@@ -11,13 +11,17 @@ import android.webkit.WebView;
 import com.garpr.android.R;
 import com.garpr.android.misc.Constants;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class AboutActivity extends BaseToolbarActivity {
 
 
     private static final String TAG = "AboutActivity";
 
-    private WebView mWebView;
+    @Bind(R.id.activity_about_webview)
+    WebView mWebView;
 
 
 
@@ -26,11 +30,6 @@ public class AboutActivity extends BaseToolbarActivity {
         final Intent intent = new Intent(activity, AboutActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         activity.startActivity(intent);
-    }
-
-
-    private void findViews() {
-        mWebView = (WebView) findViewById(R.id.activity_about_webview);
     }
 
 
@@ -55,7 +54,7 @@ public class AboutActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findViews();
+        ButterKnife.bind(this);
         prepareViews();
     }
 
@@ -67,5 +66,9 @@ public class AboutActivity extends BaseToolbarActivity {
         mWebView.loadUrl(Constants.ABOUT_URL);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 }
