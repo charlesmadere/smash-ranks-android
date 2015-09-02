@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.garpr.android.R;
 
+import butterknife.Bind;
+
 
 public class WelcomeFragment extends BaseFragment {
 
@@ -24,12 +26,22 @@ public class WelcomeFragment extends BaseFragment {
     private static final String TAG = "WelcomeFragment";
 
     private AccelerateDecelerateInterpolator mAnimationInterpolator;
-    private ImageButton mNext;
-    private ImageView mOrb;
-    private LinearLayout mContent;
     private Listener mListener;
-    private TextView mGarPr;
-    private TextView mWelcomeText;
+
+    @Bind(R.id.fragment_welcome_next)
+    ImageButton mNext;
+
+    @Bind(R.id.fragment_welcome_orb)
+    ImageView mOrb;
+
+    @Bind(R.id.fragment_welcome_content)
+    LinearLayout mContent;
+
+    @Bind(R.id.fragment_welcome_gar_pr)
+    TextView mGarPr;
+
+    @Bind(R.id.fragment_welcome_text)
+    TextView mWelcomeText;
 
 
 
@@ -61,16 +73,6 @@ public class WelcomeFragment extends BaseFragment {
     }
 
 
-    private void findViews() {
-        final View view = getView();
-        mContent = (LinearLayout) view.findViewById(R.id.fragment_welcome_content);
-        mGarPr = (TextView) view.findViewById(R.id.fragment_welcome_gar_pr);
-        mNext = (ImageButton) view.findViewById(R.id.fragment_welcome_next);
-        mOrb = (ImageView) view.findViewById(R.id.fragment_welcome_orb);
-        mWelcomeText = (TextView) view.findViewById(R.id.fragment_welcome_text);
-    }
-
-
     @Override
     protected int getContentView() {
         return R.layout.fragment_welcome;
@@ -86,7 +88,6 @@ public class WelcomeFragment extends BaseFragment {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        findViews();
         prepareViews();
     }
 
