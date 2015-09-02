@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.garpr.android.R;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 
 public class WelcomeFragment extends BaseFragment {
@@ -99,6 +100,12 @@ public class WelcomeFragment extends BaseFragment {
     }
 
 
+    @OnClick(R.id.fragment_welcome_next)
+    public void onNextClick() {
+        mListener.onWelcomeNextClick();
+    }
+
+
     @SuppressWarnings("deprecation")
     private void prepareViews() {
         mAnimationInterpolator = new AccelerateDecelerateInterpolator();
@@ -121,13 +128,6 @@ public class WelcomeFragment extends BaseFragment {
         animator.setInterpolator(mAnimationInterpolator);
         animator.setDuration(4000L);
         animator.start();
-
-        mNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                mListener.onWelcomeNextClick();
-            }
-        });
 
         mWelcomeText.setText(Html.fromHtml(getString(R.string.gar_pr_welcome_text)));
 
