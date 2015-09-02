@@ -33,6 +33,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 }
 
 dependencies {
@@ -45,6 +49,7 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.18'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
 
     compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
         transitive = true;
