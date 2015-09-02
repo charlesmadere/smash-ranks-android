@@ -40,49 +40,49 @@ public class SettingsActivity extends BaseToolbarActivity {
     private static final String TAG = "SettingsActivity";
 
     @Bind(R.id.activity_settings_sync_charging)
-    CheckPreferenceView mSyncCharging;
+    protected CheckPreferenceView mSyncCharging;
 
     @Bind(R.id.activity_settings_sync_wifi)
-    CheckPreferenceView mSyncWifi;
+    protected CheckPreferenceView mSyncWifi;
 
     @Bind(R.id.activity_settings_orb)
-    ImageButton mOrb;
+    protected ImageButton mOrb;
 
     @Bind(R.id.activity_settings_author)
-    PreferenceView mAuthor;
+    protected PreferenceView mAuthor;
 
     @Bind(R.id.activity_settings_console)
-    PreferenceView mConsole;
+    protected PreferenceView mConsole;
 
     @Bind(R.id.activity_settings_google_play_services_error)
-    PreferenceView mGooglePlayServicesError;
+    protected PreferenceView mGooglePlayServicesError;
 
     @Bind(R.id.activity_settings_network_cache)
-    PreferenceView mNetworkCache;
+    protected PreferenceView mNetworkCache;
 
     @Bind(R.id.activity_settings_region)
-    PreferenceView mRegion;
+    protected PreferenceView mRegion;
 
     @Bind(R.id.activity_settings_sync_status)
-    PreferenceView mSyncStatus;
+    protected PreferenceView mSyncStatus;
 
     @Bind(R.id.activity_settings_version)
-    PreferenceView mVersion;
+    protected PreferenceView mVersion;
 
     @Bind(R.id.activity_settings_generate_notification)
-    TextView mGenerateNotification;
+    protected TextView mGenerateNotification;
 
     @Bind(R.id.activity_settings_github)
-    TextView mGitHub;
+    protected TextView mGitHub;
 
     @Bind(R.id.activity_settings_rate_app)
-    TextView mRateApp;
+    protected TextView mRateApp;
 
     @Bind(R.id.activity_settings_server)
-    TextView mServer;
+    protected TextView mServer;
 
     @Bind(R.id.activity_settings_sync)
-    SwitchPreferenceView mSync;
+    protected SwitchPreferenceView mSync;
 
 
 
@@ -123,19 +123,19 @@ public class SettingsActivity extends BaseToolbarActivity {
 
 
     @OnClick(R.id.activity_settings_console)
-    public void onConsoleClick() {
+    protected void onConsoleClick() {
         ConsoleActivity.start(SettingsActivity.this);
     }
 
 
     @OnClick(R.id.activity_settings_github)
-    public void onGithubClick() {
+    protected void onGithubClick() {
         openLink(Constants.GITHUB_URL);
     }
 
 
     @OnClick(R.id.activity_settings_google_play_services_error)
-    public void onGooglePlayServicesErrorClick() {
+    protected void onGooglePlayServicesErrorClick() {
         final GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
         final Dialog dialog = gaa.getErrorDialog(this,
                 Utils.googlePlayServicesConnectionStatus(), 0,
@@ -158,20 +158,20 @@ public class SettingsActivity extends BaseToolbarActivity {
 
 
     @OnClick(R.id.activity_settings_network_cache)
-    public void onNetworkCacheClick() {
+    protected void onNetworkCacheClick() {
         NetworkCache.clear();
         pollNetworkCache();
     }
 
 
     @OnClick(R.id.activity_settings_server)
-    public void onServerClick() {
+    protected void onServerClick() {
         openLink(Constants.IVAN_TWITTER_URL);
     }
 
 
     @OnClick(R.id.activity_settings_author)
-    public void onAuthorClick() {
+    protected void onAuthorClick() {
         final String[] items = getResources().getStringArray(R.array.app_authors);
 
         new AlertDialog.Builder(SettingsActivity.this)
@@ -202,7 +202,7 @@ public class SettingsActivity extends BaseToolbarActivity {
 
 
     @OnClick(R.id.activity_settings_rate_app)
-    public void onRateAppClick() {
+    protected void onRateAppClick() {
         openLink(Constants.GAR_PR_GOOGLE_PLAY_STORE_URL);
     }
 
@@ -215,7 +215,7 @@ public class SettingsActivity extends BaseToolbarActivity {
 
 
     @OnClick(R.id.activity_settings_region)
-    public void onRegionClick() {
+    protected void onRegionClick() {
         RegionsActivity.start(this);
     }
 
@@ -346,7 +346,7 @@ public class SettingsActivity extends BaseToolbarActivity {
 
 
     @OnClick(R.id.activity_settings_orb)
-    public void randomYoutubeVideo() {
+    protected void randomYoutubeVideo() {
         int videoIndex;
 
         do {

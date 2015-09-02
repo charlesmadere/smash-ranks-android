@@ -20,7 +20,7 @@ public abstract class TournamentViewPagerFragment extends BaseFragment {
     private TournamentBundle mBundle;
 
     @Bind(R.id.fragment_tournament_view_pager_list)
-    RecyclerView mRecyclerView;
+    protected RecyclerView mRecyclerView;
 
 
 

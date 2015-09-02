@@ -30,19 +30,19 @@ public class WelcomeFragment extends BaseFragment {
     private Listener mListener;
 
     @Bind(R.id.fragment_welcome_next)
-    ImageButton mNext;
+    protected ImageButton mNext;
 
     @Bind(R.id.fragment_welcome_orb)
-    ImageView mOrb;
+    protected ImageView mOrb;
 
     @Bind(R.id.fragment_welcome_content)
-    LinearLayout mContent;
+    protected LinearLayout mContent;
 
     @Bind(R.id.fragment_welcome_gar_pr)
-    TextView mGarPr;
+    protected TextView mGarPr;
 
     @Bind(R.id.fragment_welcome_text)
-    TextView mWelcomeText;
+    protected TextView mWelcomeText;
 
 
 
@@ -101,7 +101,7 @@ public class WelcomeFragment extends BaseFragment {
 
 
     @OnClick(R.id.fragment_welcome_next)
-    public void onNextClick() {
+    protected void onNextClick() {
         mListener.onWelcomeNextClick();
     }
 

@@ -21,7 +21,7 @@ public class AboutActivity extends BaseToolbarActivity {
     private static final String TAG = "AboutActivity";
 
     @Bind(R.id.activity_about_webview)
-    WebView mWebView;
+    protected WebView mWebView;
 
 
 

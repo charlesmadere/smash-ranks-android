@@ -46,16 +46,16 @@ public class TournamentActivity extends BaseToolbarActivity implements
     private TournamentBundle mBundle;
 
     @Bind(R.id.activity_tournament_view_pager)
-    ViewPager mViewPager;
+    protected ViewPager mViewPager;
 
     @Bind(R.id.activity_tournament_error)
-    LinearLayout mErrorView;
+    protected LinearLayout mErrorView;
 
     @Bind(R.id.activity_tournament_tab_layout)
-    TabLayout mTabLayout;
+    protected TabLayout mTabLayout;
 
     @Bind(R.id.activity_tournament_refresh)
-    FlexibleSwipeRefreshLayout mRefreshLayout;
+    protected FlexibleSwipeRefreshLayout mRefreshLayout;
 
 
 

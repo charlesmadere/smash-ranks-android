@@ -24,7 +24,7 @@ public class FloatingActionButtonRegionsFragment extends RegionsFragment {
     private static final String TAG = "FloatingActionButtonRegionsFragment";
 
     @Bind(R.id.fragment_regions_save)
-    FloatingActionButton mSave;
+    protected FloatingActionButton mSave;
 
     private SaveListener mListener;
 
@@ -104,7 +104,7 @@ public class FloatingActionButtonRegionsFragment extends RegionsFragment {
 
 
     @OnClick(R.id.fragment_regions_save)
-    public void onSaveClick() {
+    protected void onSaveClick() {
         mListener.onRegionSaved();
     }
 

@@ -23,7 +23,7 @@ public class ToolbarRegionsFragment extends RegionsFragment implements
     private NextListener mListener;
 
     @Bind(R.id.toolbar)
-    Toolbar mToolbar;
+    protected Toolbar mToolbar;
 
 
 

@@ -35,10 +35,10 @@ public abstract class RegionsFragment extends BaseListFragment implements
     private ArrayList<ListItem> mListItems;
     private ArrayList<Region> mRegions;
     private boolean mPulled;
+    protected Region mSelectedRegion;
 
     @Bind(R.id.fragment_regions_list_frame)
     protected FrameLayout mFrame;
-    protected Region mSelectedRegion;
 
 
 
