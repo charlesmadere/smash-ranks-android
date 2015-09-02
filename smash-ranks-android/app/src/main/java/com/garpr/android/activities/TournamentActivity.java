@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -26,7 +25,7 @@ import com.garpr.android.views.RefreshLayout;
 
 
 public class TournamentActivity extends BaseToolbarActivity implements
-        SwipeRefreshLayout.OnRefreshListener {
+        RefreshLayout.OnRefreshListener {
 
 
     private static final int TOURNAMENT_FRAGMENT_COUNT = 2;
