@@ -40,7 +40,7 @@ public class TournamentPlayersFragment extends TournamentViewPagerFragment imple
 
     @Override
     @SuppressWarnings("unchecked")
-    protected TournamentAdapter createAdapter(final TournamentBundle bundle) {
+    protected RecyclerView.Adapter createAdapter(final TournamentBundle bundle) {
         final ArrayList<Player> players = bundle.getPlayers();
         Collections.sort(players, Player.ALPHABETICAL_ORDER);
         mListItems = new ArrayList<>(players.size());
@@ -156,10 +156,8 @@ public class TournamentPlayersFragment extends TournamentViewPagerFragment imple
     }
 
 
-    private final class TournamentPlayersAdapter extends TournamentAdapter {
+    private final class TournamentPlayersAdapter extends RecyclerView.Adapter {
 
-
-        private static final String TAG = "TournamentPlayersAdapter";
 
         private final int mBgGray;
         private final int mBgHighlight;
@@ -172,14 +170,14 @@ public class TournamentPlayersFragment extends TournamentViewPagerFragment imple
 
 
         @Override
-        public String getAdapterName() {
-            return TAG;
+        public int getItemCount() {
+            return mListItems.size();
         }
 
 
         @Override
-        public int getItemCount() {
-            return mListItems.size();
+        public long getItemId(final int position) {
+            return position;
         }
 
 

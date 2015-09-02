@@ -21,7 +21,6 @@ import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.FilterListener;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Player;
@@ -379,7 +378,7 @@ public class PlayerActivity extends BaseToolbarListActivity implements
 
 
     @Override
-    protected void setAdapter(final RecyclerAdapter adapter) {
+    protected void setAdapter(final RecyclerView.Adapter adapter) {
         super.setAdapter(adapter);
         mFilter = ListUtils.createSpecialFilter(mListItems, mFilterListener);
 
@@ -581,10 +580,8 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     }
 
 
-    private final class MatchesAdapter extends RecyclerAdapter {
+    private final class MatchesAdapter extends RecyclerView.Adapter {
 
-
-        private static final String TAG = "MatchesAdapter";
 
         private final int mBgGray;
         private final int mBgHighlight;
@@ -593,18 +590,10 @@ public class PlayerActivity extends BaseToolbarListActivity implements
 
 
         private MatchesAdapter() {
-            super(getRecyclerView());
-
             mBgGray = getColorCompat(R.color.gray);
             mBgHighlight = getColorCompat(R.color.overlay_bright);
             mColorLose = getColorCompat(R.color.lose_pink);
             mColorWin = getColorCompat(R.color.win_green);
-        }
-
-
-        @Override
-        public String getAdapterName() {
-            return TAG;
         }
 
 

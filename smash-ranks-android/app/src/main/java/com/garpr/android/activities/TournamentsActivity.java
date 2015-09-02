@@ -20,7 +20,6 @@ import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.MonthlyComparable;
 import com.garpr.android.misc.ListUtils.MonthlySectionCreator;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.BaseDateWrapper;
 import com.garpr.android.models.Region;
@@ -245,7 +244,7 @@ public class TournamentsActivity extends BaseToolbarListActivity implements
 
 
     @Override
-    protected void setAdapter(final RecyclerAdapter adapter) {
+    protected void setAdapter(final RecyclerView.Adapter adapter) {
         super.setAdapter(adapter);
 
         final ListUtils.FilterListener<ListItem> listener = new ListUtils.FilterListener<ListItem>(this) {
@@ -394,21 +393,7 @@ public class TournamentsActivity extends BaseToolbarListActivity implements
     }
 
 
-    private final class TournamentsAdapter extends RecyclerAdapter {
-
-
-        private static final String TAG = "TournamentsAdapter";
-
-
-        private TournamentsAdapter() {
-            super(getRecyclerView());
-        }
-
-
-        @Override
-        public String getAdapterName() {
-            return TAG;
-        }
+    private final class TournamentsAdapter extends RecyclerView.Adapter {
 
 
         @Override

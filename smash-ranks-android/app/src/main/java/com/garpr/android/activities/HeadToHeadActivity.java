@@ -18,7 +18,6 @@ import com.garpr.android.misc.Console;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.MonthlyComparable;
 import com.garpr.android.misc.ListUtils.MonthlySectionCreator;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.BaseDateWrapper;
 import com.garpr.android.models.HeadToHeadBundle;
@@ -312,7 +311,7 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
 
 
     @Override
-    protected void setAdapter(final RecyclerAdapter adapter) {
+    protected void setAdapter(final RecyclerView.Adapter adapter) {
         super.setAdapter(adapter);
 
         // it's possible for us to have gotten here before onPrepareOptionsMenu() has run
@@ -482,32 +481,28 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
     }
 
 
-    private final class MatchesAdapter extends RecyclerAdapter {
+    private final class MatchesAdapter extends RecyclerView.Adapter {
 
-
-        private static final String TAG = "MatchesAdapter";
 
         private final int mColorLose;
         private final int mColorWin;
 
 
         private MatchesAdapter() {
-            super(getRecyclerView());
-
             mColorLose = getColorCompat(R.color.lose_pink);
             mColorWin = getColorCompat(R.color.win_green);
         }
 
 
         @Override
-        public String getAdapterName() {
-            return TAG;
+        public int getItemCount() {
+            return mListItemsShown.size();
         }
 
 
         @Override
-        public int getItemCount() {
-            return mListItemsShown.size();
+        public long getItemId(final int position) {
+            return position;
         }
 
 

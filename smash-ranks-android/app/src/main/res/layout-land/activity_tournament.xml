@@ -15,7 +15,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content" />
         </android.support.v7.widget.Toolbar>
-        <com.garpr.android.views.FlexibleSwipeRefreshLayout
+        <com.garpr.android.views.RefreshLayout
             android:id="@+id/activity_tournament_refresh"
             android:layout_height="match_parent"
             android:layout_width="match_parent">
@@ -38,7 +38,7 @@
                         style="@style/error_line2" />
                 </LinearLayout>
             </FrameLayout>
-        </com.garpr.android.views.FlexibleSwipeRefreshLayout>
+        </com.garpr.android.views.RefreshLayout>
     </LinearLayout>
     <include
         layout="@layout/navigation_view" />

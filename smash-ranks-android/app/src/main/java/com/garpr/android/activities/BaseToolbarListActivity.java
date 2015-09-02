@@ -3,26 +3,23 @@ package com.garpr.android.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
-import com.garpr.android.misc.LinearLayoutManagerWrapper;
-import com.garpr.android.misc.RecyclerAdapter;
-import com.garpr.android.views.FlexibleSwipeRefreshLayout;
+import com.garpr.android.views.RefreshLayout;
 
 
 public abstract class BaseToolbarListActivity extends BaseToolbarActivity implements
-        SwipeRefreshLayout.OnRefreshListener {
+        RefreshLayout.OnRefreshListener {
 
 
     private boolean mIsLoading;
-    private FlexibleSwipeRefreshLayout mRefreshLayout;
     private LinearLayout mErrorView;
-    private RecyclerAdapter mAdapter;
+    private RecyclerView.Adapter mAdapter;
+    private RefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
     private TextView mErrorLine;
 
@@ -33,7 +30,7 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
         mErrorLine = (TextView) findViewById(R.id.activity_base_list_error_line);
         mErrorView = (LinearLayout) findViewById(R.id.activity_base_list_error);
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_base_list_list);
-        mRefreshLayout = (FlexibleSwipeRefreshLayout) findViewById(R.id.activity_base_list_refresh);
+        mRefreshLayout = (RefreshLayout) findViewById(R.id.activity_base_list_refresh);
     }
 
 
@@ -60,7 +57,7 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
 
     protected void notifyDataSetChanged() {
         if (mAdapter != null) {
-            mAdapter.dataSetChanged();
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -82,9 +79,7 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
 
     protected void prepareViews() {
         mErrorLine.setText(getErrorText());
-        mRecyclerView.setLayoutManager(new LinearLayoutManagerWrapper(this));
         mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setScrollingView(mRecyclerView);
     }
 
 
@@ -93,9 +88,10 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
     }
 
 
-    protected void setAdapter(final RecyclerAdapter adapter) {
+    protected void setAdapter(final RecyclerView.Adapter adapter) {
         mErrorView.setVisibility(View.GONE);
         mAdapter = adapter;
+        mAdapter.setHasStableIds(true);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
         setLoading(false);

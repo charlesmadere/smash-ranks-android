@@ -7,21 +7,16 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.Spanned;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.garpr.android.BuildConfig;
 import com.garpr.android.R;
 import com.garpr.android.misc.Console;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.models.LogMessage;
+import com.garpr.android.views.LogMessageView;
+import com.garpr.android.views.LogMessageWithStackTraceView;
 
 
 public class ConsoleActivity extends BaseToolbarListActivity {
@@ -37,19 +32,6 @@ public class ConsoleActivity extends BaseToolbarListActivity {
     public static void start(final Activity activity) {
         final Intent intent = new Intent(activity, ConsoleActivity.class);
         activity.startActivity(intent);
-    }
-
-
-    private void createAdapter() {
-        final ConsoleAdapter adapter;
-
-        if (BuildConfig.DEBUG) {
-            adapter = new DebugConsoleAdapter();
-        } else {
-            adapter = new ReleaseConsoleAdapter();
-        }
-
-        setAdapter(adapter);
     }
 
 
@@ -80,7 +62,12 @@ public class ConsoleActivity extends BaseToolbarListActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createAdapter();
+
+        if (BuildConfig.DEBUG) {
+            setAdapter(new DebugConsoleAdapter());
+        } else {
+            setAdapter(new ConsoleAdapter());
+        }
     }
 
 
@@ -146,41 +133,7 @@ public class ConsoleActivity extends BaseToolbarListActivity {
 
 
 
-    private abstract class ConsoleAdapter extends RecyclerAdapter {
-
-
-        private final int mDebugTextColor;
-        private final int mErrorTextColor;
-        private final int mWarnTextColor;
-
-
-        private ConsoleAdapter() {
-            super(getRecyclerView());
-
-            mDebugTextColor = getColorCompat(R.color.white);
-            mErrorTextColor = getColorCompat(R.color.console_error);
-            mWarnTextColor = getColorCompat(R.color.console_warn);
-        }
-
-
-        protected void formatTextViewPerLevel(final LogMessage logMessage, final TextView textView) {
-            switch (logMessage.getPriority()) {
-                case Log.DEBUG:
-                    textView.setTextColor(mDebugTextColor);
-                    break;
-
-                case Log.ERROR:
-                    textView.setTextColor(mErrorTextColor);
-                    break;
-
-                case Log.WARN:
-                    textView.setTextColor(mWarnTextColor);
-                    break;
-
-                default:
-                    throw new RuntimeException("Unknown priority: " + logMessage.getPriority());
-            }
-        }
+    private class ConsoleAdapter extends RecyclerView.Adapter {
 
 
         @Override
@@ -196,7 +149,17 @@ public class ConsoleActivity extends BaseToolbarListActivity {
 
 
         @Override
-        public abstract int getItemViewType(final int position);
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            final LogMessage logMessage = Console.getLogMessage(position);
+            ((LogMessageView.ViewHolder) holder).getView().setLogMessage(logMessage);
+        }
+
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
+                final int viewType) {
+            return LogMessageView.inflate(parent).getViewHolder();
+        }
 
 
     }
@@ -205,55 +168,30 @@ public class ConsoleActivity extends BaseToolbarListActivity {
     private final class DebugConsoleAdapter extends ConsoleAdapter {
 
 
-        private static final String TAG = "DebugConsoleAdapter";
-
-
-        @Override
-        public String getAdapterName() {
-            return TAG;
-        }
+        private static final int VIEW_TYPE_SIMPLE = 0;
+        private static final int VIEW_TYPE_THROWABLE = 1;
 
 
         @Override
         public int getItemViewType(final int position) {
             final LogMessage logMessage = Console.getLogMessage(position);
-            final int viewType;
 
             if (logMessage.isThrowable()) {
-                viewType = LogMessageWithStackTraceViewHolder.VIEW_TYPE;
+                return VIEW_TYPE_THROWABLE;
             } else {
-                viewType = LogMessageViewHolder.VIEW_TYPE;
+                return VIEW_TYPE_SIMPLE;
             }
-
-            return viewType;
         }
 
 
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-            final int viewType = getItemViewType(position);
-            final LogMessage logMessage = Console.getLogMessage(position);
-            final Spanned tagAndMessage = Html.fromHtml(getString(R.string.x_bold_colon_y,
-                    logMessage.getTag(), logMessage.getMessage()));
-
-            switch (viewType) {
-                case LogMessageViewHolder.VIEW_TYPE:
-                    final LogMessageViewHolder lmvh = (LogMessageViewHolder) holder;
-                    lmvh.mTagAndMessage.setText(tagAndMessage);
-                    formatTextViewPerLevel(logMessage, lmvh.mTagAndMessage);
-                    break;
-
-                case LogMessageWithStackTraceViewHolder.VIEW_TYPE:
-                    final LogMessageWithStackTraceViewHolder lmwstvh =
-                            (LogMessageWithStackTraceViewHolder) holder;
-                    lmwstvh.mTagAndMessage.setText(tagAndMessage);
-                    lmwstvh.mStackTrace.setText(logMessage.getStackTrace());
-                    formatTextViewPerLevel(logMessage, lmwstvh.mTagAndMessage);
-                    formatTextViewPerLevel(logMessage, lmwstvh.mStackTrace);
-                    break;
-
-                default:
-                    throw new RuntimeException("Unknown viewType: " + viewType);
+            if (getItemViewType(position) == VIEW_TYPE_THROWABLE) {
+                final LogMessage logMessage = Console.getLogMessage(position);
+                ((LogMessageWithStackTraceView.ViewHolder) holder).getView()
+                        .setLogMessage(logMessage);
+            } else {
+                super.onBindViewHolder(holder, position);
             }
         }
 
@@ -261,110 +199,11 @@ public class ConsoleActivity extends BaseToolbarListActivity {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
                 final int viewType) {
-            final LayoutInflater inflater = getLayoutInflater();
-
-            final View view;
-            final RecyclerView.ViewHolder holder;
-
-            switch (viewType) {
-                case LogMessageViewHolder.VIEW_TYPE:
-                    view = inflater.inflate(R.layout.model_log_message, parent, false);
-                    holder = new LogMessageViewHolder(view);
-                    break;
-
-                case LogMessageWithStackTraceViewHolder.VIEW_TYPE:
-                    view = inflater.inflate(R.layout.model_log_message_with_stack_trace, parent, false);
-                    holder = new LogMessageWithStackTraceViewHolder(view);
-                    break;
-
-                default:
-                    throw new RuntimeException("Unknown viewType: " + viewType);
-            }
-
-            return holder;
-        }
-
-
-    }
-
-
-    private final class ReleaseConsoleAdapter extends ConsoleAdapter {
-
-
-        private static final String TAG = "ReleaseConsoleAdapter";
-
-
-        @Override
-        public String getAdapterName() {
-            return TAG;
-        }
-
-
-        @Override
-        public int getItemViewType(final int position) {
-            return LogMessageViewHolder.VIEW_TYPE;
-        }
-
-
-        @Override
-        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-            final LogMessage logMessage = Console.getLogMessage(position);
-            final String text;
-
-            if (logMessage.isThrowable()) {
-                text = getString(R.string.x_bold_colon_y_paren_z, logMessage.getTag(),
-                        logMessage.getMessage(), logMessage.getThrowableMessage());
+            if (viewType == VIEW_TYPE_THROWABLE) {
+                return LogMessageWithStackTraceView.inflate(parent).getViewHolder();
             } else {
-                text = getString(R.string.x_bold_colon_y, logMessage.getTag(),
-                        logMessage.getMessage());
+                return super.onCreateViewHolder(parent, viewType);
             }
-
-            final LogMessageViewHolder lmvh = (LogMessageViewHolder) holder;
-            lmvh.mTagAndMessage.setText(Html.fromHtml(text));
-            formatTextViewPerLevel(logMessage, lmvh.mTagAndMessage);
-        }
-
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
-                final int viewType) {
-            final LayoutInflater inflater = getLayoutInflater();
-            final View view = inflater.inflate(R.layout.model_log_message, parent, false);
-            return new LogMessageViewHolder(view);
-        }
-
-
-    }
-
-
-    private static final class LogMessageViewHolder extends RecyclerView.ViewHolder {
-
-
-        private static final int VIEW_TYPE = 1;
-        private final TextView mTagAndMessage;
-
-
-        private LogMessageViewHolder(final View view) {
-            super(view);
-            mTagAndMessage = (TextView) view.findViewById(R.id.model_log_message_tag_and_message);
-        }
-
-
-    }
-
-
-    private static final class LogMessageWithStackTraceViewHolder extends RecyclerView.ViewHolder {
-
-
-        private static final int VIEW_TYPE = 2;
-        private final TextView mStackTrace;
-        private final TextView mTagAndMessage;
-
-
-        private LogMessageWithStackTraceViewHolder(final View view) {
-            super(view);
-            mStackTrace = (TextView) view.findViewById(R.id.model_log_message_with_stack_trace_stack_trace);
-            mTagAndMessage = (TextView) view.findViewById(R.id.model_log_message_with_stack_trace_tag_and_message);
         }
 
 

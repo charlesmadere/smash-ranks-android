@@ -26,7 +26,7 @@ public final class Constants {
     public static final String FIRST_SYNC = "first_sync";
     public static final String GAME = "game";
     public static final String GAR_PR_GOOGLE_PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.garpr.android";
-    public static final String GITHUB_URL = "https://github.com/airokay/smash-ranks-android";
+    public static final String GITHUB_URL = "https://github.com/charlesmadere/smash-ranks-android";
     public static final String GOOGLE_PLAY_SERVICES_URL = "https://play.google.com/store/apps/details?id=com.google.android.gms";
     public static final String HEAD_TO_HEAD = "head_to_head";
     public static final String ID = "id";

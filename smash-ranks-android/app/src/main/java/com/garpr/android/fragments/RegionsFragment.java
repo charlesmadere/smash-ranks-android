@@ -14,7 +14,6 @@ import com.garpr.android.misc.Console;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.AlphabeticalSectionCreator;
 import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.models.Region;
 import com.garpr.android.views.CheckableItemView;
 import com.garpr.android.views.SimpleSeparatorView;
@@ -268,26 +267,18 @@ public abstract class RegionsFragment extends BaseListFragment implements
     }
 
 
-    private final class RegionsAdapter extends RecyclerAdapter {
-
-
-        private static final String TAG = "RegionsAdapter";
-
-
-        private RegionsAdapter() {
-            super(getRecyclerView());
-        }
-
-
-        @Override
-        public String getAdapterName() {
-            return TAG;
-        }
+    private final class RegionsAdapter extends RecyclerView.Adapter {
 
 
         @Override
         public int getItemCount() {
             return mListItems.size();
+        }
+
+
+        @Override
+        public long getItemId(final int position) {
+            return position;
         }
 
 

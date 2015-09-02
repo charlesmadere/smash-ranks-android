@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <array name="spinner_colors">
+        <item>@color/indigo_brighter</item>
+        <item>@color/indigo_bright</item>
+        <item>@color/indigo</item>
+        <item>@color/indigo_dark</item>
+    </array>
+
     <string-array name="app_authors">
         <item>@string/charles_madere</item>
         <item>@string/timothy_choi</item>

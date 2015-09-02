@@ -38,7 +38,7 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
 
 
     @Override
-    protected TournamentAdapter createAdapter(final TournamentBundle bundle) {
+    protected RecyclerView.Adapter createAdapter(final TournamentBundle bundle) {
         mMatches = bundle.getMatches();
         return new TournamentMatchesAdapter();
     }
@@ -105,10 +105,8 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
 
 
 
-    private final class TournamentMatchesAdapter extends TournamentAdapter<MatchItemView.ViewHolder> {
+    private final class TournamentMatchesAdapter extends RecyclerView.Adapter<MatchItemView.ViewHolder> {
 
-
-        private static final String TAG = "TournamentMatchesAdapter";
 
         private final int mBgGray;
         private final int mBgHighlight;
@@ -117,12 +115,6 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
         private TournamentMatchesAdapter() {
             mBgGray = getColorCompat(R.color.gray);
             mBgHighlight = getColorCompat(R.color.overlay_bright);
-        }
-
-
-        @Override
-        public String getAdapterName() {
-            return TAG;
         }
 
 

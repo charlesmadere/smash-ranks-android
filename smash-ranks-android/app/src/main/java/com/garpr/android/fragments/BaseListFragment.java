@@ -9,9 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
-import com.garpr.android.misc.LinearLayoutManagerWrapper;
-import com.garpr.android.misc.RecyclerAdapter;
-import com.garpr.android.views.FlexibleSwipeRefreshLayout;
+import com.garpr.android.views.RefreshLayout;
 
 
 public abstract class BaseListFragment extends BaseFragment implements
@@ -19,10 +17,10 @@ public abstract class BaseListFragment extends BaseFragment implements
 
 
     private boolean mIsLoading;
-    private FlexibleSwipeRefreshLayout mRefreshLayout;
     private LinearLayout mErrorView;
-    private RecyclerAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RefreshLayout mRefreshLayout;
     private TextView mErrorLine;
 
 
@@ -33,7 +31,7 @@ public abstract class BaseListFragment extends BaseFragment implements
         mErrorLine = (TextView) view.findViewById(R.id.fragment_base_list_error_line);
         mErrorView = (LinearLayout) view.findViewById(R.id.fragment_base_list_error);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_base_list_list);
-        mRefreshLayout = (FlexibleSwipeRefreshLayout) view.findViewById(R.id.fragment_base_list_refresh);
+        mRefreshLayout = (RefreshLayout) view.findViewById(R.id.fragment_base_list_refresh);
     }
 
 
@@ -60,7 +58,7 @@ public abstract class BaseListFragment extends BaseFragment implements
 
     protected void notifyDataSetChanged() {
         if (mAdapter != null) {
-            mAdapter.dataSetChanged();
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -82,9 +80,7 @@ public abstract class BaseListFragment extends BaseFragment implements
 
     protected void prepareViews() {
         mErrorLine.setText(getErrorText());
-        mRecyclerView.setLayoutManager(new LinearLayoutManagerWrapper(getActivity()));
         mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setScrollingView(mRecyclerView);
     }
 
 
@@ -93,9 +89,10 @@ public abstract class BaseListFragment extends BaseFragment implements
     }
 
 
-    protected void setAdapter(final RecyclerAdapter adapter) {
+    protected void setAdapter(final RecyclerView.Adapter adapter) {
         mErrorView.setVisibility(View.GONE);
         mAdapter = adapter;
+        mAdapter.setHasStableIds(true);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
         setLoading(false);

@@ -23,7 +23,6 @@ import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.AlphabeticalSectionCreator;
 import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.Player;
 import com.garpr.android.views.CheckableItemView;
@@ -339,7 +338,7 @@ public class PlayersFragment extends BaseListToolbarFragment implements
 
 
     @Override
-    protected void setAdapter(final RecyclerAdapter adapter) {
+    protected void setAdapter(final RecyclerView.Adapter adapter) {
         super.setAdapter(adapter);
 
         final ListUtils.FilterListener<ListItem> listener = new ListUtils.FilterListener<ListItem>(this) {
@@ -501,21 +500,7 @@ public class PlayersFragment extends BaseListToolbarFragment implements
     }
 
 
-    private final class PlayersAdapter extends RecyclerAdapter {
-
-
-        private static final String TAG = "PlayersAdapter";
-
-
-        private PlayersAdapter() {
-            super(getRecyclerView());
-        }
-
-
-        @Override
-        public String getAdapterName() {
-            return TAG;
-        }
+    private final class PlayersAdapter extends RecyclerView.Adapter {
 
 
         @Override

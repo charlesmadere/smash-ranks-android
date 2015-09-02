@@ -131,8 +131,8 @@
     <string name="syncing">Syncing</string>
     <string name="syncing_">Syncing…</string>
     <string name="sync_description">About once a day, the app will check the GAR PR website for a
-        new version of your current region\'s roster. If a new roster is found, a notification will
-        appear in your device\'s notification center.</string>
+        new version of your personal region\'s roster. If a new roster is found, a notification
+        will appear in your device\'s notification center.</string>
     <string name="sync_has_yet_to_occur">Sync has yet to occur</string>
     <string name="tag_and_message"><b>%1$s</b> %2$s</string>
     <string name="timothy_choi">Timothy Choi</string>

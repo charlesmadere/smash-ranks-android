@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.FlexibleSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.views.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_base_list_refresh"
+    app:scrolling_child="@+id/fragment_base_list_list"
     style="@style/root.no_padding">
     <FrameLayout
         android:id="@+id/fragment_regions_list_frame"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_base_list_list"
+            android:id="@id/fragment_base_list_list"
             style="@style/list" />
         <LinearLayout
             android:id="@+id/fragment_base_list_error"
@@ -29,4 +31,4 @@
             android:src="@drawable/ic_save"
             android:visibility="invisible" />
     </FrameLayout>
-</com.garpr.android.views.FlexibleSwipeRefreshLayout>
+</com.garpr.android.views.RefreshLayout>

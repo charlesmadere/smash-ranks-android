@@ -2,13 +2,13 @@ package com.garpr.android.fragments;
 
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.garpr.android.R;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.views.CheckableItemView;
 
 
@@ -101,7 +101,7 @@ public class ToolbarRegionsFragment extends RegionsFragment implements
 
 
     @Override
-    protected void setAdapter(final RecyclerAdapter adapter) {
+    protected void setAdapter(final RecyclerView.Adapter adapter) {
         super.setAdapter(adapter);
         findToolbarItems();
 

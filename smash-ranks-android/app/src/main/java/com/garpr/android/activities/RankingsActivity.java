@@ -24,7 +24,6 @@ import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
 import com.garpr.android.misc.NetworkCache;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.misc.SyncManager;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.Player;
@@ -315,7 +314,7 @@ public class RankingsActivity extends BaseToolbarListActivity implements
 
 
     @Override
-    protected void setAdapter(final RecyclerAdapter adapter) {
+    protected void setAdapter(final RecyclerView.Adapter adapter) {
         super.setAdapter(adapter);
 
         final ListUtils.FilterListener<ListItem> listener = new ListUtils.FilterListener<ListItem>(this) {
@@ -481,26 +480,16 @@ public class RankingsActivity extends BaseToolbarListActivity implements
     }
 
 
-    private final class RankingsAdapter extends RecyclerAdapter {
+    private final class RankingsAdapter extends RecyclerView.Adapter {
 
-
-        private static final String TAG = "RankingsAdapter";
 
         private final int mBgGray;
         private final int mBgHighlight;
 
 
         private RankingsAdapter() {
-            super(getRecyclerView());
-
             mBgGray = getColorCompat(R.color.gray);
             mBgHighlight = getColorCompat(R.color.overlay_bright);
-        }
-
-
-        @Override
-        public String getAdapterName() {
-            return TAG;
         }
 
 

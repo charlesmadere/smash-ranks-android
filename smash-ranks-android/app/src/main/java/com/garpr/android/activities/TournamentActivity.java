@@ -22,7 +22,7 @@ import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.models.Tournament;
 import com.garpr.android.models.TournamentBundle;
-import com.garpr.android.views.FlexibleSwipeRefreshLayout;
+import com.garpr.android.views.RefreshLayout;
 
 
 public class TournamentActivity extends BaseToolbarActivity implements
@@ -38,9 +38,9 @@ public class TournamentActivity extends BaseToolbarActivity implements
     private static final String TAG = "TournamentActivity";
 
     private boolean mIsLoading;
-    private FlexibleSwipeRefreshLayout mRefreshLayout;
     private Intent mShareIntent;
     private LinearLayout mErrorView;
+    private RefreshLayout mRefreshLayout;
     private TabLayout mTabLayout;
     private Tournament mTournament;
     private TournamentBundle mBundle;
@@ -80,7 +80,7 @@ public class TournamentActivity extends BaseToolbarActivity implements
 
     private void findViews() {
         mErrorView = (LinearLayout) findViewById(R.id.activity_tournament_error);
-        mRefreshLayout = (FlexibleSwipeRefreshLayout) findViewById(R.id.activity_tournament_refresh);
+        mRefreshLayout = (RefreshLayout) findViewById(R.id.activity_tournament_refresh);
         mTabLayout = (TabLayout) findViewById(R.id.activity_tournament_tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.activity_tournament_view_pager);
     }

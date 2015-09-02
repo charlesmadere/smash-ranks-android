@@ -6,8 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.garpr.android.R;
-import com.garpr.android.misc.LinearLayoutManagerWrapper;
-import com.garpr.android.misc.RecyclerAdapter;
 import com.garpr.android.models.TournamentBundle;
 
 
@@ -32,7 +30,7 @@ public abstract class TournamentViewPagerFragment extends BaseFragment {
     }
 
 
-    protected abstract TournamentAdapter createAdapter(final TournamentBundle bundle);
+    protected abstract RecyclerView.Adapter createAdapter(final TournamentBundle bundle);
 
 
     private void findViews() {
@@ -67,29 +65,16 @@ public abstract class TournamentViewPagerFragment extends BaseFragment {
 
 
     protected void prepareList() {
+        final RecyclerView.Adapter adapter = createAdapter(mBundle);
+        adapter.setHasStableIds(true);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManagerWrapper(getActivity()));
-        mRecyclerView.setAdapter(createAdapter(mBundle));
+        mRecyclerView.setAdapter(adapter);
     }
 
 
     protected void readArguments() {
         final Bundle arguments = getArguments();
         mBundle = arguments.getParcelable(KEY_BUNDLE);
-    }
-
-
-
-
-    protected abstract class TournamentAdapter<T extends RecyclerView.ViewHolder> extends
-            RecyclerAdapter<T> {
-
-
-        protected TournamentAdapter() {
-            super(mRecyclerView);
-        }
-
-
     }
 
 
