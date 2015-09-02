@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.TournamentSeparatorView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    style="@style/separator_root">
+    <LinearLayout
+        android:id="@+id/view_tournament_separator_item_container"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent"
+        style="@style/separator_container">
+        <TextView
+            android:id="@+id/view_tournament_separator_item_name"
+            android:layout_marginEnd="@dimen/root_padding_half"
+            android:layout_marginRight="@dimen/root_padding_half"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            tools:text="SF Game Night 30"
+            style="@style/separator_text" />
+        <android.support.v4.widget.Space
+            android:layout_height="1dp"
+            android:layout_width="@dimen/root_padding_half" />
+        <TextView
+            android:id="@+id/view_tournament_separator_item_date"
+            tools:text="01/14/15"
+            style="@style/separator_text" />
+    </LinearLayout>
+</com.garpr.android.views.TournamentSeparatorView>

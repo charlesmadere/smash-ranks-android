@@ -1,14 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="progress">
-        <item name="android:id">@id/progress</item>
-        <item name="android:indeterminate">true</item>
-        <item name="android:indeterminateOnly">true</item>
-        <item name="android:layout_centerInParent">true</item>
+    <style name="drawer_layout" parent="root.no_padding">
+        <item name="android:id">@id/drawer_layout</item>
+    </style>
+
+    <style name="error_container">
+        <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/root_padding</item>
+        <item name="android:paddingRight">@dimen/root_padding</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="error_line">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="error_line1" parent="error_line">
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
+        <item name="android:text">@string/error_</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="error_line2" parent="error_line">
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-condensed</item>
+        <item name="android:text">@string/swipe_to_refresh_and_try_again</item>
+        <item name="android:textColor">@color/gray_lightest</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="fontFamily_medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="garpr_text">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="header_text">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="list">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingBottom">@dimen/root_padding_half</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="list.no_padding">
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+
+    <style name="list_item_root">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">@dimen/list_item_height</item>
+        <item name="android:paddingBottom">@dimen/root_padding_fourth</item>
+        <item name="android:paddingLeft">@dimen/root_padding</item>
+        <item name="android:paddingRight">@dimen/root_padding</item>
+        <item name="android:paddingTop">@dimen/root_padding_fourth</item>
+    </style>
+
+    <style name="list_item_root.no_padding">
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+    </style>
+
+    <style name="list_item_root.text">
+        <item name="android:ellipsize">end</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="match_item_text">
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="navigation_drawer_item">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:drawablePadding">@dimen/root_padding</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">@dimen/list_item_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">@dimen/root_padding</item>
+        <item name="android:paddingRight">@dimen/root_padding</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="results_bar">
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="root">
@@ -21,8 +128,120 @@
         <item name="android:padding">0dp</item>
     </style>
 
-    <style name="theme" parent="android:Theme.Holo">
+    <style name="separator_container">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:layout_height">@dimen/list_item_separator_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingBottom">@dimen/root_padding_half</item>
+        <item name="android:paddingLeft">@dimen/root_padding</item>
+        <item name="android:paddingRight">@dimen/root_padding</item>
+    </style>
 
+    <style name="separator_root">
+        <item name="android:background">@color/gray</item>
+        <item name="android:layout_marginTop">@dimen/root_padding_half</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="separator_text_base" parent="singleline">
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/indigo_bright</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="separator_text" parent="separator_text_base">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="settings_container">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">@dimen/list_item_height</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/root_padding</item>
+    </style>
+
+    <style name="settings_container.title">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="settings_section">
+        <item name="android:background">@color/gray</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/root_padding_half</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingTop">@dimen/root_padding</item>
+    </style>
+
+    <style name="settings_separator_base">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/root_padding_half</item>
+        <item name="android:layout_marginLeft">@dimen/root_padding</item>
+        <item name="android:layout_marginRight">@dimen/root_padding</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/indigo_bright</item>
+    </style>
+
+    <style name="settings_separator" parent="settings_separator_base">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="settings_sub_title" parent="settings_text">
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="settings_sub_title.error">
+        <item name="android:textColor">@color/console_warn</item>
+    </style>
+
+    <style name="settings_text">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="settings_title" parent="settings_text">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="settings_title.error">
+        <item name="android:textColor">@color/console_warn</item>
+    </style>
+
+    <style name="singleline">
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="status_bar_buffer_base">
+        <item name="android:background">@color/gray_dark</item>
+        <item name="android:id">@id/status_bar_buffer</item>
+        <item name="android:layout_height">@dimen/status_bar_height</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="status_bar_buffer" parent="status_bar_buffer_base">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="toolbar">
+        <item name="android:background">@color/gray_dark</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation</item>
+        <item name="android:id">@id/toolbar</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
 </resources>

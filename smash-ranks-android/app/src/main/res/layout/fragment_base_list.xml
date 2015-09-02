@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.FlexibleSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_base_list_refresh"
+    style="@style/root.no_padding">
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_base_list_list"
+            style="@style/list" />
+        <LinearLayout
+            android:id="@+id/fragment_base_list_error"
+            tools:visibility="visible"
+            style="@style/error_container">
+            <TextView
+                android:id="@+id/fragment_base_list_error_line"
+                style="@style/error_line1" />
+            <TextView
+                style="@style/error_line2" />
+        </LinearLayout>
+    </FrameLayout>
+</com.garpr.android.views.FlexibleSwipeRefreshLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/indigo"
+    android:id="@+id/fragment_welcome_content"
+    android:orientation="vertical"
+    tools:ignore="Overdraw"
+    style="@style/root.no_padding">
+    <ScrollView
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            style="@style/root">
+            <ImageView
+                android:adjustViewBounds="true"
+                android:alpha="0"
+                android:contentDescription="@string/gar_pr"
+                android:id="@+id/fragment_welcome_orb"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/root_padding_triple"
+                android:layout_marginTop="@dimen/root_padding_quadruple"
+                android:layout_width="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@drawable/controller_white"
+                tools:alpha="1" />
+            <TextView
+                android:alpha="0"
+                android:id="@+id/fragment_welcome_gar_pr"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/root_padding_double"
+                android:layout_width="match_parent"
+                android:text="@string/gar_pr"
+                android:shadowColor="@color/black"
+                android:shadowDx="0"
+                android:shadowDy="8"
+                android:shadowRadius="16"
+                tools:alpha="1"
+                style="@style/garpr_text" />
+            <TextView
+                android:alpha="0"
+                android:gravity="center"
+                android:id="@+id/fragment_welcome_text"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/root_padding"
+                android:layout_marginRight="@dimen/root_padding"
+                android:layout_width="match_parent"
+                android:lineSpacingExtra="4dp"
+                android:textSize="17sp"
+                tools:alpha="1"
+                tools:text="@string/gar_pr_welcome_text" />
+        </LinearLayout>
+    </ScrollView>
+    <ImageButton
+        android:alpha="0"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:id="@+id/fragment_welcome_next"
+        android:layout_gravity="bottom|right"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_width="@dimen/list_item_height"
+        android:scaleType="center"
+        android:src="@drawable/ic_forward"
+        tools:alpha="1"
+        tools:ignore="ContentDescription" />
+</LinearLayout>

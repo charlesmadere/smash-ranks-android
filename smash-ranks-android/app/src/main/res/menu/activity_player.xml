@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/ic_search"
+        android:id="@+id/activity_player_menu_search"
+        android:title="@string/search"
+        android:visible="false"
+        compat:actionViewClass="android.support.v7.widget.SearchView"
+        compat:showAsAction="collapseActionView|ifRoom" />
+    <item
+        android:icon="@drawable/ic_share"
+        android:id="@+id/activity_player_menu_share"
+        android:title="@string/share"
+        android:visible="false"
+        compat:showAsAction="ifRoom" />
+    <item
+        android:icon="@drawable/ic_sort"
+        android:id="@+id/activity_player_menu_show"
+        android:title="@string/show_"
+        android:visible="false"
+        compat:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/activity_player_menu_show_loses"
+                android:title="@string/show_loses" />
+            <item
+                android:id="@+id/activity_player_menu_show_wins"
+                android:title="@string/show_wins" />
+            <item
+                android:id="@+id/activity_player_menu_show_all"
+                android:title="@string/show_all"
+                android:visible="false" />
+        </menu>
+    </item>
+</menu>

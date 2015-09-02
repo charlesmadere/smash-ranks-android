@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/ic_sort"
+        android:id="@+id/activity_head_to_head_menu_show"
+        android:title="@string/show_"
+        android:visible="false"
+        compat:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/activity_head_to_head_menu_show_loses"
+                android:title="@string/show_loses" />
+            <item
+                android:id="@+id/activity_head_to_head_menu_show_wins"
+                android:title="@string/show_wins" />
+            <item
+                android:id="@+id/activity_head_to_head_menu_show_all"
+                android:title="@string/show_all"
+                android:visible="false" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/activity_head_to_head_menu_view_player_one"
+        android:title="@string/view_first_player"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/activity_head_to_head_menu_view_player_two"
+        android:title="@string/view_second_player"
+        compat:showAsAction="never" />
+</menu>

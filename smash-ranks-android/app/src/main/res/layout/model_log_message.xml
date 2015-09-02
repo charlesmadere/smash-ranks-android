@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/gray"
+    android:id="@+id/model_log_message_tag_and_message"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:paddingBottom="@dimen/root_padding_half"
+    android:paddingLeft="@dimen/root_padding"
+    android:paddingRight="@dimen/root_padding"
+    android:paddingTop="@dimen/root_padding_half"
+    android:textSize="14sp"
+    tools:ignore="Overdraw"
+    tools:text="Region listener added at index 4" />

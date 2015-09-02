@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.NavigationHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="@dimen/navigation_drawer_banner_height"
+    android:layout_width="match_parent">
+    <ImageView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/navigation_drawer_banner"
+        tools:ignore="ContentDescription" />
+    <View
+        android:background="@color/overlay_dark"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+    <TextView
+        android:id="@+id/navigation_header_view_region"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginLeft="@dimen/root_padding"
+        android:layout_marginRight="@dimen/root_padding"
+        android:layout_width="match_parent"
+        android:shadowColor="@color/black"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:textIsSelectable="true"
+        tools:text="Norcal"
+        style="@style/singleline" />
+    <TextView
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:id="@+id/navigation_header_view_player"
+        android:layout_above="@id/navigation_header_view_region"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/root_padding"
+        android:layout_marginRight="@dimen/root_padding"
+        android:layout_width="match_parent"
+        android:lines="1"
+        android:maxLines="1"
+        android:shadowColor="@color/black"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:singleLine="true"
+        android:textIsSelectable="true"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute"
+        tools:text="Charlezard"
+        tools:visibility="visible"
+        style="@style/fontFamily_medium" />
+</com.garpr.android.views.NavigationHeaderView>

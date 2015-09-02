@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    style="@style/root.no_padding">
+    <include
+        layout="@layout/view_status_bar_buffer" />
+    <include
+        layout="@layout/toolbar" />
+    <com.garpr.android.views.FlexibleSwipeRefreshLayout
+        android:id="@+id/fragment_base_list_refresh"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent">
+        <FrameLayout
+            android:id="@+id/fragment_base_list_frame"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_base_list_list"
+                style="@style/list" />
+            <LinearLayout
+                android:id="@+id/fragment_base_list_error"
+                tools:visibility="visible"
+                style="@style/error_container">
+                <TextView
+                    android:id="@+id/fragment_base_list_error_line"
+                    style="@style/error_line1" />
+                <TextView
+                    style="@style/error_line2" />
+            </LinearLayout>
+        </FrameLayout>
+    </com.garpr.android.views.FlexibleSwipeRefreshLayout>
+</LinearLayout>

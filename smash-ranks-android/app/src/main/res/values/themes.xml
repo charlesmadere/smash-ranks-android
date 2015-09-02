@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="app_theme" parent="base_theme">
+
+    </style>
+
+    <style name="base_theme" parent="Theme.AppCompat">
+        <item name="alertDialogTheme">@style/dialog_theme</item>
+        <item name="colorAccent">@color/indigo_bright</item>
+        <item name="colorPrimary">@color/indigo</item>
+        <item name="colorPrimaryDark">@color/indigo_dark</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/gray_darker</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="dialog_theme" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/indigo_bright</item>
+    </style>
+
+    <style name="toolbar_theme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
+</resources>

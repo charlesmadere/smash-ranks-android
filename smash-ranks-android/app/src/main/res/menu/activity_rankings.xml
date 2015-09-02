@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto">
     <item
-        android:actionViewClass="android.widget.SearchView"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search"
         android:id="@+id/activity_rankings_menu_search"
         android:title="@string/search"
-        android:showAsAction="ifRoom"
-        android:visible="false" />
+        android:visible="false"
+        compat:actionViewClass="android.support.v7.widget.SearchView"
+        compat:showAsAction="collapseActionView|ifRoom" />
     <item
-        android:id="@+id/activity_rankings_menu_tournament"
-        android:title="@string/tournaments"
-        android:showAsAction="ifRoom"
-        android:visible="true"/>
-
-    <item
-        android:id="@+id/activity_rankings_menu_abc"
-        android:title="@string/abc"
-        android:showAsAction="never"
-        android:visible="false"/>
-    <item
-        android:id="@+id/activity_rankings_menu_rank"
-        android:title="@string/rank_order"
-        android:showAsAction="never"
-        android:visible="false"/>
+        android:icon="@drawable/ic_date"
+        android:id="@+id/activity_rankings_menu_date"
+        android:title="@string/last_rankings_update"
+        android:visible="false"
+        compat:showAsAction="ifRoom" />
 </menu>

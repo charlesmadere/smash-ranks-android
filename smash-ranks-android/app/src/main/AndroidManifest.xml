@@ -1,19 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.garpr.android" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.garpr.android">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
+        android:fullBackupContent="true"
+        android:icon="@mipmap/launcher"
+        android:label="@string/gar_pr"
         android:name=".App"
-        android:theme="@style/theme" >
+        android:theme="@style/app_theme"
+        tools:ignore="UnusedAttribute">
 
         <activity
-            android:label="@string/rankings"
+            android:label="@string/about"
             android:launchMode="singleTop"
-            android:name=".activities.RankingsActivity" >
+            android:name=".activities.AboutActivity"
+            android:parentActivityName=".activities.RankingsActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RankingsActivity" />
+        </activity>
+
+        <activity
+            android:label="@string/log_console_title_case"
+            android:launchMode="singleTop"
+            android:name=".activities.ConsoleActivity"
+            android:parentActivityName=".activities.SettingsActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:label="@string/head_to_head"
+            android:launchMode="singleTop"
+            android:name=".activities.HeadToHeadActivity"
+            android:parentActivityName=".activities.PlayerActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.PlayerActivity" />
+        </activity>
+
+        <activity
+            android:label="@string/gar_pr"
+            android:launchMode="singleTop"
+            android:name=".activities.OnboardingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,30 +63,79 @@
             android:label="@string/player"
             android:launchMode="singleTop"
             android:name=".activities.PlayerActivity"
-            android:parentActivityName=".activities.RankingsActivity" >
+            android:parentActivityName=".activities.RankingsActivity"
+            tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.RankingsActivity" />
         </activity>
 
         <activity
-            android:label="@string/players"
+            android:label="@string/gar_pr"
             android:launchMode="singleTop"
-            android:name=".activities.PlayersActivity"
-            android:parentActivityName=".activities.RankingsActivity">
+            android:name=".activities.RankingsActivity" />
+
+        <activity
+            android:label="@string/regions"
+            android:launchMode="singleTop"
+            android:name=".activities.RegionsActivity"
+            android:parentActivityName=".activities.SettingsActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:label="@string/settings"
+            android:launchMode="singleTop"
+            android:name=".activities.SettingsActivity"
+            android:parentActivityName=".activities.RankingsActivity"
+            tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.RankingsActivity" />
         </activity>
+
+        <activity
+            android:label="@string/tournament"
+            android:launchMode="singleTop"
+            android:name=".activities.TournamentActivity"
+            android:parentActivityName=".activities.TournamentsActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.TournamentsActivity" />
+        </activity>
+
         <activity
             android:label="@string/tournaments"
             android:launchMode="singleTop"
             android:name=".activities.TournamentsActivity"
-            android:parentActivityName=".activities.RankingsActivity">
+            android:parentActivityName=".activities.RankingsActivity"
+            tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.RankingsActivity" />
         </activity>
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="bd8750ba792168bfa4d0bc52e19ad83a6fad27c3" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <service
+            android:exported="true"
+            android:name=".misc.SyncManager"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            <intent-filter>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

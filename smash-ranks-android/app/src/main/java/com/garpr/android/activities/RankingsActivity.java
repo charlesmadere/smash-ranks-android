@@ -1,54 +1,154 @@
 package com.garpr.android.activities;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.garpr.android.R;
-import com.garpr.android.misc.Constants;
-import com.garpr.android.misc.FlexibleSwipeRefreshLayout;
-import com.garpr.android.misc.Networking;
+import com.garpr.android.calls.Rankings;
+import com.garpr.android.calls.ResponseOnUi;
+import com.garpr.android.misc.Console;
+import com.garpr.android.misc.ListUtils;
+import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
+import com.garpr.android.misc.ListUtils.SpecialFilterable;
+import com.garpr.android.misc.NetworkCache;
+import com.garpr.android.misc.RecyclerAdapter;
+import com.garpr.android.misc.SyncManager;
+import com.garpr.android.misc.Utils;
 import com.garpr.android.models.Player;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.garpr.android.models.RankingsBundle;
+import com.garpr.android.models.Region;
+import com.garpr.android.settings.Settings;
+import com.garpr.android.settings.Settings.User;
+import com.garpr.android.views.RankingItemView;
+import com.garpr.android.views.SimpleSeparatorView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class RankingsActivity extends BaseActivity implements
-        AdapterView.OnItemClickListener,
-        SearchView.OnQueryTextListener,
-        SwipeRefreshLayout.OnRefreshListener {
+public class RankingsActivity extends BaseToolbarListActivity implements
+        MenuItemCompat.OnActionExpandListener, RankingItemView.OnClickListener,
+        SearchView.OnQueryTextListener {
 
-    private static final String TAG = RankingsActivity.class.getSimpleName();
 
+    private static final String EXTRA_IS_FROM_RANKINGS_UPDATE = "EXTRA_IS_FROM_RANKINGS_UPDATE";
+    private static final String KEY_PLAYERS = "KEY_PLAYERS";
+    private static final String KEY_RANKINGS_DATE = "KEY_RANKINGS_DATE";
+    private static final String TAG = "RankingsActivity";
+
+    private ArrayList<ListItem> mListItems;
+    private ArrayList<ListItem> mListItemsShown;
     private ArrayList<Player> mPlayers;
-    private ArrayList<Player> mPlayersShown;
-    private boolean mIsFinishedDownloading;
-    private FlexibleSwipeRefreshLayout mRefreshLayout;
-    private RankingsFilter mFilter;
-    private ListView mListView;
-    private RankingsAdapter mAdapter;
-    private TextView mError;
-    private boolean isAbcOrder;
+    private boolean mInUsersRegion;
+    private boolean mPulled;
+    private boolean mSetMenuItemsVisible;
+    private CharSequence mRankingsDate;
+    private Filter mFilter;
+    private MenuItem mDate;
+    private MenuItem mSearch;
+    private Player mUserPlayer;
 
 
+
+
+    public static void start(final Activity activity) {
+        activity.startActivity(new IntentBuilder(activity).build());
+    }
+
+
+    private void createListItems() {
+        mListItems = new ArrayList<>();
+
+        final Resources resources = getResources();
+        final int ranksPerSection = resources.getInteger(R.integer.ranks_per_section);
+        final int playersSize = mPlayers.size();
+
+        for (int i = 0; i < playersSize; ++i) {
+            final Player player = mPlayers.get(i);
+
+            String listItemTitle = null;
+
+            if (i % ranksPerSection == 0) {
+                final int sectionStart = player.getRank();
+                final int sectionEnd;
+
+                if (sectionStart + ranksPerSection - 1 > playersSize) {
+                    sectionEnd = playersSize;
+                } else {
+                    sectionEnd = sectionStart + ranksPerSection - 1;
+                }
+
+                listItemTitle = getString(R.string.x_em_dash_y, sectionStart, sectionEnd);
+            }
+
+            if (listItemTitle != null) {
+                final ListItem listItem = ListItem.createTitle(listItemTitle);
+                mListItems.add(listItem);
+            }
+
+            final ListItem listItem = ListItem.createPlayer(player);
+            mListItems.add(listItem);
+        }
+
+        mListItems.trimToSize();
+        mListItemsShown = mListItems;
+    }
+
+
+    private void fetchRankings() {
+        setLoading(true);
+
+        final ResponseOnUi<RankingsBundle> response = new ResponseOnUi<RankingsBundle>(TAG, this) {
+            @Override
+            public void errorOnUi(final Exception e) {
+                mPulled = false;
+                Console.e(TAG, "Exception when retrieving rankings", e);
+                showError();
+            }
+
+
+            @Override
+            public void successOnUi(final RankingsBundle rankingsBundle) {
+                mPulled = false;
+                mPlayers = rankingsBundle.getRankings();
+
+                if (rankingsBundle.hasDateWrapper()) {
+                    mRankingsDate = DateUtils.getRelativeDateTimeString(RankingsActivity.this,
+                            rankingsBundle.getDateWrapper().getDate().getTime(),
+                            DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
+                }
+
+                prepareList();
+            }
+        };
+
+        Rankings.get(response, mPulled);
+    }
+
+
+    @Override
+    public String getActivityName() {
+        return TAG;
+    }
+
+
+    @Override
+    protected String getErrorText() {
+        return getString(R.string.error_fetching_rankings);
+    }
 
 
     @Override
@@ -58,25 +158,84 @@ public class RankingsActivity extends BaseActivity implements
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    protected int getSelectedNavigationItemId() {
+        return R.id.navigation_view_menu_rankings;
+    }
+
+
+    private boolean isMenuNull() {
+        return Utils.areAnyObjectsNull(mDate, mSearch);
+    }
+
+
+    @Override
+    public void onClick(final RankingItemView v) {
+        final Player player = v.getPlayer();
+        PlayerActivity.start(this, player);
+    }
+
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        final Intent intent = getIntent();
+        if (intent != null && intent.getBooleanExtra(EXTRA_IS_FROM_RANKINGS_UPDATE, false)) {
+            intent.putExtra(EXTRA_IS_FROM_RANKINGS_UPDATE, false);
+            Settings.Region.set(User.Region.get());
+            NetworkCache.clear();
+        }
+
+        mInUsersRegion = User.areWeInTheUsersRegion();
+        mUserPlayer = User.Player.get();
+
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            mPlayers = savedInstanceState.getParcelableArrayList(KEY_PLAYERS);
+            mRankingsDate = savedInstanceState.getCharSequence(KEY_RANKINGS_DATE);
+        }
+
+        if (mPlayers == null || mPlayers.isEmpty()) {
+            fetchRankings();
+        } else {
+            prepareList();
+        }
+
+        if (Settings.Sync.IsEnabled.get() && !Settings.Sync.IsScheduled.get()) {
+            SyncManager.schedule();
+        }
+    }
+
+
+    @Override
+    protected void onDrawerOpened() {
+        if (!isMenuNull() && MenuItemCompat.isActionViewExpanded(mSearch)) {
+            MenuItemCompat.collapseActionView(mSearch);
+        }
+    }
+
+
+    @Override
+    public boolean onMenuItemActionCollapse(final MenuItem item) {
+        mListItemsShown = mListItems;
+        notifyDataSetChanged();
+        return true;
+    }
+
+
+    @Override
+    public boolean onMenuItemActionExpand(final MenuItem item) {
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.activity_rankings_menu_abc:
-                Collections.sort(mPlayersShown, Player.ALPHABETICAL_ORDER);
-                mAdapter.notifyDataSetChanged();
-                isAbcOrder = true;
-                invalidateOptionsMenu();
+            case R.id.activity_rankings_menu_date:
+                Toast.makeText(this, getString(R.string.updated_x, mRankingsDate),
+                        Toast.LENGTH_LONG).show();
                 break;
 
-            case R.id.activity_rankings_menu_rank:
-                Collections.sort(mPlayersShown, Player.RANK_ORDER);
-                mAdapter.notifyDataSetChanged();
-                isAbcOrder = false;
-                invalidateOptionsMenu();
-                break;
-
-            case R.id.activity_rankings_menu_tournament:
-                TournamentsActivity.start(this);
-                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -86,68 +245,18 @@ public class RankingsActivity extends BaseActivity implements
 
 
     @Override
-    protected int getContentView() {
-        return R.layout.activity_rankings;
-    }
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        mDate = menu.findItem(R.id.activity_rankings_menu_date);
+        mSearch = menu.findItem(R.id.activity_rankings_menu_search);
 
+        MenuItemCompat.setOnActionExpandListener(mSearch, this);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(mSearch);
+        searchView.setQueryHint(getString(R.string.search_players));
+        searchView.setOnQueryTextListener(this);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        findViews();
-        downloadRankings();
-    }
-
-
-    private void findViews() {
-        mError = (TextView) findViewById(R.id.activity_rankings_error);
-        mListView = (ListView) findViewById(R.id.activity_rankings_list);
-        mRefreshLayout = (FlexibleSwipeRefreshLayout) findViewById(R.id.activity_rankings_refresh);
-        mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setScrollableView(mListView);
-        mRefreshLayout.setColorSchemeResources(R.color.cyan, R.color.magenta, R.color.yellow, R.color.black);
-    }
-
-
-    private void showError() {
-        mError.setVisibility(View.VISIBLE);
-        mRefreshLayout.setRefreshing(false);
-        mIsFinishedDownloading = true;
-    }
-
-
-    private void showList(){
-        mAdapter = new RankingsAdapter();
-        mFilter = new RankingsFilter();
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(this);
-        mListView.setVisibility(View.VISIBLE);
-        mRefreshLayout.setRefreshing(false);
-        mIsFinishedDownloading = true;
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem abc = menu.findItem(R.id.activity_rankings_menu_abc);
-        MenuItem rank = menu.findItem(R.id.activity_rankings_menu_rank);
-        MenuItem search = menu.findItem(R.id.activity_rankings_menu_search);
-
-        if (mIsFinishedDownloading) {
-            search.setVisible(true);
-
-            final SearchView searchView = (SearchView) search.getActionView();
-            searchView.setQueryHint(getString(R.string.search_players));
-            searchView.setOnQueryTextListener(this);
-
-            if(isAbcOrder) {
-                abc.setVisible(false);
-                rank.setVisible(true);
-            }
-            else{
-                abc.setVisible(true);
-                rank.setVisible(false);
-            }
+        if (mSetMenuItemsVisible) {
+            showMenuItems();
+            mSetMenuItemsVisible = false;
         }
 
         return super.onPrepareOptionsMenu(menu);
@@ -169,150 +278,304 @@ public class RankingsActivity extends BaseActivity implements
 
     @Override
     public void onRefresh() {
-        if (mIsFinishedDownloading) {
-            downloadRankings();
+        super.onRefresh();
+
+        if (!isLoading()) {
+            mPulled = true;
+            MenuItemCompat.collapseActionView(mSearch);
+            fetchRankings();
         }
-    }
-
-
-    private void downloadRankings(){
-        Networking.Callback callback = new Networking.Callback() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Network exception when downloading rankings!", error);
-                showError();
-            }
-
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    ArrayList<Player> playersList = new ArrayList<Player>();
-                    JSONArray ranking = response.getJSONArray(Constants.RANKING);
-                    for(int i = 0; i < ranking.length() ; ++i ){
-                        JSONObject playerJSON = ranking.getJSONObject(i);
-                        try {
-                            Player player = new Player(playerJSON);
-                            playersList.add(player);
-                        } catch (JSONException e) {
-                            Log.e(TAG, "Exception when building player at index " + i, e);
-                        }
-                    }
-                    playersList.trimToSize();
-                    mPlayers = playersList;
-                    mPlayersShown = new ArrayList<Player>(mPlayers);
-                    showList();
-                } catch (JSONException e) {
-                    showError();
-                }
-            }
-        };
-
-        mRefreshLayout.setRefreshing(true);
-        Networking.getRankings(this, callback);
     }
 
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Player pee = mPlayers.get(i);
-        PlayerActivity.start(this, pee);
+    public void onRegionChanged(final Region region) {
+        super.onRegionChanged(region);
+        mInUsersRegion = User.areWeInTheUsersRegion();
+        fetchRankings();
     }
 
 
-    private class RankingsAdapter extends BaseAdapter{
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        private final LayoutInflater mInflater;
+        if (mPlayers != null && !mPlayers.isEmpty()) {
+            outState.putParcelableArrayList(KEY_PLAYERS, mPlayers);
+            outState.putCharSequence(KEY_RANKINGS_DATE, mRankingsDate);
+        }
+    }
+
+
+    private void prepareList() {
+        Collections.sort(mPlayers, Player.RANK_ORDER);
+        createListItems();
+        setAdapter(new RankingsAdapter());
+    }
+
+
+    @Override
+    protected void setAdapter(final RecyclerAdapter adapter) {
+        super.setAdapter(adapter);
+
+        final ListUtils.FilterListener<ListItem> listener = new ListUtils.FilterListener<ListItem>(this) {
+            @Override
+            public void onFilterComplete(final ArrayList<ListItem> list) {
+                mListItemsShown = list;
+                notifyDataSetChanged();
+            }
+        };
+
+        mFilter = ListUtils.createSpecialFilter(mListItems, listener);
+
+        // it's possible for us to have gotten here before onPrepareOptionsMenu() has run
+
+        if (isMenuNull()) {
+            mSetMenuItemsVisible = true;
+        } else {
+            showMenuItems();
+        }
+    }
+
+
+    private void showMenuItems() {
+        Utils.showMenuItems(mDate, mSearch);
+    }
+
+
+
+
+    public static final class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context) {
+            super(context, RankingsActivity.class);
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+
+
+        public IntentBuilder isFromRankingsUpdate() {
+            mIntent.putExtra(EXTRA_IS_FROM_RANKINGS_UPDATE, true);
+            return this;
+        }
+
+
+    }
+
+
+    private static final class ListItem implements AlphabeticallyComparable, SpecialFilterable {
+
+
+        private static long sId;
+
+        private long mId;
+        private Player mPlayer;
+        private String mTitle;
+        private Type mType;
+
+
+        private static ListItem createPlayer(final Player player) {
+            final ListItem item = new ListItem();
+            item.mId = sId++;
+            item.mPlayer = player;
+            item.mType = Type.PLAYER;
+
+            return item;
+        }
+
+
+        private static ListItem createTitle(final String title) {
+            final ListItem item = new ListItem();
+            item.mId = sId++;
+            item.mTitle = title;
+            item.mType = Type.TITLE;
+
+            return item;
+        }
+
+
+        @Override
+        public boolean equals(final Object o) {
+            final boolean isEqual;
+
+            if (this == o) {
+                isEqual = true;
+            } else if (o instanceof ListItem) {
+                final ListItem li = (ListItem) o;
+
+                if (isPlayer() && li.isPlayer()) {
+                    isEqual = mPlayer.equals(li.mPlayer);
+                } else if (isTitle() && li.isTitle()) {
+                    isEqual = mTitle.equals(li.mTitle);
+                } else {
+                    isEqual = false;
+                }
+            } else {
+                isEqual = false;
+            }
+
+            return isEqual;
+        }
+
+
+        @Override
+        public char getFirstCharOfName() {
+            return getName().charAt(0);
+        }
+
+
+        @Override
+        public String getName() {
+            final String name;
+
+            switch (mType) {
+                case PLAYER:
+                    name = mPlayer.getName();
+                    break;
+
+                case TITLE:
+                    name = mTitle;
+                    break;
+
+                default:
+                    throw new IllegalStateException("invalid ListItem Type: " + mType);
+            }
+
+            return name;
+        }
+
+
+        @Override
+        public boolean isBasicItem() {
+            return isPlayer();
+        }
+
+
+        private boolean isPlayer() {
+            return mType.equals(Type.PLAYER);
+        }
+
+
+        @Override
+        public boolean isSpecialItem() {
+            return isTitle();
+        }
+
+
+        private boolean isTitle() {
+            return mType.equals(Type.TITLE);
+        }
+
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+
+
+        private enum Type {
+            PLAYER, TITLE
+        }
+
+
+    }
+
+
+    private final class RankingsAdapter extends RecyclerAdapter {
+
+
+        private static final String TAG = "RankingsAdapter";
+
+        private final int mBgGray;
+        private final int mBgHighlight;
+
 
         private RankingsAdapter() {
-            mInflater = getLayoutInflater();
+            super(getRecyclerView());
+
+            mBgGray = getColorCompat(R.color.gray);
+            mBgHighlight = getColorCompat(R.color.overlay_bright);
         }
-
-        @Override
-        public int getCount() {
-            return mPlayersShown.size();
-        }
-
-        @Override
-        public Player getItem(final int i) {
-            return mPlayersShown.get(i);
-        }
-
-        @Override
-        public long getItemId(final int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(final int i, View view, final ViewGroup viewGroup) {
-            if (view == null) {
-                view = mInflater.inflate(R.layout.model_player, viewGroup, false);
-            }
-
-            ViewHolder holder = (ViewHolder) view.getTag();
-
-            if (holder == null) {
-                holder = new ViewHolder(view);
-                view.setTag(holder);
-            }
-
-            final Player player = getItem(i);
-            holder.mRank.setText(String.valueOf(player.getRank()));
-            holder.mName.setText(player.getName());
-            holder.mRating.setText(String.format("%.3f", player.getRating()));
-
-            return view;
-        }
-    }
-
-
-    private final class RankingsFilter extends Filter {
 
 
         @Override
-        protected FilterResults performFiltering(final CharSequence constraint) {
-            final ArrayList<Player> playersList = new ArrayList<Player>(mPlayers.size());
-            final String query = constraint.toString().trim().toLowerCase();
+        public String getAdapterName() {
+            return TAG;
+        }
 
-            for (final Player player : mPlayers) {
-                final String name = player.getName().toLowerCase();
 
-                if (name.contains(query)) {
-                    playersList.add(player);
+        @Override
+        public int getItemCount() {
+            return mListItemsShown.size();
+        }
+
+
+        @Override
+        public long getItemId(final int position) {
+            return mListItemsShown.get(position).mId;
+        }
+
+
+        @Override
+        public int getItemViewType(final int position) {
+            return mListItemsShown.get(position).mType.ordinal();
+        }
+
+
+        @Override
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            final ListItem listItem = mListItemsShown.get(position);
+
+            switch (listItem.mType) {
+                case PLAYER:
+                    final RankingItemView riv = ((RankingItemView.ViewHolder) holder).getView();
+                    riv.setPlayer(listItem.mPlayer);
+
+                    if (mInUsersRegion && mUserPlayer != null) {
+                        if (listItem.mPlayer.equals(mUserPlayer)) {
+                            riv.setBackgroundColor(mBgHighlight);
+                        } else {
+                            riv.setBackgroundColor(mBgGray);
+                        }
+                    }
+                    break;
+
+                case TITLE: {
+                    ((SimpleSeparatorView.ViewHolder) holder).getView().setText(listItem.mTitle);
+                    break;
                 }
+
+                default:
+                    throw new RuntimeException("Unknown ListItem Type: " + listItem.mType);
             }
-
-            playersList.trimToSize();
-
-            final FilterResults results = new FilterResults();
-            results.count = playersList.size();
-            results.values = playersList;
-
-            return results;
         }
 
 
         @Override
-        @SuppressWarnings("unchecked")
-        protected void publishResults(final CharSequence constraint, final FilterResults results) {
-            mPlayersShown = (ArrayList<Player>) results.values;
-            mAdapter.notifyDataSetChanged();
+        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
+                final int viewType) {
+            final ListItem.Type listItemType = ListItem.Type.values()[viewType];
+            final RecyclerView.ViewHolder holder;
+
+            switch (listItemType) {
+                case PLAYER:
+                    final RankingItemView riv = RankingItemView.inflate(parent);
+                    riv.setOnClickListener(RankingsActivity.this);
+                    holder = riv.getViewHolder();
+                    break;
+
+                case TITLE:
+                    holder = SimpleSeparatorView.inflate(parent)
+                            .getViewHolder();
+                    break;
+
+                default:
+                    throw new RuntimeException("Unknown ListItem Type: " + listItemType);
+            }
+
+            return holder;
         }
 
-
-    }
-
-
-    private final static class ViewHolder {
-
-        private final TextView mName;
-        private final TextView mRank;
-        private final TextView mRating;
-
-        private ViewHolder(final View view) {
-            mRank = (TextView) view.findViewById(R.id.model_player_rank);
-            mName = (TextView) view.findViewById(R.id.model_player_name);
-            mRating = (TextView) view.findViewById(R.id.model_player_rating);
-        }
 
     }
 

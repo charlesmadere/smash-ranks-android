@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/drawer_layout">
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/root.no_padding">
+        <include
+            layout="@layout/toolbar" />
+        <ScrollView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+                <View
+                    android:layout_height="@dimen/root_padding_half"
+                    android:layout_width="match_parent" />
+                <LinearLayout
+                    style="@style/settings_section">
+                    <TextView
+                        android:text="@string/general"
+                        style="@style/settings_separator" />
+                    <include
+                        android:id="@+id/activity_settings_region"
+                        layout="@layout/view_preference" />
+                    <include
+                        android:id="@+id/activity_settings_network_cache"
+                        layout="@layout/view_preference" />
+                </LinearLayout>
+                <LinearLayout
+                    style="@style/settings_section">
+                    <TextView
+                        android:text="@string/periodic_sync"
+                        style="@style/settings_separator" />
+                    <TextView
+                        android:layout_marginBottom="@dimen/root_padding_half"
+                        android:layout_marginTop="@dimen/root_padding_half"
+                        android:paddingLeft="@dimen/root_padding"
+                        android:paddingRight="@dimen/root_padding"
+                        android:text="@string/sync_description"
+                        style="@style/settings_sub_title" />
+                    <include
+                        android:id="@+id/activity_settings_google_play_services_error"
+                        android:visibility="gone"
+                        layout="@layout/view_preference_error" />
+                    <include
+                        android:id="@+id/activity_settings_sync"
+                        layout="@layout/view_switch_preference" />
+                    <include
+                        android:id="@+id/activity_settings_sync_charging"
+                        layout="@layout/view_check_preference" />
+                    <include
+                        android:id="@+id/activity_settings_sync_wifi"
+                        layout="@layout/view_check_preference" />
+                    <include
+                        android:id="@+id/activity_settings_sync_status"
+                        layout="@layout/view_preference" />
+                    <TextView
+                        android:id="@+id/activity_settings_generate_notification"
+                        android:text="@string/generate_notification"
+                        android:visibility="gone"
+                        style="@style/settings_container.title" />
+                </LinearLayout>
+                <LinearLayout
+                    style="@style/settings_section">
+                    <TextView
+                        android:text="@string/credits"
+                        style="@style/settings_separator" />
+                    <include
+                        android:id="@+id/activity_settings_author"
+                        layout="@layout/view_preference" />
+                    <TextView
+                        android:id="@+id/activity_settings_server"
+                        android:text="@string/server_backend_by_ivan_van"
+                        style="@style/settings_container.title" />
+                    <TextView
+                        android:id="@+id/activity_settings_github"
+                        android:text="@string/open_source_on_github"
+                        style="@style/settings_container.title" />
+                </LinearLayout>
+                <LinearLayout
+                    style="@style/settings_section">
+                    <TextView
+                        android:text="@string/miscellaneous"
+                        style="@style/settings_separator" />
+                    <TextView
+                        android:id="@+id/activity_settings_rate_app"
+                        android:text="@string/rate_this_app"
+                        style="@style/settings_container.title" />
+                    <include
+                        android:id="@+id/activity_settings_console"
+                        layout="@layout/view_preference" />
+                    <include
+                        android:id="@+id/activity_settings_version"
+                        layout="@layout/view_preference" />
+                </LinearLayout>
+                <ImageButton
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/activity_settings_orb"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/root_padding_double"
+                    android:layout_marginTop="@dimen/root_padding_double"
+                    android:layout_width="wrap_content"
+                    android:padding="@dimen/root_padding_half"
+                    android:src="@drawable/controller_indigo"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <include
+        layout="@layout/navigation_view" />
+</android.support.v4.widget.DrawerLayout>

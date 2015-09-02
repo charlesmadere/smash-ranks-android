@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.PreferenceView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/settings_container">
+    <TextView
+        android:id="@+id/view_preference_title"
+        tools:text="@string/change_region"
+        style="@style/settings_title.error" />
+    <TextView
+        android:id="@+id/view_preference_sub_title"
+        tools:text="@string/norcal"
+        style="@style/settings_sub_title.error" />
+</com.garpr.android.views.PreferenceView>

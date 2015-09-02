@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.CheckableItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/gray"
+    tools:ignore="Overdraw"
+    style="@style/list_item_root.no_padding">
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:id="@+id/view_checkable_item_container"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent"
+        style="@style/list_item_root">
+        <TextView
+            android:gravity="center_vertical"
+            android:id="@+id/view_checkable_item_text"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textSize="20sp"
+            tools:text="Hungrybox" />
+        <RadioButton
+            android:background="@null"
+            android:clickable="false"
+            android:duplicateParentState="false"
+            android:gravity="center_vertical"
+            android:id="@+id/view_checkable_item_radio"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+    </LinearLayout>
+</com.garpr.android.views.CheckableItemView>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="app_authors">
+        <item>@string/charles_madere</item>
+        <item>@string/timothy_choi</item>
+    </string-array>
+
+</resources>

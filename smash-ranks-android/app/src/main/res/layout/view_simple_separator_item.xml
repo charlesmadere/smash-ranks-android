@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.SimpleSeparatorView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?attr/selectableItemBackground"
+    android:layout_height="@dimen/list_item_separator_height"
+    android:paddingBottom="@dimen/root_padding_half"
+    android:paddingLeft="@dimen/root_padding"
+    android:paddingRight="@dimen/root_padding"
+    style="@style/separator_root">
+    <TextView
+        android:id="@+id/view_simple_separator_item_text"
+        tools:text="January 2015"
+        style="@style/separator_text" />
+</com.garpr.android.views.SimpleSeparatorView>

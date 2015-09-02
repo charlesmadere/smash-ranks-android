@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="currently_contains_x_entries">
+        <item quantity="one">Currently contains %d entry</item>
+        <item quantity="other">Currently contains %d entries</item>
+    </plurals>
+
+</resources>

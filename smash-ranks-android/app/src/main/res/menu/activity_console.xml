@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto">
+    <item
+        android:enabled="false"
+        android:id="@+id/activity_console_menu_clear_log"
+        android:title="@string/clear_log"
+        android:titleCondensed="@string/clear"
+        compat:showAsAction="ifRoom|withText" />
+</menu>
