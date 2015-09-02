@@ -30,27 +30,59 @@ import com.garpr.android.views.SwitchPreferenceView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 
 public class SettingsActivity extends BaseToolbarActivity {
 
 
     private static final String TAG = "SettingsActivity";
 
-    private CheckPreferenceView mSyncCharging;
-    private CheckPreferenceView mSyncWifi;
-    private ImageButton mOrb;
-    private PreferenceView mAuthor;
-    private PreferenceView mConsole;
-    private PreferenceView mGooglePlayServicesError;
-    private PreferenceView mNetworkCache;
-    private PreferenceView mRegion;
-    private PreferenceView mSyncStatus;
-    private PreferenceView mVersion;
-    private TextView mGenerateNotification;
-    private TextView mGitHub;
-    private TextView mRateApp;
-    private TextView mServer;
-    private SwitchPreferenceView mSync;
+    @Bind(R.id.activity_settings_sync_charging)
+    CheckPreferenceView mSyncCharging;
+
+    @Bind(R.id.activity_settings_sync_wifi)
+    CheckPreferenceView mSyncWifi;
+
+    @Bind(R.id.activity_settings_orb)
+    ImageButton mOrb;
+
+    @Bind(R.id.activity_settings_author)
+    PreferenceView mAuthor;
+
+    @Bind(R.id.activity_settings_console)
+    PreferenceView mConsole;
+
+    @Bind(R.id.activity_settings_google_play_services_error)
+    PreferenceView mGooglePlayServicesError;
+
+    @Bind(R.id.activity_settings_network_cache)
+    PreferenceView mNetworkCache;
+
+    @Bind(R.id.activity_settings_region)
+    PreferenceView mRegion;
+
+    @Bind(R.id.activity_settings_sync_status)
+    PreferenceView mSyncStatus;
+
+    @Bind(R.id.activity_settings_version)
+    PreferenceView mVersion;
+
+    @Bind(R.id.activity_settings_generate_notification)
+    TextView mGenerateNotification;
+
+    @Bind(R.id.activity_settings_github)
+    TextView mGitHub;
+
+    @Bind(R.id.activity_settings_rate_app)
+    TextView mRateApp;
+
+    @Bind(R.id.activity_settings_server)
+    TextView mServer;
+
+    @Bind(R.id.activity_settings_sync)
+    SwitchPreferenceView mSync;
 
 
 
@@ -59,25 +91,6 @@ public class SettingsActivity extends BaseToolbarActivity {
         final Intent intent = new Intent(activity, SettingsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         activity.startActivity(intent);
-    }
-
-
-    private void findViews() {
-        mAuthor = (PreferenceView) findViewById(R.id.activity_settings_author);
-        mConsole = (PreferenceView) findViewById(R.id.activity_settings_console);
-        mGenerateNotification = (TextView) findViewById(R.id.activity_settings_generate_notification);
-        mGitHub = (TextView) findViewById(R.id.activity_settings_github);
-        mGooglePlayServicesError = (PreferenceView) findViewById(R.id.activity_settings_google_play_services_error);
-        mNetworkCache = (PreferenceView) findViewById(R.id.activity_settings_network_cache);
-        mRateApp = (TextView) findViewById(R.id.activity_settings_rate_app);
-        mRegion = (PreferenceView) findViewById(R.id.activity_settings_region);
-        mOrb = (ImageButton) findViewById(R.id.activity_settings_orb);
-        mServer = (TextView) findViewById(R.id.activity_settings_server);
-        mSync = (SwitchPreferenceView) findViewById(R.id.activity_settings_sync);
-        mSyncCharging = (CheckPreferenceView) findViewById(R.id.activity_settings_sync_charging);
-        mSyncStatus = (PreferenceView) findViewById(R.id.activity_settings_sync_status);
-        mSyncWifi = (CheckPreferenceView) findViewById(R.id.activity_settings_sync_wifi);
-        mVersion = (PreferenceView) findViewById(R.id.activity_settings_version);
     }
 
 
@@ -102,7 +115,6 @@ public class SettingsActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findViews();
         prepareGeneralViews();
         prepareSyncViews();
         prepareCreditsViews();
