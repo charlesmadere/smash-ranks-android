@@ -32,6 +32,8 @@ import com.garpr.android.views.SimpleSeparatorView;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static butterknife.ButterKnife.findById;
+
 
 public class PlayersFragment extends BaseListToolbarFragment implements
         CheckableItemView.OnClickListener, MenuItemCompat.OnActionExpandListener,
@@ -323,7 +325,7 @@ public class PlayersFragment extends BaseListToolbarFragment implements
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             final View view = getView();
-            final View statusBarBuffer = view.findViewById(R.id.status_bar_buffer);
+            final View statusBarBuffer = findById(view, R.id.status_bar_buffer);
             Utils.applyStatusBarHeight(statusBarBuffer);
         }
 
