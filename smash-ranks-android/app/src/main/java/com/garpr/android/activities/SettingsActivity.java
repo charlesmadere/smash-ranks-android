@@ -122,10 +122,88 @@ public class SettingsActivity extends BaseToolbarActivity {
     }
 
 
-    private void openLink(final String url) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
+    @OnClick(R.id.activity_settings_console)
+    public void onConsoleClick() {
+        ConsoleActivity.start(SettingsActivity.this);
+    }
+
+
+    @OnClick(R.id.activity_settings_github)
+    public void onGithubClick() {
+        openLink(Constants.GITHUB_URL);
+    }
+
+
+    @OnClick(R.id.activity_settings_google_play_services_error)
+    public void onGooglePlayServicesErrorClick() {
+        final GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
+        final Dialog dialog = gaa.getErrorDialog(this,
+                Utils.googlePlayServicesConnectionStatus(), 0,
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(final DialogInterface dialog) {
+                        pollGooglePlayServices();
+                    }
+                });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(final DialogInterface dialog) {
+                pollGooglePlayServices();
+            }
+        });
+
+        dialog.show();
+    }
+
+
+    @OnClick(R.id.activity_settings_network_cache)
+    public void onNetworkCacheClick() {
+        NetworkCache.clear();
+        pollNetworkCache();
+    }
+
+
+    @OnClick(R.id.activity_settings_server)
+    public void onServerClick() {
+        openLink(Constants.IVAN_TWITTER_URL);
+    }
+
+
+    @OnClick(R.id.activity_settings_author)
+    public void onAuthorClick() {
+        final String[] items = getResources().getStringArray(R.array.app_authors);
+
+        new AlertDialog.Builder(SettingsActivity.this)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                        final String author = items[which];
+
+                        if (author.equalsIgnoreCase(getString(R.string.charles_madere))) {
+                            openLink(Constants.CHARLES_TWITTER_URL);
+                        } else if (author.equalsIgnoreCase(getString(R.string.timothy_choi))) {
+                            // TODO
+                            // find out what he wants here...
+                        } else {
+                            throw new RuntimeException("unknown author: " + author);
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+
+    @OnClick(R.id.activity_settings_rate_app)
+    public void onRateAppClick() {
+        openLink(Constants.GAR_PR_GOOGLE_PLAY_STORE_URL);
     }
 
 
@@ -136,11 +214,24 @@ public class SettingsActivity extends BaseToolbarActivity {
     }
 
 
+    @OnClick(R.id.activity_settings_region)
+    public void onRegionClick() {
+        RegionsActivity.start(this);
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
         pollNetworkCache();
         pollGooglePlayServices();
+    }
+
+
+    private void openLink(final String url) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
 
@@ -154,65 +245,17 @@ public class SettingsActivity extends BaseToolbarActivity {
 
     private void pollGooglePlayServices() {
         final int googlePlayServicesConnectionStatus = Utils.googlePlayServicesConnectionStatus();
-
-        if (googlePlayServicesConnectionStatus == ConnectionResult.SUCCESS) {
-            mGooglePlayServicesError.setVisibility(View.GONE);
-        } else {
-            mGooglePlayServicesError.setVisibility(View.VISIBLE);
-            mGooglePlayServicesError.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    final GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
-                    final Dialog dialog = gaa.getErrorDialog(SettingsActivity.this,
-                            googlePlayServicesConnectionStatus, 0,
-                            new DialogInterface.OnCancelListener() {
-                                @Override
-                                public void onCancel(final DialogInterface dialog) {
-                                    pollGooglePlayServices();
-                                }
-                            });
-
-                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(final DialogInterface dialog) {
-                            pollGooglePlayServices();
-                        }
-                    });
-
-                    dialog.show();
-                }
-            });
-        }
-
-        mSync.setEnabled(googlePlayServicesConnectionStatus == ConnectionResult.SUCCESS);
-        mSyncCharging.setEnabled(googlePlayServicesConnectionStatus == ConnectionResult.SUCCESS);
-        mSyncWifi.setEnabled(googlePlayServicesConnectionStatus == ConnectionResult.SUCCESS);
+        final boolean isGooglePlayConnected = googlePlayServicesConnectionStatus == ConnectionResult.SUCCESS;
+        mGooglePlayServicesError.setVisibility(isGooglePlayConnected ? View.GONE : View.VISIBLE);
+        mSync.setEnabled(isGooglePlayConnected);
+        mSyncCharging.setEnabled(isGooglePlayConnected);
+        mSyncWifi.setEnabled(isGooglePlayConnected);
     }
 
 
     private void prepareCreditsViews() {
         mAuthor.setTitleText(R.string.app_written_by);
         mAuthor.setSubTitleText(R.string.app_authors);
-        mAuthor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                showAuthorsDialog();
-            }
-        });
-
-        mServer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                openLink(Constants.IVAN_TWITTER_URL);
-            }
-        });
-
-        mGitHub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                openLink(Constants.GITHUB_URL);
-            }
-        });
     }
 
 
@@ -220,52 +263,18 @@ public class SettingsActivity extends BaseToolbarActivity {
         mRegion.setTitleText(R.string.change_region);
         mRegion.setSubTitleText(Settings.Region.get().getName());
 
-        mRegion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                RegionsActivity.start(SettingsActivity.this);
-            }
-        });
-
         mNetworkCache.setTitleText(R.string.clear_network_cache);
-        mNetworkCache.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                NetworkCache.clear();
-                pollNetworkCache();
-            }
-        });
     }
 
 
     private void prepareMiscellaneousViews() {
-        mRateApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                openLink(Constants.GAR_PR_GOOGLE_PLAY_STORE_URL);
-            }
-        });
-
         mConsole.setTitleText(R.string.log_console);
         mConsole.setSubTitleText(R.string.log_console_description);
-        mConsole.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                ConsoleActivity.start(SettingsActivity.this);
-            }
-        });
 
         mVersion.setEnabled(false);
         mVersion.setTitleText(R.string.version_information);
         mVersion.setSubTitleText(getString(R.string.x_build_y, App.getVersionName(),
                 App.getVersionCode()));
-
-        mOrb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                randomYoutubeVideo();
-            }
-        });
     }
 
 
@@ -336,7 +345,8 @@ public class SettingsActivity extends BaseToolbarActivity {
     }
 
 
-    private void randomYoutubeVideo() {
+    @OnClick(R.id.activity_settings_orb)
+    public void randomYoutubeVideo() {
         int videoIndex;
 
         do {
@@ -344,36 +354,6 @@ public class SettingsActivity extends BaseToolbarActivity {
         } while (videoIndex < 0 || videoIndex >= Constants.RANDOM_YOUTUBE_VIDEOS.length);
 
         openLink(Constants.RANDOM_YOUTUBE_VIDEOS[videoIndex]);
-    }
-
-
-    private void showAuthorsDialog() {
-        final String[] items = getResources().getStringArray(R.array.app_authors);
-
-        new AlertDialog.Builder(SettingsActivity.this)
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                        final String author = items[which];
-
-                        if (author.equalsIgnoreCase(getString(R.string.charles_madere))) {
-                            openLink(Constants.CHARLES_TWITTER_URL);
-                        } else if (author.equalsIgnoreCase(getString(R.string.timothy_choi))) {
-                            // TODO
-                            // find out what he wants here...
-                        } else {
-                            throw new RuntimeException("unknown author: " + author);
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
     }
 
 
