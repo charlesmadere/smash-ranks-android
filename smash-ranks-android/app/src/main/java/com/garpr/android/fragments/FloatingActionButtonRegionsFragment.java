@@ -103,6 +103,12 @@ public class FloatingActionButtonRegionsFragment extends RegionsFragment {
     }
 
 
+    @OnClick(R.id.fragment_regions_save)
+    public void onSaveClick() {
+        mListener.onRegionSaved();
+    }
+
+
     @Override
     protected void prepareViews() {
         super.prepareViews();
@@ -119,12 +125,6 @@ public class FloatingActionButtonRegionsFragment extends RegionsFragment {
         }
 
         mSave.show();
-        mSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                mListener.onRegionSaved();
-            }
-        });
     }
 
 
