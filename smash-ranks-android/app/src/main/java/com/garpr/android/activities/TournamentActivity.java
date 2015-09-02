@@ -24,6 +24,8 @@ import com.garpr.android.models.Tournament;
 import com.garpr.android.models.TournamentBundle;
 import com.garpr.android.views.FlexibleSwipeRefreshLayout;
 
+import butterknife.Bind;
+
 
 public class TournamentActivity extends BaseToolbarActivity implements
         SwipeRefreshLayout.OnRefreshListener {
@@ -38,13 +40,22 @@ public class TournamentActivity extends BaseToolbarActivity implements
     private static final String TAG = "TournamentActivity";
 
     private boolean mIsLoading;
-    private FlexibleSwipeRefreshLayout mRefreshLayout;
+
     private Intent mShareIntent;
-    private LinearLayout mErrorView;
-    private TabLayout mTabLayout;
     private Tournament mTournament;
     private TournamentBundle mBundle;
-    private ViewPager mViewPager;
+
+    @Bind(R.id.activity_tournament_view_pager)
+    ViewPager mViewPager;
+
+    @Bind(R.id.activity_tournament_error)
+    LinearLayout mErrorView;
+
+    @Bind(R.id.activity_tournament_tab_layout)
+    TabLayout mTabLayout;
+
+    @Bind(R.id.activity_tournament_refresh)
+    FlexibleSwipeRefreshLayout mRefreshLayout;
 
 
 
@@ -78,14 +89,6 @@ public class TournamentActivity extends BaseToolbarActivity implements
     }
 
 
-    private void findViews() {
-        mErrorView = (LinearLayout) findViewById(R.id.activity_tournament_error);
-        mRefreshLayout = (FlexibleSwipeRefreshLayout) findViewById(R.id.activity_tournament_refresh);
-        mTabLayout = (TabLayout) findViewById(R.id.activity_tournament_tab_layout);
-        mViewPager = (ViewPager) findViewById(R.id.activity_tournament_view_pager);
-    }
-
-
     @Override
     public String getActivityName() {
         return TAG;
@@ -109,7 +112,6 @@ public class TournamentActivity extends BaseToolbarActivity implements
         super.onCreate(savedInstanceState);
         readIntentData();
         setTitle(mTournament.getName());
-        findViews();
         mRefreshLayout.setOnRefreshListener(this);
 
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
