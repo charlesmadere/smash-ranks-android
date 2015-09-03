@@ -131,13 +131,26 @@ public abstract class Setting<T> {
 
     @Override
     public final String toString() {
+        final StringBuilder string = new StringBuilder()
+                .append(mKey)
+                .append("=(");
+
         final T setting = get();
 
         if (setting == null) {
-            return mKey + ":null";
+            string.append("null");
         } else {
-            return mKey + ':' + setting.toString();
+            string.append(setting.toString());
         }
+
+        string.append(") (");
+
+        synchronized (mListeners) {
+            string.append(mListeners.size());
+        }
+
+        string.append(" listeners)");
+        return string.toString();
     }
 
 
