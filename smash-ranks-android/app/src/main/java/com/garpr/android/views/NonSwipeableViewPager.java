@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 /**
  * This view's code is taken from Stack Overflow: http://stackoverflow.com/a/9650884/823952
  */
-public final class NonSwipeableViewPager extends ViewPager {
+public class NonSwipeableViewPager extends ViewPager {
 
 
     public NonSwipeableViewPager(final Context context, final AttributeSet attrs) {

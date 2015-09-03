@@ -40,11 +40,12 @@ public class PlayerActivity extends BaseToolbarListActivity implements
         SearchView.OnQueryTextListener, TournamentSeparatorView.OnClickListener {
 
 
-    private static final String CNAME = "com.garpr.android.activities.PlayerActivity";
+    private static final String TAG = "PlayerActivity";
+    private static final String CNAME = "com.garpr.android.activities." + TAG;
+
     private static final String EXTRA_PLAYER = CNAME + ".EXTRA_PLAYER";
     private static final String KEY_MATCHES = "KEY_MATCHES";
     private static final String KEY_SHOWING = "KEY_SHOWING";
-    private static final String TAG = "PlayerActivity";
 
     private ArrayList<ListItem> mListItems;
     private ArrayList<ListItem> mListItemsShown;

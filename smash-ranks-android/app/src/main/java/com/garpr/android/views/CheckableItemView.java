@@ -95,7 +95,7 @@ public class CheckableItemView extends FrameLayout implements Checkable {
 
 
 
-    public final class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
         private ViewHolder() {

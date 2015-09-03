@@ -100,7 +100,7 @@ public class LogMessageWithStackTraceView extends LinearLayout {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        public ViewHolder() {
+        private ViewHolder() {
             super(LogMessageWithStackTraceView.this);
         }
 

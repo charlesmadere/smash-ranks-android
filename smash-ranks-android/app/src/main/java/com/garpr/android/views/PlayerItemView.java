@@ -83,7 +83,7 @@ public class PlayerItemView extends FrameLayout {
 
 
 
-    public final class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
         private ViewHolder() {

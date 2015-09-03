@@ -38,12 +38,13 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
         TournamentItemView.OnClickListener {
 
 
-    private static final String CNAME = "com.garpr.android.activities.HeadToHeadActivity";
+    private static final String TAG = "HeadToHeadActivity";
+    private static final String CNAME = "com.garpr.android.activities." + TAG;
+
     private static final String EXTRA_PLAYER = CNAME + ".EXTRA_PLAYER";
     private static final String EXTRA_OPPONENT = CNAME + ".EXTRA_OPPONENT";
     private static final String KEY_BUNDLE = "KEY_BUNDLE";
     private static final String KEY_SHOWING = "KEY_SHOWING";
-    private static final String TAG = "HeadToHeadActivity";
 
     private ArrayList<ListItem> mListItems;
     private ArrayList<ListItem> mListItemsShown;

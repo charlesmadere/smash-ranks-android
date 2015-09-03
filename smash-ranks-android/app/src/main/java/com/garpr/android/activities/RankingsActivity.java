@@ -43,10 +43,12 @@ public class RankingsActivity extends BaseToolbarListActivity implements
         SearchView.OnQueryTextListener {
 
 
-    private static final String EXTRA_IS_FROM_RANKINGS_UPDATE = "EXTRA_IS_FROM_RANKINGS_UPDATE";
+    private static final String TAG = "RankingsActivity";
+    private static final String CNAME = "com.garpr.android.activities." + TAG;
+
+    private static final String EXTRA_IS_FROM_RANKINGS_UPDATE = CNAME + ".EXTRA_IS_FROM_RANKINGS_UPDATE";
     private static final String KEY_PLAYERS = "KEY_PLAYERS";
     private static final String KEY_RANKINGS_DATE = "KEY_RANKINGS_DATE";
-    private static final String TAG = "RankingsActivity";
 
     private ArrayList<ListItem> mListItems;
     private ArrayList<ListItem> mListItemsShown;

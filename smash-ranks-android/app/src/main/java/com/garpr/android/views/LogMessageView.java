@@ -84,7 +84,7 @@ public class LogMessageView extends TextView {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        public ViewHolder() {
+        private ViewHolder() {
             super(LogMessageView.this);
         }
 

@@ -27,12 +27,13 @@ public class OnboardingActivity extends BaseActivity implements PlayersFragment.
         ToolbarRegionsFragment.NextListener, WelcomeFragment.Listener {
 
 
+    private static final String TAG = "OnboardingActivity";
+
     private static final int ONBOARDING_FRAGMENT_COUNT = 3;
     private static final int ONBOARDING_FRAGMENT_PLAYERS = 2;
     private static final int ONBOARDING_FRAGMENT_REGIONS = 1;
     private static final int ONBOARDING_FRAGMENT_WELCOME = 0;
     private static final String KEY_SELECTED_REGION = "KEY_SELECTED_REGION";
-    private static final String TAG = "OnboardingActivity";
 
     private NonSwipeableViewPager mPager;
     private PlayersFragment mPlayersFragment;

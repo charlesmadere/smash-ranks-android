@@ -36,8 +36,9 @@ public class TournamentsActivity extends BaseToolbarListActivity implements
         TournamentItemView.OnClickListener {
 
 
-    private static final String KEY_TOURNAMENTS = "KEY_TOURNAMENTS";
     private static final String TAG = "TournamentsActivity";
+
+    private static final String KEY_TOURNAMENTS = "KEY_TOURNAMENTS";
 
     private ArrayList<ListItem> mListItems;
     private ArrayList<ListItem> mListItemsShown;

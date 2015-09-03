@@ -28,16 +28,16 @@ public class TournamentActivity extends BaseToolbarActivity implements
         RefreshLayout.OnRefreshListener {
 
 
+    private static final String TAG = "TournamentActivity";
+    private static final String CNAME = "com.garpr.android.activities." + TAG;
+
     private static final int TOURNAMENT_FRAGMENT_COUNT = 2;
     private static final int TOURNAMENT_FRAGMENT_MATCHES = 1;
     private static final int TOURNAMENT_FRAGMENT_PLAYERS = 0;
-    private static final String CNAME = "com.garpr.android.activities.TournamentActivity";
     private static final String EXTRA_TOURNAMENT = CNAME + ".EXTRA_TOURNAMENT";
     private static final String KEY_BUNDLE = "KEY_BUNDLE";
-    private static final String TAG = "TournamentActivity";
 
     private boolean mIsLoading;
-    private Intent mShareIntent;
     private LinearLayout mErrorView;
     private RefreshLayout mRefreshLayout;
     private TabLayout mTabLayout;
@@ -183,22 +183,19 @@ public class TournamentActivity extends BaseToolbarActivity implements
 
 
     private void share() {
-        if (mShareIntent == null) {
-            String text = getString(R.string.x_on_gar_pr_y, mTournament.getName(),
-                    mTournament.getWebUrl());
+        String text = getString(R.string.x_on_gar_pr_y, mTournament.getName(),
+                mTournament.getWebUrl());
 
-            if (text.length() > Constants.TWITTER_LENGTH) {
-                text = getString(R.string.gar_pr_x, mTournament.getWebUrl());
-            }
-
-            mShareIntent = new Intent(Intent.ACTION_SEND)
-                    .putExtra(Intent.EXTRA_TEXT, text)
-                    .setType(Constants.MIMETYPE_TEXT_PLAIN);
-
-            mShareIntent = Intent.createChooser(mShareIntent, getString(R.string.share_to));
+        if (text.length() > Constants.TWITTER_LENGTH) {
+            text = getString(R.string.gar_pr_x, mTournament.getWebUrl());
         }
 
-        startActivity(mShareIntent);
+        Intent intent = new Intent(Intent.ACTION_SEND)
+                .putExtra(Intent.EXTRA_TEXT, text)
+                .setType(Constants.MIMETYPE_TEXT_PLAIN);
+
+        intent = Intent.createChooser(intent, getString(R.string.share_to));
+        startActivity(intent);
     }
 
 

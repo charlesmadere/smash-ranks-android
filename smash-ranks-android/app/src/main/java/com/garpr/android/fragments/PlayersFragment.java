@@ -37,9 +37,10 @@ public class PlayersFragment extends BaseListToolbarFragment implements
         SearchView.OnQueryTextListener {
 
 
+    private static final String TAG = "PlayersFragment";
+
     private static final String KEY_PLAYERS = "KEY_PLAYERS";
     private static final String KEY_SELECTED_PLAYER = "KEY_SELECTED_PLAYER";
-    private static final String TAG = "PlayersFragment";
 
     private ArrayList<ListItem> mListItems;
     private ArrayList<ListItem> mListItemsShown;
