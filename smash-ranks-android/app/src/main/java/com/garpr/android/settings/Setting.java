@@ -129,6 +129,11 @@ public abstract class Setting<T> {
     }
 
 
+    public final void set(final Setting<T> setting) {
+        set(setting.get());
+    }
+
+
     @Override
     public final String toString() {
         final StringBuilder string = new StringBuilder()

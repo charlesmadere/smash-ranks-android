@@ -9,7 +9,7 @@ import com.garpr.android.settings.Settings;
 public abstract class RegionBasedCall<T> extends Call<T> {
 
 
-    private final Region mRegion;
+    final Region mRegion;
 
 
 

@@ -282,11 +282,11 @@ public class SettingsActivity extends BaseToolbarActivity {
         mSyncCharging.setEnabled(isSyncEnabled);
         mSyncWifi.setEnabled(isSyncEnabled);
 
-        mSyncCharging.set(Settings.Sync.ChargingIsNecessary, R.string.only_sync_when_charging,
+        mSyncCharging.set(Settings.Sync.IsChargingNecessary, R.string.only_sync_when_charging,
                 R.string.will_only_sync_if_plugged_in,
                 R.string.will_sync_regardless_of_being_plugged_in_or_not);
 
-        mSyncWifi.set(Settings.Sync.WifiIsNecessary, R.string.only_sync_on_wifi,
+        mSyncWifi.set(Settings.Sync.IsWifiNecessary, R.string.only_sync_on_wifi,
                 R.string.will_only_sync_if_connected_to_wifi,
                 R.string.will_sync_on_any_data_connection);
 

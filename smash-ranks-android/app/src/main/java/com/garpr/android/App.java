@@ -98,6 +98,11 @@ public final class App extends Application {
             // stored rankings date didn't necessarily reflect the user's region's date
             Settings.RankingsDate.delete();
         }
+
+        if (lastVersion < 60) {
+            // another big shift in how settings are stored
+            Settings.deleteAll();
+        }
     }
 
 

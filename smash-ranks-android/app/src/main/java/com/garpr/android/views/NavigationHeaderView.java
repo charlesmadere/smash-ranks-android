@@ -13,7 +13,6 @@ import com.garpr.android.models.Player;
 import com.garpr.android.models.Region;
 import com.garpr.android.settings.RegionSetting;
 import com.garpr.android.settings.Settings;
-import com.garpr.android.settings.Settings.User;
 
 
 public class NavigationHeaderView extends RelativeLayout implements
@@ -93,8 +92,8 @@ public class NavigationHeaderView extends RelativeLayout implements
 
 
     private void updatePlayer() {
-        if (User.hasPlayer()) {
-            final Player player = User.Player.get();
+        if (Settings.User.Player.exists()) {
+            final Player player = Settings.User.Player.get();
             mPlayer.setText(player.getName());
             mPlayer.setVisibility(VISIBLE);
         } else {
@@ -106,7 +105,7 @@ public class NavigationHeaderView extends RelativeLayout implements
     private void updateRegion() {
         Settings.Region.attachListener(this);
 
-        final Region userRegion = User.Region.get();
+        final Region userRegion = Settings.User.Region.get();
         final Region settingsRegion = Settings.Region.get();
         final String regionText;
 

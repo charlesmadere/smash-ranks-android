@@ -98,6 +98,7 @@ public class FloatingActionButtonRegionsFragment extends RegionsFragment {
     @Override
     public void onClick(final CheckableItemView v) {
         super.onClick(v);
+
         final Region region = Settings.Region.get();
 
         if (region.equals(mSelectedRegion)) {

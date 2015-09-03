@@ -2,7 +2,6 @@ package com.garpr.android.settings;
 
 
 import com.garpr.android.models.Region;
-import com.garpr.android.settings.Settings.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,20 +30,12 @@ public final class RegionSetting extends Setting<Region> {
     @Override
     public Region get() {
         final JSONObject json = mJSONSetting.get();
-        final Region region;
 
-        if (json == null) {
-            region = User.Region.get();
-            set(region);
-        } else {
-            try {
-                region = new Region(json);
-            } catch (final JSONException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            return new Region(json);
+        } catch (final JSONException e) {
+            throw new RuntimeException(e);
         }
-
-        return region;
     }
 
 

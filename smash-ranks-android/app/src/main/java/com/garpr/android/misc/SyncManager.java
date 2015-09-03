@@ -39,7 +39,7 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
 
         final PeriodicTask.Builder builder = new PeriodicTask.Builder()
                 .setPersisted(true)
-                .setRequiresCharging(Settings.Sync.ChargingIsNecessary.get())
+                .setRequiresCharging(Settings.Sync.IsChargingNecessary.get())
                 .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
                 .setService(SyncManager.class)
                 .setTag(TAG)
@@ -70,7 +70,7 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
     public int onRunTask(final TaskParams taskParams) {
         Console.d(TAG, "Running GcmNetworkTask " + printConfigurationString());
 
-        if (Settings.Sync.WifiIsNecessary.get()) {
+        if (Settings.Sync.IsWifiNecessary.get()) {
             final Context context = App.getContext();
             final ConnectivityManager cm = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -105,8 +105,8 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
 
 
     private static String printConfigurationString() {
-        return "(charging necessary: " + Settings.Sync.ChargingIsNecessary.get() +
-                ") (wifi necessary: " + Settings.Sync.WifiIsNecessary.get() + ')';
+        return "(charging necessary: " + Settings.Sync.IsChargingNecessary.get() +
+                ") (wifi necessary: " + Settings.Sync.IsWifiNecessary.get() + ')';
     }
 
 

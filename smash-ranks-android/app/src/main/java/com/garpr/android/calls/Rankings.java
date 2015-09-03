@@ -8,7 +8,6 @@ import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.RankingsBundle.DateWrapper;
 import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
-import com.garpr.android.settings.Settings.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +53,7 @@ public final class Rankings {
                 Settings.RankingsDate.set(newRankingsDate);
             } else {
                 Console.w(getCallName(), "RankingsBundle has no DateWrapper? Region is "
-                        + Settings.Region.get().getName());
+                        + mRegion.getName());
             }
 
             onRankingsBundleResponse(rankingsBundle);
@@ -77,7 +76,7 @@ public final class Rankings {
 
         private CheckForRankingsUpdatesCall(final Response<Result> response)
                 throws IllegalArgumentException {
-            super(response, true, User.Region.get());
+            super(response, true, Settings.User.Region.get());
             mCurrentRankingsDate = Settings.RankingsDate.get();
         }
 

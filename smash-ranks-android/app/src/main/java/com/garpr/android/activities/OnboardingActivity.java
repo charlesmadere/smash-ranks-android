@@ -19,7 +19,6 @@ import com.garpr.android.misc.CrashlyticsManager;
 import com.garpr.android.models.Player;
 import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
-import com.garpr.android.settings.Settings.User;
 import com.garpr.android.views.NonSwipeableViewPager;
 
 
@@ -51,7 +50,7 @@ public class OnboardingActivity extends BaseActivity implements PlayersFragment.
     private void finishOnboarding(final boolean savePlayer) {
         if (savePlayer) {
             final Player player = mPlayersFragment.getSelectedPlayer();
-            User.Player.set(player);
+            Settings.User.Player.set(player);
         }
 
         Settings.OnboardingComplete.set(true);
@@ -82,7 +81,7 @@ public class OnboardingActivity extends BaseActivity implements PlayersFragment.
                 if (!region.equals(mSelectedRegion)) {
                     mSelectedRegion = region;
                     Settings.Region.set(mSelectedRegion);
-                    User.Region.set(mSelectedRegion);
+                    Settings.User.Region.set(mSelectedRegion);
                     mPlayersFragment.refresh();
                 }
 

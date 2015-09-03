@@ -12,7 +12,7 @@ import com.garpr.android.misc.ListUtils.AlphabeticalSectionCreator;
 import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
 import com.garpr.android.models.Player;
 import com.garpr.android.models.TournamentBundle;
-import com.garpr.android.settings.Settings.User;
+import com.garpr.android.settings.Settings;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.SimpleSeparatorView;
 
@@ -88,8 +88,8 @@ public class TournamentPlayersFragment extends TournamentViewPagerFragment imple
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mInUsersRegion = User.areWeInTheUsersRegion();
-        mUserPlayer = User.Player.get();
+        mInUsersRegion = Settings.areWeInTheUsersRegion();
+        mUserPlayer = Settings.User.Player.get();
     }
 
 

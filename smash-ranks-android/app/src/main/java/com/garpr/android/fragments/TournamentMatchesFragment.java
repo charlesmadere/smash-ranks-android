@@ -13,7 +13,7 @@ import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Player;
 import com.garpr.android.models.TournamentBundle;
-import com.garpr.android.settings.Settings.User;
+import com.garpr.android.settings.Settings;
 import com.garpr.android.views.MatchItemView;
 
 import java.util.ArrayList;
@@ -60,8 +60,8 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mInUsersRegion = User.areWeInTheUsersRegion();
-        mUserPlayer = User.Player.get();
+        mInUsersRegion = Settings.areWeInTheUsersRegion();
+        mUserPlayer = Settings.User.Player.get();
     }
 
 

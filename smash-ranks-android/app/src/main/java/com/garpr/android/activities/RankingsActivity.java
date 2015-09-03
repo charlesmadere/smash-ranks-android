@@ -30,7 +30,6 @@ import com.garpr.android.models.Player;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
-import com.garpr.android.settings.Settings.User;
 import com.garpr.android.views.RankingItemView;
 import com.garpr.android.views.SimpleSeparatorView;
 
@@ -183,12 +182,12 @@ public class RankingsActivity extends BaseToolbarListActivity implements
         final Intent intent = getIntent();
         if (intent != null && intent.getBooleanExtra(EXTRA_IS_FROM_RANKINGS_UPDATE, false)) {
             intent.putExtra(EXTRA_IS_FROM_RANKINGS_UPDATE, false);
-            Settings.Region.set(User.Region.get());
+            Settings.Region.set(Settings.User.Region);
             NetworkCache.clear();
         }
 
-        mInUsersRegion = User.areWeInTheUsersRegion();
-        mUserPlayer = User.Player.get();
+        mInUsersRegion = Settings.areWeInTheUsersRegion();
+        mUserPlayer = Settings.User.Player.get();
 
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             mPlayers = savedInstanceState.getParcelableArrayList(KEY_PLAYERS);
@@ -292,7 +291,7 @@ public class RankingsActivity extends BaseToolbarListActivity implements
     @Override
     public void onRegionChanged(final Region region) {
         super.onRegionChanged(region);
-        mInUsersRegion = User.areWeInTheUsersRegion();
+        mInUsersRegion = Settings.areWeInTheUsersRegion();
         fetchRankings();
     }
 

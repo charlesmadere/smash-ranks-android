@@ -27,7 +27,7 @@ import com.garpr.android.models.Player;
 import com.garpr.android.models.Region;
 import com.garpr.android.models.Result;
 import com.garpr.android.models.Tournament;
-import com.garpr.android.settings.Settings.User;
+import com.garpr.android.settings.Settings;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.TournamentSeparatorView;
 
@@ -204,8 +204,8 @@ public class PlayerActivity extends BaseToolbarListActivity implements
             toolbar.setSubtitle(getString(R.string.rank_x, mPlayer.getRank()));
         }
 
-        mInUsersRegion = User.areWeInTheUsersRegion();
-        mUserPlayer = User.Player.get();
+        mInUsersRegion = Settings.areWeInTheUsersRegion();
+        mUserPlayer = Settings.User.Player.get();
 
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             mMatches = savedInstanceState.getParcelableArrayList(KEY_MATCHES);

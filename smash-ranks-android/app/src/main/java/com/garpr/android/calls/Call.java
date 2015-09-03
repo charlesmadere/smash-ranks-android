@@ -28,7 +28,7 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
     private boolean mPulledFromNetworkCache;
     private final boolean mIgnoreCache;
     private String mUrl;
-    protected final Response<T> mResponse;
+    final Response<T> mResponse;
 
 
 
