@@ -37,7 +37,7 @@ public final class RegionSetting extends Setting<Region> {
 
     public void attachListener(final Heartbeat heartbeat, final RegionListener listener) {
         if (Utils.areAnyObjectsNull(heartbeat, listener)) {
-            throw new RuntimeException();
+            throw new IllegalArgumentException("neither heartbeat nor listener can be null");
         }
 
         synchronized (mListeners) {
