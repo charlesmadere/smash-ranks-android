@@ -9,11 +9,11 @@ import android.widget.FrameLayout;
 
 import com.garpr.android.R;
 import com.garpr.android.calls.Regions;
-import com.garpr.android.calls.ResponseOnUi;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.AlphabeticalSectionCreator;
 import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
+import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.models.Region;
 import com.garpr.android.views.CheckableItemView;
 import com.garpr.android.views.SimpleSeparatorView;

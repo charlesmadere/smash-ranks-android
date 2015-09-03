@@ -1,8 +1,5 @@
-package com.garpr.android.calls;
+package com.garpr.android.misc;
 
-
-import com.garpr.android.misc.Heartbeat;
-import com.garpr.android.misc.Utils;
 
 import java.lang.ref.WeakReference;
 

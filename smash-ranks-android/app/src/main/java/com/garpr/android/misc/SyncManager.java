@@ -8,7 +8,6 @@ import android.support.v4.net.ConnectivityManagerCompat;
 import com.garpr.android.App;
 import com.garpr.android.BuildConfig;
 import com.garpr.android.calls.Rankings;
-import com.garpr.android.calls.Response;
 import com.garpr.android.settings.Settings;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;

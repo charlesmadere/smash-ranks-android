@@ -1,7 +1,4 @@
-package com.garpr.android.calls;
-
-
-import com.garpr.android.misc.HeartbeatWithUi;
+package com.garpr.android.misc;
 
 
 /**

@@ -3,6 +3,7 @@ package com.garpr.android.calls;
 
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
+import com.garpr.android.misc.Response;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.RankingsBundle.DateWrapper;
 import com.garpr.android.models.Region;

@@ -11,6 +11,7 @@ import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.Heartbeat;
 import com.garpr.android.misc.NetworkCache;
+import com.garpr.android.misc.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;

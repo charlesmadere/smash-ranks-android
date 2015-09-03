@@ -18,12 +18,12 @@ import android.widget.Toast;
 
 import com.garpr.android.R;
 import com.garpr.android.calls.Rankings;
-import com.garpr.android.calls.ResponseOnUi;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
 import com.garpr.android.misc.NetworkCache;
+import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.misc.SyncManager;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.Player;

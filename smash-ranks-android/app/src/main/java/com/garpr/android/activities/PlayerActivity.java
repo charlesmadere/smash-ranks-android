@@ -15,12 +15,12 @@ import android.widget.Filter;
 
 import com.garpr.android.R;
 import com.garpr.android.calls.Matches;
-import com.garpr.android.calls.ResponseOnUi;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.FilterListener;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
+import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Player;

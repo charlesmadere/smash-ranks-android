@@ -13,12 +13,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.garpr.android.R;
-import com.garpr.android.calls.ResponseOnUi;
 import com.garpr.android.calls.Tournaments;
 import com.garpr.android.fragments.TournamentMatchesFragment;
 import com.garpr.android.fragments.TournamentPlayersFragment;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
+import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.models.Tournament;
 import com.garpr.android.models.TournamentBundle;
 import com.garpr.android.views.RefreshLayout;
