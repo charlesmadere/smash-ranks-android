@@ -53,6 +53,18 @@ public abstract class Setting<T> {
     public abstract void set(final T newValue);
 
 
+    @Override
+    public final String toString() {
+        final T setting = get();
+
+        if (setting == null) {
+            return mKey + ":null";
+        } else {
+            return mKey + ':' + setting.toString();
+        }
+    }
+
+
     final SharedPreferences.Editor writeSharedPreferences() {
         return Settings.edit(mName);
     }
