@@ -17,7 +17,7 @@ import com.garpr.android.settings.Settings;
 
 
 public abstract class BaseFragment extends Fragment implements HeartbeatWithUi,
-        RegionSetting.RegionListener {
+        RegionSetting.OnSettingChangedListener<Region> {
 
 
     private boolean mIsAlive;
@@ -37,11 +37,6 @@ public abstract class BaseFragment extends Fragment implements HeartbeatWithUi,
     public abstract String getFragmentName();
 
 
-    protected LayoutInflater getLayoutInflater() {
-        return getActivity().getLayoutInflater();
-    }
-
-
     @Override
     public boolean isAlive() {
         return mIsAlive;
@@ -58,7 +53,7 @@ public abstract class BaseFragment extends Fragment implements HeartbeatWithUi,
         super.onActivityCreated(savedInstanceState);
 
         if (listenForRegionChanges()) {
-            Settings.Region.attachListener(this, this);
+            Settings.Region.attachListener(this);
         }
     }
 
@@ -93,9 +88,19 @@ public abstract class BaseFragment extends Fragment implements HeartbeatWithUi,
     }
 
 
-    @Override
-    public void onRegionChanged(final Region region) {
+    protected void onRegionChanged(final Region region) {
         // this method intentionally left blank (children can override)
+    }
+
+
+    @Override
+    public final void onSettingChanged(final Region setting) {
+        runOnUi(new Runnable() {
+            @Override
+            public void run() {
+                onRegionChanged(setting);
+            }
+        });
     }
 
 

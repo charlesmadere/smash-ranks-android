@@ -4,6 +4,11 @@ package com.garpr.android.settings;
 public final class LongSetting extends Setting<Long> {
 
 
+    LongSetting(final String name, final String key) {
+        super(name, key, 0l);
+    }
+
+
     LongSetting(final String name, final String key, final Long defaultValue) {
         super(name, key, defaultValue);
 
@@ -20,8 +25,9 @@ public final class LongSetting extends Setting<Long> {
 
 
     @Override
-    public void set(final Long newValue) {
+    public void set(final Long newValue, final boolean notifyListeners) {
         writeSharedPreferences().putLong(mKey, newValue).apply();
+        super.set(newValue, notifyListeners);
     }
 
 

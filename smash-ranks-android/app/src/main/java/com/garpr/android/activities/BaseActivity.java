@@ -26,7 +26,7 @@ import com.garpr.android.settings.Settings;
  * necessary boilerplate.
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseFragment.Listener,
-        HeartbeatWithUi, RegionSetting.RegionListener {
+        HeartbeatWithUi, RegionSetting.OnSettingChangedListener<Region> {
 
 
     private boolean mIsAlive;
@@ -80,7 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseFrag
         setContentView(getContentView());
         mIsAlive = true;
         mIsFirstResume = true;
-        Settings.Region.attachListener(this, this);
+        Settings.Region.attachListener(this);
     }
 
 
@@ -122,9 +122,19 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseFrag
     }
 
 
-    @Override
-    public void onRegionChanged(final Region region) {
+    protected void onRegionChanged(final Region region) {
         // this method intentionally left blank (children can override)
+    }
+
+
+    @Override
+    public final void onSettingChanged(final Region setting) {
+        runOnUi(new Runnable() {
+            @Override
+            public void run() {
+                onRegionChanged(setting);
+            }
+        });
     }
 
 

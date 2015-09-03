@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
-import com.garpr.android.misc.Heartbeat;
 import com.garpr.android.models.Player;
 import com.garpr.android.models.Region;
 import com.garpr.android.settings.RegionSetting;
@@ -17,13 +16,12 @@ import com.garpr.android.settings.Settings;
 import com.garpr.android.settings.Settings.User;
 
 
-public class NavigationHeaderView extends RelativeLayout implements Heartbeat,
-        RegionSetting.RegionListener {
+public class NavigationHeaderView extends RelativeLayout implements
+        RegionSetting.OnSettingChangedListener<Region> {
 
 
     private static final String TAG = "NavigationHeaderView";
 
-    private boolean mIsAlive;
     private TextView mPlayer;
     private TextView mRegion;
 
@@ -55,25 +53,14 @@ public class NavigationHeaderView extends RelativeLayout implements Heartbeat,
 
 
     @Override
-    public boolean isAlive() {
-        return mIsAlive;
-    }
-
-
-    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-
-        if (!mIsAlive) {
-            mIsAlive = true;
-            updateRegion();
-        }
+        updateRegion();
     }
 
 
     @Override
     protected void onDetachedFromWindow() {
-        mIsAlive = false;
         Settings.Region.detachListener(this);
         super.onDetachedFromWindow();
     }
@@ -82,7 +69,6 @@ public class NavigationHeaderView extends RelativeLayout implements Heartbeat,
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mIsAlive = true;
         findViews();
         updateRegion();
         updatePlayer();
@@ -90,7 +76,7 @@ public class NavigationHeaderView extends RelativeLayout implements Heartbeat,
 
 
     @Override
-    public void onRegionChanged(final Region region) {
+    public void onSettingChanged(final Region setting) {
         post(new Runnable() {
             @Override
             public void run() {
@@ -118,7 +104,7 @@ public class NavigationHeaderView extends RelativeLayout implements Heartbeat,
 
 
     private void updateRegion() {
-        Settings.Region.attachListener(this, this);
+        Settings.Region.attachListener(this);
 
         final Region userRegion = User.Region.get();
         final Region settingsRegion = Settings.Region.get();

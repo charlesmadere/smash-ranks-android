@@ -47,8 +47,9 @@ public final class PlayerSetting extends Setting<Player> {
 
 
     @Override
-    public void set(final Player newValue) {
+    public void set(final Player newValue, final boolean notifyListeners) {
         mJSONSetting.set(newValue.toJSON());
+        super.set(newValue, notifyListeners);
     }
 
 

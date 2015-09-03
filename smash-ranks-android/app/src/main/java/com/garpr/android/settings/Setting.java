@@ -5,13 +5,19 @@ import android.content.SharedPreferences;
 
 import com.garpr.android.misc.Utils;
 
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 
 public abstract class Setting<T> {
 
 
+    private final LinkedList<WeakReference<OnSettingChangedListener<T>>> mListeners;
+    private final String mName;
+
     final T mDefaultValue;
     final String mKey;
-    private final String mName;
 
 
 
@@ -26,14 +32,61 @@ public abstract class Setting<T> {
             throw new IllegalArgumentException("name and key can't be null / empty / whitespace");
         }
 
+        mListeners = new LinkedList<>();
         mName = name;
-        mKey = key;
+
         mDefaultValue = defaultValue;
+        mKey = key;
+    }
+
+
+    public final void attachListener(final OnSettingChangedListener<T> listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("listener can't be null");
+        }
+
+        synchronized (mListeners) {
+            boolean addListener = true;
+            final Iterator<WeakReference<OnSettingChangedListener<T>>> iterator =
+                    mListeners.iterator();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnSettingChangedListener<T>> wr = iterator.next();
+                final OnSettingChangedListener<T> oscl = wr.get();
+
+                if (oscl == null) {
+                    iterator.remove();
+                } else if (oscl == listener) {
+                    addListener = false;
+                }
+            }
+
+            if (addListener) {
+                mListeners.add(new WeakReference<>(listener));
+            }
+        }
     }
 
 
     public void delete() {
         writeSharedPreferences().remove(mKey).apply();
+    }
+
+
+    public void detachListener(final OnSettingChangedListener<T> listener) {
+        synchronized (mListeners) {
+            final Iterator<WeakReference<OnSettingChangedListener<T>>> iterator =
+                    mListeners.iterator();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnSettingChangedListener<T>> wr = iterator.next();
+                final OnSettingChangedListener<T> oscl = wr.get();
+
+                if (oscl == null || oscl == listener) {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
 
@@ -50,7 +103,30 @@ public abstract class Setting<T> {
     }
 
 
-    public abstract void set(final T newValue);
+    public final void set(final T newValue) {
+        set(newValue, true);
+    }
+
+
+    public void set(final T newValue, final boolean notifyListeners) {
+        if (notifyListeners) {
+            synchronized (mListeners) {
+                final Iterator<WeakReference<OnSettingChangedListener<T>>> iterator =
+                        mListeners.iterator();
+
+                while (iterator.hasNext()) {
+                    final WeakReference<OnSettingChangedListener<T>> wr = iterator.next();
+                    final OnSettingChangedListener<T> oscl = wr.get();
+
+                    if (oscl == null) {
+                        iterator.remove();
+                    } else {
+                        oscl.onSettingChanged(newValue);
+                    }
+                }
+            }
+        }
+    }
 
 
     @Override
@@ -67,6 +143,17 @@ public abstract class Setting<T> {
 
     final SharedPreferences.Editor writeSharedPreferences() {
         return Settings.edit(mName);
+    }
+
+
+
+
+    public interface OnSettingChangedListener<T> {
+
+
+        void onSettingChanged(final T setting);
+
+
     }
 
 

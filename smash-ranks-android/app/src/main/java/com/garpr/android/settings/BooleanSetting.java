@@ -4,6 +4,11 @@ package com.garpr.android.settings;
 public final class BooleanSetting extends Setting<Boolean> {
 
 
+    BooleanSetting(final String name, final String key) {
+        super(name, key, Boolean.FALSE);
+    }
+
+
     BooleanSetting(final String name, final String key, final Boolean defaultValue) {
         super(name, key, defaultValue);
 
@@ -20,8 +25,9 @@ public final class BooleanSetting extends Setting<Boolean> {
 
 
     @Override
-    public void set(final Boolean newValue) {
+    public void set(final Boolean newValue, final boolean notifyListeners) {
         writeSharedPreferences().putBoolean(mKey, newValue).apply();
+        super.set(newValue, notifyListeners);
     }
 
 

@@ -4,6 +4,11 @@ package com.garpr.android.settings;
 public final class IntegerSetting extends Setting<Integer> {
 
 
+    IntegerSetting(final String name, final String key) {
+        super(name, key, 0);
+    }
+
+
     IntegerSetting(final String name, final String key, final Integer defaultValue) {
         super(name, key, defaultValue);
 
@@ -20,8 +25,9 @@ public final class IntegerSetting extends Setting<Integer> {
 
 
     @Override
-    public void set(final Integer newValue) {
+    public void set(final Integer newValue, final boolean notifyListeners) {
         writeSharedPreferences().putInt(mKey, newValue).apply();
+        super.set(newValue, notifyListeners);
     }
 
 

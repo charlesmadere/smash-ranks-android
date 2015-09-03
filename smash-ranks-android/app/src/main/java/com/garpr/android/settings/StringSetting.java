@@ -21,8 +21,9 @@ public final class StringSetting extends Setting<String> {
 
 
     @Override
-    public void set(final String newValue) {
+    public void set(final String newValue, final boolean notifyListeners) {
         writeSharedPreferences().putString(mKey, newValue).apply();
+        super.set(newValue, notifyListeners);
     }
 
 

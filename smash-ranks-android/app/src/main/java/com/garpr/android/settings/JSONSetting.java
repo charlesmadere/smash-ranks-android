@@ -44,7 +44,7 @@ public final class JSONSetting extends Setting<JSONObject> {
 
 
     @Override
-    public void set(final JSONObject newValue) {
+    public void set(final JSONObject newValue, final boolean notifyListeners) {
         final String newValueString;
 
         if (newValue == null) {
@@ -54,6 +54,7 @@ public final class JSONSetting extends Setting<JSONObject> {
         }
 
         mStringSetting.set(newValueString);
+        super.set(newValue, notifyListeners);
     }
 
 
