@@ -1,10 +1,12 @@
 package com.garpr.android.views;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +44,19 @@ public class MatchResultsItemView extends TextView {
     public MatchResultsItemView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         initialize();
+    }
+
+
+    public MatchResultsItemView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public MatchResultsItemView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr, final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
 

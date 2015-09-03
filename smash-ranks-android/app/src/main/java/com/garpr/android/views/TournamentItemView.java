@@ -1,7 +1,9 @@
 package com.garpr.android.views;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -35,6 +37,19 @@ public class TournamentItemView extends FrameLayout {
 
     public TournamentItemView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
+    }
+
+
+    public TournamentItemView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public TournamentItemView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr, final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
 

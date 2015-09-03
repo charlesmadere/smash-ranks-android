@@ -1,7 +1,9 @@
 package com.garpr.android.views;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
 
@@ -19,6 +21,19 @@ public class SwitchPreferenceView extends BooleanSettingPreferenceView {
 
     public SwitchPreferenceView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
+    }
+
+
+    public SwitchPreferenceView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public SwitchPreferenceView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr, final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
 

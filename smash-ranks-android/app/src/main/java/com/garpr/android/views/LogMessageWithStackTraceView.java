@@ -1,7 +1,9 @@
 package com.garpr.android.views;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -19,9 +21,9 @@ import com.garpr.android.models.LogMessage;
 public class LogMessageWithStackTraceView extends LinearLayout {
 
 
-    private final int mDebugColor;
-    private final int mErrorColor;
-    private final int mWarnColor;
+    private int mDebugColor;
+    private int mErrorColor;
+    private int mWarnColor;
     private LogMessage mLogMessage;
     private TextView mBody;
     private TextView mHeader;
@@ -39,9 +41,22 @@ public class LogMessageWithStackTraceView extends LinearLayout {
 
     public LogMessageWithStackTraceView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-        mDebugColor = ContextCompat.getColor(context, R.color.white);
-        mErrorColor = ContextCompat.getColor(context, R.color.console_error);
-        mWarnColor = ContextCompat.getColor(context, R.color.console_warn);
+        initialize();
+    }
+
+
+    public LogMessageWithStackTraceView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initialize();
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public LogMessageWithStackTraceView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr, final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initialize();
     }
 
 
@@ -56,6 +71,14 @@ public class LogMessageWithStackTraceView extends LinearLayout {
         }
 
         return mViewHolder;
+    }
+
+
+    private void initialize() {
+        final Context context = getContext();
+        mDebugColor = ContextCompat.getColor(context, R.color.white);
+        mErrorColor = ContextCompat.getColor(context, R.color.console_error);
+        mWarnColor = ContextCompat.getColor(context, R.color.console_warn);
     }
 
 

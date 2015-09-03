@@ -1,7 +1,9 @@
 package com.garpr.android.views;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -31,6 +33,19 @@ public class SimpleSeparatorView extends FrameLayout {
 
     public SimpleSeparatorView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
+    }
+
+
+    public SimpleSeparatorView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public SimpleSeparatorView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr, final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
 
