@@ -4,12 +4,12 @@ package com.garpr.android.settings;
 public final class StringSetting extends Setting<String> {
 
 
-    StringSetting(final String name, final String key) {
+    public StringSetting(final String name, final String key) {
         super(name, key);
     }
 
 
-    StringSetting(final String name, final String key, final String defaultValue) {
+    public StringSetting(final String name, final String key, final String defaultValue) {
         super(name, key, defaultValue);
     }
 

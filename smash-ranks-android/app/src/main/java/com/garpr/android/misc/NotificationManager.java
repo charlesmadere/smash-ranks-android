@@ -18,7 +18,7 @@ import com.garpr.android.settings.Settings;
  * Much of this class's code was taken from the Android documentation:
  * https://developer.android.com/training/notify-user/build-notification.html
  */
-public final class Notifications {
+public final class NotificationManager {
 
 
     private static final int NOTIFICATION_ID = 1;

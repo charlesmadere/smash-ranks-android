@@ -7,7 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public final class JSONSetting extends Setting<JSONObject> {
+public final class JSONObjectSetting extends Setting<JSONObject> {
 
 
     private final StringSetting mStringSetting;
@@ -15,31 +15,28 @@ public final class JSONSetting extends Setting<JSONObject> {
 
 
 
-    JSONSetting(final String name, final String key) {
+    public JSONObjectSetting(final String name, final String key) {
         super(name, key);
         mStringSetting = new StringSetting(name, key);
     }
 
 
     @Override
-    public void delete() {
-        mStringSetting.delete();
-    }
-
-
-    @Override
     public JSONObject get() {
         final String string = mStringSetting.get();
+        final JSONObject jsonObject;
 
         if (Utils.validStrings(string)) {
             try {
-                return new JSONObject(string);
+                jsonObject = new JSONObject(string);
             } catch (final JSONException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            return null;
+            jsonObject = null;
         }
+
+        return jsonObject;
     }
 
 

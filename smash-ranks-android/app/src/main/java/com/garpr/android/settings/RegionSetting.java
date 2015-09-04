@@ -10,29 +10,31 @@ import org.json.JSONObject;
 public final class RegionSetting extends Setting<Region> {
 
 
-    private final JSONSetting mJSONSetting;
+    private final JSONObjectSetting mJSONObjectSetting;
 
 
 
 
-    RegionSetting(final String name, final String key) {
+    public RegionSetting(final String name, final String key) {
         super(name, key);
-        mJSONSetting = new JSONSetting(name, key);
-    }
-
-
-    @Override
-    public void delete() {
-        mJSONSetting.delete();
+        mJSONObjectSetting = new JSONObjectSetting(name, key);
     }
 
 
     @Override
     public Region get() {
-        final JSONObject json = mJSONSetting.get();
+        final JSONObject json = mJSONObjectSetting.get();
 
         try {
-            return new Region(json);
+            final Region region;
+
+            if (json == null) {
+                region = null;
+            } else {
+                region = new Region(json);
+            }
+
+            return region;
         } catch (final JSONException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +43,7 @@ public final class RegionSetting extends Setting<Region> {
 
     @Override
     public void set(final Region newValue, final boolean notifyListeners) {
-        mJSONSetting.set(newValue.toJSON());
+        mJSONObjectSetting.set(newValue.toJSON());
         super.set(newValue, notifyListeners);
     }
 

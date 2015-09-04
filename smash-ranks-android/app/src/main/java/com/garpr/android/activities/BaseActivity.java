@@ -15,7 +15,7 @@ import com.garpr.android.fragments.BaseFragment;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsManager;
 import com.garpr.android.misc.HeartbeatWithUi;
-import com.garpr.android.misc.Notifications;
+import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.models.Region;
 import com.garpr.android.settings.RegionSetting;
 import com.garpr.android.settings.Settings;
@@ -141,7 +141,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseFrag
     @Override
     protected void onResume() {
         super.onResume();
-        Notifications.clear();
+        NotificationManager.clear();
     }
 
 

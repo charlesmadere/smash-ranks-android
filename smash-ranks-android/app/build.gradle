@@ -23,7 +23,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 59
+        versionCode 61
         versionName "0.9.7.2b"
     }
 

@@ -13,21 +13,21 @@ import java.util.LinkedList;
 public abstract class Setting<T> {
 
 
+    protected final T mDefaultValue;
+    protected final String mKey;
+
     private final LinkedList<WeakReference<OnSettingChangedListener<T>>> mListeners;
     private final String mName;
 
-    final T mDefaultValue;
-    final String mKey;
 
 
 
-
-    Setting(final String name, final String key) {
+    protected Setting(final String name, final String key) {
         this(name, key, null);
     }
 
 
-    Setting(final String name, final String key, final T defaultValue) {
+    protected Setting(final String name, final String key, final T defaultValue) {
         if (!Utils.validStrings(name, key)) {
             throw new IllegalArgumentException("name and key can't be null / empty / whitespace");
         }
@@ -73,7 +73,7 @@ public abstract class Setting<T> {
     }
 
 
-    public void detachListener(final OnSettingChangedListener<T> listener) {
+    public final void detachListener(final OnSettingChangedListener<T> listener) {
         synchronized (mListeners) {
             final Iterator<WeakReference<OnSettingChangedListener<T>>> iterator =
                     mListeners.iterator();
@@ -98,7 +98,7 @@ public abstract class Setting<T> {
     public abstract T get();
 
 
-    final SharedPreferences readSharedPreferences() {
+    protected final SharedPreferences readSharedPreferences() {
         return Settings.get(mName);
     }
 
@@ -140,26 +140,30 @@ public abstract class Setting<T> {
                 .append(mKey)
                 .append("=(");
 
-        final T setting = get();
-
-        if (setting == null) {
-            string.append("null");
+        if (exists()) {
+            string.append("doesn't exist");
         } else {
-            string.append(setting.toString());
+            final T setting = get();
+
+            if (setting == null) {
+                string.append("null");
+            } else {
+                string.append(setting.toString());
+            }
         }
 
-        string.append(") (");
+        string.append(") listeners=(");
 
         synchronized (mListeners) {
             string.append(mListeners.size());
         }
 
-        string.append(" listeners)");
+        string.append(')');
         return string.toString();
     }
 
 
-    final SharedPreferences.Editor writeSharedPreferences() {
+    protected final SharedPreferences.Editor writeSharedPreferences() {
         return Settings.edit(mName);
     }
 

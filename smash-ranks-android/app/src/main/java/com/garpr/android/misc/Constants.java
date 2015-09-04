@@ -14,6 +14,8 @@ public final class Constants {
     public static final String DATE = "date";
     public static final String DAY_OF_MONTH_FORMAT = "d";
     public static final String DEBUG = "debug";
+    public static final String DEEP_LINK = "deep_link";
+    public static final String DEEP_LINK_URL = "deep_link_url";
     public static final String DISPLAY_NAME = "display_name";
     public static final String EASTER_EGG = "easter_egg";
     public static final String ERROR = "error";

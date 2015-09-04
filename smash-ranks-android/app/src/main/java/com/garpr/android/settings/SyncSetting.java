@@ -4,8 +4,8 @@ package com.garpr.android.settings;
 public final class SyncSetting extends Setting<SyncSetting> {
 
 
+    public final BooleanSetting IsAllowed;
     public final BooleanSetting IsChargingNecessary;
-    public final BooleanSetting IsEnabled;
     public final BooleanSetting IsScheduled;
     public final BooleanSetting IsWifiNecessary;
     public final LongSetting LastDate;
@@ -13,25 +13,32 @@ public final class SyncSetting extends Setting<SyncSetting> {
 
 
 
-    SyncSetting(final String name, final String key) {
+    public SyncSetting(final String name, final String key) {
         super(name, key);
 
+        IsAllowed = new BooleanSetting(name, key + ".IS_ALLOWED", true);
         IsChargingNecessary = new BooleanSetting(name, key + ".IS_CHARGING_NECESSARY");
-        IsEnabled = new BooleanSetting(name, key + ".IS_ENABLED", true);
         IsScheduled = new BooleanSetting(name, key + ".IS_SCHEDULED");
-        IsWifiNecessary = new BooleanSetting(name, key + ".IS_WIFI_NECESSARY");
+        IsWifiNecessary = new BooleanSetting(name, key + ".IS_WIFI_NECESSARY", true);
         LastDate = new LongSetting(name, key + ".LAST_DATE");
     }
 
 
     @Override
     public void delete() {
-        super.delete();
+        IsAllowed.delete();
         IsChargingNecessary.delete();
-        IsEnabled.delete();
         IsScheduled.delete();
         IsWifiNecessary.delete();
         LastDate.delete();
+        super.delete();
+    }
+
+
+    @Override
+    public boolean exists() {
+        return super.exists() || IsAllowed.exists() || IsChargingNecessary.exists() ||
+                IsScheduled.exists() || IsWifiNecessary.exists() || LastDate.exists();
     }
 
 
@@ -43,8 +50,8 @@ public final class SyncSetting extends Setting<SyncSetting> {
 
     @Override
     public void set(final SyncSetting newValue, final boolean notifyListeners) {
+        IsAllowed.set(newValue.IsAllowed);
         IsChargingNecessary.set(newValue.IsChargingNecessary);
-        IsEnabled.set(newValue.IsEnabled);
         IsScheduled.set(newValue.IsScheduled);
         IsWifiNecessary.set(newValue.IsWifiNecessary);
         LastDate.set(newValue.LastDate);

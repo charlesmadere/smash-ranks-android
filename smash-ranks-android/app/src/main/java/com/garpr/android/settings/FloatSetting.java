@@ -4,12 +4,12 @@ package com.garpr.android.settings;
 public final class FloatSetting extends Setting<Float> {
 
 
-    FloatSetting(final String name, final String key) {
+    public FloatSetting(final String name, final String key) {
         super(name, key, 0f);
     }
 
 
-    FloatSetting(final String name, final String key, final Float defaultValue) {
+    public FloatSetting(final String name, final String key, final Float defaultValue) {
         super(name, key, defaultValue);
 
         if (defaultValue == null) {

@@ -10,45 +10,40 @@ import org.json.JSONObject;
 public final class PlayerSetting extends Setting<Player> {
 
 
-    private final JSONSetting mJSONSetting;
+    private final JSONObjectSetting mJSONObjectSetting;
 
 
 
 
-    PlayerSetting(final String name, final String key) {
+    public PlayerSetting(final String name, final String key) {
         super(name, key);
-        mJSONSetting = new JSONSetting(name, key);
-    }
-
-
-    @Override
-    public void delete() {
-        mJSONSetting.delete();
+        mJSONObjectSetting = new JSONObjectSetting(name, key);
     }
 
 
     @Override
     public Player get() {
-        final JSONObject json = mJSONSetting.get();
-        final Player player;
+        final JSONObject json = mJSONObjectSetting.get();
 
-        if (json == null) {
-            player = null;
-        } else {
-            try {
+        try {
+            final Player player;
+
+            if (json == null) {
+                player = null;
+            } else {
                 player = new Player(json);
-            } catch (final JSONException e) {
-                throw new RuntimeException(e);
             }
-        }
 
-        return player;
+            return player;
+        } catch (final JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
     @Override
     public void set(final Player newValue, final boolean notifyListeners) {
-        mJSONSetting.set(newValue.toJSON());
+        mJSONObjectSetting.set(newValue.toJSON());
         super.set(newValue, notifyListeners);
     }
 

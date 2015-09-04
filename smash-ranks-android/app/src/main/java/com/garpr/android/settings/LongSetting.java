@@ -4,12 +4,12 @@ package com.garpr.android.settings;
 public final class LongSetting extends Setting<Long> {
 
 
-    LongSetting(final String name, final String key) {
+    public LongSetting(final String name, final String key) {
         super(name, key, 0l);
     }
 
 
-    LongSetting(final String name, final String key, final Long defaultValue) {
+    public LongSetting(final String name, final String key, final Long defaultValue) {
         super(name, key, defaultValue);
 
         if (defaultValue == null) {

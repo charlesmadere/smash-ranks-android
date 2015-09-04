@@ -5,12 +5,11 @@
     <LinearLayout
         android:orientation="vertical"
         style="@style/root.no_padding">
-        <include
-            android:elevation="0dp"
-            tools:ignore="UnusedAttribute"
-            layout="@layout/toolbar" />
+        <android.support.v7.widget.Toolbar
+            style="@style/toolbar.no_elevation" />
         <android.support.design.widget.TabLayout
             android:background="@color/gray_dark"
+            android:elevation="@dimen/elevation"
             android:id="@+id/activity_tournament_tab_layout"
             android:layout_height="48dp"
             android:layout_width="match_parent" />

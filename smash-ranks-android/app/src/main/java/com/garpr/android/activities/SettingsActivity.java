@@ -18,7 +18,7 @@ import com.garpr.android.BuildConfig;
 import com.garpr.android.R;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.NetworkCache;
-import com.garpr.android.misc.Notifications;
+import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.SyncManager;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.Region;
@@ -261,7 +261,7 @@ public class SettingsActivity extends BaseToolbarActivity {
         mGooglePlayServicesError.setTitleText(R.string.google_play_services_unavailable);
         mGooglePlayServicesError.setSubTitleText(R.string.period_sync_requires_google_play_services);
 
-        mSync.set(Settings.Sync.IsEnabled, R.string.enable_or_disable_sync,
+        mSync.set(Settings.Sync.IsAllowed, R.string.enable_or_disable_sync,
                 R.string.periodic_sync_is_on, R.string.periodic_sync_is_turned_off);
         mSync.setOnToggleListener(new BooleanSettingPreferenceView.OnToggleListener() {
             @Override
@@ -317,7 +317,7 @@ public class SettingsActivity extends BaseToolbarActivity {
             mGenerateNotification.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    Notifications.showRankingsUpdated();
+                    NotificationManager.showRankingsUpdated();
                 }
             });
         }

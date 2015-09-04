@@ -10,7 +10,7 @@ public final class UserSetting extends Setting<UserSetting> {
 
 
 
-    UserSetting(final String name, final String key) {
+    public UserSetting(final String name, final String key) {
         super(name, key);
 
         Player = new PlayerSetting(name, key + ".PLAYER");
@@ -20,9 +20,15 @@ public final class UserSetting extends Setting<UserSetting> {
 
     @Override
     public void delete() {
-        super.delete();
         Player.delete();
         Region.delete();
+        super.delete();
+    }
+
+
+    @Override
+    public boolean exists() {
+        return super.exists() || Player.exists() || Region.exists();
     }
 
 

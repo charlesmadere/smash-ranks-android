@@ -4,12 +4,12 @@ package com.garpr.android.settings;
 public final class BooleanSetting extends Setting<Boolean> {
 
 
-    BooleanSetting(final String name, final String key) {
+    public BooleanSetting(final String name, final String key) {
         super(name, key, Boolean.FALSE);
     }
 
 
-    BooleanSetting(final String name, final String key, final Boolean defaultValue) {
+    public BooleanSetting(final String name, final String key, final Boolean defaultValue) {
         super(name, key, defaultValue);
 
         if (defaultValue == null) {

@@ -1,7 +1,9 @@
 package com.garpr.android.activities;
 
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -42,6 +44,13 @@ public class OnboardingActivity extends BaseActivity implements PlayersFragment.
 
 
 
+    public static void start(final Activity activity) {
+        final Intent intent = new Intent(activity, OnboardingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
+    }
+
+
     private void findViews() {
         mPager = (NonSwipeableViewPager) findViewById(R.id.activity_onboarding_pager);
     }
@@ -51,6 +60,7 @@ public class OnboardingActivity extends BaseActivity implements PlayersFragment.
         if (savePlayer) {
             final Player player = mPlayersFragment.getSelectedPlayer();
             Settings.User.Player.set(player);
+            CrashlyticsManager.setUserIdentifier(player.toJSON().toString());
         }
 
         Settings.OnboardingComplete.set(true);
@@ -118,6 +128,11 @@ public class OnboardingActivity extends BaseActivity implements PlayersFragment.
                 onboardingAlreadyCompleted);
 
         if (onboardingAlreadyCompleted) {
+            if (Settings.User.Player.exists()) {
+                final Player player = Settings.User.Player.get();
+                CrashlyticsManager.setUserIdentifier(player.toJSON().toString());
+            }
+
             RankingsActivity.start(this);
             finish();
         } else {
