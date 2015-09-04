@@ -4,6 +4,10 @@ package com.garpr.android.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.garpr.android.R;
 import com.garpr.android.misc.Constants;
@@ -18,7 +22,18 @@ public class UrlHandlerActivity extends BaseActivity {
 
     private static final String TAG = "UrlHandlerActivity";
 
+    private Button mRetry;
+    private LinearLayout mError;
+    private ProgressBar mProgress;
 
+
+
+
+    private void findViews() {
+        mError = (LinearLayout) findViewById(R.id.activity_url_handler_error);
+        mProgress = (ProgressBar) findViewById(R.id.activity_url_handler_progress);
+        mRetry = (Button) findViewById(R.id.activity_url_handler_retry);
+    }
 
 
     @Override
@@ -36,6 +51,9 @@ public class UrlHandlerActivity extends BaseActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        findViews();
+        prepareViews();
+
         CrashlyticsManager.setBool(Constants.DEEP_LINK, true);
 
         if (Settings.OnboardingComplete.get()) {
@@ -64,6 +82,17 @@ public class UrlHandlerActivity extends BaseActivity {
 
         final String a = segments.get(0);
         final String z = segments.toString();
+    }
+
+
+    private void prepareViews() {
+        mRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                // TODO
+                // refresh
+            }
+        });
     }
 
 
