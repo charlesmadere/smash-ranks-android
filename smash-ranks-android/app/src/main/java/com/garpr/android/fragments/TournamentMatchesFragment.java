@@ -125,6 +125,12 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
 
 
         @Override
+        public long getItemId(final int position) {
+            return position;
+        }
+
+
+        @Override
         public void onBindViewHolder(final MatchItemView.ViewHolder holder, final int position) {
             final MatchItemView miv = holder.getView();
             final Match match = mMatches.get(position);
