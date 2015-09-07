@@ -74,6 +74,7 @@ public class UrlHandlerActivity extends BaseActivity {
                 }
             }
         } else {
+            Console.d(TAG, "Deep link cancelled because onboarding is incomplete");
             OnboardingActivity.start(this);
         }
 
@@ -87,6 +88,7 @@ public class UrlHandlerActivity extends BaseActivity {
         Console.d(TAG, "Deep link Uri: " + uriString);
 
         final List<String> segments = uri.getPathSegments();
+        // TODO this is always returning null / empty...
 
         if (segments == null || segments.isEmpty()) {
             Console.w(TAG, "Cancelling deep link because Uri has no segments");
