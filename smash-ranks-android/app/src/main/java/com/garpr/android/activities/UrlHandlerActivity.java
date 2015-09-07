@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.garpr.android.R;
+import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsManager;
 import com.garpr.android.settings.Settings;
@@ -54,12 +55,24 @@ public class UrlHandlerActivity extends BaseActivity {
         findViews();
         prepareViews();
 
-        CrashlyticsManager.setBool(Constants.DEEP_LINK, true);
-
         if (Settings.OnboardingComplete.get()) {
+            Console.d(TAG, "Attempting to deep link...");
+
             final Intent intent = getIntent();
-            final Uri uri = intent.getData();
-            parseUri(uri);
+
+            if (intent == null) {
+                Console.w(TAG, "Cancelling deep link because Intent is null");
+                RankingsActivity.start(this);
+            } else {
+                final Uri uri = intent.getData();
+
+                if (uri == null) {
+                    Console.w(TAG, "Cancelling deep link because Uri is null");
+                    RankingsActivity.start(this);
+                } else {
+                    parseUri(uri);
+                }
+            }
         } else {
             OnboardingActivity.start(this);
         }
@@ -69,10 +82,14 @@ public class UrlHandlerActivity extends BaseActivity {
 
 
     private void parseUri(final Uri uri) {
-        CrashlyticsManager.setString(Constants.DEEP_LINK_URL, uri.toString());
+        final String uriString = uri.toString();
+        CrashlyticsManager.setString(Constants.DEEP_LINK_URL, uriString);
+        Console.d(TAG, "Deep link Uri: " + uriString);
+
         final List<String> segments = uri.getPathSegments();
 
         if (segments == null || segments.isEmpty()) {
+            Console.w(TAG, "Cancelling deep link because Uri has no segments");
             RankingsActivity.start(this);
             return;
         }
