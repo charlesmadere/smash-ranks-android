@@ -58,6 +58,7 @@
     <string name="last_rankings_update">Last rankings update</string>
     <string name="last_sync">Last sync</string>
     <string name="lets_go">Let\'s go!</string>
+    <string name="loading_gar_pr_">Loading GAR PR…</string>
     <string name="log_console">Log console</string>
     <string name="log_console_title_case">Log Console</string>
     <string name="log_console_description">Displays log messages that would normally only be
@@ -89,6 +90,7 @@
     <string name="player">Player</string>
     <string name="players">Players</string>
     <string name="player_x_region_y">Player: (%1$s) Region: (%2$s)</string>
+    <string name="please_check_your_network_connection">Please check your network connection.</string>
     <string name="pound_sign">#</string>
     <string name="quit">Quit</string>
     <string name="ranking">Ranking</string>

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.garpr.android.R;
 import com.garpr.android.calls.Players;
@@ -32,8 +31,8 @@ public class DeepLinkActivity extends BaseActivity {
     private static final String TAG = "DeepLinkActivity";
 
     private Button mRetry;
-    private LinearLayout mError;
-    private ProgressBar mProgress;
+    private LinearLayout mErrorContainer;
+    private LinearLayout mProgressContainer;
 
 
 
@@ -167,9 +166,9 @@ public class DeepLinkActivity extends BaseActivity {
 
 
     private void findViews() {
-        mError = (LinearLayout) findViewById(R.id.activity_url_handler_error);
-        mProgress = (ProgressBar) findViewById(R.id.activity_url_handler_progress);
-        mRetry = (Button) findViewById(R.id.activity_url_handler_retry);
+        mErrorContainer = (LinearLayout) findViewById(R.id.activity_deep_link_error_container);
+        mProgressContainer = (LinearLayout) findViewById(R.id.activity_deep_link_progress_container);
+        mRetry = (Button) findViewById(R.id.activity_deep_link_retry);
     }
 
 
@@ -181,7 +180,7 @@ public class DeepLinkActivity extends BaseActivity {
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_url_handler;
+        return R.layout.activity_deep_link;
     }
 
 
@@ -284,14 +283,14 @@ public class DeepLinkActivity extends BaseActivity {
 
 
     private void showError() {
-        mProgress.setVisibility(View.GONE);
-        mError.setVisibility(View.VISIBLE);
+        mProgressContainer.setVisibility(View.GONE);
+        mErrorContainer.setVisibility(View.VISIBLE);
     }
 
 
     private void showProgress() {
-        mError.setVisibility(View.GONE);
-        mProgress.setVisibility(View.VISIBLE);
+        mErrorContainer.setVisibility(View.GONE);
+        mProgressContainer.setVisibility(View.VISIBLE);
     }
 
 
