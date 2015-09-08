@@ -19,10 +19,10 @@ public final class UserSetting extends Setting<UserSetting> {
 
 
     @Override
-    public void delete() {
+    public void delete(final boolean notifyListeners) {
         Player.delete();
         Region.delete();
-        super.delete();
+        super.delete(notifyListeners);
     }
 
 

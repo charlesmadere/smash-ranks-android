@@ -68,8 +68,17 @@ public abstract class Setting<T> {
     }
 
 
-    public void delete() {
+    public final void delete() {
+        delete(true);
+    }
+
+
+    public void delete(final boolean notifyListeners) {
         writeSharedPreferences().remove(mKey).apply();
+
+        if (notifyListeners) {
+            notifyListeners();
+        }
     }
 
 
@@ -98,6 +107,26 @@ public abstract class Setting<T> {
     public abstract T get();
 
 
+    private void notifyListeners() {
+        synchronized (mListeners) {
+            final Iterator<WeakReference<OnSettingChangedListener<T>>> iterator =
+                    mListeners.iterator();
+            final T newValue = get();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnSettingChangedListener<T>> wr = iterator.next();
+                final OnSettingChangedListener<T> oscl = wr.get();
+
+                if (oscl == null) {
+                    iterator.remove();
+                } else {
+                    oscl.onSettingChanged(newValue);
+                }
+            }
+        }
+    }
+
+
     protected final SharedPreferences readSharedPreferences() {
         return Settings.get(mName);
     }
@@ -110,21 +139,7 @@ public abstract class Setting<T> {
 
     public void set(final T newValue, final boolean notifyListeners) {
         if (notifyListeners) {
-            synchronized (mListeners) {
-                final Iterator<WeakReference<OnSettingChangedListener<T>>> iterator =
-                        mListeners.iterator();
-
-                while (iterator.hasNext()) {
-                    final WeakReference<OnSettingChangedListener<T>> wr = iterator.next();
-                    final OnSettingChangedListener<T> oscl = wr.get();
-
-                    if (oscl == null) {
-                        iterator.remove();
-                    } else {
-                        oscl.onSettingChanged(newValue);
-                    }
-                }
-            }
+            notifyListeners();
         }
     }
 

@@ -25,13 +25,13 @@ public final class SyncSetting extends Setting<SyncSetting> {
 
 
     @Override
-    public void delete() {
+    public void delete(final boolean notifyListeners) {
         IsAllowed.delete();
         IsChargingNecessary.delete();
         IsScheduled.delete();
         IsWifiNecessary.delete();
         LastDate.delete();
-        super.delete();
+        super.delete(notifyListeners);
     }
 
 
