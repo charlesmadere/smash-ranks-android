@@ -35,6 +35,7 @@ public class TournamentActivity extends BaseToolbarActivity implements
     private static final int TOURNAMENT_FRAGMENT_MATCHES = 1;
     private static final int TOURNAMENT_FRAGMENT_PLAYERS = 0;
     private static final String EXTRA_TOURNAMENT = CNAME + ".EXTRA_TOURNAMENT";
+    private static final String EXTRA_TOURNAMENT_BUNDLE = CNAME + ".EXTRA_TOURNAMENT_BUNDLE";
     private static final String KEY_BUNDLE = "KEY_BUNDLE";
 
     private boolean mIsLoading;
@@ -42,7 +43,7 @@ public class TournamentActivity extends BaseToolbarActivity implements
     private RefreshLayout mRefreshLayout;
     private TabLayout mTabLayout;
     private Tournament mTournament;
-    private TournamentBundle mBundle;
+    private TournamentBundle mTournamentBundle;
     private ViewPager mViewPager;
 
 
@@ -51,6 +52,13 @@ public class TournamentActivity extends BaseToolbarActivity implements
     public static void start(final Activity activity, final Tournament tournament) {
         final Intent intent = new Intent(activity, TournamentActivity.class);
         intent.putExtra(EXTRA_TOURNAMENT, tournament);
+        activity.startActivity(intent);
+    }
+
+
+    public static void start(final Activity activity, final TournamentBundle tournamentBundle) {
+        final Intent intent = new Intent(activity, TournamentActivity.class);
+        intent.putExtra(EXTRA_TOURNAMENT_BUNDLE, tournamentBundle);
         activity.startActivity(intent);
     }
 
@@ -68,7 +76,7 @@ public class TournamentActivity extends BaseToolbarActivity implements
 
             @Override
             public void successOnUi(final TournamentBundle object) {
-                mBundle = object;
+                mTournamentBundle = object;
                 prepareViewPager();
             }
         };
@@ -112,10 +120,10 @@ public class TournamentActivity extends BaseToolbarActivity implements
         mRefreshLayout.setOnRefreshListener(this);
 
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            mBundle = savedInstanceState.getParcelable(KEY_BUNDLE);
+            mTournamentBundle = savedInstanceState.getParcelable(KEY_BUNDLE);
         }
 
-        if (mBundle == null) {
+        if (mTournamentBundle == null) {
             fetchTournament();
         } else {
             prepareViewPager();
@@ -150,8 +158,8 @@ public class TournamentActivity extends BaseToolbarActivity implements
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (mBundle != null) {
-            outState.putParcelable(KEY_BUNDLE, mBundle);
+        if (mTournamentBundle != null) {
+            outState.putParcelable(KEY_BUNDLE, mTournamentBundle);
         }
     }
 
@@ -172,7 +180,13 @@ public class TournamentActivity extends BaseToolbarActivity implements
 
     private void readIntentData() {
         final Intent intent = getIntent();
-        mTournament = intent.getParcelableExtra(EXTRA_TOURNAMENT);
+
+        if (intent.hasExtra(EXTRA_TOURNAMENT_BUNDLE)) {
+            mTournamentBundle = intent.getParcelableExtra(EXTRA_TOURNAMENT_BUNDLE);
+            mTournament = mTournamentBundle.getTournament();
+        } else {
+            mTournament = intent.getParcelableExtra(EXTRA_TOURNAMENT);
+        }
     }
 
 
@@ -235,11 +249,11 @@ public class TournamentActivity extends BaseToolbarActivity implements
 
             switch (position) {
                 case TOURNAMENT_FRAGMENT_PLAYERS:
-                    fragment = TournamentPlayersFragment.create(mBundle);
+                    fragment = TournamentPlayersFragment.create(mTournamentBundle);
                     break;
 
                 case TOURNAMENT_FRAGMENT_MATCHES:
-                    fragment = TournamentMatchesFragment.create(mBundle);
+                    fragment = TournamentMatchesFragment.create(mTournamentBundle);
                     break;
 
                 default:
