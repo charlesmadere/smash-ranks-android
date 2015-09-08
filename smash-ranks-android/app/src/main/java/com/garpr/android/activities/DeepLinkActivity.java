@@ -10,11 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.garpr.android.R;
+import com.garpr.android.calls.Regions;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsManager;
+import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.misc.Utils;
+import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
+
+import java.util.ArrayList;
 
 
 public class DeepLinkActivity extends BaseActivity {
@@ -27,6 +32,25 @@ public class DeepLinkActivity extends BaseActivity {
     private ProgressBar mProgress;
 
 
+
+
+    private void fetchRankings(final String region) {
+        // TODO
+        // 1. download regions and grab this particular one
+        // 2. go to rankings activity
+        Regions.get(new ResponseOnUi<ArrayList<Region>>(TAG, this) {
+            @Override
+            public void errorOnUi(final Exception e) {
+
+            }
+
+
+            @Override
+            public void successOnUi(final ArrayList<Region> object) {
+
+            }
+        }, false);
+    }
 
 
     private void findViews() {
@@ -103,8 +127,9 @@ public class DeepLinkActivity extends BaseActivity {
         if (path.contains("/")) {
             // TODO split
             final String[] paths = path.split("/");
+
         } else {
-            // TODO we have the region
+            fetchRankings(path);
         }
 
         return true;
