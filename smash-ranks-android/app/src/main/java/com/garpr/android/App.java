@@ -85,6 +85,17 @@ public final class App extends Application {
     }
 
 
+    @Override
+    public void onTrimMemory(final int level) {
+        super.onTrimMemory(level);
+
+        if (level >= TRIM_MEMORY_BACKGROUND) {
+            Console.clearLogMessages();
+            Console.d(TAG, "onTrimMemory(" + level + ')');
+        }
+    }
+
+
     private void onUpgrade(final int lastVersion, final int currentVersion) {
         Console.d(TAG, "Upgrading from " + lastVersion + " to " + currentVersion);
 
@@ -102,17 +113,6 @@ public final class App extends Application {
         if (lastVersion < 60) {
             // another big shift in how settings are stored
             Settings.deleteAll();
-        }
-    }
-
-
-    @Override
-    public void onTrimMemory(final int level) {
-        super.onTrimMemory(level);
-
-        if (level >= TRIM_MEMORY_BACKGROUND) {
-            Console.clearLogMessages();
-            Console.d(TAG, "onTrimMemory(" + level + ')');
         }
     }
 
