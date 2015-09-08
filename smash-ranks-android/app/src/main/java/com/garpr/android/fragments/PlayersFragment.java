@@ -472,29 +472,7 @@ public class PlayersFragment extends BaseListToolbarFragment implements
 
 
         private enum Type {
-            PLAYER, TITLE;
-
-
-            @Override
-            public String toString() {
-                final int resId;
-
-                switch (this) {
-                    case PLAYER:
-                        resId = R.string.player;
-                        break;
-
-                    case TITLE:
-                        resId = R.string.title;
-                        break;
-
-                    default:
-                        throw new IllegalStateException("Type is invalid");
-                }
-
-                final Context context = App.getContext();
-                return context.getString(resId);
-            }
+            PLAYER, TITLE
         }
 
 
