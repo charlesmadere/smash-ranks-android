@@ -13,9 +13,8 @@ import com.garpr.android.R;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsManager;
+import com.garpr.android.misc.Utils;
 import com.garpr.android.settings.Settings;
-
-import java.util.List;
 
 
 public class DeepLinkActivity extends BaseActivity {
@@ -69,8 +68,8 @@ public class DeepLinkActivity extends BaseActivity {
                 if (uri == null) {
                     Console.w(TAG, "Cancelling deep link because Uri is null");
                     RankingsActivity.start(this);
-                } else {
-                    parseUri(uri);
+                } else if (!parseUri(uri)) {
+                    RankingsActivity.start(this);
                 }
             }
         } else {
@@ -82,25 +81,33 @@ public class DeepLinkActivity extends BaseActivity {
     }
 
 
-    private void parseUri(final Uri uri) {
+    private boolean parseUri(final Uri uri) {
         final String uriString = uri.toString();
-        CrashlyticsManager.setString(Constants.DEEP_LINK_URL, uriString);
-        Console.d(TAG, "Deep link Uri: " + uriString);
 
-        final List<String> segments = uri.getPathSegments();
-        // TODO this is always returning null / empty...
-
-        if (segments == null || segments.isEmpty()) {
-            Console.w(TAG, "Cancelling deep link because Uri has no segments");
-            RankingsActivity.start(this);
-            return;
+        if (!Utils.validStrings(uriString)) {
+            Console.w(TAG, "Deep link Uri String is invalid");
+            return false;
         }
 
-        // TODO
-        // parse segments
+        CrashlyticsManager.setString(Constants.DEEP_LINK_URL, uriString);
+        Console.d(TAG, "Deep link Uri: \"" + uriString + '"');
 
-        final String a = segments.get(0);
-        final String z = segments.toString();
+        // http://garpr.com/#/norcal/rankings
+        if (!uriString.startsWith(Constants.WEB_URL)) {
+            Console.w(TAG, "Deep link Uri doesn't start with \"" + Constants.WEB_URL + '"');
+            return false;
+        }
+
+        final String path = uriString.substring(Constants.WEB_URL.length(), uriString.length());
+
+        if (path.contains("/")) {
+            // TODO split
+            final String[] paths = path.split("/");
+        } else {
+            // TODO we have the region
+        }
+
+        return true;
     }
 
 
