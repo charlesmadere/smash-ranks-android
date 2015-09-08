@@ -35,9 +35,6 @@ public class DeepLinkActivity extends BaseActivity {
 
 
     private void fetchRankings(final String regionId) {
-        // TODO
-        // 1. download regions and grab this particular one
-        // 2. go to rankings activity
         Regions.get(new ResponseOnUi<ArrayList<Region>>(TAG, this) {
             @Override
             public void errorOnUi(final Exception e) {
