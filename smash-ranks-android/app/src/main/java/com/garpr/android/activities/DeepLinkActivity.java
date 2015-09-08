@@ -21,7 +21,7 @@ import java.util.List;
 public class DeepLinkActivity extends BaseActivity {
 
 
-    private static final String TAG = "UrlHandlerActivity";
+    private static final String TAG = "DeepLinkActivity";
 
     private Button mRetry;
     private LinearLayout mError;
