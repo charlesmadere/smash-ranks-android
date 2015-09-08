@@ -34,20 +34,34 @@ public class DeepLinkActivity extends BaseActivity {
 
 
 
-    private void fetchRankings(final String region) {
+    private void fetchRankings(final String regionId) {
         // TODO
         // 1. download regions and grab this particular one
         // 2. go to rankings activity
         Regions.get(new ResponseOnUi<ArrayList<Region>>(TAG, this) {
             @Override
             public void errorOnUi(final Exception e) {
-
+                showError();
             }
 
 
             @Override
-            public void successOnUi(final ArrayList<Region> object) {
+            public void successOnUi(final ArrayList<Region> regions) {
+                Region region = null;
 
+                for (final Region r : regions) {
+                    if (r.getId().equalsIgnoreCase(regionId)) {
+                        region = r;
+                        break;
+                    }
+                }
+
+                if (region != null) {
+                    Settings.Region.set(region);
+                }
+
+                RankingsActivity.start(DeepLinkActivity.this);
+                finish();
             }
         }, false);
     }
@@ -81,27 +95,35 @@ public class DeepLinkActivity extends BaseActivity {
         if (Settings.OnboardingComplete.get()) {
             Console.d(TAG, "Attempting to deep link...");
 
-            final Intent intent = getIntent();
-
-            if (intent == null) {
+            if (getIntent() == null) {
                 Console.w(TAG, "Cancelling deep link because Intent is null");
                 RankingsActivity.start(this);
+                finish();
             } else {
-                final Uri uri = intent.getData();
-
-                if (uri == null) {
-                    Console.w(TAG, "Cancelling deep link because Uri is null");
-                    RankingsActivity.start(this);
-                } else if (!parseUri(uri)) {
-                    RankingsActivity.start(this);
-                }
+                parseIntent();
             }
         } else {
             Console.d(TAG, "Deep link cancelled because onboarding is incomplete");
             OnboardingActivity.start(this);
+            finish();
         }
+    }
 
-        finish();
+
+    private void parseIntent() {
+        final Intent intent = getIntent();
+        final Uri uri = intent.getData();
+
+        if (uri == null) {
+            Console.w(TAG, "Cancelling deep link because Uri is null");
+            RankingsActivity.start(this);
+            finish();
+        } else if (parseUri(uri)) {
+            // intentionally blank
+        } else {
+            RankingsActivity.start(this);
+            finish();
+        }
     }
 
 
@@ -140,10 +162,23 @@ public class DeepLinkActivity extends BaseActivity {
         mRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                // TODO
-                // refresh
+                Console.d(TAG, "Retrying deep link...");
+                showProgress();
+                parseIntent();
             }
         });
+    }
+
+
+    private void showError() {
+        mProgress.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
+    }
+
+
+    private void showProgress() {
+        mError.setVisibility(View.GONE);
+        mProgress.setVisibility(View.VISIBLE);
     }
 
 
