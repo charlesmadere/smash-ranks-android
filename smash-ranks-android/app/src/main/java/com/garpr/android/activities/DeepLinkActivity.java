@@ -138,12 +138,6 @@ public class DeepLinkActivity extends BaseActivity {
         CrashlyticsManager.setString(Constants.DEEP_LINK_URL, uriString);
         Console.d(TAG, "Deep link Uri: \"" + uriString + '"');
 
-        // http://garpr.com/#/norcal/rankings
-        if (!uriString.startsWith(Constants.WEB_URL)) {
-            Console.w(TAG, "Deep link Uri doesn't start with \"" + Constants.WEB_URL + '"');
-            return false;
-        }
-
         final String path = uriString.substring(Constants.WEB_URL.length(), uriString.length());
 
         if (path.contains("/")) {
