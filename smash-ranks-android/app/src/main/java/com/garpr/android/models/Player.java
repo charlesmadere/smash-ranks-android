@@ -37,15 +37,6 @@ public class Player implements AlphabeticallyComparable, Parcelable {
     }
 
 
-    public Player(final String id, final String name) {
-        mId = id;
-        mName = name;
-        mRating = Float.MIN_VALUE;
-        mRank = Integer.MIN_VALUE;
-        mRatingTruncated = null;
-    }
-
-
     private Player(final Parcel source) {
         mRating = source.readFloat();
         mRank = source.readInt();
