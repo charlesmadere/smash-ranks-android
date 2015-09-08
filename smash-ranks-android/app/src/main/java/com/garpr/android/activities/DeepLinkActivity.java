@@ -18,7 +18,7 @@ import com.garpr.android.settings.Settings;
 import java.util.List;
 
 
-public class UrlHandlerActivity extends BaseActivity {
+public class DeepLinkActivity extends BaseActivity {
 
 
     private static final String TAG = "UrlHandlerActivity";
