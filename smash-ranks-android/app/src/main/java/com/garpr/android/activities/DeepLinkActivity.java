@@ -10,13 +10,17 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.garpr.android.R;
+import com.garpr.android.calls.Players;
 import com.garpr.android.calls.Regions;
+import com.garpr.android.calls.Tournaments;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsManager;
 import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.misc.Utils;
+import com.garpr.android.models.Player;
 import com.garpr.android.models.Region;
+import com.garpr.android.models.TournamentBundle;
 import com.garpr.android.settings.Settings;
 
 import java.util.ArrayList;
@@ -34,7 +38,42 @@ public class DeepLinkActivity extends BaseActivity {
 
 
 
-    private void fetchRankings(final String regionId) {
+    private void fetchPlayer(final String playerId, final boolean ignoreCache) {
+        Players.get(new ResponseOnUi<ArrayList<Player>>(TAG, DeepLinkActivity.this) {
+            @Override
+            public void errorOnUi(final Exception e) {
+                showError();
+            }
+
+
+            @Override
+            public void successOnUi(final ArrayList<Player> players) {
+                Player player = null;
+
+                for (final Player p : players) {
+                    if (p.getId().equalsIgnoreCase(playerId)) {
+                        player = p;
+                        break;
+                    }
+                }
+
+                if (player == null) {
+                    if (ignoreCache) {
+                        showError();
+                    } else {
+                        fetchPlayer(playerId, true);
+                    }
+                } else {
+                    PlayerActivity.start(DeepLinkActivity.this, player);
+                    finish();
+                }
+            }
+        }, false);
+    }
+
+
+    private void fetchRegion(final String regionId, final boolean ignoreCache,
+            final Callback callback) {
         Regions.get(new ResponseOnUi<ArrayList<Region>>(TAG, this) {
             @Override
             public void errorOnUi(final Exception e) {
@@ -53,14 +92,77 @@ public class DeepLinkActivity extends BaseActivity {
                     }
                 }
 
-                if (region != null) {
+                if (region == null) {
+                    if (ignoreCache) {
+                        showError();
+                    } else {
+                        fetchRegion(regionId, true, callback);
+                    }
+                } else {
                     Settings.Region.set(region);
+                    callback.finished();
                 }
+            }
+        }, ignoreCache);
+    }
 
+
+    private void fetchRegionThenPlayer(final String regionId, final String playerId) {
+        fetchRegion(regionId, false, new Callback() {
+            @Override
+            public void finished() {
+                fetchPlayer(playerId, false);
+            }
+        });
+    }
+
+
+    private void fetchRegionThenRankings(final String regionId) {
+        fetchRegion(regionId, false, new Callback() {
+            @Override
+            public void finished() {
                 RankingsActivity.start(DeepLinkActivity.this);
                 finish();
             }
-        }, false);
+        });
+    }
+
+
+    private void fetchRegionThenTournament(final String regionId, final String tournamentId) {
+        fetchRegion(regionId, false, new Callback() {
+            @Override
+            public void finished() {
+                fetchTournament(tournamentId);
+            }
+        });
+    }
+
+
+    private void fetchRegionThenTournaments(final String regionId) {
+        fetchRegion(regionId, false, new Callback() {
+            @Override
+            public void finished() {
+                TournamentsActivity.start(DeepLinkActivity.this);
+                finish();
+            }
+        });
+    }
+
+
+    private void fetchTournament(final String tournamentId) {
+        Tournaments.getTournament(new ResponseOnUi<TournamentBundle>(TAG, this) {
+            @Override
+            public void errorOnUi(final Exception e) {
+                showError();
+            }
+
+
+            @Override
+            public void successOnUi(final TournamentBundle tournamentBundle) {
+                TournamentActivity.start(DeepLinkActivity.this, tournamentBundle);
+                finish();
+            }
+        }, tournamentId);
     }
 
 
@@ -138,14 +240,34 @@ public class DeepLinkActivity extends BaseActivity {
         final String path = uriString.substring(Constants.WEB_URL.length(), uriString.length());
 
         if (path.contains("/")) {
-            // TODO split
             final String[] paths = path.split("/");
-
+            parseUriPaths(paths);
         } else {
-            fetchRankings(path);
+            fetchRegionThenRankings(path);
         }
 
         return true;
+    }
+
+
+    private void parseUriPaths(final String[] paths) {
+        final String regionId = paths[0];
+
+        if (Constants.PLAYERS.equalsIgnoreCase(paths[1])) {
+            if (paths.length == 3 && Utils.validStrings(paths[2])) {
+                fetchRegionThenPlayer(regionId, paths[2]);
+            } else {
+                fetchRegionThenRankings(regionId);
+            }
+        } else if (Constants.RANKINGS.equalsIgnoreCase(paths[1])) {
+            fetchRegionThenRankings(regionId);
+        } else if (Constants.TOURNAMENTS.equalsIgnoreCase(paths[1])) {
+            if (paths.length == 3 && Utils.validStrings(paths[2])) {
+                fetchRegionThenTournament(regionId, paths[2]);
+            } else {
+                fetchRegionThenTournaments(regionId);
+            }
+        }
     }
 
 
@@ -170,6 +292,13 @@ public class DeepLinkActivity extends BaseActivity {
     private void showProgress() {
         mError.setVisibility(View.GONE);
         mProgress.setVisibility(View.VISIBLE);
+    }
+
+
+
+
+    private interface Callback {
+        void finished();
     }
 
 
