@@ -1,8 +1,12 @@
 package com.garpr.android.misc;
 
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.support.v4.app.ActivityManagerCompat;
 import android.util.Log;
 
+import com.garpr.android.App;
 import com.garpr.android.BuildConfig;
 import com.garpr.android.models.LogMessage;
 
@@ -20,10 +24,16 @@ public final class Console {
 
 
     static {
-        if (BuildConfig.DEBUG) {
-            LOG_MESSAGES_MAX_SIZE = 256;
-        } else {
+        final Context context = App.getContext();
+        final ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+        final boolean isLowRamDevice = ActivityManagerCompat.isLowRamDevice(activityManager);
+
+        if (isLowRamDevice) {
+            LOG_MESSAGES_MAX_SIZE = 64;
+        } else if (BuildConfig.DEBUG) {
             LOG_MESSAGES_MAX_SIZE = 128;
+        } else {
+            LOG_MESSAGES_MAX_SIZE = 96;
         }
 
         LOG_MESSAGES = new LinkedList<>();
