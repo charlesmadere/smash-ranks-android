@@ -55,6 +55,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingBottom">@dimen/root_padding_half</item>
         <item name="android:scrollbars">vertical</item>
+        <item name="layoutManager">LinearLayoutManager</item>
     </style>
 
     <style name="list_item_root">
