@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -81,23 +80,7 @@ public class LogMessageView extends TextView {
         mLogMessage = logMessage;
         setText(Html.fromHtml(getResources().getString(R.string.x_bold_colon_y,
                 mLogMessage.getTag(), mLogMessage.getMessage())));
-
-        switch (mLogMessage.getPriority()) {
-            case Log.DEBUG:
-                setTextColor(mDebugColor);
-                break;
-
-            case Log.ERROR:
-                setTextColor(mErrorColor);
-                break;
-
-            case Log.WARN:
-                setTextColor(mWarnColor);
-                break;
-
-            default:
-                throw new RuntimeException("Unknown priority: " + mLogMessage.getPriority());
-        }
+        setTextColor(mLogMessage.getPriority().getColor());
     }
 
 
@@ -106,7 +89,7 @@ public class LogMessageView extends TextView {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private ViewHolder() {
+        protected ViewHolder() {
             super(LogMessageView.this);
         }
 

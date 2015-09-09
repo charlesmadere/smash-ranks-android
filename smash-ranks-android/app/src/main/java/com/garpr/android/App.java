@@ -4,7 +4,7 @@ package com.garpr.android;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.PackageManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -45,7 +45,7 @@ public final class App extends Application {
         try {
             final String packageName = sContext.getPackageName();
             return sContext.getPackageManager().getPackageInfo(packageName, 0);
-        } catch (final NameNotFoundException e) {
+        } catch (final PackageManager.NameNotFoundException e) {
             // this should never happen
             throw new RuntimeException(e);
         }
@@ -71,15 +71,17 @@ public final class App extends Application {
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
-        Fabric.with(this, new Crashlytics());
+        Fabric.with(sContext, new Crashlytics());
         CrashlyticsManager.setBool(Constants.DEBUG, BuildConfig.DEBUG);
         sRequestQueue = Volley.newRequestQueue(sContext, new OkHttpStack());
 
         final int currentVersion = getVersionCode();
         final int lastVersion = Settings.LastVersion.get();
 
+        Console.d(TAG, "App created, version is " + currentVersion);
+
         if (currentVersion > lastVersion) {
-            onUpgrade(lastVersion, currentVersion);
+            onUpgrade(lastVersion);
             Settings.LastVersion.set(currentVersion);
         }
     }
@@ -96,8 +98,8 @@ public final class App extends Application {
     }
 
 
-    private void onUpgrade(final int lastVersion, final int currentVersion) {
-        Console.d(TAG, "Upgrading from " + lastVersion + " to " + currentVersion);
+    private void onUpgrade(final int lastVersion) {
+        Console.d(TAG, "Upgrading from " + lastVersion);
 
         if (lastVersion < 40) {
             // entirely new settings model and classes, all SharedPreferences must be cleared

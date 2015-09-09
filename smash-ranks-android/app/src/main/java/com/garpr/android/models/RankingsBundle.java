@@ -37,7 +37,7 @@ public class RankingsBundle implements Parcelable {
             mRankings.add(player);
         }
 
-        final String time = json.optString(Constants.TIME);
+        final String time = json.optString(Constants.TIME, null);
 
         if (Utils.validStrings(time)) {
             try {

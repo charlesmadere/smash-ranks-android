@@ -89,10 +89,10 @@ public class SimpleItemView extends FrameLayout {
 
 
 
-    public final class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private ViewHolder() {
+        protected ViewHolder() {
             super(SimpleItemView.this);
         }
 

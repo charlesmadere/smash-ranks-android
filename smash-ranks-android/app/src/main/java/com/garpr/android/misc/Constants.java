@@ -42,7 +42,7 @@ public final class Constants {
     public static final String LOSSES = "losses";
     public static final String MATCH = "match";
     public static final String MATCHES = "matches";
-    public static final String MESSAGE = "message";
+    public static final String MSG = "msg";
     public static final String MIMETYPE_TEXT_PLAIN = "text/plain";
     public static final String MM_DD_YY_FORMAT = "M/d/yy";
     public static final String MONTH_FORMAT = "LLLL";
@@ -70,6 +70,7 @@ public final class Constants {
     public static final String PLAYER_MATCHES = "player_matches";
     public static final String PLAYER_NAME = "player_name";
     public static final String PLAYERS = "players";
+    public static final String PRIORITY = "priority";
     public static final String RANK = "rank";
     public static final String RANKING = "ranking";
     public static final String RANKINGS = "rankings";
@@ -86,9 +87,12 @@ public final class Constants {
     public static final String SHARE = "share";
     public static final String SKIPPED = "skipped";
     public static final String SKIPPED_ONBOARDING = "skipped_onboarding";
+    public static final String STACKTRACE = "stacktrace";
     public static final String STATUS = "status";
     public static final String SYNC = "sync";
     public static final String SYNC_RESULT = "sync_result";
+    public static final String TAG = "tag";
+    public static final String THROWABLE_MSG = "throwable_msg";
     public static final String TIME = "time";
     public static final String TOURNAMENT = "tournament";
     public static final String TOURNAMENTS = "tournaments";

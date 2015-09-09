@@ -22,7 +22,7 @@ public final class Players {
 
 
 
-    private static final class PlayersCall extends RegionBasedCall<ArrayList<Player>> {
+    private static final class PlayersCall extends RegionCall<ArrayList<Player>> {
 
 
         private static final String TAG = "PlayersCall";
@@ -35,19 +35,19 @@ public final class Players {
 
 
         @Override
-        String getCallName() {
+        public String getCallName() {
             return TAG;
         }
 
 
         @Override
-        String getUrl() {
+        public String getUrl() {
             return super.getUrl() + Constants.PLAYERS;
         }
 
 
         @Override
-        void onJSONResponse(final JSONObject json) throws JSONException {
+        protected void onJSONResponse(final JSONObject json) throws JSONException {
             final JSONArray playersJSON = json.getJSONArray(Constants.PLAYERS);
             final int playersLength = playersJSON.length();
             final ArrayList<Player> players = new ArrayList<>(playersLength);

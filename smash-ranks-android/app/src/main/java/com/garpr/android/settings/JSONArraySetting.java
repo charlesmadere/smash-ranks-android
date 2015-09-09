@@ -22,6 +22,17 @@ public final class JSONArraySetting extends Setting<JSONArray> {
 
 
     @Override
+    public boolean exists() {
+        if (super.exists()) {
+            final JSONArray json = get();
+            return json != null && json.length() >= 1;
+        } else {
+            return false;
+        }
+    }
+
+
+    @Override
     public JSONArray get() {
         final String string = mStringSetting.get();
         final JSONArray jsonArray;

@@ -14,9 +14,15 @@ import org.json.JSONObject;
 
 
 public enum Result implements Parcelable {
-    LOSE(R.string.lose), WIN(R.string.win);
+
+
+    LOSE(R.string.lose),
+    WIN(R.string.win);
+
 
     private final int mResId;
+
+
 
 
     public static Result create(final JSONObject json) throws JSONException {
@@ -37,16 +43,6 @@ public enum Result implements Parcelable {
 
     Result(final int resId) {
         mResId = resId;
-    }
-
-
-    public boolean isLose() {
-        return equals(LOSE);
-    }
-
-
-    public boolean isWin() {
-        return equals(WIN);
     }
 
 

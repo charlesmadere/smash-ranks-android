@@ -94,7 +94,7 @@ public class SimpleSeparatorView extends FrameLayout {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private ViewHolder() {
+        protected ViewHolder() {
             super(SimpleSeparatorView.this);
         }
 

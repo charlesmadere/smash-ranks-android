@@ -117,7 +117,7 @@ public class MatchItemView extends FrameLayout {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private ViewHolder() {
+        protected ViewHolder() {
             super(MatchItemView.this);
         }
 

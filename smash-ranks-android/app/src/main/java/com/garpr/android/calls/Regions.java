@@ -35,19 +35,19 @@ public final class Regions {
 
 
         @Override
-        String getCallName() {
+        public String getCallName() {
             return TAG;
         }
 
 
         @Override
-        String getUrl() {
+        public String getUrl() {
             return super.getUrl() + Constants.REGIONS;
         }
 
 
         @Override
-        void onJSONResponse(final JSONObject json) throws JSONException {
+        protected void onJSONResponse(final JSONObject json) throws JSONException {
             final JSONArray regionsJSON = json.getJSONArray(Constants.REGIONS);
             final int regionsLength = regionsJSON.length();
             final ArrayList<Region> regions = new ArrayList<>(regionsLength);

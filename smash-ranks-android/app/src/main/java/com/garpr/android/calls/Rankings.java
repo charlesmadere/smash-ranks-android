@@ -28,23 +28,23 @@ public final class Rankings {
 
 
 
-    private static abstract class BaseRankingsCall<T> extends RegionBasedCall<T> {
+    private static abstract class BaseRankingsCall<T> extends RegionCall<T> {
 
 
-        BaseRankingsCall(final Response<T> response, final boolean ignoreCache, final Region region)
-                throws IllegalArgumentException {
+        protected BaseRankingsCall(final Response<T> response, final boolean ignoreCache,
+                final Region region) throws IllegalArgumentException {
             super(response, ignoreCache, region);
         }
 
 
         @Override
-        final String getUrl() {
+        public final String getUrl() {
             return super.getUrl() + Constants.RANKINGS;
         }
 
 
         @Override
-        final void onJSONResponse(final JSONObject json) throws JSONException {
+        protected final void onJSONResponse(final JSONObject json) throws JSONException {
             final RankingsBundle rankingsBundle = new RankingsBundle(json);
 
             if (rankingsBundle.hasDateWrapper()) {
@@ -52,15 +52,15 @@ public final class Rankings {
                 final long newRankingsDate = dateWrapper.getDate().getTime();
                 Settings.RankingsDate.set(newRankingsDate);
             } else {
-                Console.w(getCallName(), "RankingsBundle has no DateWrapper? Region is "
-                        + mRegion.getName());
+                Console.w(getCallName(), "RankingsBundle has no DateWrapper? Region: "
+                        + getRegion().toJSON().toString());
             }
 
             onRankingsBundleResponse(rankingsBundle);
         }
 
 
-        abstract void onRankingsBundleResponse(final RankingsBundle rankingsBundle);
+        protected abstract void onRankingsBundleResponse(final RankingsBundle rankingsBundle);
 
 
     }
@@ -82,13 +82,13 @@ public final class Rankings {
 
 
         @Override
-        String getCallName() {
+        public String getCallName() {
             return TAG;
         }
 
 
         @Override
-        void onRankingsBundleResponse(final RankingsBundle rankingsBundle) {
+        protected void onRankingsBundleResponse(final RankingsBundle rankingsBundle) {
             final long newRankingsDate = Settings.RankingsDate.get();
 
             if (mCurrentRankingsDate != 0L && mCurrentRankingsDate < newRankingsDate) {
@@ -115,13 +115,13 @@ public final class Rankings {
 
 
         @Override
-        String getCallName() {
+        public String getCallName() {
             return TAG;
         }
 
 
         @Override
-        void onRankingsBundleResponse(final RankingsBundle rankingsBundle) {
+        protected void onRankingsBundleResponse(final RankingsBundle rankingsBundle) {
             mResponse.success(rankingsBundle);
         }
 

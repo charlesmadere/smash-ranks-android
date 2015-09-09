@@ -7,7 +7,6 @@ import android.support.v4.app.ActivityManagerCompat;
 import android.util.Log;
 
 import com.garpr.android.App;
-import com.garpr.android.BuildConfig;
 import com.garpr.android.models.LogMessage;
 
 import java.util.LinkedList;
@@ -16,9 +15,9 @@ import java.util.LinkedList;
 public final class Console {
 
 
+    private static int sLogMessageIdPointer;
     private static final int LOG_MESSAGES_MAX_SIZE;
     private static final LinkedList<LogMessage> LOG_MESSAGES;
-    private static long sLogMessageIdPointer;
 
 
 
@@ -29,41 +28,12 @@ public final class Console {
         final boolean isLowRamDevice = ActivityManagerCompat.isLowRamDevice(activityManager);
 
         if (isLowRamDevice) {
-            LOG_MESSAGES_MAX_SIZE = 64;
-        } else if (BuildConfig.DEBUG) {
-            LOG_MESSAGES_MAX_SIZE = 128;
+            LOG_MESSAGES_MAX_SIZE = 32;
         } else {
-            LOG_MESSAGES_MAX_SIZE = 96;
+            LOG_MESSAGES_MAX_SIZE = 64;
         }
 
         LOG_MESSAGES = new LinkedList<>();
-    }
-
-
-    private static void add(final int priority, final String tag, final String msg,
-            final Throwable tr) {
-        final String stackTrace;
-        final String throwableMessage;
-
-        CrashlyticsManager.log(priority, tag, msg);
-
-        if (tr == null) {
-            stackTrace = null;
-            throwableMessage = null;
-        } else {
-            CrashlyticsManager.logException(tr);
-            stackTrace = Log.getStackTraceString(tr);
-            throwableMessage = tr.getMessage();
-        }
-
-        synchronized (LOG_MESSAGES) {
-            LOG_MESSAGES.addFirst(new LogMessage(priority, sLogMessageIdPointer++, tag, msg,
-                    stackTrace, throwableMessage));
-
-            while (LOG_MESSAGES.size() > LOG_MESSAGES_MAX_SIZE) {
-                LOG_MESSAGES.removeLast();
-            }
-        }
     }
 
 
@@ -80,7 +50,7 @@ public final class Console {
 
 
     public static void d(final String tag, final String msg, final Throwable tr) {
-        add(Log.DEBUG, tag, msg, tr);
+        log(LogMessage.Priority.DEBUG, tag, msg, tr);
     }
 
 
@@ -90,7 +60,7 @@ public final class Console {
 
 
     public static void e(final String tag, final String msg, final Throwable tr) {
-        add(Log.ERROR, tag, msg, tr);
+        log(LogMessage.Priority.ERROR, tag, msg, tr);
     }
 
 
@@ -115,13 +85,40 @@ public final class Console {
     }
 
 
+    private static void log(final LogMessage.Priority priority, final String tag, final String msg,
+            final Throwable tr) {
+        final String stackTrace;
+        final String throwableMessage;
+
+        CrashlyticsManager.log(priority.getCode(), tag, msg);
+
+        if (tr == null) {
+            stackTrace = null;
+            throwableMessage = null;
+        } else {
+            CrashlyticsManager.logException(tr);
+            stackTrace = Log.getStackTraceString(tr);
+            throwableMessage = tr.getMessage();
+        }
+
+        synchronized (LOG_MESSAGES) {
+            LOG_MESSAGES.addFirst(new LogMessage(sLogMessageIdPointer++, priority, tag, msg,
+                    stackTrace, throwableMessage));
+
+            while (LOG_MESSAGES.size() > LOG_MESSAGES_MAX_SIZE) {
+                LOG_MESSAGES.removeLast();
+            }
+        }
+    }
+
+
     public static void w(final String tag, final String msg) {
         w(tag, msg, null);
     }
 
 
     public static void w(final String tag, final String msg, final Throwable tr) {
-        add(Log.WARN, tag, msg, tr);
+        log(LogMessage.Priority.WARN, tag, msg, tr);
     }
 
 

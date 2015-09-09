@@ -4,11 +4,9 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -21,9 +19,6 @@ import com.garpr.android.models.LogMessage;
 public class LogMessageWithStackTraceView extends LinearLayout {
 
 
-    private int mDebugColor;
-    private int mErrorColor;
-    private int mWarnColor;
     private LogMessage mLogMessage;
     private TextView mBody;
     private TextView mHeader;
@@ -41,14 +36,12 @@ public class LogMessageWithStackTraceView extends LinearLayout {
 
     public LogMessageWithStackTraceView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-        initialize();
     }
 
 
     public LogMessageWithStackTraceView(final Context context, final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initialize();
     }
 
 
@@ -56,7 +49,6 @@ public class LogMessageWithStackTraceView extends LinearLayout {
     public LogMessageWithStackTraceView(final Context context, final AttributeSet attrs,
             final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initialize();
     }
 
 
@@ -74,14 +66,6 @@ public class LogMessageWithStackTraceView extends LinearLayout {
     }
 
 
-    private void initialize() {
-        final Context context = getContext();
-        mDebugColor = ContextCompat.getColor(context, R.color.white);
-        mErrorColor = ContextCompat.getColor(context, R.color.console_error);
-        mWarnColor = ContextCompat.getColor(context, R.color.console_warn);
-    }
-
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -94,27 +78,11 @@ public class LogMessageWithStackTraceView extends LinearLayout {
         mLogMessage = logMessage;
         mHeader.setText(Html.fromHtml(getResources().getString(R.string.x_bold_colon_y,
                 mLogMessage.getTag(), mLogMessage.getMessage())));
-        mBody.setText(logMessage.getStackTrace());
+        mBody.setText(mLogMessage.getStacktrace());
 
-        switch (mLogMessage.getPriority()) {
-            case Log.DEBUG:
-                mHeader.setTextColor(mDebugColor);
-                mBody.setTextColor(mDebugColor);
-                break;
-
-            case Log.ERROR:
-                mHeader.setTextColor(mErrorColor);
-                mBody.setTextColor(mErrorColor);
-                break;
-
-            case Log.WARN:
-                mHeader.setTextColor(mWarnColor);
-                mBody.setText(mWarnColor);
-                break;
-
-            default:
-                throw new RuntimeException("Unknown priority: " + mLogMessage.getPriority());
-        }
+        final int textColor = mLogMessage.getPriority().getColor();
+        mHeader.setTextColor(textColor);
+        mBody.setTextColor(textColor);
     }
 
 
@@ -123,7 +91,7 @@ public class LogMessageWithStackTraceView extends LinearLayout {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private ViewHolder() {
+        protected ViewHolder() {
             super(LogMessageWithStackTraceView.this);
         }
 

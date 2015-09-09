@@ -31,7 +31,7 @@ public final class Matches {
 
 
 
-    private static final class HeadToHeadCall extends RegionBasedCall<HeadToHeadBundle> {
+    private static final class HeadToHeadCall extends RegionCall<HeadToHeadBundle> {
 
 
         private static final String TAG = "HeadToHeadCall";
@@ -56,20 +56,20 @@ public final class Matches {
 
 
         @Override
-        String getCallName() {
+        public String getCallName() {
             return TAG;
         }
 
 
         @Override
-        String getUrl() {
+        public String getUrl() {
             return super.getUrl() + Constants.MATCHES + '/' + mPlayer.getId() + '?' +
                     Constants.OPPONENT + '=' + mOpponent.getId();
         }
 
 
         @Override
-        void onJSONResponse(final JSONObject json) throws JSONException {
+        protected void onJSONResponse(final JSONObject json) throws JSONException {
             final HeadToHeadBundle headToHeadBundle = new HeadToHeadBundle(json);
             mResponse.success(headToHeadBundle);
         }
@@ -78,7 +78,7 @@ public final class Matches {
     }
 
 
-    private static final class MatchesCall extends RegionBasedCall<ArrayList<Match>> {
+    private static final class MatchesCall extends RegionCall<ArrayList<Match>> {
 
 
         private static final String TAG = "MatchesCall";
@@ -99,19 +99,19 @@ public final class Matches {
 
 
         @Override
-        String getCallName() {
+        public String getCallName() {
             return TAG;
         }
 
 
         @Override
-        String getUrl() {
+        public String getUrl() {
             return super.getUrl() + Constants.MATCHES + '/' + mPlayer.getId();
         }
 
 
         @Override
-        void onJSONResponse(final JSONObject json) throws JSONException {
+        protected void onJSONResponse(final JSONObject json) throws JSONException {
             final JSONArray matchesJSON = json.getJSONArray(Constants.MATCHES);
             final int matchesLength = matchesJSON.length();
             final ArrayList<Match> matches = new ArrayList<>(matchesLength);

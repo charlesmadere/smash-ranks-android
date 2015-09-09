@@ -108,7 +108,8 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
             if (listItem.isResults()) {
                 listItems.add(listItem);
             } else if (listItem.isTournament() && ((listItem.mMatch.isLoser(mPlayer) &&
-                    result.isLose()) || (listItem.mMatch.isWinner(mPlayer) && result.isWin()))) {
+                    Result.LOSE == result) || (listItem.mMatch.isWinner(mPlayer) &&
+                    Result.WIN == result))) {
                 ListItem date = null;
 
                 for (int j = i - 1; date == null; --j) {

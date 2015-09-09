@@ -28,7 +28,8 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
     private boolean mPulledFromNetworkCache;
     private final boolean mIgnoreCache;
     private String mUrl;
-    final Response<T> mResponse;
+
+    protected final Response<T> mResponse;
 
 
 
@@ -38,7 +39,8 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
     }
 
 
-    Call(final Response<T> response, final boolean ignoreCache) throws IllegalArgumentException {
+    protected Call(final Response<T> response, final boolean ignoreCache) throws
+            IllegalArgumentException {
         if (response == null) {
             throw new IllegalArgumentException("Response can't be null");
         }
@@ -48,15 +50,20 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
     }
 
 
-    abstract String getCallName();
+    public abstract String getCallName();
 
 
-    String getUrl() {
+    protected final Response<T> getResponse() {
+        return mResponse;
+    }
+
+
+    public String getUrl() {
         return Constants.API_URL + '/';
     }
 
 
-    final void make() {
+    protected final void make() {
         if (!mResponse.isAlive()) {
             return;
         }
@@ -124,7 +131,7 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
     }
 
 
-    abstract void onJSONResponse(final JSONObject json) throws JSONException;
+    protected abstract void onJSONResponse(final JSONObject json) throws JSONException;
 
 
     @Override

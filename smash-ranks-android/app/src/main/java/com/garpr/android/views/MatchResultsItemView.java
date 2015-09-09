@@ -176,10 +176,10 @@ public class MatchResultsItemView extends TextView {
 
 
 
-    public final class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private ViewHolder() {
+        protected ViewHolder() {
             super(MatchResultsItemView.this);
         }
 

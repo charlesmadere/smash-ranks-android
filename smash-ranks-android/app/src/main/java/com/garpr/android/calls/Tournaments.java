@@ -31,7 +31,7 @@ public final class Tournaments {
 
 
 
-    private static final class TournamentCall extends RegionBasedCall<TournamentBundle> {
+    private static final class TournamentCall extends RegionCall<TournamentBundle> {
 
 
         private static final String TAG = "TournamentCall";
@@ -52,19 +52,19 @@ public final class Tournaments {
 
 
         @Override
-        String getCallName() {
+        public String getCallName() {
             return TAG;
         }
 
 
         @Override
-        String getUrl() {
+        public String getUrl() {
             return super.getUrl() + Constants.TOURNAMENTS + '/' + mTournamentId;
         }
 
 
         @Override
-        void onJSONResponse(final JSONObject json) throws JSONException {
+        protected void onJSONResponse(final JSONObject json) throws JSONException {
             final TournamentBundle tournamentBundle = new TournamentBundle(json);
             mResponse.success(tournamentBundle);
         }
@@ -73,7 +73,7 @@ public final class Tournaments {
     }
 
 
-    private static final class TournamentsCall extends RegionBasedCall<ArrayList<Tournament>> {
+    private static final class TournamentsCall extends RegionCall<ArrayList<Tournament>> {
 
 
         private static final String TAG = "TournamentsCall";
@@ -86,19 +86,19 @@ public final class Tournaments {
 
 
         @Override
-        String getCallName() {
+        public String getCallName() {
             return TAG;
         }
 
 
         @Override
-        String getUrl() {
+        public String getUrl() {
             return super.getUrl() + Constants.TOURNAMENTS;
         }
 
 
         @Override
-        void onJSONResponse(final JSONObject json) throws JSONException {
+        protected void onJSONResponse(final JSONObject json) throws JSONException {
             final JSONArray tournamentsJSON = json.getJSONArray(Constants.TOURNAMENTS);
             final int tournamentsLength = tournamentsJSON.length();
             final ArrayList<Tournament> tournaments = new ArrayList<>(tournamentsLength);

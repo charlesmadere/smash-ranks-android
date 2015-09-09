@@ -107,7 +107,7 @@ public class TournamentItemView extends FrameLayout {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private ViewHolder() {
+        protected ViewHolder() {
             super(TournamentItemView.this);
         }
 

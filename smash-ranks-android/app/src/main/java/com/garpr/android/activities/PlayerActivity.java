@@ -107,8 +107,8 @@ public class PlayerActivity extends BaseToolbarListActivity implements
         for (int i = 0; i < mListItems.size(); ++i) {
             final ListItem listItem = mListItems.get(i);
 
-            if (listItem.isMatch() && ((listItem.mMatch.isLoser(mPlayer) && result.isLose())
-                    || (listItem.mMatch.isWinner(mPlayer) && result.isWin()))) {
+            if (listItem.isMatch() && ((listItem.mMatch.isLoser(mPlayer) && Result.LOSE == result)
+                    || (listItem.mMatch.isWinner(mPlayer) && Result.WIN == result))) {
                 ListItem tournament = null;
 
                 for (int j = i - 1; tournament == null; --j) {
