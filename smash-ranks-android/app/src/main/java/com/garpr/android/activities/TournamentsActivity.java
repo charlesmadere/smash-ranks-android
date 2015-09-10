@@ -1,7 +1,7 @@
 package com.garpr.android.activities;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -49,13 +49,6 @@ public class TournamentsActivity extends BaseToolbarListActivity implements
     private MenuItem mSearch;
 
 
-
-
-    public static void start(final Activity activity) {
-        final Intent intent = new Intent(activity, TournamentsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        activity.startActivity(intent);
-    }
 
 
     @SuppressWarnings("unchecked")
@@ -135,7 +128,7 @@ public class TournamentsActivity extends BaseToolbarListActivity implements
     @Override
     public void onClick(final TournamentItemView v) {
         final Tournament tournament = v.getTournament();
-        TournamentActivity.start(this, tournament);
+        new TournamentActivity.IntentBuilder(this, tournament).start(this);
     }
 
 
@@ -273,6 +266,18 @@ public class TournamentsActivity extends BaseToolbarListActivity implements
     }
 
 
+
+
+    public static class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context) {
+            super(context, TournamentsActivity.class);
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        }
+
+
+    }
 
 
     private final static class ListItem implements MonthlyComparable, SpecialFilterable {

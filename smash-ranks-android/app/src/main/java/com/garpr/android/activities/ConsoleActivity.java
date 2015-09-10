@@ -1,8 +1,7 @@
 package com.garpr.android.activities;
 
 
-import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
@@ -27,12 +26,6 @@ public class ConsoleActivity extends BaseToolbarListActivity {
     private MenuItem mClearLog;
 
 
-
-
-    public static void start(final Activity activity) {
-        final Intent intent = new Intent(activity, ConsoleActivity.class);
-        activity.startActivity(intent);
-    }
 
 
     @Override
@@ -204,6 +197,17 @@ public class ConsoleActivity extends BaseToolbarListActivity {
             } else {
                 return super.onCreateViewHolder(parent, viewType);
             }
+        }
+
+
+    }
+
+
+    public static class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context) {
+            super(context, ConsoleActivity.class);
         }
 
 

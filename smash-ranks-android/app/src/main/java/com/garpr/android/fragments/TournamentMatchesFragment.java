@@ -53,7 +53,8 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
     @Override
     public void onClick(final MatchItemView v) {
         final Match match = v.getMatch();
-        HeadToHeadActivity.start(getActivity(), match.getWinner(), match.getLoser());
+        new HeadToHeadActivity.IntentBuilder(getContext(), match.getWinner(), match.getLoser())
+                .start(getActivity());
     }
 
 
@@ -74,11 +75,15 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
                 .setItems(players, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
+                        final PlayerActivity.IntentBuilder paib;
+
                         if (which == 0) {
-                            PlayerActivity.start(getActivity(), match.getWinner());
+                            paib = new PlayerActivity.IntentBuilder(getContext(), match.getWinner());
                         } else {
-                            PlayerActivity.start(getActivity(), match.getLoser());
+                            paib = new PlayerActivity.IntentBuilder(getContext(), match.getLoser());
                         }
+
+                        paib.start(getActivity());
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

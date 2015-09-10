@@ -1,7 +1,7 @@
 package com.garpr.android.activities;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -19,6 +19,7 @@ import com.garpr.android.fragments.TournamentPlayersFragment;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.ResponseOnUi;
+import com.garpr.android.models.Region;
 import com.garpr.android.models.Tournament;
 import com.garpr.android.models.TournamentBundle;
 import com.garpr.android.views.RefreshLayout;
@@ -47,20 +48,6 @@ public class TournamentActivity extends BaseToolbarActivity implements
     private ViewPager mViewPager;
 
 
-
-
-    public static void start(final Activity activity, final Tournament tournament) {
-        final Intent intent = new Intent(activity, TournamentActivity.class);
-        intent.putExtra(EXTRA_TOURNAMENT, tournament);
-        activity.startActivity(intent);
-    }
-
-
-    public static void start(final Activity activity, final TournamentBundle tournamentBundle) {
-        final Intent intent = new Intent(activity, TournamentActivity.class);
-        intent.putExtra(EXTRA_TOURNAMENT_BUNDLE, tournamentBundle);
-        activity.startActivity(intent);
-    }
 
 
     private void fetchTournament() {
@@ -155,6 +142,13 @@ public class TournamentActivity extends BaseToolbarActivity implements
 
 
     @Override
+    protected void onRegionChanged(final Region region) {
+        super.onRegionChanged(region);
+        finish();
+    }
+
+
+    @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -227,6 +221,24 @@ public class TournamentActivity extends BaseToolbarActivity implements
     }
 
 
+
+
+    public static class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context, final Tournament tournament) {
+            super(context, TournamentActivity.class);
+            mIntent.putExtra(EXTRA_TOURNAMENT, tournament);
+        }
+
+
+        public IntentBuilder(final Context context, final TournamentBundle tournamentBundle) {
+            super(context, TournamentActivity.class);
+            mIntent.putExtra(EXTRA_TOURNAMENT_BUNDLE, tournamentBundle);
+        }
+
+
+    }
 
 
     private final class TournamentFragmentAdapter extends FragmentPagerAdapter {

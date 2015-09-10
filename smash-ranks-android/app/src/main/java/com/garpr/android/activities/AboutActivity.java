@@ -2,7 +2,7 @@ package com.garpr.android.activities;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebSettings;
@@ -20,13 +20,6 @@ public class AboutActivity extends BaseToolbarActivity {
     private WebView mWebView;
 
 
-
-
-    public static void start(final Activity activity) {
-        final Intent intent = new Intent(activity, AboutActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        activity.startActivity(intent);
-    }
 
 
     private void findViews() {
@@ -65,6 +58,20 @@ public class AboutActivity extends BaseToolbarActivity {
         final WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mWebView.loadUrl(Constants.ABOUT_URL);
+    }
+
+
+
+
+    public static class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context) {
+            super(context, AboutActivity.class);
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        }
+
+
     }
 
 

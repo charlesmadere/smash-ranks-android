@@ -47,8 +47,8 @@ public final class NotificationManager {
                 region.getName()));
 
         final Intent intent = new RankingsActivity.IntentBuilder(context)
-                .isFromRankingsUpdate()
-                .build();
+                .isFromRankingsUpdateNotification()
+                .getIntent();
 
         final PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

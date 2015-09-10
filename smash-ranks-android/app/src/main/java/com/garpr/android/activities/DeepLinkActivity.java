@@ -63,8 +63,7 @@ public class DeepLinkActivity extends BaseActivity {
                         fetchPlayer(playerId, true);
                     }
                 } else {
-                    PlayerActivity.start(DeepLinkActivity.this, player);
-                    finish();
+                    start(new PlayerActivity.IntentBuilder(DeepLinkActivity.this, player));
                 }
             }
         }, false);
@@ -120,8 +119,7 @@ public class DeepLinkActivity extends BaseActivity {
         fetchRegion(regionId, false, new Callback() {
             @Override
             public void finished() {
-                RankingsActivity.start(DeepLinkActivity.this);
-                finish();
+                start(new RankingsActivity.IntentBuilder(DeepLinkActivity.this));
             }
         });
     }
@@ -141,8 +139,7 @@ public class DeepLinkActivity extends BaseActivity {
         fetchRegion(regionId, false, new Callback() {
             @Override
             public void finished() {
-                TournamentsActivity.start(DeepLinkActivity.this);
-                finish();
+                start(new TournamentsActivity.IntentBuilder(DeepLinkActivity.this));
             }
         });
     }
@@ -158,8 +155,7 @@ public class DeepLinkActivity extends BaseActivity {
 
             @Override
             public void successOnUi(final TournamentBundle tournamentBundle) {
-                TournamentActivity.start(DeepLinkActivity.this, tournamentBundle);
-                finish();
+                start(new TournamentActivity.IntentBuilder(DeepLinkActivity.this, tournamentBundle));
             }
         }, tournamentId);
     }
@@ -195,15 +191,13 @@ public class DeepLinkActivity extends BaseActivity {
 
             if (getIntent() == null) {
                 Console.w(TAG, "Cancelling deep link because Intent is null");
-                RankingsActivity.start(this);
-                finish();
+                start(new RankingsActivity.IntentBuilder(this));
             } else {
                 parseIntent();
             }
         } else {
             Console.d(TAG, "Deep link cancelled because onboarding is incomplete");
-            OnboardingActivity.start(this);
-            finish();
+            start(new OnboardingActivity.IntentBuilder(this));
         }
     }
 
@@ -214,13 +208,11 @@ public class DeepLinkActivity extends BaseActivity {
 
         if (uri == null) {
             Console.w(TAG, "Cancelling deep link because Uri is null");
-            RankingsActivity.start(this);
-            finish();
+            start(new RankingsActivity.IntentBuilder(this));
         } else if (parseUri(uri)) {
             // intentionally blank
         } else {
-            RankingsActivity.start(this);
-            finish();
+            start(new RankingsActivity.IntentBuilder(this));
         }
     }
 
@@ -291,6 +283,12 @@ public class DeepLinkActivity extends BaseActivity {
     private void showProgress() {
         mErrorContainer.setVisibility(View.GONE);
         mProgressContainer.setVisibility(View.VISIBLE);
+    }
+
+
+    private void start(final IntentBuilder intentBuilder) {
+        intentBuilder.start(this);
+        finish();
     }
 
 

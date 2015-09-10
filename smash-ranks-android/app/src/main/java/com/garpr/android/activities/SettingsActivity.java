@@ -1,8 +1,8 @@
 package com.garpr.android.activities;
 
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -53,13 +53,6 @@ public class SettingsActivity extends BaseToolbarActivity {
     private SwitchPreferenceView mSync;
 
 
-
-
-    public static void start(final Activity activity) {
-        final Intent intent = new Intent(activity, SettingsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        activity.startActivity(intent);
-    }
 
 
     private void findViews() {
@@ -211,7 +204,8 @@ public class SettingsActivity extends BaseToolbarActivity {
         mRegion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                RegionsActivity.start(SettingsActivity.this);
+                new RegionsActivity.IntentBuilder(SettingsActivity.this)
+                        .start(SettingsActivity.this);
             }
         });
 
@@ -239,7 +233,8 @@ public class SettingsActivity extends BaseToolbarActivity {
         mConsole.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                ConsoleActivity.start(SettingsActivity.this);
+                new ConsoleActivity.IntentBuilder(SettingsActivity.this)
+                        .start(SettingsActivity.this);
             }
         });
 
@@ -362,6 +357,20 @@ public class SettingsActivity extends BaseToolbarActivity {
                     }
                 })
                 .show();
+    }
+
+
+
+
+    public static class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context) {
+            super(context, SettingsActivity.class);
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        }
+
+
     }
 
 

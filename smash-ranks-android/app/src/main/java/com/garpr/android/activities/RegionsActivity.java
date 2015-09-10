@@ -1,12 +1,12 @@
 package com.garpr.android.activities;
 
 
-import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.garpr.android.fragments.FloatingActionButtonRegionsFragment;
 import com.garpr.android.fragments.RegionsFragment;
+import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
 
 
@@ -17,12 +17,6 @@ public class RegionsActivity extends BaseFragmentActivity implements
     private static final String TAG = "RegionsActivity";
 
 
-
-
-    public static void start(final Activity activity) {
-        final Intent intent = new Intent(activity, RegionsActivity.class);
-        activity.startActivity(intent);
-    }
 
 
     @Override
@@ -40,7 +34,8 @@ public class RegionsActivity extends BaseFragmentActivity implements
     @Override
     public void onRegionSaved() {
         final RegionsFragment fragment = (RegionsFragment) getFragment();
-        Settings.Region.set(fragment.getSelectedRegion(), true);
+        final Region region = fragment.getSelectedRegion();
+        Settings.Region.set(region, true);
         finish();
     }
 
@@ -48,6 +43,19 @@ public class RegionsActivity extends BaseFragmentActivity implements
     @Override
     protected boolean showDrawerIndicator() {
         return false;
+    }
+
+
+
+
+    public static class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context) {
+            super(context, RegionsActivity.class);
+        }
+
+
     }
 
 

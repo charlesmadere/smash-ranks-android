@@ -1,6 +1,7 @@
 package com.garpr.android.activities;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -161,7 +162,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseFrag
 
 
 
-    protected static class IntentBuilder {
+    protected static abstract class IntentBuilder {
 
 
         protected final Intent mIntent;
@@ -172,14 +173,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseFrag
         }
 
 
-        public IntentBuilder addFlags(final int flags) {
-            mIntent.addFlags(flags);
-            return this;
+        public Intent getIntent() {
+            return mIntent;
         }
 
 
-        public Intent build() {
-            return mIntent;
+        public void start(final Activity activity) {
+            activity.startActivity(mIntent);
         }
 
 

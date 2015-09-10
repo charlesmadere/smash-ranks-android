@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
-import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.calls.Players;
 import com.garpr.android.misc.Console;

@@ -1,7 +1,6 @@
 package com.garpr.android.activities;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -45,7 +44,8 @@ public class RankingsActivity extends BaseToolbarListActivity implements
     private static final String TAG = "RankingsActivity";
     private static final String CNAME = "com.garpr.android.activities." + TAG;
 
-    private static final String EXTRA_IS_FROM_RANKINGS_UPDATE = CNAME + ".EXTRA_IS_FROM_RANKINGS_UPDATE";
+    private static final String EXTRA_IS_FROM_RANKINGS_UPDATE_NOTIFICATION = CNAME +
+            ".EXTRA_IS_FROM_RANKINGS_UPDATE_NOTIFICATION";
     private static final String KEY_PLAYERS = "KEY_PLAYERS";
     private static final String KEY_RANKINGS_DATE = "KEY_RANKINGS_DATE";
 
@@ -62,11 +62,6 @@ public class RankingsActivity extends BaseToolbarListActivity implements
     private Player mUserPlayer;
 
 
-
-
-    public static void start(final Activity activity) {
-        activity.startActivity(new IntentBuilder(activity).build());
-    }
 
 
     private void createListItems() {
@@ -171,7 +166,7 @@ public class RankingsActivity extends BaseToolbarListActivity implements
     @Override
     public void onClick(final RankingItemView v) {
         final Player player = v.getPlayer();
-        PlayerActivity.start(this, player);
+        new PlayerActivity.IntentBuilder(this, player).start(this);
     }
 
 
@@ -180,8 +175,8 @@ public class RankingsActivity extends BaseToolbarListActivity implements
         super.onCreate(savedInstanceState);
 
         final Intent intent = getIntent();
-        if (intent != null && intent.getBooleanExtra(EXTRA_IS_FROM_RANKINGS_UPDATE, false)) {
-            intent.putExtra(EXTRA_IS_FROM_RANKINGS_UPDATE, false);
+        if (intent != null && intent.getBooleanExtra(EXTRA_IS_FROM_RANKINGS_UPDATE_NOTIFICATION, false)) {
+            intent.putExtra(EXTRA_IS_FROM_RANKINGS_UPDATE_NOTIFICATION, false);
             Settings.Region.set(Settings.User.Region);
             NetworkCache.clear();
         }
@@ -350,12 +345,14 @@ public class RankingsActivity extends BaseToolbarListActivity implements
 
         public IntentBuilder(final Context context) {
             super(context, RankingsActivity.class);
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
 
 
-        public IntentBuilder isFromRankingsUpdate() {
-            mIntent.putExtra(EXTRA_IS_FROM_RANKINGS_UPDATE, true);
+        public IntentBuilder isFromRankingsUpdateNotification() {
+            mIntent.putExtra(EXTRA_IS_FROM_RANKINGS_UPDATE_NOTIFICATION, true);
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             return this;
         }
 

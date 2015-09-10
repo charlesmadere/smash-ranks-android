@@ -164,28 +164,28 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
         switch (menuItem.getItemId()) {
             case R.id.navigation_view_menu_about:
                 if (!(this instanceof AboutActivity)) {
-                    AboutActivity.start(this);
+                    new AboutActivity.IntentBuilder(this).start(this);
                     handled = true;
                 }
                 break;
 
             case R.id.navigation_view_menu_rankings:
                 if (!(this instanceof RankingsActivity)) {
-                    RankingsActivity.start(this);
+                    new RankingsActivity.IntentBuilder(this).start(this);
                     handled = true;
                 }
                 break;
 
             case R.id.navigation_view_menu_settings:
                 if (!(this instanceof SettingsActivity)) {
-                    SettingsActivity.start(this);
+                    new SettingsActivity.IntentBuilder(this).start(this);
                     handled = true;
                 }
                 break;
 
             case R.id.navigation_view_menu_tournaments:
                 if (!(this instanceof TournamentActivity)) {
-                    TournamentsActivity.start(this);
+                    new TournamentsActivity.IntentBuilder(this).start(this);
                     handled = true;
                 }
                 break;

@@ -1,7 +1,7 @@
 package com.garpr.android.activities;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -69,13 +69,6 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     private Result mShowing;
 
 
-
-
-    public static void start(final Activity activity, final Player player) {
-        final Intent intent = new Intent(activity, PlayerActivity.class);
-        intent.putExtra(EXTRA_PLAYER, player);
-        activity.startActivity(intent);
-    }
 
 
     private void createListItems() {
@@ -183,14 +176,14 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     @Override
     public void onClick(final PlayerItemView v) {
         final Player opponent = v.getPlayer();
-        HeadToHeadActivity.start(this, mPlayer, opponent);
+        new HeadToHeadActivity.IntentBuilder(this, mPlayer, opponent).start(this);
     }
 
 
     @Override
     public void onClick(final TournamentSeparatorView v) {
         final Tournament tournament = v.getTournament();
-        TournamentActivity.start(this, tournament);
+        new TournamentActivity.IntentBuilder(this, tournament).start(this);
     }
 
 
@@ -341,7 +334,7 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     @Override
     public void onRegionChanged(final Region region) {
         super.onRegionChanged(region);
-        RankingsActivity.start(this);
+        finish();
     }
 
 
@@ -465,6 +458,18 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     }
 
 
+
+
+    public static class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context, final Player player) {
+            super(context, PlayerActivity.class);
+            mIntent.putExtra(EXTRA_PLAYER, player);
+        }
+
+
+    }
 
 
     private static final class ListItem implements SpecialFilterable {

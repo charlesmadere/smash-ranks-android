@@ -1,7 +1,6 @@
 package com.garpr.android.activities;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import com.garpr.android.models.BaseDateWrapper;
 import com.garpr.android.models.HeadToHeadBundle;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Player;
+import com.garpr.android.models.Region;
 import com.garpr.android.models.Result;
 import com.garpr.android.models.Tournament;
 import com.garpr.android.views.MatchResultsItemView;
@@ -62,14 +62,6 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
     private Result mShowing;
 
 
-
-
-    public static void start(final Activity activity, final Player player, final Player opponent) {
-        final Intent intent = new Intent(activity, HeadToHeadActivity.class);
-        intent.putExtra(EXTRA_PLAYER, player);
-        intent.putExtra(EXTRA_OPPONENT, opponent);
-        activity.startActivity(intent);
-    }
 
 
     @SuppressWarnings("unchecked")
@@ -184,7 +176,7 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
     @Override
     public void onClick(final TournamentItemView v) {
         final Tournament tournament = v.getTournament();
-        TournamentActivity.start(this, tournament);
+        new TournamentActivity.IntentBuilder(this, tournament).start(this);
     }
 
 
@@ -228,11 +220,11 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
                 break;
 
             case R.id.activity_head_to_head_menu_view_player_one:
-                PlayerActivity.start(this, mPlayer);
+                new PlayerActivity.IntentBuilder(this, mPlayer).start(this);
                 break;
 
             case R.id.activity_head_to_head_menu_view_player_two:
-                PlayerActivity.start(this, mOpponent);
+                new PlayerActivity.IntentBuilder(this, mOpponent).start(this);
                 break;
 
             default:
@@ -276,6 +268,13 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
             mPulled = true;
             fetchMatches();
         }
+    }
+
+
+    @Override
+    protected void onRegionChanged(final Region region) {
+        super.onRegionChanged(region);
+        finish();
     }
 
 
@@ -363,6 +362,19 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
     }
 
 
+
+
+    public static class IntentBuilder extends BaseActivity.IntentBuilder {
+
+
+        public IntentBuilder(final Context context, final Player player, final Player opponent) {
+            super(context, HeadToHeadActivity.class);
+            mIntent.putExtra(EXTRA_PLAYER, player);
+            mIntent.putExtra(EXTRA_OPPONENT, opponent);
+        }
+
+
+    }
 
 
     private static final class ListItem implements MonthlyComparable {
