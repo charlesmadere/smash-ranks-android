@@ -54,7 +54,7 @@ public class LogMessage implements Parcelable {
 
     private LogMessage(final Parcel source) {
         mId = source.readInt();
-        mPriority = source.readParcelable(Priority.class.getClassLoader());
+        mPriority = Priority.values()[source.readInt()];
         mMessage = source.readString();
         mStacktrace = source.readString();
         mTag = source.readString();
@@ -194,7 +194,7 @@ public class LogMessage implements Parcelable {
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeInt(mId);
-        dest.writeParcelable(mPriority, flags);
+        dest.writeInt(mPriority.ordinal());
         dest.writeString(mMessage);
         dest.writeString(mStacktrace);
         dest.writeString(mTag);
@@ -218,7 +218,7 @@ public class LogMessage implements Parcelable {
 
 
 
-    public enum Priority implements Parcelable {
+    public enum Priority {
 
 
         DEBUG(Log.DEBUG, R.color.white),
@@ -244,39 +244,6 @@ public class LogMessage implements Parcelable {
         public int getCode() {
             return mCode;
         }
-
-
-        /*
-         * Code necessary for the Android Parcelable interface is below. Read more here:
-         * https://developer.android.com/intl/es/reference/android/os/Parcelable.html
-         */
-
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-
-        @Override
-        public void writeToParcel(final Parcel dest, final int flags) {
-            dest.writeInt(ordinal());
-        }
-
-
-        public static final Creator<Priority> CREATOR = new Creator<Priority>() {
-            @Override
-            public Priority createFromParcel(final Parcel source) {
-                final int ordinal = source.readInt();
-                return values()[ordinal];
-            }
-
-
-            @Override
-            public Priority[] newArray(final int size) {
-                return new Priority[size];
-            }
-        };
 
 
     }
