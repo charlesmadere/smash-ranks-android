@@ -22,6 +22,14 @@
         <item name="colorAccent">@color/indigo_bright</item>
     </style>
 
+    <style name="base_navigation_view_theme" parent="app_theme">
+        <item name="colorPrimary">@color/white</item>
+    </style>
+
+    <style name="navigation_view_theme" parent="base_navigation_view_theme">
+
+    </style>
+
     <style name="toolbar_theme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
     </style>
