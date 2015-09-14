@@ -224,12 +224,12 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
     protected void onResume() {
         super.onResume();
 
+        final Menu menu = mNavigationView.getMenu();
         final int selectedNavigationItemId = getSelectedNavigationItemId();
 
-        if (selectedNavigationItemId != 0) {
-            final Menu menu = mNavigationView.getMenu();
-            final MenuItem navigationItem = menu.findItem(selectedNavigationItemId);
-            navigationItem.setChecked(true);
+        for (int i = 0; i < menu.size(); ++i) {
+            final MenuItem mi = menu.getItem(i);
+            mi.setChecked(mi.getItemId() == selectedNavigationItemId);
         }
     }
 
