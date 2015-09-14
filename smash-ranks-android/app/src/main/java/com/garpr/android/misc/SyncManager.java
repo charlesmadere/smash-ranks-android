@@ -30,6 +30,43 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
     }
 
 
+    public static int checkForUpdate(final Heartbeat heartbeat) {
+        Console.d(TAG, "Running GcmNetworkTask " + printConfigurationString());
+
+        if (Settings.Sync.IsWifiNecessary.get()) {
+            final Context context = App.getContext();
+            final ConnectivityManager cm = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (ConnectivityManagerCompat.isActiveNetworkMetered(cm)) {
+                Console.d(TAG, "Rescheduling GcmNetworkTask, we're on a metered network");
+                return GcmNetworkManager.RESULT_RESCHEDULE;
+            }
+        }
+
+        Rankings.checkForUpdates(new Response<Rankings.Result>(TAG, heartbeat) {
+            @Override
+            public void error(final Exception e) {
+                Console.e(TAG, "Error checking for rankings updates", e);
+            }
+
+
+            @Override
+            public void success(final Rankings.Result result) {
+                if (result == Rankings.Result.UPDATE_AVAILABLE) {
+                    Console.d(TAG, "A new roster is available");
+                    NotificationManager.showRankingsUpdated();
+                } else {
+                    Console.d(TAG, "No new roster available");
+                }
+
+                Settings.Sync.LastDate.set(System.currentTimeMillis());
+            }
+        });
+
+        return GcmNetworkManager.RESULT_SUCCESS;
+    }
+
+
     public static void schedule() {
         if (!Utils.googlePlayServicesAreAvailable()) {
             Console.w(TAG, "Failed to schedule GcmNetworkTask because Google Play Services "
@@ -68,39 +105,7 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
 
     @Override
     public int onRunTask(final TaskParams taskParams) {
-        Console.d(TAG, "Running GcmNetworkTask " + printConfigurationString());
-
-        if (Settings.Sync.IsWifiNecessary.get()) {
-            final Context context = App.getContext();
-            final ConnectivityManager cm = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (ConnectivityManagerCompat.isActiveNetworkMetered(cm)) {
-                Console.d(TAG, "Rescheduling GcmNetworkTask, we're on a metered network");
-                return GcmNetworkManager.RESULT_RESCHEDULE;
-            }
-        }
-
-        Rankings.checkForUpdates(new Response<Rankings.Result>(TAG, this) {
-            @Override
-            public void error(final Exception e) {
-                Console.e(TAG, "Error checking for rankings updates", e);
-            }
-
-
-            @Override
-            public void success(final Rankings.Result result) {
-                if (result == Rankings.Result.UPDATE_AVAILABLE) {
-                    Console.d(TAG, "A new roster is available");
-                    NotificationManager.showRankingsUpdated();
-                } else {
-                    Console.d(TAG, "No new roster available");
-                }
-
-                Settings.Sync.LastDate.set(System.currentTimeMillis());
-            }
-        });
-
-        return GcmNetworkManager.RESULT_SUCCESS;
+        return checkForUpdate(this);
     }
 
 

@@ -58,8 +58,13 @@
                         android:id="@+id/activity_settings_sync_status"
                         layout="@layout/view_preference" />
                     <TextView
-                        android:id="@+id/activity_settings_generate_notification"
-                        android:text="@string/generate_notification"
+                        android:id="@+id/activity_settings_force_sync"
+                        android:text="@string/force_sync"
+                        android:visibility="gone"
+                        style="@style/settings_container.title" />
+                    <TextView
+                        android:id="@+id/activity_settings_force_notification"
+                        android:text="@string/force_notification"
                         android:visibility="gone"
                         style="@style/settings_container.title" />
                 </LinearLayout>

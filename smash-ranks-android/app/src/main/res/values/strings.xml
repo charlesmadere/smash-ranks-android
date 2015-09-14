@@ -40,13 +40,14 @@
     <string name="error_fetching_tournament">Error fetching tournament!</string>
     <string name="error_fetching_tournaments">Error fetching tournaments!</string>
     <string name="fetching_regions">Fetching regions…</string>
+    <string name="force_notification">Force notification</string>
+    <string name="force_sync">Force sync</string>
     <string name="gar_pr">GAR PR</string>
     <string name="gar_pr_welcome_text">GAR PR is a ranking system and tournament results archive
         for Super Smash Brothers Melee tournaments. Watch players rise and fall as the game
         progresses. <![CDATA[<i>Where do you stand?</i>]]></string>
     <string name="gar_pr_x">GAR PR: %s</string>
     <string name="general">General</string>
-    <string name="generate_notification">Generate notification</string>
     <string name="go">Go</string>
     <string name="google_play_services_unavailable">Google Play services unavailable</string>
     <string name="go_">Go!</string>
@@ -95,6 +96,7 @@
     <string name="quit">Quit</string>
     <string name="ranking">Ranking</string>
     <string name="rankings">Rankings</string>
+    <string name="rankings_result_x">Rankings result: %s</string>
     <string name="x_rankings_have_been_updated">%s rankings have been updated!</string>
     <string name="rank_order">Rank Order</string>
     <string name="rank_x">Rank %d</string>

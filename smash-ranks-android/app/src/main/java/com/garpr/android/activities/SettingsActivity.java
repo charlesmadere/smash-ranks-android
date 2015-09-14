@@ -46,7 +46,8 @@ public class SettingsActivity extends BaseToolbarActivity {
     private PreferenceView mRegion;
     private PreferenceView mSyncStatus;
     private PreferenceView mVersion;
-    private TextView mGenerateNotification;
+    private TextView mForceNotification;
+    private TextView mForceSync;
     private TextView mGitHub;
     private TextView mRateApp;
     private TextView mServer;
@@ -58,7 +59,8 @@ public class SettingsActivity extends BaseToolbarActivity {
     private void findViews() {
         mAuthor = (PreferenceView) findViewById(R.id.activity_settings_author);
         mConsole = (PreferenceView) findViewById(R.id.activity_settings_console);
-        mGenerateNotification = (TextView) findViewById(R.id.activity_settings_generate_notification);
+        mForceNotification = (TextView) findViewById(R.id.activity_settings_force_notification);
+        mForceSync = (TextView) findViewById(R.id.activity_settings_force_sync);
         mGitHub = (TextView) findViewById(R.id.activity_settings_github);
         mGooglePlayServicesError = (PreferenceView) findViewById(R.id.activity_settings_google_play_services_error);
         mNetworkCache = (PreferenceView) findViewById(R.id.activity_settings_network_cache);
@@ -308,11 +310,19 @@ public class SettingsActivity extends BaseToolbarActivity {
         }
 
         if (BuildConfig.DEBUG) {
-            mGenerateNotification.setVisibility(View.VISIBLE);
-            mGenerateNotification.setOnClickListener(new View.OnClickListener() {
+            mForceNotification.setVisibility(View.VISIBLE);
+            mForceNotification.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     NotificationManager.showRankingsUpdated();
+                }
+            });
+
+            mForceSync.setVisibility(View.VISIBLE);
+            mForceSync.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    SyncManager.checkForUpdate(SettingsActivity.this);
                 }
             });
         }
