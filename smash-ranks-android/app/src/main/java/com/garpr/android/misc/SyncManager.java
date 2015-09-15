@@ -25,7 +25,8 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
 
 
     public static void cancel() {
-        GcmNetworkManager.getInstance(App.getContext()).cancelAllTasks(SyncManager.class);
+        final Context context = App.get();
+        GcmNetworkManager.getInstance(context).cancelAllTasks(SyncManager.class);
         Settings.Sync.IsScheduled.set(false);
     }
 
@@ -34,7 +35,7 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
         Console.d(TAG, "Running GcmNetworkTask " + printConfigurationString());
 
         if (Settings.Sync.IsWifiNecessary.get()) {
-            final Context context = App.getContext();
+            final Context context = App.get();
             final ConnectivityManager cm = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
             if (ConnectivityManagerCompat.isActiveNetworkMetered(cm)) {
@@ -88,7 +89,7 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
             builder.setPeriod(60L * 60L * 24L);
         }
 
-        final Context context = App.getContext();
+        final Context context = App.get();
         final PeriodicTask task = builder.build();
         GcmNetworkManager.getInstance(context).schedule(task);
         Settings.Sync.IsScheduled.set(true);

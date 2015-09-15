@@ -121,7 +121,7 @@ public class TournamentBundle implements Parcelable {
 
     @Override
     public String toString() {
-        final Context context = App.getContext();
+        final Context context = App.get();
         return context.getString(R.string.w_on_x_has_y_players_and_z_matches, mTournament.getName(),
                 mTournament.getDateWrapper().getMmDdYy(), mPlayers.size(), mMatches.size());
     }

@@ -23,7 +23,7 @@ public final class Console {
 
 
     static {
-        final Context context = App.getContext();
+        final Context context = App.get();
         final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         final boolean isLowRamDevice = ActivityManagerCompat.isLowRamDevice(activityManager);
 

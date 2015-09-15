@@ -164,7 +164,7 @@ public class LogMessage implements Parcelable {
 
     @Override
     public String toString() {
-        final Context context = App.getContext();
+        final Context context = App.get();
         return context.getString(R.string.x_colon_y, mTag, mMessage);
     }
 
@@ -232,7 +232,7 @@ public class LogMessage implements Parcelable {
 
         Priority(final int code, final int color) {
             mCode = code;
-            mColor = ContextCompat.getColor(App.getContext(), color);
+            mColor = ContextCompat.getColor(App.get(), color);
         }
 
 

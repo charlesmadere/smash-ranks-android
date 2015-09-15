@@ -471,7 +471,7 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
                     break;
 
                 case RESULTS:
-                    final Context context = App.getContext();
+                    final Context context = App.get();
                     title = context.getString(R.string.x_em_dash_y, mResults[0], mResults[1]);
                     break;
 

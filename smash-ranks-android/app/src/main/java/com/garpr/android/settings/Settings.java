@@ -67,7 +67,8 @@ public final class Settings {
             }
         }
 
-        delete(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+        final Context context = App.get();
+        delete(PreferenceManager.getDefaultSharedPreferences(context));
     }
 
 
@@ -82,7 +83,7 @@ public final class Settings {
 
 
     public static SharedPreferences get(final String name) {
-        final Context context = App.getContext();
+        final Context context = App.get();
         return context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 

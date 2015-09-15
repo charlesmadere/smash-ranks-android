@@ -2,7 +2,6 @@ package com.garpr.android;
 
 
 import android.app.Application;
-import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
@@ -25,7 +24,7 @@ public final class App extends Application {
 
     private static final String TAG = "App";
 
-    private static Context sContext;
+    private static App sInstance;
     private static RequestQueue sRequestQueue;
 
 
@@ -36,15 +35,15 @@ public final class App extends Application {
     }
 
 
-    public static Context getContext() {
-        return sContext;
+    public static App get() {
+        return sInstance;
     }
 
 
     private static PackageInfo getPackageInfo() {
         try {
-            final String packageName = sContext.getPackageName();
-            return sContext.getPackageManager().getPackageInfo(packageName, 0);
+            final String packageName = sInstance.getPackageName();
+            return sInstance.getPackageManager().getPackageInfo(packageName, 0);
         } catch (final PackageManager.NameNotFoundException e) {
             // this should never happen
             throw new RuntimeException(e);
@@ -70,10 +69,10 @@ public final class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sContext = getApplicationContext();
-        Fabric.with(sContext, new Crashlytics());
+        sInstance = this;
+        Fabric.with(this, new Crashlytics());
         CrashlyticsManager.setBool(Constants.DEBUG, BuildConfig.DEBUG);
-        sRequestQueue = Volley.newRequestQueue(sContext, new OkHttpStack());
+        sRequestQueue = Volley.newRequestQueue(this, new OkHttpStack());
 
         final int currentVersion = getVersionCode();
         final int lastVersion = Settings.LastVersion.get();
