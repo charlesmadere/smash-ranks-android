@@ -16,13 +16,22 @@ import android.widget.TextView;
 import com.garpr.android.R;
 import com.garpr.android.models.Tournament;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class TournamentItemView extends FrameLayout {
 
 
-    private LinearLayout mContainer;
-    private TextView mDate;
-    private TextView mName;
+    @Bind(R.id.view_tournament_item_container)
+    LinearLayout mContainer;
+
+    @Bind(R.id.view_tournament_item_date)
+    TextView mDate;
+
+    @Bind(R.id.view_tournament_item_name)
+    TextView mName;
+
     private Tournament mTournament;
     private ViewHolder mViewHolder;
 
@@ -75,9 +84,7 @@ public class TournamentItemView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mContainer = (LinearLayout) findViewById(R.id.view_tournament_item_container);
-        mDate = (TextView) findViewById(R.id.view_tournament_item_date);
-        mName = (TextView) findViewById(R.id.view_tournament_item_name);
+        ButterKnife.bind(this);
     }
 
 

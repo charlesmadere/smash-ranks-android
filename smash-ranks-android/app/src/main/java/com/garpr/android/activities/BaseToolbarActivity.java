@@ -14,28 +14,29 @@ import android.view.View;
 
 import com.garpr.android.R;
 
+import butterknife.Bind;
+
 
 public abstract class BaseToolbarActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
 
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+
+    @Bind(R.id.navigation_view)
+    NavigationView mNavigationView;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
-    private Toolbar mToolbar;
 
 
 
 
     protected void closeDrawer() {
         mDrawerLayout.closeDrawer(mNavigationView);
-    }
-
-
-    private void findViews() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
     }
 
 
@@ -127,8 +128,6 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findViews();
-
         setSupportActionBar(mToolbar);
         initializeNavigationDrawer();
     }

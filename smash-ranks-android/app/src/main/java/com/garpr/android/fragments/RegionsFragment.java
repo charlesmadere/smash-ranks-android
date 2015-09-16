@@ -3,7 +3,6 @@ package com.garpr.android.fragments;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -21,6 +20,8 @@ import com.garpr.android.views.SimpleSeparatorView;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import butterknife.Bind;
+
 
 public abstract class RegionsFragment extends BaseListFragment implements
         CheckableItemView.OnClickListener {
@@ -30,10 +31,12 @@ public abstract class RegionsFragment extends BaseListFragment implements
     private static final String KEY_SELECTED_REGION = "KEY_SELECTED_REGION";
     private static final String TAG = "RegionsFragment";
 
+    @Bind(R.id.fragment_base_list_frame)
+    FrameLayout mFrame;
+
     private ArrayList<ListItem> mListItems;
     private ArrayList<Region> mRegions;
     private boolean mPulled;
-    protected FrameLayout mFrame;
     protected Region mSelectedRegion;
 
 
@@ -92,14 +95,6 @@ public abstract class RegionsFragment extends BaseListFragment implements
         };
 
         Regions.get(response, mPulled);
-    }
-
-
-    @Override
-    protected void findViews() {
-        super.findViews();
-        final View view = getView();
-        mFrame = (FrameLayout) view.findViewById(R.id.fragment_regions_list_frame);
     }
 
 

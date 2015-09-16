@@ -147,7 +147,7 @@ public class Match implements MonthlyComparable, Parcelable {
 
     @Override
     public String toString() {
-        final Context context = App.getContext();
+        final Context context = App.get();
         return context.getString(R.string.x_vs_y, mWinner.getName(), mLoser.getName());
     }
 

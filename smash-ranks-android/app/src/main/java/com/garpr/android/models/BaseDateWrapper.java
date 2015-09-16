@@ -57,7 +57,7 @@ public abstract class BaseDateWrapper implements MonthlyComparable, Parcelable {
         mMonth = MONTH_FORMATTER.format(mDate);
         mYear = YEAR_FORMATTER.format(mDate);
 
-        final Context context = App.getContext();
+        final Context context = App.get();
         mMonthAndYear = context.getString(R.string.x_y, mMonth, mYear);
     }
 

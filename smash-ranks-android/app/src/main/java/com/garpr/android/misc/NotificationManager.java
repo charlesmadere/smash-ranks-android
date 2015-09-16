@@ -27,13 +27,13 @@ public final class NotificationManager {
 
 
     public static void clear() {
-        final Context context = App.getContext();
+        final Context context = App.get();
         NotificationManagerCompat.from(context).cancelAll();
     }
 
 
     public static void showRankingsUpdated() {
-        final Context context = App.getContext();
+        final Context context = App.get();
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
                 .setCategory(NotificationCompat.CATEGORY_SOCIAL)

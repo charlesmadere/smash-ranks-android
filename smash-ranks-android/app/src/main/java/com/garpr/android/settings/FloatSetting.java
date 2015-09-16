@@ -19,6 +19,12 @@ public final class FloatSetting extends Setting<Float> {
 
 
     @Override
+    public boolean exists() {
+        return super.exists() && get() != Float.NaN;
+    }
+
+
+    @Override
     public Float get() {
         return readSharedPreferences().getFloat(mKey, mDefaultValue);
     }

@@ -17,13 +17,22 @@ import android.widget.TextView;
 
 import com.garpr.android.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class CheckableItemView extends FrameLayout implements Checkable {
 
 
-    private LinearLayout mContainer;
-    private RadioButton mRadio;
-    private TextView mText;
+    @Bind(R.id.view_checkable_item_container)
+    LinearLayout mContainer;
+
+    @Bind(R.id.view_checkable_item_radio)
+    RadioButton mRadio;
+
+    @Bind(R.id.view_checkable_item_text)
+    TextView mText;
+
     private ViewHolder mViewHolder;
 
 
@@ -71,9 +80,7 @@ public class CheckableItemView extends FrameLayout implements Checkable {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mContainer = (LinearLayout) findViewById(R.id.view_checkable_item_container);
-        mRadio = (RadioButton) findViewById(R.id.view_checkable_item_radio);
-        mText = (TextView) findViewById(R.id.view_checkable_item_text);
+        ButterKnife.bind(this);
     }
 
 

@@ -13,12 +13,18 @@ import android.widget.TextView;
 
 import com.garpr.android.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class PreferenceView extends LinearLayout {
 
 
-    private TextView mSubTitle;
-    private TextView mTitle;
+    @Bind(R.id.view_preference_sub_title)
+    TextView mSubTitle;
+
+    @Bind(R.id.view_preference_title)
+    TextView mTitle;
 
 
 
@@ -55,8 +61,7 @@ public class PreferenceView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mSubTitle = (TextView) findViewById(R.id.view_preference_sub_title);
-        mTitle = (TextView) findViewById(R.id.view_preference_title);
+        ButterKnife.bind(this);
     }
 
 

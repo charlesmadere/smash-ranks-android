@@ -22,6 +22,12 @@ public final class RegionSetting extends Setting<Region> {
 
 
     @Override
+    public boolean exists() {
+        return super.exists() && mJSONObjectSetting.exists();
+    }
+
+
+    @Override
     public Region get() {
         final JSONObject json = mJSONObjectSetting.get();
 

@@ -18,7 +18,7 @@
                 android:adjustViewBounds="true"
                 android:alpha="0"
                 android:contentDescription="@string/gar_pr"
-                android:id="@+id/fragment_welcome_orb"
+                android:id="@+id/fragment_welcome_controller"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/root_padding_triple"

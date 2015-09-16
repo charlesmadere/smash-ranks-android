@@ -14,6 +14,9 @@ import com.garpr.android.models.Region;
 import com.garpr.android.settings.RegionSetting;
 import com.garpr.android.settings.Settings;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class NavigationHeaderView extends RelativeLayout implements
         RegionSetting.OnSettingChangedListener<Region> {
@@ -21,8 +24,11 @@ public class NavigationHeaderView extends RelativeLayout implements
 
     private static final String TAG = "NavigationHeaderView";
 
-    private TextView mPlayer;
-    private TextView mRegion;
+    @Bind(R.id.navigation_header_view_player)
+    TextView mPlayer;
+
+    @Bind(R.id.navigation_header_view_region)
+    TextView mRegion;
 
 
 
@@ -45,12 +51,6 @@ public class NavigationHeaderView extends RelativeLayout implements
     }
 
 
-    private void findViews() {
-        mPlayer = (TextView) findViewById(R.id.navigation_header_view_player);
-        mRegion = (TextView) findViewById(R.id.navigation_header_view_region);
-    }
-
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -68,7 +68,7 @@ public class NavigationHeaderView extends RelativeLayout implements
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        findViews();
+        ButterKnife.bind(this);
         updateRegion();
         updatePlayer();
     }

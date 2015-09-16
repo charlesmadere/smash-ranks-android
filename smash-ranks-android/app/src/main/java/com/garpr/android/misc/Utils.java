@@ -83,7 +83,7 @@ public final class Utils {
 
 
     public static int googlePlayServicesConnectionStatus() {
-        final Context context = App.getContext();
+        final Context context = App.get();
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
     }
 

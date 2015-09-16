@@ -15,13 +15,17 @@ import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
 import com.garpr.android.views.CheckableItemView;
 
+import butterknife.Bind;
+
 
 public class FloatingActionButtonRegionsFragment extends RegionsFragment {
 
 
     private static final String TAG = "FloatingActionButtonRegionsFragment";
 
-    private FloatingActionButton mSave;
+    @Bind(R.id.fragment_regions_save)
+    FloatingActionButton mSave;
+
     private SaveListener mListener;
 
 
@@ -29,15 +33,6 @@ public class FloatingActionButtonRegionsFragment extends RegionsFragment {
 
     public static FloatingActionButtonRegionsFragment create() {
         return new FloatingActionButtonRegionsFragment();
-    }
-
-
-    @Override
-    protected void findViews() {
-        super.findViews();
-
-        final View view = getView();
-        mSave = (FloatingActionButton) view.findViewById(R.id.fragment_regions_save);
     }
 
 

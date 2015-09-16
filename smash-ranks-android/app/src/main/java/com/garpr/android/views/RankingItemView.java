@@ -18,15 +18,26 @@ import com.garpr.android.models.Player;
 
 import java.text.NumberFormat;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class RankingItemView extends FrameLayout {
 
 
-    private LinearLayout mContainer;
+    @Bind(R.id.view_ranking_item_container)
+    LinearLayout mContainer;
+
+    @Bind(R.id.view_ranking_item_name)
+    TextView mName;
+
+    @Bind(R.id.view_ranking_item_rank)
+    TextView mRank;
+
+    @Bind(R.id.view_ranking_item_rating)
+    TextView mRating;
+
     private Player mPlayer;
-    private TextView mName;
-    private TextView mRank;
-    private TextView mRating;
     private ViewHolder mViewHolder;
 
 
@@ -73,10 +84,7 @@ public class RankingItemView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mContainer = (LinearLayout) findViewById(R.id.view_ranking_item_container);
-        mName = (TextView) findViewById(R.id.view_ranking_item_name);
-        mRank = (TextView) findViewById(R.id.view_ranking_item_rank);
-        mRating = (TextView) findViewById(R.id.view_ranking_item_rating);
+        ButterKnife.bind(this);
     }
 
 

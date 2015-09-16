@@ -10,11 +10,15 @@ import android.widget.CheckBox;
 import com.garpr.android.R;
 import com.garpr.android.settings.BooleanSetting;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class CheckPreferenceView extends BooleanSettingPreferenceView {
 
 
-    private CheckBox mCheckBox;
+    @Bind(R.id.view_check_preference_check)
+    CheckBox mCheckBox;
 
 
 
@@ -40,14 +44,15 @@ public class CheckPreferenceView extends BooleanSettingPreferenceView {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mCheckBox = (CheckBox) findViewById(R.id.view_check_preference_check);
+        ButterKnife.bind(this);
     }
 
 
     @Override
     public void set(final BooleanSetting setting, final int titleText,
-            final int subTitleEnabledText, final int subTitleDisabledText) {
-        super.set(setting, titleText, subTitleEnabledText, subTitleDisabledText);
+            final int subTitleEnabledText, final int subTitleDisabledText,
+            final OnToggleListener toggleListener) {
+        super.set(setting, titleText, subTitleEnabledText, subTitleDisabledText, toggleListener);
         mCheckBox.setChecked(isChecked());
     }
 

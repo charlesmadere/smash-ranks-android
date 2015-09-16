@@ -23,6 +23,8 @@ import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
 import com.garpr.android.views.NonSwipeableViewPager;
 
+import butterknife.Bind;
+
 
 public class OnboardingActivity extends BaseActivity implements PlayersFragment.Listeners,
         ToolbarRegionsFragment.NextListener, WelcomeFragment.Listener {
@@ -36,17 +38,14 @@ public class OnboardingActivity extends BaseActivity implements PlayersFragment.
     private static final int ONBOARDING_FRAGMENT_WELCOME = 0;
     private static final String KEY_SELECTED_REGION = "KEY_SELECTED_REGION";
 
-    private NonSwipeableViewPager mPager;
+    @Bind(R.id.activity_onboarding_pager)
+    NonSwipeableViewPager mPager;
+
     private PlayersFragment mPlayersFragment;
     private Region mSelectedRegion;
     private RegionsFragment mRegionsFragment;
 
 
-
-
-    private void findViews() {
-        mPager = (NonSwipeableViewPager) findViewById(R.id.activity_onboarding_pager);
-    }
 
 
     private void finishOnboarding(final boolean savePlayer) {
@@ -129,7 +128,6 @@ public class OnboardingActivity extends BaseActivity implements PlayersFragment.
             new RankingsActivity.IntentBuilder(this).start(this);
             finish();
         } else {
-            findViews();
             mPager.setAdapter(new OnboardingFragmentAdapter());
         }
     }

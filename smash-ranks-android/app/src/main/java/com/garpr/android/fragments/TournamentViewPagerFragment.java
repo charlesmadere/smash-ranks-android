@@ -3,10 +3,11 @@ package com.garpr.android.fragments;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.garpr.android.R;
 import com.garpr.android.models.TournamentBundle;
+
+import butterknife.Bind;
 
 
 public abstract class TournamentViewPagerFragment extends BaseFragment {
@@ -14,7 +15,9 @@ public abstract class TournamentViewPagerFragment extends BaseFragment {
 
     private static final String KEY_BUNDLE = "KEY_BUNDLE";
 
-    private RecyclerView mRecyclerView;
+    @Bind(R.id.fragment_tournament_view_pager_list)
+    RecyclerView mRecyclerView;
+
     private TournamentBundle mBundle;
 
 
@@ -31,12 +34,6 @@ public abstract class TournamentViewPagerFragment extends BaseFragment {
 
 
     protected abstract RecyclerView.Adapter createAdapter(final TournamentBundle bundle);
-
-
-    private void findViews() {
-        final View view = getView();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_tournament_view_pager_list);
-    }
 
 
     @Override
@@ -59,7 +56,6 @@ public abstract class TournamentViewPagerFragment extends BaseFragment {
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         readArguments();
-        findViews();
         prepareList();
     }
 

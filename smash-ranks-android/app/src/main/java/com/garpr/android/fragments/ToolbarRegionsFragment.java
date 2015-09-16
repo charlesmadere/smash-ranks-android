@@ -6,10 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.garpr.android.R;
 import com.garpr.android.views.CheckableItemView;
+
+import butterknife.Bind;
 
 
 public class ToolbarRegionsFragment extends RegionsFragment implements
@@ -18,9 +19,11 @@ public class ToolbarRegionsFragment extends RegionsFragment implements
 
     private static final String TAG = "ToolbarRegionsFragment";
 
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     private MenuItem mNext;
     private NextListener mListener;
-    private Toolbar mToolbar;
 
 
 
@@ -35,15 +38,6 @@ public class ToolbarRegionsFragment extends RegionsFragment implements
             final Menu menu = mToolbar.getMenu();
             mNext = menu.findItem(R.id.fragment_toolbar_regions_menu_next);
         }
-    }
-
-
-    @Override
-    protected void findViews() {
-        super.findViews();
-
-        final View view = getView();
-        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
     }
 
 

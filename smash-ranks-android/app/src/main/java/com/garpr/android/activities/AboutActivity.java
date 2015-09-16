@@ -11,20 +11,18 @@ import android.webkit.WebView;
 import com.garpr.android.R;
 import com.garpr.android.misc.Constants;
 
+import butterknife.Bind;
+
 
 public class AboutActivity extends BaseToolbarActivity {
 
 
     private static final String TAG = "AboutActivity";
 
-    private WebView mWebView;
+    @Bind(R.id.activity_about_webview)
+    WebView mWebView;
 
 
-
-
-    private void findViews() {
-        mWebView = (WebView) findViewById(R.id.activity_about_webview);
-    }
 
 
     @Override
@@ -48,7 +46,6 @@ public class AboutActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findViews();
         prepareViews();
     }
 

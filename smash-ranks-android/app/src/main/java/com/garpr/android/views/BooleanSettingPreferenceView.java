@@ -52,7 +52,8 @@ public class BooleanSettingPreferenceView extends PreferenceView implements Chec
 
 
     public void set(final BooleanSetting setting, final int titleText,
-            final int subTitleEnabledText, final int subTitleDisabledText) {
+            final int subTitleEnabledText, final int subTitleDisabledText,
+            final OnToggleListener toggleListener) {
         mSetting = setting;
         setTitleText(titleText);
         mSubTitleDisabledText = subTitleDisabledText;
@@ -64,12 +65,17 @@ public class BooleanSettingPreferenceView extends PreferenceView implements Chec
             setSubTitleText(subTitleDisabledText);
         }
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                toggle();
-            }
-        });
+        mToggleListener = toggleListener;
+        if (mToggleListener == null) {
+            setClickable(false);
+        } else {
+            setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    toggle();
+                }
+            });
+        }
     }
 
 

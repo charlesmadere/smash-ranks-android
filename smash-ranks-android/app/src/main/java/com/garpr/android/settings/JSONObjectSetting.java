@@ -22,6 +22,12 @@ public final class JSONObjectSetting extends Setting<JSONObject> {
 
 
     @Override
+    public boolean exists() {
+        return super.exists() && mStringSetting.exists();
+    }
+
+
+    @Override
     public JSONObject get() {
         final String string = mStringSetting.get();
         final JSONObject jsonObject;

@@ -119,7 +119,7 @@ public class HeadToHeadBundle implements Parcelable {
 
     @Override
     public String toString() {
-        final Context context = App.getContext();
+        final Context context = App.get();
         return context.getString(R.string.w_vs_x_wins_losses, mPlayer.getName(),
                 mOpponent.getName(), mWins, mLosses);
     }
