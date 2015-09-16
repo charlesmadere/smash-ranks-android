@@ -31,7 +31,7 @@ public abstract class RegionsFragment extends BaseListFragment implements
     private static final String KEY_SELECTED_REGION = "KEY_SELECTED_REGION";
     private static final String TAG = "RegionsFragment";
 
-    @Bind(R.id.fragment_regions_list_frame)
+    @Bind(R.id.fragment_base_list_frame)
     FrameLayout mFrame;
 
     private ArrayList<ListItem> mListItems;
