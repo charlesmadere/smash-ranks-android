@@ -16,13 +16,20 @@ import com.garpr.android.R;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Player;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class MatchItemView extends FrameLayout {
 
 
+    @Bind(R.id.view_match_item_loser)
+    TextView mLoser;
+
+    @Bind(R.id.view_match_item_winner)
+    TextView mWinner;
+
     private Match mMatch;
-    private TextView mLoser;
-    private TextView mWinner;
     private ViewHolder mViewHolder;
 
 
@@ -68,8 +75,7 @@ public class MatchItemView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mLoser = (TextView) findViewById(R.id.view_match_item_loser);
-        mWinner = (TextView) findViewById(R.id.view_match_item_winner);
+        ButterKnife.bind(this);
     }
 
 

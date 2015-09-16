@@ -10,11 +10,15 @@ import android.util.AttributeSet;
 import com.garpr.android.R;
 import com.garpr.android.settings.BooleanSetting;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class SwitchPreferenceView extends BooleanSettingPreferenceView {
 
 
-    private SwitchCompat mSwitch;
+    @Bind(R.id.view_switch_preference_switch)
+    SwitchCompat mSwitch;
 
 
 
@@ -40,14 +44,15 @@ public class SwitchPreferenceView extends BooleanSettingPreferenceView {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mSwitch = (SwitchCompat) findViewById(R.id.view_switch_preference_switch);
+        ButterKnife.bind(this);
     }
 
 
     @Override
     public void set(final BooleanSetting setting, final int titleText,
-            final int subTitleEnabledText, final int subTitleDisabledText) {
-        super.set(setting, titleText, subTitleEnabledText, subTitleDisabledText);
+            final int subTitleEnabledText, final int subTitleDisabledText,
+            final OnToggleListener toggleListener) {
+        super.set(setting, titleText, subTitleEnabledText, subTitleDisabledText, toggleListener);
         mSwitch.setChecked(isChecked());
     }
 

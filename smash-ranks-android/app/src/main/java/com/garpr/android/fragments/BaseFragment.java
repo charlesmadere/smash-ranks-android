@@ -15,6 +15,8 @@ import com.garpr.android.models.Region;
 import com.garpr.android.settings.RegionSetting;
 import com.garpr.android.settings.Settings;
 
+import butterknife.ButterKnife;
+
 
 public abstract class BaseFragment extends Fragment implements HeartbeatWithUi,
         RegionSetting.OnSettingChangedListener<Region> {
@@ -70,6 +72,7 @@ public abstract class BaseFragment extends Fragment implements HeartbeatWithUi,
             final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(getContentView(), container, false);
+        ButterKnife.bind(this, view);
         mIsAlive = true;
         return view;
     }
@@ -84,6 +87,7 @@ public abstract class BaseFragment extends Fragment implements HeartbeatWithUi,
             Settings.Region.detachListener(this);
         }
 
+        ButterKnife.unbind(this);
         super.onDestroyView();
     }
 

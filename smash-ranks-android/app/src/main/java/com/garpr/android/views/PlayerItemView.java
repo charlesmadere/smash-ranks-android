@@ -15,12 +15,17 @@ import android.widget.TextView;
 import com.garpr.android.R;
 import com.garpr.android.models.Player;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class PlayerItemView extends FrameLayout {
 
 
+    @Bind(R.id.view_player_item_name)
+    TextView mName;
+
     private Player mPlayer;
-    private TextView mName;
     private ViewHolder mViewHolder;
 
 
@@ -71,7 +76,7 @@ public class PlayerItemView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mName = (TextView) findViewById(R.id.view_player_item_name);
+        ButterKnife.bind(this);
     }
 
 

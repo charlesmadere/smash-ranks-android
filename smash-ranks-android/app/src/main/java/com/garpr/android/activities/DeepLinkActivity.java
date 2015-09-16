@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.garpr.android.R;
@@ -24,15 +23,20 @@ import com.garpr.android.settings.Settings;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 
 public class DeepLinkActivity extends BaseActivity {
 
 
     private static final String TAG = "DeepLinkActivity";
 
-    private Button mRetry;
-    private LinearLayout mErrorContainer;
-    private LinearLayout mProgressContainer;
+    @Bind(R.id.activity_deep_link_error_container)
+    LinearLayout mErrorContainer;
+
+    @Bind(R.id.activity_deep_link_progress_container)
+    LinearLayout mProgressContainer;
 
 
 
@@ -161,13 +165,6 @@ public class DeepLinkActivity extends BaseActivity {
     }
 
 
-    private void findViews() {
-        mErrorContainer = (LinearLayout) findViewById(R.id.activity_deep_link_error_container);
-        mProgressContainer = (LinearLayout) findViewById(R.id.activity_deep_link_progress_container);
-        mRetry = (Button) findViewById(R.id.activity_deep_link_retry);
-    }
-
-
     @Override
     public String getActivityName() {
         return TAG;
@@ -183,8 +180,6 @@ public class DeepLinkActivity extends BaseActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findViews();
-        prepareViews();
 
         if (Settings.OnboardingComplete.get()) {
             Console.d(TAG, "Attempting to deep link...");
@@ -199,6 +194,14 @@ public class DeepLinkActivity extends BaseActivity {
             Console.d(TAG, "Deep link cancelled because onboarding is incomplete");
             start(new OnboardingActivity.IntentBuilder(this));
         }
+    }
+
+
+    @OnClick(R.id.activity_deep_link_retry)
+    void onRetryClick() {
+        Console.d(TAG, "Retrying deep link...");
+        showProgress();
+        parseIntent();
     }
 
 
@@ -259,18 +262,6 @@ public class DeepLinkActivity extends BaseActivity {
                 fetchRegionThenTournaments(regionId);
             }
         }
-    }
-
-
-    private void prepareViews() {
-        mRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Console.d(TAG, "Retrying deep link...");
-                showProgress();
-                parseIntent();
-            }
-        });
     }
 
 

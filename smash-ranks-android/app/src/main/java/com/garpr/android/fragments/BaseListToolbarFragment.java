@@ -4,26 +4,20 @@ package com.garpr.android.fragments;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.garpr.android.R;
+
+import butterknife.Bind;
 
 
 public abstract class BaseListToolbarFragment extends BaseListFragment implements
         Toolbar.OnMenuItemClickListener {
 
 
-    private Toolbar mToolbar;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
 
-
-
-    @Override
-    protected void findViews() {
-        super.findViews();
-        final View view = getView();
-        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
-    }
 
 
     @Override

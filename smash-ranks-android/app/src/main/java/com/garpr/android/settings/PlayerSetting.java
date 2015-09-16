@@ -22,6 +22,12 @@ public final class PlayerSetting extends Setting<Player> {
 
 
     @Override
+    public boolean exists() {
+        return super.exists() && mJSONObjectSetting.exists();
+    }
+
+
+    @Override
     public Player get() {
         final JSONObject json = mJSONObjectSetting.get();
 

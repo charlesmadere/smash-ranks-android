@@ -55,6 +55,7 @@
                         android:id="@+id/activity_settings_sync_wifi"
                         layout="@layout/view_check_preference" />
                     <include
+                        android:enabled="false"
                         android:id="@+id/activity_settings_sync_status"
                         layout="@layout/view_preference" />
                     <TextView
@@ -98,12 +99,13 @@
                         android:id="@+id/activity_settings_console"
                         layout="@layout/view_preference" />
                     <include
+                        android:enabled="false"
                         android:id="@+id/activity_settings_version"
                         layout="@layout/view_preference" />
                 </LinearLayout>
                 <ImageButton
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:id="@+id/activity_settings_orb"
+                    android:id="@+id/activity_settings_controller"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/root_padding_double"

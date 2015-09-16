@@ -11,27 +11,29 @@ import android.widget.TextView;
 import com.garpr.android.R;
 import com.garpr.android.views.RefreshLayout;
 
+import butterknife.Bind;
+
 
 public abstract class BaseToolbarListActivity extends BaseToolbarActivity implements
         RefreshLayout.OnRefreshListener {
 
 
+    @Bind(R.id.activity_base_list_error)
+    LinearLayout mErrorView;
+
+    @Bind(R.id.activity_base_list_refresh)
+    RefreshLayout mRefreshLayout;
+
+    @Bind(R.id.activity_base_list_list)
+    RecyclerView mRecyclerView;
+
+    @Bind(R.id.activity_base_list_error_line)
+    TextView mErrorLine;
+
     private boolean mIsLoading;
-    private LinearLayout mErrorView;
     private RecyclerView.Adapter mAdapter;
-    private RefreshLayout mRefreshLayout;
-    private RecyclerView mRecyclerView;
-    private TextView mErrorLine;
 
 
-
-
-    protected void findViews() {
-        mErrorLine = (TextView) findViewById(R.id.activity_base_list_error_line);
-        mErrorView = (LinearLayout) findViewById(R.id.activity_base_list_error);
-        mRecyclerView = (RecyclerView) findViewById(R.id.activity_base_list_list);
-        mRefreshLayout = (RefreshLayout) findViewById(R.id.activity_base_list_refresh);
-    }
 
 
     @Override
@@ -66,7 +68,6 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         readIntentData(getIntent());
-        findViews();
         prepareViews();
     }
 

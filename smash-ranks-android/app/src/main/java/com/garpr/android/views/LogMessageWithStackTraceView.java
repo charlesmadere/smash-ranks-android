@@ -15,13 +15,20 @@ import android.widget.TextView;
 import com.garpr.android.R;
 import com.garpr.android.models.LogMessage;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class LogMessageWithStackTraceView extends LinearLayout {
 
 
+    @Bind(R.id.view_log_message_with_stack_trace_body)
+    TextView mBody;
+
+    @Bind(R.id.view_log_message_with_stack_trace_header)
+    TextView mHeader;
+
     private LogMessage mLogMessage;
-    private TextView mBody;
-    private TextView mHeader;
     private ViewHolder mViewHolder;
 
 
@@ -69,8 +76,7 @@ public class LogMessageWithStackTraceView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mBody = (TextView) findViewById(R.id.view_log_message_with_stack_trace_body);
-        mHeader = (TextView) findViewById(R.id.view_log_message_with_stack_trace_header);
+        ButterKnife.bind(this);
     }
 
 

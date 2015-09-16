@@ -21,6 +21,8 @@ import com.garpr.android.models.Region;
 import com.garpr.android.settings.RegionSetting;
 import com.garpr.android.settings.Settings;
 
+import butterknife.ButterKnife;
+
 
 /**
  * All Activities should extend from this base class, as it greatly reduces the otherwise
@@ -79,6 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseFrag
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
+        ButterKnife.bind(this);
         mIsAlive = true;
         mIsFirstResume = true;
         Settings.Region.attachListener(this);

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.garpr.android.App;
@@ -30,50 +29,52 @@ import com.garpr.android.views.SwitchPreferenceView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 
 public class SettingsActivity extends BaseToolbarActivity {
 
 
     private static final String TAG = "SettingsActivity";
 
-    private CheckPreferenceView mSyncCharging;
-    private CheckPreferenceView mSyncWifi;
-    private ImageButton mOrb;
-    private PreferenceView mAuthor;
-    private PreferenceView mConsole;
-    private PreferenceView mGooglePlayServicesError;
-    private PreferenceView mNetworkCache;
-    private PreferenceView mRegion;
-    private PreferenceView mSyncStatus;
-    private PreferenceView mVersion;
-    private TextView mForceNotification;
-    private TextView mForceSync;
-    private TextView mGitHub;
-    private TextView mRateApp;
-    private TextView mServer;
-    private SwitchPreferenceView mSync;
+    @Bind(R.id.activity_settings_sync_charging)
+    CheckPreferenceView mSyncCharging;
+
+    @Bind(R.id.activity_settings_sync_wifi)
+    CheckPreferenceView mSyncWifi;
+
+    @Bind(R.id.activity_settings_author)
+    PreferenceView mAuthor;
+
+    @Bind(R.id.activity_settings_console)
+    PreferenceView mConsole;
+
+    @Bind(R.id.activity_settings_google_play_services_error)
+    PreferenceView mGooglePlayServicesError;
+
+    @Bind(R.id.activity_settings_network_cache)
+    PreferenceView mNetworkCache;
+
+    @Bind(R.id.activity_settings_region)
+    PreferenceView mRegion;
+
+    @Bind(R.id.activity_settings_sync_status)
+    PreferenceView mSyncStatus;
+
+    @Bind(R.id.activity_settings_version)
+    PreferenceView mVersion;
+
+    @Bind(R.id.activity_settings_force_notification)
+    TextView mForceNotification;
+
+    @Bind(R.id.activity_settings_force_sync)
+    TextView mForceSync;
+
+    @Bind(R.id.activity_settings_sync)
+    SwitchPreferenceView mSync;
 
 
-
-
-    private void findViews() {
-        mAuthor = (PreferenceView) findViewById(R.id.activity_settings_author);
-        mConsole = (PreferenceView) findViewById(R.id.activity_settings_console);
-        mForceNotification = (TextView) findViewById(R.id.activity_settings_force_notification);
-        mForceSync = (TextView) findViewById(R.id.activity_settings_force_sync);
-        mGitHub = (TextView) findViewById(R.id.activity_settings_github);
-        mGooglePlayServicesError = (PreferenceView) findViewById(R.id.activity_settings_google_play_services_error);
-        mNetworkCache = (PreferenceView) findViewById(R.id.activity_settings_network_cache);
-        mRateApp = (TextView) findViewById(R.id.activity_settings_rate_app);
-        mRegion = (PreferenceView) findViewById(R.id.activity_settings_region);
-        mOrb = (ImageButton) findViewById(R.id.activity_settings_orb);
-        mServer = (TextView) findViewById(R.id.activity_settings_server);
-        mSync = (SwitchPreferenceView) findViewById(R.id.activity_settings_sync);
-        mSyncCharging = (CheckPreferenceView) findViewById(R.id.activity_settings_sync_charging);
-        mSyncStatus = (PreferenceView) findViewById(R.id.activity_settings_sync_status);
-        mSyncWifi = (CheckPreferenceView) findViewById(R.id.activity_settings_sync_wifi);
-        mVersion = (PreferenceView) findViewById(R.id.activity_settings_version);
-    }
 
 
     @Override
@@ -94,10 +95,53 @@ public class SettingsActivity extends BaseToolbarActivity {
     }
 
 
+    @OnClick(R.id.activity_settings_author)
+    void onAuthorClick() {
+        final String[] items = getResources().getStringArray(R.array.app_authors);
+
+        new AlertDialog.Builder(this)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                        final String author = items[which];
+
+                        if (author.equalsIgnoreCase(getString(R.string.charles_madere))) {
+                            openLink(Constants.CHARLES_TWITTER_URL);
+                        } else if (author.equalsIgnoreCase(getString(R.string.timothy_choi))) {
+                            // TODO
+                            // find out what he wants here...
+                        } else {
+                            throw new RuntimeException("unknown author: " + author);
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+
+    @OnClick(R.id.activity_settings_console)
+    void onConsoleClick() {
+        new ConsoleActivity.IntentBuilder(this).start(this);
+    }
+
+
+    @OnClick(R.id.activity_settings_controller)
+    void onControllerClick() {
+        final int random = Utils.RANDOM.nextInt(Constants.RANDOM_YOUTUBE_VIDEOS.length);
+        openLink(Constants.RANDOM_YOUTUBE_VIDEOS[random]);
+    }
+
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findViews();
         prepareGeneralViews();
         prepareSyncViews();
         prepareCreditsViews();
@@ -105,10 +149,34 @@ public class SettingsActivity extends BaseToolbarActivity {
     }
 
 
-    private void openLink(final String url) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
+    @OnClick(R.id.activity_settings_force_notification)
+    void onForceNotificationClick() {
+        NotificationManager.showRankingsUpdated();
+    }
+
+
+    @OnClick(R.id.activity_settings_force_sync)
+    void onForceSyncClick() {
+        SyncManager.checkForUpdate(this);
+    }
+
+
+    @OnClick(R.id.activity_settings_github)
+    void onGithubClick() {
+        openLink(Constants.GITHUB_URL);
+    }
+
+
+    @OnClick(R.id.activity_settings_network_cache)
+    void onNetworkCacheClick() {
+        NetworkCache.clear();
+        pollNetworkCache();
+    }
+
+
+    @OnClick(R.id.activity_settings_rate_app)
+    void onRateAppClick() {
+        openLink(Constants.GAR_PR_GOOGLE_PLAY_STORE_URL);
     }
 
 
@@ -119,11 +187,30 @@ public class SettingsActivity extends BaseToolbarActivity {
     }
 
 
+    @OnClick(R.id.activity_settings_region)
+    void onRegionClick() {
+        new RegionsActivity.IntentBuilder(this).start(this);
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
         pollNetworkCache();
         pollGooglePlayServices();
+    }
+
+
+    @OnClick(R.id.activity_settings_server)
+    void onServerClick() {
+        openLink(Constants.IVAN_TWITTER_URL);
+    }
+
+
+    private void openLink(final String url) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
 
@@ -176,81 +263,23 @@ public class SettingsActivity extends BaseToolbarActivity {
     private void prepareCreditsViews() {
         mAuthor.setTitleText(R.string.app_written_by);
         mAuthor.setSubTitleText(R.string.app_authors);
-        mAuthor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                showAuthorsDialog();
-            }
-        });
-
-        mServer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                openLink(Constants.IVAN_TWITTER_URL);
-            }
-        });
-
-        mGitHub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                openLink(Constants.GITHUB_URL);
-            }
-        });
     }
 
 
     private void prepareGeneralViews() {
         mRegion.setTitleText(R.string.change_region);
         mRegion.setSubTitleText(Settings.Region.get().getName());
-
-        mRegion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                new RegionsActivity.IntentBuilder(SettingsActivity.this)
-                        .start(SettingsActivity.this);
-            }
-        });
-
         mNetworkCache.setTitleText(R.string.clear_network_cache);
-        mNetworkCache.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                NetworkCache.clear();
-                pollNetworkCache();
-            }
-        });
     }
 
 
     private void prepareMiscellaneousViews() {
-        mRateApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                openLink(Constants.GAR_PR_GOOGLE_PLAY_STORE_URL);
-            }
-        });
-
         mConsole.setTitleText(R.string.log_console);
         mConsole.setSubTitleText(R.string.log_console_description);
-        mConsole.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                new ConsoleActivity.IntentBuilder(SettingsActivity.this)
-                        .start(SettingsActivity.this);
-            }
-        });
 
-        mVersion.setEnabled(false);
         mVersion.setTitleText(R.string.version_information);
         mVersion.setSubTitleText(getString(R.string.x_build_y, App.getVersionName(),
                 App.getVersionCode()));
-
-        mOrb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                randomYoutubeVideo();
-            }
-        });
     }
 
 
@@ -259,33 +288,25 @@ public class SettingsActivity extends BaseToolbarActivity {
         mGooglePlayServicesError.setSubTitleText(R.string.period_sync_requires_google_play_services);
 
         mSync.set(Settings.Sync.IsAllowed, R.string.enable_or_disable_sync,
-                R.string.periodic_sync_is_on, R.string.periodic_sync_is_turned_off);
-        mSync.setOnToggleListener(new BooleanSettingPreferenceView.OnToggleListener() {
-            @Override
-            public void onToggle(final BooleanSettingPreferenceView v) {
-                final boolean isEnabled = v.getSetting().get();
-                mSyncCharging.setEnabled(isEnabled);
-                mSyncWifi.setEnabled(isEnabled);
+                R.string.periodic_sync_is_on, R.string.periodic_sync_is_turned_off,
+                new BooleanSettingPreferenceView.OnToggleListener() {
+                    @Override
+                    public void onToggle(final BooleanSettingPreferenceView v) {
+                        final boolean isEnabled = v.getSetting().get();
+                        mSyncCharging.setEnabled(isEnabled);
+                        mSyncWifi.setEnabled(isEnabled);
 
-                if (isEnabled) {
-                    SyncManager.schedule();
-                } else {
-                    SyncManager.cancel();
-                }
-            }
-        });
+                        if (isEnabled) {
+                            SyncManager.schedule();
+                        } else {
+                            SyncManager.cancel();
+                        }
+                    }
+                });
 
         final boolean isSyncEnabled = mSync.getSetting().get();
         mSyncCharging.setEnabled(isSyncEnabled);
         mSyncWifi.setEnabled(isSyncEnabled);
-
-        mSyncCharging.set(Settings.Sync.IsChargingNecessary, R.string.only_sync_when_charging,
-                R.string.will_only_sync_if_plugged_in,
-                R.string.will_sync_regardless_of_being_plugged_in_or_not);
-
-        mSyncWifi.set(Settings.Sync.IsWifiNecessary, R.string.only_sync_on_wifi,
-                R.string.will_only_sync_if_connected_to_wifi,
-                R.string.will_sync_on_any_data_connection);
 
         final BooleanSettingPreferenceView.OnToggleListener syncToggleListener =
                 new BooleanSettingPreferenceView.OnToggleListener() {
@@ -295,10 +316,16 @@ public class SettingsActivity extends BaseToolbarActivity {
                     }
                 };
 
+        mSyncCharging.set(Settings.Sync.IsChargingNecessary, R.string.only_sync_when_charging,
+                R.string.will_only_sync_if_plugged_in,
+                R.string.will_sync_regardless_of_being_plugged_in_or_not, syncToggleListener);
+
+        mSyncWifi.set(Settings.Sync.IsWifiNecessary, R.string.only_sync_on_wifi,
+                R.string.will_only_sync_if_connected_to_wifi,
+                R.string.will_sync_on_any_data_connection, syncToggleListener);
+
         mSyncCharging.setOnToggleListener(syncToggleListener);
         mSyncWifi.setOnToggleListener(syncToggleListener);
-
-        mSyncStatus.setEnabled(false);
         mSyncStatus.setTitleText(R.string.last_sync);
 
         if (Settings.Sync.LastDate.exists()) {
@@ -311,62 +338,8 @@ public class SettingsActivity extends BaseToolbarActivity {
 
         if (BuildConfig.DEBUG) {
             mForceNotification.setVisibility(View.VISIBLE);
-            mForceNotification.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    NotificationManager.showRankingsUpdated();
-                }
-            });
-
             mForceSync.setVisibility(View.VISIBLE);
-            mForceSync.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    SyncManager.checkForUpdate(SettingsActivity.this);
-                }
-            });
         }
-    }
-
-
-    private void randomYoutubeVideo() {
-        int videoIndex;
-
-        do {
-            videoIndex = Utils.RANDOM.nextInt(Constants.RANDOM_YOUTUBE_VIDEOS.length);
-        } while (videoIndex < 0 || videoIndex >= Constants.RANDOM_YOUTUBE_VIDEOS.length);
-
-        openLink(Constants.RANDOM_YOUTUBE_VIDEOS[videoIndex]);
-    }
-
-
-    private void showAuthorsDialog() {
-        final String[] items = getResources().getStringArray(R.array.app_authors);
-
-        new AlertDialog.Builder(SettingsActivity.this)
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                        final String author = items[which];
-
-                        if (author.equalsIgnoreCase(getString(R.string.charles_madere))) {
-                            openLink(Constants.CHARLES_TWITTER_URL);
-                        } else if (author.equalsIgnoreCase(getString(R.string.timothy_choi))) {
-                            // TODO
-                            // find out what he wants here...
-                        } else {
-                            throw new RuntimeException("unknown author: " + author);
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
     }
 
 

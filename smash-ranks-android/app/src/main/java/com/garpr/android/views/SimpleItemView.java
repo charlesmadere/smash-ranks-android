@@ -14,11 +14,16 @@ import android.widget.TextView;
 
 import com.garpr.android.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class SimpleItemView extends FrameLayout {
 
 
-    private TextView mText;
+    @Bind(R.id.view_simple_item_text)
+    TextView mText;
+
     private ViewHolder mViewHolder;
 
 
@@ -59,7 +64,7 @@ public class SimpleItemView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mText = (TextView) findViewById(R.id.view_simple_item_text);
+        ButterKnife.bind(this);
     }
 
 

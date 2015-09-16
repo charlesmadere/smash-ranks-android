@@ -10,28 +10,29 @@ import android.widget.TextView;
 import com.garpr.android.R;
 import com.garpr.android.views.RefreshLayout;
 
+import butterknife.Bind;
+
 
 public abstract class BaseListFragment extends BaseFragment implements
         RefreshLayout.OnRefreshListener {
 
 
+    @Bind(R.id.fragment_base_list_error)
+    LinearLayout mErrorView;
+
+    @Bind(R.id.fragment_base_list_list)
+    RecyclerView mRecyclerView;
+
+    @Bind(R.id.fragment_base_list_refresh)
+    RefreshLayout mRefreshLayout;
+
+    @Bind(R.id.fragment_base_list_error_line)
+    TextView mErrorLine;
+
     private boolean mIsLoading;
-    private LinearLayout mErrorView;
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RefreshLayout mRefreshLayout;
-    private TextView mErrorLine;
 
 
-
-
-    protected void findViews() {
-        final View view = getView();
-        mErrorLine = (TextView) view.findViewById(R.id.fragment_base_list_error_line);
-        mErrorView = (LinearLayout) view.findViewById(R.id.fragment_base_list_error);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_base_list_list);
-        mRefreshLayout = (RefreshLayout) view.findViewById(R.id.fragment_base_list_refresh);
-    }
 
 
     @Override
@@ -66,7 +67,6 @@ public abstract class BaseListFragment extends BaseFragment implements
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         readArguments(getArguments());
-        findViews();
         prepareViews();
     }
 
