@@ -12,7 +12,8 @@
             android:elevation="@dimen/elevation"
             android:id="@+id/activity_tournament_tab_layout"
             android:layout_height="48dp"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            tools:ignore="UnusedAttribute" />
         <com.garpr.android.views.RefreshLayout
             android:id="@+id/activity_tournament_refresh"
             android:layout_height="match_parent"
