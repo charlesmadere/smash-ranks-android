@@ -49,7 +49,7 @@ public final class RegionSetting extends Setting<Region> {
 
     @Override
     public void set(final Region newValue, final boolean notifyListeners) {
-        mJSONObjectSetting.set(newValue.toJSON());
+        mJSONObjectSetting.set(newValue.toJSON(), notifyListeners);
         super.set(newValue, notifyListeners);
     }
 

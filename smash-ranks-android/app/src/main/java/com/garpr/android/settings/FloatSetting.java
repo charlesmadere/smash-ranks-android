@@ -32,7 +32,7 @@ public final class FloatSetting extends Setting<Float> {
 
     @Override
     public void set(final Float newValue, final boolean notifyListeners) {
-        writeSharedPreferences().putFloat(mKey, mDefaultValue);
+        writeSharedPreferences().putFloat(mKey, mDefaultValue).apply();
         super.set(newValue, notifyListeners);
     }
 

@@ -23,11 +23,7 @@ public final class JSONArraySetting extends Setting<JSONArray> {
 
     @Override
     public boolean exists() {
-        if (super.exists() && mStringSetting.exists()) {
-            return get().length() >= 1;
-        } else {
-            return false;
-        }
+        return super.exists() && mStringSetting.exists() && get().length() >= 1;
     }
 
 
@@ -60,7 +56,7 @@ public final class JSONArraySetting extends Setting<JSONArray> {
             newValueString = newValue.toString();
         }
 
-        mStringSetting.set(newValueString);
+        mStringSetting.set(newValueString, notifyListeners);
         super.set(newValue, notifyListeners);
     }
 

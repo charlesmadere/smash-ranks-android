@@ -56,7 +56,7 @@ public final class JSONObjectSetting extends Setting<JSONObject> {
             newValueString = newValue.toString();
         }
 
-        mStringSetting.set(newValueString);
+        mStringSetting.set(newValueString, notifyListeners);
         super.set(newValue, notifyListeners);
     }
 

@@ -40,8 +40,8 @@ public final class UserSetting extends Setting<UserSetting> {
 
     @Override
     public void set(final UserSetting newValue, final boolean notifyListeners) {
-        Player.set(newValue.Player);
-        Region.set(newValue.Region);
+        Player.set(newValue.Player, notifyListeners);
+        Region.set(newValue.Region, notifyListeners);
         super.set(newValue, notifyListeners);
     }
 

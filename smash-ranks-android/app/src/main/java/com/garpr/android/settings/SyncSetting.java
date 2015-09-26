@@ -50,11 +50,11 @@ public final class SyncSetting extends Setting<SyncSetting> {
 
     @Override
     public void set(final SyncSetting newValue, final boolean notifyListeners) {
-        IsAllowed.set(newValue.IsAllowed);
-        IsChargingNecessary.set(newValue.IsChargingNecessary);
-        IsScheduled.set(newValue.IsScheduled);
-        IsWifiNecessary.set(newValue.IsWifiNecessary);
-        LastDate.set(newValue.LastDate);
+        IsAllowed.set(newValue.IsAllowed, notifyListeners);
+        IsChargingNecessary.set(newValue.IsChargingNecessary, notifyListeners);
+        IsScheduled.set(newValue.IsScheduled, notifyListeners);
+        IsWifiNecessary.set(newValue.IsWifiNecessary, notifyListeners);
+        LastDate.set(newValue.LastDate, notifyListeners);
         super.set(newValue, notifyListeners);
     }
 

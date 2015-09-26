@@ -145,7 +145,12 @@ public abstract class Setting<T> {
 
 
     public final void set(final Setting<T> setting) {
-        set(setting.get());
+        set(setting, true);
+    }
+
+
+    public final void set(final Setting<T> setting, final boolean notifyListeners) {
+        set(setting.get(), notifyListeners);
     }
 
 
