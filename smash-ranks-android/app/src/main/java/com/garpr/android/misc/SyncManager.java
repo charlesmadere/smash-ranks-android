@@ -28,6 +28,7 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
         final Context context = App.get();
         GcmNetworkManager.getInstance(context).cancelAllTasks(SyncManager.class);
         Settings.Sync.IsScheduled.set(false);
+        Console.d(TAG, "User has canceled sync");
     }
 
 
@@ -70,7 +71,7 @@ public final class SyncManager extends GcmTaskService implements Heartbeat {
 
     public static void schedule() {
         if (!Utils.googlePlayServicesAreAvailable()) {
-            Console.w(TAG, "Failed to schedule GcmNetworkTask because Google Play Services "
+            Console.w(TAG, "Failed to schedule GcmNetworkTask because Google Play Services"
                     + " are unavailable");
             return;
         }
