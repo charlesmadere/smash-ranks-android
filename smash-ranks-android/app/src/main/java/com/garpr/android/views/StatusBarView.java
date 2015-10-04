@@ -7,8 +7,6 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.garpr.android.R;
-
 
 public class StatusBarView extends View {
 

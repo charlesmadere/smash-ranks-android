@@ -65,14 +65,14 @@ public class SettingsActivity extends BaseToolbarActivity {
     @Bind(R.id.activity_settings_version)
     PreferenceView mVersion;
 
+    @Bind(R.id.activity_settings_sync)
+    SwitchPreferenceView mSync;
+
     @Bind(R.id.activity_settings_force_notification)
     TextView mForceNotification;
 
     @Bind(R.id.activity_settings_force_sync)
     TextView mForceSync;
-
-    @Bind(R.id.activity_settings_sync)
-    SwitchPreferenceView mSync;
 
 
 

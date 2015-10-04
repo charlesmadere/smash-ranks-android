@@ -65,7 +65,7 @@ public class RefreshLayout extends SwipeRefreshLayout {
 
     private void parseAttributes(final AttributeSet attrs) {
         final TypedArray ta = getContext().obtainStyledAttributes(attrs,
-                R.styleable.refresh_layout, 0, 0);
+                R.styleable.refresh_layout);
 
         if (ta.hasValue(R.styleable.refresh_layout_scrolling_child)) {
             mScrollingChildId = ta.getResourceId(R.styleable.refresh_layout_scrolling_child, 0);
