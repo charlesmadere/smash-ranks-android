@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.CheckPreferenceView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.views.BooleanPreferenceView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/settings_container">
     <LinearLayout
@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/view_preference_title"
             android:layout_weight="1"
             android:layout_width="0dp"
             tools:text="@string/only_sync_on_wifi"
@@ -15,13 +14,12 @@
         <CheckBox
             android:background="@null"
             android:clickable="false"
-            android:id="@+id/view_check_preference_check"
+            android:id="@+id/view_boolean_preference_checkable"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/root_padding"
             android:layout_width="wrap_content" />
     </LinearLayout>
     <TextView
-        android:id="@+id/view_preference_sub_title"
         tools:text="@string/will_sync_on_any_data_connection"
         style="@style/settings_sub_title" />
-</com.garpr.android.views.CheckPreferenceView>
+</com.garpr.android.views.BooleanPreferenceView>

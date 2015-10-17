@@ -23,10 +23,8 @@ import com.garpr.android.misc.SyncManager;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
-import com.garpr.android.views.BooleanSettingPreferenceView;
-import com.garpr.android.views.CheckPreferenceView;
+import com.garpr.android.views.BooleanPreferenceView;
 import com.garpr.android.views.PreferenceView;
-import com.garpr.android.views.SwitchPreferenceView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -41,11 +39,14 @@ public class SettingsActivity extends BaseToolbarActivity {
 
     private static final String TAG = "SettingsActivity";
 
+    @Bind(R.id.activity_settings_sync)
+    BooleanPreferenceView mSync;
+
     @Bind(R.id.activity_settings_sync_charging)
-    CheckPreferenceView mSyncCharging;
+    BooleanPreferenceView mSyncCharging;
 
     @Bind(R.id.activity_settings_sync_wifi)
-    CheckPreferenceView mSyncWifi;
+    BooleanPreferenceView mSyncWifi;
 
     @Bind(R.id.activity_settings_author)
     PreferenceView mAuthor;
@@ -67,9 +68,6 @@ public class SettingsActivity extends BaseToolbarActivity {
 
     @Bind(R.id.activity_settings_version)
     PreferenceView mVersion;
-
-    @Bind(R.id.activity_settings_sync)
-    SwitchPreferenceView mSync;
 
     @Bind(R.id.activity_settings_force_notification)
     TextView mForceNotification;
@@ -293,9 +291,9 @@ public class SettingsActivity extends BaseToolbarActivity {
 
         mSync.set(Settings.Sync.IsAllowed, R.string.enable_or_disable_sync,
                 R.string.periodic_sync_is_on, R.string.periodic_sync_is_turned_off,
-                new BooleanSettingPreferenceView.OnToggleListener() {
+                new BooleanPreferenceView.OnToggleListener() {
                     @Override
-                    public void onToggle(final BooleanSettingPreferenceView v) {
+                    public void onToggle(final BooleanPreferenceView v) {
                         final boolean isEnabled = v.getSetting().get();
                         mSyncCharging.setEnabled(isEnabled);
                         mSyncWifi.setEnabled(isEnabled);
@@ -312,10 +310,10 @@ public class SettingsActivity extends BaseToolbarActivity {
         mSyncCharging.setEnabled(isSyncEnabled);
         mSyncWifi.setEnabled(isSyncEnabled);
 
-        final BooleanSettingPreferenceView.OnToggleListener syncToggleListener =
-                new BooleanSettingPreferenceView.OnToggleListener() {
+        final BooleanPreferenceView.OnToggleListener syncToggleListener =
+                new BooleanPreferenceView.OnToggleListener() {
                     @Override
-                    public void onToggle(final BooleanSettingPreferenceView v) {
+                    public void onToggle(final BooleanPreferenceView v) {
                         SyncManager.schedule();
                     }
                 };

@@ -192,6 +192,7 @@
     </style>
 
     <style name="settings_sub_title" parent="settings_text">
+        <item name="android:id">@id/view_preference_sub_title</item>
         <item name="android:lineSpacingExtra">2dp</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -208,6 +209,7 @@
     </style>
 
     <style name="settings_title" parent="settings_text">
+        <item name="android:id">@id/view_preference_title</item>
         <item name="android:textSize">18sp</item>
     </style>
 

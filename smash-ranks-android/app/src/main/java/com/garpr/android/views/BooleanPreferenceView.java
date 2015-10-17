@@ -8,11 +8,17 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Checkable;
 
+import com.garpr.android.R;
 import com.garpr.android.settings.BooleanSetting;
 
+import butterknife.Bind;
 
-public class BooleanSettingPreferenceView extends PreferenceView implements Checkable {
 
+public class BooleanPreferenceView extends PreferenceView implements Checkable {
+
+
+    @Bind(R.id.view_boolean_preference_checkable)
+    Checkable mCheckable;
 
     private BooleanSetting mSetting;
     private int mSubTitleEnabledText;
@@ -22,19 +28,19 @@ public class BooleanSettingPreferenceView extends PreferenceView implements Chec
 
 
 
-    public BooleanSettingPreferenceView(final Context context, final AttributeSet attrs) {
+    public BooleanPreferenceView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
 
-    public BooleanSettingPreferenceView(final Context context, final AttributeSet attrs,
+    public BooleanPreferenceView(final Context context, final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public BooleanSettingPreferenceView(final Context context, final AttributeSet attrs,
+    public BooleanPreferenceView(final Context context, final AttributeSet attrs,
             final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -96,7 +102,10 @@ public class BooleanSettingPreferenceView extends PreferenceView implements Chec
 
     @Override
     public void toggle() {
-        if (mSetting.toggle()) {
+        final boolean newValue = mSetting.toggle();
+        mCheckable.setChecked(newValue);
+
+        if (newValue) {
             setSubTitleText(mSubTitleEnabledText);
         } else {
             setSubTitleText(mSubTitleDisabledText);
@@ -113,7 +122,7 @@ public class BooleanSettingPreferenceView extends PreferenceView implements Chec
     public interface OnToggleListener {
 
 
-        void onToggle(final BooleanSettingPreferenceView v);
+        void onToggle(final BooleanPreferenceView v);
 
 
     }

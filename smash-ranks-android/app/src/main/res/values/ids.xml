@@ -5,5 +5,7 @@
     <item name="navigation_drawer" type="id" />
     <item name="status_bar_buffer" type="id" />
     <item name="toolbar" type="id" />
+    <item name="view_preference_sub_title" type="id" />
+    <item name="view_preference_title" type="id" />
 
 </resources>
