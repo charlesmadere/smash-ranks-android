@@ -15,6 +15,10 @@
             android:title="@string/profile"
             android:visible="false" />
         <item
+            android:icon="@drawable/ic_heart"
+            android:id="@+id/navigation_view_menu_favorites"
+            android:title="@string/favorites" />
+        <item
             android:icon="@drawable/ic_settings"
             android:id="@+id/navigation_view_menu_settings"
             android:title="@string/settings" />
