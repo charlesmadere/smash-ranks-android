@@ -41,6 +41,8 @@
     <string name="error_fetching_tournaments">Error fetching tournaments!</string>
     <string name="favorite">Favorite</string>
     <string name="favorites">Favorites</string>
+    <string name="favorites_empty_subheader">Set some players as favorites and they\'ll appear in
+        this list.</string>
     <string name="fetching_regions">Fetching regions…</string>
     <string name="force_notification">Force notification</string>
     <string name="force_sync">Force sync</string>
@@ -183,5 +185,6 @@
     <string name="x_y">%1$s %2$s</string>
     <string name="yes">Yes</string>
     <string name="youre_x_from_y_ready">You\'re %1$s from %2$s. Ready?</string>
+    <string name="you_have_no_favorites">You have no favorites!</string>
 
 </resources>

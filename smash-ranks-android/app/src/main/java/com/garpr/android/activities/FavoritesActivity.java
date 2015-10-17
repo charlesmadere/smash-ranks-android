@@ -12,6 +12,8 @@ public class FavoritesActivity extends BaseToolbarActivity {
     private static final String TAG = "FavoritesActivity";
 
 
+
+
     @Override
     public String getActivityName() {
         return TAG;
@@ -20,7 +22,7 @@ public class FavoritesActivity extends BaseToolbarActivity {
 
     @Override
     protected int getContentView() {
-        return 0;
+        return R.layout.activity_favorites;
     }
 
 
