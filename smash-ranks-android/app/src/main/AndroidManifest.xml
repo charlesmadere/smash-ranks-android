@@ -55,6 +55,17 @@
         </activity>
 
         <activity
+            android:label="@string/favorites"
+            android:launchMode="singleTop"
+            android:name=".activities.FavoritesActivity"
+            android:parentActivityName=".activities.RankingsActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RankingsActivity" />
+        </activity>
+
+        <activity
             android:label="@string/head_to_head"
             android:launchMode="singleTop"
             android:name=".activities.HeadToHeadActivity"

@@ -172,6 +172,10 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
                 intentBuilder = new AboutActivity.IntentBuilder(this);
                 break;
 
+            case R.id.navigation_view_menu_favorites:
+                intentBuilder = new FavoritesActivity.IntentBuilder(this);
+                break;
+
             case R.id.navigation_view_menu_profile:
                 intentBuilder = new PlayerActivity.IntentBuilder(this, Settings.User.Player.get());
                 break;
