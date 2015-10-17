@@ -3,7 +3,6 @@
 
     <dimen name="list_item_height">60dp</dimen>
     <dimen name="list_item_separator_height">48dp</dimen>
-    <dimen name="navigation_drawer_banner_height">140dp</dimen>
     <dimen name="navigation_drawer_width">340dp</dimen>
     <dimen name="match_results_bar_height">22dp</dimen>
     <dimen name="match_results_item_height">84dp</dimen>
