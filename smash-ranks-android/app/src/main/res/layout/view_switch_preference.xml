@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/view_preference_title"
             android:layout_weight="1"
             android:layout_width="0dp"
             tools:text="@string/enable_or_disable_sync"
@@ -21,7 +20,6 @@
             android:layout_width="wrap_content" />
     </LinearLayout>
     <TextView
-        android:id="@+id/view_preference_sub_title"
         tools:text="@string/periodic_sync_is_turned_off"
         style="@style/settings_sub_title" />
 </com.garpr.android.views.BooleanPreferenceView>
