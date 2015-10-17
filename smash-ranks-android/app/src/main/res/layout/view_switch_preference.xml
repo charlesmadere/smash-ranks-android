@@ -14,7 +14,7 @@
         <android.support.v7.widget.SwitchCompat
             android:background="@null"
             android:clickable="false"
-            android:id="@+id/view_switch_preference_switch"
+            android:id="@+id/view_boolean_preference_checkable"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/root_padding"
             android:layout_width="wrap_content" />

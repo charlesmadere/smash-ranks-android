@@ -61,6 +61,8 @@ public class BooleanPreferenceView extends PreferenceView implements Checkable {
             final int subTitleEnabledText, final int subTitleDisabledText,
             final OnToggleListener toggleListener) {
         mSetting = setting;
+
+        mCheckable.setChecked(isChecked());
         setTitleText(titleText);
         mSubTitleDisabledText = subTitleDisabledText;
         mSubTitleEnabledText = subTitleEnabledText;
