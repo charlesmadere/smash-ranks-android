@@ -64,6 +64,7 @@
     <string name="last_sync">Last sync</string>
     <string name="lets_go">Let\'s go!</string>
     <string name="loading_gar_pr_">Loading GAR PR…</string>
+    <string name="loading_your_favorites_list_">Loading your favorites list…</string>
     <string name="log_console">Log console</string>
     <string name="log_console_title_case">Log Console</string>
     <string name="log_console_description">Displays log messages that would normally only be

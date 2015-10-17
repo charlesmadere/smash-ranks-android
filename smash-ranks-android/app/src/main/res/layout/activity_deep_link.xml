@@ -15,14 +15,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content" />
         <TextView
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/root_padding"
-            android:layout_width="wrap_content"
             android:text="@string/loading_gar_pr_"
-            android:textColor="@color/gray_lightest"
-            android:textSize="16sp" />
+            style="@style/loading_message" />
     </LinearLayout>
     <LinearLayout
         android:gravity="center"

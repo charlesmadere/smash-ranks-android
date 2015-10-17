@@ -10,6 +10,23 @@
         <FrameLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent">
+            <LinearLayout
+                android:gravity="center"
+                android:id="@+id/activity_favorites_progress"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical">
+                <ProgressBar
+                    android:indeterminate="true"
+                    android:indeterminateOnly="true"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+                <TextView
+                    android:text="@string/loading_your_favorites_list_"
+                    style="@style/loading_message" />
+            </LinearLayout>
             <android.support.v7.widget.RecyclerView
                 android:clipToPadding="false"
                 android:id="@+id/activity_favorites_list"
