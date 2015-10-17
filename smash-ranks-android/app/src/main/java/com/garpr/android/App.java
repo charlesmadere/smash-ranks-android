@@ -91,7 +91,7 @@ public final class App extends Application {
 
         if (cacheDir == null) {
             cacheDir = getCacheDir();
-            external = " ";
+            external = " local ";
         }
 
         cacheDir = new File(cacheDir.getPath() + File.separator + "NetworkCache");
