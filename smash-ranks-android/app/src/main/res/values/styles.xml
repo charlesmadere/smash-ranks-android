@@ -242,8 +242,4 @@
         <item name="theme">@style/toolbar_theme</item>
     </style>
 
-    <style name="toolbar.no_elevation">
-        <item name="android:elevation" tools:ignore="NewApi">0dp</item>
-    </style>
-
 </resources>
