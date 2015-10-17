@@ -20,11 +20,9 @@
                 tools:visibilty="visible"
                 style="@style/error_container">
                 <TextView
-                    android:id="@+id/activity_favorites_empty_header"
                     android:text="@string/you_have_no_favorites"
                     style="@style/error_line1" />
                 <TextView
-                    android:id="@+id/activity_favorites_empty_subheader"
                     android:text="@string/favorites_empty_subheader"
                     style="@style/error_line2" />
             </LinearLayout>
