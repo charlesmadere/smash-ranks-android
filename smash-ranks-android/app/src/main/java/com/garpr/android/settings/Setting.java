@@ -111,7 +111,6 @@ public abstract class Setting<T> {
         synchronized (mListeners) {
             final Iterator<WeakReference<OnSettingChangedListener<T>>> iterator =
                     mListeners.iterator();
-            final T newValue = get();
 
             while (iterator.hasNext()) {
                 final WeakReference<OnSettingChangedListener<T>> wr = iterator.next();
@@ -120,7 +119,7 @@ public abstract class Setting<T> {
                 if (oscl == null) {
                     iterator.remove();
                 } else {
-                    oscl.onSettingChanged(newValue);
+                    oscl.onSettingChanged(this);
                 }
             }
         }
@@ -154,35 +153,6 @@ public abstract class Setting<T> {
     }
 
 
-    @Override
-    public final String toString() {
-        final StringBuilder string = new StringBuilder()
-                .append(mKey)
-                .append("=(");
-
-        if (exists()) {
-            string.append("doesn't exist");
-        } else {
-            final T setting = get();
-
-            if (setting == null) {
-                string.append("null");
-            } else {
-                string.append(setting.toString());
-            }
-        }
-
-        string.append(") listeners=(");
-
-        synchronized (mListeners) {
-            string.append(mListeners.size());
-        }
-
-        string.append(')');
-        return string.toString();
-    }
-
-
     protected final SharedPreferences.Editor writeSharedPreferences() {
         return Settings.edit(mName);
     }
@@ -193,7 +163,7 @@ public abstract class Setting<T> {
     public interface OnSettingChangedListener<T> {
 
 
-        void onSettingChanged(final T setting);
+        void onSettingChanged(final Setting<T> setting);
 
 
     }

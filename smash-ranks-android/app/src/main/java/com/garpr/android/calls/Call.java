@@ -10,12 +10,13 @@ import com.garpr.android.App;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.Heartbeat;
-import com.garpr.android.misc.NetworkCache;
 import com.garpr.android.misc.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,7 +26,6 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
 
     private static final ExecutorService EXECUTOR_SERVICE;
 
-    private boolean mPulledFromNetworkCache;
     private final boolean mIgnoreCache;
     private String mUrl;
 
@@ -80,18 +80,10 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
                 mUrl = getUrl();
 
                 if (mIgnoreCache) {
-                    makeNetworkRequest(heartbeat);
-                } else {
-                    final JSONObject response = NetworkCache.get(mUrl);
-                    mPulledFromNetworkCache = response != null;
-
-                    if (mPulledFromNetworkCache) {
-                        Console.d(getCallName(), "Pulled call response from cache to " + mUrl);
-                        onResponse(response);
-                    } else {
-                        makeNetworkRequest(heartbeat);
-                    }
+                    wipeCacheOfUrl();
                 }
+
+                makeNetworkRequest(heartbeat);
             }
         };
 
@@ -100,7 +92,7 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
 
 
     private void makeNetworkRequest(final Heartbeat heartbeat) {
-        final JsonObjectRequest request = new JsonObjectRequest(mUrl, Call.this, Call.this);
+        final JsonObjectRequest request = new JsonObjectRequest(mUrl, this, this);
         request.setTag(heartbeat);
 
         Console.d(getCallName(), "Making call to " + mUrl);
@@ -139,10 +131,6 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (!mPulledFromNetworkCache) {
-                    NetworkCache.set(mUrl, response);
-                }
-
                 if (mResponse.isAlive()) {
                     try {
                         onJSONResponse(response);
@@ -160,6 +148,24 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
     @Override
     public final String toString() {
         return getCallName();
+    }
+
+
+    private void wipeCacheOfUrl() {
+        try {
+            final Iterator<String> iterator = App.getNetworkCache().urls();
+
+            while (iterator.hasNext()) {
+                final String url = iterator.next();
+
+                if (mUrl.equalsIgnoreCase(url)) {
+                    iterator.remove();
+                    return;
+                }
+            }
+        } catch (final IOException e) {
+            Console.e(getCallName(), "Failure to wipe cache of " + mUrl, e);
+        }
     }
 
 

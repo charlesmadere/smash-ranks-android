@@ -168,6 +168,16 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     }
 
 
+    @Override
+    protected int getSelectedNavigationItemId() {
+        if (mInUsersRegion && mUserPlayer != null && mUserPlayer.equals(mPlayer)) {
+            return R.id.navigation_view_menu_profile;
+        } else {
+            return super.getSelectedNavigationItemId();
+        }
+    }
+
+
     private boolean isMenuNull() {
         return Utils.areAnyObjectsNull(mSearch, mShare, mShow, mShowAll, mShowLoses, mShowWins);
     }

@@ -39,6 +39,8 @@
     <string name="error_fetching_regions">Error fetching regions!</string>
     <string name="error_fetching_tournament">Error fetching tournament!</string>
     <string name="error_fetching_tournaments">Error fetching tournaments!</string>
+    <string name="favorite">Favorite</string>
+    <string name="favorites">Favorites</string>
     <string name="fetching_regions">Fetching regions…</string>
     <string name="force_notification">Force notification</string>
     <string name="force_sync">Force sync</string>
@@ -93,6 +95,7 @@
     <string name="player_x_region_y">Player: (%1$s) Region: (%2$s)</string>
     <string name="please_check_your_network_connection">Please check your network connection.</string>
     <string name="pound_sign">#</string>
+    <string name="profile">Profile</string>
     <string name="quit">Quit</string>
     <string name="ranking">Ranking</string>
     <string name="rankings">Rankings</string>
@@ -127,6 +130,8 @@
     <string name="show_all">Show All</string>
     <string name="show_loses">Show Loses</string>
     <string name="show_wins">Show Wins</string>
+    <string name="size_is_unknown">Size is unknown</string>
+    <string name="size_is_x">Size is %s</string>
     <string name="sort">Sort</string>
     <string name="sort_">Sort…</string>
     <string name="sort_chronologically">Sort Chronologically</string>

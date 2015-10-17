@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.garpr.android.R;
 import com.garpr.android.models.Player;
 import com.garpr.android.models.Region;
-import com.garpr.android.settings.RegionSetting;
+import com.garpr.android.settings.Setting;
 import com.garpr.android.settings.Settings;
 
 import butterknife.Bind;
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 
 public class NavigationHeaderView extends RelativeLayout implements
-        RegionSetting.OnSettingChangedListener<Region> {
+        Setting.OnSettingChangedListener<Region> {
 
 
     private static final String TAG = "NavigationHeaderView";
@@ -75,7 +75,7 @@ public class NavigationHeaderView extends RelativeLayout implements
 
 
     @Override
-    public void onSettingChanged(final Region setting) {
+    public void onSettingChanged(final Setting<Region> setting) {
         post(new Runnable() {
             @Override
             public void run() {

@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:icon="@drawable/ic_people"
+            android:icon="@drawable/ic_group"
             android:id="@+id/navigation_view_menu_rankings"
             android:title="@string/rankings" />
         <item
             android:icon="@drawable/ic_star"
             android:id="@+id/navigation_view_menu_tournaments"
             android:title="@string/tournaments" />
+        <item
+            android:icon="@drawable/ic_face"
+            android:id="@+id/navigation_view_menu_profile"
+            android:title="@string/profile"
+            android:visible="false" />
         <item
             android:icon="@drawable/ic_settings"
             android:id="@+id/navigation_view_menu_settings"

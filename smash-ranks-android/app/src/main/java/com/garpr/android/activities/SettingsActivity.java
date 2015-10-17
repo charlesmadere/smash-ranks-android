@@ -9,14 +9,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
+import android.text.format.Formatter;
 import android.view.View;
 import android.widget.TextView;
 
 import com.garpr.android.App;
 import com.garpr.android.BuildConfig;
 import com.garpr.android.R;
+import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
-import com.garpr.android.misc.NetworkCache;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.SyncManager;
 import com.garpr.android.misc.Utils;
@@ -28,6 +29,8 @@ import com.garpr.android.views.PreferenceView;
 import com.garpr.android.views.SwitchPreferenceView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -116,12 +119,6 @@ public class SettingsActivity extends BaseToolbarActivity {
                         }
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                    }
-                })
                 .show();
     }
 
@@ -169,7 +166,7 @@ public class SettingsActivity extends BaseToolbarActivity {
 
     @OnClick(R.id.activity_settings_network_cache)
     void onNetworkCacheClick() {
-        NetworkCache.clear();
+        App.deleteNetworkCache();
         pollNetworkCache();
     }
 
@@ -215,10 +212,16 @@ public class SettingsActivity extends BaseToolbarActivity {
 
 
     private void pollNetworkCache() {
-        final int networkCacheSize = NetworkCache.size();
-        mNetworkCache.setEnabled(networkCacheSize >= 1);
-        mNetworkCache.setSubTitleText(getResources().getQuantityString(
-                R.plurals.currently_contains_x_entries, networkCacheSize, networkCacheSize));
+        try {
+            final long cacheSize = App.getNetworkCache().getSize();
+            final String formattedCacheSize = Formatter.formatShortFileSize(this, cacheSize);
+            mNetworkCache.setEnabled(cacheSize >= 1);
+            mNetworkCache.setSubTitleText(getString(R.string.size_is_x, formattedCacheSize));
+        } catch (final IOException e) {
+            Console.e(TAG, "Error when attempting to read the size of the network cache", e);
+            mNetworkCache.setEnabled(false);
+            mNetworkCache.setSubTitleText(R.string.size_is_unknown);
+        }
     }
 
 
@@ -277,6 +280,7 @@ public class SettingsActivity extends BaseToolbarActivity {
         mConsole.setTitleText(R.string.log_console);
         mConsole.setSubTitleText(R.string.log_console_description);
 
+        mVersion.setEnabled(false);
         mVersion.setTitleText(R.string.version_information);
         mVersion.setSubTitleText(getString(R.string.x_build_y, App.getVersionName(),
                 App.getVersionCode()));
@@ -326,6 +330,8 @@ public class SettingsActivity extends BaseToolbarActivity {
 
         mSyncCharging.setOnToggleListener(syncToggleListener);
         mSyncWifi.setOnToggleListener(syncToggleListener);
+
+        mSyncStatus.setEnabled(false);
         mSyncStatus.setTitleText(R.string.last_sync);
 
         if (Settings.Sync.LastDate.exists()) {

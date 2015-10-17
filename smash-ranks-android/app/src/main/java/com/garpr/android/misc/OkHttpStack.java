@@ -2,6 +2,7 @@ package com.garpr.android.misc;
 
 
 import com.android.volley.toolbox.HurlStack;
+import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.OkUrlFactory;
 
@@ -26,8 +27,11 @@ public final class OkHttpStack extends HurlStack {
 
 
 
-    public OkHttpStack() {
-        mFactory = new OkUrlFactory(new OkHttpClient());
+    public OkHttpStack(final Cache cache) {
+        final OkHttpClient client = new OkHttpClient();
+        client.setCache(cache);
+
+        mFactory = new OkUrlFactory(client);
     }
 
 

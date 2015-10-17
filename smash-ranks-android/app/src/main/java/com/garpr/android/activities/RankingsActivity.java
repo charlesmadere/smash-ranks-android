@@ -15,13 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Toast;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.calls.Rankings;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
-import com.garpr.android.misc.NetworkCache;
 import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.misc.SyncManager;
 import com.garpr.android.misc.Utils;
@@ -178,7 +178,7 @@ public class RankingsActivity extends BaseToolbarListActivity implements
         if (intent != null && intent.getBooleanExtra(EXTRA_IS_FROM_RANKINGS_UPDATE_NOTIFICATION, false)) {
             intent.putExtra(EXTRA_IS_FROM_RANKINGS_UPDATE_NOTIFICATION, false);
             Settings.Region.set(Settings.User.Region);
-            NetworkCache.clear();
+            App.deleteNetworkCache();
         }
 
         mInUsersRegion = Settings.areWeInTheUsersRegion();

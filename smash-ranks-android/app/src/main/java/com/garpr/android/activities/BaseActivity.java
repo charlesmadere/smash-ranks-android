@@ -19,6 +19,7 @@ import com.garpr.android.misc.HeartbeatWithUi;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.models.Region;
 import com.garpr.android.settings.RegionSetting;
+import com.garpr.android.settings.Setting;
 import com.garpr.android.settings.Settings;
 
 import butterknife.ButterKnife;
@@ -132,11 +133,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseFrag
 
 
     @Override
-    public final void onSettingChanged(final Region setting) {
+    public final void onSettingChanged(final Setting<Region> setting) {
         runOnUi(new Runnable() {
             @Override
             public void run() {
-                onRegionChanged(setting);
+                onRegionChanged(setting.get());
             }
         });
     }

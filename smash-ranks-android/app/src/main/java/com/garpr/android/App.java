@@ -12,9 +12,12 @@ import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsManager;
 import com.garpr.android.misc.Heartbeat;
-import com.garpr.android.misc.NetworkCache;
 import com.garpr.android.misc.OkHttpStack;
 import com.garpr.android.settings.Settings;
+import com.squareup.okhttp.Cache;
+
+import java.io.File;
+import java.io.IOException;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -22,9 +25,11 @@ import io.fabric.sdk.android.Fabric;
 public final class App extends Application {
 
 
+    private static final long NETWORK_CACHE_SIZE = 10l * 10l * 1024l; // 10 MiB
     private static final String TAG = "App";
 
     private static App sInstance;
+    private static Cache sNetworkCache;
     private static RequestQueue sRequestQueue;
 
 
@@ -35,8 +40,22 @@ public final class App extends Application {
     }
 
 
+    public static void deleteNetworkCache() {
+        try {
+            sNetworkCache.evictAll();
+        } catch (final IOException e) {
+            Console.e(TAG, "Error when attempting to delete the network cache", e);
+        }
+    }
+
+
     public static App get() {
         return sInstance;
+    }
+
+
+    public static Cache getNetworkCache() {
+        return sNetworkCache;
     }
 
 
@@ -66,18 +85,45 @@ public final class App extends Application {
     }
 
 
+    private void initializeVolley() {
+        File cacheDir = getExternalCacheDir();
+        String external = " external ";
+
+        if (cacheDir == null) {
+            cacheDir = getCacheDir();
+            external = " ";
+        }
+
+        cacheDir = new File(cacheDir.getPath() + File.separator + "NetworkCache");
+        cacheDir.mkdirs();
+
+        sNetworkCache = new Cache(cacheDir, NETWORK_CACHE_SIZE);
+
+        try {
+            sNetworkCache.initialize();
+        } catch (final IOException e) {
+            Console.e(TAG, "HTTP Cache initialization failure", e);
+        }
+
+        Console.d(TAG, "HTTP Cache is in the" + external + "cache dir at \"" +
+                sNetworkCache.getDirectory().getPath() + "\", max size is " +
+                sNetworkCache.getMaxSize());
+
+        sRequestQueue = Volley.newRequestQueue(this, new OkHttpStack(sNetworkCache));
+    }
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
         Fabric.with(this, new Crashlytics());
         CrashlyticsManager.setBool(Constants.DEBUG, BuildConfig.DEBUG);
-        sRequestQueue = Volley.newRequestQueue(this, new OkHttpStack());
+        initializeVolley();
 
         final int currentVersion = getVersionCode();
+        Console.d(TAG, "App created, current version is " + currentVersion);
         final int lastVersion = Settings.LastVersion.get();
-
-        Console.d(TAG, "App created, version is " + currentVersion);
 
         if (currentVersion > lastVersion) {
             onUpgrade(lastVersion);
@@ -98,11 +144,10 @@ public final class App extends Application {
 
 
     private void onUpgrade(final int lastVersion) {
-        Console.d(TAG, "Upgrading from " + lastVersion);
+        Console.d(TAG, "App upgrading from version " + lastVersion);
 
         if (lastVersion < 40) {
             // entirely new settings model and classes, all SharedPreferences must be cleared
-            NetworkCache.clear();
             Settings.deleteAll();
         }
 
@@ -114,6 +159,11 @@ public final class App extends Application {
         if (lastVersion < 60) {
             // another big shift in how settings are stored
             Settings.deleteAll();
+        }
+
+        if (lastVersion < 94) {
+            // we no longer use our own home-grown network cache solution
+            Settings.edit("com.garpr.android.misc.NetworkCache").clear().apply();
         }
     }
 

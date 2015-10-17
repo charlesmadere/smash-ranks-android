@@ -9,9 +9,11 @@ import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
 import com.garpr.android.misc.Utils;
 import com.garpr.android.settings.Settings;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 
@@ -26,6 +28,17 @@ public class Player implements AlphabeticallyComparable, Parcelable {
     private final String mRatingTruncated;
 
 
+
+
+    public static JSONArray toJSON(final ArrayList<Player> players) {
+        final JSONArray jsonArray = new JSONArray();
+
+        for (final Player p : players) {
+            jsonArray.put(p.toJSON());
+        }
+
+        return jsonArray;
+    }
 
 
     public Player(final JSONObject json) throws JSONException {

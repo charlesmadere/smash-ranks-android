@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.garpr.android.R;
+import com.garpr.android.settings.Settings;
 
 import butterknife.Bind;
 
@@ -90,6 +91,12 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
         }
 
         mNavigationView.setNavigationItemSelectedListener(this);
+
+        if (Settings.User.Player.exists()) {
+            final Menu menu = mNavigationView.getMenu();
+            final MenuItem profile = menu.findItem(R.id.navigation_view_menu_profile);
+            profile.setVisible(true);
+        }
     }
 
 
@@ -158,43 +165,37 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
 
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
-        boolean handled = false;
+        IntentBuilder intentBuilder = null;
 
         switch (menuItem.getItemId()) {
             case R.id.navigation_view_menu_about:
-                if (!(this instanceof AboutActivity)) {
-                    new AboutActivity.IntentBuilder(this).start(this);
-                    handled = true;
-                }
+                intentBuilder = new AboutActivity.IntentBuilder(this);
+                break;
+
+            case R.id.navigation_view_menu_profile:
+                intentBuilder = new PlayerActivity.IntentBuilder(this, Settings.User.Player.get());
                 break;
 
             case R.id.navigation_view_menu_rankings:
-                if (!(this instanceof RankingsActivity)) {
-                    new RankingsActivity.IntentBuilder(this).start(this);
-                    handled = true;
-                }
+                intentBuilder = new RankingsActivity.IntentBuilder(this);
                 break;
 
             case R.id.navigation_view_menu_settings:
-                if (!(this instanceof SettingsActivity)) {
-                    new SettingsActivity.IntentBuilder(this).start(this);
-                    handled = true;
-                }
+                intentBuilder = new SettingsActivity.IntentBuilder(this);
                 break;
 
             case R.id.navigation_view_menu_tournaments:
-                if (!(this instanceof TournamentActivity)) {
-                    new TournamentsActivity.IntentBuilder(this).start(this);
-                    handled = true;
-                }
+                intentBuilder = new TournamentsActivity.IntentBuilder(this);
                 break;
         }
 
-        if (handled) {
+        if (intentBuilder == null) {
+            return false;
+        } else {
+            intentBuilder.start(this);
             closeDrawer();
+            return true;
         }
-
-        return handled;
     }
 
 
