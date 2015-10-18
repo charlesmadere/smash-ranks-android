@@ -106,8 +106,7 @@ public final class App extends Application {
         }
 
         Console.d(TAG, "HTTP Cache is in the" + external + "cache dir at \"" +
-                sNetworkCache.getDirectory().getPath() + "\", max size is " +
-                sNetworkCache.getMaxSize());
+                sNetworkCache.getDirectory().getPath() + '"');
 
         sRequestQueue = Volley.newRequestQueue(this, new OkHttpStack(sNetworkCache));
     }
@@ -161,7 +160,7 @@ public final class App extends Application {
             Settings.deleteAll();
         }
 
-        if (lastVersion < 94) {
+        if (lastVersion < 93) {
             // we no longer use our own home-grown network cache solution
             Settings.edit("com.garpr.android.misc.NetworkCache").clear().apply();
         }
