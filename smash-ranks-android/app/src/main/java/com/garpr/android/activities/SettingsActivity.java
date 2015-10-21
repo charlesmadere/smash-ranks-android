@@ -13,6 +13,8 @@ import android.text.format.Formatter;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.Cache;
+import com.android.volley.toolbox.DiskBasedCache;
 import com.garpr.android.App;
 import com.garpr.android.BuildConfig;
 import com.garpr.android.R;
@@ -28,7 +30,7 @@ import com.garpr.android.views.PreferenceView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import java.io.IOException;
+import java.lang.reflect.Field;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -210,13 +212,40 @@ public class SettingsActivity extends BaseToolbarActivity {
 
 
     private void pollNetworkCache() {
-        try {
-            final long cacheSize = App.getNetworkCache().getSize();
-            final String formattedCacheSize = Formatter.formatShortFileSize(this, cacheSize);
-            mNetworkCache.setEnabled(cacheSize >= 1);
-            mNetworkCache.setSubTitleText(getString(R.string.size_is_x, formattedCacheSize));
-        } catch (final IOException e) {
-            Console.e(TAG, "Error when attempting to read the size of the network cache", e);
+        final Cache cache = App.getNetworkCache();
+        boolean error = false;
+
+        if (cache instanceof DiskBasedCache) {
+            final DiskBasedCache dbc = (DiskBasedCache) cache;
+            Exception exception = null;
+            Long cacheSize = null;
+
+            try {
+                final Field field = DiskBasedCache.class.getDeclaredField("mTotalSize");
+                field.setAccessible(true);
+                cacheSize = (Long) field.get(dbc);
+            } catch (final IllegalAccessException e) {
+                exception = e;
+            } catch (final NoSuchFieldException e) {
+                exception = e;
+            }
+
+            if (exception == null && cacheSize != null) {
+                final String formattedCacheSize = Formatter.formatShortFileSize(this, cacheSize);
+                mNetworkCache.setSubTitleText(getString(R.string.size_is_x, formattedCacheSize));
+                mNetworkCache.setEnabled(cacheSize >= 1);
+            } else {
+                Console.e(TAG, "Reflection failure when retrieving size of the network cache",
+                        exception);
+                error = true;
+            }
+        } else {
+            Console.d(TAG, "Network cache isn't a DiskBasedCache, is instead a \"" +
+                    cache.getClass().getSimpleName() + '"');
+            error = true;
+        }
+
+        if (error) {
             mNetworkCache.setEnabled(false);
             mNetworkCache.setSubTitleText(R.string.size_is_unknown);
         }

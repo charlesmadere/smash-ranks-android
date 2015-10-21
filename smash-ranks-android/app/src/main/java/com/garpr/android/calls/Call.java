@@ -15,8 +15,6 @@ import com.garpr.android.misc.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -80,7 +78,7 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
                 mUrl = getUrl();
 
                 if (mIgnoreCache) {
-                    wipeCacheOfUrl();
+                    App.getNetworkCache().remove(mUrl);
                 }
 
                 makeNetworkRequest(heartbeat);
@@ -148,24 +146,6 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
     @Override
     public final String toString() {
         return getCallName();
-    }
-
-
-    private void wipeCacheOfUrl() {
-        try {
-            final Iterator<String> iterator = App.getNetworkCache().urls();
-
-            while (iterator.hasNext()) {
-                final String url = iterator.next();
-
-                if (mUrl.equalsIgnoreCase(url)) {
-                    iterator.remove();
-                    return;
-                }
-            }
-        } catch (final IOException e) {
-            Console.e(getCallName(), "Failure to wipe cache of " + mUrl, e);
-        }
     }
 
 

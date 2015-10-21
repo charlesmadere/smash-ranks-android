@@ -14,7 +14,7 @@
             android:id="@+id/view_ranking_item_rank"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textColor="@color/indigo_bright"
+            android:textColor="@color/gray_lighter"
             android:textSize="14sp"
             tools:ignore="RelativeOverlap"
             tools:text="1" />
@@ -36,7 +36,7 @@
             android:id="@+id/view_ranking_item_rating"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textColor="@color/indigo_bright"
+            android:textColor="@color/gray_lighter"
             android:textSize="14sp"
             tools:text="30.102" />
     </LinearLayout>

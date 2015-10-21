@@ -86,12 +86,6 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
                         paib.start(getActivity());
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                    }
-                })
                 .show();
 
         return true;

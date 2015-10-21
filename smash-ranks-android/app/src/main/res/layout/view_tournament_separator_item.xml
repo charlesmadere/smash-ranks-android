@@ -21,6 +21,7 @@
             android:layout_width="@dimen/root_padding_half" />
         <TextView
             android:id="@+id/view_tournament_separator_item_date"
+            android:textColor="@color/gray_lighter"
             tools:text="01/14/15"
             style="@style/separator_text" />
     </LinearLayout>

@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.android.volley.Cache;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.Crashlytics;
@@ -12,12 +13,7 @@ import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsManager;
 import com.garpr.android.misc.Heartbeat;
-import com.garpr.android.misc.OkHttpStack;
 import com.garpr.android.settings.Settings;
-import com.squareup.okhttp.Cache;
-
-import java.io.File;
-import java.io.IOException;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -25,11 +21,9 @@ import io.fabric.sdk.android.Fabric;
 public final class App extends Application {
 
 
-    private static final long NETWORK_CACHE_SIZE = 10l * 10l * 1024l; // 10 MiB
     private static final String TAG = "App";
 
     private static App sInstance;
-    private static Cache sNetworkCache;
     private static RequestQueue sRequestQueue;
 
 
@@ -41,11 +35,7 @@ public final class App extends Application {
 
 
     public static void deleteNetworkCache() {
-        try {
-            sNetworkCache.evictAll();
-        } catch (final IOException e) {
-            Console.e(TAG, "Error when attempting to delete the network cache", e);
-        }
+        getNetworkCache().clear();
     }
 
 
@@ -55,7 +45,7 @@ public final class App extends Application {
 
 
     public static Cache getNetworkCache() {
-        return sNetworkCache;
+        return sRequestQueue.getCache();
     }
 
 
@@ -85,40 +75,13 @@ public final class App extends Application {
     }
 
 
-    private void initializeVolley() {
-        File cacheDir = getExternalCacheDir();
-        String external = " external ";
-
-        if (cacheDir == null) {
-            cacheDir = getCacheDir();
-            external = " local ";
-        }
-
-        cacheDir = new File(cacheDir.getPath() + File.separator + "NetworkCache");
-        cacheDir.mkdirs();
-
-        sNetworkCache = new Cache(cacheDir, NETWORK_CACHE_SIZE);
-
-        try {
-            sNetworkCache.initialize();
-        } catch (final IOException e) {
-            Console.e(TAG, "HTTP Cache initialization failure", e);
-        }
-
-        Console.d(TAG, "HTTP Cache is in the" + external + "cache dir at \"" +
-                sNetworkCache.getDirectory().getPath() + '"');
-
-        sRequestQueue = Volley.newRequestQueue(this, new OkHttpStack(sNetworkCache));
-    }
-
-
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
         Fabric.with(this, new Crashlytics());
         CrashlyticsManager.setBool(Constants.DEBUG, BuildConfig.DEBUG);
-        initializeVolley();
+        sRequestQueue = Volley.newRequestQueue(this);
 
         final int currentVersion = getVersionCode();
         Console.d(TAG, "App created, current version is " + currentVersion);
