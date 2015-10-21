@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -203,8 +204,8 @@ public class PlayerActivity extends BaseToolbarListActivity implements
         setTitle(mPlayer.getName());
 
         if (mPlayer.hasCompetitionValues()) {
-            final Toolbar toolbar = getToolbar();
-            toolbar.setSubtitle(getString(R.string.rank_x, mPlayer.getRank()));
+            final ActionBar actionBar = getSupportActionBar();
+            actionBar.setSubtitle(getString(R.string.rank_x, mPlayer.getRank()));
         }
 
         mInUsersRegion = Settings.areWeInTheUsersRegion();
