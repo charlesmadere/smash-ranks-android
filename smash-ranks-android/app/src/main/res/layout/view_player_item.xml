@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="@dimen/list_item_height"
-        android:paddingBottom="@dimen/root_padding_fourth"
+        android:paddingBottom="@dimen/root_padding_quarter"
         android:paddingLeft="@dimen/root_padding"
         android:paddingRight="@dimen/root_padding"
-        android:paddingTop="@dimen/root_padding_fourth"
+        android:paddingTop="@dimen/root_padding_quarter"
         android:maxLines="3"
         android:textSize="20sp"
         tools:text="Shroomed" />

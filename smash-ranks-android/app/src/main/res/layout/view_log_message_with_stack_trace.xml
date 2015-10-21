@@ -13,7 +13,7 @@
     <TextView
         android:id="@+id/view_log_message_with_stack_trace_header"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/root_padding_fourth"
+        android:layout_marginBottom="@dimen/root_padding_quarter"
         android:layout_width="match_parent"
         android:textSize="14sp"
         tools:text="Region listener added at index 4" />

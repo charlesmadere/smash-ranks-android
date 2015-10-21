@@ -14,14 +14,14 @@
     <color name="indigo_brighter">#A797E5</color>
     <color name="indigo_bright">#7E66D8</color>
     <color name="indigo_dark">#210054</color>
-    <color name="lose_pink">#EC407A</color>
+    <color name="lose_pink">#C36987</color>
     <color name="overlay_bright">#33FFFFFF</color>
     <color name="overlay_dark">#66000000</color>
     <color name="transparent">#00000000</color>
-    <color name="transparent_lose_pink">#33EC407A</color>
-    <color name="transparent_win_green">#3366BB6A</color>
+    <color name="transparent_lose_pink">#33C36987</color>
+    <color name="transparent_win_green">#3377AA79</color>
     <color name="white">#FFFFFF</color>
-    <color name="win_green">#66BB6A</color>
+    <color name="win_green">#77AA79</color>
 
     <color name="r">#FF0000</color>
     <color name="g">#00FF00</color>

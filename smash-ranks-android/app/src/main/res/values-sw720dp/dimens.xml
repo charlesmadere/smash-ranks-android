@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="list_item_height">60dp</dimen>
+    <dimen name="list_item_height">52dp</dimen>
     <dimen name="list_item_separator_height">48dp</dimen>
     <dimen name="navigation_drawer_width">340dp</dimen>
     <dimen name="match_results_bar_height">22dp</dimen>
     <dimen name="match_results_item_height">84dp</dimen>
-    <dimen name="root_padding">24dp</dimen>
-    <dimen name="root_padding_double">48dp</dimen>
+    <dimen name="root_padding">20dp</dimen>
+    <dimen name="root_padding_double">40dp</dimen>
     <dimen name="root_padding_eighth">3dp</dimen>
-    <dimen name="root_padding_fourth">6dp</dimen>
-    <dimen name="root_padding_half">12dp</dimen>
-    <dimen name="root_padding_quadruple">96dp</dimen>
-    <dimen name="root_padding_triple">72dp</dimen>
+    <dimen name="root_padding_quarter">5dp</dimen>
+    <dimen name="root_padding_half">10dp</dimen>
+    <dimen name="root_padding_quadruple">80dp</dimen>
+    <dimen name="root_padding_triple">60dp</dimen>
 
 </resources>

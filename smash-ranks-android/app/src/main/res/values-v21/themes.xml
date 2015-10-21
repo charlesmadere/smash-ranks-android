@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="app_theme" parent="base_theme">
+    <style name="alert_dialog_theme_v21" parent="android:Theme.Material.Dialog">
         <item name="android:colorAccent">@color/indigo_bright</item>
-        <item name="android:colorEdgeEffect">@color/indigo</item>
-        <item name="android:colorPrimary">@color/indigo</item>
-        <item name="android:colorPrimaryDark">@color/indigo_dark</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="navigation_view_theme" parent="base_navigation_view_theme">
+    <style name="app_theme" parent="app_theme_base">
+        <item name="android:alertDialogTheme">@style/alert_dialog_theme_v21</item>
+        <item name="android:navigationBarColor">@color/gray_dark</item>
+    </style>
+
+    <style name="app_theme.with_drawer">
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="navigation_view_theme" parent="navigation_view_theme_base">
         <item name="android:colorPrimary">@color/white</item>
     </style>
 
