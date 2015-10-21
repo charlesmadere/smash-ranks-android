@@ -15,8 +15,4 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="navigation_view_theme" parent="navigation_view_theme_base">
-        <item name="android:colorPrimary">@color/white</item>
-    </style>
-
 </resources>

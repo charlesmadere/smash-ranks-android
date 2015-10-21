@@ -21,14 +21,6 @@
 
     </style>
 
-    <style name="navigation_view_theme_base" parent="app_theme">
-        <item name="colorPrimary">@color/white</item>
-    </style>
-
-    <style name="navigation_view_theme" parent="navigation_view_theme_base">
-
-    </style>
-
     <style name="toolbar_theme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
     </style>
