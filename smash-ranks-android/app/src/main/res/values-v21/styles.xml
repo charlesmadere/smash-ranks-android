@@ -18,8 +18,4 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="status_bar_buffer" parent="status_bar_buffer_base">
-        <item name="android:visibility">visible</item>
-    </style>
-
 </resources>

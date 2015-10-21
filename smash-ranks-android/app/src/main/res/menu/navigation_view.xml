@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <group android:checkableBehavior="single">
         <item
             android:icon="@drawable/ic_group"
@@ -13,7 +14,8 @@
             android:icon="@drawable/ic_face"
             android:id="@+id/navigation_view_menu_profile"
             android:title="@string/profile"
-            android:visible="false" />
+            android:visible="false"
+            tools:visible="true" />
         <item
             android:icon="@drawable/ic_heart"
             android:id="@+id/navigation_view_menu_favorites"

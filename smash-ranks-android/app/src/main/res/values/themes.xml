@@ -13,8 +13,8 @@
         <item name="android:windowBackground">@color/gray_darker</item>
         <item name="alertDialogTheme">@style/alert_dialog_theme</item>
         <item name="colorAccent">@color/indigo_bright</item>
-        <item name="colorPrimary">@color/indigo</item>
-        <item name="colorPrimaryDark">@color/indigo_dark</item>
+        <item name="colorPrimary">@color/gray_dark</item>
+        <item name="colorPrimaryDark">@color/gray_darker</item>
     </style>
 
     <style name="app_theme.with_drawer">

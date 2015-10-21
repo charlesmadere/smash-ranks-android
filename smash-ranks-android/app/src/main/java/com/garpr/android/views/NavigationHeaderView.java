@@ -68,9 +68,12 @@ public class NavigationHeaderView extends RelativeLayout implements
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ButterKnife.bind(this);
-        updateRegion();
-        updatePlayer();
+
+        if (!isInEditMode()) {
+            ButterKnife.bind(this);
+            updateRegion();
+            updatePlayer();
+        }
     }
 
 

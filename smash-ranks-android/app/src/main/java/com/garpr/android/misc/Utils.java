@@ -2,16 +2,13 @@ package com.garpr.android.misc;
 
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.garpr.android.App;
-import com.garpr.android.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -28,29 +25,6 @@ public final class Utils {
     private static final String TAG = "Utils";
 
 
-
-
-    public static void applyStatusBarHeight(final View view) {
-        final Resources res = view.getResources();
-        final int statusBarHeightResId = res.getIdentifier("status_bar_height", "dimen", "android");
-
-        int statusBarHeight;
-
-        if (statusBarHeightResId > 0) {
-            try {
-                statusBarHeight = res.getDimensionPixelSize(statusBarHeightResId);
-            } catch (final Resources.NotFoundException e) {
-                Console.w(TAG, "Unable to find Android's status_bar_height resource", e);
-                statusBarHeight = res.getDimensionPixelSize(R.dimen.status_bar_height);
-            }
-        } else {
-            statusBarHeight = res.getDimensionPixelSize(R.dimen.status_bar_height);
-        }
-
-        final ViewGroup.LayoutParams params = view.getLayoutParams();
-        params.height = statusBarHeight;
-        view.setLayoutParams(params);
-    }
 
 
     public static boolean areAnyObjectsNull(final Object... objects) {
