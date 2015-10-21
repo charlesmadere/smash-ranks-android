@@ -18,6 +18,9 @@ public class FavoritesActivity extends BaseToolbarActivity {
     @Bind(R.id.activity_favorites_empty)
     LinearLayout mEmptyView;
 
+    @Bind(R.id.activity_favorites_progress)
+    LinearLayout mProgressView;
+
     @Bind(R.id.activity_favorites_list)
     RecyclerView mRecyclerView;
 
