@@ -54,13 +54,19 @@ public class NavigationHeaderView extends RelativeLayout implements
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        updateRegion();
+
+        if (!isInEditMode()) {
+            updateRegion();
+        }
     }
 
 
     @Override
     protected void onDetachedFromWindow() {
-        Settings.Region.detachListener(this);
+        if (!isInEditMode()) {
+            Settings.Region.detachListener(this);
+        }
+
         super.onDetachedFromWindow();
     }
 

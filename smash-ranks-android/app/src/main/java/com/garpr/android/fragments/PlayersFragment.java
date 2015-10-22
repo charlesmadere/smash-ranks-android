@@ -21,6 +21,7 @@ import com.garpr.android.misc.ListUtils.AlphabeticallyComparable;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
 import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.models.Player;
+import com.garpr.android.settings.Settings;
 import com.garpr.android.views.CheckableItemView;
 import com.garpr.android.views.SimpleSeparatorView;
 
@@ -323,6 +324,9 @@ public class PlayersFragment extends BaseListToolbarFragment implements
 
 
     public void refresh() {
+        final Toolbar toolbar = getToolbar();
+        toolbar.setSubtitle(Settings.User.Region.get().getName());
+
         clearSelectedPlayer();
         fetchPlayers();
     }

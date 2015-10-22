@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -72,12 +71,6 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        if (showDrawerIndicator()) {
-            final ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
         mNavigationView.setNavigationItemSelectedListener(this);
 
         if (Settings.User.Player.exists()) {
@@ -208,20 +201,6 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
     protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        final Menu menu = mNavigationView.getMenu();
-        final int selectedNavigationItemId = getSelectedNavigationItemId();
-
-        for (int i = 0; i < menu.size(); ++i) {
-            final MenuItem mi = menu.getItem(i);
-            mi.setChecked(mi.getItemId() == selectedNavigationItemId);
-        }
     }
 
 

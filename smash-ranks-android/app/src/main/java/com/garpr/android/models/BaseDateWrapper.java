@@ -9,11 +9,9 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.ListUtils.MonthlyComparable;
-import com.garpr.android.misc.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -24,15 +22,12 @@ public abstract class BaseDateWrapper implements MonthlyComparable, Parcelable {
     private static final SimpleDateFormat DAY_OF_MONTH_FORMATTER;
     private static final SimpleDateFormat MM_DD_YY_FORMATTER;
     private static final SimpleDateFormat MONTH_FORMATTER;
-    private static final SimpleDateFormat MONTH_AND_DAY_FORMATTER;
-    private static final SimpleDateFormat MONTH_AND_DAY_AND_YEAR_FORMATTER;
     private static final SimpleDateFormat YEAR_FORMATTER;
 
     private final Date mDate;
     private final String mDay;
     private final String mMmDdYy;
     private final String mMonth;
-    private String mMonthAndDayOrMonthAndDayAndYear;
     private final String mMonthAndYear;
     private final String mYear;
 
@@ -44,13 +39,12 @@ public abstract class BaseDateWrapper implements MonthlyComparable, Parcelable {
         DAY_OF_MONTH_FORMATTER = new SimpleDateFormat(Constants.DAY_OF_MONTH_FORMAT, locale);
         MM_DD_YY_FORMATTER = new SimpleDateFormat(Constants.MM_DD_YY_FORMAT,locale);
         MONTH_FORMATTER = new SimpleDateFormat(Constants.MONTH_FORMAT, locale);
-        MONTH_AND_DAY_FORMATTER = new SimpleDateFormat(Constants.MONTH_AND_DAY_FORMAT, locale);
-        MONTH_AND_DAY_AND_YEAR_FORMATTER = new SimpleDateFormat(Constants.MONTH_AND_DAY_AND_YEAR_FORMAT, locale);
         YEAR_FORMATTER = new SimpleDateFormat(Constants.YEAR_FORMAT, locale);
     }
 
 
-    BaseDateWrapper(final SimpleDateFormat parser, final String date) throws ParseException {
+    protected BaseDateWrapper(final SimpleDateFormat parser, final String date)
+            throws ParseException {
         mDate = parser.parse(date);
         mDay = DAY_OF_MONTH_FORMATTER.format(mDate);
         mMmDdYy = MM_DD_YY_FORMATTER.format(mDate);
@@ -62,12 +56,11 @@ public abstract class BaseDateWrapper implements MonthlyComparable, Parcelable {
     }
 
 
-    BaseDateWrapper(final Parcel source) {
+    protected BaseDateWrapper(final Parcel source) {
         mDate = new Date(source.readLong());
         mDay = source.readString();
         mMmDdYy = source.readString();
         mMonth = source.readString();
-        mMonthAndDayOrMonthAndDayAndYear = source.readString();
         mMonthAndYear = source.readString();
         mYear = source.readString();
     }
@@ -108,25 +101,6 @@ public abstract class BaseDateWrapper implements MonthlyComparable, Parcelable {
 
     public String getMonth() {
         return mMonth;
-    }
-
-
-    public String getMonthAndDayOrMonthAndDayAndYear() {
-        if (!Utils.validStrings(mMonthAndDayOrMonthAndDayAndYear)) {
-            final Calendar calendar = Calendar.getInstance();
-            final int actualYear = calendar.get(Calendar.YEAR);
-
-            calendar.setTime(mDate);
-            final int year = calendar.get(Calendar.YEAR);
-
-            if (actualYear == year) {
-                mMonthAndDayOrMonthAndDayAndYear = MONTH_AND_DAY_FORMATTER.format(mDate);
-            } else {
-                mMonthAndDayOrMonthAndDayAndYear = MONTH_AND_DAY_AND_YEAR_FORMATTER.format(mDate);
-            }
-        }
-
-        return mMonthAndDayOrMonthAndDayAndYear;
     }
 
 
@@ -186,7 +160,6 @@ public abstract class BaseDateWrapper implements MonthlyComparable, Parcelable {
         dest.writeString(mDay);
         dest.writeString(mMmDdYy);
         dest.writeString(mMonth);
-        dest.writeString(mMonthAndDayOrMonthAndDayAndYear);
         dest.writeString(mMonthAndYear);
         dest.writeString(mYear);
     }

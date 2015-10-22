@@ -4,10 +4,6 @@
     <declare-styleable name="refresh_layout">
         <attr name="scrolling_child" format="reference" />
         <attr name="spinner_colors" format="reference" />
-        <attr name="spinner_size" format="enum">
-            <enum name="normal" value="0" />
-            <enum name="large" value="1" />
-        </attr>
     </declare-styleable>
 
 </resources>

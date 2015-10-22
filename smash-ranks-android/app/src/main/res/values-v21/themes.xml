@@ -7,12 +7,15 @@
 
     <style name="app_theme" parent="app_theme_base">
         <item name="android:alertDialogTheme">@style/alert_dialog_theme_v21</item>
-        <item name="android:navigationBarColor">@color/gray_dark</item>
     </style>
 
-    <style name="app_theme.with_drawer">
+    <style name="app_theme.drawer">
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="app_theme.fullscreen">
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
 </resources>

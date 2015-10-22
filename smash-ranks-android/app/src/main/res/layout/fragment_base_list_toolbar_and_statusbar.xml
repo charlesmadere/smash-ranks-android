@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        app:scrolling_child="@id/fragment_base_list_list">
+        app:scrolling_child="@+id/fragment_base_list_list">
         <FrameLayout
             android:id="@+id/fragment_base_list_frame"
             android:layout_height="match_parent"

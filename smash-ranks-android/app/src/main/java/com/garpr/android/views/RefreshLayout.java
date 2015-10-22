@@ -76,10 +76,6 @@ public class RefreshLayout extends SwipeRefreshLayout {
         final int spinnerColors[] = getResources().getIntArray(spinnerColorsResId);
         setColorSchemeColors(spinnerColors);
 
-        if (ta.hasValue(R.styleable.refresh_layout_spinner_size)) {
-            setSize(ta.getInt(R.styleable.refresh_layout_spinner_size, DEFAULT));
-        }
-
         ta.recycle();
     }
 

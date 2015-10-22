@@ -34,7 +34,7 @@ public class TournamentBundle implements Parcelable {
         }
 
         // this should never happen
-        throw new RuntimeException();
+        throw new RuntimeException("unable to find player with id \"" + id + '"');
     }
 
 

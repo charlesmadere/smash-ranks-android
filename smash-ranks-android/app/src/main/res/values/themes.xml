@@ -9,7 +9,7 @@
 
     </style>
 
-    <style name="app_theme_base" parent="Theme.AppCompat">
+    <style name="app_theme_base" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/gray_darker</item>
         <item name="alertDialogTheme">@style/alert_dialog_theme</item>
         <item name="colorAccent">@color/indigo_bright</item>
@@ -17,7 +17,7 @@
         <item name="colorPrimaryDark">@color/gray_darker</item>
     </style>
 
-    <style name="app_theme.with_drawer">
+    <style name="app_theme.drawer">
 
     </style>
 

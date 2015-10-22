@@ -6,55 +6,51 @@
     android:orientation="vertical"
     tools:ignore="Overdraw"
     style="@style/root.no_padding">
-    <ScrollView
+    <include
+        layout="@layout/view_status_bar" />
+    <ImageView
+        android:adjustViewBounds="true"
+        android:alpha="0"
+        android:contentDescription="@string/gar_pr"
+        android:id="@+id/fragment_welcome_controller"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_double"
+        android:layout_marginTop="@dimen/root_padding_triple"
+        android:layout_width="wrap_content"
+        android:scaleType="centerInside"
+        android:src="@drawable/controller_white"
+        tools:alpha="1" />
+    <TextView
+        android:alpha="0"
+        android:id="@+id/fragment_welcome_gar_pr"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_double"
+        android:layout_width="match_parent"
+        android:text="@string/gar_pr"
+        android:shadowColor="@color/black"
+        android:shadowDx="0"
+        android:shadowDy="8"
+        android:shadowRadius="16"
+        tools:alpha="1"
+        style="@style/garpr_text" />
+    <TextView
+        android:alpha="0"
+        android:gravity="center"
+        android:id="@+id/fragment_welcome_text"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/root_padding"
+        android:layout_marginRight="@dimen/root_padding"
+        android:layout_width="match_parent"
+        android:lineSpacingExtra="4dp"
+        android:textSize="17sp"
+        tools:alpha="1"
+        tools:text="@string/gar_pr_welcome_text" />
+    <android.support.v4.widget.Space
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_width="match_parent">
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            style="@style/root">
-            <ImageView
-                android:adjustViewBounds="true"
-                android:alpha="0"
-                android:contentDescription="@string/gar_pr"
-                android:id="@+id/fragment_welcome_controller"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/root_padding_triple"
-                android:layout_marginTop="@dimen/root_padding_quadruple"
-                android:layout_width="wrap_content"
-                android:scaleType="centerInside"
-                android:src="@drawable/controller_white"
-                tools:alpha="1" />
-            <TextView
-                android:alpha="0"
-                android:id="@+id/fragment_welcome_gar_pr"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/root_padding_double"
-                android:layout_width="match_parent"
-                android:text="@string/gar_pr"
-                android:shadowColor="@color/black"
-                android:shadowDx="0"
-                android:shadowDy="8"
-                android:shadowRadius="16"
-                tools:alpha="1"
-                style="@style/garpr_text" />
-            <TextView
-                android:alpha="0"
-                android:gravity="center"
-                android:id="@+id/fragment_welcome_text"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/root_padding"
-                android:layout_marginRight="@dimen/root_padding"
-                android:layout_width="match_parent"
-                android:lineSpacingExtra="4dp"
-                android:textSize="17sp"
-                tools:alpha="1"
-                tools:text="@string/gar_pr_welcome_text" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_width="match_parent" />
     <ImageButton
         android:alpha="0"
         android:background="?attr/selectableItemBackgroundBorderless"
