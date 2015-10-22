@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -54,21 +55,47 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
     private void initializeToolbarAndNavigationDrawer() {
         setSupportActionBar(mToolbar);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
-                R.string.open_drawer, R.string.close_drawer) {
-            @Override
-            public void onDrawerClosed(final View drawerView) {
-                super.onDrawerClosed(drawerView);
-                BaseToolbarActivity.this.onDrawerClosed();
-            }
+        if (showDrawerIndicator()) {
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+                    R.string.open_drawer, R.string.close_drawer) {
+                @Override
+                public void onDrawerClosed(final View drawerView) {
+                    super.onDrawerClosed(drawerView);
+                    BaseToolbarActivity.this.onDrawerClosed();
+                }
 
 
-            @Override
-            public void onDrawerOpened(final View drawerView) {
-                super.onDrawerOpened(drawerView);
-                BaseToolbarActivity.this.onDrawerOpened();
-            }
-        };
+                @Override
+                public void onDrawerOpened(final View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    BaseToolbarActivity.this.onDrawerOpened();
+                }
+            };
+        } else {
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open_drawer,
+                    R.string.close_drawer) {
+                @Override
+                public void onDrawerClosed(final View drawerView) {
+                    super.onDrawerClosed(drawerView);
+                    BaseToolbarActivity.this.onDrawerClosed();
+                }
+
+
+                @Override
+                public void onDrawerOpened(final View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    BaseToolbarActivity.this.onDrawerOpened();
+                }
+            };
+
+            mToolbar.setNavigationIcon(R.drawable.ic_back);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    navigateUp();
+                }
+            });
+        }
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mNavigationView.setNavigationItemSelectedListener(this);
