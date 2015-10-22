@@ -78,6 +78,17 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
             final MenuItem profile = menu.findItem(R.id.navigation_view_menu_profile);
             profile.setVisible(true);
         }
+
+        final int selectedNavigationItemId = getSelectedNavigationItemId();
+
+        if (selectedNavigationItemId != 0) {
+            final Menu menu = mNavigationView.getMenu();
+
+            for (int i = 0; i < menu.size(); ++i) {
+                final MenuItem menuItem = menu.getItem(i);
+                menuItem.setChecked(menuItem.getItemId() == selectedNavigationItemId);
+            }
+        }
     }
 
 
