@@ -21,6 +21,10 @@
 
     </style>
 
+    <style name="app_theme.fullscreen">
+
+    </style>
+
     <style name="toolbar_theme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
     </style>
