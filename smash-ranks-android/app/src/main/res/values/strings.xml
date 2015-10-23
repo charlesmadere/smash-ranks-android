@@ -2,6 +2,7 @@
 <resources>
 
     <string name="about">About</string>
+    <string name="add_to_favorites">Add to Favorites</string>
     <string name="advanced">Advanced</string>
     <string name="x_against_y">%1$s against %2$s</string>
     <string name="alphabetical_order">Alphabetical Order</string>
