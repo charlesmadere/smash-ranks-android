@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -105,17 +104,6 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
             final MenuItem profile = menu.findItem(R.id.navigation_view_menu_profile);
             profile.setVisible(true);
         }
-
-        final int selectedNavigationItemId = getSelectedNavigationItemId();
-
-        if (selectedNavigationItemId != 0) {
-            final Menu menu = mNavigationView.getMenu();
-
-            for (int i = 0; i < menu.size(); ++i) {
-                final MenuItem menuItem = menu.getItem(i);
-                menuItem.setChecked(menuItem.getItemId() == selectedNavigationItemId);
-            }
-        }
     }
 
 
@@ -183,9 +171,15 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
 
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
+        final int menuItemId = menuItem.getItemId();
+
+        if (menuItemId == getSelectedNavigationItemId()) {
+            return false;
+        }
+
         IntentBuilder intentBuilder = null;
 
-        switch (menuItem.getItemId()) {
+        switch (menuItemId) {
             case R.id.navigation_view_menu_about:
                 intentBuilder = new AboutActivity.IntentBuilder(this);
                 break;
@@ -195,7 +189,7 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
                 break;
 
             case R.id.navigation_view_menu_profile:
-                intentBuilder = new PlayerActivity.IntentBuilder(this, Settings.User.Player.get());
+                intentBuilder = new ProfileActivity.IntentBuilder(this);
                 break;
 
             case R.id.navigation_view_menu_rankings:
@@ -239,6 +233,27 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
     protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        selectCurrentNavigationItem();
+    }
+
+
+    private void selectCurrentNavigationItem() {
+        final int selectedNavigationItemId = getSelectedNavigationItemId();
+
+        if (selectedNavigationItemId != 0) {
+            final Menu menu = mNavigationView.getMenu();
+
+            for (int i = 0; i < menu.size(); ++i) {
+                final MenuItem menuItem = menu.getItem(i);
+                menuItem.setChecked(menuItem.getItemId() == selectedNavigationItemId);
+            }
+        }
     }
 
 

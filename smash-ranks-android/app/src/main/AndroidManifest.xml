@@ -98,6 +98,17 @@
         </activity>
 
         <activity
+            android:label="@string/profile"
+            android:launchMode="singleTop"
+            android:name=".activities.ProfileActivity"
+            android:parentActivityName=".activities.RankingsActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RankingsActivity" />
+        </activity>
+
+        <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
             android:name=".activities.RankingsActivity" />
