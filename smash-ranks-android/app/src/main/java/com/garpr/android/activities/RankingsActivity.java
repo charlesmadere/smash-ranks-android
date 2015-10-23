@@ -166,7 +166,7 @@ public class RankingsActivity extends BaseToolbarListActivity implements
     @Override
     public void onClick(final RankingItemView v) {
         final Player player = v.getPlayer();
-        new PlayerActivity.IntentBuilder(this, player).start(this);
+        PlayerActivity.IntentBuilder.create(this, player).start(this);
     }
 
 

@@ -82,7 +82,7 @@ public class TournamentPlayersFragment extends TournamentViewPagerFragment imple
     @Override
     public void onClick(final PlayerItemView v) {
         final Player player = v.getPlayer();
-        new PlayerActivity.IntentBuilder(getContext(), player).start(getActivity());
+        PlayerActivity.IntentBuilder.create(getContext(), player).start(getActivity());
     }
 
 

@@ -168,16 +168,6 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     }
 
 
-    @Override
-    protected int getSelectedNavigationItemId() {
-        if (mInUsersRegion && mUserPlayer != null && mUserPlayer.equals(mPlayer)) {
-            return R.id.navigation_view_menu_profile;
-        } else {
-            return super.getSelectedNavigationItemId();
-        }
-    }
-
-
     private boolean isMenuNull() {
         return Utils.areAnyObjectsNull(mSearch, mShare, mShow, mShowAll, mShowLoses, mShowWins);
     }
@@ -473,8 +463,21 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     public static class IntentBuilder extends BaseActivity.IntentBuilder {
 
 
-        public IntentBuilder(final Context context, final Player player) {
-            super(context, PlayerActivity.class);
+        public static IntentBuilder create(final Context context, final Player player) {
+            final Class c;
+
+            if (Settings.User.Player.exists() && player.equals(Settings.User.Player.get())) {
+                c = ProfileActivity.class;
+            } else {
+                c = PlayerActivity.class;
+            }
+
+            return new IntentBuilder(context, c, player);
+        }
+
+
+        private IntentBuilder(final Context context, final Class c, final Player player) {
+            super(context, c);
             mIntent.putExtra(EXTRA_PLAYER, player);
         }
 

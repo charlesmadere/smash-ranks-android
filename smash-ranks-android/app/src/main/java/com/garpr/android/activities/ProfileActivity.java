@@ -1,22 +1,15 @@
 package com.garpr.android.activities;
 
 
-import android.content.Context;
-
-import com.garpr.android.settings.Settings;
+import com.garpr.android.R;
 
 
 public class ProfileActivity extends PlayerActivity {
 
 
-    public static class IntentBuilder extends PlayerActivity.IntentBuilder {
-
-
-        public IntentBuilder(final Context context) {
-            super(context, Settings.User.Player.get());
-        }
-
-
+    @Override
+    protected int getSelectedNavigationItemId() {
+        return R.id.navigation_view_menu_profile;
     }
 
 

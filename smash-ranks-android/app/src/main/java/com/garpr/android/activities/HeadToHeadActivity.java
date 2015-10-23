@@ -220,11 +220,11 @@ public class HeadToHeadActivity extends BaseToolbarListActivity implements
                 break;
 
             case R.id.activity_head_to_head_menu_view_player_one:
-                new PlayerActivity.IntentBuilder(this, mPlayer).start(this);
+                PlayerActivity.IntentBuilder.create(this, mPlayer).start(this);
                 break;
 
             case R.id.activity_head_to_head_menu_view_player_two:
-                new PlayerActivity.IntentBuilder(this, mOpponent).start(this);
+                PlayerActivity.IntentBuilder.create(this, mOpponent).start(this);
                 break;
 
             default:

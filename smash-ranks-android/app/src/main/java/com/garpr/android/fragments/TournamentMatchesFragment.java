@@ -75,15 +75,15 @@ public class TournamentMatchesFragment extends TournamentViewPagerFragment imple
                 .setItems(players, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        final PlayerActivity.IntentBuilder paib;
+                        final Player player;
 
                         if (which == 0) {
-                            paib = new PlayerActivity.IntentBuilder(getContext(), match.getWinner());
+                            player = match.getWinner();
                         } else {
-                            paib = new PlayerActivity.IntentBuilder(getContext(), match.getLoser());
+                            player = match.getLoser();
                         }
 
-                        paib.start(getActivity());
+                        PlayerActivity.IntentBuilder.create(getContext(), player).start(getActivity());
                     }
                 })
                 .show();

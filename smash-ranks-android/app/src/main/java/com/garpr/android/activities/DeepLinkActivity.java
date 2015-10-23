@@ -67,7 +67,7 @@ public class DeepLinkActivity extends BaseActivity {
                         fetchPlayer(playerId, true);
                     }
                 } else {
-                    start(new PlayerActivity.IntentBuilder(DeepLinkActivity.this, player));
+                    start(PlayerActivity.IntentBuilder.create(DeepLinkActivity.this, player));
                 }
             }
         }, false);

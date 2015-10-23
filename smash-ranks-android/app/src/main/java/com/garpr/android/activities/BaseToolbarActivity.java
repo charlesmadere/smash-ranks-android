@@ -189,7 +189,7 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
                 break;
 
             case R.id.navigation_view_menu_profile:
-                intentBuilder = new ProfileActivity.IntentBuilder(this);
+                intentBuilder = PlayerActivity.IntentBuilder.create(this, Settings.User.Player.get());
                 break;
 
             case R.id.navigation_view_menu_rankings:
