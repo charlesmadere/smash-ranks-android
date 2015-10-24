@@ -40,6 +40,7 @@ public final class Constants {
     public static final String LOSER_NAME = "loser_name";
     public static final String LOSS = "loss";
     public static final String LOSSES = "losses";
+    public static final String MAP = "map";
     public static final String MATCH = "match";
     public static final String MATCHES = "matches";
     public static final String MSG = "msg";
@@ -101,6 +102,7 @@ public final class Constants {
     public static final String TOURNAMENT_ID = "tournament_id";
     public static final String TOURNAMENT_NAME = "tournament_name";
     public static final String TRUE = "true";
+    public static final String VERSION = "version";
     public static final String WEB_URL = "http://garpr.com/#/";
     public static final String WHAT = "what";
     public static final String WHICH = "which";
