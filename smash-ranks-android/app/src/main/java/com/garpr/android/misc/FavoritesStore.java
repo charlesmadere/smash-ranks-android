@@ -6,6 +6,7 @@ import android.content.Context;
 import com.garpr.android.App;
 import com.garpr.android.models.Favorites;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import java.io.IOException;
 public final class FavoritesStore {
 
 
+    private static final int BUFFER_SIZE = 1024;
     private static final String FILE_NAME = "FavoritesStore.json";
     private static final String TAG = "FavoritesStore";
 
@@ -50,7 +52,24 @@ public final class FavoritesStore {
                     return;
                 }
 
-                // TODO
+                String favoritesString = null;
+
+                try {
+                    final byte[] buffer = new byte[BUFFER_SIZE];
+                    final StringBuilder builder = new StringBuilder(BUFFER_SIZE);
+
+                    while (fis.read(buffer) != -1 && response.isAlive()) {
+                        builder.append(new String(buffer));
+                    }
+
+                    if (!response.isAlive()) {
+                        return;
+                    }
+
+                    favoritesString = builder.toString();
+                } catch (final IOException e) {
+                    Console.e(TAG, "Failed reading in bytes of \"" + FILE_NAME + '"', e);
+                }
 
                 try {
                     fis.close();
@@ -58,8 +77,21 @@ public final class FavoritesStore {
                     Console.w(TAG, "Read but failed closing of \"" + FILE_NAME + '"', e);
                 }
 
-                if (response.isAlive()) {
+                if (!response.isAlive()) {
+                    return;
+                }
 
+                if (Utils.validStrings(favoritesString)) {
+                    try {
+                        final JSONObject favoritesJSON = new JSONObject(favoritesString);
+                        final Favorites favorites = new Favorites(favoritesJSON);
+                        response.success(favorites);
+                    } catch (final JSONException e) {
+                        // this should never happen
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    response.success(null);
                 }
             }
         };
@@ -92,8 +124,15 @@ public final class FavoritesStore {
                 }
 
                 final JSONObject favoritesJSON = favorites.toJSON();
+                final String favoritesString = favoritesJSON.toString();
+                final byte[] favoritesBytes = favoritesString.getBytes();
 
-                // TODO
+                try {
+                    fos.write(favoritesBytes);
+                    fos.flush();
+                } catch (final IOException e) {
+                    Console.e(TAG, "Failed writing out bytes of \"" + FILE_NAME + '"', e);
+                }
 
                 try {
                     fos.close();
