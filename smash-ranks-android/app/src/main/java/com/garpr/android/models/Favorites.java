@@ -57,6 +57,11 @@ public class Favorites implements Parcelable {
     }
 
 
+    public boolean isEmpty() {
+        return mMap.isEmpty();
+    }
+
+
     private HashMap<Region, ArrayList<Player>> readInVersion1(final JSONObject json)
             throws JSONException {
         final JSONArray mapJSON = json.getJSONArray(Constants.MAP);
