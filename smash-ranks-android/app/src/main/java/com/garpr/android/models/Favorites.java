@@ -12,8 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 
 
 public class Favorites implements Parcelable {
@@ -52,8 +51,23 @@ public class Favorites implements Parcelable {
     }
 
 
-    public Set<Map.Entry<Region, ArrayList<Player>>> get() {
-        return mMap.entrySet();
+    public ArrayList<ListItem> flatten() {
+        final ArrayList<ListItem> listItems = new ArrayList<>();
+
+        for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
+            final ArrayList<Player> players = entry.getValue();
+
+            if (players != null && !players.isEmpty()) {
+                listItems.add(ListItem.createRegion(entry.getKey()));
+
+                for (final Player player : players) {
+                    listItems.add(ListItem.createPlayer(player));
+                }
+            }
+        }
+
+        listItems.trimToSize();
+        return listItems;
     }
 
 
@@ -97,7 +111,7 @@ public class Favorites implements Parcelable {
 
             final JSONArray map = new JSONArray();
 
-            for (final Map.Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
+            for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
                 final JSONObject favorite = new JSONObject();
                 favorite.put(Constants.REGION, entry.getKey());
                 favorite.put(Constants.PLAYERS, entry.getValue());
@@ -132,7 +146,7 @@ public class Favorites implements Parcelable {
     public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeInt(mMap.size());
 
-        for (final Map.Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
+        for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
             dest.writeParcelable(entry.getKey(), flags);
             dest.writeTypedList(entry.getValue());
         }
@@ -151,6 +165,57 @@ public class Favorites implements Parcelable {
             return new Favorites[size];
         }
     };
+
+
+
+
+    public static class ListItem {
+
+
+        private Player mPlayer;
+        private Region mRegion;
+        private Type mType;
+
+
+        private static ListItem createPlayer(final Player player) {
+            final ListItem item = new ListItem();
+            item.mPlayer = player;
+            item.mType = Type.PLAYER;
+
+            return item;
+        }
+
+
+        private static ListItem createRegion(final Region region) {
+            final ListItem item = new ListItem();
+            item.mRegion = region;
+            item.mType = Type.REGION;
+
+            return item;
+        }
+
+
+        public Player getPlayer() {
+            return mPlayer;
+        }
+
+
+        public Region getRegion() {
+            return mRegion;
+        }
+
+
+        public Type getType() {
+            return mType;
+        }
+
+
+        public enum Type {
+            PLAYER, REGION
+        }
+
+
+    }
 
 
 }

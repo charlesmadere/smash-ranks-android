@@ -103,7 +103,7 @@ public class TournamentsActivity extends BaseToolbarListActivity implements
 
 
     @Override
-    protected String getErrorText() {
+    protected String getErrorLine1() {
         return getString(R.string.error_fetching_tournaments);
     }
 

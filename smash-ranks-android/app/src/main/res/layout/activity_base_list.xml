@@ -26,9 +26,10 @@
                     tools:visibilty="visible"
                     style="@style/error_container">
                     <TextView
-                        android:id="@+id/activity_base_list_error_line"
+                        android:id="@+id/activity_base_list_error_line1"
                         style="@style/error_line1" />
                     <TextView
+                        android:id="@+id/activity_base_list_error_line2"
                         style="@style/error_line2" />
                 </LinearLayout>
             </FrameLayout>

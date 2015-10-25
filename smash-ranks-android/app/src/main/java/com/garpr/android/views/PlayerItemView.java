@@ -94,6 +94,20 @@ public class PlayerItemView extends FrameLayout {
     }
 
 
+    public void setOnLongClickListener(final OnLongClickListener l) {
+        if (l == null) {
+            setLongClickable(false);
+        } else {
+            setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(final View v) {
+                    return l.onLongClick(PlayerItemView.this);
+                }
+            });
+        }
+    }
+
+
     public void setPlayer(final Player player) {
         mPlayer = player;
         mName.setText(mPlayer.getName());
@@ -122,6 +136,15 @@ public class PlayerItemView extends FrameLayout {
 
 
         void onClick(final PlayerItemView v);
+
+
+    }
+
+
+    public interface OnLongClickListener {
+
+
+        boolean onLongClick(final PlayerItemView v);
 
 
     }

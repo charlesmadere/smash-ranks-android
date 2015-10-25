@@ -2,29 +2,54 @@ package com.garpr.android.activities;
 
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.misc.FavoritesStore;
+import com.garpr.android.misc.ResponseOnUi;
+import com.garpr.android.models.Favorites;
+import com.garpr.android.models.Favorites.ListItem;
+import com.garpr.android.views.PlayerItemView;
+import com.garpr.android.views.SimpleSeparatorView;
 
-import butterknife.Bind;
+import java.util.ArrayList;
 
 
-public class FavoritesActivity extends BaseToolbarActivity {
+public class FavoritesActivity extends BaseToolbarListActivity implements
+        PlayerItemView.OnClickListener, PlayerItemView.OnLongClickListener {
 
 
     private static final String TAG = "FavoritesActivity";
 
-    @Bind(R.id.activity_favorites_empty)
-    LinearLayout mEmptyView;
-
-    @Bind(R.id.activity_favorites_progress)
-    LinearLayout mProgressView;
-
-    @Bind(R.id.activity_favorites_list)
-    RecyclerView mRecyclerView;
+    private ArrayList<ListItem> mListItems;
+    private Favorites mFavorites;
 
 
+
+
+    private void fetchFavorites() {
+        setLoading(true);
+
+        FavoritesStore.read(new ResponseOnUi<Favorites>(TAG, this) {
+            @Override
+            public void errorOnUi(final Exception e) {}
+
+
+            @Override
+            public void successOnUi(final Favorites favorites) {
+                mFavorites = favorites;
+
+                if (mFavorites == null || mFavorites.isEmpty()) {
+                    showError();
+                } else {
+                    mListItems = mFavorites.flatten();
+                    setAdapter(new FavoritesAdapter());
+                }
+            }
+        });
+    }
 
 
     @Override
@@ -34,14 +59,51 @@ public class FavoritesActivity extends BaseToolbarActivity {
 
 
     @Override
-    protected int getContentView() {
-        return R.layout.activity_favorites;
+    protected String getErrorLine1() {
+        return getString(R.string.no_favorites_);
+    }
+
+
+    @Override
+    protected String getErrorLine2() {
+        return getString(R.string.come_back_here_once_youve_added_some);
     }
 
 
     @Override
     protected int getSelectedNavigationItemId() {
         return R.id.navigation_view_menu_favorites;
+    }
+
+
+    @Override
+    public void onClick(final PlayerItemView v) {
+        // TODO change region
+        PlayerActivity.IntentBuilder.create(this, v.getPlayer()).start(this);
+    }
+
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fetchFavorites();
+    }
+
+
+    @Override
+    public boolean onLongClick(final PlayerItemView v) {
+        // TODO prompt to delete this player from favorites
+        return false;
+    }
+
+
+    @Override
+    public void onRefresh() {
+        super.onRefresh();
+
+        if (!isLoading()) {
+            fetchFavorites();
+        }
     }
 
 
@@ -52,6 +114,71 @@ public class FavoritesActivity extends BaseToolbarActivity {
 
         public IntentBuilder(final Context context) {
             super(context, FavoritesActivity.class);
+        }
+
+
+    }
+
+
+    private final class FavoritesAdapter extends RecyclerView.Adapter {
+
+
+        @Override
+        public int getItemCount() {
+            return mListItems.size();
+        }
+
+
+        @Override
+        public int getItemViewType(final int position) {
+            return mListItems.get(position).getType().ordinal();
+        }
+
+
+        @Override
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            final ListItem listItem = mListItems.get(position);
+
+            switch (listItem.getType()) {
+                case PLAYER:
+                    ((PlayerItemView.ViewHolder) holder).getView()
+                            .setPlayer(listItem.getPlayer());
+                    break;
+
+                case REGION:
+                    ((SimpleSeparatorView.ViewHolder) holder).getView()
+                            .setText(listItem.getRegion().getName());
+                    break;
+
+                default:
+                    throw new RuntimeException("Unknown ListItem Type: " + listItem.getType());
+            }
+        }
+
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
+                final int viewType) {
+            final ListItem.Type listItemType = ListItem.Type.values()[viewType];
+            final RecyclerView.ViewHolder holder;
+
+            switch (listItemType) {
+                case PLAYER:
+                    final PlayerItemView piv = PlayerItemView.inflate(parent);
+                    piv.setOnClickListener(FavoritesActivity.this);
+                    piv.setOnLongClickListener(FavoritesActivity.this);
+                    holder = piv.getViewHolder();
+                    break;
+
+                case REGION:
+                    holder = SimpleSeparatorView.inflate(parent).getViewHolder();
+                    break;
+
+                default:
+                    throw new RuntimeException("Unknown ListItem Type: " + listItemType);
+            }
+
+            return holder;
         }
 
 

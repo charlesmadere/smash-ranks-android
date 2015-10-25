@@ -22,6 +22,7 @@
     <string name="close_drawer">Close drawer</string>
     <string name="clear_log">Clear log</string>
     <string name="clear_network_cache">Clear network cache</string>
+    <string name="come_back_here_once_youve_added_some">Come back here once you\'ve added some.</string>
     <string name="console">Console</string>
     <string name="credits">Credits</string>
     <string name="date">Date</string>
@@ -81,6 +82,7 @@
     <string name="next_">Next!</string>
     <string name="no">No</string>
     <string name="norcal">Norcal</string>
+    <string name="no_favorites_">No favorites!</string>
     <string name="ok">OK</string>
     <string name="okay">Okay</string>
     <string name="only_sync_on_wifi">Only sync on wifi</string>

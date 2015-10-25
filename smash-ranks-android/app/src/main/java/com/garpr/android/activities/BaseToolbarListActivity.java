@@ -27,8 +27,11 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
     @Bind(R.id.activity_base_list_list)
     RecyclerView mRecyclerView;
 
-    @Bind(R.id.activity_base_list_error_line)
-    TextView mErrorLine;
+    @Bind(R.id.activity_base_list_error_line1)
+    TextView mErrorLine1;
+
+    @Bind(R.id.activity_base_list_error_line2)
+    TextView mErrorLine2;
 
     private boolean mIsLoading;
     private RecyclerView.Adapter mAdapter;
@@ -42,8 +45,13 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
     }
 
 
-    protected String getErrorText() {
+    protected String getErrorLine1() {
         return getString(R.string.error_);
+    }
+
+
+    protected String getErrorLine2() {
+        return getString(R.string.swipe_to_refresh_and_try_again);
     }
 
 
@@ -79,7 +87,8 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
 
 
     protected void prepareViews() {
-        mErrorLine.setText(getErrorText());
+        mErrorLine1.setText(getErrorLine1());
+        mErrorLine2.setText(getErrorLine2());
         mRefreshLayout.setOnRefreshListener(this);
     }
 

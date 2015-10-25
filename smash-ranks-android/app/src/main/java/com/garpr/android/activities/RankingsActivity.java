@@ -141,7 +141,7 @@ public class RankingsActivity extends BaseToolbarListActivity implements
 
 
     @Override
-    protected String getErrorText() {
+    protected String getErrorLine1() {
         return getString(R.string.error_fetching_rankings);
     }
 
@@ -552,8 +552,7 @@ public class RankingsActivity extends BaseToolbarListActivity implements
                     break;
 
                 case TITLE:
-                    holder = SimpleSeparatorView.inflate(parent)
-                            .getViewHolder();
+                    holder = SimpleSeparatorView.inflate(parent).getViewHolder();
                     break;
 
                 default:
