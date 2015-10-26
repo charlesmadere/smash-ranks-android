@@ -112,7 +112,7 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
-                        // TODO delete this player
+                        mFavorites.remove(player);
                     }
                 })
                 .show();

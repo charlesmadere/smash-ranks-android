@@ -127,6 +127,17 @@ public class Favorites implements Parcelable {
     }
 
 
+    public void remove(final Player player) {
+        if (player == null) {
+            throw new IllegalArgumentException("player can't be null");
+        }
+
+        final Region region = findRegionForPlayer(player);
+        final ArrayList<Player> players = mMap.get(region);
+        players.remove(player);
+    }
+
+
     public JSONObject toJSON() {
         try {
             final JSONObject json = new JSONObject();
