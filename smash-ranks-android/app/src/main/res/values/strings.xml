@@ -27,6 +27,7 @@
     <string name="credits">Credits</string>
     <string name="date">Date</string>
     <string name="debug">Debug</string>
+    <string name="delete_x_from_your_favorites_">Delete %s from your favorites?</string>
     <string name="developer">Developer</string>
     <string name="enable_or_disable_sync">Enable or disable sync</string>
     <string name="enable_sync">Enable sync</string>

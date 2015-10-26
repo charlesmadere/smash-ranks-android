@@ -2,7 +2,10 @@ package com.garpr.android.activities;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -11,10 +14,15 @@ import com.garpr.android.misc.FavoritesStore;
 import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.models.Favorites;
 import com.garpr.android.models.Favorites.ListItem;
+import com.garpr.android.models.Player;
+import com.garpr.android.models.Region;
+import com.garpr.android.settings.Settings;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.SimpleSeparatorView;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
+import java.util.Set;
 
 
 public class FavoritesActivity extends BaseToolbarListActivity implements
@@ -70,6 +78,22 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
     }
 
 
+    private Region getRegionForPlayer(final Player player) {
+        final Set<Entry<Region, ArrayList<Player>>> entrySet = mFavorites.get().entrySet();
+
+        for (final Entry<Region, ArrayList<Player>> entry : entrySet) {
+            final ArrayList<Player> players = entry.getValue();
+
+            if (players.contains(player)) {
+                return entry.getKey();
+            }
+        }
+
+        // this should never happen
+        throw new RuntimeException("Unable to find region for player " + player.getName());
+    }
+
+
     @Override
     protected int getSelectedNavigationItemId() {
         return R.id.navigation_view_menu_favorites;
@@ -78,8 +102,10 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
 
     @Override
     public void onClick(final PlayerItemView v) {
-        // TODO change region
-        PlayerActivity.IntentBuilder.create(this, v.getPlayer()).start(this);
+        final Player player = v.getPlayer();
+        final Region region = getRegionForPlayer(player);
+        Settings.Region.set(region);
+        PlayerActivity.IntentBuilder.create(this, player).start(this);
     }
 
 
@@ -92,8 +118,26 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
 
     @Override
     public boolean onLongClick(final PlayerItemView v) {
-        // TODO prompt to delete this player from favorites
-        return false;
+        final Player player = v.getPlayer();
+
+        new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.delete_x_from_your_favorites_, player.getName()))
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                        // TODO delete this player
+                    }
+                })
+                .show();
+
+        return true;
     }
 
 
@@ -114,6 +158,7 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
 
         public IntentBuilder(final Context context) {
             super(context, FavoritesActivity.class);
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         }
 
 
