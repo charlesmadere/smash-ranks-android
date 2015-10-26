@@ -84,7 +84,7 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
     @Override
     public void onClick(final PlayerItemView v) {
         final Player player = v.getPlayer();
-        Settings.Region.set(mFavorites.getRegionForPlayer(player));
+        Settings.Region.set(mFavorites.findRegionForPlayer(player));
         PlayerActivity.IntentBuilder.create(this, player).start(this);
     }
 
