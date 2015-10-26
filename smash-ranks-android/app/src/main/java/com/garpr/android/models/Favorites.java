@@ -76,6 +76,24 @@ public class Favorites implements Parcelable {
     }
 
 
+    public Region getRegionForPlayer(final Player player) {
+        if (player == null) {
+            throw new IllegalArgumentException("player can't be null");
+        }
+
+        for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
+            final ArrayList<Player> players = entry.getValue();
+
+            if (players.contains(player)) {
+                return entry.getKey();
+            }
+        }
+
+        // this should never happen
+        throw new RuntimeException("Unable to find region for player " + player.getName());
+    }
+
+
     public boolean isEmpty() {
         return mMap.isEmpty();
     }

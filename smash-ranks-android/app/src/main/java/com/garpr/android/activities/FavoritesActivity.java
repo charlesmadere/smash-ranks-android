@@ -15,14 +15,11 @@ import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.models.Favorites;
 import com.garpr.android.models.Favorites.ListItem;
 import com.garpr.android.models.Player;
-import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.SimpleSeparatorView;
 
 import java.util.ArrayList;
-import java.util.Map.Entry;
-import java.util.Set;
 
 
 public class FavoritesActivity extends BaseToolbarListActivity implements
@@ -78,22 +75,6 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
     }
 
 
-    private Region getRegionForPlayer(final Player player) {
-        final Set<Entry<Region, ArrayList<Player>>> entrySet = mFavorites.get().entrySet();
-
-        for (final Entry<Region, ArrayList<Player>> entry : entrySet) {
-            final ArrayList<Player> players = entry.getValue();
-
-            if (players.contains(player)) {
-                return entry.getKey();
-            }
-        }
-
-        // this should never happen
-        throw new RuntimeException("Unable to find region for player " + player.getName());
-    }
-
-
     @Override
     protected int getSelectedNavigationItemId() {
         return R.id.navigation_view_menu_favorites;
@@ -103,8 +84,7 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
     @Override
     public void onClick(final PlayerItemView v) {
         final Player player = v.getPlayer();
-        final Region region = getRegionForPlayer(player);
-        Settings.Region.set(region);
+        Settings.Region.set(mFavorites.getRegionForPlayer(player));
         PlayerActivity.IntentBuilder.create(this, player).start(this);
     }
 
