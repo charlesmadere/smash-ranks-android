@@ -131,6 +131,14 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
     }
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mFavorites != null) {
+            FavoritesStore.write(mFavorites);
+        }
+    }
 
 
     public static class IntentBuilder extends BaseActivity.IntentBuilder {
