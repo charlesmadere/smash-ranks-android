@@ -71,6 +71,11 @@ public class Favorites implements Parcelable {
     }
 
 
+    public HashMap<Region, ArrayList<Player>> get() {
+        return mMap;
+    }
+
+
     public boolean isEmpty() {
         return mMap.isEmpty();
     }
