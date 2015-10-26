@@ -51,6 +51,23 @@ public class Favorites implements Parcelable {
     }
 
 
+    public boolean contains(final Player player) {
+        if (player == null) {
+            throw new IllegalArgumentException("player can't be null");
+        }
+
+        for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
+            final ArrayList<Player> players = entry.getValue();
+
+            if (players.contains(player)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     public ArrayList<ListItem> flatten() {
         final ArrayList<ListItem> listItems = new ArrayList<>();
 

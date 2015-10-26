@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.garpr.android.App;
 import com.garpr.android.models.Favorites;
+import com.garpr.android.models.Player;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,24 @@ public final class FavoritesStore {
     private static final String TAG = "FavoritesStore";
 
 
+
+
+    public static void contains(final Player player, final Response<Boolean> response) {
+        read(new Response<Favorites>(TAG, response) {
+            @Override
+            public void error(final Exception e) {}
+
+
+            @Override
+            public void success(final Favorites favorites) {
+                if (favorites == null || favorites.isEmpty()) {
+                    response.success(Boolean.FALSE);
+                } else {
+                    response.success(favorites.contains(player));
+                }
+            }
+        });
+    }
 
 
     private static FileInputStream read() throws FileNotFoundException {
