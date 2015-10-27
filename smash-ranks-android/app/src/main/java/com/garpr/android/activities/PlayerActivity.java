@@ -17,6 +17,7 @@ import com.garpr.android.R;
 import com.garpr.android.calls.Matches;
 import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
+import com.garpr.android.misc.FavoritesStore;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.ListUtils.FilterListener;
 import com.garpr.android.misc.ListUtils.SpecialFilterable;
@@ -58,6 +59,7 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     private Filter mFilter;
     private FilterListener<ListItem> mFilterListener;
     private Intent mShareIntent;
+    private MenuItem mFavorite;
     private MenuItem mSearch;
     private MenuItem mShare;
     private MenuItem mShow;
@@ -285,6 +287,7 @@ public class PlayerActivity extends BaseToolbarListActivity implements
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
+        mFavorite = menu.findItem(R.id.activity_player_menu_favorite);
         mSearch = menu.findItem(R.id.activity_player_menu_search);
         mShare = menu.findItem(R.id.activity_player_menu_share);
         mShow = menu.findItem(R.id.activity_player_menu_show);
@@ -443,6 +446,21 @@ public class PlayerActivity extends BaseToolbarListActivity implements
 
 
     private void showMenuItems() {
+        if (!(this instanceof ProfileActivity)) {
+            FavoritesStore.contains(mPlayer, new ResponseOnUi<Boolean>(TAG, this) {
+                @Override
+                public void errorOnUi(final Exception e) {
+                    throw new UnsupportedOperationException("this should never happen", e);
+                }
+
+
+                @Override
+                public void successOnUi(final Boolean bool) {
+                    mFavorite.setVisible(bool == null || Boolean.FALSE.equals(bool));
+                }
+            });
+        }
+
         Utils.showMenuItems(mSearch, mShare, mShow);
 
         if (Result.LOSE.equals(mShowing)) {

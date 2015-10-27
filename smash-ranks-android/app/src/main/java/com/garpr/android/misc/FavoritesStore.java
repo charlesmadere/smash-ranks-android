@@ -29,16 +29,15 @@ public final class FavoritesStore {
     public static void contains(final Player player, final Response<Boolean> response) {
         read(new Response<Favorites>(TAG, response) {
             @Override
-            public void error(final Exception e) {}
+            public void error(final Exception e) {
+                throw new UnsupportedOperationException("this should never happen", e);
+            }
 
 
             @Override
             public void success(final Favorites favorites) {
-                if (favorites == null || favorites.isEmpty()) {
-                    response.success(Boolean.FALSE);
-                } else {
-                    response.success(favorites.contains(player));
-                }
+                response.success(favorites != null && !favorites.isEmpty() &&
+                        favorites.contains(player));
             }
         });
     }

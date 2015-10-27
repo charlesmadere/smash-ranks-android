@@ -39,7 +39,9 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
 
         FavoritesStore.read(new ResponseOnUi<Favorites>(TAG, this) {
             @Override
-            public void errorOnUi(final Exception e) {}
+            public void errorOnUi(final Exception e) {
+                throw new UnsupportedOperationException("this should never happen", e);
+            }
 
 
             @Override
