@@ -26,6 +26,30 @@ public final class FavoritesStore {
 
 
 
+    public static void add(final Player player) {
+        Heartbeat heartbeat = new Heartbeat() {
+            @Override
+            public boolean isAlive() {
+                return true;
+            }
+        };
+
+        read(new Response<Favorites>(TAG, heartbeat) {
+            @Override
+            public void error(final Exception e) {
+                throw new UnsupportedOperationException("this should never happen", e);
+            }
+
+
+            @Override
+            public void success(final Favorites favorites) {
+                favorites.add(player);
+                write(favorites);
+            }
+        });
+    }
+
+
     public static void contains(final Player player, final Response<Boolean> response) {
         read(new Response<Favorites>(TAG, response) {
             @Override

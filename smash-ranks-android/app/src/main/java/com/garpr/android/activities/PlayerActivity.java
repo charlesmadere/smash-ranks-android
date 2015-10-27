@@ -255,6 +255,10 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.activity_player_menu_favorite:
+                FavoritesStore.add(mPlayer);
+                break;
+
             case R.id.activity_player_menu_share:
                 share();
                 break;

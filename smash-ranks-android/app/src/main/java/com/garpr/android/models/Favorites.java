@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.garpr.android.misc.Constants;
+import com.garpr.android.settings.Settings;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +49,19 @@ public class Favorites implements Parcelable {
             final ArrayList<Player> players = source.createTypedArrayList(Player.CREATOR);
             mMap.put(region, players);
         }
+    }
+
+
+    public void add(final Player player) {
+        final Region region = Settings.Region.get();
+        ArrayList<Player> list = mMap.get(region);
+
+        if (list == null) {
+            list = new ArrayList<>(1);
+        }
+
+        list.add(player);
+        mMap.put(region, list);
     }
 
 
