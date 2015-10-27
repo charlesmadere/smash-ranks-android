@@ -10,6 +10,7 @@ import com.garpr.android.models.Player;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -67,8 +68,15 @@ public final class FavoritesStore {
     }
 
 
-    private static FileInputStream read() throws FileNotFoundException {
-        return App.get().openFileInput(FILE_NAME);
+    private static FileInputStream read() throws IOException {
+        final Context context = App.get();
+        final File file = context.getFileStreamPath(FILE_NAME);
+
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        return new FileInputStream(file);
     }
 
 
@@ -84,8 +92,8 @@ public final class FavoritesStore {
 
                 try {
                     fis = read();
-                } catch (final FileNotFoundException e) {
-                    Console.d(TAG, "Failed opening of \"" + FILE_NAME + '"', e);
+                } catch (final IOException e) {
+                    Console.e(TAG, "Failed opening of \"" + FILE_NAME + '"', e);
 
                     if (response.isAlive()) {
                         response.success(null);
