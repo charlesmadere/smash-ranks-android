@@ -257,6 +257,7 @@ public class PlayerActivity extends BaseToolbarListActivity implements
         switch (item.getItemId()) {
             case R.id.activity_player_menu_favorite:
                 FavoritesStore.add(mPlayer);
+                mFavorite.setVisible(false);
                 break;
 
             case R.id.activity_player_menu_share:
