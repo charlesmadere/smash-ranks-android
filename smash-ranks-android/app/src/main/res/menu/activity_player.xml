@@ -9,6 +9,12 @@
         compat:actionViewClass="android.support.v7.widget.SearchView"
         compat:showAsAction="collapseActionView|ifRoom" />
     <item
+        android:icon="@drawable/ic_heart"
+        android:id="@+id/activity_player_menu_favorite"
+        android:title="@string/add_to_favorites"
+        android:visible="false"
+        compat:showAsAction="ifRoom" />
+    <item
         android:icon="@drawable/ic_share"
         android:id="@+id/activity_player_menu_share"
         android:title="@string/share"
@@ -33,10 +39,4 @@
                 android:visible="false" />
         </menu>
     </item>
-    <item
-        android:icon="@drawable/ic_heart"
-        android:id="@+id/activity_player_menu_favorite"
-        android:title="@string/add_to_favorites"
-        android:visible="false"
-        compat:showAsAction="never" />
 </menu>
