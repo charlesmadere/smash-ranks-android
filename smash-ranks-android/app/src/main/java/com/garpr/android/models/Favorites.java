@@ -152,6 +152,10 @@ public class Favorites implements Parcelable {
         final Region region = findRegionForPlayer(player);
         final ArrayList<Player> players = mMap.get(region);
         players.remove(player);
+
+        if (players.isEmpty()) {
+            mMap.remove(region);
+        }
     }
 
 
