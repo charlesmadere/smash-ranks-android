@@ -143,6 +143,8 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
     }
 
 
+
+
     public static class IntentBuilder extends BaseActivity.IntentBuilder {
 
 
