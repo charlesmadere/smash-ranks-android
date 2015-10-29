@@ -4,6 +4,7 @@ package com.garpr.android.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
@@ -58,7 +59,6 @@ public class PlayerActivity extends BaseToolbarListActivity implements
     private boolean mSetMenuItemsVisible;
     private Filter mFilter;
     private FilterListener<ListItem> mFilterListener;
-    private Intent mShareIntent;
     private MenuItem mFavorite;
     private MenuItem mSearch;
     private MenuItem mShare;
@@ -395,36 +395,30 @@ public class PlayerActivity extends BaseToolbarListActivity implements
 
 
     private void share() {
-        if (mShareIntent == null) {
-            String text = null;
+        String text = null;
 
-            if (mPlayer.hasCompetitionValues()) {
-                text = getString(R.string.x_is_ranked_y_on_gar_pr_z, mPlayer.getName(),
-                        mPlayer.getRank(), mPlayer.getWebUrl());
-            }
-
-            if (text == null || text.length() > Constants.TWITTER_LENGTH) {
-                text = getString(R.string.x_on_gar_pr_y, mPlayer.getName(), mPlayer.getWebUrl());
-            }
-
-            if (text.length() > Constants.TWITTER_LENGTH) {
-                text = getString(R.string.gar_pr_x, mPlayer.getWebUrl());
-            }
-
-            if (text.length() > Constants.TWITTER_LENGTH) {
-                text = mPlayer.getWebUrl();
-            }
-
-            final String title = getString(R.string.x_on_gar_pr, mPlayer.getName());
-            mShareIntent = new Intent(Intent.ACTION_SEND)
-                    .putExtra(Intent.EXTRA_TEXT, text)
-                    .putExtra(Intent.EXTRA_TITLE, title)
-                    .setType(Constants.MIMETYPE_TEXT_PLAIN);
-
-            mShareIntent = Intent.createChooser(mShareIntent, getString(R.string.share_to));
+        if (mPlayer.hasCompetitionValues()) {
+            text = getString(R.string.x_is_ranked_y_on_gar_pr_z, mPlayer.getName(),
+                    mPlayer.getRank(), mPlayer.getWebUrl());
         }
 
-        startActivity(mShareIntent);
+        if (text == null || text.length() > Constants.TWITTER_LENGTH) {
+            text = getString(R.string.x_on_gar_pr_y, mPlayer.getName(), mPlayer.getWebUrl());
+        }
+
+        if (text.length() > Constants.TWITTER_LENGTH) {
+            text = getString(R.string.gar_pr_x, mPlayer.getWebUrl());
+        }
+
+        if (text.length() > Constants.TWITTER_LENGTH) {
+            text = mPlayer.getWebUrl();
+        }
+
+        ShareCompat.IntentBuilder.from(this)
+                .setChooserTitle(R.string.share_to)
+                .setText(text)
+                .setType(Constants.MIMETYPE_TEXT_PLAIN)
+                .startChooser();
     }
 
 

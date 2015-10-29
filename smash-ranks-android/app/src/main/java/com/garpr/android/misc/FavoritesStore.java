@@ -69,10 +69,10 @@ public final class FavoritesStore {
 
 
     private static FileInputStream read() throws IOException {
-        final Context context = App.get();
-        final File file = context.getFileStreamPath(FILE_NAME);
+        final File file = App.get().getFileStreamPath(FILE_NAME);
 
         if (!file.exists()) {
+            Console.d(TAG, '"' + FILE_NAME + "\" doesn't exist, creating now...");
             file.createNewFile();
         }
 
@@ -94,11 +94,6 @@ public final class FavoritesStore {
                     fis = read();
                 } catch (final IOException e) {
                     Console.e(TAG, "Failed opening of \"" + FILE_NAME + '"', e);
-
-                    if (response.isAlive()) {
-                        response.success(null);
-                    }
-
                     return;
                 }
 
@@ -108,12 +103,8 @@ public final class FavoritesStore {
                     final byte[] buffer = new byte[BUFFER_SIZE];
                     final StringBuilder builder = new StringBuilder(BUFFER_SIZE);
 
-                    while (fis.read(buffer) != -1 && response.isAlive()) {
+                    while (fis.read(buffer) != -1) {
                         builder.append(new String(buffer));
-                    }
-
-                    if (!response.isAlive()) {
-                        return;
                     }
 
                     favoritesString = builder.toString();
@@ -131,18 +122,25 @@ public final class FavoritesStore {
                     return;
                 }
 
+                final Favorites favorites;
+
                 if (Utils.validStrings(favoritesString)) {
                     try {
                         final JSONObject favoritesJSON = new JSONObject(favoritesString);
-                        final Favorites favorites = new Favorites(favoritesJSON);
-                        response.success(favorites);
+                        favorites = new Favorites(favoritesJSON);
                     } catch (final JSONException e) {
                         // this should never happen
                         throw new RuntimeException(e);
                     }
                 } else {
-                    response.success(null);
+                    favorites = new Favorites();
                 }
+
+                if (!response.isAlive()) {
+                    return;
+                }
+
+                response.success(favorites);
             }
         };
 

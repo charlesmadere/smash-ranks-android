@@ -15,7 +15,6 @@ import java.util.LinkedList;
 public final class Console {
 
 
-    private static int sLogMessageIdPointer;
     private static final int LOG_MESSAGES_MAX_SIZE;
     private static final LinkedList<LogMessage> LOG_MESSAGES;
 
@@ -102,8 +101,7 @@ public final class Console {
         }
 
         synchronized (LOG_MESSAGES) {
-            LOG_MESSAGES.addFirst(new LogMessage(sLogMessageIdPointer++, priority, tag, msg,
-                    stackTrace, throwableMessage));
+            LOG_MESSAGES.addFirst(new LogMessage(priority, tag, msg, stackTrace, throwableMessage));
 
             while (LOG_MESSAGES.size() > LOG_MESSAGES_MAX_SIZE) {
                 LOG_MESSAGES.removeLast();

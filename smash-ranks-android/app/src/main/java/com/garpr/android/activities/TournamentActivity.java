@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
@@ -198,12 +199,11 @@ public class TournamentActivity extends BaseToolbarActivity implements
             text = getString(R.string.gar_pr_x, mTournament.getWebUrl());
         }
 
-        Intent intent = new Intent(Intent.ACTION_SEND)
-                .putExtra(Intent.EXTRA_TEXT, text)
-                .setType(Constants.MIMETYPE_TEXT_PLAIN);
-
-        intent = Intent.createChooser(intent, getString(R.string.share_to));
-        startActivity(intent);
+        ShareCompat.IntentBuilder.from(this)
+                .setChooserTitle(R.string.share_to)
+                .setText(text)
+                .setType(Constants.MIMETYPE_TEXT_PLAIN)
+                .startChooser();
     }
 
 

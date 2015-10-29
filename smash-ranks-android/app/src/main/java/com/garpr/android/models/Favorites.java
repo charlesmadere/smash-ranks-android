@@ -26,6 +26,11 @@ public class Favorites implements Parcelable {
 
 
 
+    public Favorites() {
+        mMap = new HashMap<>();
+    }
+
+
     public Favorites(final JSONObject json) throws JSONException {
         final int version = json.getInt(Constants.VERSION);
 
@@ -70,6 +75,10 @@ public class Favorites implements Parcelable {
             throw new IllegalArgumentException("player can't be null");
         }
 
+        if (isEmpty()) {
+            return false;
+        }
+
         for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
             final ArrayList<Player> players = entry.getValue();
 
@@ -107,6 +116,10 @@ public class Favorites implements Parcelable {
             throw new IllegalArgumentException("player can't be null");
         }
 
+        if (isEmpty()) {
+            return null;
+        }
+
         for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
             final ArrayList<Player> players = entry.getValue();
 
@@ -115,8 +128,7 @@ public class Favorites implements Parcelable {
             }
         }
 
-        // this should never happen
-        throw new RuntimeException("Unable to find region for player " + player.getName());
+        return null;
     }
 
 
@@ -163,6 +175,10 @@ public class Favorites implements Parcelable {
             throw new IllegalArgumentException("player can't be null");
         }
 
+        if (isEmpty()) {
+            return;
+        }
+
         final Region region = findRegionForPlayer(player);
         final ArrayList<Player> players = mMap.get(region);
         players.remove(player);
@@ -182,8 +198,18 @@ public class Favorites implements Parcelable {
 
             for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
                 final JSONObject favorite = new JSONObject();
-                favorite.put(Constants.REGION, entry.getKey());
-                favorite.put(Constants.PLAYERS, entry.getValue());
+
+                final Region region = entry.getKey();
+                favorite.put(Constants.REGION, region.toJSON());
+
+                final ArrayList<Player> players = entry.getValue();
+                final JSONArray playersJSON = new JSONArray();
+
+                for (final Player player : players) {
+                    playersJSON.put(player.toJSON());
+                }
+
+                favorite.put(Constants.PLAYERS, playersJSON);
                 map.put(favorite);
             }
 

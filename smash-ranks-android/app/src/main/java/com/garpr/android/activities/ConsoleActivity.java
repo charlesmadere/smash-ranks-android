@@ -136,12 +136,6 @@ public class ConsoleActivity extends BaseToolbarListActivity {
 
 
         @Override
-        public long getItemId(final int position) {
-            return Console.getLogMessage(position).getId();
-        }
-
-
-        @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             final LogMessage logMessage = Console.getLogMessage(position);
             ((LogMessageView.ViewHolder) holder).getView().setLogMessage(logMessage);
