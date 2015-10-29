@@ -7,4 +7,6 @@
     android:layout_height="match_parent"
     android:layout_width="@dimen/navigation_drawer_width"
     app:headerLayout="@layout/navigation_header_view"
+    app:itemIconTint="@drawable/navigation_view_item_color"
+    app:itemTextColor="@drawable/navigation_view_item_color"
     app:menu="@menu/navigation_view" />
