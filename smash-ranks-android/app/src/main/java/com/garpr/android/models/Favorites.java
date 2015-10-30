@@ -143,6 +143,12 @@ public class Favorites implements Parcelable {
     }
 
 
+    public boolean hasPlayers(final Region region) {
+        final ArrayList<Player> players = mMap.get(region);
+        return players != null && !players.isEmpty();
+    }
+
+
     public boolean isEmpty() {
         return mMap.isEmpty();
     }
@@ -192,6 +198,15 @@ public class Favorites implements Parcelable {
         if (players.isEmpty()) {
             mMap.remove(region);
         }
+    }
+
+
+    public void remove(final Region region) {
+        if (region == null) {
+            throw new IllegalArgumentException("region can't be null");
+        }
+
+        mMap.remove(region);
     }
 
 
@@ -273,6 +288,9 @@ public class Favorites implements Parcelable {
     public static class ListItem {
 
 
+        private static long sId;
+
+        private long mId;
         private Player mPlayer;
         private Region mRegion;
         private Type mType;
@@ -280,6 +298,7 @@ public class Favorites implements Parcelable {
 
         private static ListItem createPlayer(final Player player) {
             final ListItem item = new ListItem();
+            item.mId = sId++;
             item.mPlayer = player;
             item.mType = Type.PLAYER;
 
@@ -289,10 +308,16 @@ public class Favorites implements Parcelable {
 
         private static ListItem createRegion(final Region region) {
             final ListItem item = new ListItem();
+            item.mId = sId++;
             item.mRegion = region;
             item.mType = Type.REGION;
 
             return item;
+        }
+
+
+        public long getId() {
+            return mId;
         }
 
 
@@ -308,6 +333,16 @@ public class Favorites implements Parcelable {
 
         public Type getType() {
             return mType;
+        }
+
+
+        public boolean isPlayer() {
+            return Type.PLAYER.equals(mType);
+        }
+
+
+        public boolean isRegion() {
+            return Type.REGION.equals(mType);
         }
 
 

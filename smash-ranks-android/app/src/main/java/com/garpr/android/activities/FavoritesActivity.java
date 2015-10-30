@@ -15,6 +15,7 @@ import com.garpr.android.misc.ResponseOnUi;
 import com.garpr.android.models.Favorites;
 import com.garpr.android.models.Favorites.ListItem;
 import com.garpr.android.models.Player;
+import com.garpr.android.models.Region;
 import com.garpr.android.settings.Settings;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.SimpleSeparatorView;
@@ -114,7 +115,33 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
+
+                        final Region region = mFavorites.findRegionForPlayer(player);
                         mFavorites.remove(player);
+
+                        for (int i = 0; i < mListItems.size(); ++i) {
+                            final ListItem li = mListItems.get(i);
+
+                            if (li.isPlayer() && li.getPlayer().equals(player)) {
+                                mListItems.remove(i);
+                                break;
+                            }
+                        }
+
+                        if (!mFavorites.hasPlayers(region)) {
+                            mFavorites.remove(region);
+
+                            for (int i = 0; i < mListItems.size(); ++i) {
+                                final ListItem li = mListItems.get(i);
+
+                                if (li.isRegion() && li.getRegion().equals(region)) {
+                                    mListItems.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+
+                        notifyDataSetChanged();
                     }
                 })
                 .show();
@@ -135,11 +162,11 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
 
     @Override
     protected void onStop() {
-        super.onStop();
-
         if (mFavorites != null) {
             FavoritesStore.write(mFavorites);
         }
+
+        super.onStop();
     }
 
 
@@ -163,6 +190,12 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
         @Override
         public int getItemCount() {
             return mListItems.size();
+        }
+
+
+        @Override
+        public long getItemId(final int position) {
+            return mListItems.get(position).getId();
         }
 
 
