@@ -159,6 +159,10 @@ public final class FavoritesStore {
 
 
     public static void write(final Favorites favorites) {
+        if (favorites == null) {
+            throw new IllegalArgumentException("favorites can't be null");
+        }
+
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
