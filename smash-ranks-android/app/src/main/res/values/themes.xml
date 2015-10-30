@@ -10,6 +10,7 @@
     </style>
 
     <style name="app_theme_base" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">@color/white</item>
         <item name="android:windowBackground">@color/gray_darker</item>
         <item name="alertDialogTheme">@style/alert_dialog_theme</item>
         <item name="colorAccent">@color/indigo_bright</item>
