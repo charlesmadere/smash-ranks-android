@@ -205,6 +205,7 @@
     <style name="settings_sub_title" parent="settings_text">
         <item name="android:id">@id/view_preference_sub_title</item>
         <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:textColor">@color/gray_lightest</item>
         <item name="android:textSize">14sp</item>
     </style>
 
