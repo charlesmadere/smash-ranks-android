@@ -17,7 +17,7 @@
             android:visible="false"
             tools:visible="true" />
         <item
-            android:icon="@drawable/ic_heart"
+            android:icon="@drawable/ic_heart_enabled"
             android:id="@+id/navigation_view_menu_favorites"
             android:title="@string/favorites" />
         <item
