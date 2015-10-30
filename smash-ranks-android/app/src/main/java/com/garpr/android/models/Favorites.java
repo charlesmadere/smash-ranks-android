@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -66,6 +67,7 @@ public class Favorites implements Parcelable {
         }
 
         list.add(player);
+        Collections.sort(list, Player.ALPHABETICAL_ORDER);
         mMap.put(region, list);
     }
 
@@ -94,11 +96,15 @@ public class Favorites implements Parcelable {
     public ArrayList<ListItem> flatten() {
         final ArrayList<ListItem> listItems = new ArrayList<>();
 
-        for (final Entry<Region, ArrayList<Player>> entry : mMap.entrySet()) {
-            final ArrayList<Player> players = entry.getValue();
+        final ArrayList<Region> regions = new ArrayList<>(mMap.keySet());
+        Collections.sort(regions, Region.ALPHABETICAL_ORDER);
+
+        for (final Region region : regions) {
+            listItems.add(ListItem.createRegion(region));
+            final ArrayList<Player> players = mMap.get(region);
 
             if (players != null && !players.isEmpty()) {
-                listItems.add(ListItem.createRegion(entry.getKey()));
+                Collections.sort(players, Player.ALPHABETICAL_ORDER);
 
                 for (final Player player : players) {
                     listItems.add(ListItem.createPlayer(player));
