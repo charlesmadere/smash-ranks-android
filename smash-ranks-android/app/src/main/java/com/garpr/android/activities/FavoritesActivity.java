@@ -16,7 +16,6 @@ import com.garpr.android.models.Favorites;
 import com.garpr.android.models.Favorites.ListItem;
 import com.garpr.android.models.Player;
 import com.garpr.android.models.Region;
-import com.garpr.android.settings.Settings;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.SimpleSeparatorView;
 
@@ -86,9 +85,7 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
 
     @Override
     public void onClick(final PlayerItemView v) {
-        final Player player = v.getPlayer();
-        Settings.Region.set(mFavorites.findRegionForPlayer(player));
-        PlayerActivity.IntentBuilder.create(this, player).start(this);
+        PlayerActivity.IntentBuilder.create(this, v.getPlayer()).start(this);
     }
 
 
