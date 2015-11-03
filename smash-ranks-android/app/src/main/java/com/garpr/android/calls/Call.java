@@ -15,9 +15,14 @@ import com.garpr.android.misc.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
 
+
+    private static final ExecutorService EXECUTOR_SERVICE;
 
     private final boolean mIgnoreCache;
     private String mUrl;
@@ -25,6 +30,11 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
     protected final Response<T> mResponse;
 
 
+
+
+    static {
+        EXECUTOR_SERVICE = Executors.newFixedThreadPool(2);
+    }
 
 
     protected Call(final Response<T> response, final boolean ignoreCache) throws
@@ -75,7 +85,7 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
             }
         };
 
-        submit(runnable);
+        EXECUTOR_SERVICE.submit(runnable);
     }
 
 
@@ -107,7 +117,7 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
             }
         };
 
-        submit(runnable);
+        EXECUTOR_SERVICE.submit(runnable);
     }
 
 
@@ -129,12 +139,7 @@ public abstract class Call<T> implements ErrorListener, Listener<JSONObject> {
             }
         };
 
-        submit(runnable);
-    }
-
-
-    private void submit(final Runnable runnable) {
-        App.getExecutorService().submit(runnable);
+        EXECUTOR_SERVICE.submit(runnable);
     }
 
 

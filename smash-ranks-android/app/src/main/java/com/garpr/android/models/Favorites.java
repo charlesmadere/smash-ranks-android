@@ -4,6 +4,7 @@ package com.garpr.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.garpr.android.misc.Console;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.settings.Settings;
 
@@ -21,6 +22,7 @@ public class Favorites implements Parcelable {
 
 
     private static final int VERSION = 1;
+    private static final String TAG = "Favorites";
 
     private final HashMap<Region, ArrayList<Player>> mMap;
 
@@ -64,11 +66,16 @@ public class Favorites implements Parcelable {
 
         if (list == null) {
             list = new ArrayList<>(1);
+            list.add(player);
+            mMap.put(region, list);
+        } else if (list.contains(player)) {
+            Console.w(TAG, "Didn't add player because it already exists in the list: "
+                    + player.toJSON().toString() + ", list contains " + list.size()
+                    + " player(s)");
+        } else {
+            list.add(player);
+            Collections.sort(list, Player.ALPHABETICAL_ORDER);
         }
-
-        list.add(player);
-        Collections.sort(list, Player.ALPHABETICAL_ORDER);
-        mMap.put(region, list);
     }
 
 

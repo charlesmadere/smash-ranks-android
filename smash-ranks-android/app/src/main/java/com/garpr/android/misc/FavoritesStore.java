@@ -15,16 +15,25 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public final class FavoritesStore {
 
+
+    private static final ExecutorService EXECUTOR_SERVICE;
 
     private static final int BUFFER_SIZE = 1024;
     private static final String FILE_NAME = "FavoritesStore.json";
     private static final String TAG = "FavoritesStore";
 
 
+
+
+    static {
+        EXECUTOR_SERVICE = Executors.newFixedThreadPool(1);
+    }
 
 
     public static void add(final Player player) {
@@ -144,12 +153,7 @@ public final class FavoritesStore {
             }
         };
 
-        submit(runnable);
-    }
-
-
-    private static void submit(final Runnable runnable) {
-        App.getExecutorService().submit(runnable);
+        EXECUTOR_SERVICE.submit(runnable);
     }
 
 
@@ -194,7 +198,7 @@ public final class FavoritesStore {
             }
         };
 
-        submit(runnable);
+        EXECUTOR_SERVICE.submit(runnable);
     }
 
 

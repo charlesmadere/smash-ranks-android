@@ -15,9 +15,6 @@ import com.garpr.android.misc.CrashlyticsManager;
 import com.garpr.android.misc.Heartbeat;
 import com.garpr.android.settings.Settings;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import io.fabric.sdk.android.Fabric;
 
 
@@ -27,7 +24,6 @@ public final class App extends Application {
     private static final String TAG = "App";
 
     private static App sInstance;
-    private static ExecutorService sExecutorService;
     private static RequestQueue sRequestQueue;
 
 
@@ -45,11 +41,6 @@ public final class App extends Application {
 
     public static App get() {
         return sInstance;
-    }
-
-
-    public static ExecutorService getExecutorService() {
-        return sExecutorService;
     }
 
 
@@ -88,7 +79,6 @@ public final class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        sExecutorService = Executors.newFixedThreadPool(3);
         sRequestQueue = Volley.newRequestQueue(this);
 
         Fabric.with(this, new Crashlytics());
