@@ -52,7 +52,13 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
                     showError();
                 } else {
                     mListItems = mFavorites.flatten();
-                    setAdapter(new FavoritesAdapter());
+
+                    if (hasAdapter()) {
+                        notifyDataSetChanged();
+                        setLoading(false);
+                    } else {
+                        setAdapter(new FavoritesAdapter());
+                    }
                 }
             }
         });
@@ -92,7 +98,7 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fetchFavorites();
+        getRefreshLayout().setEnabled(false);
     }
 
 
@@ -112,33 +118,7 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
-
-                        final Region region = mFavorites.findRegionForPlayer(player);
-                        mFavorites.remove(player);
-
-                        for (int i = 0; i < mListItems.size(); ++i) {
-                            final ListItem li = mListItems.get(i);
-
-                            if (li.isPlayer() && li.getPlayer().equals(player)) {
-                                mListItems.remove(i);
-                                break;
-                            }
-                        }
-
-                        if (!mFavorites.hasPlayers(region)) {
-                            mFavorites.remove(region);
-
-                            for (int i = 0; i < mListItems.size(); ++i) {
-                                final ListItem li = mListItems.get(i);
-
-                                if (li.isRegion() && li.getRegion().equals(region)) {
-                                    mListItems.remove(i);
-                                    break;
-                                }
-                            }
-                        }
-
-                        notifyDataSetChanged();
+                        remove(player);
                     }
                 })
                 .show();
@@ -148,22 +128,49 @@ public class FavoritesActivity extends BaseToolbarListActivity implements
 
 
     @Override
-    public void onRefresh() {
-        super.onRefresh();
-
-        if (!isLoading()) {
-            fetchFavorites();
-        }
-    }
-
-
-    @Override
-    protected void onStop() {
+    protected void onPause() {
         if (mFavorites != null) {
             FavoritesStore.write(mFavorites);
         }
 
-        super.onStop();
+        super.onPause();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchFavorites();
+    }
+
+
+    private void remove(final Player player) {
+        final Region region = mFavorites.findRegionForPlayer(player);
+        mFavorites.remove(player);
+
+        for (int i = 0; i < mListItems.size(); ++i) {
+            final ListItem li = mListItems.get(i);
+
+            if (li.isPlayer() && li.getPlayer().equals(player)) {
+                mListItems.remove(i);
+                break;
+            }
+        }
+
+        if (!mFavorites.hasPlayers(region)) {
+            mFavorites.remove(region);
+
+            for (int i = 0; i < mListItems.size(); ++i) {
+                final ListItem li = mListItems.get(i);
+
+                if (li.isRegion() && li.getRegion().equals(region)) {
+                    mListItems.remove(i);
+                    break;
+                }
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
 

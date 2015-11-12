@@ -244,15 +244,12 @@ public abstract class BaseToolbarActivity extends BaseActivity implements
 
 
     private void selectCurrentNavigationItem() {
+        final Menu menu = mNavigationView.getMenu();
         final int selectedNavigationItemId = getSelectedNavigationItemId();
 
-        if (selectedNavigationItemId != 0) {
-            final Menu menu = mNavigationView.getMenu();
-
-            for (int i = 0; i < menu.size(); ++i) {
-                final MenuItem menuItem = menu.getItem(i);
-                menuItem.setChecked(menuItem.getItemId() == selectedNavigationItemId);
-            }
+        for (int i = 0; i < menu.size(); ++i) {
+            final MenuItem menuItem = menu.getItem(i);
+            menuItem.setChecked(menuItem.getItemId() == selectedNavigationItemId);
         }
     }
 

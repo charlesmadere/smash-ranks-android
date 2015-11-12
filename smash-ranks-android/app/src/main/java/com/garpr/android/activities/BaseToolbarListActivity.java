@@ -60,6 +60,16 @@ public abstract class BaseToolbarListActivity extends BaseToolbarActivity implem
     }
 
 
+    protected RefreshLayout getRefreshLayout() {
+        return mRefreshLayout;
+    }
+
+
+    protected boolean hasAdapter() {
+        return mAdapter != null;
+    }
+
+
     protected boolean isLoading() {
         return mIsLoading;
     }
