@@ -3,9 +3,11 @@ package com.garpr.android.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.garpr.android.R;
+
 public class HomeActivity extends BaseActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "HomeActivity";
 
 
     @Override
@@ -16,6 +18,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
     }
 
 }

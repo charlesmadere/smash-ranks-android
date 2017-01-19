@@ -2,5 +2,6 @@
 <resources>
 
     <item name="bottom_navigation_view" type="id" />
+    <item name="toolbar" type="id" />
 
 </resources>
