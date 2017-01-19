@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="refresh_layout">
-        <attr name="scrolling_child" format="reference" />
-        <attr name="spinner_colors" format="reference" />
+    <declare-styleable name="RefreshLayout">
+        <attr name="scrollingChild" format="reference" />
+        <attr name="spinnerColors" format="reference" />
     </declare-styleable>
 
 </resources>

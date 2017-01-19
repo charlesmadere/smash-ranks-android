@@ -3,9 +3,9 @@ package com.garpr.android.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-public class SettingsActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity {
 
-    private static final String TAG = "SettingsActivity";
+    private static final String TAG = "MainActivity";
 
 
     @Override

@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="alert_dialog_theme_v21" parent="android:Theme.Material.Dialog">
+    <style name="AlertDialogTheme_v21" parent="android:Theme.Material.Dialog">
         <item name="android:colorAccent">@color/indigo_bright</item>
     </style>
 
-    <style name="app_theme" parent="app_theme_base">
-        <item name="android:alertDialogTheme">@style/alert_dialog_theme_v21</item>
-    </style>
-
-    <style name="app_theme.drawer">
-        <item name="android:statusBarColor">@color/transparent</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-    </style>
-
-    <style name="app_theme.fullscreen">
-        <item name="android:windowTranslucentStatus">true</item>
+    <style name="AppTheme" parent="AppThemeBase">
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme_v21</item>
     </style>
 
 </resources>

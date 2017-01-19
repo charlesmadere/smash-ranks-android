@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="drawer_layout" type="id" />
-    <item name="navigation_drawer" type="id" />
-    <item name="toolbar" type="id" />
-    <item name="view_preference_sub_title" type="id" />
-    <item name="view_preference_title" type="id" />
+    <item name="bottom_navigation_view" type="id" />
 
 </resources>

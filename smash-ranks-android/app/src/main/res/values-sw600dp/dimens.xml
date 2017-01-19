@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="list_item_height">50dp</dimen>
-    <dimen name="list_item_separator_height">44dp</dimen>
-    <dimen name="navigation_drawer_banner_height">160dp</dimen>
-    <dimen name="navigation_drawer_width">320dp</dimen>
-    <dimen name="match_results_bar_height">20dp</dimen>
-    <dimen name="match_results_item_height">82dp</dimen>
+    <dimen name="list_item_height">52dp</dimen>
     <dimen name="root_padding">18dp</dimen>
     <dimen name="root_padding_double">36dp</dimen>
     <dimen name="root_padding_eighth">2.25dp</dimen>

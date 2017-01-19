@@ -1,32 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="alert_dialog_theme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="colorAccent">@color/indigo_bright</item>
     </style>
 
-    <style name="app_theme" parent="app_theme_base">
+    <style name="AppTheme" parent="AppThemeBase">
 
     </style>
 
-    <style name="app_theme_base" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppThemeBase" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:textColor">@color/white</item>
         <item name="android:windowBackground">@color/gray_darker</item>
-        <item name="alertDialogTheme">@style/alert_dialog_theme</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="colorAccent">@color/indigo_bright</item>
         <item name="colorPrimary">@color/gray_dark</item>
         <item name="colorPrimaryDark">@color/gray_darker</item>
     </style>
 
-    <style name="app_theme.drawer">
-
-    </style>
-
-    <style name="app_theme.fullscreen">
-
-    </style>
-
-    <style name="toolbar_theme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
     </style>
 

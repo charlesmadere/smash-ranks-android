@@ -8,9 +8,4 @@
         <item>@color/indigo_dark</item>
     </array>
 
-    <string-array name="app_authors">
-        <item>@string/charles_madere</item>
-        <item>@string/timothy_choi</item>
-    </string-array>
-
 </resources>

@@ -1,9 +1,9 @@
 package com.garpr.android.views;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -13,16 +13,14 @@ import android.widget.ScrollView;
 
 import com.garpr.android.R;
 
-
+/**
+ * A child class of the official Android {@link SwipeRefreshLayout} that helps us work around
+ * some of its shortcomings. We should use this view instead of SwipeRefreshLayout in every case.
+ */
 public class RefreshLayout extends SwipeRefreshLayout {
 
-
-    private static final int DEFAULT_SPINNER_COLORS = R.array.spinner_colors;
-
-    private int mScrollingChildId;
-    private View mScrollingChild;
-
-
+    private int scrollingChildId;
+    private View scrollingChild;
 
 
     public RefreshLayout(final Context context, final AttributeSet attrs) {
@@ -30,55 +28,59 @@ public class RefreshLayout extends SwipeRefreshLayout {
         parseAttributes(attrs);
     }
 
-
+    /*
+     * http://stackoverflow.com/q/25270171/823952
+     */
     @Override
     public boolean canChildScrollUp() {
-        final boolean canChildScrollUp;
-
-        if (mScrollingChild == null) {
-            canChildScrollUp = super.canChildScrollUp();
+        if (scrollingChild == null) {
+            return super.canChildScrollUp();
         } else {
-            // -1 means to check scrolling up (1 would check scrolling down)
-            canChildScrollUp = ViewCompat.canScrollVertically(mScrollingChild, -1);
+            return ViewCompat.canScrollVertically(scrollingChild, -1);
         }
-
-        return canChildScrollUp;
     }
-
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        if (mScrollingChildId != 0) {
-            final View scrollingChild = findViewById(mScrollingChildId);
-
-            if (scrollingChild == null) {
-                throw new IllegalStateException("unable to find scrolling child with view ID of "
-                        + mScrollingChild);
-            }
-
-            setScrollingChild(scrollingChild);
+        if (scrollingChildId != 0) {
+            findScrollingChild();
         }
     }
 
+    private void findScrollingChild() {
+        final View scrollingChild = findViewById(scrollingChildId);
+
+        if (scrollingChild == null) {
+            throw new NullPointerException("unable to find scrolling child");
+        } else if (scrollingChild instanceof AbsListView || scrollingChild instanceof NestedScrollView
+                || scrollingChild instanceof RecyclerView || scrollingChild instanceof ScrollView) {
+            this.scrollingChild = scrollingChild;
+        } else {
+            throw new IllegalStateException("scrollingChild (" + scrollingChild +
+                    ") must be an AbsListView, RecyclerView, or ScrollView");
+        }
+    }
 
     private void parseAttributes(final AttributeSet attrs) {
-        final TypedArray ta = getContext().obtainStyledAttributes(attrs,
-                R.styleable.refresh_layout);
-
-        if (ta.hasValue(R.styleable.refresh_layout_scrolling_child)) {
-            mScrollingChildId = ta.getResourceId(R.styleable.refresh_layout_scrolling_child, 0);
+        if (isInEditMode()) {
+            return;
         }
 
-        final int spinnerColorsResId = ta.getResourceId(
-                R.styleable.refresh_layout_spinner_colors, DEFAULT_SPINNER_COLORS);
-        final int spinnerColors[] = getResources().getIntArray(spinnerColorsResId);
-        setColorSchemeColors(spinnerColors);
+        final TypedArray ta = getContext().obtainStyledAttributes(attrs,
+                R.styleable.RefreshLayout);
+
+        final int spinnerColorsResId = ta.getResourceId(R.styleable.RefreshLayout_spinnerColors,
+                R.array.spinner_colors);
+        setColorSchemeColors(getResources().getIntArray(spinnerColorsResId));
+
+        if (ta.hasValue(R.styleable.RefreshLayout_scrollingChild)) {
+            scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0);
+        }
 
         ta.recycle();
     }
-
 
     @Override
     public void setRefreshing(final boolean refreshing) {
@@ -89,17 +91,5 @@ public class RefreshLayout extends SwipeRefreshLayout {
             }
         });
     }
-
-
-    public void setScrollingChild(final View scrollingChild) throws IllegalArgumentException {
-        if (scrollingChild instanceof AbsListView || scrollingChild instanceof RecyclerView
-                || scrollingChild instanceof ScrollView) {
-            mScrollingChild = scrollingChild;
-        } else {
-            throw new IllegalArgumentException("scrollingChild (" + scrollingChild +
-                    ") must be an AbsListView, RecyclerView, or ScrollView");
-        }
-    }
-
 
 }
