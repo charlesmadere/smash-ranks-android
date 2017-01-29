@@ -31,6 +31,30 @@ public class HomeActivity extends BaseActivity implements
         return TAG;
     }
 
+    private void navigateToTag(@NonNull final String tag) {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            if (PlayersFragment.TAG.equals(tag)) {
+                fragment = PlayersFragment.create();
+            } else if (RankingsFragment.TAG.equals(tag)) {
+                fragment = RankingsFragment.create();
+            } else if (TournamentsFragment.TAG.equals(tag)) {
+                fragment = TournamentsFragment.create();
+            } else {
+                throw new RuntimeException("unknown tag: " + tag);
+            }
+
+            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flContent, fragment);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commit();
+        } else {
+            fragmentManager.popBackStack(tag, 0);
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,31 +89,10 @@ public class HomeActivity extends BaseActivity implements
                 break;
 
             default:
-                throw new RuntimeException("unknown item: " + item);
+                throw new RuntimeException("unknown item: " + item.getTitle());
         }
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            if (PlayersFragment.TAG.equals(tag)) {
-                fragment = PlayersFragment.create();
-            } else if (RankingsFragment.TAG.equals(tag)) {
-                fragment = RankingsFragment.create();
-            } else if (TournamentsFragment.TAG.equals(tag)) {
-                fragment = TournamentsFragment.create();
-            } else {
-                throw new RuntimeException("unknown tag: " + tag);
-            }
-
-            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.flContent, fragment);
-            fragmentTransaction.addToBackStack(tag);
-            fragmentTransaction.commit();
-        } else {
-            fragmentManager.popBackStack(tag, 0);
-        }
-
+        navigateToTag(tag);
         return true;
     }
 
