@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
+    <include
+        layout="@layout/toolbar" />
     <android.support.design.widget.BottomNavigationView
         design:menu="@menu/bottom_navigation_view"
         style="@style/bottom_navigation_view" />
