@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="auto">Auto</string>
+    <string name="day">Day</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
     <string name="error_loading_tournaments">Error loading tournaments!</string>
     <string name="gar_pr">GAR PR</string>
+    <string name="night">Night</string>
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
     <string name="no_tournaments">No tournaments</string>
@@ -12,6 +15,7 @@
     <string name="rankings">Rankings</string>
     <string name="settings">Settings</string>
     <string name="swipe_to_refresh_to_check_again">Swipe to refresh to check again</string>
+    <string name="system">System</string>
     <string name="tournaments">Tournaments</string>
 
 </resources>
