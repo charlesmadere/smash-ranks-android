@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="error_loading_players">Error loading players!</string>
     <string name="gar_pr">GAR PR</string>
+    <string name="no_players">No players</string>
     <string name="players">Players</string>
     <string name="rankings">Rankings</string>
     <string name="settings">Settings</string>
+    <string name="swipe_to_refresh_to_check_again">Swipe to refresh to check again</string>
     <string name="tournaments">Tournaments</string>
 
 </resources>

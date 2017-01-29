@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            app:layoutManager="LinearLayoutManager" />
+        <LinearLayout
+            android:clickable="true"
+            android:gravity="center"
+            android:id="@+id/llEmpty"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/no_players" />
+            <TextView
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/swipe_to_refresh_to_check_again" />
+        </LinearLayout>
+        <LinearLayout
+            android:clickable="true"
+            android:gravity="center"
+            android:id="@+id/llError"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:gravity="center"
+                android:id="@+id/tvError"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="@string/error_loading_players" />
+            <TextView
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/swipe_to_refresh_to_check_again" />
+        </LinearLayout>
+    </FrameLayout>
+</com.garpr.android.views.RefreshLayout>
