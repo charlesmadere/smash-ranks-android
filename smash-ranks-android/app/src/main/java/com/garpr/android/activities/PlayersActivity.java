@@ -14,7 +14,8 @@ public class PlayersActivity extends BaseNavigationActivity {
 
 
     public static Intent getLaunchIntent(final Context context) {
-        return new Intent(context, PlayersActivity.class);
+        return new Intent(context, PlayersActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     }
 
     @IdRes

@@ -14,7 +14,8 @@ public class TournamentsActivity extends BaseNavigationActivity {
 
 
     public static Intent getLaunchIntent(final Context context) {
-        return new Intent(context, TournamentsActivity.class);
+        return new Intent(context, TournamentsActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     }
 
     @IdRes

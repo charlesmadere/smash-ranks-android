@@ -14,7 +14,8 @@ public class RankingsActivity extends BaseNavigationActivity {
 
 
     public static Intent getLaunchIntent(final Context context) {
-        return new Intent(context, RankingsActivity.class);
+        return new Intent(context, RankingsActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     }
 
     @IdRes
