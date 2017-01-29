@@ -6,7 +6,13 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class TournamentsBundle implements Parcelable {
+
+    @Nullable
+    @SerializedName("players")
+    private ArrayList<Player> mPlayers;
 
     @SerializedName("date")
     private SimpleDate mDate;
@@ -38,6 +44,11 @@ public class TournamentsBundle implements Parcelable {
         return mName;
     }
 
+    @Nullable
+    public ArrayList<Player> getPlayers() {
+        return mPlayers;
+    }
+
     public String getRawId() {
         return mRawId;
     }
@@ -64,6 +75,7 @@ public class TournamentsBundle implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
+        dest.writeTypedList(mPlayers);
         dest.writeParcelable(mDate, flags);
         dest.writeString(mId);
         dest.writeString(mName);
@@ -75,6 +87,7 @@ public class TournamentsBundle implements Parcelable {
         @Override
         public TournamentsBundle createFromParcel(final Parcel source) {
             final TournamentsBundle tb = new TournamentsBundle();
+            tb.mPlayers = source.createTypedArrayList(Player.CREATOR);
             tb.mDate = source.readParcelable(SimpleDate.class.getClassLoader());
             tb.mId = source.readString();
             tb.mName = source.readString();
