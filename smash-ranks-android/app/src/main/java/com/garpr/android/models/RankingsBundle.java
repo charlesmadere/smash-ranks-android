@@ -14,6 +14,10 @@ public class RankingsBundle implements Parcelable {
     @SerializedName("ranking")
     private ArrayList<Ranking> mRankings;
 
+    @Nullable
+    @SerializedName("tournaments")
+    private ArrayList<String> mTournaments;
+
     @SerializedName("time")
     private SimpleDate mTime;
 
@@ -42,6 +46,11 @@ public class RankingsBundle implements Parcelable {
         return mTime;
     }
 
+    @Nullable
+    public ArrayList<String> getTournaments() {
+        return mTournaments;
+    }
+
     @Override
     public int hashCode() {
         return mId.hashCode();
@@ -62,6 +71,7 @@ public class RankingsBundle implements Parcelable {
         dest.writeParcelable(mTime, flags);
         dest.writeString(mId);
         dest.writeString(mRegion);
+        dest.writeStringList(mTournaments);
     }
 
     public static final Creator<RankingsBundle> CREATOR = new Creator<RankingsBundle>() {
@@ -72,6 +82,7 @@ public class RankingsBundle implements Parcelable {
             rb.mTime = source.readParcelable(SimpleDate.class.getClassLoader());
             rb.mId = source.readString();
             rb.mRegion = source.readString();
+            rb.mTournaments = source.createStringArrayList();
             return rb;
         }
 
