@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="BottomNavigationView">
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
         <item name="android:id">@id/bottomNavigationView</item>
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_gravity">bottom</item>
@@ -15,6 +16,7 @@
 
     <style name="Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
         <item name="android:id">@id/toolbar</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
