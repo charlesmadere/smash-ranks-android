@@ -5,9 +5,9 @@ import android.support.annotation.Nullable;
 
 import com.garpr.android.R;
 
-public class HomeActivity extends BaseActivity {
+public class RankingsActivity extends BaseActivity {
 
-    private static final String TAG = "HomeActivity";
+    private static final String TAG = "RankingsActivity";
 
 
     @Override
@@ -18,7 +18,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_rankings);
     }
 
 }

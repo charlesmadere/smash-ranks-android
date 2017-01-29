@@ -15,9 +15,18 @@
         android:theme="@style/AppTheme">
 
         <activity
+            android:label="@string/players"
+            android:launchMode="singleTop"
+            android:name=".activities.PlayersActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RankingsActivity" />
+        </activity>
+
+        <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
-            android:name=".activities.HomeActivity">
+            android:name=".activities.RankingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,10 +37,20 @@
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:name=".activities.SettingsActivity"
-            android:parentActivityName=".activities.HomeActivity">
+            android:parentActivityName=".activities.RankingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.HomeActivity" />
+                android:value=".activities.RankingsActivity" />
+        </activity>
+
+        <activity
+            android:label="@string/tournaments"
+            android:launchMode="singleTop"
+            android:name=".activities.TournamentsActivity"
+            android:parentActivityName=".activities.RankingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RankingsActivity" />
         </activity>
 
     </application>
