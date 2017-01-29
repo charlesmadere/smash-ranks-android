@@ -20,7 +20,7 @@
             android:name=".activities.PlayersActivity" />
 
         <activity
-            android:label="@string/gar_pr"
+            android:label="@string/rankings"
             android:launchMode="singleTop"
             android:name=".activities.RankingsActivity">
             <intent-filter>
