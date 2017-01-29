@@ -49,6 +49,7 @@ public abstract class BaseNavigationActivity extends BaseActivity implements
     @Override
     protected void onViewsBound() {
         super.onViewsBound();
+        mBottomNavigationView.inflateMenu(R.menu.bottom_navigation_view);
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
