@@ -40,7 +40,7 @@ public class RankingsFragment extends BaseFragment implements SwipeRefreshLayout
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_players, container, false);
+        return inflater.inflate(R.layout.fragment_rankings, container, false);
     }
 
     @Override
