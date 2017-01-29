@@ -2,6 +2,7 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -16,6 +17,13 @@ public class TournamentsBundle implements Parcelable {
     @SerializedName("name")
     private String mName;
 
+    @SerializedName("raw_id")
+    private String mRawId;
+
+    @Nullable
+    @SerializedName("url")
+    private String mUrl;
+
 
     @Override
     public boolean equals(final Object obj) {
@@ -28,6 +36,15 @@ public class TournamentsBundle implements Parcelable {
 
     public String getName() {
         return mName;
+    }
+
+    public String getRawId() {
+        return mRawId;
+    }
+
+    @Nullable
+    public String getUrl() {
+        return mUrl;
     }
 
     @Override
@@ -50,6 +67,8 @@ public class TournamentsBundle implements Parcelable {
         dest.writeParcelable(mDate, flags);
         dest.writeString(mId);
         dest.writeString(mName);
+        dest.writeString(mRawId);
+        dest.writeString(mUrl);
     }
 
     public static final Creator<TournamentsBundle> CREATOR = new Creator<TournamentsBundle>() {
@@ -59,6 +78,8 @@ public class TournamentsBundle implements Parcelable {
             tb.mDate = source.readParcelable(SimpleDate.class.getClassLoader());
             tb.mId = source.readString();
             tb.mName = source.readString();
+            tb.mRawId = source.readString();
+            tb.mUrl = source.readString();
             return tb;
         }
 
