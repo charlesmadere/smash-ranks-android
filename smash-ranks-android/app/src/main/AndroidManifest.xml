@@ -15,14 +15,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:label="@string/players"
+            android:label="@string/gar_pr"
             android:launchMode="singleTop"
-            android:name=".activities.PlayersActivity" />
-
-        <activity
-            android:label="@string/rankings"
-            android:launchMode="singleTop"
-            android:name=".activities.RankingsActivity">
+            android:name=".activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,11 +28,6 @@
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:name=".activities.SettingsActivity" />
-
-        <activity
-            android:label="@string/tournaments"
-            android:launchMode="singleTop"
-            android:name=".activities.TournamentsActivity" />
 
     </application>
 

@@ -17,7 +17,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     @Override
-    public String getTag() {
+    public String getActivityName() {
         return TAG;
     }
 
@@ -25,11 +25,6 @@ public class SettingsActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-    }
-
-    @Override
-    protected boolean showBaseMenu() {
-        return false;
     }
 
     @Override

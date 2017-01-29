@@ -8,18 +8,16 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.garpr.android.R;
 import com.garpr.android.misc.Heartbeat;
-import com.garpr.android.misc.TagHandle;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseActivity extends AppCompatActivity implements Heartbeat, TagHandle {
+public abstract class BaseActivity extends AppCompatActivity implements Heartbeat {
 
     private Unbinder mUnbinder;
 
@@ -27,6 +25,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     @BindView(R.id.toolbar)
     protected Toolbar mToolbar;
 
+
+    protected abstract String getActivityName();
 
     @Override
     public boolean isAlive() {
@@ -48,23 +48,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     }
 
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        if (showBaseMenu()) {
-            getMenuInflater().inflate(R.menu.base_activity, menu);
-        }
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 navigateUp();
-                return true;
-
-            case R.id.miSettings:
-                startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
         }
 
@@ -95,17 +82,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
         onViewsBound();
     }
 
-    protected boolean showBaseMenu() {
-        return true;
-    }
-
     protected boolean showUpNavigation() {
         return false;
     }
 
     @Override
     public String toString() {
-        return getTag();
+        return getActivityName();
     }
 
 }
