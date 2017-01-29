@@ -1,6 +1,8 @@
 package com.garpr.android;
 
 import android.app.Application;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class App extends Application {
 
@@ -15,6 +17,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+
+        Fabric.with(this, new Crashlytics());
     }
 
 }
