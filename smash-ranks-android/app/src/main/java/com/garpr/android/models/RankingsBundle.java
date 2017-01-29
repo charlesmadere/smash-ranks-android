@@ -26,7 +26,11 @@ public class RankingsBundle implements Parcelable {
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof RankingsBundle && mId.equals(((RankingsBundle) obj).mId);
+        return obj instanceof RankingsBundle && mId.equals(((RankingsBundle) obj).getId());
+    }
+
+    public String getId() {
+        return mId;
     }
 
     @Nullable
