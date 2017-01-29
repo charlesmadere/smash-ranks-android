@@ -32,4 +32,9 @@ public class SettingsActivity extends BaseActivity {
         return false;
     }
 
+    @Override
+    protected boolean showUpNavigation() {
+        return true;
+    }
+
 }
