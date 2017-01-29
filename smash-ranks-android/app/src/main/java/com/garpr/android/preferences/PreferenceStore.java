@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 public interface PreferenceStore {
 
     void clearAll();
-
     Context getContext();
-
     SharedPreferences getDefaultSharedPreferences();
 
 }
