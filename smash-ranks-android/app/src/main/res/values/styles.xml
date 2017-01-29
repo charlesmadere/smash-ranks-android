@@ -48,11 +48,11 @@
     </style>
 
     <style name="RecyclerViewMessage.Error">
-        <item name="android:id">@id/recyclerView</item>
+        <item name="android:id">@id/error</item>
     </style>
 
     <style name="RecyclerViewMessage.Empty">
-        <item name="android:id">@id/error</item>
+        <item name="android:id">@id/empty</item>
     </style>
 
     <style name="RefreshLayout">

@@ -74,7 +74,7 @@ public class HomeActivity extends BaseActivity implements
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
-        return false;
+        return true;
     }
 
     @Override
