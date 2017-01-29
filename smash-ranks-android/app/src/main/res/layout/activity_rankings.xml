@@ -8,5 +8,5 @@
         layout="@layout/toolbar" />
     <android.support.design.widget.BottomNavigationView
         design:menu="@menu/bottom_navigation_view"
-        style="@style/bottom_navigation_view" />
+        style="@style/BottomNavigationView" />
 </RelativeLayout>
