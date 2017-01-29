@@ -21,12 +21,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class DaggerModule {
+public class AppModule {
 
     private final Application mApplication;
 
 
-    public DaggerModule(@NonNull final Application application) {
+    public AppModule(@NonNull final Application application) {
         mApplication = application;
     }
 
