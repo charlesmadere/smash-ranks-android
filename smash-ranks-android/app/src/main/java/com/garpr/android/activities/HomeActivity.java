@@ -32,8 +32,9 @@ public class HomeActivity extends BaseActivity implements
         return TAG;
     }
 
-    private void navigateToTag(@NonNull final String tag, final boolean addToBackStack) {
+    private void navigateToTag(@NonNull final String tag) {
         final FragmentManager fragmentManager = getSupportFragmentManager();
+        final boolean fragmentExists = fragmentManager.findFragmentById(R.id.flContent) != null;
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
         if (fragment == null) {
@@ -48,10 +49,12 @@ public class HomeActivity extends BaseActivity implements
             }
 
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.flContent, fragment, tag);
 
-            if (addToBackStack) {
+            if (fragmentExists) {
+                fragmentTransaction.replace(R.id.flContent, fragment, tag);
                 fragmentTransaction.addToBackStack(null);
+            } else {
+                fragmentTransaction.add(R.id.flContent, fragment, tag);
             }
 
             fragmentTransaction.commit();
@@ -80,7 +83,7 @@ public class HomeActivity extends BaseActivity implements
         setContentView(R.layout.activity_home);
 
         if (savedInstanceState == null) {
-            navigateToTag(RankingsFragment.TAG, false);
+            navigateToTag(RankingsFragment.TAG);
         }
     }
 
@@ -115,7 +118,7 @@ public class HomeActivity extends BaseActivity implements
                 throw new RuntimeException("unknown item: " + item.getTitle());
         }
 
-        navigateToTag(tag, true);
+        navigateToTag(tag);
         return true;
     }
 
