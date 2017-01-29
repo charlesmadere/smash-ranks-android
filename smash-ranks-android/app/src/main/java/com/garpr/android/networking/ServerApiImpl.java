@@ -8,7 +8,7 @@ public class ServerApiImpl implements ServerApi {
 
     @Override
     public void getRankings(@NonNull final String region, final ApiCall<RankingsBundle> call) {
-
+        // TODO
     }
 
 }
