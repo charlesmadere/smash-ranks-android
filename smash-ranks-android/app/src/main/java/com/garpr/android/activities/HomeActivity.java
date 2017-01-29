@@ -47,8 +47,8 @@ public class HomeActivity extends BaseActivity implements
             }
 
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.flContent, fragment);
-            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.replace(R.id.flContent, fragment, tag);
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         } else {
             fragmentManager.popBackStack(tag, 0);
