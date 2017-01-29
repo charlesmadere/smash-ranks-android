@@ -11,6 +11,10 @@ public class RankingsBundle implements Parcelable {
     private SimpleDate mTime;
 
 
+    public SimpleDate getTime() {
+        return mTime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
