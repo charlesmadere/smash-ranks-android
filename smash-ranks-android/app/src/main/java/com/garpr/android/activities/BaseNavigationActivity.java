@@ -1,5 +1,6 @@
 package com.garpr.android.activities;
 
+import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -27,18 +28,25 @@ public abstract class BaseNavigationActivity extends BaseActivity implements
             return false;
         }
 
+        Intent intent = null;
+
         switch (item.getItemId()) {
             case R.id.actionPlayers:
-                startActivity(PlayersActivity.getLaunchIntent(this));
+                intent = PlayersActivity.getLaunchIntent(this);
                 break;
 
             case R.id.actionRankings:
-                startActivity(RankingsActivity.getLaunchIntent(this));
+                intent = RankingsActivity.getLaunchIntent(this);
                 break;
 
             case R.id.actionTournaments:
-                startActivity(TournamentsActivity.getLaunchIntent(this));
+                intent = TournamentsActivity.getLaunchIntent(this);
                 break;
+        }
+
+        if (intent != null) {
+            startActivity(intent);
+            overridePendingTransition(0, 0);
         }
 
         return false;
