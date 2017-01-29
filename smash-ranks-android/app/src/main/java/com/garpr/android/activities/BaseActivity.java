@@ -7,6 +7,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.garpr.android.R;
@@ -46,10 +47,23 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     }
 
     @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        if (showBaseMenu()) {
+            getMenuInflater().inflate(R.menu.base_activity, menu);
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 navigateUp();
+                return true;
+
+            case R.id.miSettings:
+                startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
         }
 
@@ -72,6 +86,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     public void setContentView(@LayoutRes final int layoutResID) {
         super.setContentView(layoutResID);
         onViewsBound();
+    }
+
+    protected boolean showBaseMenu() {
+        return true;
     }
 
     @Override
