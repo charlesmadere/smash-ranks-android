@@ -49,19 +49,19 @@ public class HomeActivity extends BaseActivity implements
             return false;
         }
 
-        final Fragment fragment;
+        final String tag;
 
         switch (item.getItemId()) {
             case R.id.actionPlayers:
-                fragment = PlayersFragment.create();
+                tag = PlayersFragment.TAG;
                 break;
 
             case R.id.actionRankings:
-                fragment = RankingsFragment.create();
+                tag = RankingsFragment.TAG;
                 break;
 
             case R.id.actionTournaments:
-                fragment = TournamentsFragment.create();
+                tag = TournamentsFragment.TAG;
                 break;
 
             default:
@@ -69,10 +69,26 @@ public class HomeActivity extends BaseActivity implements
         }
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContent, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            if (PlayersFragment.TAG.equals(tag)) {
+                fragment = PlayersFragment.create();
+            } else if (RankingsFragment.TAG.equals(tag)) {
+                fragment = RankingsFragment.create();
+            } else if (TournamentsFragment.TAG.equals(tag)) {
+                fragment = TournamentsFragment.create();
+            } else {
+                throw new RuntimeException("unknown tag: " + tag);
+            }
+
+            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flContent, fragment);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commit();
+        } else {
+            fragmentManager.popBackStack(tag, 0);
+        }
 
         return true;
     }

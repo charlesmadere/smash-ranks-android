@@ -14,7 +14,7 @@ import butterknife.BindView;
 
 public class RankingsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG = "RankingsFragment";
+    public static final String TAG = "RankingsFragment";
 
     @BindView(R.id.refreshLayout)
     RefreshLayout mRefreshLayout;
