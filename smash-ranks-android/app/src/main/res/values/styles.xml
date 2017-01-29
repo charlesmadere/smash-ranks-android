@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+    <style name="bottom_navigation_view">
+        <item name="android:id">@id/bottom_navigation_view</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:layout_height">@dimen/bottom_navigation_view_height</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
 
 </resources>

@@ -5,9 +5,6 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
     <android.support.design.widget.BottomNavigationView
-        android:id="@id/bottom_navigation_view"
-        android:layout_alignParentBottom="true"
-        android:layout_height="@dimen/bottom_navigation_view_height"
-        android:layout_width="match_parent"
-        design:menu="@menu/bottom_navigation_view" />
+        design:menu="@menu/bottom_navigation_view"
+        style="@style/bottom_navigation_view" />
 </RelativeLayout>
