@@ -59,6 +59,10 @@ public class HomeActivity extends BaseActivity implements
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if (savedInstanceState == null) {
+            navigateToTag(RankingsFragment.TAG);
+        }
     }
 
     @Override
