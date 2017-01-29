@@ -64,17 +64,14 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public void onBackStackChanged() {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        final Fragment fragment = fragmentManager.findFragmentById(R.id.flContent);
+    public void onBackPressed() {
+        super.onBackPressed();
+        updateSelectedNavigationItem();
+    }
 
-        if (fragment instanceof PlayersFragment) {
-            mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
-        } else if (fragment instanceof RankingsFragment) {
-            mBottomNavigationView.getMenu().findItem(R.id.actionRankings).setChecked(true);
-        } else if (fragment instanceof TournamentsFragment) {
-            mBottomNavigationView.getMenu().findItem(R.id.actionTournaments).setChecked(true);
-        }
+    @Override
+    public void onBackStackChanged() {
+        updateSelectedNavigationItem();
     }
 
     @Override
@@ -138,6 +135,19 @@ public class HomeActivity extends BaseActivity implements
         super.onViewsBound();
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
+    }
+
+    private void updateSelectedNavigationItem() {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment fragment = fragmentManager.findFragmentById(R.id.flContent);
+
+        if (fragment instanceof PlayersFragment) {
+            mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
+        } else if (fragment instanceof RankingsFragment) {
+            mBottomNavigationView.getMenu().findItem(R.id.actionRankings).setChecked(true);
+        } else if (fragment instanceof TournamentsFragment) {
+            mBottomNavigationView.getMenu().findItem(R.id.actionTournaments).setChecked(true);
+        }
     }
 
 }
