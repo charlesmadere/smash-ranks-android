@@ -2,6 +2,8 @@
 <resources>
 
     <item name="bottomNavigationView" type="id" />
+    <item name="empty" type="id" />
+    <item name="error" type="id" />
     <item name="recyclerView" type="id" />
     <item name="refreshLayout" type="id" />
     <item name="toolbar" type="id" />

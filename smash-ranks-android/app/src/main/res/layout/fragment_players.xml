@@ -8,45 +8,22 @@
         <android.support.v7.widget.RecyclerView
             style="@style/RecyclerView" />
         <LinearLayout
-            android:clickable="true"
-            android:gravity="center"
-            android:id="@+id/llEmpty"
-            android:layout_gravity="center"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
+            style="@style/RecyclerViewMessage.Empty">
             <TextView
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="@string/no_players" />
+                android:text="@string/no_players"
+                style="@style/RecyclerViewLine.1" />
             <TextView
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="@string/swipe_to_refresh_to_check_again" />
+                android:text="@string/swipe_to_refresh_to_check_again"
+                style="@style/RecyclerViewLine.2" />
         </LinearLayout>
         <LinearLayout
-            android:clickable="true"
-            android:gravity="center"
-            android:id="@+id/llError"
-            android:layout_gravity="center"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
+            style="@style/RecyclerViewMessage.Error">
             <TextView
-                android:gravity="center"
-                android:id="@+id/tvError"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:text="@string/error_loading_players" />
+                android:text="@string/error_loading_players"
+                style="@style/RecyclerViewLine.1" />
             <TextView
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="@string/swipe_to_refresh_to_check_again" />
+                android:text="@string/swipe_to_refresh_to_check_again"
+                style="@style/RecyclerViewLine.2" />
         </LinearLayout>
     </FrameLayout>
 </com.garpr.android.views.RefreshLayout>

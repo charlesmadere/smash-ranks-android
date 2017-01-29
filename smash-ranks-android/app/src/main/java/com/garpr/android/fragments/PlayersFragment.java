@@ -19,6 +19,12 @@ public class PlayersFragment extends BaseFragment implements SwipeRefreshLayout.
     @BindView(R.id.refreshLayout)
     RefreshLayout mRefreshLayout;
 
+    @BindView(R.id.empty)
+    View mEmpty;
+
+    @BindView(R.id.error)
+    View mError;
+
 
     public static PlayersFragment create() {
         return new PlayersFragment();

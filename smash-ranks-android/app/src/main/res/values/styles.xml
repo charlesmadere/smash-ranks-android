@@ -23,6 +23,38 @@
         <item name="layoutManager">LinearLayoutManager</item>
     </style>
 
+    <style name="RecyclerViewLine">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="RecyclerViewLine.1">
+
+    </style>
+
+    <style name="RecyclerViewLine.2">
+
+    </style>
+
+    <style name="RecyclerViewMessage">
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="RecyclerViewMessage.Error">
+        <item name="android:id">@id/recyclerView</item>
+    </style>
+
+    <style name="RecyclerViewMessage.Empty">
+        <item name="android:id">@id/error</item>
+    </style>
+
     <style name="Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
