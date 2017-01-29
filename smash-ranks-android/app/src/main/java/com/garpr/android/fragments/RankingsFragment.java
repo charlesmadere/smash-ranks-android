@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.models.RankingsBundle;
+import com.garpr.android.networking.ApiListener;
 import com.garpr.android.views.RefreshLayout;
 
 import butterknife.BindView;
 
-public class RankingsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class RankingsFragment extends BaseFragment implements ApiListener<RankingsBundle>,
+        SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "RankingsFragment";
 
@@ -28,6 +31,11 @@ public class RankingsFragment extends BaseFragment implements SwipeRefreshLayout
 
     public static RankingsFragment create() {
         return new RankingsFragment();
+    }
+
+    @Override
+    public void failure() {
+
     }
 
     @Override
@@ -53,6 +61,11 @@ public class RankingsFragment extends BaseFragment implements SwipeRefreshLayout
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void success(@Nullable final RankingsBundle rankingsBundle) {
+
     }
 
 }

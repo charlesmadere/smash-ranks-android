@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.models.TournamentsBundle;
+import com.garpr.android.networking.ApiListener;
 import com.garpr.android.views.RefreshLayout;
 
 import butterknife.BindView;
 
-public class TournamentsFragment extends BaseFragment implements
+public class TournamentsFragment extends BaseFragment implements ApiListener<TournamentsBundle>,
         SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "TournamentsFragment";
@@ -29,6 +31,11 @@ public class TournamentsFragment extends BaseFragment implements
 
     public static TournamentsFragment create() {
         return new TournamentsFragment();
+    }
+
+    @Override
+    public void failure() {
+
     }
 
     @Override
@@ -54,6 +61,11 @@ public class TournamentsFragment extends BaseFragment implements
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void success(@Nullable final TournamentsBundle tournamentsBundle) {
+
     }
 
 }
