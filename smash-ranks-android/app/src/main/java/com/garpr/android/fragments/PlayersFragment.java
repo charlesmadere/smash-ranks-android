@@ -48,4 +48,11 @@ public class PlayersFragment extends BaseFragment implements SwipeRefreshLayout.
         // TODO
     }
 
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mRefreshLayout.setRefreshing(true);
+    }
+
 }
