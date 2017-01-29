@@ -2,8 +2,12 @@
 <resources>
 
     <string name="error_loading_players">Error loading players!</string>
+    <string name="error_loading_rankings">Error loading rankings!</string>
+    <string name="error_loading_tournaments">Error loading tournaments!</string>
     <string name="gar_pr">GAR PR</string>
     <string name="no_players">No players</string>
+    <string name="no_rankings">No rankings</string>
+    <string name="no_tournaments">No tournaments</string>
     <string name="players">Players</string>
     <string name="rankings">Rankings</string>
     <string name="settings">Settings</string>
