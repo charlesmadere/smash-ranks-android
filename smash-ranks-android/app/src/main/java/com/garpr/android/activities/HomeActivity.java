@@ -1,7 +1,5 @@
 package com.garpr.android.activities;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,11 +19,6 @@ public class HomeActivity extends BaseActivity implements
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNavigationView;
 
-
-    public static Intent getLaunchIntent(final Context context) {
-        return new Intent(context, HomeActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-    }
 
     @Override
     public String getActivityName() {
