@@ -39,6 +39,12 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_home, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
         if (item.isChecked()) {
             return false;
@@ -47,12 +53,6 @@ public class HomeActivity extends BaseActivity implements
         // TODO
 
         return false;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_home, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
