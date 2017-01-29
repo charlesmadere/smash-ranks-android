@@ -29,7 +29,7 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     protected boolean showBaseMenu() {
-        return true;
+        return false;
     }
 
 }
