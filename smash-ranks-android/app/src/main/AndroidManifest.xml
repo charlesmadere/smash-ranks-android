@@ -17,11 +17,7 @@
         <activity
             android:label="@string/players"
             android:launchMode="singleTop"
-            android:name=".activities.PlayersActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.RankingsActivity" />
-        </activity>
+            android:name=".activities.PlayersActivity" />
 
         <activity
             android:label="@string/gar_pr"
@@ -36,22 +32,12 @@
         <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
-            android:name=".activities.SettingsActivity"
-            android:parentActivityName=".activities.RankingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.RankingsActivity" />
-        </activity>
+            android:name=".activities.SettingsActivity" />
 
         <activity
             android:label="@string/tournaments"
             android:launchMode="singleTop"
-            android:name=".activities.TournamentsActivity"
-            android:parentActivityName=".activities.RankingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.RankingsActivity" />
-        </activity>
+            android:name=".activities.TournamentsActivity" />
 
     </application>
 
