@@ -18,7 +18,8 @@ import com.garpr.android.fragments.TournamentsFragment;
 import butterknife.BindView;
 
 public class HomeActivity extends BaseActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener {
+        BottomNavigationView.OnNavigationItemSelectedListener,
+        FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -31,7 +32,7 @@ public class HomeActivity extends BaseActivity implements
         return TAG;
     }
 
-    private void navigateToTag(@NonNull final String tag) {
+    private void navigateToTag(@NonNull final String tag, final boolean addToBackStack) {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
@@ -48,10 +49,28 @@ public class HomeActivity extends BaseActivity implements
 
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.flContent, fragment, tag);
-            fragmentTransaction.addToBackStack(null);
+
+            if (addToBackStack) {
+                fragmentTransaction.addToBackStack(null);
+            }
+
             fragmentTransaction.commit();
         } else {
             fragmentManager.popBackStack(tag, 0);
+        }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment fragment = fragmentManager.findFragmentById(R.id.flContent);
+
+        if (fragment instanceof PlayersFragment) {
+            mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
+        } else if (fragment instanceof RankingsFragment) {
+            mBottomNavigationView.getMenu().findItem(R.id.actionRankings).setChecked(true);
+        } else if (fragment instanceof TournamentsFragment) {
+            mBottomNavigationView.getMenu().findItem(R.id.actionTournaments).setChecked(true);
         }
     }
 
@@ -61,7 +80,7 @@ public class HomeActivity extends BaseActivity implements
         setContentView(R.layout.activity_home);
 
         if (savedInstanceState == null) {
-            navigateToTag(RankingsFragment.TAG);
+            navigateToTag(RankingsFragment.TAG, false);
         }
     }
 
@@ -96,7 +115,7 @@ public class HomeActivity extends BaseActivity implements
                 throw new RuntimeException("unknown item: " + item.getTitle());
         }
 
-        navigateToTag(tag);
+        navigateToTag(tag, true);
         return true;
     }
 
@@ -114,6 +133,7 @@ public class HomeActivity extends BaseActivity implements
     @Override
     protected void onViewsBound() {
         super.onViewsBound();
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
