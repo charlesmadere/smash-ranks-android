@@ -1,4 +1,4 @@
-package com.garpr.android.lifecycle;
+package com.garpr.android.misc;
 
 public interface Heartbeat {
 

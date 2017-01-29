@@ -2,7 +2,7 @@ package com.garpr.android.networking;
 
 import android.support.annotation.Nullable;
 
-import com.garpr.android.lifecycle.Heartbeat;
+import com.garpr.android.misc.Heartbeat;
 
 public interface ApiListener<T> extends Heartbeat {
 
