@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.garpr.android.R;
 
-public class TournamentsActivity extends BaseActivity {
+public class TournamentsActivity extends BaseNavigationActivity {
 
     private static final String TAG = "TournamentsActivity";
 
@@ -25,6 +25,11 @@ public class TournamentsActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tournaments);
+    }
+
+    @Override
+    protected void onTournamentsSelected() {
+
     }
 
 }

@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.garpr.android.R;
 
-public class PlayersActivity extends BaseActivity {
+public class PlayersActivity extends BaseNavigationActivity {
 
     private static final String TAG = "PlayersActivity";
 
@@ -25,6 +25,11 @@ public class PlayersActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_players);
+    }
+
+    @Override
+    protected void onPlayersSelected() {
+
     }
 
 }
