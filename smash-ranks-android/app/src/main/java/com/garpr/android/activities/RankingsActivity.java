@@ -1,5 +1,7 @@
 package com.garpr.android.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -9,6 +11,10 @@ public class RankingsActivity extends BaseActivity {
 
     private static final String TAG = "RankingsActivity";
 
+
+    public static Intent getLaunchIntent(final Context context) {
+        return new Intent(context, RankingsActivity.class);
+    }
 
     @Override
     public String getTag() {

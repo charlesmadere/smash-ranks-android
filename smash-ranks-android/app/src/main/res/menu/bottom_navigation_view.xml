@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:icon="@drawable/ic_stars_white_24dp"
-        android:id="@+id/miRankings"
+        android:id="@+id/actionRankings"
         android:title="@string/rankings" />
     <item
         android:icon="@drawable/ic_people_white_24dp"
-        android:id="@+id/miPlayers"
+        android:id="@+id/actionPlayers"
         android:title="@string/players" />
     <item
         android:icon="@drawable/ic_date_range_white_24dp"
-        android:id="@+id/miTournaments"
+        android:id="@+id/actionTournaments"
         android:title="@string/tournaments" />
 </menu>
