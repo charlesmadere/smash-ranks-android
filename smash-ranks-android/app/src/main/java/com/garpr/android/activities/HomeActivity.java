@@ -4,10 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.garpr.android.R;
+import com.garpr.android.fragments.PlayersFragment;
+import com.garpr.android.fragments.RankingsFragment;
+import com.garpr.android.fragments.TournamentsFragment;
 
 import butterknife.BindView;
 
@@ -43,7 +49,30 @@ public class HomeActivity extends BaseActivity implements
             return false;
         }
 
-        // TODO
+        final Fragment fragment;
+
+        switch (item.getItemId()) {
+            case R.id.actionPlayers:
+                fragment = PlayersFragment.create();
+                break;
+
+            case R.id.actionRankings:
+                fragment = RankingsFragment.create();
+                break;
+
+            case R.id.actionTournaments:
+                fragment = TournamentsFragment.create();
+                break;
+
+            default:
+                throw new RuntimeException("unknown item: " + item);
+        }
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flContent, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
 
         return false;
     }
