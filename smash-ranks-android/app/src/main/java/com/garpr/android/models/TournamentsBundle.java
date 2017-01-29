@@ -14,6 +14,10 @@ public class TournamentsBundle implements Parcelable {
     @SerializedName("players")
     private ArrayList<Player> mPlayers;
 
+    @Nullable
+    @SerializedName("regions")
+    private ArrayList<String> mRegions;
+
     @SerializedName("date")
     private SimpleDate mDate;
 
@@ -54,6 +58,11 @@ public class TournamentsBundle implements Parcelable {
     }
 
     @Nullable
+    public ArrayList<String> getRegions() {
+        return mRegions;
+    }
+
+    @Nullable
     public String getUrl() {
         return mUrl;
     }
@@ -80,6 +89,7 @@ public class TournamentsBundle implements Parcelable {
         dest.writeString(mId);
         dest.writeString(mName);
         dest.writeString(mRawId);
+        dest.writeStringList(mRegions);
         dest.writeString(mUrl);
     }
 
@@ -92,6 +102,7 @@ public class TournamentsBundle implements Parcelable {
             tb.mId = source.readString();
             tb.mName = source.readString();
             tb.mRawId = source.readString();
+            tb.mRegions = source.createStringArrayList();
             tb.mUrl = source.readString();
             return tb;
         }
