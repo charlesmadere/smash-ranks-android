@@ -10,9 +10,22 @@ public class RankingsBundle implements Parcelable {
     @SerializedName("time")
     private SimpleDate mTime;
 
+    @SerializedName("id")
+    private String mId;
+
+
+    @Override
+    public boolean equals(final Object obj) {
+        return obj instanceof RankingsBundle && mId.equals(((RankingsBundle) obj).mId);
+    }
 
     public SimpleDate getTime() {
         return mTime;
+    }
+
+    @Override
+    public int hashCode() {
+        return mId.hashCode();
     }
 
     @Override
@@ -23,6 +36,7 @@ public class RankingsBundle implements Parcelable {
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeParcelable(mTime, flags);
+        dest.writeString(mId);
     }
 
     public static final Creator<RankingsBundle> CREATOR = new Creator<RankingsBundle>() {
@@ -30,6 +44,7 @@ public class RankingsBundle implements Parcelable {
         public RankingsBundle createFromParcel(final Parcel source) {
             final RankingsBundle rb = new RankingsBundle();
             rb.mTime = source.readParcelable(SimpleDate.class.getClassLoader());
+            rb.mId = source.readString();
             return rb;
         }
 
