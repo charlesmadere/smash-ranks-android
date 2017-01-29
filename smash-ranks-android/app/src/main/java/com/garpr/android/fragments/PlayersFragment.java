@@ -2,15 +2,22 @@ package com.garpr.android.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.views.RefreshLayout;
 
-public class PlayersFragment extends BaseFragment {
+import butterknife.BindView;
+
+public class PlayersFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "PlayersFragment";
+
+    @BindView(R.id.refreshLayout)
+    RefreshLayout mRefreshLayout;
 
 
     public static PlayersFragment create() {
@@ -28,6 +35,11 @@ public class PlayersFragment extends BaseFragment {
             @Nullable final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.fragment_players, container, false);
+    }
+
+    @Override
+    public void onRefresh() {
+        // TODO
     }
 
 }
