@@ -30,8 +30,8 @@ public class App extends Application {
         sInstance = this;
         Fabric.with(sInstance, new Crashlytics());
 
-        mAppComponent = DaggerAppComponent.Builder()
-                .daggerModule(new AppModule(sInstance))
+        mAppComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(sInstance))
                 .build();
     }
 
