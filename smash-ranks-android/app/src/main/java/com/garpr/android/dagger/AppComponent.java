@@ -14,11 +14,11 @@ import dagger.Component;
 public interface AppComponent {
 
     // activities
-    void inject(SettingsActivity obj);
+    void inject(SettingsActivity activity);
 
     // fragments
-    void inject(PlayersFragment obj);
-    void inject(RankingsFragment obj);
-    void inject(TournamentsFragment obj);
+    void inject(PlayersFragment fragment);
+    void inject(RankingsFragment fragment);
+    void inject(TournamentsFragment fragment);
 
 }
