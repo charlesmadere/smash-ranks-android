@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import com.garpr.android.R;
 import com.garpr.android.models.TournamentsBundle;
 import com.garpr.android.networking.ApiListener;
+import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -18,6 +21,9 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
         SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "TournamentsFragment";
+
+    @Inject
+    ServerApi mServerApi;
 
     @BindView(R.id.refreshLayout)
     RefreshLayout mRefreshLayout;
@@ -35,7 +41,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
 
     @Override
     public void failure() {
-
+        // TODO
     }
 
     @Override
@@ -65,7 +71,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
 
     @Override
     public void success(@Nullable final TournamentsBundle tournamentsBundle) {
-
+        // TODO
     }
 
 }

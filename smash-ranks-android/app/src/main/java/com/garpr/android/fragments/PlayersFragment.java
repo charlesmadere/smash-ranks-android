@@ -8,13 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
 public class PlayersFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "PlayersFragment";
+
+    @Inject
+    ServerApi mServerApi;
 
     @BindView(R.id.refreshLayout)
     RefreshLayout mRefreshLayout;
