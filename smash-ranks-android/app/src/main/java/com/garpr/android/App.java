@@ -5,6 +5,7 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.garpr.android.dagger.AppComponent;
 import com.garpr.android.dagger.AppModule;
+import com.garpr.android.dagger.DaggerAppComponent;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -14,6 +15,10 @@ public class App extends Application {
 
     private AppComponent mAppComponent;
 
+
+    public static App getInstance() {
+        return sInstance;
+    }
 
     public AppComponent getAppComponent() {
         return mAppComponent;
