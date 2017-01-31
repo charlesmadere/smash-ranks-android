@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.garpr.android.models.Ratings;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
@@ -46,6 +47,7 @@ public class AppModule {
     @Singleton
     Gson providesGson() {
         return new GsonBuilder()
+                .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
                 .create();
     }
