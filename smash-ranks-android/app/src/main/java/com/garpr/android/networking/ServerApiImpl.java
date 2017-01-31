@@ -10,6 +10,13 @@ import com.garpr.android.models.TournamentsBundle;
 
 public class ServerApiImpl implements ServerApi {
 
+    private final GarPrApi mGarPrApi;
+
+
+    public ServerApiImpl(final GarPrApi garPrApi) {
+        mGarPrApi = garPrApi;
+    }
+
     @Override
     public void getPlayer(@NonNull final String region, @NonNull final String playerId,
             @NonNull final ApiCall<Player> call) {

@@ -6,6 +6,7 @@ import com.crashlytics.android.Crashlytics;
 import com.garpr.android.dagger.AppComponent;
 import com.garpr.android.dagger.AppModule;
 import com.garpr.android.dagger.DaggerAppComponent;
+import com.garpr.android.misc.Constants;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -31,7 +32,7 @@ public class App extends Application {
         Fabric.with(sInstance, new Crashlytics());
 
         mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(sInstance))
+                .appModule(new AppModule(sInstance, Constants.GAR_PR_URL))
                 .build();
     }
 

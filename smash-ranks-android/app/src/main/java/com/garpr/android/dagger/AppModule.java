@@ -25,10 +25,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AppModule {
 
     private final Application mApplication;
+    private final String mGarPrUrl;
 
 
-    public AppModule(@NonNull final Application application) {
+    public AppModule(@NonNull final Application application, @NonNull final String garPrUrl) {
         mApplication = application;
+        mGarPrUrl = garPrUrl;
     }
 
     @Provides
@@ -63,14 +65,14 @@ public class AppModule {
     Retrofit providesRetrofit(final Gson gson) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl("https://www.garpr.com:3001/")
+                .baseUrl(mGarPrUrl)
                 .build();
     }
 
     @Provides
     @Singleton
-    ServerApi providesServerApi() {
-        return new ServerApiImpl();
+    ServerApi providesServerApi(final GarPrApi garPrApi) {
+        return new ServerApiImpl(garPrApi);
     }
 
 }
