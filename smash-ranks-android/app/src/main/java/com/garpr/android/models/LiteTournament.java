@@ -8,19 +8,14 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class Player implements Parcelable {
-
-    @Nullable
-    @SerializedName("aliases")
-    private ArrayList<String> mAliases;
+public class LiteTournament implements Parcelable {
 
     @Nullable
     @SerializedName("regions")
     private ArrayList<String> mRegions;
 
-    @Nullable
-    @SerializedName("ratings")
-    private Ratings mRatings;
+    @SerializedName("date")
+    private SimpleDate mDate;
 
     @SerializedName("id")
     private String mId;
@@ -31,7 +26,11 @@ public class Player implements Parcelable {
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof Player && mId.equals(((Player) obj).getId());
+        return obj instanceof LiteTournament && mId.equals(((LiteTournament) obj).getId());
+    }
+
+    public SimpleDate getDate() {
+        return mDate;
     }
 
     public String getId() {
@@ -43,8 +42,8 @@ public class Player implements Parcelable {
     }
 
     @Nullable
-    public Ratings getRatings() {
-        return mRatings;
+    public ArrayList<String> getRegions() {
+        return mRegions;
     }
 
     @Override
@@ -64,28 +63,26 @@ public class Player implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
-        dest.writeStringList(mAliases);
         dest.writeStringList(mRegions);
-        dest.writeParcelable(mRatings, flags);
+        dest.writeParcelable(mDate, flags);
         dest.writeString(mId);
         dest.writeString(mName);
     }
 
-    public static final Creator<Player> CREATOR = new Creator<Player>() {
+    public static final Creator<LiteTournament> CREATOR = new Creator<LiteTournament>() {
         @Override
-        public Player createFromParcel(final Parcel source) {
-            final Player p = new Player();
-            p.mAliases = source.createStringArrayList();
-            p.mRegions = source.createStringArrayList();
-            p.mRatings = source.readParcelable(Ratings.class.getClassLoader());
-            p.mId = source.readString();
-            p.mName = source.readString();
-            return p;
+        public LiteTournament createFromParcel(final Parcel source) {
+            final LiteTournament lt = new LiteTournament();
+            lt.mRegions = source.createStringArrayList();
+            lt.mDate = source.readParcelable(SimpleDate.class.getClassLoader());
+            lt.mId = source.readString();
+            lt.mName = source.readString();
+            return lt;
         }
 
         @Override
-        public Player[] newArray(final int size) {
-            return new Player[size];
+        public LiteTournament[] newArray(final int size) {
+            return new LiteTournament[size];
         }
     };
 

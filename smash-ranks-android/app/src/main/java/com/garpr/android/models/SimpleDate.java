@@ -34,7 +34,7 @@ public class SimpleDate implements Parcelable {
 
     @Override
     public boolean equals(final Object obj) {
-        return mDate.equals(obj);
+        return obj instanceof SimpleDate && mDate.equals(((SimpleDate) obj).getDate());
     }
 
     public Date getDate() {
@@ -44,6 +44,11 @@ public class SimpleDate implements Parcelable {
     @Override
     public int hashCode() {
         return mDate.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return mDate.toString();
     }
 
     @Override
