@@ -58,6 +58,11 @@ public class Ratings extends ArrayList<Rating> implements Parcelable {
 
     private Ratings(final Parcel source) {
         final int size = source.readInt();
+
+        if (size == 0) {
+            return;
+        }
+
         ensureCapacity(size);
 
         for (int i = 0; i < size; ++i) {
@@ -74,9 +79,14 @@ public class Ratings extends ArrayList<Rating> implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
-        dest.writeInt(size());
+        final int size = size();
+        dest.writeInt(size);
 
-        for (int i = 0; i < size(); ++i) {
+        if (size == 0) {
+            return;
+        }
+
+        for (int i = 0; i < size; ++i) {
             dest.writeParcelable(get(i), flags);
         }
     }
