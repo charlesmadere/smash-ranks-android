@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.garpr.android.misc.Timber;
+import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.Ratings;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
@@ -73,6 +75,12 @@ public class AppModule {
     @Singleton
     ServerApi providesServerApi(final GarPrApi garPrApi) {
         return new ServerApiImpl(garPrApi);
+    }
+
+    @Provides
+    @Singleton
+    Timber providesTimber() {
+        return new TimberImpl();
     }
 
 }
