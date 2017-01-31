@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.garpr.android.R;
 import com.garpr.android.models.RankingsBundle;
+import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
@@ -21,6 +22,11 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
         SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "RankingsFragment";
+    private static final String KEY_RANKINGS_BUNDLE = "RankingsBundle";
+    private static final String KEY_REGION = "Region";
+
+    private RankingsBundle mRankingsBundle;
+    private String mRegion;
 
     @Inject
     ServerApi mServerApi;
@@ -35,18 +41,55 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     View mError;
 
 
-    public static RankingsFragment create() {
-        return new RankingsFragment();
+    public static RankingsFragment create(final String region) {
+        final Bundle args = new Bundle(1);
+        args.putString(KEY_REGION, region);
+
+        final RankingsFragment fragment = new RankingsFragment();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
     public void failure() {
-        // TODO
+        mRankingsBundle = null;
+        showError();
+    }
+
+    private void fetchRankingsBundle() {
+        mRefreshLayout.setRefreshing(true);
+        mServerApi.getRankings(mRegion, new ApiCall<>(this));
     }
 
     @Override
     protected String getFragmentName() {
         return TAG;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            mRankingsBundle = savedInstanceState.getParcelable(KEY_RANKINGS_BUNDLE);
+        }
+
+        if (mRankingsBundle == null) {
+            fetchRankingsBundle();
+        } else if (mRankingsBundle.hasRankings()) {
+            showRankingsBundle();
+        } else {
+            showEmpty();
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        final Bundle args = getArguments();
+        mRegion = args.getString(KEY_REGION);
     }
 
     @Nullable
@@ -59,19 +102,46 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
 
     @Override
     public void onRefresh() {
-        // TODO
+        fetchRankingsBundle();
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mRankingsBundle != null) {
+            outState.putParcelable(KEY_RANKINGS_BUNDLE, mRankingsBundle);
+        }
     }
 
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRefreshLayout.setRefreshing(true);
+        mRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void showEmpty() {
+        // TODO
+    }
+
+    private void showError() {
+        // TODO
+    }
+
+    private void showRankingsBundle() {
+        // TODO
     }
 
     @Override
     public void success(@Nullable final RankingsBundle rankingsBundle) {
-        // TODO
+        mRankingsBundle = rankingsBundle;
+
+        if (mRankingsBundle != null && mRankingsBundle.hasRankings()) {
+            showRankingsBundle();
+        } else {
+            showEmpty();
+        }
     }
 
 }

@@ -11,15 +11,16 @@ import com.garpr.android.models.TournamentsBundle;
 public interface ServerApi {
 
     void getPlayer(@NonNull final String region, @NonNull final String playerId,
-            @NonNull final ApiCall<Player> call);
+            @NonNull final ApiListener<Player> apiCall);
 
-    void getPlayers(@NonNull final String region, @NonNull final ApiCall<PlayersBundle> call);
+    void getPlayers(@NonNull final String region, @NonNull final ApiListener<PlayersBundle> apiCall);
 
-    void getRankings(@NonNull final String region, @NonNull final ApiCall<RankingsBundle> call);
+    void getRankings(@NonNull final String region, @NonNull final ApiListener<RankingsBundle> apiCall);
 
     void getTournament(@NonNull final String region, @NonNull final String tournamentId,
-            final ApiCall<Tournament> call);
+            final ApiListener<Tournament> apiCall);
 
-    void getTournaments(@NonNull final String region, @NonNull final ApiCall<TournamentsBundle> call);
+    void getTournaments(@NonNull final String region,
+            @NonNull final ApiListener<TournamentsBundle> apiCall);
 
 }
