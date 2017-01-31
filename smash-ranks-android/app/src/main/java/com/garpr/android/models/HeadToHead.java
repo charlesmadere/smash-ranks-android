@@ -2,10 +2,17 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class HeadToHead implements Parcelable {
+
+    @Nullable
+    @SerializedName("matches")
+    private ArrayList<Match> mMatches;
 
     @SerializedName("losses")
     private int mLosses;
@@ -22,6 +29,11 @@ public class HeadToHead implements Parcelable {
 
     public int getLosses() {
         return mLosses;
+    }
+
+    @Nullable
+    public ArrayList<Match> getMatches() {
+        return mMatches;
     }
 
     public LitePlayer getOpponent() {
@@ -43,6 +55,7 @@ public class HeadToHead implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
+        dest.writeTypedList(mMatches);
         dest.writeInt(mLosses);
         dest.writeInt(mWins);
         dest.writeParcelable(mOpponent, flags);
@@ -53,6 +66,7 @@ public class HeadToHead implements Parcelable {
         @Override
         public HeadToHead createFromParcel(final Parcel source) {
             final HeadToHead hth = new HeadToHead();
+            hth.mMatches = source.createTypedArrayList(Match.CREATOR);
             hth.mLosses = source.readInt();
             hth.mWins = source.readInt();
             hth.mOpponent = source.readParcelable(LitePlayer.class.getClassLoader());
