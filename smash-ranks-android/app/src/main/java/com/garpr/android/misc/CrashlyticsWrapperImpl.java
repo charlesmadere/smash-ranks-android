@@ -50,4 +50,9 @@ public class CrashlyticsWrapperImpl implements CrashlyticsWrapper {
         Crashlytics.setInt(key, value);
     }
 
+    @Override
+    public void setString(@NonNull final String key, final String value) {
+        Crashlytics.setString(key, value);
+    }
+
 }

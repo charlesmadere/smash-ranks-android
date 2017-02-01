@@ -14,4 +14,6 @@ public interface CrashlyticsWrapper {
 
     void setInt(@NonNull final String key, final int value);
 
+    void setString(@NonNull final String key, final String value);
+
 }
