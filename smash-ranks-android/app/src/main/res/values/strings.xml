@@ -2,11 +2,13 @@
 <resources>
 
     <string name="auto">Auto</string>
+    <string name="clear_log">Clear Log</string>
     <string name="day">Day</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
     <string name="error_loading_tournaments">Error loading tournaments!</string>
     <string name="gar_pr">GAR PR</string>
+    <string name="log_viewer">Log Viewer</string>
     <string name="night">Night</string>
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>

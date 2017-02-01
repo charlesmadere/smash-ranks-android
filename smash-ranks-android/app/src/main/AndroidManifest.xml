@@ -25,6 +25,15 @@
         </activity>
 
         <activity
+            android:label="@string/log_viewer"
+            android:name=".activities.LogViewerActivity"
+            android:parentActivityName=".activities.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SettingsActivity" />
+        </activity>
+
+        <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:name=".activities.SettingsActivity" />
