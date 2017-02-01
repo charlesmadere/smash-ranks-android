@@ -14,6 +14,9 @@ import com.garpr.android.R;
 import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.fragments.TournamentsFragment;
+import com.garpr.android.misc.RegionManager;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -22,6 +25,9 @@ public class HomeActivity extends BaseActivity implements
         FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = "HomeActivity";
+
+    @Inject
+    RegionManager mRegionManager;
 
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNavigationView;
@@ -38,12 +44,14 @@ public class HomeActivity extends BaseActivity implements
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
         if (fragment == null) {
+            final String region = mRegionManager.getCurrentRegion();
+
             if (PlayersFragment.TAG.equals(tag)) {
-                fragment = PlayersFragment.create();
+                fragment = PlayersFragment.create(region);
             } else if (RankingsFragment.TAG.equals(tag)) {
-                fragment = RankingsFragment.create();
+                fragment = RankingsFragment.create(region);
             } else if (TournamentsFragment.TAG.equals(tag)) {
-                fragment = TournamentsFragment.create();
+                fragment = TournamentsFragment.create(region);
             } else {
                 throw new RuntimeException("unknown tag: " + tag);
             }

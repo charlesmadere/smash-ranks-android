@@ -1,6 +1,7 @@
 package com.garpr.android.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     View mError;
 
 
-    public static RankingsFragment create(final String region) {
+    public static RankingsFragment create(@NonNull final String region) {
         final Bundle args = new Bundle(1);
         args.putString(KEY_REGION, region);
 

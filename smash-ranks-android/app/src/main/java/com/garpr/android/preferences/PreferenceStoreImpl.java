@@ -9,6 +9,7 @@ public class PreferenceStoreImpl implements PreferenceStore {
     private final Context mContext;
 
     private Preference<NightMode> mNightMode;
+    private Preference<String> mCurrentRegion;
 
 
     public PreferenceStoreImpl(final Context context) {
@@ -18,6 +19,15 @@ public class PreferenceStoreImpl implements PreferenceStore {
     @Override
     public void clearAll() {
         mNightMode.delete();
+    }
+
+    @Override
+    public Preference<String> getCurrentRegion() {
+        if (mCurrentRegion == null) {
+            // TODO
+        }
+
+        return mCurrentRegion;
     }
 
     @Override

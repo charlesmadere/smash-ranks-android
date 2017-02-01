@@ -5,6 +5,9 @@ import com.garpr.android.models.NightMode;
 public interface PreferenceStore {
 
     void clearAll();
+
+    Preference<String> getCurrentRegion();
+
     Preference<NightMode> getNightMode();
 
 }

@@ -20,6 +20,10 @@ public class PlayersBundle implements Parcelable {
         return mPlayers;
     }
 
+    public boolean hasPlayers() {
+        return mPlayers != null && !mPlayers.isEmpty();
+    }
+
     @Override
     public int describeContents() {
         return 0;

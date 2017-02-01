@@ -20,6 +20,10 @@ public class TournamentsBundle implements Parcelable {
         return mTournaments;
     }
 
+    public boolean hasTournaments() {
+        return mTournaments != null && !mTournaments.isEmpty();
+    }
+
     @Override
     public int describeContents() {
         return 0;
