@@ -16,6 +16,8 @@ import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.networking.ServerApiImpl;
+import com.garpr.android.preferences.KeyValueStore;
+import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.preferences.PreferenceStore;
 import com.garpr.android.preferences.PreferenceStoreImpl;
 import com.google.gson.Gson;
@@ -71,6 +73,12 @@ public class AppModule {
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
                 .create();
+    }
+
+    @Provides
+    @Singleton
+    KeyValueStore providesKeyValueStore() {
+        return new KeyValueStoreImpl(mApplication);
     }
 
     @Provides
