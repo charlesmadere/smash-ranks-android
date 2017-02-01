@@ -7,6 +7,8 @@ import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.CrashlyticsWrapperImpl;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
+import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.Ratings;
@@ -75,6 +77,12 @@ public class AppModule {
     @Singleton
     PreferenceStore providesPreferenceStore() {
         return new PreferenceStoreImpl(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    RegionManager providesRegionManager(final PreferenceStore preferenceStore) {
+        return new RegionManagerImpl(preferenceStore.getCurrentRegion());
     }
 
     @Provides
