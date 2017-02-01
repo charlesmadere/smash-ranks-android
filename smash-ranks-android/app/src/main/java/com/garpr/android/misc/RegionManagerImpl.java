@@ -22,7 +22,7 @@ public class RegionManagerImpl implements RegionManager {
 
     @Override
     public void addListener(@NonNull final OnRegionChangeListener l) {
-
+        // TODO
     }
 
     @NonNull
@@ -37,14 +37,19 @@ public class RegionManagerImpl implements RegionManager {
         return currentRegion;
     }
 
+    private void notifyListeners() {
+        // TODO
+    }
+
     @Override
     public void removeListener(@Nullable final OnRegionChangeListener l) {
-
+        // TODO
     }
 
     @Override
     public void setCurrentRegion(@NonNull final String region) {
         mCurrentRegion.set(region);
+        notifyListeners();
     }
 
 }
