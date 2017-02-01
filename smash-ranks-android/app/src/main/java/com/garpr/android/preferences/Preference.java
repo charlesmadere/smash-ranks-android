@@ -5,11 +5,6 @@ import android.support.annotation.Nullable;
 
 public interface Preference<T> {
 
-    interface OnPreferenceChangeListener<T> {
-        void onPreferenceChange(final Preference<T> preference);
-    }
-
-
     void addListener(@NonNull final OnPreferenceChangeListener<T> listener);
 
     void delete();
@@ -36,5 +31,10 @@ public interface Preference<T> {
     void set(@NonNull final Preference<T> preference);
 
     void set(@NonNull final Preference<T> preference, final boolean notifyListeners);
+
+
+    interface OnPreferenceChangeListener<T> {
+        void onPreferenceChange(final Preference<T> preference);
+    }
 
 }
