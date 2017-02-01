@@ -7,10 +7,6 @@ public interface Preference<T> {
 
     void addListener(@NonNull final OnPreferenceChangeListener<T> listener);
 
-    void delete();
-
-    void delete(final boolean notifyListeners);
-
     boolean exists();
 
     @Nullable
@@ -24,6 +20,10 @@ public interface Preference<T> {
 
     @NonNull
     String getName();
+
+    void remove();
+
+    void remove(final boolean notifyListeners);
 
     void removeListener(@NonNull final OnPreferenceChangeListener<T> listener);
 
