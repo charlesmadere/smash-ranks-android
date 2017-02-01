@@ -17,7 +17,7 @@ public interface Preference<T> {
     T get();
 
     @Nullable
-    String getDefaultValue();
+    T getDefaultValue();
 
     @NonNull
     String getKey();
