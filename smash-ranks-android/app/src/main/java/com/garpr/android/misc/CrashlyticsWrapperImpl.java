@@ -13,7 +13,7 @@ public class CrashlyticsWrapperImpl implements CrashlyticsWrapper {
     private final Application mApplication;
 
 
-    public CrashlyticsWrapperImpl(final Application application) {
+    public CrashlyticsWrapperImpl(@NonNull final Application application) {
         mApplication = application;
     }
 

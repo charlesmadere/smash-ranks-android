@@ -7,6 +7,7 @@ import com.garpr.android.dagger.AppModule;
 import com.garpr.android.dagger.DaggerAppComponent;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsWrapper;
+import com.garpr.android.misc.DeviceUtils;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,9 @@ public class App extends Application {
 
     @Inject
     CrashlyticsWrapper mCrashlyticsWrapper;
+
+    @Inject
+    DeviceUtils mDeviceUtils;
 
 
     public static App get() {
@@ -34,11 +38,12 @@ public class App extends Application {
         sInstance = this;
 
         mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this, Constants.GAR_PR_URL))
+                .appModule(new AppModule(this, Constants.DEFAULT_REGION, Constants.GAR_PR_URL))
                 .build();
         mAppComponent.inject(this);
 
         mCrashlyticsWrapper.initialize(BuildConfig.DEBUG);
+        mCrashlyticsWrapper.setBool("low_ram_device", mDeviceUtils.hasLowRam());
     }
 
 }

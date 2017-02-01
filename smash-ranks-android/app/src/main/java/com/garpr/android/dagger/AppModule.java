@@ -114,7 +114,7 @@ public class AppModule {
     @Provides
     @Singleton
     Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
-        return new TimberImpl(deviceUtils.isLowRam(), crashlyticsWrapper);
+        return new TimberImpl(deviceUtils.hasLowRam(), crashlyticsWrapper);
     }
 
 }

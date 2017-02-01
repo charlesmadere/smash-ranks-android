@@ -11,7 +11,7 @@ public class KeyValueStoreImpl implements KeyValueStore {
     private final Application mApplication;
 
 
-    public KeyValueStoreImpl(final Application application) {
+    public KeyValueStoreImpl(@NonNull final Application application) {
         mApplication = application;
     }
 

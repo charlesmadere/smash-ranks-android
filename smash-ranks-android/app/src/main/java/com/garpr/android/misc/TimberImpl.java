@@ -1,5 +1,6 @@
 package com.garpr.android.misc;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -14,7 +15,8 @@ public class TimberImpl implements Timber {
     private final List<Entry> mEntries;
 
 
-    public TimberImpl(final boolean isLowRamDevice, final CrashlyticsWrapper crashlyticsWrapper) {
+    public TimberImpl(final boolean isLowRamDevice,
+            @NonNull final CrashlyticsWrapper crashlyticsWrapper) {
         mMaxSize = isLowRamDevice ? 64 : 256;
         mEntries = new ArrayList<>(mMaxSize);
         mCrashlyticsWrapper = crashlyticsWrapper;

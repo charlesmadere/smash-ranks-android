@@ -16,7 +16,7 @@ public class DeviceUtilsImpl implements DeviceUtils {
     }
 
     @Override
-    public boolean isLowRam() {
+    public boolean hasLowRam() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return true;
         } else {
