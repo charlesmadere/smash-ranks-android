@@ -15,7 +15,7 @@ public class RegionManagerImpl implements RegionManager {
     private final Preference<String> mCurrentRegion;
 
 
-    public RegionManagerImpl(final Preference<String> currentRegion) {
+    public RegionManagerImpl(@NonNull final Preference<String> currentRegion) {
         mOnRegionChangeListeners = new LinkedList<>();
         mCurrentRegion = currentRegion;
     }

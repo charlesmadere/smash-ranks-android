@@ -1,30 +1,46 @@
 package com.garpr.android.preferences;
 
-import android.content.Context;
+import android.app.Application;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import com.garpr.android.models.NightMode;
+import com.garpr.android.preferences.persistent.PersistentGsonPreference;
+import com.garpr.android.preferences.persistent.PersistentStringPreference;
+import com.google.gson.Gson;
 
 public class PreferenceStoreImpl implements PreferenceStore {
 
-    private final Context mContext;
+    private final Application mApplication;
+    private final Gson mGson;
+    private final KeyValueStore mKeyValueStore;
+    private final String mDefaultRegion;
+    private final String mName;
 
     private Preference<NightMode> mNightMode;
     private Preference<String> mCurrentRegion;
 
 
-    public PreferenceStoreImpl(final Context context) {
-        mContext = context.getApplicationContext();
+    public PreferenceStoreImpl(@NonNull final Application application, @NonNull final Gson gson,
+            @NonNull final KeyValueStore keyValueStore, @NonNull final String defaultRegion) {
+        mApplication = application;
+        mGson = gson;
+        mKeyValueStore = keyValueStore;
+        mDefaultRegion = defaultRegion;
+        mName = application.getPackageName() + ".Preferences";
     }
 
     @Override
     public void clearAll() {
-        mNightMode.delete();
+        PreferenceManager.getDefaultSharedPreferences(mApplication);
+        mKeyValueStore.clear(mName);
     }
 
     @Override
     public Preference<String> getCurrentRegion() {
         if (mCurrentRegion == null) {
-            // TODO
+            mCurrentRegion = new PersistentStringPreference(mName, "CURRENT_REGION",
+                    mDefaultRegion, mKeyValueStore);
         }
 
         return mCurrentRegion;
@@ -33,7 +49,8 @@ public class PreferenceStoreImpl implements PreferenceStore {
     @Override
     public Preference<NightMode> getNightMode() {
         if (mNightMode == null) {
-            // TODO
+            mNightMode = new PersistentGsonPreference<>(mName, "NIGHT_MODE", NightMode.SYSTEM,
+                    NightMode.class, mKeyValueStore, mGson);
         }
 
         return mNightMode;

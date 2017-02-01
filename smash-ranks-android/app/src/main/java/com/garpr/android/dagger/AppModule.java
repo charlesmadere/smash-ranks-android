@@ -34,11 +34,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AppModule {
 
     private final Application mApplication;
+    private final String mDefaultRegion;
     private final String mGarPrUrl;
 
 
-    public AppModule(@NonNull final Application application, @NonNull final String garPrUrl) {
+    public AppModule(@NonNull final Application application, @NonNull final String defaultRegion,
+            @NonNull final String garPrUrl) {
         mApplication = application;
+        mDefaultRegion = defaultRegion;
         mGarPrUrl = garPrUrl;
     }
 
@@ -83,8 +86,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    PreferenceStore providesPreferenceStore() {
-        return new PreferenceStoreImpl(mApplication);
+    PreferenceStore providesPreferenceStore(final Gson gson, final KeyValueStore keyValueStore) {
+        return new PreferenceStoreImpl(mApplication, gson, keyValueStore, mDefaultRegion);
     }
 
     @Provides
