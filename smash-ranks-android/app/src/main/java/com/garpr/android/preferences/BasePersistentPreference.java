@@ -14,6 +14,14 @@ public abstract class BasePersistentPreference<T> extends BasePreference<T> {
         mKeyValueStore = keyValueStore;
     }
 
+    protected KeyValueStore getKeyValueStore() {
+        return mKeyValueStore;
+    }
+
+    protected boolean hasValueInStore() {
+        return mKeyValueStore.contains(getName(), getKey());
+    }
+
     @Override
     public void remove() {
         remove(true);

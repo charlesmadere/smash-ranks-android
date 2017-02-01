@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class KeyValueStoreImpl implements KeyValueStore {
 
@@ -25,6 +26,36 @@ public class KeyValueStoreImpl implements KeyValueStore {
     @Override
     public boolean contains(@NonNull final String name, @NonNull final String key) {
         return getSharedPreferences(name).contains(key);
+    }
+
+    @Override
+    public boolean getBoolean(@NonNull final String name, @NonNull final String key,
+            final boolean fallbackValue) {
+        return getSharedPreferences(name).getBoolean(key, fallbackValue);
+    }
+
+    @Override
+    public float getFloat(@NonNull final String name, @NonNull final String key,
+            final float fallbackValue) {
+        return getSharedPreferences(name).getFloat(key, fallbackValue);
+    }
+
+    @Override
+    public int getInteger(@NonNull final String name, @NonNull final String key,
+            final int fallbackValue) {
+        return getSharedPreferences(name).getInt(key, fallbackValue);
+    }
+
+    @Override
+    public long getLong(@NonNull final String name, @NonNull final String key,
+            final long fallbackValue) {
+        return getSharedPreferences(name).getLong(key, fallbackValue);
+    }
+
+    @Override
+    public String getString(@NonNull final String name, @NonNull final String key,
+            @Nullable final String fallbackValue) {
+        return getSharedPreferences(name).getString(key, fallbackValue);
     }
 
     private SharedPreferences getSharedPreferences(@NonNull final String name) {
