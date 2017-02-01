@@ -32,7 +32,11 @@ public class PreferenceStoreImpl implements PreferenceStore {
 
     @Override
     public void clearAll() {
-        PreferenceManager.getDefaultSharedPreferences(mApplication);
+        PreferenceManager.getDefaultSharedPreferences(mApplication)
+                .edit()
+                .clear()
+                .apply();
+
         mKeyValueStore.clear(mName);
     }
 
