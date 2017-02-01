@@ -31,7 +31,7 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.getInstance().getAppComponent().inject(this);
+        App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_settings);
     }
 

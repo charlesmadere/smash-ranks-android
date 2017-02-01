@@ -2,6 +2,7 @@ package com.garpr.android.networking;
 
 import android.support.annotation.NonNull;
 
+import com.garpr.android.misc.Timber;
 import com.garpr.android.models.Player;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.models.RankingsBundle;
@@ -14,11 +15,15 @@ import retrofit2.Response;
 
 public class ServerApiImpl implements ServerApi {
 
+    private static final String TAG = "ServerApiImpl";
+
     private final GarPrApi mGarPrApi;
+    private final Timber mTimber;
 
 
-    public ServerApiImpl(final GarPrApi garPrApi) {
+    public ServerApiImpl(final GarPrApi garPrApi, final Timber timber) {
         mGarPrApi = garPrApi;
+        mTimber = timber;
     }
 
     @Override
@@ -27,17 +32,18 @@ public class ServerApiImpl implements ServerApi {
         mGarPrApi.getPlayer(region, playerId).enqueue(new Callback<Player>() {
             @Override
             public void onResponse(final Call<Player> call, final Response<Player> response) {
-                final Player body = response.isSuccessful() ? response.body() : null;
-
-                if (body == null) {
-                    apiCall.failure();
+                if (response.isSuccessful()) {
+                    apiCall.success(response.body());
                 } else {
-                    apiCall.success(body);
+                    mTimber.e(TAG, "getPlayer (" + region + ") (" + playerId + ") failed (code "
+                            + response.code() + ")");
+                    apiCall.failure();
                 }
             }
 
             @Override
             public void onFailure(final Call<Player> call, final Throwable t) {
+                mTimber.e(TAG, "getPlayer (" + region + ") (" + playerId + ") failed", t);
                 apiCall.failure();
             }
         });
@@ -50,17 +56,18 @@ public class ServerApiImpl implements ServerApi {
             @Override
             public void onResponse(final Call<PlayersBundle> call,
                     final Response<PlayersBundle> response) {
-                final PlayersBundle body = response.isSuccessful() ? response.body() : null;
-
-                if (body == null) {
-                    apiCall.failure();
+                if (response.isSuccessful()) {
+                    apiCall.success(response.body());
                 } else {
-                    apiCall.success(body);
+                    mTimber.e(TAG, "getPlayers (" + region + ") failed (code " + response.code()
+                            + ")");
+                    apiCall.failure();
                 }
             }
 
             @Override
             public void onFailure(final Call<PlayersBundle> call, final Throwable t) {
+                mTimber.e(TAG, "getPlayers (" + region + ") failed", t);
                 apiCall.failure();
             }
         });
@@ -73,17 +80,18 @@ public class ServerApiImpl implements ServerApi {
             @Override
             public void onResponse(final Call<RankingsBundle> call,
                     final Response<RankingsBundle> response) {
-                final RankingsBundle body = response.isSuccessful() ? response.body() : null;
-
-                if (body == null) {
-                    apiCall.failure();
+                if (response.isSuccessful()) {
+                    apiCall.success(response.body());
                 } else {
-                    apiCall.success(body);
+                    mTimber.e(TAG, "getRankings (" + region + ") failed (code " + response.code()
+                            + ")");
+                    apiCall.failure();
                 }
             }
 
             @Override
             public void onFailure(final Call<RankingsBundle> call, final Throwable t) {
+                mTimber.e(TAG, "getRankings (" + region + ") failed", t);
                 apiCall.failure();
             }
         });
@@ -96,17 +104,18 @@ public class ServerApiImpl implements ServerApi {
             @Override
             public void onResponse(final Call<Tournament> call,
                     final Response<Tournament> response) {
-                final Tournament body = response.isSuccessful() ? response.body() : null;
-
-                if (body == null) {
-                    apiCall.failure();
+                if (response.isSuccessful()) {
+                    apiCall.success(response.body());
                 } else {
-                    apiCall.success(body);
+                    mTimber.e(TAG, "getTournament (" + region + ") (" + tournamentId +
+                            ") failed (code " + response.code() + ")");
+                    apiCall.failure();
                 }
             }
 
             @Override
             public void onFailure(final Call<Tournament> call, final Throwable t) {
+                mTimber.e(TAG, "getTournament (" + region + ") (" + tournamentId + ") failed", t);
                 apiCall.failure();
             }
         });
@@ -119,17 +128,18 @@ public class ServerApiImpl implements ServerApi {
             @Override
             public void onResponse(final Call<TournamentsBundle> call,
                     final Response<TournamentsBundle> response) {
-                final TournamentsBundle body = response.isSuccessful() ? response.body() : null;
-
-                if (body == null) {
-                    apiCall.failure();
+                if (response.isSuccessful()) {
+                    apiCall.success(response.body());
                 } else {
-                    apiCall.success(body);
+                    mTimber.e(TAG, "getTournaments (" + region + ") failed (code " +
+                            response.code() + ")");
+                    apiCall.failure();
                 }
             }
 
             @Override
             public void onFailure(final Call<TournamentsBundle> call, final Throwable t) {
+                mTimber.e(TAG, "getTournaments (" + region + ") failed", t);
                 apiCall.failure();
             }
         });

@@ -3,6 +3,7 @@ package com.garpr.android.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,9 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
 
     @Inject
     ServerApi mServerApi;
+
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
 
     @BindView(R.id.refreshLayout)
     RefreshLayout mRefreshLayout;

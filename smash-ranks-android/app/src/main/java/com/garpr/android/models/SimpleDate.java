@@ -2,6 +2,7 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.JsonDeserializationContext;
@@ -23,6 +24,29 @@ public class SimpleDate implements Parcelable {
 
     private final Date mDate;
 
+
+    @Nullable
+    public static SimpleDate fromJson(@Nullable final JsonElement json) throws JsonParseException {
+        if (json == null || json.isJsonNull()) {
+            return null;
+        }
+
+        final String jsonString = json.getAsString();
+
+        if (TextUtils.isEmpty(jsonString)) {
+            return null;
+        }
+
+        for (final SimpleDateFormat format : FORMATS) {
+            try {
+                return new SimpleDate(format.parse(jsonString));
+            } catch (final ParseException e) {
+                // this Exception can be safely ignored
+            }
+        }
+
+        throw new JsonParseException("unable to parse date: " + jsonString);
+    }
 
     private SimpleDate(final Date date) {
         mDate = date;
@@ -77,25 +101,7 @@ public class SimpleDate implements Parcelable {
         @Override
         public SimpleDate deserialize(final JsonElement json, final Type typeOfT,
                 final JsonDeserializationContext context) throws JsonParseException {
-            if (json == null || json.isJsonNull()) {
-                return null;
-            }
-
-            final String jsonString = json.getAsString();
-
-            if (TextUtils.isEmpty(jsonString)) {
-                return null;
-            }
-
-            for (final SimpleDateFormat format : FORMATS) {
-                try {
-                    return new SimpleDate(format.parse(jsonString));
-                } catch (final ParseException e) {
-                    // this Exception can be safely ignored
-                }
-            }
-
-            throw new JsonParseException("unable to parse date: " + jsonString);
+            return fromJson(json);
         }
     };
 

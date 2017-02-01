@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="timberDebug" format="color" />
+    <attr name="timberError" format="color" />
+    <attr name="timberWarn" format="color" />
+
     <declare-styleable name="RefreshLayout">
         <attr name="scrollingChild" format="reference" />
         <attr name="spinnerColors" format="reference" />

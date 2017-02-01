@@ -1,6 +1,7 @@
 package com.garpr.android.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
@@ -10,8 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.Heartbeat;
+import com.garpr.android.misc.Timber;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +24,12 @@ import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity implements Heartbeat {
 
+    private static final String TAG = "BaseActivity";
+
     private Unbinder mUnbinder;
+
+    @Inject
+    protected Timber mTimber;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -45,6 +55,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
         } else {
             NavUtils.navigateUpTo(this, upIntent);
         }
+    }
+
+    @Override
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.get().getAppComponent().inject(this);
+        mTimber.d(TAG, getActivityName() + " created");
     }
 
     @Override

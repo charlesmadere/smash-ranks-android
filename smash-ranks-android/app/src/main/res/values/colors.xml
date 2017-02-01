@@ -2,26 +2,14 @@
 <resources>
 
     <color name="black">#000000</color>
-    <color name="console_error">#FF6666</color>
-    <color name="console_warn">#FFBBBB</color>
+    <color name="error">#FF6666</color>
     <color name="gray">#303030</color>
     <color name="gray_dark">#212121</color>
-    <color name="gray_darker">#161616</color>
     <color name="gray_light">#666666</color>
-    <color name="gray_lighter">#888888</color>
-    <color name="gray_lightest">#BBBBBB</color>
-    <color name="indigo">#311B52</color>
-    <color name="indigo_brighter">#A797E5</color>
-    <color name="indigo_bright">#7E66D8</color>
-    <color name="indigo_dark">#210054</color>
-    <color name="lose_pink">#CE5E83</color>
-    <color name="overlay_bright">#33FFFFFF</color>
-    <color name="overlay_dark">#66000000</color>
+    <color name="indigo">#210054</color>
     <color name="transparent">#00000000</color>
-    <color name="transparent_lose_pink">#33CE5E83</color>
-    <color name="transparent_win_green">#3371B073</color>
+    <color name="warn">#FFBBBB</color>
     <color name="white">#FFFFFF</color>
-    <color name="win_green">#71B073</color>
 
     <color name="r">#FF0000</color>
     <color name="g">#00FF00</color>

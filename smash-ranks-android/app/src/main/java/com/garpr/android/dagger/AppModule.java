@@ -1,9 +1,12 @@
 package com.garpr.android.dagger;
 
 import android.app.Application;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.garpr.android.misc.CrashlyticsWrapper;
+import com.garpr.android.misc.CrashlyticsWrapperImpl;
+import com.garpr.android.misc.DeviceUtils;
+import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.Ratings;
@@ -37,8 +40,20 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Context providesApplicationContext() {
+    Application providesApplication() {
         return mApplication;
+    }
+
+    @Provides
+    @Singleton
+    CrashlyticsWrapper providesCrashlyticsWrapper() {
+        return new CrashlyticsWrapperImpl(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    DeviceUtils providesDeviceUtils() {
+        return new DeviceUtilsImpl(mApplication);
     }
 
     @Provides
@@ -73,14 +88,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ServerApi providesServerApi(final GarPrApi garPrApi) {
-        return new ServerApiImpl(garPrApi);
+    ServerApi providesServerApi(final GarPrApi garPrApi, final Timber timber) {
+        return new ServerApiImpl(garPrApi, timber);
     }
 
     @Provides
     @Singleton
-    Timber providesTimber() {
-        return new TimberImpl();
+    Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
+        return new TimberImpl(deviceUtils.isLowRam(), crashlyticsWrapper);
     }
 
 }

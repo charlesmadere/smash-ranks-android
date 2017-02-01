@@ -2,10 +2,8 @@
 <resources>
 
     <array name="spinner_colors">
-        <item>@color/indigo_brighter</item>
-        <item>@color/indigo_bright</item>
         <item>@color/indigo</item>
-        <item>@color/indigo_dark</item>
+        <item>@color/gray_dark</item>
     </array>
 
 </resources>

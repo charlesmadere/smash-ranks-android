@@ -2,7 +2,7 @@
 <resources>
 
     <style name="AlertDialogTheme_v21" parent="android:Theme.Material.Dialog">
-        <item name="android:colorAccent">@color/indigo_bright</item>
+        <item name="android:colorAccent">@color/indigo</item>
     </style>
 
     <style name="AppTheme" parent="AppThemeBase">
