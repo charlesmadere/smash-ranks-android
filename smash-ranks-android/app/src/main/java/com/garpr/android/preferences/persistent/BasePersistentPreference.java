@@ -1,7 +1,10 @@
-package com.garpr.android.preferences;
+package com.garpr.android.preferences.persistent;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.garpr.android.preferences.BasePreference;
+import com.garpr.android.preferences.KeyValueStore;
 
 public abstract class BasePersistentPreference<T> extends BasePreference<T> {
 
@@ -12,6 +15,11 @@ public abstract class BasePersistentPreference<T> extends BasePreference<T> {
             @Nullable final T defaultValue, @NonNull final KeyValueStore keyValueStore) {
         super(name, key, defaultValue);
         mKeyValueStore = keyValueStore;
+    }
+
+    @Override
+    public boolean exists() {
+        return hasValueInStore() || getDefaultValue() != null;
     }
 
     protected KeyValueStore getKeyValueStore() {

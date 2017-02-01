@@ -83,6 +83,8 @@ public abstract class BasePreference<T> implements Preference<T> {
         }
     }
 
+    protected abstract void performSet(@NonNull final T newValue, final boolean notifyListeners);
+
     @Override
     public void removeListener(@NonNull final OnPreferenceChangeListener<T> listener) {
         synchronized (mListeners) {
@@ -101,6 +103,11 @@ public abstract class BasePreference<T> implements Preference<T> {
     }
 
     @Override
+    public void set(@Nullable final T newValue) {
+        set(newValue, true);
+    }
+
+    @Override
     public void set(@NonNull final Preference<T> preference) {
         set(preference.get());
     }
@@ -108,6 +115,15 @@ public abstract class BasePreference<T> implements Preference<T> {
     @Override
     public void set(@NonNull final Preference<T> preference, final boolean notifyListeners) {
         set(preference.get(), notifyListeners);
+    }
+
+    @Override
+    public void set(@Nullable final T newValue, final boolean notifyListeners) {
+        if (newValue == null) {
+            remove(notifyListeners);
+        } else {
+            performSet(newValue, notifyListeners);
+        }
     }
 
 }
