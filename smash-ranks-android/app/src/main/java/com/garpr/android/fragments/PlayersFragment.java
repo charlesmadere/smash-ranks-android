@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.adapters.PlayersAdapter;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -27,6 +28,7 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
     private static final String KEY_PLAYERS_BUNDLE = "PlayersBundle";
     private static final String KEY_REGION = "Region";
 
+    private PlayersAdapter mAdapter;
     private PlayersBundle mPlayersBundle;
     private String mRegion;
 
@@ -107,7 +109,7 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
 
     @Override
     public void onRefresh() {
-        // TODO
+        fetchPlayersBundle();
     }
 
     @Override
@@ -124,6 +126,8 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setOnRefreshListener(this);
+        mAdapter = new PlayersAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void showEmpty() {

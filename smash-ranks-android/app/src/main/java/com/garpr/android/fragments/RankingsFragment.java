@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.adapters.RankingsAdapter;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -27,6 +28,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     private static final String KEY_RANKINGS_BUNDLE = "RankingsBundle";
     private static final String KEY_REGION = "Region";
 
+    private RankingsAdapter mAdapter;
     private RankingsBundle mRankingsBundle;
     private String mRegion;
 
@@ -124,6 +126,8 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setOnRefreshListener(this);
+        mAdapter = new RankingsAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void showEmpty() {

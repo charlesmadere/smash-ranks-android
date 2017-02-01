@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.adapters.TournamentsAdapter;
 import com.garpr.android.models.TournamentsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -27,6 +28,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
     private static final String KEY_TOURNAMENTS_BUNDLE = "TournamentsBundle";
     private static final String KEY_REGION = "Region";
 
+    private TournamentsAdapter mAdapter;
     private TournamentsBundle mTournamentsBundle;
     private String mRegion;
 
@@ -107,7 +109,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
 
     @Override
     public void onRefresh() {
-        // TODO
+        fetchTournamentsBundle();
     }
 
     @Override
@@ -124,6 +126,8 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setOnRefreshListener(this);
+        mAdapter = new TournamentsAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void showEmpty() {
