@@ -16,10 +16,13 @@ public interface Preference<T> {
     @Nullable
     T get();
 
+    @Nullable
     String getDefaultValue();
 
+    @NonNull
     String getKey();
 
+    @NonNull
     String getName();
 
     void removeListener(@NonNull final OnPreferenceChangeListener<T> listener);
