@@ -8,13 +8,13 @@ import android.view.LayoutInflater;
 import com.garpr.android.R;
 import com.garpr.android.misc.Timber;
 
-public class TimberEntryAdapter extends BaseAdapter<Timber.Entry> {
+public class TimberEntriesAdapter extends BaseAdapter<Timber.Entry> {
 
-    public TimberEntryAdapter(@NonNull final Context context) {
+    public TimberEntriesAdapter(@NonNull final Context context) {
         super(context);
     }
 
-    public TimberEntryAdapter(@NonNull final LayoutInflater layoutInflater) {
+    public TimberEntriesAdapter(@NonNull final LayoutInflater layoutInflater) {
         super(layoutInflater);
     }
 

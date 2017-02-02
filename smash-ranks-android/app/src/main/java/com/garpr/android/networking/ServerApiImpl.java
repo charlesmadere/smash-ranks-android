@@ -3,10 +3,10 @@ package com.garpr.android.networking;
 import android.support.annotation.NonNull;
 
 import com.garpr.android.misc.Timber;
-import com.garpr.android.models.Player;
+import com.garpr.android.models.FullPlayer;
+import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.models.RankingsBundle;
-import com.garpr.android.models.Tournament;
 import com.garpr.android.models.TournamentsBundle;
 
 import retrofit2.Call;
@@ -28,10 +28,10 @@ public class ServerApiImpl implements ServerApi {
 
     @Override
     public void getPlayer(@NonNull final String region, @NonNull final String playerId,
-            @NonNull final ApiListener<Player> apiCall) {
-        mGarPrApi.getPlayer(region, playerId).enqueue(new Callback<Player>() {
+            @NonNull final ApiListener<FullPlayer> apiCall) {
+        mGarPrApi.getPlayer(region, playerId).enqueue(new Callback<FullPlayer>() {
             @Override
-            public void onResponse(final Call<Player> call, final Response<Player> response) {
+            public void onResponse(final Call<FullPlayer> call, final Response<FullPlayer> response) {
                 if (response.isSuccessful()) {
                     apiCall.success(response.body());
                 } else {
@@ -42,7 +42,7 @@ public class ServerApiImpl implements ServerApi {
             }
 
             @Override
-            public void onFailure(final Call<Player> call, final Throwable t) {
+            public void onFailure(final Call<FullPlayer> call, final Throwable t) {
                 mTimber.e(TAG, "getPlayer (" + region + ") (" + playerId + ") failed", t);
                 apiCall.failure();
             }
@@ -99,11 +99,11 @@ public class ServerApiImpl implements ServerApi {
 
     @Override
     public void getTournament(@NonNull final String region, @NonNull final String tournamentId,
-            @NonNull final ApiListener<Tournament> apiCall) {
-        mGarPrApi.getTournament(region, tournamentId).enqueue(new Callback<Tournament>() {
+            @NonNull final ApiListener<FullTournament> apiCall) {
+        mGarPrApi.getTournament(region, tournamentId).enqueue(new Callback<FullTournament>() {
             @Override
-            public void onResponse(final Call<Tournament> call,
-                    final Response<Tournament> response) {
+            public void onResponse(final Call<FullTournament> call,
+                    final Response<FullTournament> response) {
                 if (response.isSuccessful()) {
                     apiCall.success(response.body());
                 } else {
@@ -114,7 +114,7 @@ public class ServerApiImpl implements ServerApi {
             }
 
             @Override
-            public void onFailure(final Call<Tournament> call, final Throwable t) {
+            public void onFailure(final Call<FullTournament> call, final Throwable t) {
                 mTimber.e(TAG, "getTournament (" + region + ") (" + tournamentId + ") failed", t);
                 apiCall.failure();
             }

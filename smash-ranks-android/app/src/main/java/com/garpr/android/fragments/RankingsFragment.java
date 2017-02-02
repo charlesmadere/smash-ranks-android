@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.RankingsAdapter;
 import com.garpr.android.models.RankingsBundle;
@@ -94,6 +95,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.get().getAppComponent().inject(this);
 
         final Bundle args = getArguments();
         mRegion = args.getString(KEY_REGION);
@@ -131,15 +133,26 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     }
 
     private void showEmpty() {
-        // TODO
+        mRecyclerView.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
     }
 
     private void showError() {
-        // TODO
+        mAdapter.clear();
+        mRecyclerView.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
     }
 
     private void showRankingsBundle() {
-        // TODO
+        mAdapter.set(mRankingsBundle);
+        mEmpty.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
     }
 
     @Override

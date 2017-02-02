@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.PlayerItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical">
-
-</com.garpr.android.views.PlayerItemView>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="@dimen/text_size_large"
+    tools:text="Charlezard"
+    style="@style/ListItem" />

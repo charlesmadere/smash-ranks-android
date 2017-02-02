@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.garpr.android.misc.ParcelableUtils;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -12,11 +13,11 @@ public class TournamentsBundle implements Parcelable {
 
     @Nullable
     @SerializedName("tournaments")
-    private ArrayList<LiteTournament> mTournaments;
+    private ArrayList<AbsTournament> mTournaments;
 
 
     @Nullable
-    public ArrayList<LiteTournament> getTournaments() {
+    public ArrayList<AbsTournament> getTournaments() {
         return mTournaments;
     }
 
@@ -31,14 +32,14 @@ public class TournamentsBundle implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
-        dest.writeTypedList(mTournaments);
+        ParcelableUtils.writeAbsTournamentList(mTournaments, dest, flags);
     }
 
     public static final Creator<TournamentsBundle> CREATOR = new Creator<TournamentsBundle>() {
         @Override
         public TournamentsBundle createFromParcel(final Parcel source) {
             final TournamentsBundle tb = new TournamentsBundle();
-            tb.mTournaments = source.createTypedArrayList(LiteTournament.CREATOR);
+            tb.mTournaments = ParcelableUtils.readAbsTournamentList(source);
             return tb;
         }
 

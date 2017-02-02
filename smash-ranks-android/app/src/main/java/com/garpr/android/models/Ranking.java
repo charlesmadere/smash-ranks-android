@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Locale;
+
 public class Ranking implements Parcelable {
 
     @SerializedName("rating")
@@ -44,6 +46,10 @@ public class Ranking implements Parcelable {
 
     public float getRating() {
         return mRating;
+    }
+
+    public String getRatingTruncated() {
+        return String.format(Locale.getDefault(), "%.3f", mRating);
     }
 
     @Override

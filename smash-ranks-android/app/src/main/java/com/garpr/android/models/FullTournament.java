@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class Tournament implements Parcelable {
+public class FullTournament extends AbsTournament implements Parcelable {
 
     @Nullable
     @SerializedName("matches")
@@ -18,22 +18,6 @@ public class Tournament implements Parcelable {
     @SerializedName("players")
     private ArrayList<LitePlayer> mPlayers;
 
-    @Nullable
-    @SerializedName("regions")
-    private ArrayList<String> mRegions;
-
-    @SerializedName("type")
-    private Type mType;
-
-    @SerializedName("date")
-    private SimpleDate mDate;
-
-    @SerializedName("id")
-    private String mId;
-
-    @SerializedName("name")
-    private String mName;
-
     @SerializedName("raw_id")
     private String mRawId;
 
@@ -41,27 +25,18 @@ public class Tournament implements Parcelable {
     @SerializedName("url")
     private String mUrl;
 
+    @SerializedName("type")
+    private Type mType;
+
 
     @Override
-    public boolean equals(final Object obj) {
-        return obj instanceof Tournament && mId.equals(((Tournament) obj).getId());
-    }
-
-    public SimpleDate getDate() {
-        return mDate;
-    }
-
-    public String getId() {
-        return mId;
+    public Kind getKind() {
+        return Kind.FULL;
     }
 
     @Nullable
     public ArrayList<Match> getMatches() {
         return mMatches;
-    }
-
-    public String getName() {
-        return mName;
     }
 
     @Nullable
@@ -71,11 +46,6 @@ public class Tournament implements Parcelable {
 
     public String getRawId() {
         return mRawId;
-    }
-
-    @Nullable
-    public ArrayList<String> getRegions() {
-        return mRegions;
     }
 
     public Type getType() {
@@ -88,52 +58,36 @@ public class Tournament implements Parcelable {
     }
 
     @Override
-    public int hashCode() {
-        return mId.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return getName();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+    protected void readFromParcel(final Parcel source) {
+        super.readFromParcel(source);
+        mMatches = source.createTypedArrayList(Match.CREATOR);
+        mPlayers = source.createTypedArrayList(LitePlayer.CREATOR);
+        mRawId = source.readString();
+        mUrl = source.readString();
+        mType = source.readParcelable(Type.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeTypedList(mMatches);
         dest.writeTypedList(mPlayers);
-        dest.writeStringList(mRegions);
-        dest.writeParcelable(mType, flags);
-        dest.writeParcelable(mDate, flags);
-        dest.writeString(mId);
-        dest.writeString(mName);
         dest.writeString(mRawId);
         dest.writeString(mUrl);
+        dest.writeParcelable(mType, flags);
     }
 
-    public static final Creator<Tournament> CREATOR = new Creator<Tournament>() {
+    public static final Creator<FullTournament> CREATOR = new Creator<FullTournament>() {
         @Override
-        public Tournament createFromParcel(final Parcel source) {
-            final Tournament t = new Tournament();
-            t.mMatches = source.createTypedArrayList(Match.CREATOR);
-            t.mPlayers = source.createTypedArrayList(LitePlayer.CREATOR);
-            t.mRegions = source.createStringArrayList();
-            t.mType = source.readParcelable(Type.class.getClassLoader());
-            t.mDate = source.readParcelable(SimpleDate.class.getClassLoader());
-            t.mId = source.readString();
-            t.mName = source.readString();
-            t.mRawId = source.readString();
-            t.mUrl = source.readString();
+        public FullTournament createFromParcel(final Parcel source) {
+            final FullTournament t = new FullTournament();
+            t.readFromParcel(source);
             return t;
         }
 
         @Override
-        public Tournament[] newArray(final int size) {
-            return new Tournament[size];
+        public FullTournament[] newArray(final int size) {
+            return new FullTournament[size];
         }
     };
 

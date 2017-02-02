@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.RankingItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    style="@style/ListItem">
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvRank"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        tools:text="84" />
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvName"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:maxLines="3"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Charlezard" />
+    <TextView
+        android:ellipsize="end"
+        android:gravity="end"
+        android:id="@+id/tvRating"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        tools:text="21.737" />
 </com.garpr.android.views.RankingItemView>

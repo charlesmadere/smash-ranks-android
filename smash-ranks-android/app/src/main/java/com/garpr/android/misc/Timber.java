@@ -22,8 +22,6 @@ public interface Timber {
 
     List<Entry> getEntries();
 
-    void setBoolean(final String key, final boolean value);
-
     void w(final String tag, final String msg);
 
     void w(final String tag, final String msg, @Nullable final Throwable tr);

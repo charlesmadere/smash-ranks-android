@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.fragments.RankingsFragment;
@@ -85,6 +86,7 @@ public class HomeActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_home);
 
         if (savedInstanceState == null) {

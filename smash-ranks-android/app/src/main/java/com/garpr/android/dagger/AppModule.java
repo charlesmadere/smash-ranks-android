@@ -11,6 +11,8 @@ import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
+import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Ratings;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
@@ -73,6 +75,8 @@ public class AppModule {
     @Singleton
     Gson providesGson() {
         return new GsonBuilder()
+                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_DESERIALIZER)
+                .registerTypeAdapter(AbsTournament.class, AbsTournament.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
                 .create();

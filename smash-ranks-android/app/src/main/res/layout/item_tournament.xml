@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.TournamentItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    style="@style/ListItem">
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Genesis 3" />
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        tools:text="1/20/2016" />
 </com.garpr.android.views.TournamentItemView>

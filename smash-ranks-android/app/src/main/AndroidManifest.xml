@@ -34,9 +34,17 @@
         </activity>
 
         <activity
+            android:label=""
+            android:name=".activities.PlayerActivity" />
+
+        <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:name=".activities.SettingsActivity" />
+
+        <activity
+            android:label=""
+            android:name=".activities.TournamentActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

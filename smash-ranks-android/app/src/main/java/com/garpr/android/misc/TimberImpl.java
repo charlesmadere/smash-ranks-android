@@ -71,11 +71,6 @@ public class TimberImpl implements Timber {
     }
 
     @Override
-    public void setBoolean(final String key, final boolean value) {
-        mCrashlyticsWrapper.setBool(key, value);
-    }
-
-    @Override
     public synchronized void w(final String tag, final String msg) {
         w(tag, msg, null);
     }
