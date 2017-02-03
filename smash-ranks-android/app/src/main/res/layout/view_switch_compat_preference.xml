@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+    <android.support.v7.widget.SwitchCompat
+        style="@style/PreferenceViewIcon" />
+    <TextView
+        tools:text="@string/must_be_charging"
+        style="@style/PreferenceViewTitle" />
+    <TextView
+        android:layout_below="@id/title"
+        tools:text="@string/will_poll_regardless_of_being_plugged_in_or_not"
+        style="@style/PreferenceViewDescription" />
+</RelativeLayout>

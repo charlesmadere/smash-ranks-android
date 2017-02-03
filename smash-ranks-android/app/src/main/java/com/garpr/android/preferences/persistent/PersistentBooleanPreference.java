@@ -7,9 +7,9 @@ import com.garpr.android.preferences.KeyValueStore;
 
 public class PersistentBooleanPreference extends BasePersistentPreference<Boolean> {
 
-    public PersistentBooleanPreference(@NonNull final String name, @NonNull final String key,
+    public PersistentBooleanPreference(@NonNull final String key,
             @Nullable final Boolean defaultValue, @NonNull final KeyValueStore keyValueStore) {
-        super(name, key, defaultValue, keyValueStore);
+        super(key, defaultValue, keyValueStore);
     }
 
     @Nullable
@@ -17,7 +17,7 @@ public class PersistentBooleanPreference extends BasePersistentPreference<Boolea
     public Boolean get() {
         if (hasValueInStore()) {
             // at this point, returning the fallback value is impossible
-            return getKeyValueStore().getBoolean(getName(), getKey(), false);
+            return getKeyValueStore().getBoolean(getKey(), false);
         } else {
             return getDefaultValue();
         }
@@ -25,7 +25,7 @@ public class PersistentBooleanPreference extends BasePersistentPreference<Boolea
 
     @Override
     protected void performSet(@NonNull final Boolean newValue, final boolean notifyListeners) {
-        getKeyValueStore().setBoolean(getName(), getKey(), newValue);
+        getKeyValueStore().setBoolean(getKey(), newValue);
 
         if (notifyListeners) {
             notifyListeners();

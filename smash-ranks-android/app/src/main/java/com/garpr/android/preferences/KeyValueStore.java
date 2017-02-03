@@ -5,34 +5,30 @@ import android.support.annotation.Nullable;
 
 public interface KeyValueStore {
 
-    void clear(@NonNull final String name);
+    void clear();
 
-    boolean contains(@NonNull final String name, @NonNull final String key);
+    boolean contains(@NonNull final String key);
 
-    boolean getBoolean(@NonNull final String name, @NonNull final String key,
-            final boolean fallbackValue);
+    boolean getBoolean(@NonNull final String key, final boolean fallbackValue);
 
-    float getFloat(@NonNull final String name, @NonNull final String key,
-            final float fallbackValue);
+    float getFloat(@NonNull final String key, final float fallbackValue);
 
-    int getInteger(@NonNull final String name, @NonNull final String key, final int fallbackValue);
+    int getInteger(@NonNull final String key, final int fallbackValue);
 
-    long getLong(@NonNull final String name, @NonNull final String key, final long fallbackValue);
+    long getLong(@NonNull final String key, final long fallbackValue);
 
-    String getString(@NonNull final String name, @NonNull final String key,
-            @Nullable final String fallbackValue);
+    String getString(@NonNull final String key, @Nullable final String fallbackValue);
 
-    void remove(@NonNull final String name, @NonNull final String key);
+    void remove(@NonNull final String key);
 
-    void setBoolean(@NonNull final String name, @NonNull final String key, final boolean value);
+    void setBoolean(@NonNull final String key, final boolean value);
 
-    void setFloat(@NonNull final String name, @NonNull final String key, final float value);
+    void setFloat(@NonNull final String key, final float value);
 
-    void setInteger(@NonNull final String name, @NonNull final String key, final int value);
+    void setInteger(@NonNull final String key, final int value);
 
-    void setLong(@NonNull final String name, @NonNull final String key, final long value);
+    void setLong(@NonNull final String key, final long value);
 
-    void setString(@NonNull final String name, @NonNull final String key,
-            @NonNull final String value);
+    void setString(@NonNull final String key, @NonNull final String value);
 
 }

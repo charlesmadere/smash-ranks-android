@@ -11,10 +11,24 @@ public abstract class BasePersistentPreference<T> extends BasePreference<T> {
     private final KeyValueStore mKeyValueStore;
 
 
-    public BasePersistentPreference(@NonNull final String name, @NonNull final String key,
+    public BasePersistentPreference(@NonNull final String key,
             @Nullable final T defaultValue, @NonNull final KeyValueStore keyValueStore) {
-        super(name, key, defaultValue);
+        super(key, defaultValue);
         mKeyValueStore = keyValueStore;
+    }
+
+    @Override
+    public void delete() {
+        delete(true);
+    }
+
+    @Override
+    public void delete(final boolean notifyListeners) {
+        mKeyValueStore.remove(getKey());
+
+        if (notifyListeners) {
+            notifyListeners();
+        }
     }
 
     @Override
@@ -27,21 +41,7 @@ public abstract class BasePersistentPreference<T> extends BasePreference<T> {
     }
 
     protected boolean hasValueInStore() {
-        return mKeyValueStore.contains(getName(), getKey());
-    }
-
-    @Override
-    public void remove() {
-        remove(true);
-    }
-
-    @Override
-    public void remove(final boolean notifyListeners) {
-        mKeyValueStore.remove(getName(), getKey());
-
-        if (notifyListeners) {
-            notifyListeners();
-        }
+        return mKeyValueStore.contains(getKey());
     }
 
     @Override

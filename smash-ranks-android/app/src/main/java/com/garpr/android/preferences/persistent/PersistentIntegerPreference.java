@@ -7,9 +7,9 @@ import com.garpr.android.preferences.KeyValueStore;
 
 public class PersistentIntegerPreference extends BasePersistentPreference<Integer> {
 
-    public PersistentIntegerPreference(@NonNull final String name, @NonNull final String key,
+    public PersistentIntegerPreference(@NonNull final String key,
             @Nullable final Integer defaultValue, @NonNull final KeyValueStore keyValueStore) {
-        super(name, key, defaultValue, keyValueStore);
+        super(key, defaultValue, keyValueStore);
     }
 
     @Nullable
@@ -17,7 +17,7 @@ public class PersistentIntegerPreference extends BasePersistentPreference<Intege
     public Integer get() {
         if (hasValueInStore()) {
             // at this point, returning the fallback value is impossible
-            return getKeyValueStore().getInteger(getName(), getKey(), 0);
+            return getKeyValueStore().getInteger(getKey(), 0);
         } else {
             return getDefaultValue();
         }
@@ -25,7 +25,7 @@ public class PersistentIntegerPreference extends BasePersistentPreference<Intege
 
     @Override
     protected void performSet(@NonNull final Integer newValue, final boolean notifyListeners) {
-        getKeyValueStore().setInteger(getName(), getKey(), newValue);
+        getKeyValueStore().setInteger(getKey(), newValue);
 
         if (notifyListeners) {
             notifyListeners();

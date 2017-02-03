@@ -8,6 +8,8 @@ import com.garpr.android.fragments.BaseFragment;
 import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.fragments.TournamentsFragment;
+import com.garpr.android.views.LastPollPreferenceView;
+import com.garpr.android.views.ThemePreferenceView;
 
 import javax.inject.Singleton;
 
@@ -30,5 +32,9 @@ public interface AppComponent {
 
     // other
     void inject(App app);
+
+    // views
+    void inject(LastPollPreferenceView view);
+    void inject(ThemePreferenceView view);
 
 }

@@ -11,15 +11,12 @@ public abstract class BasePreference<T> implements Preference<T> {
 
     private final LinkedList<WeakReference<OnPreferenceChangeListener<T>>> mListeners;
     private final String mKey;
-    private final String mName;
     private final T mDefaultValue;
 
 
-    public BasePreference(@NonNull final String name, @NonNull final String key,
-            @Nullable final T defaultValue) {
+    public BasePreference(@NonNull final String key, @Nullable final T defaultValue) {
         mListeners = new LinkedList<>();
         mKey = key;
-        mName = name;
         mDefaultValue = defaultValue;
     }
 
@@ -57,12 +54,6 @@ public abstract class BasePreference<T> implements Preference<T> {
     @Override
     public String getKey() {
         return mKey;
-    }
-
-    @NonNull
-    @Override
-    public String getName() {
-        return mName;
     }
 
     protected void notifyListeners() {
@@ -120,7 +111,7 @@ public abstract class BasePreference<T> implements Preference<T> {
     @Override
     public void set(@Nullable final T newValue, final boolean notifyListeners) {
         if (newValue == null) {
-            remove(notifyListeners);
+            delete(notifyListeners);
         } else {
             performSet(newValue, notifyListeners);
         }

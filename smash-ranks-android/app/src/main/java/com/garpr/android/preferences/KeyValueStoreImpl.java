@@ -9,104 +9,99 @@ import android.support.annotation.Nullable;
 public class KeyValueStoreImpl implements KeyValueStore {
 
     private final Application mApplication;
+    private final String mName;
 
 
-    public KeyValueStoreImpl(@NonNull final Application application) {
+    public KeyValueStoreImpl(@NonNull final Application application, @NonNull final String name) {
         mApplication = application;
+        mName = name;
     }
 
     @Override
-    public void clear(@NonNull final String name) {
-        getSharedPreferences(name)
+    public void clear() {
+        getSharedPreferences()
                 .edit()
                 .clear()
                 .apply();
     }
 
     @Override
-    public boolean contains(@NonNull final String name, @NonNull final String key) {
-        return getSharedPreferences(name).contains(key);
+    public boolean contains(@NonNull final String key) {
+        return getSharedPreferences().contains(key);
     }
 
     @Override
-    public boolean getBoolean(@NonNull final String name, @NonNull final String key,
-            final boolean fallbackValue) {
-        return getSharedPreferences(name).getBoolean(key, fallbackValue);
+    public boolean getBoolean(@NonNull final String key, final boolean fallbackValue) {
+        return getSharedPreferences().getBoolean(key, fallbackValue);
     }
 
     @Override
-    public float getFloat(@NonNull final String name, @NonNull final String key,
-            final float fallbackValue) {
-        return getSharedPreferences(name).getFloat(key, fallbackValue);
+    public float getFloat(@NonNull final String key, final float fallbackValue) {
+        return getSharedPreferences().getFloat(key, fallbackValue);
     }
 
     @Override
-    public int getInteger(@NonNull final String name, @NonNull final String key,
-            final int fallbackValue) {
-        return getSharedPreferences(name).getInt(key, fallbackValue);
+    public int getInteger(@NonNull final String key, final int fallbackValue) {
+        return getSharedPreferences().getInt(key, fallbackValue);
     }
 
     @Override
-    public long getLong(@NonNull final String name, @NonNull final String key,
-            final long fallbackValue) {
-        return getSharedPreferences(name).getLong(key, fallbackValue);
+    public long getLong(@NonNull final String key, final long fallbackValue) {
+        return getSharedPreferences().getLong(key, fallbackValue);
     }
 
     @Override
-    public String getString(@NonNull final String name, @NonNull final String key,
-            @Nullable final String fallbackValue) {
-        return getSharedPreferences(name).getString(key, fallbackValue);
+    public String getString(@NonNull final String key, @Nullable final String fallbackValue) {
+        return getSharedPreferences().getString(key, fallbackValue);
     }
 
-    private SharedPreferences getSharedPreferences(@NonNull final String name) {
-        return mApplication.getSharedPreferences(name, Context.MODE_PRIVATE);
+    private SharedPreferences getSharedPreferences() {
+        return mApplication.getSharedPreferences(mName, Context.MODE_PRIVATE);
     }
 
     @Override
-    public void remove(@NonNull final String name, @NonNull final String key) {
-        getSharedPreferences(name)
+    public void remove(@NonNull final String key) {
+        getSharedPreferences()
                 .edit()
                 .remove(key)
                 .apply();
     }
 
     @Override
-    public void setBoolean(@NonNull final String name, @NonNull final String key,
-            final boolean value) {
-        getSharedPreferences(name)
+    public void setBoolean(@NonNull final String key, final boolean value) {
+        getSharedPreferences()
                 .edit()
                 .putBoolean(key, value)
                 .apply();
     }
 
     @Override
-    public void setFloat(@NonNull final String name, @NonNull final String key, final float value) {
-        getSharedPreferences(name)
+    public void setFloat(@NonNull final String key, final float value) {
+        getSharedPreferences()
                 .edit()
                 .putFloat(key, value)
                 .apply();
     }
 
     @Override
-    public void setInteger(@NonNull final String name, @NonNull final String key, final int value) {
-        getSharedPreferences(name)
+    public void setInteger(@NonNull final String key, final int value) {
+        getSharedPreferences()
                 .edit()
                 .putInt(key, value)
                 .apply();
     }
 
     @Override
-    public void setLong(@NonNull final String name, @NonNull final String key, final long value) {
-        getSharedPreferences(name)
+    public void setLong(@NonNull final String key, final long value) {
+        getSharedPreferences()
                 .edit()
                 .putLong(key, value)
                 .apply();
     }
 
     @Override
-    public void setString(@NonNull final String name, @NonNull final String key,
-            @NonNull final String value) {
-        getSharedPreferences(name)
+    public void setString(@NonNull final String key, @NonNull final String value) {
+        getSharedPreferences()
                 .edit()
                 .putString(key, value)
                 .apply();

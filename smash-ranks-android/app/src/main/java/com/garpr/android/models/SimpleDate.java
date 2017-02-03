@@ -50,8 +50,12 @@ public class SimpleDate implements Parcelable {
         throw new JsonParseException("unable to parse date: " + jsonString);
     }
 
-    private SimpleDate(final Date date) {
+    public SimpleDate(final Date date) {
         mDate = date;
+    }
+
+    public SimpleDate(final long date) {
+        mDate = new Date(date);
     }
 
     private SimpleDate(final Parcel source) {

@@ -38,7 +38,7 @@ public class App extends Application {
         sInstance = this;
 
         mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this, Constants.DEFAULT_REGION, Constants.GAR_PR_URL))
+                .appModule(new AppModule(this, Constants.GAR_PR_URL, Constants.DEFAULT_REGION))
                 .build();
         mAppComponent.inject(this);
 

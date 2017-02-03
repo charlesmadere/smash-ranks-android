@@ -5,9 +5,25 @@
     <attr name="timberError" format="color" />
     <attr name="timberWarn" format="color" />
 
+    <declare-styleable name="CheckablePreferenceView">
+        <attr name="disabledDescriptionText" format="string" />
+        <attr name="enabledDescriptionText" format="string" />
+        <attr name="titleText" format="string" />
+        <attr name="checkableType" format="enum">
+            <enum name="checkbox" value="0" />
+            <enum name="switch_compat" value="1" />
+        </attr>
+    </declare-styleable>
+
     <declare-styleable name="RefreshLayout">
         <attr name="scrollingChild" format="reference" />
         <attr name="spinnerColors" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SimplePreferenceView">
+        <attr name="simpleDescriptionText" format="string" />
+        <attr name="simpleIcon" format="reference" />
+        <attr name="simpleTitleText" format="string" />
     </declare-styleable>
 
 </resources>

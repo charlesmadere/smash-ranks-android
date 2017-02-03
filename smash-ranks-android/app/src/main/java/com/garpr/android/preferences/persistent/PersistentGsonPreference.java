@@ -16,12 +16,12 @@ public class PersistentGsonPreference<T> extends BasePersistentPreference<T> {
     private final Type mType;
 
 
-    public PersistentGsonPreference(@NonNull final String name, @NonNull final String key,
-            @Nullable final T defaultValue, final Type type,
-            @NonNull final KeyValueStore keyValueStore, @NonNull final Gson gson) {
-        super(name, key, defaultValue, keyValueStore);
+    public PersistentGsonPreference(@NonNull final String key, @Nullable final T defaultValue,
+            @NonNull final KeyValueStore keyValueStore, @NonNull final Type type,
+            @NonNull final Gson gson) {
+        super(key, defaultValue, keyValueStore);
         mGson = gson;
-        mBackingPreference = new PersistentStringPreference(name, key, null, keyValueStore);
+        mBackingPreference = new PersistentStringPreference(key, null, keyValueStore);
         mType = type;
     }
 

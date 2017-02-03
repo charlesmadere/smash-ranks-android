@@ -1,60 +1,60 @@
 package com.garpr.android.preferences;
 
-import android.app.Application;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.garpr.android.models.NightMode;
 import com.garpr.android.preferences.persistent.PersistentGsonPreference;
+import com.garpr.android.preferences.persistent.PersistentIntegerPreference;
 import com.garpr.android.preferences.persistent.PersistentStringPreference;
 import com.google.gson.Gson;
 
-public class PreferenceStoreImpl implements PreferenceStore {
+public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
 
-    private final Application mApplication;
     private final Gson mGson;
     private final KeyValueStore mKeyValueStore;
     private final String mDefaultRegion;
-    private final String mName;
 
+    private Preference<Integer> mLastVersion;
     private Preference<NightMode> mNightMode;
     private Preference<String> mCurrentRegion;
 
 
-    public PreferenceStoreImpl(@NonNull final Application application, @NonNull final Gson gson,
+    public GeneralPreferenceStoreImpl(@NonNull final Gson gson,
             @NonNull final KeyValueStore keyValueStore, @NonNull final String defaultRegion) {
-        mApplication = application;
         mGson = gson;
         mKeyValueStore = keyValueStore;
         mDefaultRegion = defaultRegion;
-        mName = application.getPackageName() + ".Preferences";
     }
 
     @Override
-    public void clearAll() {
-        PreferenceManager.getDefaultSharedPreferences(mApplication)
-                .edit()
-                .clear()
-                .apply();
-
-        mKeyValueStore.clear(mName);
+    public void clear() {
+        mKeyValueStore.clear();
     }
 
     @Override
     public Preference<String> getCurrentRegion() {
         if (mCurrentRegion == null) {
-            mCurrentRegion = new PersistentStringPreference(mName, "CURRENT_REGION",
-                    mDefaultRegion, mKeyValueStore);
+            mCurrentRegion = new PersistentStringPreference("CURRENT_REGION", mDefaultRegion,
+                    mKeyValueStore);
         }
 
         return mCurrentRegion;
     }
 
     @Override
+    public Preference<Integer> getLastVersion() {
+        if (mLastVersion == null) {
+            mLastVersion = new PersistentIntegerPreference("LAST_VERSION", null, mKeyValueStore);
+        }
+
+        return mLastVersion;
+    }
+
+    @Override
     public Preference<NightMode> getNightMode() {
         if (mNightMode == null) {
-            mNightMode = new PersistentGsonPreference<>(mName, "NIGHT_MODE", NightMode.SYSTEM,
-                    NightMode.class, mKeyValueStore, mGson);
+            mNightMode = new PersistentGsonPreference<>("NIGHT_MODE", NightMode.SYSTEM,
+                    mKeyValueStore, NightMode.class, mGson);
         }
 
         return mNightMode;

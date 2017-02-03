@@ -7,9 +7,9 @@ import com.garpr.android.preferences.KeyValueStore;
 
 public class PersistentFloatPreference extends BasePersistentPreference<Float> {
 
-    public PersistentFloatPreference(@NonNull final String name, @NonNull final String key,
-            @Nullable final Float defaultValue, @NonNull final KeyValueStore keyValueStore) {
-        super(name, key, defaultValue, keyValueStore);
+    public PersistentFloatPreference(@NonNull final String key, @Nullable final Float defaultValue,
+            @NonNull final KeyValueStore keyValueStore) {
+        super(key, defaultValue, keyValueStore);
     }
 
     @Nullable
@@ -17,7 +17,7 @@ public class PersistentFloatPreference extends BasePersistentPreference<Float> {
     public Float get() {
         if (hasValueInStore()) {
             // at this point, returning the fallback value is impossible
-            return getKeyValueStore().getFloat(getName(), getKey(), 0f);
+            return getKeyValueStore().getFloat(getKey(), 0f);
         } else {
             return getDefaultValue();
         }
@@ -25,7 +25,7 @@ public class PersistentFloatPreference extends BasePersistentPreference<Float> {
 
     @Override
     protected void performSet(@NonNull final Float newValue, final boolean notifyListeners) {
-        getKeyValueStore().setFloat(getName(), getKey(), newValue);
+        getKeyValueStore().setFloat(getKey(), newValue);
 
         if (notifyListeners) {
             notifyListeners();

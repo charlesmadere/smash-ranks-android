@@ -18,13 +18,16 @@ import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.networking.ServerApiImpl;
+import com.garpr.android.preferences.GeneralPreferenceStore;
+import com.garpr.android.preferences.GeneralPreferenceStoreImpl;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
-import com.garpr.android.preferences.PreferenceStore;
-import com.garpr.android.preferences.PreferenceStoreImpl;
+import com.garpr.android.preferences.RankingsPollingPreferenceStore;
+import com.garpr.android.preferences.RankingsPollingPreferenceStoreImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -35,16 +38,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class AppModule {
 
+    private static final String GENERAL_KEY_VALUE_STORE = "GENERAL_KEY_VALUE_STORE";
+    private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
+
     private final Application mApplication;
     private final String mDefaultRegion;
     private final String mGarPrUrl;
 
 
-    public AppModule(@NonNull final Application application, @NonNull final String defaultRegion,
-            @NonNull final String garPrUrl) {
+    public AppModule(@NonNull final Application application, @NonNull final String garPrUrl,
+            @NonNull final String defaultRegion) {
         mApplication = application;
-        mDefaultRegion = defaultRegion;
         mGarPrUrl = garPrUrl;
+        mDefaultRegion = defaultRegion;
     }
 
     @Provides
@@ -73,6 +79,21 @@ public class AppModule {
 
     @Provides
     @Singleton
+    @Named(GENERAL_KEY_VALUE_STORE)
+    KeyValueStore providesGeneralKeyValueStore() {
+        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+                ".Preferences.v2.General");
+    }
+
+    @Provides
+    @Singleton
+    GeneralPreferenceStore providesGeneralPreferenceStore(final Gson gson,
+            @Named(GENERAL_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
+        return new GeneralPreferenceStoreImpl(gson, keyValueStore, mDefaultRegion);
+    }
+
+    @Provides
+    @Singleton
     Gson providesGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_DESERIALIZER)
@@ -84,20 +105,23 @@ public class AppModule {
 
     @Provides
     @Singleton
-    KeyValueStore providesKeyValueStore() {
-        return new KeyValueStoreImpl(mApplication);
+    @Named(RANKINGS_POLLING_KEY_VALUE_STORE)
+    KeyValueStore providesRankingsPollingKeyValueStore() {
+        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+                ".Preferences.v2.RankingsPolling");
     }
 
     @Provides
     @Singleton
-    PreferenceStore providesPreferenceStore(final Gson gson, final KeyValueStore keyValueStore) {
-        return new PreferenceStoreImpl(mApplication, gson, keyValueStore, mDefaultRegion);
+    RankingsPollingPreferenceStore providesRankingsPollingPreferenceStore(final Gson gson,
+            @Named(RANKINGS_POLLING_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
+        return new RankingsPollingPreferenceStoreImpl(gson, keyValueStore);
     }
 
     @Provides
     @Singleton
-    RegionManager providesRegionManager(final PreferenceStore preferenceStore) {
-        return new RegionManagerImpl(preferenceStore.getCurrentRegion());
+    RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore) {
+        return new RegionManagerImpl(generalPreferenceStore.getCurrentRegion());
     }
 
     @Provides

@@ -2,11 +2,13 @@ package com.garpr.android.preferences;
 
 import com.garpr.android.models.NightMode;
 
-public interface PreferenceStore {
+public interface GeneralPreferenceStore {
 
-    void clearAll();
+    void clear();
 
     Preference<String> getCurrentRegion();
+
+    Preference<Integer> getLastVersion();
 
     Preference<NightMode> getNightMode();
 

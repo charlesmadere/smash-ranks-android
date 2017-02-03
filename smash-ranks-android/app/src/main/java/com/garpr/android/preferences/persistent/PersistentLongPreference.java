@@ -7,9 +7,9 @@ import com.garpr.android.preferences.KeyValueStore;
 
 public class PersistentLongPreference extends BasePersistentPreference<Long> {
 
-    public PersistentLongPreference(@NonNull final String name, @NonNull final String key,
-            @Nullable final Long defaultValue, @NonNull final KeyValueStore keyValueStore) {
-        super(name, key, defaultValue, keyValueStore);
+    public PersistentLongPreference(@NonNull final String key, @Nullable final Long defaultValue,
+            @NonNull final KeyValueStore keyValueStore) {
+        super(key, defaultValue, keyValueStore);
     }
 
     @Nullable
@@ -17,7 +17,7 @@ public class PersistentLongPreference extends BasePersistentPreference<Long> {
     public Long get() {
         if (hasValueInStore()) {
             // at this point, returning the fallback value is impossible
-            return getKeyValueStore().getLong(getName(), getKey(), 0L);
+            return getKeyValueStore().getLong(getKey(), 0L);
         } else {
             return getDefaultValue();
         }
@@ -25,7 +25,7 @@ public class PersistentLongPreference extends BasePersistentPreference<Long> {
 
     @Override
     protected void performSet(@NonNull final Long newValue, final boolean notifyListeners) {
-        getKeyValueStore().setLong(getName(), getKey(), newValue);
+        getKeyValueStore().setLong(getKey(), newValue);
 
         if (notifyListeners) {
             notifyListeners();
