@@ -2,6 +2,7 @@
 <resources>
 
     <color name="error">#FF6666</color>
+    <color name="indigo">#5600EA</color>
     <color name="warn">#FFBBBB</color>
     <color name="windowBackground">#232323</color>
 
