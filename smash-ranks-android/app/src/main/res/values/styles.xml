@@ -86,11 +86,11 @@
     </style>
 
     <style name="RecyclerViewLine.1">
-
+        <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
     <style name="RecyclerViewLine.2">
-
+        <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
     <style name="RecyclerViewMessage">
