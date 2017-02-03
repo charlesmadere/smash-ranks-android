@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.TimberEntryItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
     android:orientation="vertical"
-    style="@style/ListItem">
+    android:paddingBottom="@dimen/root_padding_half"
+    android:paddingEnd="@dimen/root_padding"
+    android:paddingStart="@dimen/root_padding"
+    android:paddingTop="@dimen/root_padding_half">
     <TextView
         android:id="@+id/tvTagAndMessage"
         android:layout_height="wrap_content"
