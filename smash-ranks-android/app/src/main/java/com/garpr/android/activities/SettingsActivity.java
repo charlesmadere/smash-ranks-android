@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.preferences.GeneralPreferenceStore;
+import com.garpr.android.preferences.Preference;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.views.CheckablePreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
@@ -60,6 +61,12 @@ public class SettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_settings);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRankingsPollingPreferenceStore.getEnabled().removeListener(mOnRankingsPollingEnabledChange);
+    }
+
     @OnClick(R.id.spvLogViewer)
     void onLogViewerClick() {
         startActivity(LogViewerActivity.getLaunchIntent(this));
@@ -68,26 +75,46 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        mTheme.refresh();
-        mUseRankingsPolling.refresh();
-        mMustBeOnWifi.refresh();
-        mMustBeCharging.refresh();
-        mLastPoll.refresh();
+        refresh();
     }
 
     @Override
     protected void onViewsBound() {
         super.onViewsBound();
 
+        mRankingsPollingPreferenceStore.getEnabled().addListener(mOnRankingsPollingEnabledChange);
         mUseRankingsPolling.set(mRankingsPollingPreferenceStore.getEnabled());
         mMustBeOnWifi.set(mRankingsPollingPreferenceStore.getWifiRequired());
         mMustBeCharging.set(mRankingsPollingPreferenceStore.getChargingRequired());
+    }
+
+    private void refresh() {
+        mTheme.refresh();
+        mUseRankingsPolling.refresh();
+        mMustBeOnWifi.refresh();
+        mMustBeCharging.refresh();
+        mLastPoll.refresh();
+
+        if (Boolean.TRUE.equals(mRankingsPollingPreferenceStore.getEnabled().get())) {
+            mMustBeOnWifi.setEnabled(true);
+            mMustBeCharging.setEnabled(true);
+        } else {
+            mMustBeOnWifi.setEnabled(false);
+            mMustBeCharging.setEnabled(false);
+        }
     }
 
     @Override
     protected boolean showUpNavigation() {
         return true;
     }
+
+    private final Preference.OnPreferenceChangeListener<Boolean> mOnRankingsPollingEnabledChange =
+            new Preference.OnPreferenceChangeListener<Boolean>() {
+        @Override
+        public void onPreferenceChange(final Preference<Boolean> preference) {
+            refresh();
+        }
+    };
 
 }
