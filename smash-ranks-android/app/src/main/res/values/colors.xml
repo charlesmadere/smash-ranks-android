@@ -2,14 +2,15 @@
 <resources>
 
     <color name="black">#000000</color>
-    <color name="error">#FF6666</color>
+    <color name="error">#FF2222</color>
     <color name="gray">#303030</color>
     <color name="gray_dark">#212121</color>
     <color name="gray_light">#666666</color>
-    <color name="indigo">#210054</color>
+    <color name="indigo">#330087</color>
     <color name="transparent">#00000000</color>
-    <color name="warn">#FFBBBB</color>
+    <color name="warn">#FF7070</color>
     <color name="white">#FFFFFF</color>
+    <color name="windowBackground">#E6E6E6</color>
 
     <color name="r">#FF0000</color>
     <color name="g">#00FF00</color>

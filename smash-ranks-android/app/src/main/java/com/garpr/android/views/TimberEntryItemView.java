@@ -47,7 +47,8 @@ public class TimberEntryItemView extends LinearLayout implements BaseAdapterView
 
     @Override
     public void setContent(final Timber.Entry content) {
-        mTagAndMessage.setText(content.mMsg);
+        mTagAndMessage.setText(getResources().getString(R.string.tag_and_message, content.mTag,
+                content.mMsg));
 
         if (TextUtils.isEmpty(content.mStackTrace)) {
             mStackTrace.setText("");
