@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
     <include
         layout="@layout/toolbar" />
@@ -44,6 +45,15 @@
                         style="@style/SettingsCardTitle" />
                     <TextView
                         android:text="@string/rankings_polling_description"
+                        style="@style/SettingsCardDescription" />
+                    <TextView
+                        android:background="?attr/selectableItemBackground"
+                        android:id="@+id/tvGooglePlayServicesError"
+                        android:text="@string/rankings_polling_requires_google_play_services"
+                        android:textColor="@color/warn"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         style="@style/SettingsCardDescription" />
                     <com.garpr.android.views.CheckablePreferenceView
                         android:id="@+id/cpvUseRankingsPolling"

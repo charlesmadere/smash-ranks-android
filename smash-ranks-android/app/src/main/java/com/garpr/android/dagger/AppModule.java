@@ -7,6 +7,8 @@ import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.CrashlyticsWrapperImpl;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
+import com.garpr.android.misc.GoogleApiWrapper;
+import com.garpr.android.misc.GoogleApiWrapperImpl;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.Timber;
@@ -90,6 +92,13 @@ public class AppModule {
     GeneralPreferenceStore providesGeneralPreferenceStore(final Gson gson,
             @Named(GENERAL_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
         return new GeneralPreferenceStoreImpl(gson, keyValueStore, mDefaultRegion);
+    }
+
+    @Provides
+    @Singleton
+    GoogleApiWrapper providesGoogleApiWrapper(final CrashlyticsWrapper crashlyticsWrapper,
+            final Timber timber) {
+        return new GoogleApiWrapperImpl(mApplication, crashlyticsWrapper, timber);
     }
 
     @Provides
