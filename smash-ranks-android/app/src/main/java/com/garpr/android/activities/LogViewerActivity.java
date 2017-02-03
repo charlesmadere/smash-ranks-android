@@ -55,6 +55,7 @@ public class LogViewerActivity extends BaseActivity implements
             mRecyclerView.setVisibility(View.VISIBLE);
         }
 
+        supportInvalidateOptionsMenu();
         mRefreshLayout.setRefreshing(false);
     }
 
@@ -86,6 +87,15 @@ public class LogViewerActivity extends BaseActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        if (mAdapter != null && !mAdapter.isEmpty()) {
+            menu.findItem(R.id.miClearLog).setEnabled(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

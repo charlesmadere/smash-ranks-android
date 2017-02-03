@@ -66,6 +66,10 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapterVie
     @Override
     public abstract int getItemViewType(final int position);
 
+    public boolean isEmpty() {
+        return mItems.isEmpty();
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(final BaseAdapterViewHolder holder, final int position) {
