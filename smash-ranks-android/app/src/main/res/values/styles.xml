@@ -86,6 +86,7 @@
     </style>
 
     <style name="RecyclerViewLine.1">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
