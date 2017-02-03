@@ -33,7 +33,7 @@ public class PersistentGsonPreference<T> extends BasePersistentPreference<T> {
     @Nullable
     @Override
     public T get() {
-        if (exists()) {
+        if (mBackingPreference.exists()) {
             return mGson.fromJson(mBackingPreference.get(), mType);
         } else {
             return getDefaultValue();
