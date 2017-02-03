@@ -60,6 +60,8 @@ public class ThemePreferenceView extends SimplePreferenceView implements
 
     @Override
     public void onClick(final DialogInterface dialog, final int which) {
+        dialog.dismiss();
+
         final NightMode current = mGeneralPreferenceStore.getNightMode().get();
         final NightMode selected = NightMode.values()[which];
 
