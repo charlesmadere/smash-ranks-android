@@ -18,6 +18,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
     private Preference<Boolean> mWifiRequired;
     private Preference<PollFrequency> mPollFrequency;
     private Preference<SimpleDate> mLastPoll;
+    private Preference<SimpleDate> mRankingsDate;
 
 
     public RankingsPollingPreferenceStoreImpl(@NonNull final Gson gson,
@@ -68,6 +69,16 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         }
 
         return mPollFrequency;
+    }
+
+    @Override
+    public Preference<SimpleDate> getRankingsDate() {
+        if (mRankingsDate == null) {
+            mRankingsDate = new PersistentGsonPreference<>("RANKINGS_DATE", null, mKeyValueStore,
+                    SimpleDate.class, mGson);
+        }
+
+        return mRankingsDate;
     }
 
     @Override

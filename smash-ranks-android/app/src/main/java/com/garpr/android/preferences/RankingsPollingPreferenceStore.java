@@ -15,6 +15,8 @@ public interface RankingsPollingPreferenceStore {
 
     Preference<PollFrequency> getPollFrequency();
 
+    Preference<SimpleDate> getRankingsDate();
+
     Preference<Boolean> getWifiRequired();
 
 }
