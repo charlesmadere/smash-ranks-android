@@ -111,6 +111,7 @@ out/
 ## Misc
 #################
 
+com.crashlytics.settings.json
 session_analytics*.tap
 
 

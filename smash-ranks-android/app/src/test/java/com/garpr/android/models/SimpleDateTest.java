@@ -12,6 +12,7 @@ import org.robolectric.annotation.Config;
 
 import javax.inject.Inject;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
@@ -44,8 +45,11 @@ public class SimpleDateTest extends BaseTest {
     }
 
     @Test
-    public void testToNull() throws Exception {
-        
+    public void testToJsonOne() throws Exception {
+        final SimpleDate simpleDate1 = mGson.fromJson(JSON_ONE, SimpleDate.class);
+        final String json = mGson.toJson(simpleDate1, SimpleDate.class);
+        final SimpleDate simpleDate2 = mGson.fromJson(json, SimpleDate.class);
+        assertEquals(simpleDate1, simpleDate2);
     }
 
 }
