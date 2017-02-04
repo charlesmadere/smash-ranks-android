@@ -2,6 +2,7 @@ package com.garpr.android.networking;
 
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.FullTournament;
+import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.RegionsBundle;
@@ -12,6 +13,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface GarPrApi {
+
+    @GET("{region}/matches/{playerId}")
+    Call<MatchesBundle> getMatches(@Path("region") String region, @Path("playerId") String playerId);
 
     @GET("{region}/players/{playerId}")
     Call<FullPlayer> getPlayer(@Path("region") String region, @Path("playerId") String playerId);

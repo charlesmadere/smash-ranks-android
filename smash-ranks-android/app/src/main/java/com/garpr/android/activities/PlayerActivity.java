@@ -7,9 +7,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.FullPlayer;
+import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Ranking;
+import com.garpr.android.networking.ApiListener;
+import com.garpr.android.networking.ServerApi;
+
+import javax.inject.Inject;
 
 public class PlayerActivity extends BaseActivity {
 
@@ -17,6 +24,9 @@ public class PlayerActivity extends BaseActivity {
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
     private static final String EXTRA_PLAYER_ID = CNAME + ".PlayerId";
     private static final String EXTRA_PLAYER_NAME = CNAME + ".PlayerName";
+
+    @Inject
+    ServerApi mServerApi;
 
 
     public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player) {
@@ -47,6 +57,7 @@ public class PlayerActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_player);
 
         final Intent intent = getIntent();
@@ -61,5 +72,39 @@ public class PlayerActivity extends BaseActivity {
     protected boolean showUpNavigation() {
         return true;
     }
+
+    private final ApiListener<FullPlayer> mFullPlayerListener = new ApiListener<FullPlayer>() {
+        @Override
+        public void failure() {
+
+        }
+
+        @Override
+        public boolean isAlive() {
+            return PlayerActivity.this.isAlive();
+        }
+
+        @Override
+        public void success(@Nullable final FullPlayer object) {
+
+        }
+    };
+
+    private final ApiListener<MatchesBundle> mMatchesBundleListener = new ApiListener<MatchesBundle>() {
+        @Override
+        public void failure() {
+
+        }
+
+        @Override
+        public boolean isAlive() {
+            return PlayerActivity.this.isAlive();
+        }
+
+        @Override
+        public void success(@Nullable final MatchesBundle object) {
+
+        }
+    };
 
 }
