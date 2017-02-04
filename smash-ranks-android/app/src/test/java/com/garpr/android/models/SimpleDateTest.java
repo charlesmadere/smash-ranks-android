@@ -43,4 +43,9 @@ public class SimpleDateTest extends BaseTest {
         assertNull(simpleDate);
     }
 
+    @Test
+    public void testToNull() throws Exception {
+        
+    }
+
 }
