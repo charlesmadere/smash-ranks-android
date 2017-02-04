@@ -3,9 +3,9 @@ package com.garpr.android.preferences;
 import android.support.annotation.NonNull;
 
 import com.garpr.android.models.PollFrequency;
+import com.garpr.android.models.SimpleDate;
 import com.garpr.android.preferences.persistent.PersistentBooleanPreference;
 import com.garpr.android.preferences.persistent.PersistentGsonPreference;
-import com.garpr.android.preferences.persistent.PersistentLongPreference;
 import com.google.gson.Gson;
 
 public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPreferenceStore {
@@ -16,8 +16,8 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
     private Preference<Boolean> mChargingRequired;
     private Preference<Boolean> mEnabled;
     private Preference<Boolean> mWifiRequired;
-    private Preference<Long> mLastPoll;
     private Preference<PollFrequency> mPollFrequency;
+    private Preference<SimpleDate> mLastPoll;
 
 
     public RankingsPollingPreferenceStoreImpl(@NonNull final Gson gson,
@@ -51,9 +51,10 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
     }
 
     @Override
-    public Preference<Long> getLastPoll() {
+    public Preference<SimpleDate> getLastPoll() {
         if (mLastPoll == null) {
-            mLastPoll = new PersistentLongPreference("LAST_POLL", null, mKeyValueStore);
+            mLastPoll = new PersistentGsonPreference<>("LAST_POLL", null, mKeyValueStore,
+                    SimpleDate.class, mGson);
         }
 
         return mLastPoll;

@@ -1,6 +1,7 @@
 package com.garpr.android.preferences;
 
 import com.garpr.android.models.PollFrequency;
+import com.garpr.android.models.SimpleDate;
 
 public interface RankingsPollingPreferenceStore {
 
@@ -10,7 +11,7 @@ public interface RankingsPollingPreferenceStore {
 
     Preference<Boolean> getEnabled();
 
-    Preference<Long> getLastPoll();
+    Preference<SimpleDate> getLastPoll();
 
     Preference<PollFrequency> getPollFrequency();
 
