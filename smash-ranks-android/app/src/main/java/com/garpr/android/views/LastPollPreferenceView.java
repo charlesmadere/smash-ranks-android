@@ -15,7 +15,7 @@ import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import javax.inject.Inject;
 
 public class LastPollPreferenceView extends SimplePreferenceView implements
-        Preference.OnPreferenceChangeListener<Long> {
+        Preference.OnPreferenceChangeListener<SimpleDate> {
 
     @Inject
     RankingsPollingPreferenceStore mRankingsPollingPreferenceStore;
@@ -72,20 +72,19 @@ public class LastPollPreferenceView extends SimplePreferenceView implements
     }
 
     @Override
-    public void onPreferenceChange(final Preference<Long> preference) {
+    public void onPreferenceChange(final Preference<SimpleDate> preference) {
         if (ViewCompat.isAttachedToWindow(this)) {
             refresh();
         }
     }
 
     public void refresh() {
-        final Long date = mRankingsPollingPreferenceStore.getLastPoll().get();
+        final SimpleDate date = mRankingsPollingPreferenceStore.getLastPoll().get();
 
         if (date == null) {
             setDescriptionText(getResources().getText(R.string.poll_has_yet_to_occur));
         } else {
-            final SimpleDate simpleDate = new SimpleDate(date);
-            setDescriptionText(simpleDate.getRelativeDateTimeText(getContext()));
+            setDescriptionText(date.getRelativeDateTimeText(getContext()));
         }
     }
 
