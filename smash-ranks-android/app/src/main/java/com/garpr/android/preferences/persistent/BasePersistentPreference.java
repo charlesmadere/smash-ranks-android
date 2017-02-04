@@ -44,9 +44,4 @@ public abstract class BasePersistentPreference<T> extends BasePreference<T> {
         return mKeyValueStore.contains(getKey());
     }
 
-    @Override
-    public void set(@Nullable final T newValue) {
-        set(newValue, true);
-    }
-
 }
