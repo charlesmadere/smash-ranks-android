@@ -111,6 +111,7 @@ public class AppModule {
                 .registerTypeAdapter(AbsTournament.class, AbsTournament.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
+                .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_SERIALIZER)
                 .create();
     }
 
