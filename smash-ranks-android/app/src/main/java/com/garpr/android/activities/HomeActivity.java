@@ -1,5 +1,7 @@
 package com.garpr.android.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.IntentCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -33,6 +36,11 @@ public class HomeActivity extends BaseActivity implements
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNavigationView;
 
+
+    public static Intent getLaunchIntent(final Context context) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        return IntentCompat.makeRestartActivityTask(intent.getComponent());
+    }
 
     @Override
     public String getActivityName() {

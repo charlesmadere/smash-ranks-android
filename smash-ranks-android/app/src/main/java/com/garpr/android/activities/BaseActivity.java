@@ -15,6 +15,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.Heartbeat;
 import com.garpr.android.misc.Timber;
+import com.garpr.android.preferences.GeneralPreferenceStore;
 
 import javax.inject.Inject;
 
@@ -27,6 +28,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     private static final String TAG = "BaseActivity";
 
     private Unbinder mUnbinder;
+
+    @Inject
+    protected GeneralPreferenceStore mGeneralPreferenceStore;
 
     @Inject
     protected Timber mTimber;
@@ -59,8 +63,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
+        // noinspection ConstantConditions
+        getDelegate().setLocalNightMode(mGeneralPreferenceStore.getNightMode().get().getThemeValue());
+
+        super.onCreate(savedInstanceState);
         mTimber.d(TAG, getActivityName() + " created");
     }
 

@@ -13,11 +13,11 @@ import android.widget.Toast;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.GoogleApiWrapper;
-import com.garpr.android.preferences.GeneralPreferenceStore;
 import com.garpr.android.preferences.Preference;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.views.CheckablePreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
+import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
 
 import javax.inject.Inject;
@@ -29,9 +29,6 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
         DialogInterface.OnDismissListener {
 
     private static final String TAG = "SettingsActivity";
-
-    @Inject
-    GeneralPreferenceStore mGeneralPreferenceStore;
 
     @Inject
     GoogleApiWrapper mGoogleApiWrapper;
@@ -50,6 +47,9 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
 
     @BindView(R.id.lastPollPreferenceView)
     LastPollPreferenceView mLastPoll;
+
+    @BindView(R.id.pollFrequencyPreferenceView)
+    PollFrequencyPreferenceView mPollFrequency;
 
     @BindView(R.id.tvGooglePlayServicesError)
     TextView mGooglePlayServicesError;
@@ -142,6 +142,7 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
     private void refresh() {
         mTheme.refresh();
         mUseRankingsPolling.refresh();
+        mPollFrequency.refresh();
         mMustBeOnWifi.refresh();
         mMustBeCharging.refresh();
         mLastPoll.refresh();
@@ -151,15 +152,18 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
             mUseRankingsPolling.setEnabled(true);
 
             if (Boolean.TRUE.equals(mRankingsPollingPreferenceStore.getEnabled().get())) {
+                mPollFrequency.setEnabled(true);
                 mMustBeOnWifi.setEnabled(true);
                 mMustBeCharging.setEnabled(true);
             } else {
+                mPollFrequency.setEnabled(false);
                 mMustBeOnWifi.setEnabled(false);
                 mMustBeCharging.setEnabled(false);
             }
         } else {
             mGooglePlayServicesError.setVisibility(View.VISIBLE);
             mUseRankingsPolling.setEnabled(false);
+            mPollFrequency.setEnabled(false);
             mMustBeOnWifi.setEnabled(false);
             mMustBeCharging.setEnabled(false);
         }

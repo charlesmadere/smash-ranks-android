@@ -2,7 +2,7 @@
 <resources>
 
     <array name="spinner_colors">
-        <item>@color/indigo</item>
+        <item>@color/salmon</item>
         <item>@color/gray_dark</item>
     </array>
 

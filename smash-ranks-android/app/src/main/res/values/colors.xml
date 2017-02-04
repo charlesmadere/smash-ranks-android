@@ -2,11 +2,12 @@
 <resources>
 
     <color name="black">#000000</color>
+    <color name="debug">@color/black</color>
     <color name="error">#FF2222</color>
     <color name="gray">#303030</color>
     <color name="gray_dark">#212121</color>
     <color name="gray_light">#666666</color>
-    <color name="indigo">#330087</color>
+    <color name="salmon">#C4636C</color>
     <color name="transparent">#00000000</color>
     <color name="warn">#FF7070</color>
     <color name="white">#FFFFFF</color>

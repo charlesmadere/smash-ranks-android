@@ -2,7 +2,7 @@
 <resources>
 
     <style name="AlertDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
-        <item name="colorAccent">@color/indigo</item>
+        <item name="colorAccent">@color/salmon</item>
     </style>
 
     <style name="AppTheme" parent="AppThemeBase">
@@ -10,12 +10,12 @@
     </style>
 
     <style name="AppThemeBase" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="timberDebug">?android:attr/textColorPrimary</item>
+        <item name="timberDebug">@color/debug</item>
         <item name="timberError">@color/error</item>
         <item name="timberWarn">@color/warn</item>
 
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
-        <item name="colorAccent">@color/indigo</item>
+        <item name="colorAccent">@color/salmon</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
         <item name="android:windowBackground">@color/windowBackground</item>

@@ -27,6 +27,7 @@
     <string name="no_tournaments">No tournaments</string>
     <string name="ok">OK</string>
     <string name="players">Players</string>
+    <string name="poll_frequency">Poll frequency</string>
     <string name="poll_has_yet_to_occur">Poll has yet to occur</string>
     <string name="rankings">Rankings</string>
     <string name="rankings_polling">Rankings Polling</string>

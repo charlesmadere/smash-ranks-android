@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
+import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.models.NightMode;
 import com.garpr.android.preferences.GeneralPreferenceStore;
@@ -101,7 +102,8 @@ public class ThemePreferenceView extends SimplePreferenceView implements
 
     @Override
     public void onDismiss(final DialogInterface dialog) {
-        // TODO
+        final Context context = getContext();
+        context.startActivity(HomeActivity.getLaunchIntent(context));
     }
 
     @Override

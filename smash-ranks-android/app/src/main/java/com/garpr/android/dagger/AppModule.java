@@ -9,6 +9,8 @@ import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
+import com.garpr.android.misc.NotificationManager;
+import com.garpr.android.misc.NotificationManagerImpl;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.Timber;
@@ -110,6 +112,12 @@ public class AppModule {
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
                 .create();
+    }
+
+    @Provides
+    @Singleton
+    NotificationManager providesNotificationManager() {
+        return new NotificationManagerImpl(mApplication);
     }
 
     @Provides

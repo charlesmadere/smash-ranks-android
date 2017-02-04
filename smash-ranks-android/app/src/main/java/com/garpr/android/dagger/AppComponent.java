@@ -9,6 +9,7 @@ import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.fragments.TournamentsFragment;
 import com.garpr.android.views.LastPollPreferenceView;
+import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
 
 import javax.inject.Singleton;
@@ -18,6 +19,8 @@ import dagger.Component;
 @Singleton
 @Component(modules = { AppModule.class })
 public interface AppComponent {
+
+    void inject(App app);
 
     // activities
     void inject(BaseActivity activity);
@@ -30,11 +33,9 @@ public interface AppComponent {
     void inject(RankingsFragment fragment);
     void inject(TournamentsFragment fragment);
 
-    // other
-    void inject(App app);
-
     // views
     void inject(LastPollPreferenceView view);
+    void inject(PollFrequencyPreferenceView view);
     void inject(ThemePreferenceView view);
 
 }

@@ -20,6 +20,10 @@ public class RegionsBundle implements Parcelable {
         return mRegions;
     }
 
+    public boolean hasRegions() {
+        return mRegions != null && !mRegions.isEmpty();
+    }
+
     @Override
     public int describeContents() {
         return 0;

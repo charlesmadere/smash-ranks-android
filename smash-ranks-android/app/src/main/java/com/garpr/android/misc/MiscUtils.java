@@ -3,6 +3,10 @@ package com.garpr.android.misc;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 
 public final class MiscUtils {
@@ -15,6 +19,24 @@ public final class MiscUtils {
         }
 
         return activity;
+    }
+
+    @ColorInt
+    public static int getAttrColor(final Context context, @AttrRes final int attrResId)
+            throws Resources.NotFoundException {
+        final int[] attrs = { attrResId };
+        final TypedArray ta = context.obtainStyledAttributes(attrs);
+
+        if (!ta.hasValue(0)) {
+            ta.recycle();
+            throw new Resources.NotFoundException("unable to find resId (" + attrResId + "): "
+                    + context.getResources().getResourceEntryName(attrResId));
+        }
+
+        final int color = ta.getColor(0, 0);
+        ta.recycle();
+
+        return color;
     }
 
     @Nullable
