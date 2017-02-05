@@ -3,6 +3,7 @@ package com.garpr.android.dagger;
 import com.garpr.android.App;
 import com.garpr.android.activities.BaseActivity;
 import com.garpr.android.activities.HomeActivity;
+import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.fragments.BaseFragment;
 import com.garpr.android.fragments.PlayersFragment;
@@ -25,6 +26,7 @@ public interface AppComponent {
     // activities
     void inject(BaseActivity activity);
     void inject(HomeActivity activity);
+    void inject(PlayerActivity activity);
     void inject(SettingsActivity activity);
 
     // fragments
