@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Locale;
+
 public class Rating implements Parcelable {
 
     @SerializedName("mu")
@@ -33,12 +35,20 @@ public class Rating implements Parcelable {
         return mMu;
     }
 
+    public String getMuTruncated() {
+        return String.format(Locale.getDefault(), "%.3f", mMu);
+    }
+
     public String getRegion() {
         return mRegion;
     }
 
     public float getSigma() {
         return mSigma;
+    }
+
+    public String getSigmaTruncated() {
+        return String.format(Locale.getDefault(), "%.3f", mSigma);
     }
 
     @Override

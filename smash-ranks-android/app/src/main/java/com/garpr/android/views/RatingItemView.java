@@ -2,6 +2,7 @@ package com.garpr.android.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
@@ -46,7 +47,10 @@ public class RatingItemView extends LinearLayout implements BaseAdapterView<Rati
 
     @Override
     public void setContent(final Rating content) {
-
+        final Resources res = getResources();
+        mRating.setText(res.getString(R.string.rating_x, String.valueOf(content.getMu())));
+        mUnadjusted.setText(res.getString(R.string.unadjusted_x_y, content.getMuTruncated(),
+                content.getSigmaTruncated()));
     }
 
 }
