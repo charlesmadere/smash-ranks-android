@@ -48,7 +48,7 @@ public class RatingItemView extends LinearLayout implements BaseAdapterView<Rati
     @Override
     public void setContent(final Rating content) {
         final Resources res = getResources();
-        mRating.setText(res.getString(R.string.rating_x, String.valueOf(content.getMu())));
+        mRating.setText(res.getString(R.string.rating_x, content.getRatingTruncated()));
         mUnadjusted.setText(res.getString(R.string.unadjusted_x_y, content.getMuTruncated(),
                 content.getSigmaTruncated()));
     }

@@ -3,9 +3,8 @@ package com.garpr.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.garpr.android.misc.MiscUtils;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Locale;
 
 public class Ranking implements Parcelable {
 
@@ -27,11 +26,6 @@ public class Ranking implements Parcelable {
         return obj instanceof Ranking && mId.equals(((Ranking) obj).getId());
     }
 
-    @Override
-    public int hashCode() {
-        return mId.hashCode();
-    }
-
     public String getId() {
         return mId;
     }
@@ -49,7 +43,12 @@ public class Ranking implements Parcelable {
     }
 
     public String getRatingTruncated() {
-        return String.format(Locale.getDefault(), "%.3f", mRating);
+        return MiscUtils.truncateFloat(mRating);
+    }
+
+    @Override
+    public int hashCode() {
+        return mId.hashCode();
     }
 
     @Override

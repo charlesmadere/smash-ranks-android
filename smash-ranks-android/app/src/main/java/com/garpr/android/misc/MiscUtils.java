@@ -9,6 +9,8 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 
+import java.util.Locale;
+
 public final class MiscUtils {
 
     public static Activity getActivity(final Context context) {
@@ -48,6 +50,10 @@ public final class MiscUtils {
         } else {
             return null;
         }
+    }
+
+    public static String truncateFloat(final float value) {
+        return String.format(Locale.getDefault(), "%.3f", value);
     }
 
 }
