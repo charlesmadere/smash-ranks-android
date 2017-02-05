@@ -132,7 +132,7 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
         mRefreshLayout.setOnRefreshListener(this);
         mAdapter = new PlayersAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.HORIZONTAL));
+                DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
     }
 

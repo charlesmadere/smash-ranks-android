@@ -132,7 +132,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
         mRefreshLayout.setOnRefreshListener(this);
         mAdapter = new RankingsAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.HORIZONTAL));
+                DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
     }
 

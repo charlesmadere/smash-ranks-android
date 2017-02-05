@@ -16,9 +16,6 @@ import butterknife.ButterKnife;
 
 public class FullPlayerItemView extends LinearLayout implements BaseAdapterView<FullPlayer> {
 
-    @BindView(R.id.tvName)
-    TextView mName;
-
     @BindView(R.id.tvRating)
     TextView mRating;
 
@@ -49,7 +46,6 @@ public class FullPlayerItemView extends LinearLayout implements BaseAdapterView<
 
     @Override
     public void setContent(final FullPlayer content) {
-        mName.setText(content.getName());
 
     }
 

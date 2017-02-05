@@ -4,13 +4,6 @@
     android:orientation="vertical"
     style="@style/ListItem">
     <TextView
-        android:id="@+id/tvName"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_xlarge"
-        tools:text="dizzkidboogie" />
-    <TextView
         android:id="@+id/tvRating"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

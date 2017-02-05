@@ -138,7 +138,7 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
 
         mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.HORIZONTAL));
+                DividerItemDecoration.VERTICAL));
         mAdapter = new PlayerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }

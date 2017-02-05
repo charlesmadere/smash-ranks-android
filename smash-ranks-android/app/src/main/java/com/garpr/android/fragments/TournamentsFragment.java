@@ -131,7 +131,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
 
         mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.HORIZONTAL));
+                DividerItemDecoration.VERTICAL));
         mAdapter = new TournamentsAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
     }
