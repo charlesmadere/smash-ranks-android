@@ -10,33 +10,21 @@ public class Match implements Parcelable {
     @SerializedName("result")
     private Result mResult;
 
-    @SerializedName("tournament_date")
-    private SimpleDate mDate;
-
-    @SerializedName("tournament_id")
-    private String mId;
-
-    @SerializedName("tournament_name")
-    private String mName;
-
     @SerializedName("opponent_id")
     private String mOpponentId;
 
     @SerializedName("opponent_name")
     private String mOpponentName;
 
+    @SerializedName("tournament_date")
+    private SimpleDate mTournamentDate;
 
-    public SimpleDate getDate() {
-        return mDate;
-    }
+    @SerializedName("tournament_id")
+    private String mTournamentId;
 
-    public String getId() {
-        return mId;
-    }
+    @SerializedName("tournament_name")
+    private String mTournamentName;
 
-    public String getName() {
-        return mName;
-    }
 
     public String getOpponentId() {
         return mOpponentId;
@@ -50,9 +38,16 @@ public class Match implements Parcelable {
         return mResult;
     }
 
-    @Override
-    public String toString() {
-        return getName();
+    public SimpleDate getTournamentDate() {
+        return mTournamentDate;
+    }
+
+    public String getTournamentId() {
+        return mTournamentId;
+    }
+
+    public String getTournamentName() {
+        return mTournamentName;
     }
 
     @Override
@@ -63,11 +58,11 @@ public class Match implements Parcelable {
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeParcelable(mResult, flags);
-        dest.writeParcelable(mDate, flags);
-        dest.writeString(mId);
-        dest.writeString(mName);
         dest.writeString(mOpponentId);
         dest.writeString(mOpponentName);
+        dest.writeParcelable(mTournamentDate, flags);
+        dest.writeString(mTournamentId);
+        dest.writeString(mTournamentName);
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -75,11 +70,11 @@ public class Match implements Parcelable {
         public Match createFromParcel(final Parcel source) {
             final Match m = new Match();
             m.mResult = source.readParcelable(Result.class.getClassLoader());
-            m.mDate = source.readParcelable(SimpleDate.class.getClassLoader());
-            m.mId = source.readString();
-            m.mName = source.readString();
             m.mOpponentId = source.readString();
             m.mOpponentName = source.readString();
+            m.mTournamentDate = source.readParcelable(SimpleDate.class.getClassLoader());
+            m.mTournamentId = source.readString();
+            m.mTournamentName = source.readString();
             return m;
         }
 
