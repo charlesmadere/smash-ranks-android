@@ -1,7 +1,6 @@
 package com.garpr.android.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.TournamentsAdapter;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.TournamentsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -27,12 +27,12 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
         SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "TournamentsFragment";
-    private static final String KEY_TOURNAMENTS_BUNDLE = "TournamentsBundle";
-    private static final String KEY_REGION = "Region";
 
     private TournamentsAdapter mAdapter;
     private TournamentsBundle mTournamentsBundle;
-    private String mRegion;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @Inject
     ServerApi mServerApi;
@@ -50,14 +50,8 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
     View mError;
 
 
-    public static TournamentsFragment create(@NonNull final String region) {
-        final Bundle args = new Bundle(1);
-        args.putString(KEY_REGION, region);
-
-        final TournamentsFragment fragment = new TournamentsFragment();
-        fragment.setArguments(args);
-
-        return fragment;
+    public static TournamentsFragment create() {
+        return new TournamentsFragment();
     }
 
     @Override
@@ -69,7 +63,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
     private void fetchTournamentsBundle() {
         mTournamentsBundle = null;
         mRefreshLayout.setRefreshing(true);
-        mServerApi.getTournaments(mRegion, new ApiCall<>(this));
+        mServerApi.getTournaments(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
 
     @Override
@@ -81,26 +75,13 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
     public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            mTournamentsBundle = savedInstanceState.getParcelable(KEY_TOURNAMENTS_BUNDLE);
-        }
-
-        if (mTournamentsBundle == null) {
-            fetchTournamentsBundle();
-        } else if (mTournamentsBundle.hasTournaments()) {
-            showTournamentsBundle();
-        } else {
-            showEmpty();
-        }
+        fetchTournamentsBundle();
     }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
-
-        final Bundle args = getArguments();
-        mRegion = args.getString(KEY_REGION);
     }
 
     @Nullable
@@ -114,15 +95,6 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
     @Override
     public void onRefresh() {
         fetchTournamentsBundle();
-    }
-
-    @Override
-    public void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (mTournamentsBundle != null) {
-            outState.putParcelable(KEY_TOURNAMENTS_BUNDLE, mTournamentsBundle);
-        }
     }
 
     @Override

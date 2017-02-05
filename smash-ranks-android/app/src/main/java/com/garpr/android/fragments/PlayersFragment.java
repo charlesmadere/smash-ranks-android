@@ -1,7 +1,6 @@
 package com.garpr.android.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayersAdapter;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -27,12 +27,12 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
         SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "PlayersFragment";
-    private static final String KEY_PLAYERS_BUNDLE = "PlayersBundle";
-    private static final String KEY_REGION = "Region";
 
     private PlayersAdapter mAdapter;
     private PlayersBundle mPlayersBundle;
-    private String mRegion;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @Inject
     ServerApi mServerApi;
@@ -50,14 +50,8 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
     View mError;
 
 
-    public static PlayersFragment create(@NonNull final String region) {
-        final Bundle args = new Bundle(1);
-        args.putString(KEY_REGION, region);
-
-        final PlayersFragment fragment = new PlayersFragment();
-        fragment.setArguments(args);
-
-        return fragment;
+    public static PlayersFragment create() {
+        return new PlayersFragment();
     }
 
     @Override
@@ -69,7 +63,7 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
     private void fetchPlayersBundle() {
         mPlayersBundle = null;
         mRefreshLayout.setRefreshing(true);
-        mServerApi.getPlayers(mRegion, new ApiCall<>(this));
+        mServerApi.getPlayers(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
 
     @Override
@@ -81,26 +75,13 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
     public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            mPlayersBundle = savedInstanceState.getParcelable(KEY_PLAYERS_BUNDLE);
-        }
-
-        if (mPlayersBundle == null) {
-            fetchPlayersBundle();
-        } else if (mPlayersBundle.hasPlayers()) {
-            showPlayersBundle();
-        } else {
-            showEmpty();
-        }
+        fetchPlayersBundle();
     }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
-
-        final Bundle args = getArguments();
-        mRegion = args.getString(KEY_REGION);
     }
 
     @Nullable
@@ -114,15 +95,6 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
     @Override
     public void onRefresh() {
         fetchPlayersBundle();
-    }
-
-    @Override
-    public void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (mPlayersBundle != null) {
-            outState.putParcelable(KEY_PLAYERS_BUNDLE, mPlayersBundle);
-        }
     }
 
     @Override

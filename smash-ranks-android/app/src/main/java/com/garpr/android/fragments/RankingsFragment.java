@@ -1,7 +1,6 @@
 package com.garpr.android.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.RankingsAdapter;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -27,12 +27,12 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
         SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "RankingsFragment";
-    private static final String KEY_RANKINGS_BUNDLE = "RankingsBundle";
-    private static final String KEY_REGION = "Region";
 
     private RankingsAdapter mAdapter;
     private RankingsBundle mRankingsBundle;
-    private String mRegion;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @Inject
     ServerApi mServerApi;
@@ -50,14 +50,8 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     View mError;
 
 
-    public static RankingsFragment create(@NonNull final String region) {
-        final Bundle args = new Bundle(1);
-        args.putString(KEY_REGION, region);
-
-        final RankingsFragment fragment = new RankingsFragment();
-        fragment.setArguments(args);
-
-        return fragment;
+    public static RankingsFragment create() {
+        return new RankingsFragment();
     }
 
     @Override
@@ -69,7 +63,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     private void fetchRankingsBundle() {
         mRankingsBundle = null;
         mRefreshLayout.setRefreshing(true);
-        mServerApi.getRankings(mRegion, new ApiCall<>(this));
+        mServerApi.getRankings(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
 
     @Override
@@ -81,26 +75,13 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            mRankingsBundle = savedInstanceState.getParcelable(KEY_RANKINGS_BUNDLE);
-        }
-
-        if (mRankingsBundle == null) {
-            fetchRankingsBundle();
-        } else if (mRankingsBundle.hasRankings()) {
-            showRankingsBundle();
-        } else {
-            showEmpty();
-        }
+        fetchRankingsBundle();
     }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
-
-        final Bundle args = getArguments();
-        mRegion = args.getString(KEY_REGION);
     }
 
     @Nullable
@@ -114,15 +95,6 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     @Override
     public void onRefresh() {
         fetchRankingsBundle();
-    }
-
-    @Override
-    public void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (mRankingsBundle != null) {
-            outState.putParcelable(KEY_RANKINGS_BUNDLE, mRankingsBundle);
-        }
     }
 
     @Override

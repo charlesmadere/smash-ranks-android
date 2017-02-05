@@ -48,7 +48,7 @@ public class RegionManagerImpl implements RegionManager {
 
     @NonNull
     @Override
-    public String getCurrentRegion() {
+    public String getRegion() {
         final String currentRegion = mCurrentRegion.get();
 
         if (TextUtils.isEmpty(currentRegion)) {
@@ -60,7 +60,7 @@ public class RegionManagerImpl implements RegionManager {
 
     @NonNull
     @Override
-    public String getCurrentRegion(@Nullable final Context context) {
+    public String getRegion(@Nullable final Context context) {
         if (context instanceof RegionHandle) {
             final String region = ((RegionHandle) context).getCurrentRegion();
 
@@ -70,14 +70,14 @@ public class RegionManagerImpl implements RegionManager {
         }
 
         if (context instanceof ContextWrapper) {
-            final String region = getCurrentRegion(((ContextWrapper) context).getBaseContext());
+            final String region = getRegion(((ContextWrapper) context).getBaseContext());
 
             if (!TextUtils.isEmpty(region)) {
                 return region;
             }
         }
 
-        return getCurrentRegion();
+        return getRegion();
     }
 
     private void notifyListeners() {
@@ -114,7 +114,7 @@ public class RegionManagerImpl implements RegionManager {
     }
 
     @Override
-    public void setCurrentRegion(@NonNull final String region) {
+    public void setRegion(@NonNull final String region) {
         mCurrentRegion.set(region);
         notifyListeners();
     }

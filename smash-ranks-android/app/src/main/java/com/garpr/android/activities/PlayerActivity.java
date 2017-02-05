@@ -88,7 +88,7 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         mMatchesBundle = null;
         mRefreshLayout.setRefreshing(true);
 
-        final String region = mRegionManager.getCurrentRegion(this);
+        final String region = mRegionManager.getRegion(this);
         mServerApi.getMatches(region, mPlayerId, mMatchesBundleListener);
         mServerApi.getPlayer(region, mPlayerId, mFullPlayerListener);
     }

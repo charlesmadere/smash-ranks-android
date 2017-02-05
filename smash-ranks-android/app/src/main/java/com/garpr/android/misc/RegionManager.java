@@ -9,14 +9,14 @@ public interface RegionManager {
     void addListener(@NonNull final OnRegionChangeListener listener);
 
     @NonNull
-    String getCurrentRegion();
+    String getRegion();
 
     @NonNull
-    String getCurrentRegion(@Nullable final Context context);
+    String getRegion(@Nullable final Context context);
 
     void removeListener(@Nullable final OnRegionChangeListener listener);
 
-    void setCurrentRegion(@NonNull final String region);
+    void setRegion(@NonNull final String region);
 
 
     interface OnRegionChangeListener {
