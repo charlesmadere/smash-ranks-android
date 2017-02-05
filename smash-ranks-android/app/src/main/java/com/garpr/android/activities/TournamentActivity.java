@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.garpr.android.R;
 import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.Match;
 import com.garpr.android.views.RefreshLayout;
 
 import butterknife.BindView;
@@ -43,8 +44,13 @@ public class TournamentActivity extends BaseActivity implements
     ViewPager mViewPager;
 
 
-    public static Intent getLaunchIntent(final Context context, @NonNull final AbsTournament tournament) {
+    public static Intent getLaunchIntent(final Context context,
+            @NonNull final AbsTournament tournament) {
         return getLaunchIntent(context, tournament.getId(), tournament.getName());
+    }
+
+    public static Intent getLaunchIntent(final Context context, @NonNull final Match match) {
+        return getLaunchIntent(context, match.getTournamentId(), match.getTournamentName());
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String tournamentId,
