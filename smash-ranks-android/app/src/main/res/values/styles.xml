@@ -154,6 +154,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TabLayout">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
+        <item name="android:id">@id/tabLayout</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
     <style name="Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
@@ -161,6 +169,12 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:theme">@style/ToolbarTheme</item>
+    </style>
+
+    <style name="ViewPager">
+        <item name="android:id">@id/viewPager</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
 </resources>

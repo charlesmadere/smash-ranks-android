@@ -5,5 +5,22 @@
     android:orientation="vertical">
     <include
         layout="@layout/toolbar" />
-
+    <com.garpr.android.views.RefreshLayout
+        style="@style/RefreshLayout">
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <android.support.v7.widget.RecyclerView
+                style="@style/RecyclerView" />
+            <LinearLayout
+                style="@style/RecyclerViewMessage.Error">
+                <TextView
+                    android:text="@string/error_loading_player"
+                    style="@style/RecyclerViewLine.1" />
+                <TextView
+                    android:text="@string/swipe_to_refresh_to_try_again"
+                    style="@style/RecyclerViewLine.2" />
+            </LinearLayout>
+        </FrameLayout>
+    </com.garpr.android.views.RefreshLayout>
 </LinearLayout>

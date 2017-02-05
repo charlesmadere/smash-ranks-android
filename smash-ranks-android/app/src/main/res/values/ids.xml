@@ -8,7 +8,9 @@
     <item name="icon" type="id" />
     <item name="recyclerView" type="id" />
     <item name="refreshLayout" type="id" />
+    <item name="tabLayout" type="id" />
     <item name="title" type="id" />
     <item name="toolbar" type="id" />
+    <item name="viewPager" type="id" />
 
 </resources>

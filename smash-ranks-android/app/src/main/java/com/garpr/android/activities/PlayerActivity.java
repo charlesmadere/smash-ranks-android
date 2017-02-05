@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -15,18 +19,36 @@ import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Ranking;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
+import com.garpr.android.views.RefreshLayout;
 
 import javax.inject.Inject;
 
-public class PlayerActivity extends BaseActivity {
+import butterknife.BindView;
+
+public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "PlayerActivity";
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
     private static final String EXTRA_PLAYER_ID = CNAME + ".PlayerId";
     private static final String EXTRA_PLAYER_NAME = CNAME + ".PlayerName";
+    private static final String KEY_FULL_PLAYER = "FullPlayer";
+    private static final String KEY_MATCHES_BUNDLE = "MatchesBundle";
+
+    private FullPlayer mFullPlayer;
+    private MatchesBundle mMatchesBundle;
+    private String mPlayerId;
 
     @Inject
     ServerApi mServerApi;
+
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+
+    @BindView(R.id.refreshLayout)
+    RefreshLayout mRefreshLayout;
+
+    @BindView(R.id.error)
+    View mError;
 
 
     public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player) {
@@ -49,6 +71,16 @@ public class PlayerActivity extends BaseActivity {
         return intent;
     }
 
+    private void failure() {
+
+    }
+
+    private void fetchData() {
+        mRefreshLayout.setRefreshing(true);
+        mServerApi.getMatches(getCurrentRegion(), mPlayerId, mMatchesBundleListener);
+        mServerApi.getPlayer(getCurrentRegion(), mPlayerId, mFullPlayerListener);
+    }
+
     @Override
     protected String getActivityName() {
         return TAG;
@@ -61,16 +93,70 @@ public class PlayerActivity extends BaseActivity {
         setContentView(R.layout.activity_player);
 
         final Intent intent = getIntent();
+        mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID);
+
         if (intent.hasExtra(EXTRA_PLAYER_NAME)) {
             setTitle(intent.getStringExtra(EXTRA_PLAYER_NAME));
         }
 
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            mFullPlayer = savedInstanceState.getParcelable(KEY_FULL_PLAYER);
+            mMatchesBundle = savedInstanceState.getParcelable(KEY_MATCHES_BUNDLE);
+        }
+
+        if (mFullPlayer == null || mMatchesBundle == null) {
+            fetchData();
+        } else {
+            showData();
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        fetchData();
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mFullPlayer != null && mMatchesBundle != null) {
+            outState.putParcelable(KEY_FULL_PLAYER, mFullPlayer);
+            outState.putParcelable(KEY_MATCHES_BUNDLE, mMatchesBundle);
+        }
+    }
+
+    @Override
+    protected void onViewsBound() {
+        super.onViewsBound();
+
+        mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.HORIZONTAL));
         // TODO
+    }
+
+    private void showData() {
+        // TODO
+        mError.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    private void showError() {
+        // TODO
+        mRecyclerView.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
     }
 
     @Override
     protected boolean showUpNavigation() {
         return true;
+    }
+
+    private void success() {
+
     }
 
     private final ApiListener<FullPlayer> mFullPlayerListener = new ApiListener<FullPlayer>() {
@@ -85,7 +171,7 @@ public class PlayerActivity extends BaseActivity {
         }
 
         @Override
-        public void success(@Nullable final FullPlayer object) {
+        public void success(@Nullable final FullPlayer fullPlayer) {
 
         }
     };
@@ -102,7 +188,7 @@ public class PlayerActivity extends BaseActivity {
         }
 
         @Override
-        public void success(@Nullable final MatchesBundle object) {
+        public void success(@Nullable final MatchesBundle matchesBundle) {
 
         }
     };
