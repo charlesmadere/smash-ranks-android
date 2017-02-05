@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 
 import com.garpr.android.R;
-import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Rating;
@@ -35,10 +34,12 @@ public class PlayerAdapter extends BaseMultiAdapter {
         super(layoutInflater, LAYOUT_KEY_MAP);
     }
 
-    public void set(@NonNull final FullPlayer fullPlayer,
-            @Nullable final MatchesBundle matchesBundle) {
+    public void set(@Nullable final Rating rating, @Nullable final MatchesBundle matchesBundle) {
         final ArrayList<Object> list = new ArrayList<>();
-        list.add(fullPlayer);
+
+        if (rating != null) {
+            list.add(rating);
+        }
 
         if (matchesBundle != null && matchesBundle.hasMatches()) {
             list.addAll(matchesBundle.getMatches());

@@ -43,6 +43,10 @@ public class FullPlayer extends AbsPlayer implements Parcelable {
         return mRegions;
     }
 
+    public boolean hasRatings() {
+        return mRatings != null && !mRatings.isEmpty();
+    }
+
     @Override
     protected void readFromParcel(final Parcel source) {
         super.readFromParcel(source);

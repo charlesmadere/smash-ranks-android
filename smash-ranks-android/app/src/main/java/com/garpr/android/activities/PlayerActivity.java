@@ -20,6 +20,7 @@ import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Ranking;
+import com.garpr.android.models.Rating;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
@@ -34,8 +35,6 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
     private static final String EXTRA_PLAYER_ID = CNAME + ".PlayerId";
     private static final String EXTRA_PLAYER_NAME = CNAME + ".PlayerName";
-    private static final String KEY_FULL_PLAYER = "FullPlayer";
-    private static final String KEY_MATCHES_BUNDLE = "MatchesBundle";
 
     private FullPlayer mFullPlayer;
     private MatchesBundle mMatchesBundle;
@@ -116,31 +115,12 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
             setTitle(intent.getStringExtra(EXTRA_PLAYER_NAME));
         }
 
-        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            mFullPlayer = savedInstanceState.getParcelable(KEY_FULL_PLAYER);
-            mMatchesBundle = savedInstanceState.getParcelable(KEY_MATCHES_BUNDLE);
-        }
-
-        if (mFullPlayer == null || mMatchesBundle == null) {
-            fetchData();
-        } else {
-            showData();
-        }
+        fetchData();
     }
 
     @Override
     public void onRefresh() {
         fetchData();
-    }
-
-    @Override
-    protected void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (mFullPlayer != null && mMatchesBundle != null) {
-            outState.putParcelable(KEY_FULL_PLAYER, mFullPlayer);
-            outState.putParcelable(KEY_MATCHES_BUNDLE, mMatchesBundle);
-        }
     }
 
     @Override
@@ -155,7 +135,12 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     private void showData() {
-        mAdapter.set(mFullPlayer, mMatchesBundle);
+        final String region = mRegionManager.getRegion(this);
+        // noinspection ConstantConditions
+        final Rating rating = mFullPlayer.hasRatings() ?
+                mFullPlayer.getRatings().getRegion(region) : null;
+
+        mAdapter.set(rating, mMatchesBundle);
         mError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mRefreshLayout.setRefreshing(false);
