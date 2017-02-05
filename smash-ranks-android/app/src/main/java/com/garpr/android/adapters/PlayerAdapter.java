@@ -23,7 +23,7 @@ public class PlayerAdapter extends BaseMultiAdapter {
         LAYOUT_KEY_MAP = new HashMap<>(3);
         LAYOUT_KEY_MAP.put(FullPlayer.class, R.layout.item_full_player);
         LAYOUT_KEY_MAP.put(Match.class, R.layout.item_match);
-        LAYOUT_KEY_MAP.put(String.class, R.layout.item_message);
+        LAYOUT_KEY_MAP.put(String.class, R.layout.item_string);
     }
 
     public PlayerAdapter(@NonNull final Context context) {

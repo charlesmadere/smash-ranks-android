@@ -14,6 +14,7 @@ import android.view.View;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayerAdapter;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.MatchesBundle;
@@ -39,6 +40,9 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     private MatchesBundle mMatchesBundle;
     private PlayerAdapter mAdapter;
     private String mPlayerId;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @Inject
     ServerApi mServerApi;
@@ -83,8 +87,10 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         mFullPlayer = null;
         mMatchesBundle = null;
         mRefreshLayout.setRefreshing(true);
-        mServerApi.getMatches(getCurrentRegion(), mPlayerId, mMatchesBundleListener);
-        mServerApi.getPlayer(getCurrentRegion(), mPlayerId, mFullPlayerListener);
+
+        final String region = mRegionManager.getCurrentRegion(this);
+        mServerApi.getMatches(region, mPlayerId, mMatchesBundleListener);
+        mServerApi.getPlayer(region, mPlayerId, mFullPlayerListener);
     }
 
     @Override
