@@ -6,6 +6,7 @@
     <include
         layout="@layout/toolbar" />
     <com.garpr.android.views.RefreshLayout
+        android:scrollbars="none"
         style="@style/RefreshLayout">
         <FrameLayout
             android:layout_height="match_parent"
