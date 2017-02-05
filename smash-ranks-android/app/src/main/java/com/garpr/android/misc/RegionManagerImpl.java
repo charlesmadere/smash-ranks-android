@@ -7,22 +7,41 @@ import android.text.TextUtils;
 import com.garpr.android.preferences.Preference;
 
 import java.lang.ref.WeakReference;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class RegionManagerImpl implements RegionManager {
 
-    private final LinkedList<WeakReference<OnRegionChangeListener>> mOnRegionChangeListeners;
+    private final LinkedList<WeakReference<OnRegionChangeListener>> mListeners;
     private final Preference<String> mCurrentRegion;
 
 
     public RegionManagerImpl(@NonNull final Preference<String> currentRegion) {
-        mOnRegionChangeListeners = new LinkedList<>();
+        mListeners = new LinkedList<>();
         mCurrentRegion = currentRegion;
     }
 
     @Override
-    public void addListener(@NonNull final OnRegionChangeListener l) {
-        // TODO
+    public void addListener(@NonNull final OnRegionChangeListener listener) {
+        synchronized (mListeners) {
+            boolean addListener = true;
+            final Iterator<WeakReference<OnRegionChangeListener>> iterator = mListeners.iterator();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnRegionChangeListener> reference = iterator.next();
+                final OnRegionChangeListener item = reference.get();
+
+                if (item == null) {
+                    iterator.remove();
+                } else if (item == listener) {
+                    addListener = false;
+                }
+            }
+
+            if (addListener) {
+                mListeners.add(new WeakReference<>(listener));
+            }
+        }
     }
 
     @NonNull
@@ -38,12 +57,36 @@ public class RegionManagerImpl implements RegionManager {
     }
 
     private void notifyListeners() {
-        // TODO
+        synchronized (mListeners) {
+            final Iterator<WeakReference<OnRegionChangeListener>> iterator = mListeners.iterator();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnRegionChangeListener> reference = iterator.next();
+                final OnRegionChangeListener item = reference.get();
+
+                if (item == null) {
+                    iterator.remove();
+                } else {
+                    item.onRegionChange(this);
+                }
+            }
+        }
     }
 
     @Override
-    public void removeListener(@Nullable final OnRegionChangeListener l) {
-        // TODO
+    public void removeListener(@Nullable final OnRegionChangeListener listener) {
+        synchronized (mListeners) {
+            final Iterator<WeakReference<OnRegionChangeListener>> iterator = mListeners.iterator();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnRegionChangeListener> reference = iterator.next();
+                final OnRegionChangeListener item = reference.get();
+
+                if (item == null || item == listener) {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     @Override
