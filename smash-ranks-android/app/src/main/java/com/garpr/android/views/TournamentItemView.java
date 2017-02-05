@@ -61,7 +61,7 @@ public class TournamentItemView extends LinearLayout implements BaseAdapterView<
         mContent = content;
 
         mName.setText(mContent.getName());
-        mDate.setText(mContent.getDate().getRelativeDateTimeText(getContext()));
+        mDate.setText(mContent.getDate().getDateString());
     }
 
 }

@@ -1,11 +1,9 @@
 package com.garpr.android.models;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -28,6 +26,7 @@ public class SimpleDate implements Parcelable {
     };
 
     private final Date mDate;
+    private String mDateString;
 
 
     @Nullable
@@ -93,9 +92,12 @@ public class SimpleDate implements Parcelable {
         return mDate;
     }
 
-    public CharSequence getRelativeDateTimeText(final Context context) {
-        return DateUtils.getRelativeDateTimeString(context, mDate.getTime(),
-                DateUtils.HOUR_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
+    public String getDateString() {
+        if (mDateString == null) {
+            mDateString = FORMATS[0].format(mDate);
+        }
+
+        return mDateString;
     }
 
     @Override

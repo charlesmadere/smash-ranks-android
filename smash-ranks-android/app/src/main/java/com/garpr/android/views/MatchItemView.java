@@ -26,6 +26,9 @@ public class MatchItemView extends LinearLayout implements BaseAdapterView<Match
     @BindView(R.id.tvOpponentName)
     TextView mOpponentName;
 
+    @BindView(R.id.tvTournamentDate)
+    TextView mTournamentDate;
+
     @BindView(R.id.tvTournamentName)
     TextView mTournamentName;
 
@@ -67,8 +70,9 @@ public class MatchItemView extends LinearLayout implements BaseAdapterView<Match
     public void setContent(final Match content) {
         mContent = content;
 
-        mOpponentName.setText(content.getOpponentName());
-        mTournamentName.setText(content.getTournamentName());
+        mOpponentName.setText(mContent.getOpponentName());
+        mTournamentName.setText(mContent.getTournamentName());
+        mTournamentDate.setText(mContent.getTournamentDate().getDateString());
     }
 
 }

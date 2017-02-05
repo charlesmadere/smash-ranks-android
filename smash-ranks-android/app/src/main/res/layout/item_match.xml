@@ -36,7 +36,7 @@
         <TextView
             android:ellipsize="end"
             android:gravity="end"
-            android:id="@+id/tvDate"
+            android:id="@+id/tvTournamentDate"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:maxLines="1"

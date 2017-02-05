@@ -84,7 +84,7 @@ public class LastPollPreferenceView extends SimplePreferenceView implements
         if (date == null) {
             setDescriptionText(getResources().getText(R.string.poll_has_yet_to_occur));
         } else {
-            setDescriptionText(date.getRelativeDateTimeText(getContext()));
+            setDescriptionText(date.getDateString());
         }
     }
 
