@@ -6,16 +6,25 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.garpr.android.R;
 import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.models.Match;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MatchItemView extends LinearLayout implements BaseAdapterView<Match>,
         View.OnClickListener {
 
     private Match mContent;
+
+    @BindView(R.id.tvOpponentName)
+    TextView mOpponentName;
+
+    @BindView(R.id.tvTournamentName)
+    TextView mTournamentName;
 
 
     public MatchItemView(final Context context, final AttributeSet attrs) {
@@ -34,7 +43,8 @@ public class MatchItemView extends LinearLayout implements BaseAdapterView<Match
 
     @Override
     public void onClick(final View v) {
-
+        final Context context = getContext();
+        // TODO
     }
 
     @Override
