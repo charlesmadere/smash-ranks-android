@@ -121,6 +121,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
         onViewsBound();
     }
 
+    protected void setSubtitle(@Nullable final CharSequence subtitle) {
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setSubtitle(subtitle);
+        }
+    }
+
     protected boolean showUpNavigation() {
         return false;
     }
