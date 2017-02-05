@@ -17,6 +17,7 @@ import com.garpr.android.adapters.PlayerAdapter;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullPlayer;
+import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Ranking;
 import com.garpr.android.networking.ApiListener;
@@ -59,6 +60,10 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
 
     public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player) {
         return getLaunchIntent(context, player.getId(), player.getName());
+    }
+
+    public static Intent getLaunchIntent(final Context context, @NonNull final Match match) {
+        return getLaunchIntent(context, match.getOpponentId(), match.getOpponentName());
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final Ranking ranking) {

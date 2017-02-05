@@ -9,11 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
+import com.garpr.android.activities.PlayerActivity;
+import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.models.Match;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MatchItemView extends LinearLayout implements BaseAdapterView<Match>,
         View.OnClickListener {
@@ -44,7 +47,7 @@ public class MatchItemView extends LinearLayout implements BaseAdapterView<Match
     @Override
     public void onClick(final View v) {
         final Context context = getContext();
-        // TODO
+        context.startActivity(PlayerActivity.getLaunchIntent(context, mContent));
     }
 
     @Override
@@ -54,11 +57,18 @@ public class MatchItemView extends LinearLayout implements BaseAdapterView<Match
         setOnClickListener(this);
     }
 
+    @OnClick(R.id.llTournament)
+    void onTournamentClick() {
+        final Context context = getContext();
+        context.startActivity(TournamentActivity.getLaunchIntent(context, mContent));
+    }
+
     @Override
     public void setContent(final Match content) {
         mContent = content;
 
-
+        mOpponentName.setText(content.getOpponentName());
+        mTournamentName.setText(content.getTournamentName());
     }
 
 }
