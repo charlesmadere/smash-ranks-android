@@ -25,7 +25,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseActivity extends AppCompatActivity implements Heartbeat {
+public abstract class BaseActivity extends AppCompatActivity implements Heartbeat,
+        RegionManager.RegionHandle {
 
     private static final String TAG = "BaseActivity";
     private static final String CNAME = BaseActivity.class.getCanonicalName();
@@ -49,7 +50,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
 
     protected abstract String getActivityName();
 
-    protected String getCurrentRegion() {
+    @Override
+    public String getCurrentRegion() {
         final Intent intent = getIntent();
 
         if (intent != null && intent.hasExtra(EXTRA_REGION)) {
