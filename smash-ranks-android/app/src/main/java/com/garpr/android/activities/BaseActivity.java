@@ -16,6 +16,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.Heartbeat;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.RegionManager.RegionHandle;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.preferences.GeneralPreferenceStore;
 
@@ -25,8 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseActivity extends AppCompatActivity implements Heartbeat,
-        RegionManager.RegionHandle {
+public abstract class BaseActivity extends AppCompatActivity implements Heartbeat, RegionHandle {
 
     private static final String TAG = "BaseActivity";
     private static final String CNAME = BaseActivity.class.getCanonicalName();
