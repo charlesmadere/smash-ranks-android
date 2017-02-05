@@ -2,6 +2,7 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.JsonDeserializationContext;
@@ -70,6 +71,17 @@ public class Ratings extends ArrayList<Rating> implements Parcelable {
         }
 
         trimToSize();
+    }
+
+    @Nullable
+    public Rating getRegion(@NonNull final String region) {
+        for (final Rating rating : this) {
+            if (region.equals(rating.getRegion())) {
+                return rating;
+            }
+        }
+
+        return null;
     }
 
     @Override

@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 import com.garpr.android.R;
 import com.garpr.android.adapters.BaseAdapterView;
-import com.garpr.android.models.FullPlayer;
+import com.garpr.android.models.Rating;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FullPlayerItemView extends LinearLayout implements BaseAdapterView<FullPlayer> {
+public class RatingItemView extends LinearLayout implements BaseAdapterView<Rating> {
 
     @BindView(R.id.tvRating)
     TextView mRating;
@@ -23,17 +23,17 @@ public class FullPlayerItemView extends LinearLayout implements BaseAdapterView<
     TextView mUnadjusted;
 
 
-    public FullPlayerItemView(final Context context, final AttributeSet attrs) {
+    public RatingItemView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FullPlayerItemView(final Context context, final AttributeSet attrs,
+    public RatingItemView(final Context context, final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public FullPlayerItemView(final Context context, final AttributeSet attrs,
+    public RatingItemView(final Context context, final AttributeSet attrs,
             final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -45,7 +45,7 @@ public class FullPlayerItemView extends LinearLayout implements BaseAdapterView<
     }
 
     @Override
-    public void setContent(final FullPlayer content) {
+    public void setContent(final Rating content) {
 
     }
 

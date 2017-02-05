@@ -9,6 +9,7 @@ import com.garpr.android.R;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
+import com.garpr.android.models.Rating;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +22,8 @@ public class PlayerAdapter extends BaseMultiAdapter {
 
     static {
         LAYOUT_KEY_MAP = new HashMap<>(3);
-        LAYOUT_KEY_MAP.put(FullPlayer.class, R.layout.item_full_player);
         LAYOUT_KEY_MAP.put(Match.class, R.layout.item_match);
+        LAYOUT_KEY_MAP.put(Rating.class, R.layout.item_rating);
         LAYOUT_KEY_MAP.put(String.class, R.layout.item_string);
     }
 
