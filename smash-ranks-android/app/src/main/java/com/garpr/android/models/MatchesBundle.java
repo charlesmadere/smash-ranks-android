@@ -42,6 +42,10 @@ public class MatchesBundle implements Parcelable {
         return mWins;
     }
 
+    public boolean hasMatches() {
+        return mMatches != null && !mMatches.isEmpty();
+    }
+
     @Override
     public int describeContents() {
         return 0;

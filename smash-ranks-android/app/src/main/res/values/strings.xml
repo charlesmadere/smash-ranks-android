@@ -23,6 +23,7 @@
     <string name="must_be_on_wifi">Must be on wifi</string>
     <string name="night">Night</string>
     <string name="no_log_entries">No log entries</string>
+    <string name="no_matches">No matches</string>
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
     <string name="no_tournaments">No tournaments</string>

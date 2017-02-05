@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
+import com.garpr.android.adapters.PlayerAdapter;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.MatchesBundle;
@@ -36,6 +37,7 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
 
     private FullPlayer mFullPlayer;
     private MatchesBundle mMatchesBundle;
+    private PlayerAdapter mAdapter;
     private String mPlayerId;
 
     @Inject
@@ -137,18 +139,19 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.HORIZONTAL));
-        // TODO
+        mAdapter = new PlayerAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void showData() {
-        // TODO
+        mAdapter.set(mFullPlayer, mMatchesBundle);
         mError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mRefreshLayout.setRefreshing(false);
     }
 
     private void showError() {
-        // TODO
+        mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
         mError.setVisibility(View.VISIBLE);
         mRefreshLayout.setRefreshing(false);

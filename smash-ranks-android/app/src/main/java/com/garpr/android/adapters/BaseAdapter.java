@@ -53,6 +53,10 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapterVie
         }
     }
 
+    public Context getContext() {
+        return mLayoutInflater.getContext();
+    }
+
     public T getItem(final int position) {
         return mItems.get(position);
     }
