@@ -1,5 +1,7 @@
 package com.garpr.android.misc;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -54,6 +56,28 @@ public class RegionManagerImpl implements RegionManager {
         }
 
         return currentRegion;
+    }
+
+    @NonNull
+    @Override
+    public String getCurrentRegion(@Nullable final Context context) {
+        if (context instanceof RegionHandle) {
+            final String region = ((RegionHandle) context).getCurrentRegion();
+
+            if (!TextUtils.isEmpty(region)) {
+                return region;
+            }
+        }
+
+        if (context instanceof ContextWrapper) {
+            final String region = getCurrentRegion(((ContextWrapper) context).getBaseContext());
+
+            if (!TextUtils.isEmpty(region)) {
+                return region;
+            }
+        }
+
+        return getCurrentRegion();
     }
 
     private void notifyListeners() {
