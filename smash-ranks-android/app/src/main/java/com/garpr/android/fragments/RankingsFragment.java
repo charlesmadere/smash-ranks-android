@@ -66,6 +66,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     }
 
     private void fetchRankingsBundle() {
+        mRankingsBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getRankings(mRegion, new ApiCall<>(this));
     }

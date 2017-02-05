@@ -66,6 +66,7 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
     }
 
     private void fetchPlayersBundle() {
+        mPlayersBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getPlayers(mRegion, new ApiCall<>(this));
     }

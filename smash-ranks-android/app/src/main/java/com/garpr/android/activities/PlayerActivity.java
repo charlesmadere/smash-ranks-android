@@ -76,6 +76,8 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     private void fetchData() {
+        mFullPlayer = null;
+        mMatchesBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getMatches(getCurrentRegion(), mPlayerId, mMatchesBundleListener);
         mServerApi.getPlayer(getCurrentRegion(), mPlayerId, mFullPlayerListener);
@@ -156,7 +158,9 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     private void success() {
-
+        if (mFullPlayer != null && mMatchesBundle != null) {
+            showData();
+        }
     }
 
     private final ApiListener<FullPlayer> mFullPlayerListener = new ApiListener<FullPlayer>() {

@@ -66,6 +66,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
     }
 
     private void fetchTournamentsBundle() {
+        mTournamentsBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getTournaments(mRegion, new ApiCall<>(this));
     }
