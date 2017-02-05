@@ -72,7 +72,9 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     private void failure() {
-
+        mFullPlayer = null;
+        mMatchesBundle = null;
+        showError();
     }
 
     private void fetchData() {
@@ -166,7 +168,7 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     private final ApiListener<FullPlayer> mFullPlayerListener = new ApiListener<FullPlayer>() {
         @Override
         public void failure() {
-
+            PlayerActivity.this.failure();
         }
 
         @Override
@@ -176,14 +178,15 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
 
         @Override
         public void success(@Nullable final FullPlayer fullPlayer) {
-
+            mFullPlayer = fullPlayer;
+            PlayerActivity.this.success();
         }
     };
 
     private final ApiListener<MatchesBundle> mMatchesBundleListener = new ApiListener<MatchesBundle>() {
         @Override
         public void failure() {
-
+            PlayerActivity.this.failure();
         }
 
         @Override
@@ -193,7 +196,8 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
 
         @Override
         public void success(@Nullable final MatchesBundle matchesBundle) {
-
+            mMatchesBundle = matchesBundle;
+            PlayerActivity.this.success();
         }
     };
 
