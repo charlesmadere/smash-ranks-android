@@ -43,6 +43,10 @@ public class FullPlayer extends AbsPlayer implements Parcelable {
         return mRegions;
     }
 
+    public boolean hasAliases() {
+        return mAliases != null && !mAliases.isEmpty();
+    }
+
     public boolean hasRatings() {
         return mRatings != null && !mRatings.isEmpty();
     }

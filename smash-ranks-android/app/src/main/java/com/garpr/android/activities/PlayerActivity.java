@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.garpr.android.App;
@@ -23,6 +26,7 @@ import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Rating;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
+import com.garpr.android.views.AliasesListView;
 import com.garpr.android.views.RefreshLayout;
 
 import javax.inject.Inject;
@@ -119,6 +123,32 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_player, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.miAliases:
+                showAliases();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        if (mFullPlayer != null && mFullPlayer.hasAliases()) {
+            menu.findItem(R.id.miAliases).setVisible(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void onRefresh() {
         fetchData();
     }
@@ -132,6 +162,17 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
                 DividerItemDecoration.VERTICAL));
         mAdapter = new PlayerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void showAliases() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final AliasesListView view = AliasesListView.inflate(builder.getContext());
+        view.setContent(mFullPlayer.getAliases());
+
+        builder.setNeutralButton(R.string.close, null)
+                .setView(view)
+                .show();
     }
 
     private void showData() {
