@@ -26,8 +26,9 @@ import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Rating;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
-import com.garpr.android.views.AliasesListView;
 import com.garpr.android.views.RefreshLayout;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -95,10 +96,7 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         mFullPlayer = null;
         mMatchesBundle = null;
         mRefreshLayout.setRefreshing(true);
-
-        final String region = mRegionManager.getRegion(this);
-        mServerApi.getMatches(region, mPlayerId, mMatchesBundleListener);
-        mServerApi.getPlayer(region, mPlayerId, mFullPlayerListener);
+        new DataListener();
     }
 
     @Override
@@ -165,13 +163,14 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     private void showAliases() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final ArrayList<String> aliases = mFullPlayer.getAliases();
+        // noinspection ConstantConditions
+        final CharSequence[] items = new CharSequence[aliases.size()];
+        aliases.toArray(items);
 
-        final AliasesListView view = AliasesListView.inflate(builder.getContext());
-        view.setContent(mFullPlayer.getAliases());
-
-        builder.setNeutralButton(R.string.close, null)
-                .setView(view)
+        new AlertDialog.Builder(this)
+                .setItems(items, null)
+                .setNeutralButton(R.string.close, null)
                 .show();
     }
 
@@ -185,6 +184,12 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         mError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mRefreshLayout.setRefreshing(false);
+
+        if (TextUtils.isEmpty(getTitle())) {
+            setTitle(mFullPlayer.getName());
+        }
+
+        supportInvalidateOptionsMenu();
     }
 
     private void showError() {
@@ -199,46 +204,79 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         return true;
     }
 
-    private void success() {
-        if (mFullPlayer != null && mMatchesBundle != null) {
-            showData();
-        }
+    private void success(@NonNull final FullPlayer fullPlayer,
+            @Nullable final MatchesBundle matchesBundle) {
+        mFullPlayer = fullPlayer;
+        mMatchesBundle = matchesBundle;
+        showData();
     }
 
-    private final ApiListener<FullPlayer> mFullPlayerListener = new ApiListener<FullPlayer>() {
-        @Override
-        public void failure() {
-            PlayerActivity.this.failure();
+
+    private final class DataListener {
+        private boolean mFullPlayerFound;
+        private boolean mMatchesBundleFound;
+        private FullPlayer mFullPlayer;
+        private MatchesBundle mMatchesBundle;
+
+        private DataListener() {
+            final String region = mRegionManager.getRegion(PlayerActivity.this);
+            mServerApi.getMatches(region, mPlayerId, mMatchesBundleListener);
+            mServerApi.getPlayer(region, mPlayerId, mFullPlayerListener);
         }
 
-        @Override
-        public boolean isAlive() {
-            return PlayerActivity.this.isAlive();
+        private void proceed() {
+            if (mFullPlayerFound && mMatchesBundleFound) {
+                // intentionally not checking to see if mMatchesBundle is null, PlayerActivity is
+                // designed to handle a null MatchesBundle
+                if (mFullPlayer == null) {
+                    failure();
+                } else {
+                    success(mFullPlayer, mMatchesBundle);
+                }
+            }
         }
 
-        @Override
-        public void success(@Nullable final FullPlayer fullPlayer) {
-            mFullPlayer = fullPlayer;
-            PlayerActivity.this.success();
-        }
-    };
+        private final ApiListener<FullPlayer> mFullPlayerListener = new ApiListener<FullPlayer>() {
+            @Override
+            public void failure() {
+                mFullPlayerFound = true;
+                mFullPlayer = null;
+                proceed();
+            }
 
-    private final ApiListener<MatchesBundle> mMatchesBundleListener = new ApiListener<MatchesBundle>() {
-        @Override
-        public void failure() {
-            PlayerActivity.this.failure();
-        }
+            @Override
+            public boolean isAlive() {
+                return PlayerActivity.this.isAlive();
+            }
 
-        @Override
-        public boolean isAlive() {
-            return PlayerActivity.this.isAlive();
-        }
+            @Override
+            public void success(@Nullable final FullPlayer fullPlayer) {
+                mFullPlayerFound = true;
+                mFullPlayer = fullPlayer;
+                proceed();
+            }
+        };
 
-        @Override
-        public void success(@Nullable final MatchesBundle matchesBundle) {
-            mMatchesBundle = matchesBundle;
-            PlayerActivity.this.success();
-        }
-    };
+        private final ApiListener<MatchesBundle> mMatchesBundleListener = new ApiListener<MatchesBundle>() {
+            @Override
+            public void failure() {
+                mMatchesBundleFound = true;
+                mMatchesBundle = null;
+                proceed();
+            }
+
+            @Override
+            public boolean isAlive() {
+                return PlayerActivity.this.isAlive();
+            }
+
+            @Override
+            public void success(@Nullable final MatchesBundle matchesBundle) {
+                mMatchesBundleFound = true;
+                mMatchesBundle = matchesBundle;
+                proceed();
+            }
+        };
+    }
 
 }

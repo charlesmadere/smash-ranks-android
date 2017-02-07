@@ -18,11 +18,6 @@ public abstract class BasePersistentPreference<T> extends BasePreference<T> {
     }
 
     @Override
-    public void delete() {
-        delete(true);
-    }
-
-    @Override
     public void delete(final boolean notifyListeners) {
         mKeyValueStore.remove(getKey());
 

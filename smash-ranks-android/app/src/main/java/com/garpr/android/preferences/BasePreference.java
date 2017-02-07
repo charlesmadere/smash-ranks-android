@@ -44,6 +44,11 @@ public abstract class BasePreference<T> implements Preference<T> {
         }
     }
 
+    @Override
+    public void delete() {
+        delete(true);
+    }
+
     @Nullable
     @Override
     public T getDefaultValue() {

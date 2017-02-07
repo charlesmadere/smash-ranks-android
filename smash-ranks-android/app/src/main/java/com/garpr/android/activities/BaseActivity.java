@@ -57,6 +57,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
         }
     }
 
+    @Nullable
+    protected CharSequence getSubtitle() {
+        final ActionBar actionBar = getSupportActionBar();
+        return actionBar == null ? null : actionBar.getSubtitle();
+    }
+
     @Override
     public boolean isAlive() {
         return !isFinishing() && !isDestroyed();

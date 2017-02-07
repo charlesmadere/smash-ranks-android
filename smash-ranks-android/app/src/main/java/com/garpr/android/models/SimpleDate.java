@@ -16,6 +16,8 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -26,6 +28,8 @@ public class SimpleDate implements Parcelable {
     };
 
     private final Date mDate;
+    private Integer mMonth;
+    private Integer mYear;
     private String mDateString;
 
 
@@ -100,6 +104,26 @@ public class SimpleDate implements Parcelable {
         return mDateString;
     }
 
+    public int getMonth() {
+        if (mMonth == null) {
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTime(mDate);
+            mMonth = calendar.get(Calendar.MONTH);
+        }
+
+        return mMonth;
+    }
+
+    public int getYear() {
+        if (mYear == null) {
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTime(mDate);
+            mYear = calendar.get(Calendar.YEAR);
+        }
+
+        return mYear;
+    }
+
     @Override
     public int hashCode() {
         return mDate.hashCode();
@@ -129,6 +153,20 @@ public class SimpleDate implements Parcelable {
         @Override
         public SimpleDate[] newArray(final int size) {
             return new SimpleDate[size];
+        }
+    };
+
+    public static final Comparator<SimpleDate> CHRONOLOGICAL_ORDER = new Comparator<SimpleDate>() {
+        @Override
+        public int compare(final SimpleDate o1, final SimpleDate o2) {
+            return o1.getDate().compareTo(o2.getDate());
+        }
+    };
+
+    public static final Comparator<SimpleDate> REVERSE_CHRONOLOGICAL_ORDER = new Comparator<SimpleDate>() {
+        @Override
+        public int compare(final SimpleDate o1, final SimpleDate o2) {
+            return CHRONOLOGICAL_ORDER.compare(o2, o1);
         }
     };
 

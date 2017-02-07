@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
+
 public class Match implements Parcelable {
 
     @SerializedName("result")
@@ -81,6 +83,21 @@ public class Match implements Parcelable {
         @Override
         public Match[] newArray(final int size) {
             return new Match[size];
+        }
+    };
+
+    public static final Comparator<Match> CHRONOLOGICAL_ORDER = new Comparator<Match>() {
+        @Override
+        public int compare(final Match o1, final Match o2) {
+            return SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.getTournamentDate(),
+                    o2.getTournamentDate());
+        }
+    };
+
+    public static final Comparator<Match> REVERSE_CHRONOLOGICAL_ORDER = new Comparator<Match>() {
+        @Override
+        public int compare(final Match o1, final Match o2) {
+            return CHRONOLOGICAL_ORDER.compare(o2, o1);
         }
     };
 

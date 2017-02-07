@@ -89,7 +89,12 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapterVie
 
     public void set(@Nullable final List<T> items) {
         mItems.clear();
-        add(items);
+
+        if (items != null && !items.isEmpty()) {
+            mItems.addAll(items);
+        }
+
+        notifyDataSetChanged();
     }
 
 }

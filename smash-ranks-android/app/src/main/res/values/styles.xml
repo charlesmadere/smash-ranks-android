@@ -14,10 +14,21 @@
         <item name="menu">@menu/bottom_navigation_view</item>
     </style>
 
+    <style name="DividerItem">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">@dimen/divider_item_height</item>
+        <item name="android:paddingBottom">@dimen/root_padding_quarter</item>
+        <item name="android:paddingEnd">@dimen/root_padding</item>
+        <item name="android:paddingStart">@dimen/root_padding</item>
+        <item name="android:paddingTop">@dimen/root_padding_quarter</item>
+    </style>
+
     <style name="ListItem">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:minHeight">@dimen/list_item_height</item>
@@ -143,6 +154,7 @@
     </style>
 
     <style name="SettingsCardTitle">
+        <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingBottom">@dimen/root_padding_quarter</item>

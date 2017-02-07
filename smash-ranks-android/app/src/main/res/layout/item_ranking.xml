@@ -5,6 +5,7 @@
     style="@style/ListItem">
     <TextView
         android:ellipsize="end"
+        android:fontFamily="sans-serif-condensed"
         android:id="@+id/tvRank"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -24,6 +25,7 @@
         tools:text="Charlezard" />
     <TextView
         android:ellipsize="end"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="end"
         android:id="@+id/tvRating"
         android:layout_height="wrap_content"

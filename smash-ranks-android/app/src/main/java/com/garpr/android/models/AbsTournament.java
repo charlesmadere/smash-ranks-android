@@ -59,6 +59,10 @@ public abstract class AbsTournament implements Parcelable {
         return mId.hashCode();
     }
 
+    public boolean hasRegions() {
+        return mRegions != null && !mRegions.isEmpty();
+    }
+
     @Override
     public String toString() {
         return getName();
@@ -121,7 +125,7 @@ public abstract class AbsTournament implements Parcelable {
 
             final JsonObject jsonObject = json.getAsJsonObject();
 
-            if (jsonObject.has("raw_id")) {
+            if (jsonObject.has("matches") || jsonObject.has("players") || jsonObject.has("raw_id")) {
                 return context.deserialize(json, FullTournament.class);
             } else {
                 return context.deserialize(json, LiteTournament.class);
