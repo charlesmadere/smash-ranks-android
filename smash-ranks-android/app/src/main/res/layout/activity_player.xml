@@ -13,6 +13,15 @@
             <android.support.v7.widget.RecyclerView
                 style="@style/RecyclerView" />
             <LinearLayout
+                style="@style/RecyclerViewMessage.Empty">
+                <TextView
+                    android:text="@string/no_player_data"
+                    style="@style/RecyclerViewLine.1" />
+                <TextView
+                    android:text="@string/swipe_to_refresh_to_check_again"
+                    style="@style/RecyclerViewLine.2" />
+            </LinearLayout>
+            <LinearLayout
                 style="@style/RecyclerViewMessage.Error">
                 <TextView
                     android:text="@string/error_loading_player"

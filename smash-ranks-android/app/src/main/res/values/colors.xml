@@ -2,6 +2,7 @@
 <resources>
 
     <color name="black">#000000</color>
+    <color name="cardBackground">#FFFFFF</color>
     <color name="debug">@color/black</color>
     <color name="error">#FF2222</color>
     <color name="gray">#303030</color>

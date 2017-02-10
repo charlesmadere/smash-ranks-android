@@ -1,5 +1,6 @@
 package com.garpr.android.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.RankingsAdapter;
+import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.networking.ApiCall;
@@ -28,6 +30,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
 
     public static final String TAG = "RankingsFragment";
 
+    private Listener mListener;
     private RankingsAdapter mAdapter;
     private RankingsBundle mRankingsBundle;
 
@@ -57,6 +60,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     @Override
     public void failure() {
         mRankingsBundle = null;
+        mListener.onRankingsBundleFetched(null);
         showError();
     }
 
@@ -76,6 +80,13 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
         super.onActivityCreated(savedInstanceState);
 
         fetchRankingsBundle();
+    }
+
+    @Override
+    public void onAttach(final Context context) {
+        super.onAttach(context);
+
+        mListener = (Listener) MiscUtils.getActivity(context);
     }
 
     @Override
@@ -136,10 +147,17 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
         mRankingsBundle = rankingsBundle;
 
         if (mRankingsBundle != null && mRankingsBundle.hasRankings()) {
+            mListener.onRankingsBundleFetched(mRankingsBundle);
             showRankingsBundle();
         } else {
+            mListener.onRankingsBundleFetched(null);
             showEmpty();
         }
+    }
+
+
+    public interface Listener {
+        void onRankingsBundleFetched(@Nullable final RankingsBundle rankingsBundle);
     }
 
 }

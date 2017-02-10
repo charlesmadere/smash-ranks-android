@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -17,7 +16,9 @@ import android.view.View;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayerAdapter;
+import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
@@ -52,11 +53,17 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Inject
     ServerApi mServerApi;
 
+    @Inject
+    ShareUtils mShareUtils;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
     @BindView(R.id.refreshLayout)
     RefreshLayout mRefreshLayout;
+
+    @BindView(R.id.empty)
+    View mEmpty;
 
     @BindView(R.id.error)
     View mError;
@@ -131,7 +138,11 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         switch (item.getItemId()) {
             case R.id.miAliases:
                 showAliases();
-                break;
+                return true;
+
+            case R.id.miShare:
+                mShareUtils.sharePlayer(this, mFullPlayer);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -139,8 +150,12 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
-        if (mFullPlayer != null && mFullPlayer.hasAliases()) {
-            menu.findItem(R.id.miAliases).setVisible(true);
+        if (mFullPlayer != null) {
+            menu.findItem(R.id.miShare).setVisible(true);
+
+            if (mFullPlayer.hasAliases()) {
+                menu.findItem(R.id.miAliases).setVisible(true);
+            }
         }
 
         return super.onPrepareOptionsMenu(menu);
@@ -156,8 +171,6 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         super.onViewsBound();
 
         mRefreshLayout.setOnRefreshListener(this);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL));
         mAdapter = new PlayerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -180,9 +193,21 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
         final Rating rating = mFullPlayer.hasRatings() ?
                 mFullPlayer.getRatings().getRegion(region) : null;
 
-        mAdapter.set(rating, mMatchesBundle);
+        final ArrayList<Object> list = ListUtils.createPlayerList(getResources(), rating,
+                mMatchesBundle);
+
         mError.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+
+        if (list == null || list.isEmpty()) {
+            mAdapter.clear();
+            mRecyclerView.setVisibility(View.GONE);
+            mEmpty.setVisibility(View.VISIBLE);
+        } else {
+            mAdapter.set(list);
+            mEmpty.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
+
         mRefreshLayout.setRefreshing(false);
 
         if (TextUtils.isEmpty(getTitle())) {
@@ -195,6 +220,7 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     private void showError() {
         mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.VISIBLE);
         mRefreshLayout.setRefreshing(false);
     }

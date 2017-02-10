@@ -3,6 +3,8 @@ package com.garpr.android.misc;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.ActivityManagerCompat;
 
@@ -24,6 +26,14 @@ public class DeviceUtilsImpl implements DeviceUtils {
                     .getSystemService(Context.ACTIVITY_SERVICE);
             return ActivityManagerCompat.isLowRamDevice(activityManager);
         }
+    }
+
+    @Override
+    public boolean hasNetworkConnection() {
+        final ConnectivityManager connectivityManager = (ConnectivityManager) mApplication
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 }

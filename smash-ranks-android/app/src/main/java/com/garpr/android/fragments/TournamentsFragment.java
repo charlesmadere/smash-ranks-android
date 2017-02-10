@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.TournamentsAdapter;
+import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.TournamentsBundle;
 import com.garpr.android.networking.ApiCall;
@@ -124,7 +125,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
     }
 
     private void showTournamentsBundle() {
-        mAdapter.set(mTournamentsBundle);
+        mAdapter.set(ListUtils.createTournamentList(mTournamentsBundle));
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);

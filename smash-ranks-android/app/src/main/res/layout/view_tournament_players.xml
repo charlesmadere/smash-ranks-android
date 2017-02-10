@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.TournamentPlayersView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <android.support.v7.widget.RecyclerView
+        style="@style/RecyclerView" />
+    <LinearLayout
+        style="@style/RecyclerViewMessage.Empty">
+        <TextView
+            android:text="@string/no_players"
+            style="@style/RecyclerViewLine.2" />
+    </LinearLayout>
+</com.garpr.android.views.TournamentPlayersView>

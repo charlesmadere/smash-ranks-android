@@ -2,8 +2,20 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 public class LiteTournament extends AbsTournament implements Parcelable {
+
+    public LiteTournament() {
+        // only here for GSON purposes
+    }
+
+    public LiteTournament(@NonNull final String id, @NonNull final String name,
+            @NonNull final SimpleDate date) {
+        mId = id;
+        mName = name;
+        mDate = date;
+    }
 
     @Override
     public Kind getKind() {

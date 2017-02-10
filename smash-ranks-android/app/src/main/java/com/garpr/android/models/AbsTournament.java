@@ -13,21 +13,22 @@ import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public abstract class AbsTournament implements Parcelable {
 
     @Nullable
     @SerializedName("regions")
-    private ArrayList<String> mRegions;
+    protected ArrayList<String> mRegions;
 
     @SerializedName("date")
-    private SimpleDate mDate;
+    protected SimpleDate mDate;
 
     @SerializedName("id")
-    private String mId;
+    protected String mId;
 
     @SerializedName("name")
-    private String mName;
+    protected String mName;
 
 
     @Override
@@ -88,6 +89,38 @@ public abstract class AbsTournament implements Parcelable {
         dest.writeString(mName);
     }
 
+    public static final Comparator<AbsTournament> CHRONOLOGICAL_ORDER = new Comparator<AbsTournament>() {
+        @Override
+        public int compare(final AbsTournament o1, final AbsTournament o2) {
+            return SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.getDate(), o2.getDate());
+        }
+    };
+
+    public static final Comparator<AbsTournament> REVERSE_CHRONOLOGICAL_ORDER = new Comparator<AbsTournament>() {
+        @Override
+        public int compare(final AbsTournament o1, final AbsTournament o2) {
+            return CHRONOLOGICAL_ORDER.compare(o2, o1);
+        }
+    };
+
+    public static final JsonDeserializer<AbsTournament> JSON_DESERIALIZER = new JsonDeserializer<AbsTournament>() {
+        @Override
+        public AbsTournament deserialize(final JsonElement json, final Type typeOfT,
+                final JsonDeserializationContext context) throws JsonParseException {
+            if (json == null || json.isJsonNull()) {
+                return null;
+            }
+
+            final JsonObject jsonObject = json.getAsJsonObject();
+
+            if (jsonObject.has("matches") || jsonObject.has("players") || jsonObject.has("raw_id")) {
+                return context.deserialize(json, FullTournament.class);
+            } else {
+                return context.deserialize(json, LiteTournament.class);
+            }
+        }
+    };
+
 
     public enum Kind implements Parcelable {
         LITE, FULL;
@@ -114,23 +147,5 @@ public abstract class AbsTournament implements Parcelable {
             }
         };
     }
-
-    public static final JsonDeserializer<AbsTournament> JSON_DESERIALIZER = new JsonDeserializer<AbsTournament>() {
-        @Override
-        public AbsTournament deserialize(final JsonElement json, final Type typeOfT,
-                final JsonDeserializationContext context) throws JsonParseException {
-            if (json == null || json.isJsonNull()) {
-                return null;
-            }
-
-            final JsonObject jsonObject = json.getAsJsonObject();
-
-            if (jsonObject.has("matches") || jsonObject.has("players") || jsonObject.has("raw_id")) {
-                return context.deserialize(json, FullTournament.class);
-            } else {
-                return context.deserialize(json, LiteTournament.class);
-            }
-        }
-    };
 
 }

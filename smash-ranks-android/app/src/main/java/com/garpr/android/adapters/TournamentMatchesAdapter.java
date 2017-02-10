@@ -6,22 +6,22 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 
 import com.garpr.android.R;
-import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.FullTournament;
 
-public class TournamentsAdapter extends BaseAdapter<AbsTournament> {
+public class TournamentMatchesAdapter extends BaseAdapter<FullTournament.Match> {
 
-    public TournamentsAdapter(@NonNull final Context context) {
+    public TournamentMatchesAdapter(@NonNull final Context context) {
         super(context);
     }
 
-    public TournamentsAdapter(@NonNull final LayoutInflater layoutInflater) {
+    public TournamentMatchesAdapter(@NonNull final LayoutInflater layoutInflater) {
         super(layoutInflater);
     }
 
     @LayoutRes
     @Override
     public int getItemViewType(final int position) {
-        return R.layout.item_tournament;
+        return R.layout.item_tournament_match;
     }
 
 }

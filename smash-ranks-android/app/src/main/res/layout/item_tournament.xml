@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.TournamentItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     style="@style/ListItem">
-    <TextView
-        android:ellipsize="end"
-        android:id="@+id/tvName"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:maxLines="3"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_large"
-        tools:text="Genesis 3" />
-    <android.support.v4.widget.Space
-        android:layout_height="1dp"
-        android:layout_width="@dimen/root_padding" />
-    <TextView
-        android:ellipsize="end"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="end"
-        android:id="@+id/tvDate"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:maxLines="1"
-        tools:text="1/20/2016" />
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/InnerListItem">
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/tvName"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:maxLines="3"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_large"
+            tools:text="Genesis 3" />
+        <android.support.v4.widget.Space
+            android:layout_height="1dp"
+            android:layout_width="@dimen/root_padding" />
+        <TextView
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="end"
+            android:id="@+id/tvDate"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            tools:text="1/20/2016" />
+    </LinearLayout>
 </com.garpr.android.views.TournamentItemView>

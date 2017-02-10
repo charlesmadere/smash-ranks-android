@@ -1,47 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.MatchItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    style="@style/ListItem">
+    style="@style/ListItem.WithBackground">
     <TextView
         android:ellipsize="end"
-        android:id="@+id/tvOpponentName"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:maxLines="3"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_large"
-        tools:text="Armada" />
-    <android.support.v4.widget.Space
-        android:layout_height="1dp"
-        android:layout_width="@dimen/root_padding" />
-    <LinearLayout
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:id="@+id/llTournament"
         android:gravity="center_vertical"
+        android:id="@+id/tvName"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/root_padding_quarter">
-        <TextView
-            android:ellipsize="end"
-            android:gravity="end"
-            android:id="@+id/tvTournamentName"
-            android:layout_gravity="end"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            tools:text="Genesis 3" />
-        <TextView
-            android:ellipsize="end"
-            android:gravity="end"
-            android:id="@+id/tvTournamentDate"
-            android:layout_gravity="end"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            tools:text="1/20/2016" />
-    </LinearLayout>
+        android:maxLines="2"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Armada" />
 </com.garpr.android.views.MatchItemView>

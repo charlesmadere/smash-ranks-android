@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
@@ -16,7 +16,7 @@ import com.garpr.android.models.AbsTournament;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TournamentItemView extends LinearLayout implements BaseAdapterView<AbsTournament>,
+public class TournamentItemView extends FrameLayout implements BaseAdapterView<AbsTournament>,
         View.OnClickListener {
 
     private AbsTournament mContent;
@@ -38,8 +38,8 @@ public class TournamentItemView extends LinearLayout implements BaseAdapterView<
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TournamentItemView(final Context context, final AttributeSet attrs, final int defStyleAttr,
-            final int defStyleRes) {
+    public TournamentItemView(final Context context, final AttributeSet attrs,
+            final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

@@ -13,8 +13,10 @@ import android.widget.Toast;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.GoogleApiWrapper;
+import com.garpr.android.models.PollFrequency;
 import com.garpr.android.preferences.Preference;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
+import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.CheckablePreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
@@ -25,8 +27,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SettingsActivity extends BaseActivity implements DialogInterface.OnCancelListener,
-        DialogInterface.OnDismissListener {
+public class SettingsActivity extends BaseActivity {
 
     private static final String TAG = "SettingsActivity";
 
@@ -35,6 +36,9 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
 
     @Inject
     RankingsPollingPreferenceStore mRankingsPollingPreferenceStore;
+
+    @Inject
+    RankingsPollingSyncManager mRankingsPollingSyncManager;
 
     @BindView(R.id.cpvMustBeCharging)
     CheckablePreferenceView mMustBeCharging;
@@ -74,11 +78,6 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
     }
 
     @Override
-    public void onCancel(final DialogInterface dialog) {
-        refresh();
-    }
-
-    @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
@@ -88,12 +87,11 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mRankingsPollingPreferenceStore.getEnabled().removeListener(mOnRankingsPollingEnabledChange);
-    }
 
-    @Override
-    public void onDismiss(final DialogInterface dialog) {
-        refresh();
+        mRankingsPollingPreferenceStore.getChargingRequired().removeListener(mOnChargingRequiredChange);
+        mRankingsPollingPreferenceStore.getEnabled().removeListener(mOnRankingsPollingEnabledChange);
+        mRankingsPollingPreferenceStore.getPollFrequency().removeListener(mOnPollFrequencyChange);
+        mRankingsPollingPreferenceStore.getWifiRequired().removeListener(mOnWifiRequiredChange);
     }
 
     @OnClick(R.id.tvGooglePlayServicesError)
@@ -103,10 +101,17 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
         if (mGoogleApiWrapper.isConnectionStatusSuccess(connectionStatus)) {
             Toast.makeText(this, R.string.google_play_services_error_has_been_resolved,
                     Toast.LENGTH_LONG).show();
+            refresh();
             return;
         }
 
-        if (mGoogleApiWrapper.showPlayServicesResolutionDialog(connectionStatus, this, this)) {
+        if (mGoogleApiWrapper.showPlayServicesResolutionDialog(connectionStatus, this,
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(final DialogInterface dialog) {
+                        refresh();
+                    }
+                })) {
             return;
         }
 
@@ -114,7 +119,12 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
                 .setMessage(getString(R.string.google_play_services_error_cant_be_resolved,
                         connectionStatus))
                 .setNeutralButton(R.string.ok, null)
-                .setOnDismissListener(this)
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(final DialogInterface dialog) {
+                        refresh();
+                    }
+                })
                 .show();
     }
 
@@ -133,7 +143,11 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
     protected void onViewsBound() {
         super.onViewsBound();
 
+        mRankingsPollingPreferenceStore.getChargingRequired().addListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().addListener(mOnRankingsPollingEnabledChange);
+        mRankingsPollingPreferenceStore.getPollFrequency().addListener(mOnPollFrequencyChange);
+        mRankingsPollingPreferenceStore.getWifiRequired().addListener(mOnWifiRequiredChange);
+
         mUseRankingsPolling.set(mRankingsPollingPreferenceStore.getEnabled());
         mMustBeOnWifi.set(mRankingsPollingPreferenceStore.getWifiRequired());
         mMustBeCharging.set(mRankingsPollingPreferenceStore.getChargingRequired());
@@ -174,10 +188,38 @@ public class SettingsActivity extends BaseActivity implements DialogInterface.On
         return true;
     }
 
+    private final Preference.OnPreferenceChangeListener<Boolean> mOnChargingRequiredChange =
+            new Preference.OnPreferenceChangeListener<Boolean>() {
+        @Override
+        public void onPreferenceChange(final Preference<Boolean> preference) {
+            mRankingsPollingSyncManager.enableOrDisable();
+            refresh();
+        }
+    };
+
+    private final Preference.OnPreferenceChangeListener<PollFrequency> mOnPollFrequencyChange =
+            new Preference.OnPreferenceChangeListener<PollFrequency>() {
+        @Override
+        public void onPreferenceChange(final Preference<PollFrequency> preference) {
+            mRankingsPollingSyncManager.enableOrDisable();
+            refresh();
+        }
+    };
+
     private final Preference.OnPreferenceChangeListener<Boolean> mOnRankingsPollingEnabledChange =
             new Preference.OnPreferenceChangeListener<Boolean>() {
         @Override
         public void onPreferenceChange(final Preference<Boolean> preference) {
+            mRankingsPollingSyncManager.enableOrDisable();
+            refresh();
+        }
+    };
+
+    private final Preference.OnPreferenceChangeListener<Boolean> mOnWifiRequiredChange =
+            new Preference.OnPreferenceChangeListener<Boolean>() {
+        @Override
+        public void onPreferenceChange(final Preference<Boolean> preference) {
+            mRankingsPollingSyncManager.enableOrDisable();
             refresh();
         }
     };

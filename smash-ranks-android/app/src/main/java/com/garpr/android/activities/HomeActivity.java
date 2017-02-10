@@ -6,29 +6,40 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
-import com.garpr.android.fragments.PlayersFragment;
+import com.garpr.android.adapters.HomeFragmentAdapter;
 import com.garpr.android.fragments.RankingsFragment;
-import com.garpr.android.fragments.TournamentsFragment;
+import com.garpr.android.misc.NotificationManager;
+import com.garpr.android.models.RankingsBundle;
+import com.garpr.android.sync.RankingsPollingSyncManager;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener,
-        FragmentManager.OnBackStackChangedListener {
+        BottomNavigationView.OnNavigationItemSelectedListener, RankingsFragment.Listener {
 
     private static final String TAG = "HomeActivity";
 
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNavigationView;
+
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
+
+    @Inject
+    NotificationManager mNotificationManager;
+
+    @Inject
+    RankingsPollingSyncManager mRankingsPollingSyncManager;
 
 
     public static Intent getLaunchIntent(final Context context) {
@@ -41,57 +52,14 @@ public class HomeActivity extends BaseActivity implements
         return TAG;
     }
 
-    private void navigateToTag(@NonNull final String tag) {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        final boolean fragmentExists = fragmentManager.findFragmentById(R.id.flContent) != null;
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            if (PlayersFragment.TAG.equals(tag)) {
-                fragment = PlayersFragment.create();
-            } else if (RankingsFragment.TAG.equals(tag)) {
-                fragment = RankingsFragment.create();
-            } else if (TournamentsFragment.TAG.equals(tag)) {
-                fragment = TournamentsFragment.create();
-            } else {
-                throw new RuntimeException("unknown tag: " + tag);
-            }
-
-            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            if (fragmentExists) {
-                fragmentTransaction.replace(R.id.flContent, fragment, tag);
-                fragmentTransaction.addToBackStack(null);
-            } else {
-                fragmentTransaction.add(R.id.flContent, fragment, tag);
-            }
-
-            fragmentTransaction.commit();
-        } else {
-            fragmentManager.popBackStack(tag, 0);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        updateSelectedNavigationItem();
-    }
-
-    @Override
-    public void onBackStackChanged() {
-        updateSelectedNavigationItem();
-    }
-
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_home);
 
-        if (savedInstanceState == null) {
-            navigateToTag(RankingsFragment.TAG);
-        }
+        mRankingsPollingSyncManager.enableOrDisable();
+        mNotificationManager.cancelAll();
     }
 
     @Override
@@ -106,26 +74,23 @@ public class HomeActivity extends BaseActivity implements
             return false;
         }
 
-        final String tag;
-
         switch (item.getItemId()) {
-            case R.id.actionPlayers:
-                tag = PlayersFragment.TAG;
+            case R.id.actionRankings:
+                mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_RANKINGS);
                 break;
 
-            case R.id.actionRankings:
-                tag = RankingsFragment.TAG;
+            case R.id.actionPlayers:
+                mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_PLAYERS);
                 break;
 
             case R.id.actionTournaments:
-                tag = TournamentsFragment.TAG;
+                mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_TOURNAMENTS);
                 break;
 
             default:
                 throw new RuntimeException("unknown item: " + item.getTitle());
         }
 
-        navigateToTag(tag);
         return true;
     }
 
@@ -140,23 +105,43 @@ public class HomeActivity extends BaseActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    @OnPageChange(R.id.viewPager)
+    void onPageChange() {
+        updateSelectedBottomNavigationItem();
+    }
+
+    @Override
+    public void onRankingsBundleFetched(@Nullable final RankingsBundle rankingsBundle) {
+        if (rankingsBundle == null) {
+            setSubtitle("");
+        } else {
+            setSubtitle(getString(R.string.updated_x, rankingsBundle.getTime().getDateString()));
+        }
+    }
+
     @Override
     protected void onViewsBound() {
         super.onViewsBound();
-        getSupportFragmentManager().addOnBackStackChangedListener(this);
+
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
+        mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.root_padding));
+        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setAdapter(new HomeFragmentAdapter(getSupportFragmentManager()));
     }
 
-    private void updateSelectedNavigationItem() {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        final Fragment fragment = fragmentManager.findFragmentById(R.id.flContent);
+    private void updateSelectedBottomNavigationItem() {
+        switch (mViewPager.getCurrentItem()) {
+            case HomeFragmentAdapter.POSITION_RANKINGS:
+                mBottomNavigationView.getMenu().findItem(R.id.actionRankings).setChecked(true);
+                break;
 
-        if (fragment instanceof PlayersFragment) {
-            mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
-        } else if (fragment instanceof RankingsFragment) {
-            mBottomNavigationView.getMenu().findItem(R.id.actionRankings).setChecked(true);
-        } else if (fragment instanceof TournamentsFragment) {
-            mBottomNavigationView.getMenu().findItem(R.id.actionTournaments).setChecked(true);
+            case HomeFragmentAdapter.POSITION_PLAYERS:
+                mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
+                break;
+
+            case HomeFragmentAdapter.POSITION_TOURNAMENTS:
+                mBottomNavigationView.getMenu().findItem(R.id.actionTournaments).setChecked(true);
+                break;
         }
     }
 

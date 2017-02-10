@@ -13,6 +13,8 @@ import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.NotificationManagerImpl;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
+import com.garpr.android.misc.ShareUtils;
+import com.garpr.android.misc.ShareUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.AbsPlayer;
@@ -28,6 +30,8 @@ import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.preferences.RankingsPollingPreferenceStoreImpl;
+import com.garpr.android.sync.RankingsPollingSyncManager;
+import com.garpr.android.sync.RankingsPollingSyncManagerImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -47,13 +51,15 @@ public class AppModule {
 
     private final Application mApplication;
     private final String mDefaultRegion;
-    private final String mGarPrUrl;
+    private final String mGarPrApiUrl;
+    private final String mGarPrWebUrl;
 
 
-    public AppModule(@NonNull final Application application, @NonNull final String garPrUrl,
-            @NonNull final String defaultRegion) {
+    public AppModule(@NonNull final Application application, @NonNull final String garPrApiUrl,
+            @NonNull final String garPrWebUrl, @NonNull final String defaultRegion) {
         mApplication = application;
-        mGarPrUrl = garPrUrl;
+        mGarPrApiUrl = garPrApiUrl;
+        mGarPrWebUrl = garPrWebUrl;
         mDefaultRegion = defaultRegion;
     }
 
@@ -147,7 +153,7 @@ public class AppModule {
     Retrofit providesRetrofit(final Gson gson) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(mGarPrUrl)
+                .baseUrl(mGarPrApiUrl)
                 .build();
     }
 
@@ -155,6 +161,22 @@ public class AppModule {
     @Singleton
     ServerApi providesServerApi(final GarPrApi garPrApi, final Timber timber) {
         return new ServerApiImpl(garPrApi, timber);
+    }
+
+    @Provides
+    @Singleton
+    ShareUtils providesShareUtils(final RegionManager regionManager) {
+        return new ShareUtilsImpl(regionManager, mGarPrWebUrl);
+    }
+
+    @Provides
+    @Singleton
+    RankingsPollingSyncManager providesRankingsPollingSyncManager(
+            final GoogleApiWrapper googleApiWrapper,
+            final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
+            final Timber timber) {
+        return new RankingsPollingSyncManagerImpl(googleApiWrapper, rankingsPollingPreferenceStore,
+                timber);
     }
 
     @Provides

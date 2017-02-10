@@ -8,9 +8,9 @@ import dagger.Module;
 @Module
 public class TestAppModule extends AppModule {
 
-    public TestAppModule(@NonNull final Application application, @NonNull final String garPrUrl,
-            @NonNull final String defaultRegion) {
-        super(application, garPrUrl, defaultRegion);
+    public TestAppModule(@NonNull final Application application, @NonNull final String garPrApiUrl,
+            @NonNull final String garPrWebUrl, @NonNull final String defaultRegion) {
+        super(application, garPrApiUrl, garPrWebUrl, defaultRegion);
     }
 
 }

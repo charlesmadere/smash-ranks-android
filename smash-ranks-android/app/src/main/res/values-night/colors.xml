@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="cardBackground">#424242</color>
     <color name="debug">@color/white</color>
     <color name="error">#FF6666</color>
     <color name="warn">#FFBBBB</color>

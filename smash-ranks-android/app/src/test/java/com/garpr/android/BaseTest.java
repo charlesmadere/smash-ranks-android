@@ -26,7 +26,8 @@ public abstract class BaseTest {
     public void setUp() throws Exception {
         mTestAppComponent = DaggerTestAppComponent.builder()
                 .testAppModule(new TestAppModule(RuntimeEnvironment.application,
-                        Constants.GAR_PR_URL, Constants.DEFAULT_REGION))
+                        Constants.GAR_PR_API_URL, Constants.GAR_PR_WEB_URL,
+                        Constants.DEFAULT_REGION))
                 .build();
     }
 

@@ -1,18 +1,28 @@
 package com.garpr.android.views;
 
+import android.annotation.TargetApi;
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
+import com.garpr.android.R;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.models.AbsPlayer;
 
-public class PlayerItemView extends AppCompatTextView implements BaseAdapterView<AbsPlayer>,
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class PlayerItemView extends FrameLayout implements BaseAdapterView<AbsPlayer>,
         View.OnClickListener {
 
     private AbsPlayer mContent;
+
+    @BindView(R.id.tvName)
+    TextView mName;
 
 
     public PlayerItemView(final Context context, final AttributeSet attrs) {
@@ -24,6 +34,12 @@ public class PlayerItemView extends AppCompatTextView implements BaseAdapterView
         super(context, attrs, defStyleAttr);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public PlayerItemView(final Context context, final AttributeSet attrs, final int defStyleAttr,
+            final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
     @Override
     public void onClick(final View v) {
         final Context context = getContext();
@@ -33,6 +49,7 @@ public class PlayerItemView extends AppCompatTextView implements BaseAdapterView
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        ButterKnife.bind(this);
         setOnClickListener(this);
     }
 
@@ -40,7 +57,7 @@ public class PlayerItemView extends AppCompatTextView implements BaseAdapterView
     public void setContent(final AbsPlayer content) {
         mContent = content;
 
-        setText(mContent.getName());
+        mName.setText(mContent.getName());
     }
 
 }

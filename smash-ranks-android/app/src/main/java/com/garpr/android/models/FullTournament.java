@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.garpr.android.misc.ParcelableUtils;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class FullTournament extends AbsTournament implements Parcelable {
 
     @Nullable
     @SerializedName("players")
-    private ArrayList<LitePlayer> mPlayers;
+    private ArrayList<AbsPlayer> mPlayers;
 
     @SerializedName("raw_id")
     private String mRawId;
@@ -24,9 +25,6 @@ public class FullTournament extends AbsTournament implements Parcelable {
     @Nullable
     @SerializedName("url")
     private String mUrl;
-
-    @SerializedName("type")
-    private Type mType;
 
 
     @Override
@@ -40,7 +38,7 @@ public class FullTournament extends AbsTournament implements Parcelable {
     }
 
     @Nullable
-    public ArrayList<LitePlayer> getPlayers() {
+    public ArrayList<AbsPlayer> getPlayers() {
         return mPlayers;
     }
 
@@ -48,33 +46,35 @@ public class FullTournament extends AbsTournament implements Parcelable {
         return mRawId;
     }
 
-    public Type getType() {
-        return mType;
-    }
-
     @Nullable
     public String getUrl() {
         return mUrl;
+    }
+
+    public boolean hasMatches() {
+        return mMatches != null && !mMatches.isEmpty();
+    }
+
+    public boolean hasPlayers() {
+        return mPlayers != null && !mPlayers.isEmpty();
     }
 
     @Override
     protected void readFromParcel(final Parcel source) {
         super.readFromParcel(source);
         mMatches = source.createTypedArrayList(Match.CREATOR);
-        mPlayers = source.createTypedArrayList(LitePlayer.CREATOR);
+        mPlayers = ParcelableUtils.readAbsPlayerList(source);
         mRawId = source.readString();
         mUrl = source.readString();
-        mType = source.readParcelable(Type.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
         super.writeToParcel(dest, flags);
         dest.writeTypedList(mMatches);
-        dest.writeTypedList(mPlayers);
+        ParcelableUtils.writeAbsPlayerList(mPlayers, dest, flags);
         dest.writeString(mRawId);
         dest.writeString(mUrl);
-        dest.writeParcelable(mType, flags);
     }
 
     public static final Creator<FullTournament> CREATOR = new Creator<FullTournament>() {
@@ -166,37 +166,6 @@ public class FullTournament extends AbsTournament implements Parcelable {
             @Override
             public Match[] newArray(final int size) {
                 return new Match[size];
-            }
-        };
-    }
-
-
-    public enum Type implements Parcelable {
-        @SerializedName("challonge")
-        CHALLONGE,
-
-        @SerializedName("smashgg")
-        SMASHGG;
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(final Parcel dest, final int flags) {
-            dest.writeInt(ordinal());
-        }
-
-        public static final Creator<Type> CREATOR = new Creator<Type>() {
-            @Override
-            public Type createFromParcel(final Parcel source) {
-                return values()[source.readInt()];
-            }
-
-            @Override
-            public Type[] newArray(final int size) {
-                return new Type[size];
             }
         };
     }

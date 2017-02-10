@@ -5,7 +5,11 @@ import android.content.DialogInterface.OnCancelListener;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.android.gms.gcm.GcmNetworkManager;
+
 public interface GoogleApiWrapper {
+
+    GcmNetworkManager getGcmNetworkManager();
 
     int getGooglePlayServicesConnectionStatus();
 

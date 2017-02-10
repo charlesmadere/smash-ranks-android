@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import com.garpr.android.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.gcm.GcmNetworkManager;
 
 public class GoogleApiWrapperImpl implements GoogleApiWrapper {
 
@@ -49,6 +50,11 @@ public class GoogleApiWrapperImpl implements GoogleApiWrapper {
 
         final String versionName = pi == null ? "n/a" : pi.versionName;
         mCrashlyticsWrapper.setString("gms_version_name", versionName);
+    }
+
+    @Override
+    public GcmNetworkManager getGcmNetworkManager() {
+        return GcmNetworkManager.getInstance(mApplication);
     }
 
     @Override

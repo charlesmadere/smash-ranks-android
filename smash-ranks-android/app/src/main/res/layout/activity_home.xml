@@ -5,11 +5,10 @@
     android:orientation="vertical">
     <include
         layout="@layout/toolbar" />
-    <FrameLayout
-        android:id="@+id/flContent"
+    <com.garpr.android.views.NonSwipeableViewPager
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_width="match_parent" />
+        style="@style/ViewPager" />
     <android.support.design.widget.BottomNavigationView
         style="@style/BottomNavigationView" />
 </LinearLayout>

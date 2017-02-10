@@ -34,8 +34,8 @@ public class RatingItemView extends LinearLayout implements BaseAdapterView<Rati
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public RatingItemView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public RatingItemView(final Context context, final AttributeSet attrs, final int defStyleAttr,
+            final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

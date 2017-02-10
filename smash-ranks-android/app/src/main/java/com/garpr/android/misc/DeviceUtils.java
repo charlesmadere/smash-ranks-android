@@ -4,4 +4,6 @@ public interface DeviceUtils {
 
     boolean hasLowRam();
 
+    boolean hasNetworkConnection();
+
 }

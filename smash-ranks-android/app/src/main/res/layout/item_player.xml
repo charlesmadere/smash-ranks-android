@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.PlayerItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:textColor="?android:attr/textColorPrimary"
-    android:textSize="@dimen/text_size_large"
-    tools:text="Charlezard"
-    style="@style/ListItem" />
+    style="@style/ListItem">
+    <TextView
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:id="@+id/tvName"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="2"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Charlezard" />
+</com.garpr.android.views.PlayerItemView>
