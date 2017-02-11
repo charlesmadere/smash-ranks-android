@@ -11,10 +11,11 @@ import com.garpr.android.preferences.Preference;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class RegionManagerImpl implements RegionManager {
 
-    private final LinkedList<WeakReference<OnRegionChangeListener>> mListeners;
+    private final List<WeakReference<OnRegionChangeListener>> mListeners;
     private final Preference<String> mCurrentRegion;
 
 
