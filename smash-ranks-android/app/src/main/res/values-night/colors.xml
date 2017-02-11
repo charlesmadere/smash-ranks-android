@@ -4,7 +4,9 @@
     <color name="cardBackground">#424242</color>
     <color name="debug">@color/white</color>
     <color name="error">#FF6666</color>
+    <color name="lose">#F0BEC5</color>
     <color name="warn">#FFBBBB</color>
+    <color name="win">#C6E8B5</color>
     <color name="windowBackground">#232323</color>
 
 </resources>

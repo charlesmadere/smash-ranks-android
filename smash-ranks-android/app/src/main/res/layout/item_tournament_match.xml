@@ -13,6 +13,7 @@
             android:layout_width="0dp"
             android:maxLines="2"
             android:padding="@dimen/root_padding_half"
+            android:textColor="@color/win"
             tools:text="Mikkuz" />
         <TextView
             android:ellipsize="end"
@@ -23,6 +24,7 @@
             android:layout_width="0dp"
             android:maxLines="2"
             android:padding="@dimen/root_padding_half"
+            android:textColor="@color/lose"
             tools:text="gaR" />
     </LinearLayout>
 </com.garpr.android.views.TournamentMatchItemView>
