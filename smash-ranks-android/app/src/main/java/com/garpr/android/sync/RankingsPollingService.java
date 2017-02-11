@@ -136,7 +136,7 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
         final SimpleDate newRankingsDate = rankingsBundle.getTime();
         rankingsDate.set(newRankingsDate);
 
-        if (oldRankingsDate == null || newRankingsDate.happenedAfter(oldRankingsDate)) {
+        if (oldRankingsDate != null && newRankingsDate.happenedAfter(oldRankingsDate)) {
             showRankingsUpdated();
         }
     }
