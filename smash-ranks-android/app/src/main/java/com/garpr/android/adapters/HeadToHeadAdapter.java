@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import com.garpr.android.R;
 import com.garpr.android.models.LiteTournament;
 import com.garpr.android.models.Match;
+import com.garpr.android.models.WinsLosses;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +18,10 @@ public class HeadToHeadAdapter extends BaseMultiAdapter {
 
 
     static {
-        LAYOUT_KEY_MAP = new HashMap<>();
+        LAYOUT_KEY_MAP = new HashMap<>(3);
         LAYOUT_KEY_MAP.put(LiteTournament.class, R.layout.divider_tournament);
         LAYOUT_KEY_MAP.put(Match.class, R.layout.item_match);
-        // TODO
+        LAYOUT_KEY_MAP.put(WinsLosses.class, R.layout.item_wins_losses);
     }
 
     public HeadToHeadAdapter(@NonNull final Context context) {
