@@ -7,4 +7,10 @@
         android:title="@string/share"
         android:visible="false"
         compat:showAsAction="ifRoom" />
+    <item
+        android:icon="@drawable/ic_link_white_24dp"
+        android:id="@+id/miViewTournamentPage"
+        android:title="@string/view_tournament_page"
+        android:visible="false"
+        compat:showAsAction="ifRoom" />
 </menu>

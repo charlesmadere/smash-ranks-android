@@ -141,6 +141,8 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     public boolean onPrepareOptionsMenu(final Menu menu) {
         if (mFullTournament != null) {
             menu.findItem(R.id.miShare).setVisible(true);
+            menu.findItem(R.id.miViewTournamentPage).setVisible(
+                    !TextUtils.isEmpty(mFullTournament.getUrl()));
         }
 
         return super.onPrepareOptionsMenu(menu);

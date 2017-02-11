@@ -61,6 +61,7 @@
     <string name="use_rankings_polling">Use rankings polling</string>
     <string name="view_logs">View logs</string>
     <string name="view_logs_description">Read logs normally only visible via Android\'s Logcat. Really only useful for debug purposes.</string>
+    <string name="view_tournament_page">View tournament page</string>
     <string name="x_vs_y">%1$s vs %2$s</string>
     <string name="weekly">Weekly</string>
     <string name="will_only_poll_if_connected_to_wifi">Will only poll if connected to wifi</string>
