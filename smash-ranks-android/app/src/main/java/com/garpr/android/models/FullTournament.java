@@ -12,12 +12,12 @@ import java.util.ArrayList;
 public class FullTournament extends AbsTournament implements Parcelable {
 
     @Nullable
-    @SerializedName("matches")
-    private ArrayList<Match> mMatches;
-
-    @Nullable
     @SerializedName("players")
     private ArrayList<AbsPlayer> mPlayers;
+
+    @Nullable
+    @SerializedName("matches")
+    private ArrayList<Match> mMatches;
 
     @SerializedName("raw_id")
     private String mRawId;
@@ -62,8 +62,8 @@ public class FullTournament extends AbsTournament implements Parcelable {
     @Override
     protected void readFromParcel(final Parcel source) {
         super.readFromParcel(source);
-        mMatches = source.createTypedArrayList(Match.CREATOR);
         mPlayers = ParcelableUtils.readAbsPlayerList(source);
+        mMatches = source.createTypedArrayList(Match.CREATOR);
         mRawId = source.readString();
         mUrl = source.readString();
     }
@@ -71,8 +71,8 @@ public class FullTournament extends AbsTournament implements Parcelable {
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeTypedList(mMatches);
         ParcelableUtils.writeAbsPlayerList(mPlayers, dest, flags);
+        dest.writeTypedList(mMatches);
         dest.writeString(mRawId);
         dest.writeString(mUrl);
     }
