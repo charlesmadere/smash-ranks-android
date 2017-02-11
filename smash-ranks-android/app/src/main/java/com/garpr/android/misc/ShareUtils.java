@@ -1,12 +1,16 @@
 package com.garpr.android.misc;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
 
 public interface ShareUtils {
+
+    void openUrl(@NonNull final Context context, @Nullable final String url);
 
     void sharePlayer(@NonNull final Activity activity, @NonNull final AbsPlayer player);
 

@@ -56,6 +56,7 @@
     <string name="theme">Theme</string>
     <string name="the_app_will_now_restart">The app will now restart.</string>
     <string name="tournaments">Tournaments</string>
+    <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
     <string name="x_updated_y">%1$s updated %2$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>

@@ -132,6 +132,10 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
             case R.id.miShare:
                 mShareUtils.shareTournament(this, mFullTournament);
                 return true;
+
+            case R.id.miViewTournamentPage:
+                mShareUtils.openUrl(this, mFullTournament.getUrl());
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

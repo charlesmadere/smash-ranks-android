@@ -12,5 +12,5 @@
         android:id="@+id/miViewTournamentPage"
         android:title="@string/view_tournament_page"
         android:visible="false"
-        compat:showAsAction="ifRoom" />
+        compat:showAsAction="never" />
 </menu>
