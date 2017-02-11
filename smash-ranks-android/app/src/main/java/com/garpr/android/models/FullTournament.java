@@ -111,6 +111,11 @@ public class FullTournament extends AbsTournament implements Parcelable {
         @SerializedName("winner_name")
         private String mWinnerName;
 
+        @Override
+        public boolean equals(final Object obj) {
+            return obj instanceof Match && mMatchId.equals(((Match) obj).getMatchId());
+        }
+
         public String getLoserId() {
             return mLoserId;
         }
@@ -129,6 +134,11 @@ public class FullTournament extends AbsTournament implements Parcelable {
 
         public String getWinnerName() {
             return mWinnerName;
+        }
+
+        @Override
+        public int hashCode() {
+            return mMatchId.hashCode();
         }
 
         public boolean isExcluded() {
