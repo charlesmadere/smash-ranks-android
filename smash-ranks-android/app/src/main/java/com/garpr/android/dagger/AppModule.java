@@ -167,8 +167,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ShareUtils providesShareUtils(final RegionManager regionManager) {
-        return new ShareUtilsImpl(regionManager, mGarPrWebUrl);
+    ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
+        return new ShareUtilsImpl(regionManager, mGarPrWebUrl, timber);
     }
 
     @Provides
