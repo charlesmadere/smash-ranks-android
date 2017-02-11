@@ -15,6 +15,7 @@ import com.garpr.android.R;
 import com.garpr.android.adapters.RankingsAdapter;
 import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.Searchable;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -26,7 +27,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class RankingsFragment extends BaseFragment implements ApiListener<RankingsBundle>,
-        SwipeRefreshLayout.OnRefreshListener {
+        Searchable, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "RankingsFragment";
 
@@ -117,6 +118,11 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void search(@Nullable final String query) {
+        // TODO
     }
 
     private void showEmpty() {

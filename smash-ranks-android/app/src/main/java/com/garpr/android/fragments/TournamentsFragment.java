@@ -14,6 +14,7 @@ import com.garpr.android.R;
 import com.garpr.android.adapters.TournamentsAdapter;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.Searchable;
 import com.garpr.android.models.TournamentsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -25,7 +26,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class TournamentsFragment extends BaseFragment implements ApiListener<TournamentsBundle>,
-        SwipeRefreshLayout.OnRefreshListener {
+        Searchable, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "TournamentsFragment";
 
@@ -103,10 +104,15 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setOnRefreshListener(this);
+        mAdapter = new TournamentsAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
-        mAdapter = new TournamentsAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void search(@Nullable final String query) {
+        // TODO
     }
 
     private void showEmpty() {

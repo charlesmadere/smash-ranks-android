@@ -4,11 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.garpr.android.misc.ParcelableUtils;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
 public class HeadToHead implements Parcelable {
+
+    @SerializedName("opponent")
+    private AbsPlayer mOpponent;
+
+    @SerializedName("player")
+    private AbsPlayer mPlayer;
 
     @Nullable
     @SerializedName("matches")
@@ -20,12 +27,6 @@ public class HeadToHead implements Parcelable {
     @SerializedName("wins")
     private int mWins;
 
-    @SerializedName("opponent")
-    private LitePlayer mOpponent;
-
-    @SerializedName("player")
-    private LitePlayer mPlayer;
-
 
     public int getLosses() {
         return mLosses;
@@ -36,11 +37,11 @@ public class HeadToHead implements Parcelable {
         return mMatches;
     }
 
-    public LitePlayer getOpponent() {
+    public AbsPlayer getOpponent() {
         return mOpponent;
     }
 
-    public LitePlayer getPlayer() {
+    public AbsPlayer getPlayer() {
         return mPlayer;
     }
 
@@ -55,22 +56,22 @@ public class HeadToHead implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
+        ParcelableUtils.writeAbsPlayer(mOpponent, dest, flags);
+        ParcelableUtils.writeAbsPlayer(mPlayer, dest, flags);
         dest.writeTypedList(mMatches);
         dest.writeInt(mLosses);
         dest.writeInt(mWins);
-        dest.writeParcelable(mOpponent, flags);
-        dest.writeParcelable(mPlayer, flags);
     }
 
     public static final Creator<HeadToHead> CREATOR = new Creator<HeadToHead>() {
         @Override
         public HeadToHead createFromParcel(final Parcel source) {
             final HeadToHead hth = new HeadToHead();
+            hth.mOpponent = ParcelableUtils.readAbsPlayer(source);
+            hth.mPlayer = ParcelableUtils.readAbsPlayer(source);
             hth.mMatches = source.createTypedArrayList(Match.CREATOR);
             hth.mLosses = source.readInt();
             hth.mWins = source.readInt();
-            hth.mOpponent = source.readParcelable(LitePlayer.class.getClassLoader());
-            hth.mPlayer = source.readParcelable(LitePlayer.class.getClassLoader());
             return hth;
         }
 

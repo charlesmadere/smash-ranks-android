@@ -16,6 +16,10 @@
         android:theme="@style/AppTheme">
 
         <activity
+            android:label="@string/head_to_head"
+            android:name=".activities.HeadToHeadActivity" />
+
+        <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
             android:name=".activities.HomeActivity">

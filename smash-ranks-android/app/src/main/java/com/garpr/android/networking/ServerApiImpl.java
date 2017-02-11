@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.FullTournament;
+import com.garpr.android.models.HeadToHead;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.models.RankingsBundle;
@@ -26,6 +27,31 @@ public class ServerApiImpl implements ServerApi {
     public ServerApiImpl(@NonNull final GarPrApi garPrApi, @NonNull final Timber timber) {
         mGarPrApi = garPrApi;
         mTimber = timber;
+    }
+
+    @Override
+    public void getHeadToHead(@NonNull final String region, @NonNull final String playerId,
+            @NonNull final String opponentId, @NonNull final ApiListener<HeadToHead> listener) {
+        mGarPrApi.getHeadToHead(region, playerId, opponentId).enqueue(new Callback<HeadToHead>() {
+            @Override
+            public void onResponse(final Call<HeadToHead> call,
+                    final Response<HeadToHead> response) {
+                if (response.isSuccessful()) {
+                    listener.success(response.body());
+                } else {
+                    mTimber.e(TAG, "getHeadToHead (" + region + ") (" + playerId + ") (" +
+                            opponentId + ") failed (code " + response.code() + ")");
+                    listener.failure();
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<HeadToHead> call, final Throwable t) {
+                mTimber.e(TAG, "getHeadToHead (" + region + ") (" + playerId + ") (" +
+                        opponentId + ") failed", t);
+                listener.failure();
+            }
+        });
     }
 
     @Override

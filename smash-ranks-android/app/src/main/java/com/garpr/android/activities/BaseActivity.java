@@ -1,7 +1,6 @@
 package com.garpr.android.activities;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -31,7 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     private static final String CNAME = BaseActivity.class.getCanonicalName();
     private static final String EXTRA_REGION = CNAME + ".Region";
 
-    private boolean mIsAlive;
     private Unbinder mUnbinder;
 
     @Inject
@@ -67,11 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
 
     @Override
     public boolean isAlive() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            return mIsAlive && !isFinishing() && !isDestroyed();
-        } else {
-            return mIsAlive && !isFinishing();
-        }
+        return !isFinishing() && !isDestroyed();
     }
 
     private void navigateUp() {
@@ -95,15 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
         getDelegate().setLocalNightMode(mGeneralPreferenceStore.getNightMode().get().getThemeValue());
 
         super.onCreate(savedInstanceState);
-        mIsAlive = true;
-
         mTimber.d(TAG, getActivityName() + " created");
-    }
-
-    @Override
-    protected void onDestroy() {
-        mIsAlive = false;
-        super.onDestroy();
     }
 
     @Override

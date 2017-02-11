@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import com.garpr.android.R;
 import com.garpr.android.adapters.BaseAdapterView;
+import com.garpr.android.adapters.TournamentMatchesAdapter;
 import com.garpr.android.models.FullTournament;
 
 import butterknife.BindView;

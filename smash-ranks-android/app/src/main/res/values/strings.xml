@@ -8,6 +8,8 @@
     <string name="close">Close</string>
     <string name="daily">Daily</string>
     <string name="day">Day</string>
+    <string name="x_em_dash_y">%1$s &#8211; %2$s</string>
+    <string name="error_loading_head_to_head">Error loading head to head!</string>
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
@@ -19,12 +21,14 @@
     <string name="general">General</string>
     <string name="google_play_services_error_cant_be_resolved">Sorry, but your Google Play Services error (%1$d) can\'t be resolved.</string>
     <string name="google_play_services_error_has_been_resolved">Google Play Services error has been resolved!</string>
+    <string name="head_to_head">Head to Head</string>
     <string name="last_poll">Last poll</string>
     <string name="log_viewer">Log Viewer</string>
     <string name="matches">Matches</string>
     <string name="must_be_charging">Must be charging</string>
     <string name="must_be_on_wifi">Must be on wifi</string>
     <string name="night">Night</string>
+    <string name="no_head_to_head_data">No head to head data</string>
     <string name="no_log_entries">No log entries</string>
     <string name="no_matches">No matches</string>
     <string name="no_player_data">No player data</string>
@@ -41,6 +45,7 @@
     <string name="rankings_polling_description">This feature will periodically poll GAR PR and let you know if its rankings have been updated. Note that the poll frequency is just an estimate, it\'s not guaranteed to run at these exact intervals.</string>
     <string name="rankings_polling_requires_google_play_services">Rankings polling requires Google Play Services in order to function. Click here to try to resolve the issues with your Google Play services installation.</string>
     <string name="rating_x">Rating: %1$s</string>
+    <string name="search">Search</string>
     <string name="settings">Settings</string>
     <string name="share">Share</string>
     <string name="share_x">Share %1$s</string>

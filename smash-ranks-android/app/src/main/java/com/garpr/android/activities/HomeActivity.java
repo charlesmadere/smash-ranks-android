@@ -16,6 +16,7 @@ import com.garpr.android.R;
 import com.garpr.android.adapters.HomeFragmentAdapter;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.misc.NotificationManager;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 
@@ -29,17 +30,20 @@ public class HomeActivity extends BaseActivity implements
 
     private static final String TAG = "HomeActivity";
 
-    @BindView(R.id.bottomNavigationView)
-    BottomNavigationView mBottomNavigationView;
-
-    @BindView(R.id.viewPager)
-    ViewPager mViewPager;
-
     @Inject
     NotificationManager mNotificationManager;
 
     @Inject
     RankingsPollingSyncManager mRankingsPollingSyncManager;
+
+    @Inject
+    RegionManager mRegionManager;
+
+    @BindView(R.id.bottomNavigationView)
+    BottomNavigationView mBottomNavigationView;
+
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
 
 
     public static Intent getLaunchIntent(final Context context) {
@@ -79,12 +83,12 @@ public class HomeActivity extends BaseActivity implements
                 mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_RANKINGS);
                 break;
 
-            case R.id.actionPlayers:
-                mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_PLAYERS);
-                break;
-
             case R.id.actionTournaments:
                 mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_TOURNAMENTS);
+                break;
+
+            case R.id.actionPlayers:
+                mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_PLAYERS);
                 break;
 
             default:
@@ -115,7 +119,8 @@ public class HomeActivity extends BaseActivity implements
         if (rankingsBundle == null) {
             setSubtitle("");
         } else {
-            setSubtitle(getString(R.string.updated_x, rankingsBundle.getTime().getDateString()));
+            setSubtitle(getString(R.string.x_updated_y, mRegionManager.getRegion(this),
+                    rankingsBundle.getTime().getDateString()));
         }
     }
 

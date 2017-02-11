@@ -13,6 +13,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayersAdapter;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.Searchable;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -24,7 +25,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PlayersFragment extends BaseFragment implements ApiListener<PlayersBundle>,
-        SwipeRefreshLayout.OnRefreshListener {
+        Searchable, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "PlayersFragment";
 
@@ -106,6 +107,11 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void search(@Nullable final String query) {
+        // TODO
     }
 
     private void showEmpty() {

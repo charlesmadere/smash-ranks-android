@@ -11,17 +11,19 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
+import com.garpr.android.activities.HeadToHeadActivity;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
-import com.garpr.android.models.FullTournament.Match;
+import com.garpr.android.models.FullTournament;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TournamentMatchItemView extends FrameLayout implements BaseAdapterView<Match>,
-        DialogInterface.OnClickListener, View.OnClickListener {
+public class TournamentMatchItemView extends FrameLayout implements
+        BaseAdapterView<FullTournament.Match>, DialogInterface.OnClickListener,
+        View.OnClickListener {
 
-    private Match mContent;
+    private FullTournament.Match mContent;
 
     @BindView(R.id.tvLoserName)
     TextView mLoserName;
@@ -61,7 +63,7 @@ public class TournamentMatchItemView extends FrameLayout implements BaseAdapterV
                 break;
 
             case 2:
-                // TODO
+                context.startActivity(HeadToHeadActivity.getLaunchIntent(context, mContent));
                 break;
 
             default:
@@ -91,7 +93,7 @@ public class TournamentMatchItemView extends FrameLayout implements BaseAdapterV
     }
 
     @Override
-    public void setContent(final Match content) {
+    public void setContent(final FullTournament.Match content) {
         mContent = content;
 
         mLoserName.setText(content.getLoserName());
