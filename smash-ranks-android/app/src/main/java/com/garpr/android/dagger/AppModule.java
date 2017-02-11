@@ -159,8 +159,10 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ServerApi providesServerApi(final GarPrApi garPrApi, final Timber timber) {
-        return new ServerApiImpl(garPrApi, timber);
+    ServerApi providesServerApi(final GarPrApi garPrApi,
+            final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
+            final RegionManager regionManager, final Timber timber) {
+        return new ServerApiImpl(garPrApi, rankingsPollingPreferenceStore, regionManager, timber);
     }
 
     @Provides

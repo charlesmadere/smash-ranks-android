@@ -2,6 +2,7 @@ package com.garpr.android.networking;
 
 import android.support.annotation.NonNull;
 
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.FullTournament;
@@ -11,6 +12,7 @@ import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.RegionsBundle;
 import com.garpr.android.models.TournamentsBundle;
+import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,11 +23,17 @@ public class ServerApiImpl implements ServerApi {
     private static final String TAG = "ServerApiImpl";
 
     private final GarPrApi mGarPrApi;
+    private final RankingsPollingPreferenceStore mRankingsPollingPreferenceStore;
+    private final RegionManager mRegionManager;
     private final Timber mTimber;
 
 
-    public ServerApiImpl(@NonNull final GarPrApi garPrApi, @NonNull final Timber timber) {
+    public ServerApiImpl(@NonNull final GarPrApi garPrApi,
+            @NonNull final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
+            @NonNull final RegionManager regionManager, @NonNull final Timber timber) {
         mGarPrApi = garPrApi;
+        mRankingsPollingPreferenceStore = rankingsPollingPreferenceStore;
+        mRegionManager = regionManager;
         mTimber = timber;
     }
 
@@ -132,8 +140,14 @@ public class ServerApiImpl implements ServerApi {
             @Override
             public void onResponse(final Call<RankingsBundle> call,
                     final Response<RankingsBundle> response) {
+                final RankingsBundle body = response.isSuccessful() ? response.body() : null;
+
+                if (body != null && region.equals(mRegionManager.getRegion())) {
+                    mRankingsPollingPreferenceStore.getRankingsDate().set(body.getTime());
+                }
+
                 if (response.isSuccessful()) {
-                    listener.success(response.body());
+                    listener.success(body);
                 } else {
                     mTimber.e(TAG, "getRankings (" + region + ") failed (code " + response.code()
                             + ")");
