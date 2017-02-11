@@ -32,6 +32,8 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
 
     private static final String TAG = "RankingsPollingService";
 
+    private SimpleDate mOldRankingsDate;
+
     @Inject
     DeviceUtils mDeviceUtils;
 
@@ -60,7 +62,8 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
 
     @Override
     public void failure() {
-        mTimber.e(TAG, "failure fetching rankings for sync");
+        mTimber.e(TAG, "canceling any notifications, failure fetching rankings");
+        mNotificationManager.cancelAll();
     }
 
     @Override
@@ -76,6 +79,13 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
 
     @Override
     public int onRunTask(final TaskParams taskParams) {
+        mOldRankingsDate = mRankingsPollingPreferenceStore.getRankingsDate().get();
+
+        if (mOldRankingsDate == null) {
+            mTimber.d(TAG, "canceling sync, the user has no rankings date");
+            return GcmNetworkManager.RESULT_SUCCESS;
+        }
+
         if (!mDeviceUtils.hasNetworkConnection()) {
             mTimber.d(TAG, "rescheduling sync, the device does not have a network connection");
             return GcmNetworkManager.RESULT_RESCHEDULE;
@@ -125,18 +135,19 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
 
     @Override
     public void success(@Nullable final RankingsBundle rankingsBundle) {
-        final Preference<SimpleDate> rankingsDate = mRankingsPollingPreferenceStore.getRankingsDate();
-
         if (rankingsBundle == null) {
-            rankingsDate.delete();
+            mTimber.d(TAG, "canceling any notifications, received a null rankings bundle");
+            mNotificationManager.cancelAll();
             return;
         }
 
-        final SimpleDate oldRankingsDate = rankingsDate.get();
-        final SimpleDate newRankingsDate = rankingsBundle.getTime();
-        rankingsDate.set(newRankingsDate);
+        final SimpleDate newRankingsDate = mRankingsPollingPreferenceStore.getRankingsDate().get();
 
-        if (oldRankingsDate != null && newRankingsDate.happenedAfter(oldRankingsDate)) {
+        if (newRankingsDate == null) {
+            // should be impossible...
+            mTimber.e(TAG, "new rankings date is null! canceling any notifications");
+            mNotificationManager.cancelAll();
+        } else if (newRankingsDate.happenedAfter(mOldRankingsDate)) {
             showRankingsUpdated();
         }
     }
