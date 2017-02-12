@@ -1,11 +1,12 @@
 package com.garpr.android.misc;
 
-import android.content.res.Resources;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.garpr.android.R;
 import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.LiteTournament;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
@@ -32,8 +33,15 @@ public final class ListUtils {
     }
 
     @Nullable
-    public static ArrayList<Object> createPlayerList(@NonNull final Resources resources,
-            @Nullable final Rating rating, @Nullable final MatchesBundle bundle) {
+    public static ArrayList<Object> createPlayerList(@NonNull final Context context,
+            @NonNull final RegionManager regionManager, @NonNull final FullPlayer fullPlayer,
+            @Nullable final MatchesBundle bundle) {
+        final String region = regionManager.getRegion(context);
+
+        // noinspection ConstantConditions
+        final Rating rating = fullPlayer.hasRatings() ? fullPlayer.getRatings().getRegion(region)
+                : null;
+
         if (rating == null && (bundle == null || !bundle.hasMatches())) {
             return  null;
         }
@@ -48,7 +56,7 @@ public final class ListUtils {
             if (list.isEmpty()) {
                 return null;
             } else {
-                list.add(resources.getString(R.string.no_matches));
+                list.add(context.getString(R.string.no_matches));
                 list.trimToSize();
                 return list;
             }

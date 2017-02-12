@@ -23,7 +23,6 @@ import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Ranking;
-import com.garpr.android.models.Rating;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
@@ -178,18 +177,12 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
 
         new AlertDialog.Builder(this)
                 .setItems(items, null)
-                .setNeutralButton(R.string.close, null)
                 .show();
     }
 
     private void showData() {
-        final String region = mRegionManager.getRegion(this);
-        // noinspection ConstantConditions
-        final Rating rating = mFullPlayer.hasRatings() ?
-                mFullPlayer.getRatings().getRegion(region) : null;
-
-        final ArrayList<Object> list = ListUtils.createPlayerList(getResources(), rating,
-                mMatchesBundle);
+        final ArrayList<Object> list = ListUtils.createPlayerList(this, mRegionManager,
+                mFullPlayer, mMatchesBundle);
 
         mError.setVisibility(View.GONE);
 
