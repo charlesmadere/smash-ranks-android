@@ -12,9 +12,11 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:maxLines="2"
-            android:padding="@dimen/root_padding_half"
             android:textColor="@color/win"
             tools:text="Mikkuz" />
+        <android.support.v4.widget.Space
+            android:layout_height="1dp"
+            android:layout_width="@dimen/root_padding" />
         <TextView
             android:ellipsize="end"
             android:gravity="center_vertical"
@@ -23,7 +25,6 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:maxLines="2"
-            android:padding="@dimen/root_padding_half"
             android:textColor="@color/lose"
             tools:text="gaR" />
     </LinearLayout>
