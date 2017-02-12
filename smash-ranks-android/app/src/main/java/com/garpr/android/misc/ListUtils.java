@@ -7,29 +7,37 @@ import android.support.annotation.Nullable;
 import com.garpr.android.R;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.FullPlayer;
+import com.garpr.android.models.HeadToHead;
 import com.garpr.android.models.LiteTournament;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Rating;
 import com.garpr.android.models.TournamentsBundle;
+import com.garpr.android.models.WinsLosses;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public final class ListUtils {
 
-    @Nullable
-    public static ArrayList<AbsTournament> createTournamentList(
-            @Nullable final TournamentsBundle bundle) {
-        if (bundle == null || !bundle.hasTournaments()) {
-            return null;
+    @NonNull
+    public static ArrayList<Object> createHeadToHeadList(@Nullable final HeadToHead headToHead) {
+        final ArrayList<Object> list = new ArrayList<>();
+
+        if (headToHead == null) {
+            list.add(new WinsLosses(0, 0));
+            return list;
         }
 
-        // noinspection ConstantConditions
-        final ArrayList<AbsTournament> tournaments = new ArrayList<>(bundle.getTournaments());
-        Collections.sort(tournaments, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER);
+        list.add(new WinsLosses(headToHead.getWins(), headToHead.getLosses()));
 
-        return tournaments;
+        if (!headToHead.hasMatches()) {
+            return list;
+        }
+
+        // TODO
+
+        return list;
     }
 
     @Nullable
@@ -80,6 +88,20 @@ public final class ListUtils {
 
         list.trimToSize();
         return list;
+    }
+
+    @Nullable
+    public static ArrayList<AbsTournament> createTournamentList(
+            @Nullable final TournamentsBundle bundle) {
+        if (bundle == null || !bundle.hasTournaments()) {
+            return null;
+        }
+
+        // noinspection ConstantConditions
+        final ArrayList<AbsTournament> tournaments = new ArrayList<>(bundle.getTournaments());
+        Collections.sort(tournaments, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER);
+
+        return tournaments;
     }
 
 }

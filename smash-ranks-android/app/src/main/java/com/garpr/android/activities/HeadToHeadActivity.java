@@ -13,6 +13,7 @@ import android.view.View;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.HeadToHeadAdapter;
+import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.HeadToHead;
@@ -131,7 +132,7 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     }
 
     private void showData() {
-        // TODO
+        mAdapter.set(ListUtils.createHeadToHeadList(mHeadToHead));
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
