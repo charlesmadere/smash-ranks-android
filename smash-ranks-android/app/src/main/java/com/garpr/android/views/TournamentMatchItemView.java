@@ -59,7 +59,7 @@ public class TournamentMatchItemView extends FrameLayout implements
 
             case 1:
                 context.startActivity(PlayerActivity.getLaunchIntent(context,
-                        mContent.getWinnerId(), mContent.getWinnerName()));
+                        mContent.getLoserId(), mContent.getLoserName()));
                 break;
 
             case 2:

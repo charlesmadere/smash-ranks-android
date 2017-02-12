@@ -1,10 +1,12 @@
 package com.garpr.android.models;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -113,6 +115,11 @@ public class SimpleDate implements Parcelable {
         }
 
         return mMonth;
+    }
+
+    public CharSequence getRelativeDateTimeText(final Context context) {
+        return DateUtils.getRelativeDateTimeString(context, mDate.getTime(),
+                DateUtils.DAY_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
     }
 
     public int getYear() {
