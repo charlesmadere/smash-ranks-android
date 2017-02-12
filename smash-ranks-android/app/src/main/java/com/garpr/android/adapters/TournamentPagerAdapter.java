@@ -52,12 +52,14 @@ public class TournamentPagerAdapter extends PagerAdapter {
             case POSITION_MATCHES: {
                 final TournamentMatchesView view = TournamentMatchesView.inflate(container);
                 view.setContent(mTournament);
+                container.addView(view);
                 return view;
             }
 
             case POSITION_PLAYERS: {
                 final TournamentPlayersView view = TournamentPlayersView.inflate(container);
                 view.setContent(mTournament);
+                container.addView(view);
                 return view;
             }
         }
