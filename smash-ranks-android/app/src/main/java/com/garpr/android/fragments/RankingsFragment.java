@@ -126,6 +126,7 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
     }
 
     private void showEmpty() {
+        mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mEmpty.setVisibility(View.VISIBLE);

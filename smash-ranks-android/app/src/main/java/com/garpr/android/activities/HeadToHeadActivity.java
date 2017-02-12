@@ -132,16 +132,25 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
 
     private void showData() {
         // TODO
+        mEmpty.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
         mRefreshLayout.setRefreshing(false);
     }
 
     private void showEmpty() {
-        // TODO
+        mAdapter.clear();
+        mRecyclerView.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.VISIBLE);
         mRefreshLayout.setRefreshing(false);
     }
 
     private void showError() {
-        // TODO
+        mAdapter.clear();
+        mRecyclerView.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
         mRefreshLayout.setRefreshing(false);
     }
 

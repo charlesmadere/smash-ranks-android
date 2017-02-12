@@ -116,6 +116,7 @@ public class TournamentsFragment extends BaseFragment implements ApiListener<Tou
     }
 
     private void showEmpty() {
+        mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mEmpty.setVisibility(View.VISIBLE);

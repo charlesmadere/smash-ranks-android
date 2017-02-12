@@ -115,6 +115,7 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
     }
 
     private void showEmpty() {
+        mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mEmpty.setVisibility(View.VISIBLE);
