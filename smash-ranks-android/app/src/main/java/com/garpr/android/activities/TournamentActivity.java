@@ -167,6 +167,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         super.onViewsBound();
 
         mRefreshLayout.setOnRefreshListener(this);
+        mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.root_padding));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
