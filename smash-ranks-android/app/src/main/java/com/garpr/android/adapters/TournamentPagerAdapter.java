@@ -2,19 +2,21 @@ package com.garpr.android.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.R;
+import com.garpr.android.misc.Searchable;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.views.TournamentMatchesView;
 import com.garpr.android.views.TournamentPlayersView;
 
-public class TournamentPagerAdapter extends PagerAdapter {
+public class TournamentPagerAdapter extends PagerAdapter implements Searchable {
 
-    public static final int POSITION_MATCHES = 0;
-    public static final int POSITION_PLAYERS = 1;
+    private static final int POSITION_MATCHES = 0;
+    private static final int POSITION_PLAYERS = 1;
 
     private final Context mContext;
     private final FullTournament mTournament;
@@ -70,6 +72,11 @@ public class TournamentPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(final View view, final Object object) {
         return view == object;
+    }
+
+    @Override
+    public void search(@Nullable final String query) {
+
     }
 
 }

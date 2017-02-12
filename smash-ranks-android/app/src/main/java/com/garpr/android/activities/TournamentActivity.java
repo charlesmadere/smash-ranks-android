@@ -129,6 +129,10 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miSearch:
+                // TODO
+                return true;
+
             case R.id.miShare:
                 mShareUtils.shareTournament(this, mFullTournament);
                 return true;
@@ -144,6 +148,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
         if (mFullTournament != null) {
+            menu.findItem(R.id.miSearch).setVisible(true);
             menu.findItem(R.id.miShare).setVisible(true);
             menu.findItem(R.id.miViewTournamentPage).setVisible(
                     !TextUtils.isEmpty(mFullTournament.getUrl()));

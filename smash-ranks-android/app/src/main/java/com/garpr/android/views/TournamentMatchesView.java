@@ -3,6 +3,8 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,12 +15,14 @@ import android.widget.FrameLayout;
 import com.garpr.android.R;
 import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.adapters.TournamentMatchesAdapter;
+import com.garpr.android.misc.Searchable;
 import com.garpr.android.models.FullTournament;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TournamentMatchesView extends FrameLayout implements BaseAdapterView<FullTournament> {
+public class TournamentMatchesView extends FrameLayout implements BaseAdapterView<FullTournament>,
+        Searchable {
 
     private TournamentMatchesAdapter mAdapter;
 
@@ -55,7 +59,14 @@ public class TournamentMatchesView extends FrameLayout implements BaseAdapterVie
         ButterKnife.bind(this);
 
         mAdapter = new TournamentMatchesAdapter(getContext());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void search(@Nullable final String query) {
+        // TODO
     }
 
     @Override
