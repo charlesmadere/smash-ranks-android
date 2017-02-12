@@ -8,11 +8,11 @@
     <color name="gray">#303030</color>
     <color name="gray_dark">#212121</color>
     <color name="gray_light">#666666</color>
-    <color name="lose">#EF566D</color>
+    <color name="lose">#C1455A</color>
     <color name="salmon">#C4636C</color>
     <color name="transparent">#00000000</color>
     <color name="warn">#FF7070</color>
-    <color name="win">#83E552</color>
+    <color name="win">#5DA33A</color>
     <color name="white">#FFFFFF</color>
     <color name="windowBackground">#E6E6E6</color>
 
