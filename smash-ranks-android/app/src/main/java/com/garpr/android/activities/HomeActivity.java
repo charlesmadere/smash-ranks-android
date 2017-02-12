@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -101,6 +102,10 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miSearch:
+                // TODO
+                return true;
+
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
@@ -115,6 +120,15 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        if (!TextUtils.isEmpty(getSubtitle())) {
+            menu.findItem(R.id.miSearch).setVisible(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void onRankingsBundleFetched(@Nullable final RankingsBundle rankingsBundle) {
         if (rankingsBundle == null) {
             setSubtitle("");
@@ -122,6 +136,8 @@ public class HomeActivity extends BaseActivity implements
             setSubtitle(getString(R.string.x_updated_y, mRegionManager.getRegion(this),
                     rankingsBundle.getTime().getDateString()));
         }
+
+        supportInvalidateOptionsMenu();
     }
 
     @Override

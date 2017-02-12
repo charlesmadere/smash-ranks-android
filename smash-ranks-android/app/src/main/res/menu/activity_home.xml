@@ -5,6 +5,7 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:id="@+id/miSearch"
         android:title="@string/search"
+        android:visible="false"
         compat:showAsAction="ifRoom" />
     <item
         android:icon="@drawable/ic_settings_white_24dp"
