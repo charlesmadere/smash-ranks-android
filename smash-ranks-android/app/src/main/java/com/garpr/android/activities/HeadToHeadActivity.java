@@ -82,7 +82,8 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
 
     @Override
     public void failure() {
-
+        mHeadToHead = null;
+        showError();
     }
 
     private void fetchHeadToHead() {
@@ -129,14 +130,35 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    private void showData() {
+        // TODO
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    private void showEmpty() {
+        // TODO
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    private void showError() {
+        // TODO
+        mRefreshLayout.setRefreshing(false);
+    }
+
     @Override
     protected boolean showUpNavigation() {
         return true;
     }
 
     @Override
-    public void success(@Nullable final HeadToHead object) {
+    public void success(@Nullable final HeadToHead headToHead) {
+        mHeadToHead = headToHead;
 
+        if (mHeadToHead != null && mHeadToHead.hasMatches()) {
+            showData();
+        } else {
+            showEmpty();
+        }
     }
 
 }
