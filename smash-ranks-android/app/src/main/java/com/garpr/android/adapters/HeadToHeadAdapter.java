@@ -18,9 +18,10 @@ public class HeadToHeadAdapter extends BaseMultiAdapter {
 
 
     static {
-        LAYOUT_KEY_MAP = new HashMap<>(3);
+        LAYOUT_KEY_MAP = new HashMap<>(4);
         LAYOUT_KEY_MAP.put(LiteTournament.class, R.layout.divider_tournament);
         LAYOUT_KEY_MAP.put(Match.class, R.layout.item_match);
+        LAYOUT_KEY_MAP.put(String.class, R.layout.item_string);
         LAYOUT_KEY_MAP.put(WinsLosses.class, R.layout.item_wins_losses);
     }
 

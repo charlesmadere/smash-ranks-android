@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.garpr.android.App;
@@ -39,7 +41,9 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     private HeadToHead mHeadToHead;
     private HeadToHeadAdapter mAdapter;
     private String mOpponentId;
+    private String mOpponentName;
     private String mPlayerId;
+    private String mPlayerName;
 
     @Inject
     RegionManager mRegionManager;
@@ -109,12 +113,61 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
         mOpponentId = intent.getStringExtra(EXTRA_OPPONENT_ID);
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID);
 
-        if (intent.hasExtra(EXTRA_PLAYER_NAME) && intent.hasExtra(EXTRA_OPPONENT_NAME)) {
-            setSubtitle(getString(R.string.x_vs_y, intent.getStringExtra(EXTRA_PLAYER_NAME),
-                    intent.getStringExtra(EXTRA_OPPONENT_NAME)));
+        if (intent.hasExtra(EXTRA_OPPONENT_NAME) && intent.hasExtra(EXTRA_PLAYER_NAME)) {
+            mOpponentName = intent.getStringExtra(EXTRA_OPPONENT_NAME);
+            mPlayerName = intent.getStringExtra(EXTRA_PLAYER_NAME);
+            setSubtitle();
         }
 
         fetchHeadToHead();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_head_to_head, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.miFilterLosses:
+                // TODO
+                underConstruction();
+                return true;
+
+            case R.id.miFilterWins:
+                // TODO
+                underConstruction();
+                return true;
+
+            case R.id.miViewOpponent:
+                startActivity(PlayerActivity.getLaunchIntent(this, mOpponentId, mOpponentName));
+                return true;
+
+            case R.id.miViewPlayer:
+                startActivity(PlayerActivity.getLaunchIntent(this, mPlayerId, mPlayerName));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        menu.findItem(R.id.miFilter).setVisible(mHeadToHead != null);
+
+        if (!TextUtils.isEmpty(mOpponentName) && !TextUtils.isEmpty(mPlayerName)) {
+            final MenuItem viewOpponent = menu.findItem(R.id.miViewOpponent);
+            viewOpponent.setTitle(getString(R.string.view_x, mOpponentName));
+            viewOpponent.setVisible(true);
+
+            final MenuItem viewPlayer = menu.findItem(R.id.miViewPlayer);
+            viewPlayer.setTitle(getString(R.string.view_x, mPlayerName));
+            viewPlayer.setVisible(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -131,11 +184,27 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    private void prepareMenuAndSubtitle() {
+        if (mHeadToHead != null) {
+            if (TextUtils.isEmpty(mOpponentName)) {
+                mOpponentName = mHeadToHead.getOpponent().getName();
+            }
+
+            if (TextUtils.isEmpty(mPlayerName)) {
+                mPlayerName = mHeadToHead.getPlayer().getName();
+            }
+        }
+
+        setSubtitle();
+        supportInvalidateOptionsMenu();
+    }
+
     private void showData() {
-        mAdapter.set(ListUtils.createHeadToHeadList(mHeadToHead));
+        mAdapter.set(ListUtils.createHeadToHeadList(this, mHeadToHead));
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+        prepareMenuAndSubtitle();
         mRefreshLayout.setRefreshing(false);
     }
 
@@ -144,6 +213,7 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
         mRecyclerView.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mEmpty.setVisibility(View.VISIBLE);
+        prepareMenuAndSubtitle();
         mRefreshLayout.setRefreshing(false);
     }
 
@@ -152,6 +222,7 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
         mRecyclerView.setVisibility(View.GONE);
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.VISIBLE);
+        prepareMenuAndSubtitle();
         mRefreshLayout.setRefreshing(false);
     }
 
@@ -160,14 +231,21 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
         return true;
     }
 
+    private void setSubtitle() {
+        if (TextUtils.isEmpty(getSubtitle()) && !TextUtils.isEmpty(mPlayerName) &&
+                !TextUtils.isEmpty(mOpponentName)) {
+            setSubtitle(getString(R.string.x_vs_y, mPlayerName, mOpponentName));
+        }
+    }
+
     @Override
     public void success(@Nullable final HeadToHead headToHead) {
         mHeadToHead = headToHead;
 
-        if (mHeadToHead != null && mHeadToHead.hasMatches()) {
-            showData();
-        } else {
+        if (mHeadToHead == null) {
             showEmpty();
+        } else {
+            showData();
         }
     }
 

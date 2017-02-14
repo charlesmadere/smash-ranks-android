@@ -99,14 +99,6 @@ public class SimpleDate implements Parcelable {
         return mDate;
     }
 
-    public String getDateString() {
-        if (mDateString == null) {
-            mDateString = FORMATS[0].format(mDate);
-        }
-
-        return mDateString;
-    }
-
     public int getMonth() {
         if (mMonth == null) {
             final Calendar calendar = Calendar.getInstance();
@@ -120,6 +112,14 @@ public class SimpleDate implements Parcelable {
     public CharSequence getRelativeDateTimeText(final Context context) {
         return DateUtils.getRelativeDateTimeString(context, mDate.getTime(),
                 DateUtils.DAY_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
+    }
+
+    public String getSimpleString() {
+        if (mDateString == null) {
+            mDateString = FORMATS[0].format(mDate);
+        }
+
+        return mDateString;
     }
 
     public int getYear() {

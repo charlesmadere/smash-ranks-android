@@ -21,6 +21,7 @@ import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.Match;
+import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
@@ -35,6 +36,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
     private static final String TAG = "TournamentActivity";
     private static final String CNAME = TournamentActivity.class.getCanonicalName();
+    private static final String EXTRA_TOURNAMENT_DATE = CNAME + ".TournamentDate";
     private static final String EXTRA_TOURNAMENT_ID = CNAME + ".TournamentId";
     private static final String EXTRA_TOURNAMENT_NAME = CNAME + ".TournamentName";
 
@@ -68,20 +70,26 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
     public static Intent getLaunchIntent(final Context context,
             @NonNull final AbsTournament tournament) {
-        return getLaunchIntent(context, tournament.getId(), tournament.getName());
+        return getLaunchIntent(context, tournament.getId(), tournament.getName(),
+                tournament.getDate());
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final Match match) {
-        return getLaunchIntent(context, match.getTournamentId(), match.getTournamentName());
+        return getLaunchIntent(context, match.getTournamentId(), match.getTournamentName(),
+                match.getTournamentDate());
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String tournamentId,
-            @Nullable final String tournamentName) {
+            @Nullable final String tournamentName, @Nullable final SimpleDate tournamentDate) {
         final Intent intent = new Intent(context, TournamentActivity.class)
                 .putExtra(EXTRA_TOURNAMENT_ID, tournamentId);
 
         if (!TextUtils.isEmpty(tournamentName)) {
             intent.putExtra(EXTRA_TOURNAMENT_NAME, tournamentName);
+        }
+
+        if (tournamentDate != null) {
+            intent.putExtra(EXTRA_TOURNAMENT_DATE, tournamentDate);
         }
 
         return intent;
@@ -112,6 +120,8 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
         final Intent intent = getIntent();
         mTournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID);
+
+        prepareMenuAndTitles();
 
         if (intent.hasExtra(EXTRA_TOURNAMENT_NAME)) {
             setTitle(intent.getStringExtra(EXTRA_TOURNAMENT_NAME));
@@ -171,10 +181,45 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
+    private void prepareMenuAndTitles() {
+        final Intent intent = getIntent();
+
+        if (TextUtils.isEmpty(getTitle())) {
+            String title = null;
+
+            if (mFullTournament != null) {
+                title = mFullTournament.getName();
+            } else if (intent.hasExtra(EXTRA_TOURNAMENT_NAME)) {
+                title = intent.getStringExtra(EXTRA_TOURNAMENT_NAME);
+            }
+
+            if (!TextUtils.isEmpty(title)) {
+                setTitle(title);
+            }
+        }
+
+        if (TextUtils.isEmpty(getSubtitle())) {
+            SimpleDate subtitle = null;
+
+            if (mFullTournament != null) {
+                subtitle = mFullTournament.getDate();
+            } else if (intent.hasExtra(EXTRA_TOURNAMENT_DATE)) {
+                subtitle = intent.getParcelableExtra(EXTRA_TOURNAMENT_DATE);
+            }
+
+            if (subtitle != null) {
+                setSubtitle(subtitle.getSimpleString());
+            }
+        }
+
+        supportInvalidateOptionsMenu();
+    }
+
     private void showEmpty() {
         mError.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
         mEmpty.setVisibility(View.VISIBLE);
+        prepareMenuAndTitles();
         mRefreshLayout.setRefreshing(false);
     }
 
@@ -182,6 +227,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         mEmpty.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
         mError.setVisibility(View.VISIBLE);
+        prepareMenuAndTitles();
         mRefreshLayout.setRefreshing(false);
     }
 
@@ -190,19 +236,9 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mViewPager.setVisibility(View.VISIBLE);
-
+        prepareMenuAndTitles();
         mRefreshLayout.setRefreshing(false);
         mRefreshLayout.setEnabled(false);
-
-        if (TextUtils.isEmpty(getTitle())) {
-            setTitle(mFullTournament.getName());
-        }
-
-        if (TextUtils.isEmpty(getSubtitle())) {
-            setSubtitle(mFullTournament.getDate().getDateString());
-        }
-
-        supportInvalidateOptionsMenu();
     }
 
     @Override

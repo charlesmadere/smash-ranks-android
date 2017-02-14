@@ -45,9 +45,8 @@ public class ShareUtilsImpl implements ShareUtils {
             context.startActivity(intent);
         } catch (final ActivityNotFoundException e) {
             mTimber.e(TAG, "Unable to open browser to URI: \"" + uri + "\"", e);
+            Toast.makeText(context, R.string.unable_to_open_link, Toast.LENGTH_LONG).show();
         }
-
-        Toast.makeText(context, R.string.unable_to_open_link, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:id="@+id/miFilter"
+        android:title="@string/filter"
+        android:visible="false"
+        compat:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/miFilterWins"
+                android:title="@string/show_wins" />
+            <item
+                android:id="@+id/miFilterLosses"
+                android:title="@string/show_losses" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/miViewPlayer"
+        android:title="@string/view_player"
+        android:visible="false"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/miViewOpponent"
+        android:title="@string/view_opponent"
+        android:visible="false"
+        compat:showAsAction="never" />
+</menu>

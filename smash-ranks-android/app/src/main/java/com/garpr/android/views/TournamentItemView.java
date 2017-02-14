@@ -61,7 +61,7 @@ public class TournamentItemView extends FrameLayout implements BaseAdapterView<A
         mContent = content;
 
         mName.setText(mContent.getName());
-        mDate.setText(mContent.getDate().getDateString());
+        mDate.setText(mContent.getDate().getSimpleString());
     }
 
 }

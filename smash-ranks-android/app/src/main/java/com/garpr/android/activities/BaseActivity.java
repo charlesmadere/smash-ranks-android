@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -142,6 +143,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     @Override
     public String toString() {
         return getActivityName();
+    }
+
+    protected void underConstruction() {
+        Toast.makeText(this, R.string.under_construction, Toast.LENGTH_SHORT).show();
     }
 
 }

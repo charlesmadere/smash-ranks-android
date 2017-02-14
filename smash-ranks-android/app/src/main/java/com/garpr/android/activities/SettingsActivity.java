@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
+import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.GoogleApiWrapper;
+import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.PollFrequency;
 import com.garpr.android.preferences.Preference;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
@@ -39,6 +41,9 @@ public class SettingsActivity extends BaseActivity {
 
     @Inject
     RankingsPollingSyncManager mRankingsPollingSyncManager;
+
+    @Inject
+    ShareUtils mShareUtils;
 
     @BindView(R.id.cpvMustBeCharging)
     CheckablePreferenceView mMustBeCharging;
@@ -77,6 +82,11 @@ public class SettingsActivity extends BaseActivity {
         refresh();
     }
 
+    @OnClick(R.id.spvCharlesTwitter)
+    void onCharlesTwitterClick() {
+        mShareUtils.openUrl(this, Constants.CHARLES_TWITTER_URL);
+    }
+
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +102,11 @@ public class SettingsActivity extends BaseActivity {
         mRankingsPollingPreferenceStore.getEnabled().removeListener(mOnRankingsPollingEnabledChange);
         mRankingsPollingPreferenceStore.getPollFrequency().removeListener(mOnPollFrequencyChange);
         mRankingsPollingPreferenceStore.getWifiRequired().removeListener(mOnWifiRequiredChange);
+    }
+
+    @OnClick(R.id.spvGarTwitter)
+    void onGarTwitterClick() {
+        mShareUtils.openUrl(this, Constants.GAR_TWITTER_URL);
     }
 
     @OnClick(R.id.tvGooglePlayServicesError)
@@ -131,6 +146,11 @@ public class SettingsActivity extends BaseActivity {
     @OnClick(R.id.spvLogViewer)
     void onLogViewerClick() {
         startActivity(LogViewerActivity.getLaunchIntent(this));
+    }
+
+    @OnClick(R.id.spvGitHub)
+    void onGitHubClick() {
+        mShareUtils.openUrl(this, Constants.GITHUB_URL);
     }
 
     @Override

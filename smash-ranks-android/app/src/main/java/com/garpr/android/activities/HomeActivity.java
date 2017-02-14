@@ -134,7 +134,7 @@ public class HomeActivity extends BaseActivity implements
             setSubtitle("");
         } else {
             setSubtitle(getString(R.string.x_updated_y, mRegionManager.getRegion(this),
-                    rankingsBundle.getTime().getDateString()));
+                    rankingsBundle.getTime().getSimpleString()));
         }
 
         supportInvalidateOptionsMenu();

@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
@@ -36,14 +35,14 @@ public class WinsLossesView extends AppCompatTextView implements BaseAdapterView
     }
 
     private void calculateRects() {
-        if (!ViewCompat.isAttachedToWindow(this) || !ViewCompat.isLaidOut(this) || mContent == null) {
+        final int height = getHeight();
+        final int width = getWidth();
+
+        if (height == 0 || width == 0 || mContent == null) {
             mLossesRect.setEmpty();
             mWinsRect.setEmpty();
             return;
         }
-
-        final int height = getHeight();
-        final int width = getWidth();
 
         final int barThickness = height / 4;
         final int top = (height - barThickness) / 2;

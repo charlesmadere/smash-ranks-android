@@ -36,7 +36,7 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
-                android:layout_marginBottom="@dimen/root_padding_double"
+                android:layout_marginBottom="@dimen/root_padding"
                 style="@style/SettingsCard">
                 <LinearLayout
                     style="@style/SettingsCardContainer">
@@ -77,6 +77,31 @@
                         style="@style/PreferenceView" />
                     <com.garpr.android.views.LastPollPreferenceView
                         android:id="@+id/lastPollPreferenceView"
+                        style="@style/PreferenceView" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_marginBottom="@dimen/root_padding_double"
+                style="@style/SettingsCard">
+                <LinearLayout
+                    style="@style/SettingsCardContainer">
+                    <TextView
+                        android:text="@string/miscellaneous"
+                        style="@style/SettingsCardTitle" />
+                    <com.garpr.android.views.SimplePreferenceView
+                        android:id="@+id/spvCharlesTwitter"
+                        app:simpleDescriptionText="@string/charles_twitter_url"
+                        app:simpleTitleText="@string/app_by_charles_madere"
+                        style="@style/PreferenceView" />
+                    <com.garpr.android.views.SimplePreferenceView
+                        android:id="@+id/spvGarTwitter"
+                        app:simpleDescriptionText="@string/gar_twitter_url"
+                        app:simpleTitleText="@string/website_by_gar"
+                        style="@style/PreferenceView" />
+                    <com.garpr.android.views.SimplePreferenceView
+                        android:id="@+id/spvGitHub"
+                        app:simpleDescriptionText="@string/contribute_your_changes"
+                        app:simpleTitleText="@string/open_source_on_github"
                         style="@style/PreferenceView" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>

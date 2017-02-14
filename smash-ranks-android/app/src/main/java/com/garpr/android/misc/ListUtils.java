@@ -21,21 +21,27 @@ import java.util.Collections;
 public final class ListUtils {
 
     @NonNull
-    public static ArrayList<Object> createHeadToHeadList(@Nullable final HeadToHead headToHead) {
+    public static ArrayList<Object> createHeadToHeadList(@NonNull final Context context,
+            @Nullable final HeadToHead headToHead) {
         final ArrayList<Object> list = new ArrayList<>();
 
         if (headToHead == null) {
             list.add(new WinsLosses(0, 0));
+            list.add(context.getString(R.string.no_matches));
+            list.trimToSize();
             return list;
         }
 
         list.add(new WinsLosses(headToHead.getWins(), headToHead.getLosses()));
 
         if (!headToHead.hasMatches()) {
+            list.add(context.getString(R.string.no_matches));
+            list.trimToSize();
             return list;
         }
 
-        // TODO
+        list.addAll(headToHead.getMatches());
+        list.trimToSize();
 
         return list;
     }
