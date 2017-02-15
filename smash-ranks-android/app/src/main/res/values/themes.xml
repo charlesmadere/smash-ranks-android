@@ -18,7 +18,7 @@
         <item name="colorAccent">@color/salmon</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowBackground">@color/window_background</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

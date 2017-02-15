@@ -146,6 +146,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     }
 
     protected void underConstruction() {
+        // TODO
         Toast.makeText(this, R.string.under_construction, Toast.LENGTH_SHORT).show();
     }
 

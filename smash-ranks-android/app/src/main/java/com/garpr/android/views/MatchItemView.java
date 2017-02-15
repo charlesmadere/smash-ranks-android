@@ -1,8 +1,10 @@
 package com.garpr.android.views;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.garpr.android.R;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
+import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.models.Match;
 
 import butterknife.BindView;
@@ -39,11 +42,21 @@ public class MatchItemView extends FrameLayout implements BaseAdapterView<Match>
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    public Match getContent() {
+        return mContent;
+    }
+
     @Override
     public void onClick(final View v) {
         final Context context = getContext();
-        context.startActivity(PlayerActivity.getLaunchIntent(context, mContent.getOpponentId(),
-                mContent.getOpponentName()));
+        final Activity activity = MiscUtils.optActivity(context);
+
+        if (activity instanceof OnClickListener) {
+            ((OnClickListener) activity).onClick(this);
+        } else {
+            context.startActivity(PlayerActivity.getLaunchIntent(context, mContent.getOpponentId(),
+                    mContent.getOpponentName()));
+        }
     }
 
     @Override
@@ -58,6 +71,24 @@ public class MatchItemView extends FrameLayout implements BaseAdapterView<Match>
         mContent = content;
 
         mName.setText(mContent.getOpponentName());
+
+        switch (mContent.getResult()) {
+            case LOSE:
+                mName.setTextColor(ContextCompat.getColor(getContext(), R.color.lose));
+                break;
+
+            case WIN:
+                mName.setTextColor(ContextCompat.getColor(getContext(), R.color.win));
+                break;
+
+            default:
+                throw new RuntimeException("unknown result: " + mContent.getResult());
+        }
+    }
+
+
+    public interface OnClickListener {
+        void onClick(final MatchItemView v);
     }
 
 }

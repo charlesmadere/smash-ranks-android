@@ -70,6 +70,7 @@
     <string name="under_construction">Under construction!</string>
     <string name="x_updated_y">%1$s updated %2$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
+    <string name="view">View</string>
     <string name="view_x">View %1$s</string>
     <string name="view_logs">View logs</string>
     <string name="view_logs_description">Read logs normally only visible via Android\'s Logcat. Really only useful for debug purposes.</string>
@@ -77,7 +78,7 @@
     <string name="view_player">View player</string>
     <string name="view_tournament_page">View tournament page</string>
     <string name="x_vs_y">%1$s vs %2$s</string>
-    <string name="website_by_gar">Website by Gar</string>
+    <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
     <string name="will_only_poll_if_connected_to_wifi">Will only poll if connected to wifi</string>
     <string name="will_only_poll_if_plugged_in">Will only poll if plugged in</string>

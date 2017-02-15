@@ -15,7 +15,7 @@
     </style>
 
     <style name="DividerItem">
-        <item name="android:background">@color/cardBackground</item>
+        <item name="android:background">@color/card_background</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:gravity">bottom</item>
@@ -48,7 +48,7 @@
     </style>
 
     <style name="ListItem.WithBackground">
-        <item name="android:background">@color/cardBackground</item>
+        <item name="android:background">@color/card_background</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>

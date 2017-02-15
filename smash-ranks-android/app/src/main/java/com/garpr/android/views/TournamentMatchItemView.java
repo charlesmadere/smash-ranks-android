@@ -82,6 +82,7 @@ public class TournamentMatchItemView extends FrameLayout implements
 
         new AlertDialog.Builder(getContext())
                 .setItems(items, this)
+                .setTitle(R.string.view)
                 .show();
     }
 

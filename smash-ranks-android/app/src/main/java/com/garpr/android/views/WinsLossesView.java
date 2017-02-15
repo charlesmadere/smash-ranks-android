@@ -68,13 +68,13 @@ public class WinsLossesView extends AppCompatTextView implements BaseAdapterView
     private void initialize() {
         mLossesPaint = new Paint();
         mLossesPaint.setAntiAlias(true);
-        mLossesPaint.setColor(ContextCompat.getColor(getContext(), R.color.lose));
+        mLossesPaint.setColor(ContextCompat.getColor(getContext(), R.color.lose_background));
         mLossesPaint.setDither(true);
         mLossesPaint.setStyle(Paint.Style.FILL);
 
         mWinsPaint = new Paint();
         mWinsPaint.setAntiAlias(true);
-        mWinsPaint.setColor(ContextCompat.getColor(getContext(), R.color.win));
+        mWinsPaint.setColor(ContextCompat.getColor(getContext(), R.color.win_background));
         mWinsPaint.setDither(true);
         mWinsPaint.setStyle(Paint.Style.FILL);
 

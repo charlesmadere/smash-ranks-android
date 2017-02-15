@@ -58,6 +58,16 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        if (mViewPager.getCurrentItem() != 0) {
+            mViewPager.setCurrentItem(0);
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
@@ -104,6 +114,7 @@ public class HomeActivity extends BaseActivity implements
         switch (item.getItemId()) {
             case R.id.miSearch:
                 // TODO
+                underConstruction();
                 return true;
 
             case R.id.miSettings:

@@ -96,7 +96,7 @@
                     <com.garpr.android.views.SimplePreferenceView
                         android:id="@+id/spvGarTwitter"
                         app:simpleDescriptionText="@string/gar_twitter_url"
-                        app:simpleTitleText="@string/website_by_gar"
+                        app:simpleTitleText="@string/website_by_ivan_van"
                         style="@style/PreferenceView" />
                     <com.garpr.android.views.SimplePreferenceView
                         android:id="@+id/spvGitHub"

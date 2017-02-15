@@ -7,12 +7,12 @@
         android:id="@+id/tvRating"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_large"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_xlarge"
         tools:text="Rating: 39.101" />
     <TextView
         android:id="@+id/tvUnadjusted"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_large"
         tools:text="Unadjusted: 45.679 (+/- 2.193)" />
 </com.garpr.android.views.RatingItemView>

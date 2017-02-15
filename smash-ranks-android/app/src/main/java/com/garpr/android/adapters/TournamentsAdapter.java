@@ -12,10 +12,17 @@ public class TournamentsAdapter extends BaseAdapter<AbsTournament> {
 
     public TournamentsAdapter(@NonNull final Context context) {
         super(context);
+        setHasStableIds(true);
     }
 
     public TournamentsAdapter(@NonNull final LayoutInflater layoutInflater) {
         super(layoutInflater);
+        setHasStableIds(true);
+    }
+
+    @Override
+    public long getItemId(final int position) {
+        return getItem(position).hashCode();
     }
 
     @LayoutRes

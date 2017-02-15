@@ -17,8 +17,10 @@ import com.garpr.android.R;
 import com.garpr.android.adapters.HeadToHeadAdapter;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.HeadToHead;
+import com.garpr.android.models.Match;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
@@ -63,6 +65,12 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     @BindView(R.id.error)
     View mError;
 
+
+    public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player,
+            @NonNull final Match match) {
+        return getLaunchIntent(context, player.getId(), player.getName(), match.getOpponentId(),
+                match.getOpponentName());
+    }
 
     public static Intent getLaunchIntent(final Context context,
             @NonNull final FullTournament.Match match) {

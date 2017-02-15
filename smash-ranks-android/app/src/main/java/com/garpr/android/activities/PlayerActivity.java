@@ -21,10 +21,12 @@ import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullPlayer;
+import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Ranking;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
+import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.RefreshLayout;
 
 import java.util.ArrayList;
@@ -33,7 +35,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class PlayerActivity extends BaseActivity implements MatchItemView.OnClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "PlayerActivity";
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
@@ -106,6 +109,12 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     @Override
+    public void onClick(final MatchItemView v) {
+        final Match match = v.getContent();
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, mFullPlayer, match));
+    }
+
+    @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
@@ -134,6 +143,11 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
                 showAliases();
                 return true;
 
+            case R.id.miSearch:
+                // TODO
+                underConstruction();
+                return true;
+
             case R.id.miShare:
                 mShareUtils.sharePlayer(this, mFullPlayer);
                 return true;
@@ -145,11 +159,9 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
         if (mFullPlayer != null) {
+            menu.findItem(R.id.miSearch).setVisible(true);
             menu.findItem(R.id.miShare).setVisible(true);
-
-            if (mFullPlayer.hasAliases()) {
-                menu.findItem(R.id.miAliases).setVisible(true);
-            }
+            menu.findItem(R.id.miAliases).setVisible(mFullPlayer.hasAliases());
         }
 
         return super.onPrepareOptionsMenu(menu);
@@ -177,6 +189,7 @@ public class PlayerActivity extends BaseActivity implements SwipeRefreshLayout.O
 
         new AlertDialog.Builder(this)
                 .setItems(items, null)
+                .setTitle(R.string.aliases)
                 .show();
     }
 

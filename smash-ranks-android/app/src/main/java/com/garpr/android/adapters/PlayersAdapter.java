@@ -14,10 +14,17 @@ public class PlayersAdapter extends BaseAdapter<AbsPlayer> {
 
     public PlayersAdapter(@NonNull final Context context) {
         super(context);
+        setHasStableIds(true);
     }
 
     public PlayersAdapter(@NonNull final LayoutInflater layoutInflater) {
         super(layoutInflater);
+        setHasStableIds(true);
+    }
+
+    @Override
+    public long getItemId(final int position) {
+        return getItem(position).hashCode();
     }
 
     @LayoutRes

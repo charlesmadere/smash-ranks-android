@@ -141,6 +141,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         switch (item.getItemId()) {
             case R.id.miSearch:
                 // TODO
+                underConstruction();
                 return true;
 
             case R.id.miShare:

@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.CrashlyticsWrapperImpl;
+import com.garpr.android.misc.DeepLinkUtils;
+import com.garpr.android.misc.DeepLinkUtilsImpl;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
@@ -77,6 +79,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    DeepLinkUtils providesDeepLinkUtils(final RegionManager regionManager, final Timber timber) {
+        return new DeepLinkUtilsImpl(regionManager, mGarPrWebUrl, timber);
+    }
+
+    @Provides
+    @Singleton
     DeviceUtils providesDeviceUtils() {
         return new DeviceUtilsImpl(mApplication);
     }
@@ -144,6 +152,16 @@ public class AppModule {
 
     @Provides
     @Singleton
+    RankingsPollingSyncManager providesRankingsPollingSyncManager(
+            final GoogleApiWrapper googleApiWrapper,
+            final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
+            final Timber timber) {
+        return new RankingsPollingSyncManagerImpl(googleApiWrapper, rankingsPollingPreferenceStore,
+                timber);
+    }
+
+    @Provides
+    @Singleton
     RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore) {
         return new RegionManagerImpl(generalPreferenceStore.getCurrentRegion());
     }
@@ -169,16 +187,6 @@ public class AppModule {
     @Singleton
     ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
         return new ShareUtilsImpl(regionManager, mGarPrWebUrl, timber);
-    }
-
-    @Provides
-    @Singleton
-    RankingsPollingSyncManager providesRankingsPollingSyncManager(
-            final GoogleApiWrapper googleApiWrapper,
-            final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final Timber timber) {
-        return new RankingsPollingSyncManagerImpl(googleApiWrapper, rankingsPollingPreferenceStore,
-                timber);
     }
 
     @Provides

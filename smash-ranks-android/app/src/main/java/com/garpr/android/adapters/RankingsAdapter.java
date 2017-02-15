@@ -14,10 +14,17 @@ public class RankingsAdapter extends BaseAdapter<Ranking> {
 
     public RankingsAdapter(@NonNull final Context context) {
         super(context);
+        setHasStableIds(true);
     }
 
     public RankingsAdapter(@NonNull final LayoutInflater layoutInflater) {
         super(layoutInflater);
+        setHasStableIds(true);
+    }
+
+    @Override
+    public long getItemId(final int position) {
+        return getItem(position).hashCode();
     }
 
     @LayoutRes

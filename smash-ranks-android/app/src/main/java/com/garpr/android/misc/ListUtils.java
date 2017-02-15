@@ -40,7 +40,8 @@ public final class ListUtils {
             return list;
         }
 
-        list.addAll(headToHead.getMatches());
+        // noinspection ConstantConditions
+        list.addAll(createSortedTournamentAndMatchList(headToHead.getMatches()));
         list.trimToSize();
 
         return list;
@@ -77,12 +78,21 @@ public final class ListUtils {
         }
 
         // noinspection ConstantConditions
-        final ArrayList<Match> matches = new ArrayList<>(bundle.getMatches());
-        Collections.sort(matches, Match.REVERSE_CHRONOLOGICAL_ORDER);
+        list.addAll(createSortedTournamentAndMatchList(bundle.getMatches()));
+        list.trimToSize();
 
+        return list;
+    }
+
+    private static ArrayList<Object> createSortedTournamentAndMatchList(
+            @NonNull final ArrayList<Match> matches) {
+        final ArrayList<Match> matchesCopy = new ArrayList<>(matches);
+        Collections.sort(matchesCopy, Match.REVERSE_CHRONOLOGICAL_ORDER);
+
+        final ArrayList<Object> list = new ArrayList<>();
         String tournamentId = null;
 
-        for (final Match match : matches) {
+        for (final Match match : matchesCopy) {
             if (tournamentId == null || !match.getTournamentId().equals(tournamentId)) {
                 tournamentId = match.getTournamentId();
                 list.add(new LiteTournament(tournamentId, match.getTournamentName(),
@@ -92,7 +102,6 @@ public final class ListUtils {
             list.add(match);
         }
 
-        list.trimToSize();
         return list;
     }
 

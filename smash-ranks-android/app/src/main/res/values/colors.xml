@@ -2,19 +2,21 @@
 <resources>
 
     <color name="black">#000000</color>
-    <color name="cardBackground">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
     <color name="debug">@color/black</color>
     <color name="error">#FF2222</color>
     <color name="gray">#303030</color>
     <color name="gray_dark">#212121</color>
     <color name="gray_light">#666666</color>
     <color name="lose">#C1455A</color>
+    <color name="lose_background">#44C1455A</color>
     <color name="salmon">#C4636C</color>
     <color name="transparent">#00000000</color>
     <color name="warn">#FF7070</color>
     <color name="win">#5DA33A</color>
+    <color name="win_background">#445DA33A</color>
     <color name="white">#FFFFFF</color>
-    <color name="windowBackground">#E6E6E6</color>
+    <color name="window_background">#E6E6E6</color>
 
     <color name="r">#FF0000</color>
     <color name="g">#00FF00</color>
