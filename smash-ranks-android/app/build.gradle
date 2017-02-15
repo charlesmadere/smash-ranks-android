@@ -69,8 +69,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:10.0.1'
 
     // Jake Wharton's ButterKnife
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    apt 'com.jakewharton:butterknife-compiler:8.5.1'
 
     // Robolectric
     testCompile "org.robolectric:robolectric:3.2.2"
