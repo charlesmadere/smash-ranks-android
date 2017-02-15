@@ -71,7 +71,8 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
             return null;
         }
 
-        mTimber.d(TAG, "Attempting to deep link to \"" + uri + "\"");
+        mTimber.d(TAG, "Attempting to deep link to \"" + uri + "\", current region is \"" +
+                mRegionManager.getRegion() + "\"");
 
         final String path;
 
@@ -87,44 +88,53 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
             return null;
         }
 
-        final String[] paths = path.split("/");
+        final String[] splits = path.split("/");
 
-        if (paths.length == 0) {
+        if (splits.length == 0) {
             mTimber.d(TAG, "Deep link's path split is empty");
             return null;
         }
 
-        final String bang = paths[0];
+        final String bang = splits[0];
 
         if (!"#".equals(bang)) {
             mTimber.w(TAG, "First path split is not a bang");
             return null;
         }
 
-        if (paths.length == 1) {
+        if (splits.length == 1) {
             return null;
         }
 
-        final String region = paths[1];
+        final String region = splits[1];
 
         if (TextUtils.isEmpty(region) || TextUtils.getTrimmedLength(region) == 0) {
             mTimber.w(TAG, "Region is null / empty / whitespace");
             return null;
         }
 
-        if (paths.length == 2 && region.equalsIgnoreCase(mRegionManager.getRegion())) {
+        final boolean sameRegion = region.equalsIgnoreCase(mRegionManager.getRegion());
+
+        if (sameRegion && splits.length == 2) {
             return null;
         }
 
         final List<Intent> intentStack = new ArrayList<>();
         intentStack.add(HomeActivity.getLaunchIntent(context));
 
-        // TODO
-        // need activities to view rankings for other regions
+        final String page = splits[2];
 
-        final String page = paths[2];
+        if (PLAYERS.equalsIgnoreCase(page)) {
+            buildPlayersIntentStack(intentStack, splits, region, sameRegion);
+        } else if (RANKINGS.equalsIgnoreCase(page)) {
+            buildRankingsIntentStack(intentStack, splits, region, sameRegion);
+        } else if (TOURNAMENTS.equalsIgnoreCase(page)) {
+            buildTournamentsIntentStack(intentStack, splits, region, sameRegion);
+        } else {
+            mTimber.w(TAG, "Unknown page \"" + page + "\"");
+        }
 
-        return createIntentStack(intentStack);
+        return buildIntentStack(intentStack);
     }
 
     @Nullable
@@ -139,10 +149,26 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
     }
 
     @NonNull
-    private Intent[] createIntentStack(@NonNull final List<Intent> intentStack) {
+    private Intent[] buildIntentStack(@NonNull final List<Intent> intentStack) {
+        mTimber.d(TAG, "Creating Intent stack of size " + intentStack.size());
         final Intent[] array = new Intent[intentStack.size()];
         intentStack.toArray(array);
         return array;
+    }
+
+    private void buildPlayersIntentStack(@NonNull final List<Intent> intentStack,
+            @NonNull final String[] splits, @NonNull final String region, final boolean sameRegion) {
+        // TODO
+    }
+
+    private void buildRankingsIntentStack(@NonNull final List<Intent> intentStack,
+            @NonNull final String[] splits, @NonNull final String region, final boolean sameRegion) {
+        // TODO
+    }
+
+    private void buildTournamentsIntentStack(@NonNull final List<Intent> intentStack,
+            @NonNull final String[] splits, @NonNull final String region, final boolean sameRegion) {
+        // TODO
     }
 
 }
