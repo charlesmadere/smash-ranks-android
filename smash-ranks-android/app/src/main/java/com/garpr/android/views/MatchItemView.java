@@ -73,6 +73,11 @@ public class MatchItemView extends FrameLayout implements BaseAdapterView<Match>
         mName.setText(mContent.getOpponentName());
 
         switch (mContent.getResult()) {
+            case EXCLUDED:
+                mName.setTextColor(MiscUtils.getAttrColor(getContext(),
+                        android.R.attr.textColorSecondary));
+                break;
+
             case LOSE:
                 mName.setTextColor(ContextCompat.getColor(getContext(), R.color.lose));
                 break;
