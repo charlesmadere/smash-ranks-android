@@ -103,6 +103,9 @@ public class Match implements Parcelable {
 
 
     public enum Result implements Parcelable {
+        @SerializedName("excluded")
+        EXCLUDED,
+
         @SerializedName("lose")
         LOSE,
 
