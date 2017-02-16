@@ -9,6 +9,11 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.garpr.android.activities.HomeActivity;
+import com.garpr.android.activities.PlayerActivity;
+import com.garpr.android.activities.PlayersActivity;
+import com.garpr.android.activities.RankingsActivity;
+import com.garpr.android.activities.TournamentActivity;
+import com.garpr.android.activities.TournamentsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,18 +100,7 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
             return null;
         }
 
-        final String bang = splits[0];
-
-        if (!"#".equals(bang)) {
-            mTimber.w(TAG, "First path split is not a bang");
-            return null;
-        }
-
-        if (splits.length == 1) {
-            return null;
-        }
-
-        final String region = splits[1];
+        final String region = splits[0];
 
         if (TextUtils.isEmpty(region) || TextUtils.getTrimmedLength(region) == 0) {
             mTimber.w(TAG, "Region is null / empty / whitespace");
@@ -115,21 +109,19 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
 
         final boolean sameRegion = region.equalsIgnoreCase(mRegionManager.getRegion());
 
-        if (sameRegion && splits.length == 2) {
+        if (sameRegion && splits.length == 1) {
             return null;
         }
 
         final List<Intent> intentStack = new ArrayList<>();
-        intentStack.add(HomeActivity.getLaunchIntent(context));
-
-        final String page = splits[2];
+        final String page = splits[1];
 
         if (PLAYERS.equalsIgnoreCase(page)) {
-            buildPlayersIntentStack(intentStack, splits, region, sameRegion);
+            buildPlayersIntentStack(context, intentStack, region, sameRegion, splits);
         } else if (RANKINGS.equalsIgnoreCase(page)) {
-            buildRankingsIntentStack(intentStack, splits, region, sameRegion);
+            buildRankingsIntentStack(context, intentStack, region, sameRegion);
         } else if (TOURNAMENTS.equalsIgnoreCase(page)) {
-            buildTournamentsIntentStack(intentStack, splits, region, sameRegion);
+            buildTournamentsIntentStack(context, intentStack, region, sameRegion, splits);
         } else {
             mTimber.w(TAG, "Unknown page \"" + page + "\"");
         }
@@ -148,27 +140,71 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
         }
     }
 
-    @NonNull
-    private Intent[] buildIntentStack(@NonNull final List<Intent> intentStack) {
+    @Nullable
+    private Intent[] buildIntentStack(@Nullable final List<Intent> intentStack) {
+        if (intentStack == null || intentStack.isEmpty()) {
+            return null;
+        }
+
         mTimber.d(TAG, "Creating Intent stack of size " + intentStack.size());
         final Intent[] array = new Intent[intentStack.size()];
         intentStack.toArray(array);
+
         return array;
     }
 
-    private void buildPlayersIntentStack(@NonNull final List<Intent> intentStack,
-            @NonNull final String[] splits, @NonNull final String region, final boolean sameRegion) {
-        // TODO
+    private void buildPlayersIntentStack(final Context context, final List<Intent> intentStack,
+            final String region, final boolean sameRegion, final String[] splits) {
+        if (sameRegion) {
+            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_PLAYERS));
+        } else {
+            intentStack.add(HomeActivity.getLaunchIntent(context));
+            intentStack.add(PlayersActivity.getLaunchIntent(context, region));
+        }
+
+        if (splits.length < 3) {
+            return;
+        }
+
+        final String playerId = splits[2];
+
+        if (TextUtils.isEmpty(playerId) || TextUtils.getTrimmedLength(playerId) == 0) {
+            return;
+        }
+
+        intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null));
     }
 
-    private void buildRankingsIntentStack(@NonNull final List<Intent> intentStack,
-            @NonNull final String[] splits, @NonNull final String region, final boolean sameRegion) {
-        // TODO
+    private void buildRankingsIntentStack(final Context context, final List<Intent> intentStack,
+            final String region, final boolean sameRegion) {
+        if (sameRegion) {
+            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_RANKINGS));
+        } else {
+            intentStack.add(HomeActivity.getLaunchIntent(context));
+            intentStack.add(RankingsActivity.getLaunchIntent(context, region));
+        }
     }
 
-    private void buildTournamentsIntentStack(@NonNull final List<Intent> intentStack,
-            @NonNull final String[] splits, @NonNull final String region, final boolean sameRegion) {
-        // TODO
+    private void buildTournamentsIntentStack(final Context context, final List<Intent> intentStack,
+            final String region, final boolean sameRegion, final String[] splits) {
+        if (sameRegion) {
+            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_TOURNAMENTS));
+        } else {
+            intentStack.add(HomeActivity.getLaunchIntent(context));
+            intentStack.add(TournamentsActivity.getLaunchIntent(context, region));
+        }
+
+        if (splits.length < 3) {
+            return;
+        }
+
+        final String tournamentId = splits[2];
+
+        if (TextUtils.isEmpty(tournamentId) || TextUtils.getTrimmedLength(tournamentId) == 0) {
+            return;
+        }
+
+        intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null));
     }
 
 }

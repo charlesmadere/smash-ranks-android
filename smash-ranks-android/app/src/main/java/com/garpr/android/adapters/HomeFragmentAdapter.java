@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.util.SparseArrayCompat;
 import android.view.ViewGroup;
 
+import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.fragments.BaseFragment;
 import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.fragments.RankingsFragment;
@@ -16,9 +17,9 @@ import java.lang.ref.WeakReference;
 
 public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Searchable {
 
-    public static final int POSITION_RANKINGS = 0;
-    public static final int POSITION_TOURNAMENTS = 1;
-    public static final int POSITION_PLAYERS = 2;
+    private static final int POSITION_PLAYERS = HomeActivity.POSITION_PLAYERS;
+    private static final int POSITION_RANKINGS = HomeActivity.POSITION_RANKINGS;
+    private static final int POSITION_TOURNAMENTS = HomeActivity.POSITION_TOURNAMENTS;
 
     private final SparseArrayCompat<WeakReference<BaseFragment>> mFragments;
 
@@ -44,16 +45,16 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Se
         final BaseFragment fragment;
 
         switch (position) {
+            case POSITION_PLAYERS:
+                fragment = PlayersFragment.create();
+                break;
+
             case POSITION_RANKINGS:
                 fragment = RankingsFragment.create();
                 break;
 
             case POSITION_TOURNAMENTS:
                 fragment = TournamentsFragment.create();
-                break;
-
-            case POSITION_PLAYERS:
-                fragment = PlayersFragment.create();
                 break;
 
             default:

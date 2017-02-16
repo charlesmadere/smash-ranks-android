@@ -27,6 +27,7 @@ public class SimpleDateTest extends BaseTest {
 
 
     @Before
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         getTestAppComponent().inject(this);

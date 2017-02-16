@@ -30,6 +30,12 @@ public class HomeActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener, RankingsFragment.Listener {
 
     private static final String TAG = "HomeActivity";
+    private static final String CNAME = HomeActivity.class.getCanonicalName();
+    private static final String EXTRA_INITIAL_POSITION = CNAME + ".InitialPosition";
+
+    public static final int POSITION_RANKINGS = 0;
+    public static final int POSITION_TOURNAMENTS = 1;
+    public static final int POSITION_PLAYERS = 2;
 
     @Inject
     NotificationManager mNotificationManager;
@@ -48,7 +54,16 @@ public class HomeActivity extends BaseActivity implements
 
 
     public static Intent getLaunchIntent(final Context context) {
-        Intent intent = new Intent(context, HomeActivity.class);
+        return new Intent(context, HomeActivity.class);
+    }
+
+    public static Intent getLaunchIntent(final Context context, final int initialPosition) {
+        return new Intent(context, HomeActivity.class)
+                .putExtra(EXTRA_INITIAL_POSITION, initialPosition);
+    }
+
+    public static Intent getRestartLaunchIntent(final Context context) {
+        final Intent intent = new Intent(context, HomeActivity.class);
         return IntentCompat.makeRestartActivityTask(intent.getComponent());
     }
 
@@ -90,16 +105,16 @@ public class HomeActivity extends BaseActivity implements
         }
 
         switch (item.getItemId()) {
+            case R.id.actionPlayers:
+                mViewPager.setCurrentItem(POSITION_PLAYERS);
+                break;
+
             case R.id.actionRankings:
-                mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_RANKINGS);
+                mViewPager.setCurrentItem(POSITION_RANKINGS);
                 break;
 
             case R.id.actionTournaments:
-                mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_TOURNAMENTS);
-                break;
-
-            case R.id.actionPlayers:
-                mViewPager.setCurrentItem(HomeFragmentAdapter.POSITION_PLAYERS);
+                mViewPager.setCurrentItem(POSITION_TOURNAMENTS);
                 break;
 
             default:
@@ -163,15 +178,15 @@ public class HomeActivity extends BaseActivity implements
 
     private void updateSelectedBottomNavigationItem() {
         switch (mViewPager.getCurrentItem()) {
-            case HomeFragmentAdapter.POSITION_RANKINGS:
-                mBottomNavigationView.getMenu().findItem(R.id.actionRankings).setChecked(true);
-                break;
-
-            case HomeFragmentAdapter.POSITION_PLAYERS:
+            case POSITION_PLAYERS:
                 mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
                 break;
 
-            case HomeFragmentAdapter.POSITION_TOURNAMENTS:
+            case POSITION_RANKINGS:
+                mBottomNavigationView.getMenu().findItem(R.id.actionRankings).setChecked(true);
+                break;
+
+            case POSITION_TOURNAMENTS:
                 mBottomNavigationView.getMenu().findItem(R.id.actionTournaments).setChecked(true);
                 break;
         }
