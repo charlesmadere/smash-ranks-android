@@ -172,7 +172,11 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
             return;
         }
 
-        intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null));
+        if (sameRegion) {
+            intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null));
+        } else {
+            intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null, region));
+        }
     }
 
     private void buildRankingsIntentStack(final Context context, final List<Intent> intentStack,
@@ -204,7 +208,12 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
             return;
         }
 
-        intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null));
+        if (sameRegion) {
+            intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null));
+        } else {
+            intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null,
+                    region));
+        }
     }
 
 }

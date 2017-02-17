@@ -32,6 +32,7 @@ public class HomeActivity extends BaseActivity implements
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
     private static final String EXTRA_INITIAL_POSITION = CNAME + ".InitialPosition";
+    private static final String KEY_CURRENT_POSITION = "CurrentPosition";
 
     public static final int POSITION_RANKINGS = 0;
     public static final int POSITION_TOURNAMENTS = 1;
@@ -90,6 +91,8 @@ public class HomeActivity extends BaseActivity implements
 
         mRankingsPollingSyncManager.enableOrDisable();
         mNotificationManager.cancelAll();
+
+        setInitialPosition(savedInstanceState);
     }
 
     @Override
@@ -167,6 +170,12 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_CURRENT_POSITION, mViewPager.getCurrentItem());
+    }
+
+    @Override
     protected void onViewsBound() {
         super.onViewsBound();
 
@@ -174,6 +183,26 @@ public class HomeActivity extends BaseActivity implements
         mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.root_padding));
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(new HomeFragmentAdapter(getSupportFragmentManager()));
+    }
+
+    private void setInitialPosition(@Nullable final Bundle savedInstanceState) {
+        int initialPosition = -1;
+
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            initialPosition = savedInstanceState.getInt(KEY_CURRENT_POSITION, -1);
+        }
+
+        if (initialPosition == -1) {
+            final Intent intent = getIntent();
+
+            if (intent != null && intent.hasExtra(EXTRA_INITIAL_POSITION)) {
+                initialPosition = intent.getIntExtra(EXTRA_INITIAL_POSITION, -1);
+            }
+        }
+
+        if (initialPosition != -1) {
+            mViewPager.setCurrentItem(initialPosition);
+        }
     }
 
     private void updateSelectedBottomNavigationItem() {
