@@ -35,9 +35,9 @@
 }
 
 
-###################
-## Google's AppCompat Library
-###################
+################################
+## Google's AppCompat Library ##
+################################
 -keep public class android.support.v7.widget.** { *; }
 -keep public class android.support.v7.internal.widget.** { *; }
 -keep public class android.support.v7.internal.view.menu.** { *; }
@@ -47,16 +47,16 @@
 }
 
 
-###################
-## Google's CardView Libary
-###################
+##############################
+## Google's CardView Libary ##
+##############################
 # http://stackoverflow.com/questions/29679177/cardview-shadow-not-appearing-in-lollipop-after-obfuscate-with-proguard/29698051
 -keep class android.support.v7.widget.RoundRectDrawable { *; }
 
 
-###################
-## Google's Design Library
-###################
+#############################
+## Google's Design Library ##
+#############################
 -dontwarn android.support.design.**
 -keep class android.support.design.** { *; }
 -keep interface android.support.design.** { *; }
@@ -83,9 +83,9 @@
 ##---------------End: proguard configuration for Gson  ----------
 
 
-#######################
-## Square's Okio
-#######################
+###################
+## Square's Okio ##
+###################
 -keep class sun.misc.Unsafe { *; }
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement

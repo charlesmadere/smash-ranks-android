@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
 
     private static final String TAG = "BaseActivity";
     private static final String CNAME = BaseActivity.class.getCanonicalName();
-    private static final String EXTRA_REGION = CNAME + ".Region";
+    protected static final String EXTRA_REGION = CNAME + ".Region";
 
     private Unbinder mUnbinder;
 

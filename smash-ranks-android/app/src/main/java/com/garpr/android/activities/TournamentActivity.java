@@ -81,6 +81,12 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String tournamentId,
             @Nullable final String tournamentName, @Nullable final SimpleDate tournamentDate) {
+        return getLaunchIntent(context, tournamentId, tournamentName, tournamentDate, null);
+    }
+
+    public static Intent getLaunchIntent(final Context context, @NonNull final String tournamentId,
+            @Nullable final String tournamentName, @Nullable final SimpleDate tournamentDate,
+            @Nullable final String region) {
         final Intent intent = new Intent(context, TournamentActivity.class)
                 .putExtra(EXTRA_TOURNAMENT_ID, tournamentId);
 
@@ -90,6 +96,10 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
         if (tournamentDate != null) {
             intent.putExtra(EXTRA_TOURNAMENT_DATE, tournamentDate);
+        }
+
+        if (!TextUtils.isEmpty(region)) {
+            intent.putExtra(EXTRA_REGION, region);
         }
 
         return intent;

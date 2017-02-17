@@ -29,6 +29,7 @@ public class RatingsTest extends BaseTest {
 
 
     @Before
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         getTestAppComponent().inject(this);

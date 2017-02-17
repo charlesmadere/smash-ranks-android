@@ -80,11 +80,20 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String playerId,
             @Nullable final String playerName) {
+        return getLaunchIntent(context, playerId, playerName, null);
+    }
+
+    public static Intent getLaunchIntent(final Context context, @NonNull final String playerId,
+            @Nullable final String playerName, @Nullable final String region) {
         final Intent intent = new Intent(context, PlayerActivity.class)
                 .putExtra(EXTRA_PLAYER_ID, playerId);
 
         if (!TextUtils.isEmpty(playerName)) {
             intent.putExtra(EXTRA_PLAYER_NAME, playerName);
+        }
+
+        if (!TextUtils.isEmpty(region)) {
+            intent.putExtra(EXTRA_REGION, region);
         }
 
         return intent;
@@ -143,6 +152,16 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
                 showAliases();
                 return true;
 
+            case R.id.miFilterLosses:
+                // TODO
+                underConstruction();
+                return true;
+
+            case R.id.miFilterWins:
+                // TODO
+                underConstruction();
+                return true;
+
             case R.id.miSearch:
                 // TODO
                 underConstruction();
@@ -160,6 +179,7 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     public boolean onPrepareOptionsMenu(final Menu menu) {
         if (mFullPlayer != null) {
             menu.findItem(R.id.miSearch).setVisible(true);
+            menu.findItem(R.id.miFilter).setVisible(true);
             menu.findItem(R.id.miShare).setVisible(true);
             menu.findItem(R.id.miAliases).setVisible(mFullPlayer.hasAliases());
         }
@@ -194,7 +214,7 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     }
 
     private void showData() {
-        final ArrayList<Object> list = ListUtils.createPlayerList(this, mRegionManager,
+        final ArrayList<Object> list = ListUtils.createPlayerMatchesList(this, mRegionManager,
                 mFullPlayer, mMatchesBundle);
 
         mError.setVisibility(View.GONE);

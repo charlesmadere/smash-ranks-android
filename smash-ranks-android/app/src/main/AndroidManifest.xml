@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:label=""
+            android:label="@string/gar_pr"
             android:launchMode="singleTop"
             android:name=".activities.DeepLinkActivity"
             android:noHistory="true">
