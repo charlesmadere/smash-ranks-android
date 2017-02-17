@@ -3,6 +3,7 @@ package com.garpr.android.misc;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.garpr.android.R;
 import com.garpr.android.models.AbsTournament;
@@ -17,6 +18,7 @@ import com.garpr.android.models.WinsLosses;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public final class ListUtils {
 
@@ -48,7 +50,7 @@ public final class ListUtils {
     }
 
     @Nullable
-    public static ArrayList<Object> createPlayerList(@NonNull final Context context,
+    public static ArrayList<Object> createPlayerMatchesList(@NonNull final Context context,
             @NonNull final RegionManager regionManager, @NonNull final FullPlayer fullPlayer,
             @Nullable final MatchesBundle bundle) {
         final String region = regionManager.getRegion(context);
@@ -117,6 +119,64 @@ public final class ListUtils {
         Collections.sort(tournaments, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER);
 
         return tournaments;
+    }
+
+    @Nullable
+    public static ArrayList<Object> searchPlayerMatchesList(@Nullable String query,
+            @Nullable final List<Object> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        query = query.trim();
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        final ArrayList<Object> newList = new ArrayList<>(list.size());
+
+        for (final Object object : list) {
+            if (object instanceof AbsTournament) {
+                // TODO
+            } else if (object instanceof Match) {
+                // TODO
+            }
+        }
+
+        return newList;
+    }
+
+    @Nullable
+    public static ArrayList<AbsTournament> searchTournamentList(@Nullable String query,
+            @Nullable final List<AbsTournament> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        query = query.trim();
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        final ArrayList<AbsTournament> newList = new ArrayList<>(list.size());
+
+        for (final AbsTournament tournament : list) {
+            if (tournament.getName().contains(query)) {
+                newList.add(tournament);
+            }
+        }
+
+        return newList;
     }
 
 }
