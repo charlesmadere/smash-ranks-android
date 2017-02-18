@@ -12,13 +12,18 @@ import android.view.ViewGroup;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayersAdapter;
+import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.Searchable;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,6 +42,9 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
 
     @Inject
     ServerApi mServerApi;
+
+    @Inject
+    ThreadUtils mThreadUtils;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -111,7 +119,27 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
 
     @Override
     public void search(@Nullable final String query) {
-        // TODO
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<AbsPlayer> mList;
+
+            @Override
+            public void onBackground() {
+                if (!isAlive()) {
+                    return;
+                }
+
+                mList = ListUtils.searchPlayerList(query, mPlayersBundle.getPlayers());
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive()) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+            }
+        });
     }
 
     private void showEmpty() {

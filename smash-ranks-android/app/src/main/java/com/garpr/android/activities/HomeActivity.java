@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +29,8 @@ import butterknife.BindView;
 import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener, RankingsFragment.Listener {
+        BottomNavigationView.OnNavigationItemSelectedListener, RankingsFragment.Listener,
+        SearchView.OnCloseListener, SearchView.OnQueryTextListener {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
@@ -37,6 +40,9 @@ public class HomeActivity extends BaseActivity implements
     public static final int POSITION_RANKINGS = 0;
     public static final int POSITION_TOURNAMENTS = 1;
     public static final int POSITION_PLAYERS = 2;
+
+    private HomeFragmentAdapter mAdapter;
+    private MenuItem mSearchMenuItem;
 
     @Inject
     NotificationManager mNotificationManager;
@@ -75,12 +81,23 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
+        if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
+            MenuItemCompat.collapseActionView(mSearchMenuItem);
+            return;
+        }
+
         if (mViewPager.getCurrentItem() != 0) {
             mViewPager.setCurrentItem(0);
             return;
         }
 
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onClose() {
+        mAdapter.search(null);
+        return false;
     }
 
     @Override
@@ -98,6 +115,17 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.activity_home, menu);
+
+        if (!TextUtils.isEmpty(getSubtitle())) {
+            mSearchMenuItem = menu.findItem(R.id.miSearch);
+            mSearchMenuItem.setVisible(true);
+
+            final SearchView searchView = (SearchView) mSearchMenuItem.getActionView();
+            searchView.setQueryHint(getText(R.string.search_));
+            searchView.setOnCloseListener(this);
+            searchView.setOnQueryTextListener(this);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -131,8 +159,7 @@ public class HomeActivity extends BaseActivity implements
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miSearch:
-                // TODO
-                underConstruction();
+                MenuItemCompat.expandActionView(mSearchMenuItem);
                 return true;
 
             case R.id.miSettings:
@@ -149,12 +176,15 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(final Menu menu) {
-        if (!TextUtils.isEmpty(getSubtitle())) {
-            menu.findItem(R.id.miSearch).setVisible(true);
-        }
+    public boolean onQueryTextChange(final String newText) {
+        mAdapter.search(newText);
+        return false;
+    }
 
-        return super.onPrepareOptionsMenu(menu);
+    @Override
+    public boolean onQueryTextSubmit(final String query) {
+        mAdapter.search(query);
+        return false;
     }
 
     @Override
@@ -182,7 +212,9 @@ public class HomeActivity extends BaseActivity implements
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
         mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.root_padding));
         mViewPager.setOffscreenPageLimit(3);
-        mViewPager.setAdapter(new HomeFragmentAdapter(getSupportFragmentManager()));
+
+        mAdapter = new HomeFragmentAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
     }
 
     private void setInitialPosition(@Nullable final Bundle savedInstanceState) {

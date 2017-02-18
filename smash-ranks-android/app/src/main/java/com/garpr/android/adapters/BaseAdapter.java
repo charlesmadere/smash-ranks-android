@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapterViewHolder> {
@@ -64,6 +65,14 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapterVie
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    public List<T> getItems() {
+        if (isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return new ArrayList<>(mItems);
+        }
     }
 
     @LayoutRes
