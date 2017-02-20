@@ -172,10 +172,6 @@ public class HomeActivity extends BaseActivity implements BaseSearchableFragment
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.miSearch:
-                MenuItemCompat.expandActionView(mSearchMenuItem);
-                return true;
-
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
