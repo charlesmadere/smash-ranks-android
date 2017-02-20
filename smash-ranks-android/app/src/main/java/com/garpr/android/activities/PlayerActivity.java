@@ -111,12 +111,14 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
 
     private void failure() {
         mFullPlayer = null;
+        mList = null;
         mMatchesBundle = null;
         showError();
     }
 
     private void fetchData() {
         mFullPlayer = null;
+        mList = null;
         mMatchesBundle = null;
         mRefreshLayout.setRefreshing(true);
         new DataListener();
