@@ -33,6 +33,7 @@ import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.RefreshLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -47,9 +48,9 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     private static final String EXTRA_PLAYER_ID = CNAME + ".PlayerId";
     private static final String EXTRA_PLAYER_NAME = CNAME + ".PlayerName";
 
+    private ArrayList<Object> mList;
     private FullPlayer mFullPlayer;
     private MatchesBundle mMatchesBundle;
-    private MenuItem mSearchMenuItem;
     private PlayerAdapter mAdapter;
     private SearchView mSearchView;
     private String mPlayerId;
@@ -158,11 +159,11 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
         getMenuInflater().inflate(R.menu.activity_player, menu);
 
         if (mFullPlayer != null) {
-            mSearchMenuItem = menu.findItem(R.id.miSearch);
-            mSearchMenuItem.setVisible(true);
+            final MenuItem searchMenuItem = menu.findItem(R.id.miSearch);
+            searchMenuItem.setVisible(true);
 
-            MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
-            mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+            MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
+            mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
             mSearchView.setQueryHint(getText(R.string.search_opponents_));
             mSearchView.setOnQueryTextListener(this);
 
@@ -237,7 +238,27 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     }
 
     private void search(@Nullable final String query) {
-        // TODO
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<Object> mList;
+
+            @Override
+            public void onBackground() {
+                if (!isAlive()) {
+                    return;
+                }
+
+                mList = ListUtils.searchPlayerMatchesList(query, PlayerActivity.this.mList);
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+            }
+        });
     }
 
     private void showAliases() {
@@ -253,17 +274,16 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     }
 
     private void showData() {
-        final ArrayList<Object> list = ListUtils.createPlayerMatchesList(this, mRegionManager,
-                mFullPlayer, mMatchesBundle);
+        mList = ListUtils.createPlayerMatchesList(this, mRegionManager, mFullPlayer, mMatchesBundle);
 
         mError.setVisibility(View.GONE);
 
-        if (list == null || list.isEmpty()) {
+        if (mList == null || mList.isEmpty()) {
             mAdapter.clear();
             mRecyclerView.setVisibility(View.GONE);
             mEmpty.setVisibility(View.VISIBLE);
         } else {
-            mAdapter.set(list);
+            mAdapter.set(mList);
             mEmpty.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
         }
