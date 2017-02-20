@@ -29,8 +29,9 @@ import butterknife.BindView;
 import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener, RankingsFragment.Listener,
-        SearchView.OnCloseListener, SearchView.OnQueryTextListener {
+        BottomNavigationView.OnNavigationItemSelectedListener,
+        MenuItemCompat.OnActionExpandListener, RankingsFragment.Listener,
+        SearchView.OnQueryTextListener {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
@@ -95,12 +96,6 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onClose() {
-        mAdapter.search(null);
-        return false;
-    }
-
-    @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
@@ -120,13 +115,24 @@ public class HomeActivity extends BaseActivity implements
             mSearchMenuItem = menu.findItem(R.id.miSearch);
             mSearchMenuItem.setVisible(true);
 
-            final SearchView searchView = (SearchView) mSearchMenuItem.getActionView();
+            MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
             searchView.setQueryHint(getText(R.string.search_));
-            searchView.setOnCloseListener(this);
             searchView.setOnQueryTextListener(this);
         }
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(final MenuItem item) {
+        mAdapter.search(null);
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(final MenuItem item) {
+        return true;
     }
 
     @Override

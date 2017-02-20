@@ -7,7 +7,7 @@
         android:title="@string/search"
         android:visible="false"
         compat:actionViewClass="android.support.v7.widget.SearchView"
-        compat:showAsAction="ifRoom" />
+        compat:showAsAction="collapseActionView|ifRoom" />
     <item
         android:icon="@drawable/ic_settings_white_24dp"
         android:id="@+id/miSettings"
