@@ -9,6 +9,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +38,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PlayerActivity extends BaseActivity implements MatchItemView.OnClickListener,
-        MenuItemCompat.OnActionExpandListener, SwipeRefreshLayout.OnRefreshListener {
+        MenuItemCompat.OnActionExpandListener, SearchView.OnQueryTextListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "PlayerActivity";
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
@@ -46,7 +48,9 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
 
     private FullPlayer mFullPlayer;
     private MatchesBundle mMatchesBundle;
+    private MenuItem mSearchMenuItem;
     private PlayerAdapter mAdapter;
+    private SearchView mSearchView;
     private String mPlayerId;
 
     @Inject
@@ -118,6 +122,11 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
         return TAG;
     }
 
+    @Nullable
+    private CharSequence getSearchQuery() {
+        return mSearchView == null ? null : mSearchView.getQuery();
+    }
+
     @Override
     public void onClick(final MatchItemView v) {
         final Match match = v.getContent();
@@ -143,17 +152,33 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.activity_player, menu);
+
+        if (mFullPlayer != null) {
+            mSearchMenuItem = menu.findItem(R.id.miSearch);
+            mSearchMenuItem.setVisible(true);
+
+            MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
+            mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+            mSearchView.setQueryHint(getText(R.string.search_opponents_));
+            mSearchView.setOnQueryTextListener(this);
+
+            menu.findItem(R.id.miSearch).setVisible(true);
+            menu.findItem(R.id.miFilter).setVisible(true);
+            menu.findItem(R.id.miShare).setVisible(true);
+            menu.findItem(R.id.miAliases).setVisible(mFullPlayer.hasAliases());
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onMenuItemActionCollapse(final MenuItem item) {
+        search(null);
         return true;
     }
 
     @Override
     public boolean onMenuItemActionExpand(final MenuItem item) {
-        // TODO
         return true;
     }
 
@@ -174,11 +199,6 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
                 underConstruction();
                 return true;
 
-            case R.id.miSearch:
-                // TODO
-                underConstruction();
-                return true;
-
             case R.id.miShare:
                 mShareUtils.sharePlayer(this, mFullPlayer);
                 return true;
@@ -188,15 +208,15 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(final Menu menu) {
-        if (mFullPlayer != null) {
-            menu.findItem(R.id.miSearch).setVisible(true);
-            menu.findItem(R.id.miFilter).setVisible(true);
-            menu.findItem(R.id.miShare).setVisible(true);
-            menu.findItem(R.id.miAliases).setVisible(mFullPlayer.hasAliases());
-        }
+    public boolean onQueryTextChange(final String newText) {
+        search(newText);
+        return false;
+    }
 
-        return super.onPrepareOptionsMenu(menu);
+    @Override
+    public boolean onQueryTextSubmit(final String query) {
+        search(query);
+        return false;
     }
 
     @Override
@@ -211,6 +231,10 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
         mRefreshLayout.setOnRefreshListener(this);
         mAdapter = new PlayerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void search(@Nullable final String query) {
+        // TODO
     }
 
     private void showAliases() {
