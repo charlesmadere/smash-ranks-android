@@ -169,11 +169,17 @@ public final class ListUtils {
         }
 
         final ArrayList<Object> newList = new ArrayList<>(list.size());
+        boolean addedRating = false;
 
         for (int i = 0; i < list.size(); ++i) {
             final Object objectI = list.get(i);
 
-            if (objectI instanceof AbsTournament) {
+            if (objectI instanceof Rating) {
+                if (!addedRating) {
+                    addedRating = true;
+                    newList.add(objectI);
+                }
+            } else if (objectI instanceof AbsTournament) {
                 final AbsTournament tournament = (AbsTournament) objectI;
                 boolean addedTournament = false;
                 int j = i + 1;
