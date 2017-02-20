@@ -21,6 +21,7 @@ import com.garpr.android.adapters.PlayerAdapter;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ShareUtils;
+import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
@@ -61,6 +62,9 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
 
     @Inject
     ShareUtils mShareUtils;
+
+    @Inject
+    ThreadUtils mThreadUtils;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
