@@ -162,7 +162,6 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
             mSearchView.setQueryHint(getText(R.string.search_opponents_));
             mSearchView.setOnQueryTextListener(this);
 
-            menu.findItem(R.id.miSearch).setVisible(true);
             menu.findItem(R.id.miFilter).setVisible(true);
             menu.findItem(R.id.miShare).setVisible(true);
             menu.findItem(R.id.miAliases).setVisible(mFullPlayer.hasAliases());
