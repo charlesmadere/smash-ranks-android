@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import com.garpr.android.R;
 import com.garpr.android.adapters.PlayersAdapter;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
-import com.garpr.android.misc.Searchable;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.PlayersBundle;
@@ -29,8 +29,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class PlayersFragment extends BaseFragment implements ApiListener<PlayersBundle>,
-        Searchable, SwipeRefreshLayout.OnRefreshListener {
+public class PlayersFragment extends BaseSearchableFragment implements ApiListener<PlayersBundle>,
+        SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "PlayersFragment";
 
@@ -133,7 +133,7 @@ public class PlayersFragment extends BaseFragment implements ApiListener<Players
 
             @Override
             public void onUi() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 

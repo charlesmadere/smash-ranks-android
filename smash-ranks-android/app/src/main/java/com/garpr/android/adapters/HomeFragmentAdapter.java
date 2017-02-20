@@ -1,13 +1,14 @@
 package com.garpr.android.adapters;
 
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.util.SparseArrayCompat;
 import android.view.ViewGroup;
 
 import com.garpr.android.activities.HomeActivity;
-import com.garpr.android.fragments.BaseFragment;
+import com.garpr.android.fragments.BaseSearchableFragment;
 import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.fragments.TournamentsFragment;
@@ -21,7 +22,7 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Se
     private static final int POSITION_RANKINGS = HomeActivity.POSITION_RANKINGS;
     private static final int POSITION_TOURNAMENTS = HomeActivity.POSITION_TOURNAMENTS;
 
-    private final SparseArrayCompat<WeakReference<BaseFragment>> mFragments;
+    private final SparseArrayCompat<WeakReference<BaseSearchableFragment>> mFragments;
 
 
     public HomeFragmentAdapter(final FragmentManager fm) {
@@ -41,8 +42,8 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Se
     }
 
     @Override
-    public BaseFragment getItem(final int position) {
-        final BaseFragment fragment;
+    public Fragment getItem(final int position) {
+        final BaseSearchableFragment fragment;
 
         switch (position) {
             case POSITION_PLAYERS:
@@ -66,8 +67,9 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Se
     }
 
     @Override
-    public BaseFragment instantiateItem(final ViewGroup container, final int position) {
-        final BaseFragment fragment = (BaseFragment) super.instantiateItem(container, position);
+    public Object instantiateItem(final ViewGroup container, final int position) {
+        final BaseSearchableFragment fragment = (BaseSearchableFragment) super.instantiateItem(
+                container, position);
         mFragments.put(position, new WeakReference<>(fragment));
         return fragment;
     }
@@ -75,13 +77,13 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Se
     @Override
     public void search(@Nullable final String query) {
         for (int i = 0; i < mFragments.size(); ++i) {
-            final WeakReference<BaseFragment> reference = mFragments.get(i);
+            final WeakReference<BaseSearchableFragment> reference = mFragments.get(i);
 
             if (reference != null) {
-                final BaseFragment fragment = reference.get();
+                final BaseSearchableFragment fragment = reference.get();
 
-                if (fragment != null && fragment.isAlive() && fragment instanceof Searchable) {
-                    ((Searchable) fragment).search(query);
+                if (fragment != null && fragment.isAlive()) {
+                    fragment.search(query);
                 }
             }
         }

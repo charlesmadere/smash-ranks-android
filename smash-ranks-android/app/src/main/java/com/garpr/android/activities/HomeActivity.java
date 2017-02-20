@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.HomeFragmentAdapter;
+import com.garpr.android.fragments.BaseSearchableFragment;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
@@ -28,7 +29,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnPageChange;
 
-public class HomeActivity extends BaseActivity implements
+public class HomeActivity extends BaseActivity implements BaseSearchableFragment.Listener,
         BottomNavigationView.OnNavigationItemSelectedListener,
         MenuItemCompat.OnActionExpandListener, RankingsFragment.Listener,
         SearchView.OnQueryTextListener {
@@ -44,6 +45,7 @@ public class HomeActivity extends BaseActivity implements
 
     private HomeFragmentAdapter mAdapter;
     private MenuItem mSearchMenuItem;
+    private SearchView mSearchView;
 
     @Inject
     NotificationManager mNotificationManager;
@@ -78,6 +80,12 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public String getActivityName() {
         return TAG;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getSearchQuery() {
+        return mSearchView == null ? null : mSearchView.getQuery();
     }
 
     @Override
@@ -116,9 +124,9 @@ public class HomeActivity extends BaseActivity implements
             mSearchMenuItem.setVisible(true);
 
             MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
-            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
-            searchView.setQueryHint(getText(R.string.search_));
-            searchView.setOnQueryTextListener(this);
+            mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+            mSearchView.setQueryHint(getText(R.string.search_));
+            mSearchView.setOnQueryTextListener(this);
         }
 
         return super.onCreateOptionsMenu(menu);
