@@ -28,11 +28,6 @@
                     <com.garpr.android.views.ThemePreferenceView
                         android:id="@+id/themePreferenceView"
                         style="@style/PreferenceView" />
-                    <com.garpr.android.views.SimplePreferenceView
-                        android:id="@+id/spvLogViewer"
-                        app:simpleDescriptionText="@string/view_logs_description"
-                        app:simpleTitleText="@string/view_logs"
-                        style="@style/PreferenceView" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
@@ -102,6 +97,11 @@
                         android:id="@+id/spvGitHub"
                         app:simpleDescriptionText="@string/contribute_your_changes"
                         app:simpleTitleText="@string/open_source_on_github"
+                        style="@style/PreferenceView" />
+                    <com.garpr.android.views.SimplePreferenceView
+                        android:id="@+id/spvLogViewer"
+                        app:simpleDescriptionText="@string/view_logs_description"
+                        app:simpleTitleText="@string/view_logs"
                         style="@style/PreferenceView" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
