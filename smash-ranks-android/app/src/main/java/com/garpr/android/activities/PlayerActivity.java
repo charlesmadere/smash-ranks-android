@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +37,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PlayerActivity extends BaseActivity implements MatchItemView.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        MenuItemCompat.OnActionExpandListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "PlayerActivity";
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
@@ -143,6 +144,17 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.activity_player, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(final MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(final MenuItem item) {
+        // TODO
+        return true;
     }
 
     @Override
