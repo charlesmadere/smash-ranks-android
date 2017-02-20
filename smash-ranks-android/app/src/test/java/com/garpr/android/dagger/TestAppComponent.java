@@ -6,6 +6,7 @@ import com.garpr.android.models.AbsPlayerTest;
 import com.garpr.android.models.AbsTournamentTest;
 import com.garpr.android.models.RatingsTest;
 import com.garpr.android.models.SimpleDateTest;
+import com.garpr.android.preferences.persistent.PersistentBooleanPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentIntegerPreferenceTest;
 
 import javax.inject.Singleton;
@@ -27,6 +28,7 @@ public interface TestAppComponent {
     void inject(SimpleDateTest test);
 
     // preferences
+    void inject(PersistentBooleanPreferenceTest test);
     void inject(PersistentIntegerPreferenceTest test);
 
 }
