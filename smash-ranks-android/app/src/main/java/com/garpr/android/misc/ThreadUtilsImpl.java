@@ -14,7 +14,7 @@ public class ThreadUtilsImpl implements ThreadUtils {
 
 
     public ThreadUtilsImpl(final boolean isLowRamDevice) {
-        mExecutorService = Executors.newFixedThreadPool(3);
+        mExecutorService = Executors.newFixedThreadPool(isLowRamDevice ? 2 : 3);
         mMainHandler = new Handler(Looper.getMainLooper());
     }
 
