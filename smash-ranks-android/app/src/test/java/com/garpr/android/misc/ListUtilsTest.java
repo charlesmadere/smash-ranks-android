@@ -95,7 +95,10 @@ public class ListUtilsTest extends BaseTest {
         final List<Object> list = ListUtils.createHeadToHeadList(mApplication, null);
 
         assertNotNull(list);
+        assertEquals(list.size(), 2);
 
+        assertTrue(list.get(0) instanceof WinsLosses);
+        assertTrue(list.get(1) instanceof CharSequence);
     }
 
     @Test
