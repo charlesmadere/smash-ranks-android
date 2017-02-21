@@ -1,7 +1,6 @@
 package com.garpr.android.misc;
 
 import android.app.Application;
-import android.media.Rating;
 
 import com.garpr.android.BaseTest;
 import com.garpr.android.BuildConfig;
@@ -14,6 +13,7 @@ import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.models.Ranking;
 import com.garpr.android.models.RankingsBundle;
+import com.garpr.android.models.Rating;
 import com.garpr.android.models.TournamentsBundle;
 import com.garpr.android.models.WinsLosses;
 import com.google.gson.Gson;
