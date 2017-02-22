@@ -76,8 +76,8 @@ dependencies {
     testCompile "org.robolectric:robolectric:3.2.2"
 
     // Square's Retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 
     // Twitter's Fabric
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
