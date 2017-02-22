@@ -9,6 +9,7 @@ import com.garpr.android.R;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.FullPlayer;
+import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.HeadToHead;
 import com.garpr.android.models.LiteTournament;
 import com.garpr.android.models.Match;
@@ -121,6 +122,20 @@ public final class ListUtils {
         Collections.sort(tournaments, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER);
 
         return tournaments;
+    }
+
+    @Nullable
+    public static ArrayList<Object> filterPlayerMatchesList(@Nullable final Match.Result result,
+            @Nullable final List<Object> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+
+        final ArrayList<Object> newList = new ArrayList<>(list.size());
+
+        // TODO
+
+        return newList;
     }
 
     @Nullable
@@ -260,6 +275,35 @@ public final class ListUtils {
         for (final AbsTournament tournament : list) {
             if (tournament.getName().toLowerCase().contains(query)) {
                 newList.add(tournament);
+            }
+        }
+
+        return newList;
+    }
+
+    @Nullable
+    public static ArrayList<FullTournament.Match> searchTournamentMatchesList(@Nullable String query,
+            @Nullable final List<FullTournament.Match> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        query = query.trim().toLowerCase();
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        final ArrayList<FullTournament.Match> newList = new ArrayList<>(list.size());
+
+        for (final FullTournament.Match match : list) {
+            if (match.getWinnerName().toLowerCase().contains(query) ||
+                    match.getLoserName().toLowerCase().contains(query)) {
+                newList.add(match);
             }
         }
 

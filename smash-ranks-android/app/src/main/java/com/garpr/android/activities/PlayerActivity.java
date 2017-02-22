@@ -20,6 +20,7 @@ import com.garpr.android.R;
 import com.garpr.android.adapters.PlayerAdapter;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
@@ -40,7 +41,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PlayerActivity extends BaseActivity implements MatchItemView.OnClickListener,
-        MenuItemCompat.OnActionExpandListener, SearchView.OnQueryTextListener,
+        MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener,
         SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "PlayerActivity";
@@ -130,7 +131,8 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     }
 
     @Nullable
-    private CharSequence getSearchQuery() {
+    @Override
+    public CharSequence getSearchQuery() {
         return mSearchView == null ? null : mSearchView.getQuery();
     }
 
@@ -193,6 +195,11 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
         switch (item.getItemId()) {
             case R.id.miAliases:
                 showAliases();
+                return true;
+
+            case R.id.miFilterAll:
+                // TODO
+                underConstruction();
                 return true;
 
             case R.id.miFilterLosses:

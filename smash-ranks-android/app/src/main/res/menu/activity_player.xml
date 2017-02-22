@@ -16,6 +16,10 @@
         compat:showAsAction="ifRoom">
         <menu>
             <item
+                android:id="@+id/miFilterAll"
+                android:title="@string/show_all"
+                android:visible="false" />
+            <item
                 android:id="@+id/miFilterWins"
                 android:title="@string/show_wins" />
             <item

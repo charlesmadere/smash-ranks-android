@@ -9,9 +9,17 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 
-import java.util.Locale;
+import java.text.DecimalFormat;
 
 public final class MiscUtils {
+
+    private static final DecimalFormat DECIMAL_FORMAT;
+
+
+    static {
+        DECIMAL_FORMAT = new DecimalFormat("#.###");
+        DECIMAL_FORMAT.setMinimumFractionDigits(3);
+    }
 
     public static Activity getActivity(final Context context) {
         final Activity activity = optActivity(context);
@@ -53,7 +61,7 @@ public final class MiscUtils {
     }
 
     public static String truncateFloat(final float value) {
-        return String.format(Locale.getDefault(), "%.3f", value);
+        return DECIMAL_FORMAT.format(value);
     }
 
 }

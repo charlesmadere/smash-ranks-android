@@ -5,17 +5,19 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.garpr.android.misc.MiscUtils;
+import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.misc.Searchable;
 
-public abstract class BaseSearchableFragment extends BaseFragment implements Searchable {
+public abstract class BaseSearchableFragment extends BaseFragment implements Searchable,
+        SearchQueryHandle {
 
     @Nullable
-    private Listener mListener;
+    private SearchQueryHandle mSearchQueryHandle;
 
 
     @Nullable
-    protected CharSequence getSearchQuery() {
-        return mListener == null ? null : mListener.getSearchQuery();
+    public CharSequence getSearchQuery() {
+        return mSearchQueryHandle == null ? null : mSearchQueryHandle.getSearchQuery();
     }
 
     @Override
@@ -23,20 +25,15 @@ public abstract class BaseSearchableFragment extends BaseFragment implements Sea
         super.onAttach(context);
 
         final Activity activity = MiscUtils.optActivity(context);
-        if (activity instanceof Listener) {
-            mListener = (Listener) activity;
+        if (activity instanceof SearchQueryHandle) {
+            mSearchQueryHandle = (SearchQueryHandle) activity;
         }
     }
 
     @Override
     public void onDetach() {
-        mListener = null;
+        mSearchQueryHandle = null;
         super.onDetach();
-    }
-
-    public interface Listener {
-        @Nullable
-        CharSequence getSearchQuery();
     }
 
 }

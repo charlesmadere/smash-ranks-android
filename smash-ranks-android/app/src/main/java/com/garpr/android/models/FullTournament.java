@@ -146,6 +146,11 @@ public class FullTournament extends AbsTournament implements Parcelable {
         }
 
         @Override
+        public String toString() {
+            return getWinnerName() + " vs " + getLoserName();
+        }
+
+        @Override
         public int describeContents() {
             return 0;
         }

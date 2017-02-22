@@ -17,10 +17,10 @@ import android.view.MenuItem;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.HomeFragmentAdapter;
-import com.garpr.android.fragments.BaseSearchableFragment;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 
@@ -29,10 +29,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnPageChange;
 
-public class HomeActivity extends BaseActivity implements BaseSearchableFragment.Listener,
+public class HomeActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
         MenuItemCompat.OnActionExpandListener, RankingsFragment.Listener,
-        SearchView.OnQueryTextListener {
+        SearchQueryHandle, SearchView.OnQueryTextListener {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
