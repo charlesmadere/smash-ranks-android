@@ -139,6 +139,11 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miFilterAll:
+                // TODO
+                underConstruction();
+                return true;
+
             case R.id.miFilterLosses:
                 // TODO
                 underConstruction();

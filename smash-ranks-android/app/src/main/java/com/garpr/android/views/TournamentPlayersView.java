@@ -5,37 +5,30 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.garpr.android.R;
-import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.adapters.PlayersAdapter;
-import com.garpr.android.misc.Searchable;
+import com.garpr.android.misc.ListUtils;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullTournament;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.List;
 
-public class TournamentPlayersView extends FrameLayout implements BaseAdapterView<FullTournament>,
-        Searchable {
+public class TournamentPlayersView extends TournamentPageView {
 
+    private FullTournament mContent;
     private PlayersAdapter mAdapter;
-
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-
-    @BindView(R.id.empty)
-    View mEmpty;
 
 
     public static TournamentPlayersView inflate(final ViewGroup parent) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return (TournamentPlayersView) inflater.inflate(R.layout.view_tournament_players, parent, false);
+        return (TournamentPlayersView) inflater.inflate(R.layout.view_tournament_players, parent,
+                false);
     }
 
     public TournamentPlayersView(final Context context, final AttributeSet attrs) {
@@ -56,7 +49,6 @@ public class TournamentPlayersView extends FrameLayout implements BaseAdapterVie
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ButterKnife.bind(this);
 
         mAdapter = new PlayersAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
@@ -66,13 +58,39 @@ public class TournamentPlayersView extends FrameLayout implements BaseAdapterVie
 
     @Override
     public void search(@Nullable final String query) {
-        // TODO
+        if (!mContent.hasPlayers()) {
+            return;
+        }
+
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<AbsPlayer> mList;
+
+            @Override
+            public void onBackground() {
+                if (!isAlive()) {
+                    return;
+                }
+
+                mList = ListUtils.searchPlayerList(query, mContent.getPlayers());
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+            }
+        });
     }
 
     @Override
     public void setContent(final FullTournament content) {
-        if (content.hasPlayers()) {
-            mAdapter.set(content.getPlayers());
+        mContent = content;
+
+        if (mContent.hasPlayers()) {
+            mAdapter.set(mContent.getPlayers());
             mEmpty.setVisibility(GONE);
             mRecyclerView.setVisibility(VISIBLE);
         } else {

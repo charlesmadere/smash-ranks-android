@@ -25,6 +25,11 @@ public class WinsLosses implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return mWins + " - " + mLosses;
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

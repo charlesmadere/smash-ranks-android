@@ -17,6 +17,8 @@ import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ShareUtilsImpl;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.AbsPlayer;
@@ -187,6 +189,12 @@ public class AppModule {
     @Singleton
     ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
         return new ShareUtilsImpl(regionManager, mGarPrWebUrl, timber);
+    }
+
+    @Provides
+    @Singleton
+    ThreadUtils providesThreadUtils(final DeviceUtils deviceUtils) {
+        return new ThreadUtilsImpl(deviceUtils.hasLowRam());
     }
 
     @Provides

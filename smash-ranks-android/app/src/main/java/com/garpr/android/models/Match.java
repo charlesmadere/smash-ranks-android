@@ -53,6 +53,11 @@ public class Match implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return getOpponentName();
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

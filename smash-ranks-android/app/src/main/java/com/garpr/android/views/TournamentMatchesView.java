@@ -5,37 +5,29 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.garpr.android.R;
-import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.adapters.TournamentMatchesAdapter;
-import com.garpr.android.misc.Searchable;
+import com.garpr.android.misc.ListUtils;
+import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.FullTournament;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.List;
 
-public class TournamentMatchesView extends FrameLayout implements BaseAdapterView<FullTournament>,
-        Searchable {
+public class TournamentMatchesView extends TournamentPageView {
 
+    private FullTournament mContent;
     private TournamentMatchesAdapter mAdapter;
-
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-
-    @BindView(R.id.empty)
-    View mEmpty;
 
 
     public static TournamentMatchesView inflate(final ViewGroup parent) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return (TournamentMatchesView) inflater.inflate(R.layout.view_tournament_matches, parent, false);
+        return (TournamentMatchesView) inflater.inflate(R.layout.view_tournament_matches, parent,
+                false);
     }
 
     public TournamentMatchesView(final Context context, final AttributeSet attrs) {
@@ -56,7 +48,6 @@ public class TournamentMatchesView extends FrameLayout implements BaseAdapterVie
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ButterKnife.bind(this);
 
         mAdapter = new TournamentMatchesAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
@@ -66,13 +57,39 @@ public class TournamentMatchesView extends FrameLayout implements BaseAdapterVie
 
     @Override
     public void search(@Nullable final String query) {
-        // TODO
+        if (!mContent.hasMatches()) {
+            return;
+        }
+
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<FullTournament.Match> mList;
+
+            @Override
+            public void onBackground() {
+                if (!isAlive()) {
+                    return;
+                }
+
+                mList = ListUtils.searchTournamentMatchesList(query, mContent.getMatches());
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+            }
+        });
     }
 
     @Override
     public void setContent(final FullTournament content) {
-        if (content.hasMatches()) {
-            mAdapter.set(content.getMatches());
+        mContent = content;
+
+        if (mContent.hasMatches()) {
+            mAdapter.set(mContent.getMatches());
             mEmpty.setVisibility(GONE);
             mRecyclerView.setVisibility(VISIBLE);
         } else {

@@ -6,7 +6,8 @@
         android:id="@+id/miSearch"
         android:title="@string/search"
         android:visible="false"
-        compat:showAsAction="ifRoom" />
+        compat:actionViewClass="android.support.v7.widget.SearchView"
+        compat:showAsAction="collapseActionView|ifRoom" />
     <item
         android:icon="@drawable/ic_filter_list_white_24dp"
         android:id="@+id/miFilter"
@@ -14,6 +15,10 @@
         android:visible="false"
         compat:showAsAction="ifRoom">
         <menu>
+            <item
+                android:id="@+id/miFilterAll"
+                android:title="@string/show_all"
+                android:visible="false" />
             <item
                 android:id="@+id/miFilterWins"
                 android:title="@string/show_wins" />

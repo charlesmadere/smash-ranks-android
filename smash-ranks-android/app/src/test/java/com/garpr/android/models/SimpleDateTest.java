@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.Calendar;
+
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
@@ -21,6 +23,7 @@ import static org.junit.Assert.assertNull;
 public class SimpleDateTest extends BaseTest {
 
     private static final String JSON_ONE = "\"01/05/17\"";
+    private static final String JSON_TWO = "\"11/28/89\"";
 
     @Inject
     Gson mGson;
@@ -34,8 +37,11 @@ public class SimpleDateTest extends BaseTest {
     }
 
     @Test
-    public void testFromJsonOne() throws Exception {
-        final SimpleDate simpleDate = mGson.fromJson(JSON_ONE, SimpleDate.class);
+    public void testFromJson() throws Exception {
+        SimpleDate simpleDate = mGson.fromJson(JSON_ONE, SimpleDate.class);
+        assertNotNull(simpleDate);
+
+        simpleDate = mGson.fromJson(JSON_TWO, SimpleDate.class);
         assertNotNull(simpleDate);
     }
 
@@ -46,10 +52,33 @@ public class SimpleDateTest extends BaseTest {
     }
 
     @Test
-    public void testToJsonOne() throws Exception {
-        final SimpleDate simpleDate1 = mGson.fromJson(JSON_ONE, SimpleDate.class);
-        final String json = mGson.toJson(simpleDate1, SimpleDate.class);
-        final SimpleDate simpleDate2 = mGson.fromJson(json, SimpleDate.class);
+    public void testGetMonth() throws Exception {
+        SimpleDate simpleDate = mGson.fromJson(JSON_ONE, SimpleDate.class);
+        assertEquals(simpleDate.getMonth(), Calendar.JANUARY);
+
+        simpleDate = mGson.fromJson(JSON_TWO, SimpleDate.class);
+        assertEquals(simpleDate.getMonth(), Calendar.NOVEMBER);
+    }
+
+    @Test
+    public void testGetYear() throws Exception {
+        SimpleDate simpleDate = mGson.fromJson(JSON_ONE, SimpleDate.class);
+        assertEquals(simpleDate.getYear(), 2017);
+
+        simpleDate = mGson.fromJson(JSON_TWO, SimpleDate.class);
+        assertEquals(simpleDate.getYear(), 1989);
+    }
+
+    @Test
+    public void testToJson() throws Exception {
+        SimpleDate simpleDate1 = mGson.fromJson(JSON_ONE, SimpleDate.class);
+        String json = mGson.toJson(simpleDate1, SimpleDate.class);
+        SimpleDate simpleDate2 = mGson.fromJson(json, SimpleDate.class);
+        assertEquals(simpleDate1, simpleDate2);
+
+        simpleDate1 = mGson.fromJson(JSON_TWO, SimpleDate.class);
+        json = mGson.toJson(simpleDate1, SimpleDate.class);
+        simpleDate2 = mGson.fromJson(json, SimpleDate.class);
         assertEquals(simpleDate1, simpleDate2);
     }
 

@@ -16,6 +16,7 @@ import com.garpr.android.sync.RankingsPollingService;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
+import com.garpr.android.views.TournamentPageView;
 
 import javax.inject.Singleton;
 
@@ -49,5 +50,6 @@ public interface AppComponent {
     void inject(LastPollPreferenceView view);
     void inject(PollFrequencyPreferenceView view);
     void inject(ThemePreferenceView view);
+    void inject(TournamentPageView view);
 
 }

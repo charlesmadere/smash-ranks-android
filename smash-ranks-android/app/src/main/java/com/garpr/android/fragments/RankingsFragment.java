@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +14,25 @@ import android.view.ViewGroup;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.RankingsAdapter;
+import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.RegionManager;
-import com.garpr.android.misc.Searchable;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.models.Ranking;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class RankingsFragment extends BaseFragment implements ApiListener<RankingsBundle>,
-        Searchable, SwipeRefreshLayout.OnRefreshListener {
+public class RankingsFragment extends BaseSearchableFragment implements ApiListener<RankingsBundle>,
+        SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "RankingsFragment";
 
@@ -40,6 +45,9 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
 
     @Inject
     ServerApi mServerApi;
+
+    @Inject
+    ThreadUtils mThreadUtils;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -122,7 +130,27 @@ public class RankingsFragment extends BaseFragment implements ApiListener<Rankin
 
     @Override
     public void search(@Nullable final String query) {
-        // TODO
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<Ranking> mList;
+
+            @Override
+            public void onBackground() {
+                if (!isAlive()) {
+                    return;
+                }
+
+                mList = ListUtils.searchRankingList(query, mRankingsBundle.getRankings());
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+            }
+        });
     }
 
     private void showEmpty() {

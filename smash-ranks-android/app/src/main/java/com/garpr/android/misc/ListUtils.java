@@ -6,12 +6,15 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.garpr.android.R;
+import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.FullPlayer;
+import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.HeadToHead;
 import com.garpr.android.models.LiteTournament;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
+import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Rating;
 import com.garpr.android.models.TournamentsBundle;
 import com.garpr.android.models.WinsLosses;
@@ -122,6 +125,48 @@ public final class ListUtils {
     }
 
     @Nullable
+    public static ArrayList<Object> filterPlayerMatchesList(@Nullable final Match.Result result,
+            @Nullable final List<Object> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+
+        final ArrayList<Object> newList = new ArrayList<>(list.size());
+
+        // TODO
+
+        return newList;
+    }
+
+    @Nullable
+    public static ArrayList<AbsPlayer> searchPlayerList(@Nullable String query,
+            @Nullable final List<AbsPlayer> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        query = query.trim().toLowerCase();
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        final ArrayList<AbsPlayer> newList = new ArrayList<>(list.size());
+
+        for (final AbsPlayer player : list) {
+            if (player.getName().toLowerCase().contains(query)) {
+                newList.add(player);
+            }
+        }
+
+        return newList;
+    }
+
+    @Nullable
     public static ArrayList<Object> searchPlayerMatchesList(@Nullable String query,
             @Nullable final List<Object> list) {
         if (list == null || list.isEmpty()) {
@@ -132,19 +177,76 @@ public final class ListUtils {
             return new ArrayList<>(list);
         }
 
-        query = query.trim();
+        query = query.trim().toLowerCase();
 
         if (TextUtils.isEmpty(query)) {
             return new ArrayList<>(list);
         }
 
         final ArrayList<Object> newList = new ArrayList<>(list.size());
+        boolean addedRating = false;
 
-        for (final Object object : list) {
-            if (object instanceof AbsTournament) {
-                // TODO
-            } else if (object instanceof Match) {
-                // TODO
+        for (int i = 0; i < list.size(); ++i) {
+            final Object objectI = list.get(i);
+
+            if (objectI instanceof Rating) {
+                if (!addedRating) {
+                    addedRating = true;
+                    newList.add(objectI);
+                }
+            } else if (objectI instanceof AbsTournament) {
+                final AbsTournament tournament = (AbsTournament) objectI;
+                boolean addedTournament = false;
+                int j = i + 1;
+
+                while (j < list.size()) {
+                    final Object objectJ = list.get(j);
+
+                    if (objectJ instanceof Match) {
+                        final Match match = (Match) objectJ;
+
+                        if (match.getOpponentName().toLowerCase().contains(query)) {
+                            if (!addedTournament) {
+                                addedTournament = true;
+                                newList.add(tournament);
+                            }
+
+                            newList.add(match);
+                        }
+
+                        ++j;
+                    } else {
+                        j = list.size();
+                    }
+                }
+            }
+        }
+
+        return newList;
+    }
+
+    @Nullable
+    public static ArrayList<Ranking> searchRankingList(@Nullable String query,
+            @Nullable final List<Ranking> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        query = query.trim().toLowerCase();
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        final ArrayList<Ranking> newList = new ArrayList<>(list.size());
+
+        for (final Ranking ranking : list) {
+            if (ranking.getName().toLowerCase().contains(query)) {
+                newList.add(ranking);
             }
         }
 
@@ -162,7 +264,7 @@ public final class ListUtils {
             return new ArrayList<>(list);
         }
 
-        query = query.trim();
+        query = query.trim().toLowerCase();
 
         if (TextUtils.isEmpty(query)) {
             return new ArrayList<>(list);
@@ -171,8 +273,37 @@ public final class ListUtils {
         final ArrayList<AbsTournament> newList = new ArrayList<>(list.size());
 
         for (final AbsTournament tournament : list) {
-            if (tournament.getName().contains(query)) {
+            if (tournament.getName().toLowerCase().contains(query)) {
                 newList.add(tournament);
+            }
+        }
+
+        return newList;
+    }
+
+    @Nullable
+    public static ArrayList<FullTournament.Match> searchTournamentMatchesList(@Nullable String query,
+            @Nullable final List<FullTournament.Match> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        query = query.trim().toLowerCase();
+
+        if (TextUtils.isEmpty(query)) {
+            return new ArrayList<>(list);
+        }
+
+        final ArrayList<FullTournament.Match> newList = new ArrayList<>(list.size());
+
+        for (final FullTournament.Match match : list) {
+            if (match.getWinnerName().toLowerCase().contains(query) ||
+                    match.getLoserName().toLowerCase().contains(query)) {
+                newList.add(match);
             }
         }
 

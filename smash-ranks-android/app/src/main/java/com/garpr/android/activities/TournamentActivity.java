@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.TournamentPagerAdapter;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.FullTournament;
@@ -32,6 +35,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class TournamentActivity extends BaseActivity implements ApiListener<FullTournament>,
+        MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener,
         SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "TournamentActivity";
@@ -41,7 +45,9 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     private static final String EXTRA_TOURNAMENT_NAME = CNAME + ".TournamentName";
 
     private FullTournament mFullTournament;
+    private SearchView mSearchView;
     private String mTournamentId;
+    private TournamentPagerAdapter mAdapter;
 
     @Inject
     RegionManager mRegionManager;
@@ -122,6 +128,12 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         return TAG;
     }
 
+    @Nullable
+    @Override
+    public CharSequence getSearchQuery() {
+        return mSearchView == null ? null : mSearchView.getQuery();
+    }
+
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,17 +155,38 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.activity_tournament, menu);
+
+        if (mFullTournament != null) {
+            final MenuItem searchMenuItem = menu.findItem(R.id.miSearch);
+            searchMenuItem.setVisible(true);
+
+            MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
+            mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+            mSearchView.setQueryHint(getText(R.string.search_));
+            mSearchView.setOnQueryTextListener(this);
+
+            menu.findItem(R.id.miShare).setVisible(true);
+            menu.findItem(R.id.miViewTournamentPage).setVisible(
+                    !TextUtils.isEmpty(mFullTournament.getUrl()));
+        }
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(final MenuItem item) {
+        mAdapter.search(null);
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(final MenuItem item) {
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.miSearch:
-                // TODO
-                underConstruction();
-                return true;
-
             case R.id.miShare:
                 mShareUtils.shareTournament(this, mFullTournament);
                 return true;
@@ -167,15 +200,15 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(final Menu menu) {
-        if (mFullTournament != null) {
-            menu.findItem(R.id.miSearch).setVisible(true);
-            menu.findItem(R.id.miShare).setVisible(true);
-            menu.findItem(R.id.miViewTournamentPage).setVisible(
-                    !TextUtils.isEmpty(mFullTournament.getUrl()));
-        }
+    public boolean onQueryTextChange(final String newText) {
+        mAdapter.search(newText);
+        return false;
+    }
 
-        return super.onPrepareOptionsMenu(menu);
+    @Override
+    public boolean onQueryTextSubmit(final String query) {
+        mAdapter.search(query);
+        return false;
     }
 
     @Override
@@ -243,7 +276,8 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     }
 
     private void showFullTournament() {
-        mViewPager.setAdapter(new TournamentPagerAdapter(this, mFullTournament));
+        mAdapter = new TournamentPagerAdapter(this, mFullTournament);
+        mViewPager.setAdapter(mAdapter);
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mViewPager.setVisibility(View.VISIBLE);

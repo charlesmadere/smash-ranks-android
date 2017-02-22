@@ -14,6 +14,7 @@ import org.robolectric.annotation.Config;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
@@ -29,6 +30,42 @@ public class PersistentIntegerPreferenceTest extends BaseTest {
     public void setUp() throws Exception {
         super.setUp();
         getTestAppComponent().inject(this);
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", -47,
+                mKeyValueStore);
+
+        assertEquals(preference.get(), Integer.valueOf(-47));
+
+        preference.delete();
+        assertEquals(preference.get(), Integer.valueOf(-47));
+
+        preference.set(100);
+        assertEquals(preference.get(), Integer.valueOf(100));
+
+        preference.delete();
+        assertEquals(preference.get(), Integer.valueOf(-47));
+    }
+
+    @Test
+    public void testGetAndSet() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", 900,
+                mKeyValueStore);
+
+        assertEquals(preference.get(), Integer.valueOf(900));
+
+        preference.set(0);
+        assertEquals(preference.get(), Integer.valueOf(0));
+
+        preference.set((Integer) null);
+        assertEquals(preference.get(), Integer.valueOf(900));
+        assertEquals(preference.get(), preference.getDefaultValue());
+
+        preference.set(-20);
+        assertEquals(preference.get(), Integer.valueOf(-20));
+        assertNotEquals(preference.get(), preference.getDefaultValue());
     }
 
     @Test
