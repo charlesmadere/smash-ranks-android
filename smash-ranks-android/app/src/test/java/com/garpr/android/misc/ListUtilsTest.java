@@ -30,6 +30,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -150,8 +151,185 @@ public class ListUtilsTest extends BaseTest {
     }
 
     @Test
+    public void testFilterHeadToHeadListWithLose() throws Exception {
+        final HeadToHead headToHead = mGson.fromJson(JSON_HEAD_TO_HEAD, HeadToHead.class);
+        List<Object> list = ListUtils.createHeadToHeadList(mApplication, headToHead);
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list);
+
+        assertNotNull(list);
+        assertNotEquals(list.size(), size);
+
+        assertTrue(list.get(0) instanceof WinsLosses);
+        assertTrue(list.get(1) instanceof AbsTournament);
+        assertTrue(list.get(2) instanceof Match);
+    }
+
+    @Test
+    public void testFilterHeadToHeadListWithNull() throws Exception {
+        final HeadToHead headToHead = mGson.fromJson(JSON_HEAD_TO_HEAD, HeadToHead.class);
+        List<Object> list = ListUtils.createHeadToHeadList(mApplication, headToHead);
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(null, list);
+
+        assertNotNull(list);
+        assertEquals(size, list.size());
+    }
+
+    @Test
+    public void testFilterHeadToHeadListWithWin() throws Exception {
+        final HeadToHead headToHead = mGson.fromJson(JSON_HEAD_TO_HEAD, HeadToHead.class);
+        List<Object> list = ListUtils.createHeadToHeadList(mApplication, headToHead);
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list);
+
+        assertNotNull(list);
+        assertNotEquals(list.size(), size);
+
+        assertTrue(list.get(0) instanceof WinsLosses);
+        assertTrue(list.get(1) instanceof AbsTournament);
+        assertTrue(list.get(2) instanceof Match);
+    }
+
+    @Test
+    public void testFilterHeadToHeadListFromNullListWithLose() throws Exception {
+        List<Object> list = ListUtils.createHeadToHeadList(mApplication, null);
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list);
+
+        assertNotNull(list);
+        assertEquals(size, list.size());
+
+        assertTrue(list.get(0) instanceof WinsLosses);
+        assertTrue(list.get(1) instanceof CharSequence);
+    }
+
+    @Test
+    public void testFilterHeadToHeadListFromNullListWithNull() throws Exception {
+        List<Object> list = ListUtils.createHeadToHeadList(mApplication, null);
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(null, list);
+
+        assertNotNull(list);
+        assertEquals(size, list.size());
+    }
+
+    @Test
+    public void testFilterHeadToHeadListFromNullListWithWin() throws Exception {
+        List<Object> list = ListUtils.createHeadToHeadList(mApplication, null);
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list);
+
+        assertNotNull(list);
+        assertEquals(size, list.size());
+
+        assertTrue(list.get(0) instanceof WinsLosses);
+        assertTrue(list.get(1) instanceof CharSequence);
+    }
+
+    @Test
+    public void testFilterPlayerMatchesListWithLose() throws Exception {
+        final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
+        final MatchesBundle bundle = mGson.fromJson(JSON_MATCHES, MatchesBundle.class);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                bundle);
+
+        // noinspection ConstantConditions
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list);
+
+        assertNotNull(list);
+        assertNotEquals(list.size(), size);
+        assertEquals(list.size(), 7);
+
+        assertTrue(list.get(0) instanceof Rating);
+        assertTrue(list.get(1) instanceof AbsTournament);
+        assertTrue(list.get(2) instanceof Match);
+    }
+
+    @Test
+    public void testFilterPlayerMatchesListWithNull() throws Exception {
+        final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
+        final MatchesBundle bundle = mGson.fromJson(JSON_MATCHES, MatchesBundle.class);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                bundle);
+
+        // noinspection ConstantConditions
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(null, list);
+
+        assertNotNull(list);
+        assertEquals(list.size(), size);
+    }
+
+    @Test
     public void testFilterPlayerMatchesListWithWin() throws Exception {
-        
+        final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
+        final MatchesBundle bundle = mGson.fromJson(JSON_MATCHES, MatchesBundle.class);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                bundle);
+
+        // noinspection ConstantConditions
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list);
+
+        assertNotNull(list);
+        assertNotEquals(list.size(), size);
+        assertEquals(list.size(), 10);
+    }
+
+    @Test
+    public void testFilterPlayerMatchesListFromNullListWithLose() throws Exception {
+        final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                null);
+
+        // noinspection ConstantConditions
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list);
+
+        assertNotNull(list);
+        assertEquals(size, list.size());
+    }
+
+    @Test
+    public void testFilterPlayerMatchesListFromNullListWithNull() throws Exception {
+        final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                null);
+
+        // noinspection ConstantConditions
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(null, list);
+
+        assertNotNull(list);
+        assertEquals(size, list.size());
+    }
+
+    @Test
+    public void testFilterPlayerMatchesListFromNullListWithWin() throws Exception {
+        final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                null);
+
+        // noinspection ConstantConditions
+        final int size = list.size();
+
+        list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list);
+
+        assertNotNull(list);
+        assertEquals(size, list.size());
     }
 
     @Test
@@ -187,9 +365,7 @@ public class ListUtilsTest extends BaseTest {
     @Test
     public void testSearchPlayerListWithImyt() throws Exception {
         final PlayersBundle bundle = mGson.fromJson(JSON_PLAYERS_BUNDLE, PlayersBundle.class);
-        List<AbsPlayer> players = bundle.getPlayers();
-
-        players = ListUtils.searchPlayerList("Imyt", players);
+        List<AbsPlayer> players = ListUtils.searchPlayerList("Imyt", bundle.getPlayers());
 
         // noinspection ConstantConditions
         assertEquals(players.size(), 1);
@@ -231,19 +407,18 @@ public class ListUtilsTest extends BaseTest {
     @Test
     public void testSearchPlayerListWithZebra() throws Exception {
         final PlayersBundle bundle = mGson.fromJson(JSON_PLAYERS_BUNDLE, PlayersBundle.class);
-        List<AbsPlayer> players = bundle.getPlayers();
-
-        players = ListUtils.searchPlayerList("Zebra", players);
+        List<AbsPlayer> players = ListUtils.searchPlayerList("Zebra", bundle.getPlayers());
 
         // noinspection ConstantConditions
-        assertTrue(players.isEmpty());
+        assertTrue(players == null || players.isEmpty());
     }
 
     @Test
     public void testSearchPlayerMatchesListThatHasMatchesWithEmpty() throws Exception {
         final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
         final MatchesBundle matches = mGson.fromJson(JSON_MATCHES, MatchesBundle.class);
-        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player, matches);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                matches);
         list = ListUtils.searchPlayerMatchesList("", list);
 
         assertNotNull(list);
@@ -275,7 +450,8 @@ public class ListUtilsTest extends BaseTest {
     public void testSearchPlayerMatchesListThatHasMatchesWithNull() throws Exception {
         final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
         final MatchesBundle matches = mGson.fromJson(JSON_MATCHES, MatchesBundle.class);
-        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player, matches);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                matches);
         list = ListUtils.searchPlayerMatchesList(null, list);
 
         assertNotNull(list);
@@ -307,7 +483,8 @@ public class ListUtilsTest extends BaseTest {
     public void testSearchPlayerMatchesListThatHasMatchesWithAr() throws Exception {
         final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
         final MatchesBundle matches = mGson.fromJson(JSON_MATCHES, MatchesBundle.class);
-        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player, matches);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                matches);
         list = ListUtils.searchPlayerMatchesList("ar", list);
 
         assertNotNull(list);
@@ -326,7 +503,8 @@ public class ListUtilsTest extends BaseTest {
     public void testSearchPlayerMatchesListThatHasMatchesWithWhitespace() throws Exception {
         final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
         final MatchesBundle matches = mGson.fromJson(JSON_MATCHES, MatchesBundle.class);
-        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player, matches);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                matches);
         list = ListUtils.searchPlayerMatchesList(" ", list);
 
         assertNotNull(list);
@@ -357,7 +535,8 @@ public class ListUtilsTest extends BaseTest {
     @Test
     public void testSearchPlayerMatchesListThatHasNoMatchesWithEmpty() throws Exception {
         final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
-        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player, null);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                null);
         list = ListUtils.searchPlayerMatchesList("", list);
 
         assertNotNull(list);
@@ -370,7 +549,8 @@ public class ListUtilsTest extends BaseTest {
     @Test
     public void testSearchPlayerMatchesListThatHasNoMatchesWithNull() throws Exception {
         final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
-        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player, null);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                null);
         list = ListUtils.searchPlayerMatchesList(null, list);
 
         assertNotNull(list);
@@ -383,7 +563,8 @@ public class ListUtilsTest extends BaseTest {
     @Test
     public void testSearchPlayerMatchesListThatHasNoMatchesWithWhitespace() throws Exception {
         final FullPlayer player = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer.class);
-        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player, null);
+        List<Object> list = ListUtils.createPlayerMatchesList(mApplication, mRegionManager, player,
+                null);
         list = ListUtils.searchPlayerMatchesList(" ", list);
 
         assertNotNull(list);
@@ -417,9 +598,7 @@ public class ListUtilsTest extends BaseTest {
     @Test
     public void testSearchRankingListWithImyt() throws Exception {
         final RankingsBundle bundle = mGson.fromJson(JSON_RANKINGS_BUNDLE, RankingsBundle.class);
-        List<Ranking> rankings = bundle.getRankings();
-
-        rankings = ListUtils.searchRankingList("Imyt", rankings);
+        List<Ranking> rankings = ListUtils.searchRankingList("Imyt", bundle.getRankings());
 
         // noinspection ConstantConditions
         assertEquals(rankings.size(), 1);
@@ -447,9 +626,7 @@ public class ListUtilsTest extends BaseTest {
     @Test
     public void testSearchRankingListWithOng() throws Exception {
         final RankingsBundle bundle = mGson.fromJson(JSON_RANKINGS_BUNDLE, RankingsBundle.class);
-        List<Ranking> rankings = bundle.getRankings();
-
-        rankings = ListUtils.searchRankingList("ong", rankings);
+        List<Ranking> rankings = ListUtils.searchRankingList("ong", bundle.getRankings());
 
         // noinspection ConstantConditions
         assertEquals(rankings.size(), 2);
@@ -483,7 +660,8 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentListWithEmpty() throws Exception {
-        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE, TournamentsBundle.class);
+        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE,
+                TournamentsBundle.class);
         List<AbsTournament> tournaments = bundle.getTournaments();
 
         // noinspection ConstantConditions
@@ -497,7 +675,8 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentListWithNull() throws Exception {
-        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE, TournamentsBundle.class);
+        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE,
+                TournamentsBundle.class);
         List<AbsTournament> tournaments = bundle.getTournaments();
 
         // noinspection ConstantConditions
@@ -511,10 +690,10 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentListWith105() throws Exception {
-        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE, TournamentsBundle.class);
-        List<AbsTournament> tournaments = bundle.getTournaments();
-
-        tournaments = ListUtils.searchTournamentList("105", tournaments);
+        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE,
+                TournamentsBundle.class);
+        List<AbsTournament> tournaments = ListUtils.searchTournamentList("105",
+                bundle.getTournaments());
 
         // noinspection ConstantConditions
         assertEquals(tournaments.size(), 1);
@@ -527,10 +706,10 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentListWithThe() throws Exception {
-        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE, TournamentsBundle.class);
-        List<AbsTournament> tournaments = bundle.getTournaments();
-
-        tournaments = ListUtils.searchTournamentList("The", tournaments);
+        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE,
+                TournamentsBundle.class);
+        List<AbsTournament> tournaments = ListUtils.searchTournamentList("The",
+                bundle.getTournaments());
 
         // noinspection ConstantConditions
         assertEquals(tournaments.size(), 7);
@@ -543,7 +722,8 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentListWithWhitespace() throws Exception {
-        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE, TournamentsBundle.class);
+        final TournamentsBundle bundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE,
+                TournamentsBundle.class);
         List<AbsTournament> tournaments = bundle.getTournaments();
 
         // noinspection ConstantConditions
@@ -557,7 +737,8 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentMatchesWithEmpty() throws Exception {
-        final FullTournament tournament = mGson.fromJson(JSON_FULL_TOURNAMENT, FullTournament.class);
+        final FullTournament tournament = mGson.fromJson(JSON_FULL_TOURNAMENT,
+                FullTournament.class);
         List<FullTournament.Match> matches = tournament.getMatches();
 
         // noinspection ConstantConditions
@@ -571,7 +752,8 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentMatchesWithNull() throws Exception {
-        final FullTournament tournament = mGson.fromJson(JSON_FULL_TOURNAMENT, FullTournament.class);
+        final FullTournament tournament = mGson.fromJson(JSON_FULL_TOURNAMENT,
+                FullTournament.class);
         List<FullTournament.Match> matches = tournament.getMatches();
 
         // noinspection ConstantConditions
@@ -585,7 +767,8 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentMatchesWithWhitespace() throws Exception {
-        final FullTournament tournament = mGson.fromJson(JSON_FULL_TOURNAMENT, FullTournament.class);
+        final FullTournament tournament = mGson.fromJson(JSON_FULL_TOURNAMENT,
+                FullTournament.class);
         List<FullTournament.Match> matches = tournament.getMatches();
 
         // noinspection ConstantConditions
@@ -599,10 +782,10 @@ public class ListUtilsTest extends BaseTest {
 
     @Test
     public void testSearchTournamentMatchesWithZorc() throws Exception {
-        final FullTournament tournament = mGson.fromJson(JSON_FULL_TOURNAMENT, FullTournament.class);
-        List<FullTournament.Match> matches = tournament.getMatches();
-
-        matches = ListUtils.searchTournamentMatchesList("zorc", matches);
+        final FullTournament tournament = mGson.fromJson(JSON_FULL_TOURNAMENT,
+                FullTournament.class);
+        List<FullTournament.Match> matches = ListUtils.searchTournamentMatchesList("zorc",
+                tournament.getMatches());
 
         // noinspection ConstantConditions
         assertEquals(matches.size(), 8);

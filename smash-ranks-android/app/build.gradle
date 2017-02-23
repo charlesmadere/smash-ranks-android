@@ -29,8 +29,8 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 1003
-        versionName '0.10.3'
+        versionCode 1004
+        versionName '0.10.4'
     }
 
     buildTypes {
@@ -76,8 +76,8 @@ dependencies {
     testCompile "org.robolectric:robolectric:3.2.2"
 
     // Square's Retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 
     // Twitter's Fabric
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
