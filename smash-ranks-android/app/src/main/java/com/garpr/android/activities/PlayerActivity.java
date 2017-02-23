@@ -52,6 +52,7 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     private ArrayList<Object> mList;
     private FullPlayer mFullPlayer;
     private MatchesBundle mMatchesBundle;
+    private Match.Result mResult;
     private PlayerAdapter mAdapter;
     private SearchView mSearchView;
     private String mPlayerId;
@@ -114,6 +115,7 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
         mFullPlayer = null;
         mList = null;
         mMatchesBundle = null;
+        mResult = null;
         showError();
     }
 
@@ -121,8 +123,32 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
         mFullPlayer = null;
         mList = null;
         mMatchesBundle = null;
+        mResult = null;
         mRefreshLayout.setRefreshing(true);
         new DataListener();
+    }
+
+    private void filter(@Nullable final Match.Result result) {
+        mResult = result;
+
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<Object> mList;
+
+            @Override
+            public void onBackground() {
+                mList = ListUtils.filterPlayerMatchesList(result, PlayerActivity.this.mList);
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || mResult != result) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+                supportInvalidateOptionsMenu();
+            }
+        });
     }
 
     @Override
@@ -163,15 +189,21 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
         getMenuInflater().inflate(R.menu.activity_player, menu);
 
         if (mFullPlayer != null) {
-            final MenuItem searchMenuItem = menu.findItem(R.id.miSearch);
-            searchMenuItem.setVisible(true);
+            if (mMatchesBundle != null && mMatchesBundle.hasMatches()) {
+                final MenuItem searchMenuItem = menu.findItem(R.id.miSearch);
+                searchMenuItem.setVisible(true);
 
-            MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-            mSearchView.setQueryHint(getText(R.string.search_opponents_));
-            mSearchView.setOnQueryTextListener(this);
+                MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
+                mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+                mSearchView.setQueryHint(getText(R.string.search_opponents_));
+                mSearchView.setOnQueryTextListener(this);
 
-            menu.findItem(R.id.miFilter).setVisible(true);
+                menu.findItem(R.id.miFilter).setVisible(true);
+                menu.findItem(R.id.miFilterAll).setVisible(mResult != null);
+                menu.findItem(R.id.miFilterLosses).setVisible(mResult != Match.Result.LOSE);
+                menu.findItem(R.id.miFilterWins).setVisible(mResult != Match.Result.WIN);
+            }
+
             menu.findItem(R.id.miShare).setVisible(true);
             menu.findItem(R.id.miAliases).setVisible(mFullPlayer.hasAliases());
         }
@@ -198,18 +230,15 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
                 return true;
 
             case R.id.miFilterAll:
-                // TODO
-                underConstruction();
+                filter(null);
                 return true;
 
             case R.id.miFilterLosses:
-                // TODO
-                underConstruction();
+                filter(Match.Result.LOSE);
                 return true;
 
             case R.id.miFilterWins:
-                // TODO
-                underConstruction();
+                filter(Match.Result.WIN);
                 return true;
 
             case R.id.miShare:

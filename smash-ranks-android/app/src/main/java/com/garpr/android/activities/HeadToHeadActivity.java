@@ -17,6 +17,7 @@ import com.garpr.android.R;
 import com.garpr.android.adapters.HeadToHeadAdapter;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.HeadToHead;
@@ -25,6 +26,9 @@ import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,8 +44,10 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     private static final String EXTRA_OPPONENT_ID = CNAME + ".OpponentId";
     private static final String EXTRA_OPPONENT_NAME = CNAME + ".OpponentName";
 
+    private ArrayList<Object> mList;
     private HeadToHead mHeadToHead;
     private HeadToHeadAdapter mAdapter;
+    private Match.Result mResult;
     private String mOpponentId;
     private String mOpponentName;
     private String mPlayerId;
@@ -52,6 +58,9 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
 
     @Inject
     ServerApi mServerApi;
+
+    @Inject
+    ThreadUtils mThreadUtils;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -96,14 +105,41 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     @Override
     public void failure() {
         mHeadToHead = null;
+        mList = null;
+        mResult = null;
         showError();
     }
 
     private void fetchHeadToHead() {
         mHeadToHead = null;
+        mList = null;
+        mResult = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getHeadToHead(mRegionManager.getRegion(this), mPlayerId, mOpponentId,
                 new ApiCall<>(this));
+    }
+
+    private void filter(@Nullable final Match.Result result) {
+        mResult = result;
+
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<Object> mList;
+
+            @Override
+            public void onBackground() {
+                mList = ListUtils.filterPlayerMatchesList(result, HeadToHeadActivity.this.mList);
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || mResult != result) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+                supportInvalidateOptionsMenu();
+            }
+        });
     }
 
     @Override
@@ -133,6 +169,14 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.activity_head_to_head, menu);
+
+        if (mHeadToHead != null) {
+            menu.findItem(R.id.miFilter).setVisible(true);
+            menu.findItem(R.id.miFilterAll).setVisible(mResult != null);
+            menu.findItem(R.id.miFilterLosses).setVisible(mResult != Match.Result.LOSE);
+            menu.findItem(R.id.miFilterWins).setVisible(mResult != Match.Result.WIN);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -140,18 +184,15 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miFilterAll:
-                // TODO
-                underConstruction();
+                filter(null);
                 return true;
 
             case R.id.miFilterLosses:
-                // TODO
-                underConstruction();
+                filter(Match.Result.LOSE);
                 return true;
 
             case R.id.miFilterWins:
-                // TODO
-                underConstruction();
+                filter(Match.Result.WIN);
                 return true;
 
             case R.id.miViewOpponent:
@@ -213,7 +254,8 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     }
 
     private void showData() {
-        mAdapter.set(ListUtils.createHeadToHeadList(this, mHeadToHead));
+        mList = ListUtils.createHeadToHeadList(this, mHeadToHead);
+        mAdapter.set(mList);
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);

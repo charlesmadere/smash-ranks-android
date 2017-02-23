@@ -133,7 +133,60 @@ public final class ListUtils {
 
         final ArrayList<Object> newList = new ArrayList<>(list.size());
 
-        // TODO
+        if (result == null) {
+            newList.addAll(list);
+            return newList;
+        }
+
+        boolean addedCharSequence = false;
+        boolean addedRating = false;
+        boolean addedWinsLosses = false;
+
+        for (int i = 0; i < list.size(); ++i) {
+            final Object objectI = list.get(i);
+
+            if (objectI instanceof CharSequence) {
+                if (!addedCharSequence) {
+                    addedCharSequence = true;
+                    newList.add(objectI);
+                }
+            } else if (objectI instanceof Rating) {
+                if (!addedRating) {
+                    addedRating = true;
+                    newList.add(objectI);
+                }
+            } else if (objectI instanceof WinsLosses) {
+                if (!addedWinsLosses) {
+                    addedWinsLosses = true;
+                    newList.add(objectI);
+                }
+            } else if (objectI instanceof AbsTournament) {
+                final AbsTournament tournament = (AbsTournament) objectI;
+                boolean addedTournament = false;
+                int j = i + 1;
+
+                while (j < list.size()) {
+                    final Object objectJ = list.get(j);
+
+                    if (objectJ instanceof Match) {
+                        final Match match = (Match) objectJ;
+
+                        if (match.getResult() == result) {
+                            if (!addedTournament) {
+                                addedTournament = true;
+                                newList.add(tournament);
+                            }
+
+                            newList.add(match);
+                        }
+
+                        ++j;
+                    } else {
+                        j = list.size();
+                    }
+                }
+            }
+        }
 
         return newList;
     }
@@ -145,17 +198,14 @@ public final class ListUtils {
             return null;
         }
 
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
+        final ArrayList<AbsPlayer> newList = new ArrayList<>(list.size());
+
+        if (TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
+            newList.addAll(list);
+            return newList;
         }
 
         query = query.trim().toLowerCase();
-
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
-        }
-
-        final ArrayList<AbsPlayer> newList = new ArrayList<>(list.size());
 
         for (final AbsPlayer player : list) {
             if (player.getName().toLowerCase().contains(query)) {
@@ -173,17 +223,14 @@ public final class ListUtils {
             return null;
         }
 
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
+        final ArrayList<Object> newList = new ArrayList<>(list.size());
+
+        if (TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
+            newList.addAll(list);
+            return newList;
         }
 
         query = query.trim().toLowerCase();
-
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
-        }
-
-        final ArrayList<Object> newList = new ArrayList<>(list.size());
         boolean addedRating = false;
 
         for (int i = 0; i < list.size(); ++i) {
@@ -232,17 +279,14 @@ public final class ListUtils {
             return null;
         }
 
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
+        final ArrayList<Ranking> newList = new ArrayList<>(list.size());
+
+        if (TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
+            newList.addAll(list);
+            return newList;
         }
 
         query = query.trim().toLowerCase();
-
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
-        }
-
-        final ArrayList<Ranking> newList = new ArrayList<>(list.size());
 
         for (final Ranking ranking : list) {
             if (ranking.getName().toLowerCase().contains(query)) {
@@ -260,17 +304,15 @@ public final class ListUtils {
             return null;
         }
 
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
+        final ArrayList<AbsTournament> newList = new ArrayList<>(list.size());
+
+        if (TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
+            newList.addAll(list);
+            Collections.sort(newList, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER);
+            return newList;
         }
 
         query = query.trim().toLowerCase();
-
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
-        }
-
-        final ArrayList<AbsTournament> newList = new ArrayList<>(list.size());
 
         for (final AbsTournament tournament : list) {
             if (tournament.getName().toLowerCase().contains(query)) {
@@ -278,6 +320,7 @@ public final class ListUtils {
             }
         }
 
+        Collections.sort(newList, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER);
         return newList;
     }
 
@@ -288,17 +331,14 @@ public final class ListUtils {
             return null;
         }
 
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
+        final ArrayList<FullTournament.Match> newList = new ArrayList<>(list.size());
+
+        if (TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
+            newList.addAll(list);
+            return newList;
         }
 
         query = query.trim().toLowerCase();
-
-        if (TextUtils.isEmpty(query)) {
-            return new ArrayList<>(list);
-        }
-
-        final ArrayList<FullTournament.Match> newList = new ArrayList<>(list.size());
 
         for (final FullTournament.Match match : list) {
             if (match.getWinnerName().toLowerCase().contains(query) ||

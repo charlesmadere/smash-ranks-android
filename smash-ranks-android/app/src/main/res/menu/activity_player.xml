@@ -21,10 +21,12 @@
                 android:visible="false" />
             <item
                 android:id="@+id/miFilterWins"
-                android:title="@string/show_wins" />
+                android:title="@string/show_wins"
+                android:visible="false" />
             <item
                 android:id="@+id/miFilterLosses"
-                android:title="@string/show_losses" />
+                android:title="@string/show_losses"
+                android:visible="false" />
         </menu>
     </item>
     <item
