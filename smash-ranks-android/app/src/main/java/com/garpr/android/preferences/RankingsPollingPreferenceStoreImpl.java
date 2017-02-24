@@ -15,6 +15,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
 
     private Preference<Boolean> mChargingRequired;
     private Preference<Boolean> mEnabled;
+    private Preference<Boolean> mVibrationEnabled;
     private Preference<Boolean> mWifiRequired;
     private Preference<PollFrequency> mPollFrequency;
     private Preference<SimpleDate> mLastPoll;
@@ -79,6 +80,16 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         }
 
         return mRankingsDate;
+    }
+
+    @Override
+    public Preference<Boolean> getVibrationEnabled() {
+        if (mVibrationEnabled == null) {
+            mVibrationEnabled = new PersistentBooleanPreference("VIBRATION_ENABLED", Boolean.FALSE,
+                    mKeyValueStore);
+        }
+
+        return mVibrationEnabled;
     }
 
     @Override
