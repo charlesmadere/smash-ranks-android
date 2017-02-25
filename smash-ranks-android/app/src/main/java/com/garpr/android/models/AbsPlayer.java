@@ -64,7 +64,7 @@ public abstract class AbsPlayer implements Parcelable {
 
 
     public enum Kind implements Parcelable {
-        LITE, FULL;
+        FULL, LITE;
 
         @Override
         public int describeContents() {

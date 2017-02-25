@@ -74,9 +74,9 @@ public class FullPlayer extends AbsPlayer implements Parcelable {
     public static final Creator<FullPlayer> CREATOR = new Creator<FullPlayer>() {
         @Override
         public FullPlayer createFromParcel(final Parcel source) {
-            final FullPlayer p = new FullPlayer();
-            p.readFromParcel(source);
-            return p;
+            final FullPlayer fp = new FullPlayer();
+            fp.readFromParcel(source);
+            return fp;
         }
 
         @Override

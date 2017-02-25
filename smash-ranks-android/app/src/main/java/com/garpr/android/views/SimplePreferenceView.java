@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -70,6 +71,10 @@ public class SimplePreferenceView extends FrameLayout {
         mDescription.setText(mDescriptionText);
     }
 
+    public void setDescriptionText(@StringRes final int descriptionTextResId) {
+        setDescriptionText(getResources().getText(descriptionTextResId));
+    }
+
     @Override
     public void setEnabled(final boolean enabled) {
         super.setEnabled(enabled);
@@ -80,6 +85,10 @@ public class SimplePreferenceView extends FrameLayout {
     public void setTitleText(@Nullable final CharSequence titleText) {
         mTitleText = titleText;
         mTitle.setText(mTitleText);
+    }
+
+    public void setTitleText(@StringRes final int titleTextResId) {
+        setTitleText(getResources().getText(titleTextResId));
     }
 
 }

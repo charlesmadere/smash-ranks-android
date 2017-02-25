@@ -11,6 +11,8 @@ import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
+import com.garpr.android.misc.IdentityManager;
+import com.garpr.android.misc.IdentityManagerImpl;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.NotificationManagerImpl;
 import com.garpr.android.misc.RegionManager;
@@ -129,6 +131,12 @@ public class AppModule {
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_SERIALIZER)
                 .create();
+    }
+
+    @Provides
+    @Singleton
+    IdentityManager providesIdentityManager(final GeneralPreferenceStore generalPreferenceStore) {
+        return new IdentityManagerImpl(generalPreferenceStore);
     }
 
     @Provides
