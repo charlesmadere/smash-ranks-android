@@ -257,7 +257,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         }
 
         if (mSearchMenuItem != null) {
-            if (mSearchView != null && !visible) {
+            if (!visible) {
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
             }
 
