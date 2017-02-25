@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
+import com.garpr.android.activities.SetIdentityActivity;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.models.AbsPlayer;
 
@@ -47,7 +48,8 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements V
 
     @Override
     public void onClick(final View v) {
-        // TODO
+        final Context context = getContext();
+        context.startActivity(SetIdentityActivity.getLaunchIntent(getContext()));
     }
 
     @Override
