@@ -136,6 +136,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     @Override
     public void onClick(final PlayerSelectionItemView v) {
         mSelectedPlayer = v.getContent();
+        mSaveMenuItem.setEnabled(true);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -144,6 +145,8 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_set_identity);
+
+        fetchPlayersBundle();
     }
 
     @Override
@@ -246,6 +249,10 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
 
     private void setMenuItemsVisible(final boolean visible) {
         if (mSaveMenuItem != null) {
+            if (!mSaveMenuItem.isVisible() && visible) {
+                mSaveMenuItem.setEnabled(false);
+            }
+
             mSaveMenuItem.setVisible(visible);
         }
 
