@@ -61,7 +61,7 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements V
         }
 
         setOnClickListener(this);
-        setTitleText(R.string.set_identity);
+        setTitleText(R.string.set_your_identity);
 
         if (isInEditMode()) {
             return;
