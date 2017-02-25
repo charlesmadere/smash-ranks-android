@@ -47,16 +47,6 @@ public class PlayerSelectionItemView extends LinearLayout implements BaseAdapter
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private void attach() {
-        final Activity activity = MiscUtils.optActivity(getContext());
-
-        if (activity instanceof Listeners) {
-            mListeners = (Listeners) activity;
-        } else {
-            mListeners = null;
-        }
-    }
-
     public AbsPlayer getContent() {
         return mContent;
     }
@@ -67,12 +57,6 @@ public class PlayerSelectionItemView extends LinearLayout implements BaseAdapter
     }
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        attach();
-    }
-
-    @Override
     public void onClick(final View v) {
         if (mListeners != null) {
             mListeners.onClick(this);
@@ -80,17 +64,18 @@ public class PlayerSelectionItemView extends LinearLayout implements BaseAdapter
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mListeners = null;
-    }
-
-    @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
         setOnClickListener(this);
-        attach();
+
+        final Activity activity = MiscUtils.optActivity(getContext());
+
+        if (activity instanceof Listeners) {
+            mListeners = (Listeners) activity;
+        } else {
+            mListeners = null;
+        }
     }
 
     @Override

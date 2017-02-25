@@ -55,7 +55,11 @@ public class IdentityManagerImpl implements IdentityManager {
 
     @Override
     public void set(@Nullable final AbsPlayer player) {
-        mGeneralPreferenceStore.getIdentity().set(player);
+        if (player == null) {
+            delete();
+        } else {
+            mGeneralPreferenceStore.getIdentity().set(player);
+        }
     }
 
 }

@@ -22,6 +22,7 @@ import com.garpr.android.adapters.PlayersSelectionAdapter;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.ResultCodes;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.PlayersBundle;
@@ -43,6 +44,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
 
     private static final String TAG = "SetIdentityActivity";
 
+    private AbsPlayer mOldSelectedPlayer;
     private AbsPlayer mSelectedPlayer;
     private MenuItem mSaveMenuItem;
     private MenuItem mSearchMenuItem;
@@ -106,7 +108,11 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     @Nullable
     @Override
     public AbsPlayer getSelectedPlayer() {
-        return mSelectedPlayer;
+        if (mSelectedPlayer == null) {
+            return mOldSelectedPlayer;
+        } else {
+            return mSelectedPlayer;
+        }
     }
 
     @Override
@@ -146,6 +152,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_set_identity);
 
+        mOldSelectedPlayer = mIdentityManager.get();
         fetchPlayersBundle();
     }
 
@@ -179,7 +186,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miSave:
-
+                save();
                 return true;
         }
 
@@ -221,6 +228,12 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
                 DividerItemDecoration.VERTICAL));
         mAdapter = new PlayersSelectionAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void save() {
+        mIdentityManager.set(mSelectedPlayer);
+        setResult(ResultCodes.IDENTITY_SELECTED.mValue);
+        supportFinishAfterTransition();
     }
 
     private void search(@Nullable final String query) {
