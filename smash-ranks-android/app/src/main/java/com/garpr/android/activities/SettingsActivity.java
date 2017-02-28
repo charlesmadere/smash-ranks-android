@@ -15,6 +15,7 @@ import com.garpr.android.R;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.IdentityManager;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.PollFrequency;
 import com.garpr.android.preferences.Preference;
@@ -47,6 +48,9 @@ public class SettingsActivity extends BaseActivity {
 
     @Inject
     RankingsPollingSyncManager mRankingsPollingSyncManager;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @Inject
     ShareUtils mShareUtils;
@@ -112,6 +116,9 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        mIdentityManager.removeListener(mOnIdentityChangeListener);
+        mRegionManager.removeListener(mOnRegionChangeListener);
 
         mRankingsPollingPreferenceStore.getChargingRequired().removeListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().removeListener(mOnRankingsPollingEnabledChange);
@@ -179,6 +186,9 @@ public class SettingsActivity extends BaseActivity {
     protected void onViewsBound() {
         super.onViewsBound();
 
+        mIdentityManager.addListener(mOnIdentityChangeListener);
+        mRegionManager.addListener(mOnRegionChangeListener);
+
         mRankingsPollingPreferenceStore.getChargingRequired().addListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().addListener(mOnRankingsPollingEnabledChange);
         mRankingsPollingPreferenceStore.getPollFrequency().addListener(mOnPollFrequencyChange);
@@ -242,6 +252,14 @@ public class SettingsActivity extends BaseActivity {
         return true;
     }
 
+    private final IdentityManager.OnIdentityChangeListener mOnIdentityChangeListener =
+            new IdentityManager.OnIdentityChangeListener() {
+        @Override
+        public void onIdentityChange(final IdentityManager identityManager) {
+            refresh();
+        }
+    };
+
     private final Preference.OnPreferenceChangeListener<Boolean> mOnChargingRequiredChange =
             new Preference.OnPreferenceChangeListener<Boolean>() {
         @Override
@@ -283,6 +301,14 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public void onPreferenceChange(final Preference<Boolean> preference) {
             mRankingsPollingSyncManager.enableOrDisable();
+            refresh();
+        }
+    };
+
+    private final RegionManager.OnRegionChangeListener mOnRegionChangeListener =
+            new RegionManager.OnRegionChangeListener() {
+        @Override
+        public void onRegionChange(final RegionManager regionManager) {
             refresh();
         }
     };

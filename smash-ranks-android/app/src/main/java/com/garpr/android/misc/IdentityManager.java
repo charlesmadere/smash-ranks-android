@@ -1,12 +1,13 @@
 package com.garpr.android.misc;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.garpr.android.models.AbsPlayer;
 
 public interface IdentityManager {
 
-    void delete();
+    void addListener(@NonNull final OnIdentityChangeListener listener);
 
     @Nullable
     AbsPlayer get();
@@ -17,6 +18,13 @@ public interface IdentityManager {
 
     boolean isPlayer(@Nullable final AbsPlayer player);
 
+    void removeListener(@Nullable final OnIdentityChangeListener listener);
+
     void set(@Nullable final AbsPlayer player);
+
+
+    interface OnIdentityChangeListener {
+        void onIdentityChange(final IdentityManager identityManager);
+    }
 
 }

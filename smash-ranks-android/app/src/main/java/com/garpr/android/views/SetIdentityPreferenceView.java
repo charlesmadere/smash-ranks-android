@@ -14,7 +14,8 @@ import com.garpr.android.models.AbsPlayer;
 
 import javax.inject.Inject;
 
-public class SetIdentityPreferenceView extends SimplePreferenceView implements View.OnClickListener {
+public class SetIdentityPreferenceView extends SimplePreferenceView implements
+        IdentityManager.OnIdentityChangeListener, View.OnClickListener {
 
     @Inject
     IdentityManager mIdentityManager;
@@ -43,6 +44,7 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements V
             return;
         }
 
+        mIdentityManager.addListener(this);
         refresh();
     }
 
@@ -50,6 +52,12 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements V
     public void onClick(final View v) {
         final Context context = getContext();
         context.startActivity(SetIdentityActivity.getLaunchIntent(getContext()));
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mIdentityManager.removeListener(this);
     }
 
     @Override
@@ -67,16 +75,22 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements V
             return;
         }
 
+        mIdentityManager.addListener(this);
+        refresh();
+    }
+
+    @Override
+    public void onIdentityChange(final IdentityManager identityManager) {
         refresh();
     }
 
     public void refresh() {
-        if (mIdentityManager.hasIdentity()) {
-            final AbsPlayer player = mIdentityManager.get();
-            // noinspection ConstantConditions
-            setDescriptionText(getResources().getString(R.string.identity_is_x, player.getName()));
-        } else {
+        final AbsPlayer player = mIdentityManager.get();
+
+        if (player == null) {
             setDescriptionText(R.string.easily_find_yourself_throughout_the_app);
+        } else {
+            setDescriptionText(getResources().getString(R.string.identity_is_x, player.getName()));
         }
     }
 

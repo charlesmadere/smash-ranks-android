@@ -7,18 +7,43 @@ import android.text.TextUtils;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.preferences.GeneralPreferenceStore;
 
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class IdentityManagerImpl implements IdentityManager {
 
     private final GeneralPreferenceStore mGeneralPreferenceStore;
+    private final List<WeakReference<OnIdentityChangeListener>> mListeners;
 
 
     public IdentityManagerImpl(@NonNull final GeneralPreferenceStore generalPreferenceStore) {
         mGeneralPreferenceStore = generalPreferenceStore;
+        mListeners = new LinkedList<>();
     }
 
     @Override
-    public void delete() {
-        mGeneralPreferenceStore.getIdentity().delete();
+    public void addListener(@NonNull final OnIdentityChangeListener listener) {
+        synchronized (mListeners) {
+            boolean addListener = true;
+            final Iterator<WeakReference<OnIdentityChangeListener>> iterator = mListeners.iterator();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnIdentityChangeListener> reference = iterator.next();
+                final OnIdentityChangeListener item = reference.get();
+
+                if (item == null) {
+                    iterator.remove();
+                } else if (item == listener) {
+                    addListener = false;
+                }
+            }
+
+            if (addListener) {
+                mListeners.add(new WeakReference<>(listener));
+            }
+        }
     }
 
     @Nullable
@@ -53,13 +78,43 @@ public class IdentityManagerImpl implements IdentityManager {
         return identity != null && identity.equals(player);
     }
 
+    private void notifyListeners() {
+        synchronized (mListeners) {
+            final Iterator<WeakReference<OnIdentityChangeListener>> iterator = mListeners.iterator();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnIdentityChangeListener> reference = iterator.next();
+                final OnIdentityChangeListener item = reference.get();
+
+                if (item == null) {
+                    iterator.remove();
+                } else {
+                    item.onIdentityChange(this);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void removeListener(@Nullable final OnIdentityChangeListener listener) {
+        synchronized (mListeners) {
+            final Iterator<WeakReference<OnIdentityChangeListener>> iterator = mListeners.iterator();
+
+            while (iterator.hasNext()) {
+                final WeakReference<OnIdentityChangeListener> reference = iterator.next();
+                final OnIdentityChangeListener item = reference.get();
+
+                if (item == null || item == listener) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
     @Override
     public void set(@Nullable final AbsPlayer player) {
-        if (player == null) {
-            delete();
-        } else {
-            mGeneralPreferenceStore.getIdentity().set(player);
-        }
+        mGeneralPreferenceStore.getIdentity().set(player);
+        notifyListeners();
     }
 
 }

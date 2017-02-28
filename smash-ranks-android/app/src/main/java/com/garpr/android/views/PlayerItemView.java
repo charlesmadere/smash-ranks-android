@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
@@ -16,7 +15,7 @@ import com.garpr.android.models.AbsPlayer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PlayerItemView extends FrameLayout implements BaseAdapterView<AbsPlayer>,
+public class PlayerItemView extends IdentityFrameLayout implements BaseAdapterView<AbsPlayer>,
         View.OnClickListener {
 
     private AbsPlayer mContent;
@@ -41,6 +40,23 @@ public class PlayerItemView extends FrameLayout implements BaseAdapterView<AbsPl
     }
 
     @Override
+    protected AbsPlayer getIdentity() {
+        return mContent;
+    }
+
+    @Override
+    protected void identityIsSomeoneElse() {
+        super.identityIsSomeoneElse();
+        styleTextViewForSomeoneElse(mName);
+    }
+
+    @Override
+    protected void identityIsUser() {
+        super.identityIsUser();
+        styleTextViewForUser(mName);
+    }
+
+    @Override
     public void onClick(final View v) {
         final Context context = getContext();
         context.startActivity(PlayerActivity.getLaunchIntent(context, mContent));
@@ -58,6 +74,8 @@ public class PlayerItemView extends FrameLayout implements BaseAdapterView<AbsPl
         mContent = content;
 
         mName.setText(mContent.getName());
+
+        refreshIdentity();
     }
 
 }

@@ -33,6 +33,31 @@ public class PersistentIntegerPreferenceTest extends BaseTest {
     }
 
     @Test
+    public void testAddListener() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", null,
+                mKeyValueStore);
+
+        final int[] array = { 0 };
+
+        final Preference.OnPreferenceChangeListener<Integer> listener =
+                new Preference.OnPreferenceChangeListener<Integer>() {
+            @Override
+            public void onPreferenceChange(final Preference<Integer> preference) {
+                // noinspection ConstantConditions
+                array[0] = preference.get();
+            }
+        };
+
+        preference.addListener(listener);
+
+        preference.set(10);
+        assertEquals(10, array[0]);
+
+        preference.set(20);
+        assertEquals(20, array[0]);
+    }
+
+    @Test
     public void testDelete() throws Exception {
         final Preference<Integer> preference = new PersistentIntegerPreference("integer", -47,
                 mKeyValueStore);
@@ -88,6 +113,36 @@ public class PersistentIntegerPreferenceTest extends BaseTest {
 
         preference.set(20);
         assertNull(preference.getDefaultValue());
+    }
+
+    @Test
+    public void testRemoveListener() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", null,
+                mKeyValueStore);
+
+        final int[] array = { 0 };
+
+        final Preference.OnPreferenceChangeListener<Integer> listener =
+                new Preference.OnPreferenceChangeListener<Integer>() {
+            @Override
+            public void onPreferenceChange(final Preference<Integer> preference) {
+                // noinspection ConstantConditions
+                array[0] = preference.get();
+            }
+        };
+
+        preference.addListener(listener);
+
+        preference.set(10);
+        assertEquals(10, array[0]);
+
+        preference.set(20);
+        assertEquals(20, array[0]);
+
+        preference.removeListener(listener);
+
+        preference.set(100);
+        assertNotEquals(100, array[0]);
     }
 
     @Test

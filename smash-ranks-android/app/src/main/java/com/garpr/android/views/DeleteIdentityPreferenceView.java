@@ -2,7 +2,9 @@ package com.garpr.android.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -13,7 +15,9 @@ import com.garpr.android.models.AbsPlayer;
 
 import javax.inject.Inject;
 
-public class DeleteIdentityPreferenceView extends SimplePreferenceView implements View.OnClickListener {
+public class DeleteIdentityPreferenceView extends SimplePreferenceView implements
+        DialogInterface.OnClickListener, IdentityManager.OnIdentityChangeListener,
+        View.OnClickListener {
 
     @Inject
     IdentityManager mIdentityManager;
@@ -42,12 +46,28 @@ public class DeleteIdentityPreferenceView extends SimplePreferenceView implement
             return;
         }
 
+        mIdentityManager.addListener(this);
         refresh();
     }
 
     @Override
+    public void onClick(final DialogInterface dialog, final int which) {
+        mIdentityManager.set(null);
+    }
+
+    @Override
     public void onClick(final View v) {
-        // TODO
+        new AlertDialog.Builder(getContext())
+                .setMessage(R.string.are_you_sure_you_want_to_delete_your_identity)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.yes, this)
+                .show();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mIdentityManager.removeListener(this);
     }
 
     @Override
@@ -65,16 +85,22 @@ public class DeleteIdentityPreferenceView extends SimplePreferenceView implement
             return;
         }
 
+        mIdentityManager.addListener(this);
+        refresh();
+    }
+
+    @Override
+    public void onIdentityChange(final IdentityManager identityManager) {
         refresh();
     }
 
     public void refresh() {
-        if (mIdentityManager.hasIdentity()) {
-            final AbsPlayer player = mIdentityManager.get();
-            // noinspection ConstantConditions
-            setDescriptionText(getResources().getString(R.string.identity_is_x, player.getName()));
-        } else {
+        final AbsPlayer player = mIdentityManager.get();
+
+        if (player == null) {
             setDescriptionText(R.string.no_identity_has_been_set);
+        } else {
+            setDescriptionText(getResources().getString(R.string.identity_is_x, player.getName()));
         }
     }
 
