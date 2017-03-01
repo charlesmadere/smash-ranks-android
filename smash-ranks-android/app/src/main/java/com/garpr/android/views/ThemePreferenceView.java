@@ -132,7 +132,10 @@ public class ThemePreferenceView extends SimplePreferenceView implements
         }
     }
 
+    @Override
     public void refresh() {
+        super.refresh();
+
         final NightMode nightMode = mGeneralPreferenceStore.getNightMode().get();
         setDescriptionText(nightMode == null ? R.string.not_yet_set : nightMode.getTextResId());
     }

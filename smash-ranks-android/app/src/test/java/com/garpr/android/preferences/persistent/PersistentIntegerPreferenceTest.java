@@ -49,6 +49,7 @@ public class PersistentIntegerPreferenceTest extends BaseTest {
         };
 
         preference.addListener(listener);
+        assertEquals(0, array[0]);
 
         preference.set(10);
         assertEquals(10, array[0]);

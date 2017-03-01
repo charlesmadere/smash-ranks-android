@@ -116,7 +116,10 @@ public class PollFrequencyPreferenceView extends SimplePreferenceView implements
         }
     }
 
+    @Override
     public void refresh() {
+        super.refresh();
+
         final PollFrequency pollFrequency = mRankingsPollingPreferenceStore.getPollFrequency().get();
         setDescriptionText(pollFrequency == null ? R.string.not_yet_set : pollFrequency.getTextResId());
     }

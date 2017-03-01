@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.garpr.android.models.AbsPlayer;
-import com.garpr.android.preferences.GeneralPreferenceStore;
+import com.garpr.android.preferences.Preference;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -14,13 +14,18 @@ import java.util.List;
 
 public class IdentityManagerImpl implements IdentityManager {
 
-    private final GeneralPreferenceStore mGeneralPreferenceStore;
+    private static final String TAG = "IdentityManagerImpl";
+
     private final List<WeakReference<OnIdentityChangeListener>> mListeners;
+    private final Preference<AbsPlayer> mIdentity;
+    private final Timber mTimber;
 
 
-    public IdentityManagerImpl(@NonNull final GeneralPreferenceStore generalPreferenceStore) {
-        mGeneralPreferenceStore = generalPreferenceStore;
+    public IdentityManagerImpl(@NonNull final Preference<AbsPlayer> identity,
+            @NonNull final Timber timber) {
         mListeners = new LinkedList<>();
+        mIdentity = identity;
+        mTimber = timber;
     }
 
     @Override
@@ -48,13 +53,22 @@ public class IdentityManagerImpl implements IdentityManager {
 
     @Nullable
     @Override
-    public AbsPlayer get() {
-        return mGeneralPreferenceStore.getIdentity().get();
+    public AbsPlayer getIdentity() {
+        return mIdentity.get();
+    }
+
+    @NonNull
+    private String getPlayerString(@Nullable final AbsPlayer player) {
+        if (player == null) {
+            return "null";
+        } else {
+            return "(id:" + player.getId() + ") (name:" + player.getName() + ")";
+        }
     }
 
     @Override
     public boolean hasIdentity() {
-        return mGeneralPreferenceStore.getIdentity().exists();
+        return mIdentity.exists();
     }
 
     @Override
@@ -63,9 +77,8 @@ public class IdentityManagerImpl implements IdentityManager {
             return false;
         }
 
-        final AbsPlayer identity = get();
+        final AbsPlayer identity = getIdentity();
         return identity != null && identity.getId().equals(id);
-
     }
 
     @Override
@@ -74,7 +87,7 @@ public class IdentityManagerImpl implements IdentityManager {
             return false;
         }
 
-        final AbsPlayer identity = get();
+        final AbsPlayer identity = getIdentity();
         return identity != null && identity.equals(player);
     }
 
@@ -112,8 +125,11 @@ public class IdentityManagerImpl implements IdentityManager {
     }
 
     @Override
-    public void set(@Nullable final AbsPlayer player) {
-        mGeneralPreferenceStore.getIdentity().set(player);
+    public void setIdentity(@Nullable final AbsPlayer player) {
+        mTimber.d(TAG, "Old identity is " + getPlayerString(getIdentity()) + ", new identity is "
+                + getPlayerString(player) + ".");
+
+        mIdentity.set(player);
         notifyListeners();
     }
 

@@ -135,8 +135,9 @@ public class AppModule {
 
     @Provides
     @Singleton
-    IdentityManager providesIdentityManager(final GeneralPreferenceStore generalPreferenceStore) {
-        return new IdentityManagerImpl(generalPreferenceStore);
+    IdentityManager providesIdentityManager(final GeneralPreferenceStore generalPreferenceStore,
+            final Timber timber) {
+        return new IdentityManagerImpl(generalPreferenceStore.getIdentity(), timber);
     }
 
     @Provides
@@ -172,8 +173,9 @@ public class AppModule {
 
     @Provides
     @Singleton
-    RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore) {
-        return new RegionManagerImpl(generalPreferenceStore.getCurrentRegion());
+    RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore,
+            final Timber timber) {
+        return new RegionManagerImpl(generalPreferenceStore.getCurrentRegion(), timber);
     }
 
     @Provides

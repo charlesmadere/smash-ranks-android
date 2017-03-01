@@ -15,13 +15,18 @@ import java.util.List;
 
 public class RegionManagerImpl implements RegionManager {
 
+    private static final String TAG = "RegionManagerImpl";
+
     private final List<WeakReference<OnRegionChangeListener>> mListeners;
-    private final Preference<String> mCurrentRegion;
+    private final Preference<String> mRegion;
+    private final Timber mTimber;
 
 
-    public RegionManagerImpl(@NonNull final Preference<String> currentRegion) {
+    public RegionManagerImpl(@NonNull final Preference<String> region,
+            @NonNull final Timber timber) {
         mListeners = new LinkedList<>();
-        mCurrentRegion = currentRegion;
+        mRegion = region;
+        mTimber = timber;
     }
 
     @Override
@@ -50,13 +55,13 @@ public class RegionManagerImpl implements RegionManager {
     @NonNull
     @Override
     public String getRegion() {
-        final String currentRegion = mCurrentRegion.get();
+        final String region = mRegion.get();
 
-        if (TextUtils.isEmpty(currentRegion)) {
-            throw new IllegalStateException("current region is empty!");
+        if (TextUtils.isEmpty(region)) {
+            throw new IllegalStateException("region is empty!");
         }
 
-        return currentRegion;
+        return region;
     }
 
     @NonNull
@@ -116,7 +121,9 @@ public class RegionManagerImpl implements RegionManager {
 
     @Override
     public void setRegion(@NonNull final String region) {
-        mCurrentRegion.set(region);
+        mTimber.d(TAG, "Old region is " + getRegion() + ", new region is " + region + ".");
+
+        mRegion.set(region);
         notifyListeners();
     }
 

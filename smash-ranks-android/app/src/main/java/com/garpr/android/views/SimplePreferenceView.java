@@ -66,6 +66,10 @@ public class SimplePreferenceView extends FrameLayout {
         ta.recycle();
     }
 
+    public void refresh() {
+        // intentionally empty, children can override
+    }
+
     public void setDescriptionText(@Nullable final CharSequence descriptionText) {
         mDescriptionText = descriptionText;
         mDescription.setText(mDescriptionText);

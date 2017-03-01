@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
     <ImageView
+        tools:ignore="ContentDescription"
         style="@style/PreferenceViewIcon" />
     <TextView
         tools:text="@string/must_be_charging"

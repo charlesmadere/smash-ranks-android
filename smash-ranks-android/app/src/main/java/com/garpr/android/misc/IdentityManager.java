@@ -10,7 +10,7 @@ public interface IdentityManager {
     void addListener(@NonNull final OnIdentityChangeListener listener);
 
     @Nullable
-    AbsPlayer get();
+    AbsPlayer getIdentity();
 
     boolean hasIdentity();
 
@@ -20,7 +20,7 @@ public interface IdentityManager {
 
     void removeListener(@Nullable final OnIdentityChangeListener listener);
 
-    void set(@Nullable final AbsPlayer player);
+    void setIdentity(@Nullable final AbsPlayer player);
 
 
     interface OnIdentityChangeListener {

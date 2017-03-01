@@ -52,7 +52,7 @@ public class DeleteIdentityPreferenceView extends SimplePreferenceView implement
 
     @Override
     public void onClick(final DialogInterface dialog, final int which) {
-        mIdentityManager.set(null);
+        mIdentityManager.setIdentity(null);
     }
 
     @Override
@@ -94,8 +94,11 @@ public class DeleteIdentityPreferenceView extends SimplePreferenceView implement
         refresh();
     }
 
+    @Override
     public void refresh() {
-        final AbsPlayer player = mIdentityManager.get();
+        super.refresh();
+
+        final AbsPlayer player = mIdentityManager.getIdentity();
 
         if (player == null) {
             setDescriptionText(R.string.no_identity_has_been_set);

@@ -3,6 +3,7 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -81,11 +82,16 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements
 
     @Override
     public void onIdentityChange(final IdentityManager identityManager) {
-        refresh();
+        if (ViewCompat.isAttachedToWindow(this)) {
+            refresh();
+        }
     }
 
+    @Override
     public void refresh() {
-        final AbsPlayer player = mIdentityManager.get();
+        super.refresh();
+
+        final AbsPlayer player = mIdentityManager.getIdentity();
 
         if (player == null) {
             setDescriptionText(R.string.easily_find_yourself_throughout_the_app);

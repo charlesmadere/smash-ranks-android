@@ -152,7 +152,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_set_identity);
 
-        mOldSelectedPlayer = mIdentityManager.get();
+        mOldSelectedPlayer = mIdentityManager.getIdentity();
         fetchPlayersBundle();
     }
 
@@ -231,7 +231,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     private void save() {
-        mIdentityManager.set(mSelectedPlayer);
+        mIdentityManager.setIdentity(mSelectedPlayer);
         setResult(ResultCodes.IDENTITY_SELECTED.mValue);
         supportFinishAfterTransition();
     }

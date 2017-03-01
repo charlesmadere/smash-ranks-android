@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -93,7 +94,9 @@ public abstract class IdentityFrameLayout extends FrameLayout implements
 
     @Override
     public void onIdentityChange(final IdentityManager identityManager) {
-        refreshIdentity();
+        if (ViewCompat.isAttachedToWindow(this)) {
+            refreshIdentity();
+        }
     }
 
     protected void refreshIdentity() {

@@ -61,6 +61,7 @@
     <string name="rankings_polling_description">This feature will periodically poll GAR PR and let you know if its rankings have been updated. Note that the poll frequency is just an estimate, it\'s not guaranteed to run at these exact intervals.</string>
     <string name="rankings_polling_requires_google_play_services">Rankings polling requires Google Play Services in order to function. Click here to try to resolve the issues with your Google Play services installation.</string>
     <string name="rating_x">Rating: %1$s</string>
+    <string name="region">Region</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="search_">Search…</string>

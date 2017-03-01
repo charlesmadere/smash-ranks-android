@@ -80,7 +80,10 @@ public class LastPollPreferenceView extends SimplePreferenceView implements
         }
     }
 
+    @Override
     public void refresh() {
+        super.refresh();
+
         final SimpleDate date = mRankingsPollingPreferenceStore.getLastPoll().get();
 
         if (date == null) {
