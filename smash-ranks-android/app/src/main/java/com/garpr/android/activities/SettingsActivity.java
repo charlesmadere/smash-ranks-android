@@ -55,9 +55,6 @@ public class SettingsActivity extends BaseActivity {
     @Inject
     ShareUtils mShareUtils;
 
-    @BindView(R.id.cpvVibrationEnabled)
-    CheckablePreferenceView mVibrationEnabled;
-
     @BindView(R.id.cpvMustBeCharging)
     CheckablePreferenceView mMustBeCharging;
 
@@ -196,7 +193,6 @@ public class SettingsActivity extends BaseActivity {
         mRankingsPollingPreferenceStore.getWifiRequired().addListener(mOnWifiRequiredChange);
 
         mUseRankingsPolling.set(mRankingsPollingPreferenceStore.getEnabled());
-        mVibrationEnabled.set(mRankingsPollingPreferenceStore.getVibrationEnabled());
         mMustBeOnWifi.set(mRankingsPollingPreferenceStore.getWifiRequired());
         mMustBeCharging.set(mRankingsPollingPreferenceStore.getChargingRequired());
     }
@@ -217,7 +213,6 @@ public class SettingsActivity extends BaseActivity {
 
         mUseRankingsPolling.refresh();
         mPollFrequency.refresh();
-        mVibrationEnabled.refresh();
         mMustBeOnWifi.refresh();
         mMustBeCharging.refresh();
         mLastPoll.refresh();
@@ -228,12 +223,10 @@ public class SettingsActivity extends BaseActivity {
 
             if (Boolean.TRUE.equals(mRankingsPollingPreferenceStore.getEnabled().get())) {
                 mPollFrequency.setEnabled(true);
-                mVibrationEnabled.setEnabled(true);
                 mMustBeOnWifi.setEnabled(true);
                 mMustBeCharging.setEnabled(true);
             } else {
                 mPollFrequency.setEnabled(false);
-                mVibrationEnabled.setEnabled(false);
                 mMustBeOnWifi.setEnabled(false);
                 mMustBeCharging.setEnabled(false);
             }
@@ -241,7 +234,6 @@ public class SettingsActivity extends BaseActivity {
             mGooglePlayServicesError.setVisibility(View.VISIBLE);
             mUseRankingsPolling.setEnabled(false);
             mPollFrequency.setEnabled(false);
-            mVibrationEnabled.setEnabled(false);
             mMustBeOnWifi.setEnabled(false);
             mMustBeCharging.setEnabled(false);
         }
@@ -291,7 +283,6 @@ public class SettingsActivity extends BaseActivity {
             new Preference.OnPreferenceChangeListener<Boolean>() {
         @Override
         public void onPreferenceChange(final Preference<Boolean> preference) {
-            mRankingsPollingSyncManager.enableOrDisable();
             refresh();
         }
     };
