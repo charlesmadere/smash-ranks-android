@@ -8,7 +8,6 @@
     <color name="gray">#303030</color>
     <color name="gray_dark">#212121</color>
     <color name="gray_light">#666666</color>
-    <color name="identity_background">#FFFFFFFF</color>
     <color name="lose">#C1455A</color>
     <color name="lose_background">#44C1455A</color>
     <color name="salmon">#C4636C</color>

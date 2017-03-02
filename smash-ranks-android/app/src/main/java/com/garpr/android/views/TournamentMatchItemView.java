@@ -75,8 +75,7 @@ public class TournamentMatchItemView extends IdentityFrameLayout implements
         final CharSequence[] items = {
                 mContent.getWinnerName(),
                 mContent.getLoserName(),
-                getResources().getString(R.string.x_vs_y, mContent.getWinnerName(),
-                        mContent.getLoserName())
+                getResources().getText(R.string.head_to_head)
         };
 
         new AlertDialog.Builder(getContext())
@@ -104,7 +103,7 @@ public class TournamentMatchItemView extends IdentityFrameLayout implements
             identityIsUser();
         } else {
             styleTextViewForSomeoneElse(mWinnerName);
-            styleTextViewForUser(mLoserName);
+            styleTextViewForSomeoneElse(mLoserName);
             identityIsSomeoneElse();
         }
     }

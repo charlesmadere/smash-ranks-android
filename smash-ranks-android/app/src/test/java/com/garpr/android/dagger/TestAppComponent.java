@@ -9,7 +9,9 @@ import com.garpr.android.models.AbsTournamentTest;
 import com.garpr.android.models.RatingsTest;
 import com.garpr.android.models.SimpleDateTest;
 import com.garpr.android.preferences.persistent.PersistentBooleanPreferenceTest;
+import com.garpr.android.preferences.persistent.PersistentGsonPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentIntegerPreferenceTest;
+import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest;
 
 import javax.inject.Singleton;
 
@@ -33,6 +35,8 @@ public interface TestAppComponent {
 
     // preferences
     void inject(PersistentBooleanPreferenceTest test);
+    void inject(PersistentGsonPreferenceTest test);
     void inject(PersistentIntegerPreferenceTest test);
+    void inject(PersistentStringPreferenceTest test);
 
 }

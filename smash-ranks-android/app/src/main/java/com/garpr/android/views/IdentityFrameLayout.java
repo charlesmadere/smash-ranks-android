@@ -54,11 +54,11 @@ public abstract class IdentityFrameLayout extends FrameLayout implements
     }
 
     protected void identityIsSomeoneElse() {
-        setBackground(mOriginalBackground);
+        ViewCompat.setBackground(this, mOriginalBackground);
     }
 
     protected void identityIsUser() {
-        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.identity_background));
+        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.card_background));
     }
 
     @Override
