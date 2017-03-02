@@ -64,11 +64,13 @@ public class LastPollPreferenceView extends SimplePreferenceView implements
         }
 
         setEnabled(false);
-        setTitleText(getResources().getText(R.string.last_poll));
+        setTitleText(R.string.last_poll);
 
-        if (!isInEditMode()) {
-            refresh();
+        if (isInEditMode()) {
+            return;
         }
+
+        refresh();
     }
 
     @Override
@@ -78,11 +80,14 @@ public class LastPollPreferenceView extends SimplePreferenceView implements
         }
     }
 
+    @Override
     public void refresh() {
+        super.refresh();
+
         final SimpleDate date = mRankingsPollingPreferenceStore.getLastPoll().get();
 
         if (date == null) {
-            setDescriptionText(getResources().getText(R.string.poll_has_yet_to_occur));
+            setDescriptionText(R.string.poll_has_yet_to_occur);
         } else {
             setDescriptionText(date.getRelativeDateTimeText(getContext()));
         }

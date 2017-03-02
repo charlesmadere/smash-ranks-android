@@ -6,6 +6,7 @@ import com.garpr.android.activities.DeepLinkActivity;
 import com.garpr.android.activities.HeadToHeadActivity;
 import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.activities.PlayerActivity;
+import com.garpr.android.activities.SetIdentityActivity;
 import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.fragments.BaseFragment;
@@ -13,6 +14,10 @@ import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.fragments.TournamentsFragment;
 import com.garpr.android.sync.RankingsPollingService;
+import com.garpr.android.views.DeleteIdentityPreferenceView;
+import com.garpr.android.views.IdentityFrameLayout;
+import com.garpr.android.views.RegionPreferenceView;
+import com.garpr.android.views.SetIdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
@@ -34,6 +39,7 @@ public interface AppComponent {
     void inject(HeadToHeadActivity activity);
     void inject(HomeActivity activity);
     void inject(PlayerActivity activity);
+    void inject(SetIdentityActivity activity);
     void inject(SettingsActivity activity);
     void inject(TournamentActivity activity);
 
@@ -47,8 +53,12 @@ public interface AppComponent {
     void inject(RankingsPollingService service);
 
     // views
+    void inject(DeleteIdentityPreferenceView view);
+    void inject(IdentityFrameLayout view);
     void inject(LastPollPreferenceView view);
     void inject(PollFrequencyPreferenceView view);
+    void inject(RegionPreferenceView view);
+    void inject(SetIdentityPreferenceView view);
     void inject(ThemePreferenceView view);
     void inject(TournamentPageView view);
 

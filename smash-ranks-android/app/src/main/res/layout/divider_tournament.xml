@@ -6,8 +6,6 @@
         android:orientation="horizontal"
         style="@style/InnerListItem">
         <TextView
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-condensed"
             android:gravity="bottom"
             android:id="@+id/tvName"
             android:layout_gravity="bottom"
@@ -15,10 +13,8 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:maxLines="2"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_large"
-            android:textStyle="bold"
-            tools:text="Genesis 3" />
+            tools:text="Genesis 3"
+            style="@style/CardHeaderText" />
         <android.support.v4.widget.Space
             android:layout_height="1dp"
             android:layout_width="@dimen/root_padding" />

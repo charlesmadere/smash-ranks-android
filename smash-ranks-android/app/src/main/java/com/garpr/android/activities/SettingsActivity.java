@@ -14,14 +14,18 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.GoogleApiWrapper;
+import com.garpr.android.misc.IdentityManager;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.PollFrequency;
 import com.garpr.android.preferences.Preference;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.CheckablePreferenceView;
+import com.garpr.android.views.DeleteIdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
+import com.garpr.android.views.SetIdentityPreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
 
 import javax.inject.Inject;
@@ -37,10 +41,16 @@ public class SettingsActivity extends BaseActivity {
     GoogleApiWrapper mGoogleApiWrapper;
 
     @Inject
+    IdentityManager mIdentityManager;
+
+    @Inject
     RankingsPollingPreferenceStore mRankingsPollingPreferenceStore;
 
     @Inject
     RankingsPollingSyncManager mRankingsPollingSyncManager;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @Inject
     ShareUtils mShareUtils;
@@ -54,11 +64,17 @@ public class SettingsActivity extends BaseActivity {
     @BindView(R.id.cpvUseRankingsPolling)
     CheckablePreferenceView mUseRankingsPolling;
 
+    @BindView(R.id.deleteIdentityPreferenceView)
+    DeleteIdentityPreferenceView mDeleteIdentityPreferenceView;
+
     @BindView(R.id.lastPollPreferenceView)
     LastPollPreferenceView mLastPoll;
 
     @BindView(R.id.pollFrequencyPreferenceView)
     PollFrequencyPreferenceView mPollFrequency;
+
+    @BindView(R.id.setIdentityPreferenceView)
+    SetIdentityPreferenceView mSetIdentityPreferenceView;
 
     @BindView(R.id.tvGooglePlayServicesError)
     TextView mGooglePlayServicesError;
@@ -98,9 +114,13 @@ public class SettingsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+        mIdentityManager.removeListener(mOnIdentityChangeListener);
+        mRegionManager.removeListener(mOnRegionChangeListener);
+
         mRankingsPollingPreferenceStore.getChargingRequired().removeListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().removeListener(mOnRankingsPollingEnabledChange);
         mRankingsPollingPreferenceStore.getPollFrequency().removeListener(mOnPollFrequencyChange);
+        mRankingsPollingPreferenceStore.getVibrationEnabled().removeListener(mOnVibrationEnabledChange);
         mRankingsPollingPreferenceStore.getWifiRequired().removeListener(mOnWifiRequiredChange);
     }
 
@@ -163,9 +183,13 @@ public class SettingsActivity extends BaseActivity {
     protected void onViewsBound() {
         super.onViewsBound();
 
+        mIdentityManager.addListener(mOnIdentityChangeListener);
+        mRegionManager.addListener(mOnRegionChangeListener);
+
         mRankingsPollingPreferenceStore.getChargingRequired().addListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().addListener(mOnRankingsPollingEnabledChange);
         mRankingsPollingPreferenceStore.getPollFrequency().addListener(mOnPollFrequencyChange);
+        mRankingsPollingPreferenceStore.getVibrationEnabled().addListener(mOnVibrationEnabledChange);
         mRankingsPollingPreferenceStore.getWifiRequired().addListener(mOnWifiRequiredChange);
 
         mUseRankingsPolling.set(mRankingsPollingPreferenceStore.getEnabled());
@@ -175,6 +199,18 @@ public class SettingsActivity extends BaseActivity {
 
     private void refresh() {
         mTheme.refresh();
+
+        mSetIdentityPreferenceView.refresh();
+        mDeleteIdentityPreferenceView.refresh();
+
+        if (mIdentityManager.hasIdentity()) {
+            mSetIdentityPreferenceView.setVisibility(View.GONE);
+            mDeleteIdentityPreferenceView.setVisibility(View.VISIBLE);
+        } else {
+            mSetIdentityPreferenceView.setVisibility(View.VISIBLE);
+            mDeleteIdentityPreferenceView.setVisibility(View.GONE);
+        }
+
         mUseRankingsPolling.refresh();
         mPollFrequency.refresh();
         mMustBeOnWifi.refresh();
@@ -208,6 +244,14 @@ public class SettingsActivity extends BaseActivity {
         return true;
     }
 
+    private final IdentityManager.OnIdentityChangeListener mOnIdentityChangeListener =
+            new IdentityManager.OnIdentityChangeListener() {
+        @Override
+        public void onIdentityChange(final IdentityManager identityManager) {
+            refresh();
+        }
+    };
+
     private final Preference.OnPreferenceChangeListener<Boolean> mOnChargingRequiredChange =
             new Preference.OnPreferenceChangeListener<Boolean>() {
         @Override
@@ -235,11 +279,27 @@ public class SettingsActivity extends BaseActivity {
         }
     };
 
+    private final Preference.OnPreferenceChangeListener<Boolean> mOnVibrationEnabledChange =
+            new Preference.OnPreferenceChangeListener<Boolean>() {
+        @Override
+        public void onPreferenceChange(final Preference<Boolean> preference) {
+            refresh();
+        }
+    };
+
     private final Preference.OnPreferenceChangeListener<Boolean> mOnWifiRequiredChange =
             new Preference.OnPreferenceChangeListener<Boolean>() {
         @Override
         public void onPreferenceChange(final Preference<Boolean> preference) {
             mRankingsPollingSyncManager.enableOrDisable();
+            refresh();
+        }
+    };
+
+    private final RegionManager.OnRegionChangeListener mOnRegionChangeListener =
+            new RegionManager.OnRegionChangeListener() {
+        @Override
+        public void onRegionChange(final RegionManager regionManager) {
             refresh();
         }
     };

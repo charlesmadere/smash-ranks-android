@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -131,7 +132,9 @@ public class CheckablePreferenceView extends FrameLayout implements
 
     @Override
     public void onPreferenceChange(final Preference<Boolean> preference) {
-        refresh();
+        if (ViewCompat.isAttachedToWindow(this)) {
+            refresh();
+        }
     }
 
     private void parseAttributes(final AttributeSet attrs) {

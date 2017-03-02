@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
@@ -19,7 +18,7 @@ import com.garpr.android.models.Match;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MatchItemView extends FrameLayout implements BaseAdapterView<Match>,
+public class MatchItemView extends IdentityFrameLayout implements BaseAdapterView<Match>,
         View.OnClickListener {
 
     private Match mContent;
@@ -44,6 +43,23 @@ public class MatchItemView extends FrameLayout implements BaseAdapterView<Match>
 
     public Match getContent() {
         return mContent;
+    }
+
+    @Override
+    protected String getIdentityId() {
+        return mContent.getOpponentId();
+    }
+
+    @Override
+    protected void identityIsSomeoneElse() {
+        super.identityIsSomeoneElse();
+        styleTextViewForSomeoneElse(mName);
+    }
+
+    @Override
+    protected void identityIsUser() {
+        super.identityIsUser();
+        styleTextViewForUser(mName);
     }
 
     @Override
@@ -89,6 +105,8 @@ public class MatchItemView extends FrameLayout implements BaseAdapterView<Match>
             default:
                 throw new RuntimeException("unknown result: " + mContent.getResult());
         }
+
+        refreshIdentity();
     }
 
 

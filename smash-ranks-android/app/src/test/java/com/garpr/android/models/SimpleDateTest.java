@@ -10,7 +10,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,6 +37,23 @@ public class SimpleDateTest extends BaseTest {
     public void setUp() throws Exception {
         super.setUp();
         getTestAppComponent().inject(this);
+    }
+
+    @Test
+    public void testChronologicalOrder() throws Exception {
+        final List<SimpleDate> list = new ArrayList<>();
+        list.add(new SimpleDate(2));
+        list.add(new SimpleDate(0));
+        list.add(new SimpleDate(1));
+        list.add(new SimpleDate(5));
+        list.add(new SimpleDate(20));
+
+        Collections.sort(list, SimpleDate.CHRONOLOGICAL_ORDER);
+        assertEquals(list.get(0).getDate().getTime(), 0);
+        assertEquals(list.get(1).getDate().getTime(), 1);
+        assertEquals(list.get(2).getDate().getTime(), 2);
+        assertEquals(list.get(3).getDate().getTime(), 5);
+        assertEquals(list.get(4).getDate().getTime(), 20);
     }
 
     @Test
@@ -67,6 +87,23 @@ public class SimpleDateTest extends BaseTest {
 
         simpleDate = mGson.fromJson(JSON_TWO, SimpleDate.class);
         assertEquals(simpleDate.getYear(), 1989);
+    }
+
+    @Test
+    public void testReverseChronologicalOrder() throws Exception {
+        final List<SimpleDate> list = new ArrayList<>();
+        list.add(new SimpleDate(2));
+        list.add(new SimpleDate(0));
+        list.add(new SimpleDate(1));
+        list.add(new SimpleDate(5));
+        list.add(new SimpleDate(20));
+
+        Collections.sort(list, SimpleDate.REVERSE_CHRONOLOGICAL_ORDER);
+        assertEquals(list.get(0).getDate().getTime(), 20);
+        assertEquals(list.get(1).getDate().getTime(), 5);
+        assertEquals(list.get(2).getDate().getTime(), 2);
+        assertEquals(list.get(3).getDate().getTime(), 1);
+        assertEquals(list.get(4).getDate().getTime(), 0);
     }
 
     @Test

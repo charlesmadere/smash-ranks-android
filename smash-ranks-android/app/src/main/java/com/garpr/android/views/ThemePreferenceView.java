@@ -116,11 +116,13 @@ public class ThemePreferenceView extends SimplePreferenceView implements
         }
 
         setOnClickListener(this);
-        setTitleText(getResources().getText(R.string.theme));
+        setTitleText(R.string.theme);
 
-        if (!isInEditMode()) {
-            refresh();
+        if (isInEditMode()) {
+            return;
         }
+
+        refresh();
     }
 
     @Override
@@ -130,9 +132,12 @@ public class ThemePreferenceView extends SimplePreferenceView implements
         }
     }
 
+    @Override
     public void refresh() {
+        super.refresh();
+
         final NightMode nightMode = mGeneralPreferenceStore.getNightMode().get();
-        setDescriptionText(nightMode == null ? "" : getResources().getText(nightMode.getTextResId()));
+        setDescriptionText(nightMode == null ? R.string.not_yet_set : nightMode.getTextResId());
     }
 
     private void showRestartDialog() {

@@ -100,11 +100,13 @@ public class PollFrequencyPreferenceView extends SimplePreferenceView implements
         }
 
         setOnClickListener(this);
-        setTitleText(getResources().getText(R.string.poll_frequency));
+        setTitleText(R.string.poll_frequency);
 
-        if (!isInEditMode()) {
-            refresh();
+        if (isInEditMode()) {
+            return;
         }
+
+        refresh();
     }
 
     @Override
@@ -114,9 +116,12 @@ public class PollFrequencyPreferenceView extends SimplePreferenceView implements
         }
     }
 
+    @Override
     public void refresh() {
+        super.refresh();
+
         final PollFrequency pollFrequency = mRankingsPollingPreferenceStore.getPollFrequency().get();
-        setDescriptionText(pollFrequency == null ? "" : getResources().getText(pollFrequency.getTextResId()));
+        setDescriptionText(pollFrequency == null ? R.string.not_yet_set : pollFrequency.getTextResId());
     }
 
 }

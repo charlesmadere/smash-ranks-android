@@ -28,6 +28,12 @@
                     <com.garpr.android.views.ThemePreferenceView
                         android:id="@+id/themePreferenceView"
                         style="@style/PreferenceView" />
+                    <com.garpr.android.views.SetIdentityPreferenceView
+                        android:id="@+id/setIdentityPreferenceView"
+                        style="@style/PreferenceView" />
+                    <com.garpr.android.views.DeleteIdentityPreferenceView
+                        android:id="@+id/deleteIdentityPreferenceView"
+                        style="@style/PreferenceView" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView

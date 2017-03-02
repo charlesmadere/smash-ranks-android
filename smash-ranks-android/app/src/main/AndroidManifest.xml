@@ -68,6 +68,16 @@
             android:name=".activities.RankingsActivity" />
 
         <activity
+            android:label="@string/set_identity"
+            android:launchMode="singleTop"
+            android:name=".activities.SetIdentityActivity"
+            android:parentActivityName=".activities.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SettingsActivity" />
+        </activity>
+
+        <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:name=".activities.SettingsActivity" />

@@ -17,6 +17,8 @@ public interface RankingsPollingPreferenceStore {
 
     Preference<SimpleDate> getRankingsDate();
 
+    Preference<Boolean> getVibrationEnabled();
+
     Preference<Boolean> getWifiRequired();
 
 }

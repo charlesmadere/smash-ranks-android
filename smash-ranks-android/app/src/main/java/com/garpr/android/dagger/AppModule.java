@@ -11,6 +11,8 @@ import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
+import com.garpr.android.misc.IdentityManager;
+import com.garpr.android.misc.IdentityManagerImpl;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.NotificationManagerImpl;
 import com.garpr.android.misc.RegionManager;
@@ -133,6 +135,13 @@ public class AppModule {
 
     @Provides
     @Singleton
+    IdentityManager providesIdentityManager(final GeneralPreferenceStore generalPreferenceStore,
+            final Timber timber) {
+        return new IdentityManagerImpl(generalPreferenceStore.getIdentity(), timber);
+    }
+
+    @Provides
+    @Singleton
     NotificationManager providesNotificationManager() {
         return new NotificationManagerImpl(mApplication);
     }
@@ -164,8 +173,9 @@ public class AppModule {
 
     @Provides
     @Singleton
-    RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore) {
-        return new RegionManagerImpl(generalPreferenceStore.getCurrentRegion());
+    RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore,
+            final Timber timber) {
+        return new RegionManagerImpl(generalPreferenceStore.getCurrentRegion(), timber);
     }
 
     @Provides

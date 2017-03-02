@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
@@ -19,7 +18,7 @@ import com.garpr.android.models.FullTournament;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TournamentMatchItemView extends FrameLayout implements
+public class TournamentMatchItemView extends IdentityFrameLayout implements
         BaseAdapterView<FullTournament.Match>, DialogInterface.OnClickListener,
         View.OnClickListener {
 
@@ -76,8 +75,7 @@ public class TournamentMatchItemView extends FrameLayout implements
         final CharSequence[] items = {
                 mContent.getWinnerName(),
                 mContent.getLoserName(),
-                getResources().getString(R.string.x_vs_y, mContent.getWinnerName(),
-                        mContent.getLoserName())
+                getResources().getText(R.string.head_to_head)
         };
 
         new AlertDialog.Builder(getContext())
@@ -94,11 +92,30 @@ public class TournamentMatchItemView extends FrameLayout implements
     }
 
     @Override
+    protected void refreshIdentity() {
+        if (mIdentityManager.isId(mContent.getWinnerId())) {
+            styleTextViewForUser(mWinnerName);
+            styleTextViewForSomeoneElse(mLoserName);
+            identityIsUser();
+        } else if (mIdentityManager.isId(mContent.getLoserId())) {
+            styleTextViewForSomeoneElse(mWinnerName);
+            styleTextViewForUser(mLoserName);
+            identityIsUser();
+        } else {
+            styleTextViewForSomeoneElse(mWinnerName);
+            styleTextViewForSomeoneElse(mLoserName);
+            identityIsSomeoneElse();
+        }
+    }
+
+    @Override
     public void setContent(final FullTournament.Match content) {
         mContent = content;
 
         mLoserName.setText(content.getLoserName());
         mWinnerName.setText(content.getWinnerName());
+
+        refreshIdentity();
     }
 
 }

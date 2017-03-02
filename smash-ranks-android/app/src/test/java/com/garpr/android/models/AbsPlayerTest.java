@@ -72,4 +72,14 @@ public class AbsPlayerTest extends BaseTest {
         assertNull(player);
     }
 
+    @Test
+    public void testToJsonAndBackWithLitePlayer() throws Exception {
+        final AbsPlayer before = mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class);
+        final String json = mGson.toJson(before, AbsPlayer.class);
+        final AbsPlayer after = mGson.fromJson(json, AbsPlayer.class);
+
+        assertEquals(before, after);
+        assertEquals(before.getKind(), after.getKind());
+    }
+
 }

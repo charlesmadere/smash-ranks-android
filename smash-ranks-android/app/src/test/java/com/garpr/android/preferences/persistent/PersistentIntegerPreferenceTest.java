@@ -14,8 +14,10 @@ import org.robolectric.annotation.Config;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -33,6 +35,35 @@ public class PersistentIntegerPreferenceTest extends BaseTest {
     }
 
     @Test
+    public void testAddListener() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", null,
+                mKeyValueStore);
+
+        final int[] array = { 0 };
+
+        final Preference.OnPreferenceChangeListener<Integer> listener =
+                new Preference.OnPreferenceChangeListener<Integer>() {
+            @Override
+            public void onPreferenceChange(final Preference<Integer> preference) {
+                // noinspection ConstantConditions
+                array[0] = preference.get();
+            }
+        };
+
+        preference.addListener(listener);
+        assertEquals(0, array[0]);
+
+        preference.set(10);
+        assertEquals(10, array[0]);
+
+        preference.set(-100, false);
+        assertNotEquals(-100, array[0]);
+
+        preference.set(20);
+        assertEquals(20, array[0]);
+    }
+
+    @Test
     public void testDelete() throws Exception {
         final Preference<Integer> preference = new PersistentIntegerPreference("integer", -47,
                 mKeyValueStore);
@@ -47,6 +78,32 @@ public class PersistentIntegerPreferenceTest extends BaseTest {
 
         preference.delete();
         assertEquals(preference.get(), Integer.valueOf(-47));
+    }
+
+    @Test
+    public void testExistsWithDefaultValue() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", 1989,
+                mKeyValueStore);
+        assertTrue(preference.exists());
+
+        preference.delete();
+        assertTrue(preference.exists());
+    }
+
+    @Test
+    public void testExistsWithNullDefaultValue() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", null,
+                mKeyValueStore);
+        assertFalse(preference.exists());
+
+        preference.delete();
+        assertFalse(preference.exists());
+
+        preference.set(1996);
+        assertTrue(preference.exists());
+
+        preference.delete();
+        assertFalse(preference.exists());
     }
 
     @Test
@@ -88,6 +145,36 @@ public class PersistentIntegerPreferenceTest extends BaseTest {
 
         preference.set(20);
         assertNull(preference.getDefaultValue());
+    }
+
+    @Test
+    public void testRemoveListener() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", null,
+                mKeyValueStore);
+
+        final int[] array = { 0 };
+
+        final Preference.OnPreferenceChangeListener<Integer> listener =
+                new Preference.OnPreferenceChangeListener<Integer>() {
+            @Override
+            public void onPreferenceChange(final Preference<Integer> preference) {
+                // noinspection ConstantConditions
+                array[0] = preference.get();
+            }
+        };
+
+        preference.addListener(listener);
+
+        preference.set(10);
+        assertEquals(10, array[0]);
+
+        preference.set(20);
+        assertEquals(20, array[0]);
+
+        preference.removeListener(listener);
+
+        preference.set(100);
+        assertNotEquals(100, array[0]);
     }
 
     @Test

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.PlayerSelectionItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    style="@style/ListItem">
+    <TextView
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:id="@+id/tvName"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:maxLines="2"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Charlezard" />
+    <RadioButton
+        android:background="@null"
+        android:clickable="false"
+        android:id="@+id/radioButton"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+</com.garpr.android.views.PlayerSelectionItemView>
