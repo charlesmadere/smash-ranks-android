@@ -126,6 +126,13 @@ public class PersistentIntegerPreferenceTest extends BaseTest {
     }
 
     @Test
+    public void testGetKey() throws Exception {
+        final Preference<Integer> preference = new PersistentIntegerPreference("integer", null,
+                mKeyValueStore);
+        assertEquals("integer", preference.getKey());
+    }
+
+    @Test
     public void testNonNullGetDefaultValue() throws Exception {
         final Preference<Integer> preference = new PersistentIntegerPreference("integer", 128,
                 mKeyValueStore);

@@ -4,6 +4,7 @@ import com.garpr.android.misc.DeepLinkUtilsTest;
 import com.garpr.android.misc.IdentityManagerTest;
 import com.garpr.android.misc.ListUtilsTest;
 import com.garpr.android.misc.RegionManagerTest;
+import com.garpr.android.misc.TimberTest;
 import com.garpr.android.models.AbsPlayerTest;
 import com.garpr.android.models.AbsTournamentTest;
 import com.garpr.android.models.RatingsTest;
@@ -26,6 +27,7 @@ public interface TestAppComponent {
     void inject(IdentityManagerTest test);
     void inject(ListUtilsTest test);
     void inject(RegionManagerTest test);
+    void inject(TimberTest test);
 
     // models
     void inject(AbsPlayerTest test);

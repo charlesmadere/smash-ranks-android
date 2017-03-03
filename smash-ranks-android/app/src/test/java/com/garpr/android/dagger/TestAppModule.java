@@ -19,6 +19,45 @@ public class TestAppModule extends AppModule {
         super(application, garPrApiUrl, garPrWebUrl, defaultRegion);
     }
 
+    /*
+    @Provides
+    @Override
+    @Singleton
+    CrashlyticsWrapper providesCrashlyticsWrapper() {
+        return new CrashlyticsWrapper() {
+            @Override
+            public void initialize(final boolean disabled) {
+                // intentionally empty
+            }
+
+            @Override
+            public void log(final int priority, final String tag, final String msg) {
+                // intentionally empty
+            }
+
+            @Override
+            public void logException(@NonNull final Throwable tr) {
+                // intentionally empty
+            }
+
+            @Override
+            public void setBool(@NonNull final String key, final boolean value) {
+                // intentionally empty
+            }
+
+            @Override
+            public void setInt(@NonNull final String key, final int value) {
+                // intentionally empty
+            }
+
+            @Override
+            public void setString(@NonNull final String key, final String value) {
+                // intentionally empty
+            }
+        };
+    }
+    */
+
     @Provides
     @Singleton
     KeyValueStore providesKeyValueStore(final Application application) {

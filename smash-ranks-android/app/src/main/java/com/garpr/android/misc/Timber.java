@@ -20,6 +20,7 @@ public interface Timber {
 
     void e(final String tag, final String msg, @Nullable final Throwable tr);
 
+    @NonNull
     List<Entry> getEntries();
 
     void w(final String tag, final String msg);

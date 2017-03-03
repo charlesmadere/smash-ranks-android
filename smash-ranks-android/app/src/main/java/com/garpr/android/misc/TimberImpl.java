@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class TimberImpl implements Timber {
@@ -65,9 +64,10 @@ public class TimberImpl implements Timber {
         }
     }
 
+    @NonNull
     @Override
     public synchronized List<Entry> getEntries() {
-        return Collections.unmodifiableList(mEntries);
+        return new ArrayList<>(mEntries);
     }
 
     @Override
