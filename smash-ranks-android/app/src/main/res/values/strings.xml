@@ -44,6 +44,7 @@
     <string name="must_be_on_wifi">Must be on wifi</string>
     <string name="night">Night</string>
     <string name="not_yet_set">Not yet set</string>
+    <string name="no_favorite_players">No favorite players</string>
     <string name="no_head_to_head_data">No head to head data</string>
     <string name="no_identity_has_been_set">No identity has been set</string>
     <string name="no_log_entries">No log entries</string>
@@ -107,6 +108,7 @@
     <string name="will_poll_regardless_of_being_plugged_in_or_not">Will poll regardless of being plugged in or not</string>
     <string name="will_rumble_when_rankings_are_updated">Will rumble when rankings are updated</string>
     <string name="yes">Yes</string>
+    <string name="you_can_add_a_player_to_your_favorites">You can add a player to your favorites when viewing their profile screen.</string>
     <string name="youve_selected_an_identity_but_havent_saved">You\'ve selected an identity but haven\'t saved. Are you sure you still want to close this screen?</string>
 
 </resources>
