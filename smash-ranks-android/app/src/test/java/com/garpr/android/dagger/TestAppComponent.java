@@ -1,6 +1,7 @@
 package com.garpr.android.dagger;
 
 import com.garpr.android.misc.DeepLinkUtilsTest;
+import com.garpr.android.misc.FavoritePlayersManagerTest;
 import com.garpr.android.misc.IdentityManagerTest;
 import com.garpr.android.misc.ListUtilsTest;
 import com.garpr.android.misc.RegionManagerTest;
@@ -24,6 +25,7 @@ public interface TestAppComponent {
 
     // misc
     void inject(DeepLinkUtilsTest test);
+    void inject(FavoritePlayersManagerTest test);
     void inject(IdentityManagerTest test);
     void inject(ListUtilsTest test);
     void inject(RegionManagerTest test);
