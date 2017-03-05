@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class KeyValueStoreImpl implements KeyValueStore {
@@ -35,7 +36,13 @@ public class KeyValueStoreImpl implements KeyValueStore {
     @Nullable
     @Override
     public Map<String, ?> getAll() {
-        return getSharedPreferences().getAll();
+        final Map<String, ?> map = getSharedPreferences().getAll();
+
+        if (map == null || map.isEmpty()) {
+            return null;
+        } else {
+            return Collections.unmodifiableMap(map);
+        }
     }
 
     @Override
