@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Map;
+
 public class KeyValueStoreImpl implements KeyValueStore {
 
     private final Application mApplication;
@@ -28,6 +30,12 @@ public class KeyValueStoreImpl implements KeyValueStore {
     @Override
     public boolean contains(@NonNull final String key) {
         return getSharedPreferences().contains(key);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, ?> getAll() {
+        return getSharedPreferences().getAll();
     }
 
     @Override

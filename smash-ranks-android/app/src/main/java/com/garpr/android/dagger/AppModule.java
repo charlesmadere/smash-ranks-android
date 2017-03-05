@@ -54,6 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class AppModule {
 
+    private static final String FAVORITE_PLAYERS_KEY_VALUE_STORE = "FAVORITE_PLAYERS_KEY_VALUE_STORE";
     private static final String GENERAL_KEY_VALUE_STORE = "GENERAL_KEY_VALUE_STORE";
     private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
 
@@ -97,8 +98,18 @@ public class AppModule {
 
     @Provides
     @Singleton
-    FavoritePlayersManager providesFavoritePlayersManager() {
-        return new FavoritePlayersManagerImpl();
+    @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE)
+    KeyValueStore providesFavoritePlayersKeyvalueStore() {
+        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+                ".Preferences.v2.FavoritePlayers");
+    }
+
+    @Provides
+    @Singleton
+    FavoritePlayersManager providesFavoritePlayersManager(
+            @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE) final KeyValueStore keyValueStore,
+            final Timber timber) {
+        return new FavoritePlayersManagerImpl(keyValueStore, timber);
     }
 
     @Provides
