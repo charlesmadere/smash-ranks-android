@@ -3,6 +3,7 @@ package com.garpr.android.dagger;
 import com.garpr.android.App;
 import com.garpr.android.activities.BaseActivity;
 import com.garpr.android.activities.DeepLinkActivity;
+import com.garpr.android.activities.FavoritePlayersActivity;
 import com.garpr.android.activities.HeadToHeadActivity;
 import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.activities.PlayerActivity;
@@ -36,6 +37,7 @@ public interface AppComponent {
     // activities
     void inject(BaseActivity activity);
     void inject(DeepLinkActivity activity);
+    void inject(FavoritePlayersActivity activity);
     void inject(HeadToHeadActivity activity);
     void inject(HomeActivity activity);
     void inject(PlayerActivity activity);

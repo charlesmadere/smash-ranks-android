@@ -9,6 +9,8 @@ import com.garpr.android.misc.DeepLinkUtils;
 import com.garpr.android.misc.DeepLinkUtilsImpl;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
+import com.garpr.android.misc.FavoritePlayersManager;
+import com.garpr.android.misc.FavoritePlayersManagerImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
 import com.garpr.android.misc.IdentityManager;
@@ -91,6 +93,12 @@ public class AppModule {
     @Singleton
     DeviceUtils providesDeviceUtils() {
         return new DeviceUtilsImpl(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    FavoritePlayersManager providesFavoritePlayersManager() {
+        return new FavoritePlayersManagerImpl();
     }
 
     @Provides
