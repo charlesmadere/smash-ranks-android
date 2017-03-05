@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
 
@@ -55,15 +56,16 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
 
     }
 
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
     @Nullable
     @Override
     public List<AbsPlayer> getPlayers() {
         return null;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        final Map<String, ?> all = mKeyValueStore.getAll();
+        return all == null || all.isEmpty();
     }
 
     private void notifyListeners() {

@@ -13,10 +13,10 @@ public interface FavoritePlayersManager {
 
     void addPlayer(@NonNull final AbsPlayer player);
 
-    boolean isEmpty();
-
     @Nullable
     List<AbsPlayer> getPlayers();
+
+    boolean isEmpty();
 
     void removeListener(@Nullable final OnFavoritePlayersChangeListener listener);
 
