@@ -32,6 +32,10 @@
         </activity>
 
         <activity
+            android:label="@string/favorite_players"
+            android:name=".activities.FavoritePlayersActivity" />
+
+        <activity
             android:label="@string/head_to_head"
             android:name=".activities.HeadToHeadActivity" />
 
