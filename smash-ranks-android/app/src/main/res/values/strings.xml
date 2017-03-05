@@ -20,6 +20,7 @@
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
+    <string name="error_loading_tournament">Error loading tournament!</string>
     <string name="error_loading_tournaments">Error loading tournaments!</string>
     <string name="every_2_days">Every 2 days</string>
     <string name="every_3_days">Every 3 days</string>
