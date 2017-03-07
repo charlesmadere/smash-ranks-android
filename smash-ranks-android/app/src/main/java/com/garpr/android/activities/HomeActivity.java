@@ -40,8 +40,9 @@ public class HomeActivity extends BaseActivity implements
     private static final String KEY_CURRENT_POSITION = "CurrentPosition";
 
     public static final int POSITION_RANKINGS = 0;
-    public static final int POSITION_TOURNAMENTS = 1;
-    public static final int POSITION_PLAYERS = 2;
+    public static final int POSITION_FAVORITE_PLAYERS = 1;
+    public static final int POSITION_TOURNAMENTS = 2;
+    public static final int POSITION_PLAYERS = 3;
 
     private HomeFragmentAdapter mAdapter;
     private MenuItem mSearchMenuItem;
@@ -249,6 +250,10 @@ public class HomeActivity extends BaseActivity implements
 
     private void updateSelectedBottomNavigationItem() {
         switch (mViewPager.getCurrentItem()) {
+            case POSITION_FAVORITE_PLAYERS:
+                mBottomNavigationView.getMenu().findItem(R.id.actionFavoritePlayers).setChecked(true);
+                break;
+
             case POSITION_PLAYERS:
                 mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
                 break;

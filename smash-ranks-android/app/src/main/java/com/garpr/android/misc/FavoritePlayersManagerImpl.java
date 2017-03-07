@@ -5,8 +5,10 @@ import android.support.annotation.Nullable;
 
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.preferences.KeyValueStore;
+import com.google.gson.Gson;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,13 +18,15 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
 
     private static final String TAG = "FavoritePlayersManagerImpl";
 
+    private final Gson mGson;
     private final KeyValueStore mKeyValueStore;
     private final List<WeakReference<OnFavoritePlayersChangeListener>> mListeners;
     private final Timber mTimber;
 
 
-    public FavoritePlayersManagerImpl(@NonNull final KeyValueStore keyValueStore,
-            @NonNull final Timber timber) {
+    public FavoritePlayersManagerImpl(@NonNull final Gson gson,
+            @NonNull final KeyValueStore keyValueStore, @NonNull final Timber timber) {
+        mGson = gson;
         mKeyValueStore = keyValueStore;
         mListeners = new LinkedList<>();
         mTimber = timber;
@@ -53,13 +57,47 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
 
     @Override
     public void addPlayer(@NonNull final AbsPlayer player) {
+        if (containsPlayer(player)) {
+            mTimber.d(TAG, "Not adding favorite, it already exists in the store");
+            return;
+        }
 
+        final List<AbsPlayer> players = getPlayers();
+        mTimber.d(TAG, "Adding favorite (there are currently " +
+                (players == null ? 0 : players.size()) + " favorite(s))");
+
+        final String playerJson = mGson.toJson(player, AbsPlayer.class);
+        mKeyValueStore.setString(player.getId(), playerJson);
+        notifyListeners();
+    }
+
+    @Override
+    public boolean containsPlayer(@NonNull final AbsPlayer player) {
+        return containsPlayer(player.getId());
+    }
+
+    @Override
+    public boolean containsPlayer(@NonNull final String playerId) {
+        return mKeyValueStore.contains(playerId);
     }
 
     @Nullable
     @Override
     public List<AbsPlayer> getPlayers() {
-        return null;
+        final Map<String, ?> all = mKeyValueStore.getAll();
+
+        if (all == null || all.isEmpty()) {
+            return null;
+        }
+
+        final List<AbsPlayer> players = new ArrayList<>(all.size());
+
+        for (final Map.Entry<String, ?> entry : all.entrySet()) {
+            final String json = (String) entry.getValue();
+            players.add(mGson.fromJson(json, AbsPlayer.class));
+        }
+
+        return players;
     }
 
     @Override
@@ -103,7 +141,13 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
 
     @Override
     public void removePlayer(@NonNull final AbsPlayer player) {
+        removePlayer(player.getId());
+    }
 
+    @Override
+    public void removePlayer(@NonNull final String playerId) {
+        mKeyValueStore.remove(playerId);
+        notifyListeners();
     }
 
 }

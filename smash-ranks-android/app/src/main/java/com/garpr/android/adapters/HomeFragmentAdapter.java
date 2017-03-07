@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.fragments.BaseSearchableFragment;
+import com.garpr.android.fragments.FavoritePlayersFragment;
 import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.fragments.RankingsFragment;
 import com.garpr.android.fragments.TournamentsFragment;
@@ -18,6 +19,7 @@ import java.lang.ref.WeakReference;
 
 public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Searchable {
 
+    private static final int POSITION_FAVORITE_PLAYERS = HomeActivity.POSITION_FAVORITE_PLAYERS;
     private static final int POSITION_PLAYERS = HomeActivity.POSITION_PLAYERS;
     private static final int POSITION_RANKINGS = HomeActivity.POSITION_RANKINGS;
     private static final int POSITION_TOURNAMENTS = HomeActivity.POSITION_TOURNAMENTS;
@@ -38,7 +40,7 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Se
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -46,6 +48,10 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter implements Se
         final BaseSearchableFragment fragment;
 
         switch (position) {
+            case POSITION_FAVORITE_PLAYERS:
+                fragment = FavoritePlayersFragment.create();
+                break;
+
             case POSITION_PLAYERS:
                 fragment = PlayersFragment.create();
                 break;

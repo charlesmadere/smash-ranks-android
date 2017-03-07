@@ -13,6 +13,10 @@ public interface FavoritePlayersManager {
 
     void addPlayer(@NonNull final AbsPlayer player);
 
+    boolean containsPlayer(@NonNull final AbsPlayer player);
+
+    boolean containsPlayer(@NonNull final String playerId);
+
     @Nullable
     List<AbsPlayer> getPlayers();
 
@@ -21,6 +25,8 @@ public interface FavoritePlayersManager {
     void removeListener(@Nullable final OnFavoritePlayersChangeListener listener);
 
     void removePlayer(@NonNull final AbsPlayer player);
+
+    void removePlayer(@NonNull final String playerId);
 
 
     interface OnFavoritePlayersChangeListener {

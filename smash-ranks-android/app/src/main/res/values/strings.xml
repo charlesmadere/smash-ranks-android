@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="add_to_favorites">Add to favorites</string>
     <string name="aliases">Aliases</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
@@ -25,6 +26,7 @@
     <string name="every_2_days">Every 2 days</string>
     <string name="every_3_days">Every 3 days</string>
     <string name="every_8_hours">Every 8 hours</string>
+    <string name="favorite">Favorite</string>
     <string name="favorite_players">Favorite Players</string>
     <string name="filter">Filter</string>
     <string name="gar_pr">GAR PR</string>
@@ -65,6 +67,7 @@
     <string name="rankings_polling_requires_google_play_services">Rankings polling requires Google Play Services in order to function. Click here to try to resolve the issues with your Google Play services installation.</string>
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="search_">Search…</string>

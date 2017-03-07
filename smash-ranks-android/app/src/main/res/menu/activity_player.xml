@@ -36,6 +36,16 @@
         android:visible="false"
         compat:showAsAction="ifRoom" />
     <item
+        android:id="@+id/miAddToFavorites"
+        android:title="@string/add_to_favorites"
+        android:visible="false"
+        compat:showAsAction="never" />
+    <item
+        android:id="@+id/miRemoveFromFavorites"
+        android:title="@string/remove_from_favorites"
+        android:visible="false"
+        compat:showAsAction="never" />
+    <item
         android:id="@+id/miAliases"
         android:title="@string/aliases"
         android:visible="false"
