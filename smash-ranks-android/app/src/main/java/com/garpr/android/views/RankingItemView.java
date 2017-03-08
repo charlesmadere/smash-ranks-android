@@ -7,21 +7,28 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
+import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.models.Ranking;
 
 import java.text.NumberFormat;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RankingItemView extends IdentityFrameLayout implements BaseAdapterView<Ranking>,
-        View.OnClickListener {
+        View.OnClickListener, View.OnLongClickListener {
 
     private NumberFormat mNumberFormat;
     private Ranking mContent;
+
+    @Inject
+    FavoritePlayersManager mFavoritePlayersManager;
 
     @BindView(R.id.tvName)
     TextView mName;
@@ -76,7 +83,20 @@ public class RankingItemView extends IdentityFrameLayout implements BaseAdapterV
         super.onFinishInflate();
         ButterKnife.bind(this);
         setOnClickListener(this);
+        setOnLongClickListener(this);
         mNumberFormat = NumberFormat.getNumberInstance();
+
+        if (isInEditMode()) {
+            return;
+        }
+
+        App.get().getAppComponent().inject(this);
+    }
+
+    @Override
+    public boolean onLongClick(final View v) {
+        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(getContext(),
+                mContent.getPlayer());
     }
 
     @Override

@@ -122,9 +122,10 @@ public class RankingsFragment extends BaseSearchableFragment implements ApiListe
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setOnRefreshListener(this);
-        mAdapter = new RankingsAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new RankingsAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
     }
 

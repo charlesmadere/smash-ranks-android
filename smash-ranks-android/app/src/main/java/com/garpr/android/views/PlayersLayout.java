@@ -7,15 +7,30 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.garpr.android.App;
+import com.garpr.android.R;
+import com.garpr.android.adapters.PlayersAdapter;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PlayersLayout extends SearchableFrameLayout {
 
-    // TODO
+    private PlayersAdapter mAdapter;
+
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+
+    @BindView(R.id.empty)
+    View mEmpty;
+
+    @BindView(R.id.error)
+    View mError;
 
 
     public PlayersLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
@@ -43,6 +58,12 @@ public class PlayersLayout extends SearchableFrameLayout {
         }
 
         App.get().getAppComponent().inject(this);
+
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new PlayersAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

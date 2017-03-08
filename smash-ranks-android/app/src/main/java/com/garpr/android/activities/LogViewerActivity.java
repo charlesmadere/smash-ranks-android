@@ -46,7 +46,7 @@ public class LogViewerActivity extends BaseActivity implements
 
         final List<Timber.Entry> entries = mTimber.getEntries();
 
-        if (entries == null || entries.isEmpty()) {
+        if (entries.isEmpty()) {
             mAdapter.clear();
             mRecyclerView.setVisibility(View.GONE);
             mEmpty.setVisibility(View.VISIBLE);
@@ -111,6 +111,7 @@ public class LogViewerActivity extends BaseActivity implements
         mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new TimberEntriesAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }

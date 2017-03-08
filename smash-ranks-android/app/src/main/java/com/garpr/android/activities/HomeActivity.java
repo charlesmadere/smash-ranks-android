@@ -40,9 +40,8 @@ public class HomeActivity extends BaseActivity implements
     private static final String KEY_CURRENT_POSITION = "CurrentPosition";
 
     public static final int POSITION_RANKINGS = 0;
-    public static final int POSITION_FAVORITE_PLAYERS = 1;
-    public static final int POSITION_TOURNAMENTS = 2;
-    public static final int POSITION_PLAYERS = 3;
+    public static final int POSITION_TOURNAMENTS = 1;
+    public static final int POSITION_FAVORITE_PLAYERS = 2;
 
     private HomeFragmentAdapter mAdapter;
     private MenuItem mSearchMenuItem;
@@ -151,28 +150,30 @@ public class HomeActivity extends BaseActivity implements
         }
 
         switch (item.getItemId()) {
-            case R.id.actionPlayers:
-                mViewPager.setCurrentItem(POSITION_PLAYERS);
-                break;
+            case R.id.actionFavoritePlayers:
+                mViewPager.setCurrentItem(POSITION_FAVORITE_PLAYERS);
+                return true;
 
             case R.id.actionRankings:
                 mViewPager.setCurrentItem(POSITION_RANKINGS);
-                break;
+                return true;
 
             case R.id.actionTournaments:
                 mViewPager.setCurrentItem(POSITION_TOURNAMENTS);
-                break;
+                return true;
 
             default:
                 throw new RuntimeException("unknown item: " + item.getTitle());
         }
-
-        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miPlayers:
+                startActivity(PlayersActivity.getLaunchIntent(this));
+                return true;
+
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
@@ -204,7 +205,7 @@ public class HomeActivity extends BaseActivity implements
             setSubtitle("");
         } else {
             setSubtitle(getString(R.string.x_updated_y, mRegionManager.getRegion(this),
-                    rankingsBundle.getTime().getSimpleString()));
+                    rankingsBundle.getTime().getShortForm()));
         }
 
         supportInvalidateOptionsMenu();
@@ -254,10 +255,6 @@ public class HomeActivity extends BaseActivity implements
                 mBottomNavigationView.getMenu().findItem(R.id.actionFavoritePlayers).setChecked(true);
                 break;
 
-            case POSITION_PLAYERS:
-                mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
-                break;
-
             case POSITION_RANKINGS:
                 mBottomNavigationView.getMenu().findItem(R.id.actionRankings).setChecked(true);
                 break;
@@ -265,6 +262,9 @@ public class HomeActivity extends BaseActivity implements
             case POSITION_TOURNAMENTS:
                 mBottomNavigationView.getMenu().findItem(R.id.actionTournaments).setChecked(true);
                 break;
+
+            default:
+                throw new RuntimeException("unknown current item: " + mViewPager.getCurrentItem());
         }
     }
 

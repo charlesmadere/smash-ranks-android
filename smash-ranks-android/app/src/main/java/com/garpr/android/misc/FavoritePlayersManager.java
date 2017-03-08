@@ -1,5 +1,6 @@
 package com.garpr.android.misc;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -12,6 +13,8 @@ public interface FavoritePlayersManager {
     void addListener(@NonNull final OnFavoritePlayersChangeListener listener);
 
     void addPlayer(@NonNull final AbsPlayer player);
+
+    void clear();
 
     boolean containsPlayer(@NonNull final AbsPlayer player);
 
@@ -27,6 +30,9 @@ public interface FavoritePlayersManager {
     void removePlayer(@NonNull final AbsPlayer player);
 
     void removePlayer(@NonNull final String playerId);
+
+    boolean showAddOrRemovePlayerDialog(@NonNull Context context,
+            @Nullable final AbsPlayer player);
 
 
     interface OnFavoritePlayersChangeListener {

@@ -111,9 +111,10 @@ public class TournamentsFragment extends BaseSearchableFragment implements
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setOnRefreshListener(this);
-        mAdapter = new TournamentsAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new TournamentsAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
     }
 

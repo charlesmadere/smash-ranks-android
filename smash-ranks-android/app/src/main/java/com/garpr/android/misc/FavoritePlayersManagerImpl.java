@@ -1,14 +1,19 @@
 package com.garpr.android.misc;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 
+import com.garpr.android.R;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.preferences.KeyValueStore;
 import com.google.gson.Gson;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,6 +77,12 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
     }
 
     @Override
+    public void clear() {
+        mKeyValueStore.clear();
+        notifyListeners();
+    }
+
+    @Override
     public boolean containsPlayer(@NonNull final AbsPlayer player) {
         return containsPlayer(player.getId());
     }
@@ -97,6 +108,7 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
             players.add(mGson.fromJson(json, AbsPlayer.class));
         }
 
+        Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER);
         return players;
     }
 
@@ -148,6 +160,38 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
     public void removePlayer(@NonNull final String playerId) {
         mKeyValueStore.remove(playerId);
         notifyListeners();
+    }
+
+    @Override
+    public boolean showAddOrRemovePlayerDialog(@NonNull Context context,
+            @Nullable final AbsPlayer player) {
+        if (player == null) {
+            return false;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setNegativeButton(R.string.cancel, null);
+
+        if (containsPlayer(player)) {
+            builder.setMessage(context.getString(R.string.remove_x_from_favorites, player.getName()))
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            removePlayer(player);
+                        }
+                    });
+        } else {
+            builder.setMessage(context.getString(R.string.add_x_to_favorites, player.getName()))
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            addPlayer(player);
+                        }
+                    });
+        }
+
+        builder.show();
+        return true;
     }
 
 }

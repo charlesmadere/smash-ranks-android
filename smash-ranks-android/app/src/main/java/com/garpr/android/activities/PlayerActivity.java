@@ -186,6 +186,7 @@ public class PlayerActivity extends BaseActivity implements
             setTitle(intent.getStringExtra(EXTRA_PLAYER_NAME));
         }
 
+        mFavoritePlayersManager.addListener(this);
         fetchData();
     }
 
@@ -221,6 +222,12 @@ public class PlayerActivity extends BaseActivity implements
         }
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFavoritePlayersManager.removeListener(this);
     }
 
     @Override
@@ -296,6 +303,7 @@ public class PlayerActivity extends BaseActivity implements
         super.onViewsBound();
 
         mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new PlayerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }

@@ -111,9 +111,10 @@ public class PlayersFragment extends BaseSearchableFragment implements ApiListen
         super.onViewCreated(view, savedInstanceState);
 
         mRefreshLayout.setOnRefreshListener(this);
-        mAdapter = new PlayersAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new PlayersAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
     }
 

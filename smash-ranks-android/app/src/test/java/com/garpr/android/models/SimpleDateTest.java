@@ -72,24 +72,6 @@ public class SimpleDateTest extends BaseTest {
     }
 
     @Test
-    public void testGetMonth() throws Exception {
-        SimpleDate simpleDate = mGson.fromJson(JSON_ONE, SimpleDate.class);
-        assertEquals(simpleDate.getMonth(), Calendar.JANUARY);
-
-        simpleDate = mGson.fromJson(JSON_TWO, SimpleDate.class);
-        assertEquals(simpleDate.getMonth(), Calendar.NOVEMBER);
-    }
-
-    @Test
-    public void testGetYear() throws Exception {
-        SimpleDate simpleDate = mGson.fromJson(JSON_ONE, SimpleDate.class);
-        assertEquals(simpleDate.getYear(), 2017);
-
-        simpleDate = mGson.fromJson(JSON_TWO, SimpleDate.class);
-        assertEquals(simpleDate.getYear(), 1989);
-    }
-
-    @Test
     public void testReverseChronologicalOrder() throws Exception {
         final List<SimpleDate> list = new ArrayList<>();
         list.add(new SimpleDate(2));
@@ -117,6 +99,28 @@ public class SimpleDateTest extends BaseTest {
         json = mGson.toJson(simpleDate1, SimpleDate.class);
         simpleDate2 = mGson.fromJson(json, SimpleDate.class);
         assertEquals(simpleDate1, simpleDate2);
+    }
+
+    @Test
+    public void testValuesWithJsonOne() throws Exception {
+        final SimpleDate simpleDate = mGson.fromJson(JSON_ONE, SimpleDate.class);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(simpleDate.getDate());
+
+        assertEquals(calendar.get(Calendar.YEAR), 2017);
+        assertEquals(calendar.get(Calendar.MONTH), Calendar.JANUARY);
+        assertEquals(calendar.get(Calendar.DAY_OF_MONTH), 1);
+    }
+
+    @Test
+    public void testValuesWithJsonTwo() throws Exception {
+        final SimpleDate simpleDate = mGson.fromJson(JSON_TWO, SimpleDate.class);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(simpleDate.getDate());
+
+        assertEquals(calendar.get(Calendar.YEAR), 1989);
+        assertEquals(calendar.get(Calendar.MONTH), Calendar.NOVEMBER);
+        assertEquals(calendar.get(Calendar.DAY_OF_MONTH), 28);
     }
 
 }

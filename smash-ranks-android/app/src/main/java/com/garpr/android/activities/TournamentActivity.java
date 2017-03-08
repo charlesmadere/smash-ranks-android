@@ -252,7 +252,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
             }
 
             if (subtitle != null) {
-                setSubtitle(subtitle.getSimpleString());
+                setSubtitle(subtitle.getLongForm());
             }
         }
 

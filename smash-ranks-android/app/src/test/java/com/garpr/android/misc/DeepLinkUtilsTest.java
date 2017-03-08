@@ -23,6 +23,8 @@ import static org.junit.Assert.assertNull;
 @Config(constants = BuildConfig.class)
 public class DeepLinkUtilsTest extends BaseTest {
 
+    private static final String GOOGLEMTV_RANKINGS = "https://www.garpr.com/#/googlemtv/rankings";
+
     private static final String NORCAL_PLAYERS = "https://www.garpr.com/#/norcal/players";
     private static final String NORCAL_RANKINGS = "https://www.garpr.com/#/norcal/rankings";
 
@@ -51,10 +53,17 @@ public class DeepLinkUtilsTest extends BaseTest {
     }
 
     @Test
+    public void testGoogleMtvRankingsBuildIntentStack() throws Exception {
+        final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(mApplication, GOOGLEMTV_RANKINGS);
+        assertNotNull(intentStack);
+        assertEquals(intentStack.length, 2);
+    }
+
+    @Test
     public void testNorcalPlayersBuildIntentStack() throws Exception {
         final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(mApplication, NORCAL_PLAYERS);
         assertNotNull(intentStack);
-        assertEquals(intentStack.length, 1);
+        assertEquals(intentStack.length, 2);
     }
 
     @Test

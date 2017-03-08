@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -16,6 +18,11 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayersAdapter;
 import com.garpr.android.misc.FavoritePlayersManager;
+import com.garpr.android.misc.ListUtils;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.models.AbsPlayer;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -88,6 +95,9 @@ public class FavoritePlayersLayout extends SearchableFrameLayout implements
 
         App.get().getAppComponent().inject(this);
 
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new PlayersAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
         mFavoritePlayersManager.addListener(this);
@@ -109,7 +119,23 @@ public class FavoritePlayersLayout extends SearchableFrameLayout implements
 
     @Override
     public void search(@Nullable final String query) {
-        // TODO
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<AbsPlayer> mList;
+
+            @Override
+            public void onBackground() {
+                mList = ListUtils.searchPlayerList(query, mFavoritePlayersManager.getPlayers());
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+            }
+        });
     }
 
 }

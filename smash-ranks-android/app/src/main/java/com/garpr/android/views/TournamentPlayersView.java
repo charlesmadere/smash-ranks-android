@@ -50,9 +50,10 @@ public class TournamentPlayersView extends TournamentPageView {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mAdapter = new PlayersAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new PlayersAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
     }
 

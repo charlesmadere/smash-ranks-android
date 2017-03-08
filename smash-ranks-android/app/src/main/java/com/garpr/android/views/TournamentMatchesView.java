@@ -49,9 +49,10 @@ public class TournamentMatchesView extends TournamentPageView {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mAdapter = new TournamentMatchesAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new TournamentMatchesAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
     }
 

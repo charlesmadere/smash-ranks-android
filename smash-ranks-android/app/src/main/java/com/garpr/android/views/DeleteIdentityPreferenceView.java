@@ -103,7 +103,7 @@ public class DeleteIdentityPreferenceView extends SimplePreferenceView implement
         if (player == null) {
             setDescriptionText(R.string.no_identity_has_been_set);
         } else {
-            setDescriptionText(getResources().getString(R.string.identity_is_x, player.getName()));
+            setDescriptionText(player.getName());
         }
     }
 

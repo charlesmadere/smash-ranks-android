@@ -136,6 +136,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/root_padding_double</item>
         <item name="android:visibility">gone</item>
     </style>
 
