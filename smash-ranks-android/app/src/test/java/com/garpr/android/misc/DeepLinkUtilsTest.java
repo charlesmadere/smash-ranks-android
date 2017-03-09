@@ -104,7 +104,7 @@ public class DeepLinkUtilsTest extends BaseTest {
     public void testSfatBuildIntentStack() throws Exception {
         final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYER_SFAT);
         assertNotNull(intentStack);
-        assertEquals(intentStack.length, 2);
+        assertEquals(intentStack.length, 3);
     }
 
     @Test
