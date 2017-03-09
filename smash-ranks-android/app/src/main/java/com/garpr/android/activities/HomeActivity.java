@@ -16,13 +16,13 @@ import android.view.MenuItem;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
-import com.garpr.android.adapters.HomeFragmentAdapter;
-import com.garpr.android.fragments.RankingsFragment;
+import com.garpr.android.adapters.HomePagerAdapter;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.sync.RankingsPollingSyncManager;
+import com.garpr.android.views.RankingsLayout;
 
 import javax.inject.Inject;
 
@@ -31,8 +31,8 @@ import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
-        MenuItemCompat.OnActionExpandListener, RankingsFragment.Listener,
-        SearchQueryHandle, SearchView.OnQueryTextListener {
+        MenuItemCompat.OnActionExpandListener, RankingsLayout.Listener, SearchQueryHandle,
+        SearchView.OnQueryTextListener {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
@@ -41,9 +41,9 @@ public class HomeActivity extends BaseActivity implements
 
     public static final int POSITION_RANKINGS = 0;
     public static final int POSITION_TOURNAMENTS = 1;
-    public static final int POSITION_PLAYERS = 2;
+    public static final int POSITION_FAVORITE_PLAYERS = 2;
 
-    private HomeFragmentAdapter mAdapter;
+    private HomePagerAdapter mAdapter;
     private MenuItem mSearchMenuItem;
     private SearchView mSearchView;
 
@@ -150,28 +150,30 @@ public class HomeActivity extends BaseActivity implements
         }
 
         switch (item.getItemId()) {
-            case R.id.actionPlayers:
-                mViewPager.setCurrentItem(POSITION_PLAYERS);
-                break;
+            case R.id.actionFavoritePlayers:
+                mViewPager.setCurrentItem(POSITION_FAVORITE_PLAYERS);
+                return true;
 
             case R.id.actionRankings:
                 mViewPager.setCurrentItem(POSITION_RANKINGS);
-                break;
+                return true;
 
             case R.id.actionTournaments:
                 mViewPager.setCurrentItem(POSITION_TOURNAMENTS);
-                break;
+                return true;
 
             default:
                 throw new RuntimeException("unknown item: " + item.getTitle());
         }
-
-        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miPlayers:
+                startActivity(PlayersActivity.getLaunchIntent(this));
+                return true;
+
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
@@ -203,7 +205,7 @@ public class HomeActivity extends BaseActivity implements
             setSubtitle("");
         } else {
             setSubtitle(getString(R.string.x_updated_y, mRegionManager.getRegion(this),
-                    rankingsBundle.getTime().getSimpleString()));
+                    rankingsBundle.getTime().getShortForm()));
         }
 
         supportInvalidateOptionsMenu();
@@ -223,7 +225,7 @@ public class HomeActivity extends BaseActivity implements
         mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.root_padding));
         mViewPager.setOffscreenPageLimit(3);
 
-        mAdapter = new HomeFragmentAdapter(getSupportFragmentManager());
+        mAdapter = new HomePagerAdapter();
         mViewPager.setAdapter(mAdapter);
     }
 
@@ -249,8 +251,8 @@ public class HomeActivity extends BaseActivity implements
 
     private void updateSelectedBottomNavigationItem() {
         switch (mViewPager.getCurrentItem()) {
-            case POSITION_PLAYERS:
-                mBottomNavigationView.getMenu().findItem(R.id.actionPlayers).setChecked(true);
+            case POSITION_FAVORITE_PLAYERS:
+                mBottomNavigationView.getMenu().findItem(R.id.actionFavoritePlayers).setChecked(true);
                 break;
 
             case POSITION_RANKINGS:
@@ -260,6 +262,9 @@ public class HomeActivity extends BaseActivity implements
             case POSITION_TOURNAMENTS:
                 mBottomNavigationView.getMenu().findItem(R.id.actionTournaments).setChecked(true);
                 break;
+
+            default:
+                throw new RuntimeException("unknown current item: " + mViewPager.getCurrentItem());
         }
     }
 

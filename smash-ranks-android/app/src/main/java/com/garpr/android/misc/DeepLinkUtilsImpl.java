@@ -155,10 +155,11 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
 
     private void buildPlayersIntentStack(final Context context, final List<Intent> intentStack,
             final String region, final boolean sameRegion, final String[] splits) {
+        intentStack.add(HomeActivity.getLaunchIntent(context));
+
         if (sameRegion) {
-            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_PLAYERS));
+            intentStack.add(PlayersActivity.getLaunchIntent(context));
         } else {
-            intentStack.add(HomeActivity.getLaunchIntent(context));
             intentStack.add(PlayersActivity.getLaunchIntent(context, region));
         }
 

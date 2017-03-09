@@ -17,9 +17,9 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
@@ -31,9 +31,9 @@ public class SimpleDate implements Parcelable {
     };
 
     private final Date mDate;
-    private Integer mMonth;
-    private Integer mYear;
-    private String mDateString;
+    private String mLongForm;
+    private String mMediumForm;
+    private String mShortForm;
 
 
     @Nullable
@@ -99,14 +99,20 @@ public class SimpleDate implements Parcelable {
         return mDate;
     }
 
-    public int getMonth() {
-        if (mMonth == null) {
-            final Calendar calendar = Calendar.getInstance();
-            calendar.setTime(mDate);
-            mMonth = calendar.get(Calendar.MONTH);
+    public String getLongForm() {
+        if (mLongForm == null) {
+            mLongForm = DateFormat.getDateInstance(DateFormat.LONG).format(mDate);
         }
 
-        return mMonth;
+        return mLongForm;
+    }
+
+    public String getMediumForm() {
+        if (mMediumForm == null) {
+            mMediumForm = DateFormat.getDateInstance(DateFormat.MEDIUM).format(mDate);
+        }
+
+        return mMediumForm;
     }
 
     public CharSequence getRelativeDateTimeText(final Context context) {
@@ -114,22 +120,12 @@ public class SimpleDate implements Parcelable {
                 DateUtils.DAY_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
     }
 
-    public String getSimpleString() {
-        if (mDateString == null) {
-            mDateString = FORMATS[0].format(mDate);
+    public String getShortForm() {
+        if (mShortForm == null) {
+            mShortForm = DateFormat.getDateInstance(DateFormat.SHORT).format(mDate);
         }
 
-        return mDateString;
-    }
-
-    public int getYear() {
-        if (mYear == null) {
-            final Calendar calendar = Calendar.getInstance();
-            calendar.setTime(mDate);
-            mYear = calendar.get(Calendar.YEAR);
-        }
-
-        return mYear;
+        return mShortForm;
     }
 
     public boolean happenedAfter(@NonNull final SimpleDate simpleDate) {

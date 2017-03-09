@@ -10,30 +10,33 @@ import android.view.View;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
-import com.garpr.android.misc.IdentityManager;
-import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.misc.FavoritePlayersManager;
+
+import java.text.NumberFormat;
 
 import javax.inject.Inject;
 
-public class DeleteIdentityPreferenceView extends SimplePreferenceView implements
-        DialogInterface.OnClickListener, IdentityManager.OnIdentityChangeListener,
+public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView implements
+        DialogInterface.OnClickListener, FavoritePlayersManager.OnFavoritePlayersChangeListener,
         View.OnClickListener {
 
+    private NumberFormat mNumberFormat;
+
     @Inject
-    IdentityManager mIdentityManager;
+    FavoritePlayersManager mFavoritePlayersManager;
 
 
-    public DeleteIdentityPreferenceView(final Context context, final AttributeSet attrs) {
+    public ClearFavoritePlayersPreferenceView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public DeleteIdentityPreferenceView(final Context context, final AttributeSet attrs,
+    public ClearFavoritePlayersPreferenceView(final Context context, final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public DeleteIdentityPreferenceView(final Context context, final AttributeSet attrs,
+    public ClearFavoritePlayersPreferenceView(final Context context, final AttributeSet attrs,
             final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -46,19 +49,19 @@ public class DeleteIdentityPreferenceView extends SimplePreferenceView implement
             return;
         }
 
-        mIdentityManager.addListener(this);
+        mFavoritePlayersManager.addListener(this);
         refresh();
     }
 
     @Override
     public void onClick(final DialogInterface dialog, final int which) {
-        mIdentityManager.setIdentity(null);
+        mFavoritePlayersManager.clear();
     }
 
     @Override
     public void onClick(final View v) {
         new AlertDialog.Builder(getContext())
-                .setMessage(R.string.are_you_sure_you_want_to_delete_your_identity)
+                .setMessage(R.string.are_you_sure_you_want_to_clear_all_your_favorites)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes, this)
                 .show();
@@ -67,30 +70,32 @@ public class DeleteIdentityPreferenceView extends SimplePreferenceView implement
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mIdentityManager.removeListener(this);
+        mFavoritePlayersManager.removeListener(this);
+    }
+
+    @Override
+    public void onFavoritePlayersChanged(final FavoritePlayersManager manager) {
+        refresh();
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        setOnClickListener(this);
+        mNumberFormat = java.text.NumberFormat.getInstance();
 
         if (!isInEditMode()) {
             App.get().getAppComponent().inject(this);
+            mFavoritePlayersManager.addListener(this);
         }
 
         setOnClickListener(this);
-        setTitleText(R.string.delete_identity);
+        setTitleText(R.string.clear_favorite_players);
 
         if (isInEditMode()) {
             return;
         }
 
-        mIdentityManager.addListener(this);
-        refresh();
-    }
-
-    @Override
-    public void onIdentityChange(final IdentityManager identityManager) {
         refresh();
     }
 
@@ -98,13 +103,10 @@ public class DeleteIdentityPreferenceView extends SimplePreferenceView implement
     public void refresh() {
         super.refresh();
 
-        final AbsPlayer player = mIdentityManager.getIdentity();
-
-        if (player == null) {
-            setDescriptionText(R.string.no_identity_has_been_set);
-        } else {
-            setDescriptionText(player.getName());
-        }
+        final int size = mFavoritePlayersManager.size();
+        setEnabled(size != 0);
+        setDescriptionText(getResources().getQuantityString(R.plurals.x_favorites,
+                size, mNumberFormat.format(size)));
     }
 
 }

@@ -18,6 +18,7 @@ import android.view.View;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayerAdapter;
+import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
@@ -40,7 +41,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class PlayerActivity extends BaseActivity implements MatchItemView.OnClickListener,
+public class PlayerActivity extends BaseActivity implements
+        FavoritePlayersManager.OnFavoritePlayersChangeListener, MatchItemView.OnClickListener,
         MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener,
         SwipeRefreshLayout.OnRefreshListener {
 
@@ -56,6 +58,9 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     private PlayerAdapter mAdapter;
     private SearchView mSearchView;
     private String mPlayerId;
+
+    @Inject
+    FavoritePlayersManager mFavoritePlayersManager;
 
     @Inject
     RegionManager mRegionManager;
@@ -181,6 +186,7 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
             setTitle(intent.getStringExtra(EXTRA_PLAYER_NAME));
         }
 
+        mFavoritePlayersManager.addListener(this);
         fetchData();
     }
 
@@ -205,10 +211,28 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
             }
 
             menu.findItem(R.id.miShare).setVisible(true);
+
+            if (mFavoritePlayersManager.containsPlayer(mPlayerId)) {
+                menu.findItem(R.id.miRemoveFromFavorites).setVisible(true);
+            } else {
+                menu.findItem(R.id.miAddToFavorites).setVisible(true);
+            }
+
             menu.findItem(R.id.miAliases).setVisible(mFullPlayer.hasAliases());
         }
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFavoritePlayersManager.removeListener(this);
+    }
+
+    @Override
+    public void onFavoritePlayersChanged(final FavoritePlayersManager manager) {
+        supportInvalidateOptionsMenu();
     }
 
     @Override
@@ -225,6 +249,10 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miAddToFavorites:
+                mFavoritePlayersManager.addPlayer(mFullPlayer);
+                return true;
+
             case R.id.miAliases:
                 showAliases();
                 return true;
@@ -239,6 +267,10 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
 
             case R.id.miFilterWins:
                 filter(Match.Result.WIN);
+                return true;
+
+            case R.id.miRemoveFromFavorites:
+                mFavoritePlayersManager.removePlayer(mPlayerId);
                 return true;
 
             case R.id.miShare:
@@ -271,6 +303,7 @@ public class PlayerActivity extends BaseActivity implements MatchItemView.OnClic
         super.onViewsBound();
 
         mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new PlayerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }

@@ -9,7 +9,10 @@
         compat:actionViewClass="android.support.v7.widget.SearchView"
         compat:showAsAction="collapseActionView|ifRoom" />
     <item
-        android:icon="@drawable/ic_settings_white_24dp"
+        android:id="@+id/miPlayers"
+        android:title="@string/view_all_players"
+        compat:showAsAction="never" />
+    <item
         android:id="@+id/miSettings"
         android:title="@string/settings"
         compat:showAsAction="never" />

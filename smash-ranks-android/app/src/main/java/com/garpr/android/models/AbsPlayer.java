@@ -11,6 +11,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 
 public abstract class AbsPlayer implements Parcelable {
 
@@ -62,6 +63,31 @@ public abstract class AbsPlayer implements Parcelable {
         dest.writeString(mName);
     }
 
+    public static final Comparator<AbsPlayer> ALPHABETICAL_ORDER = new Comparator<AbsPlayer>() {
+        @Override
+        public int compare(final AbsPlayer o1, final AbsPlayer o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+    };
+
+    public static final JsonDeserializer<AbsPlayer> JSON_DESERIALIZER = new JsonDeserializer<AbsPlayer>() {
+        @Override
+        public AbsPlayer deserialize(final JsonElement json, final Type typeOfT,
+                final JsonDeserializationContext context) throws JsonParseException {
+            if (json == null || json.isJsonNull()) {
+                return null;
+            }
+
+            final JsonObject jsonObject = json.getAsJsonObject();
+
+            if (jsonObject.has("aliases") || jsonObject.has("regions") || jsonObject.has("ratings")) {
+                return context.deserialize(json, FullPlayer.class);
+            } else {
+                return context.deserialize(json, LitePlayer.class);
+            }
+        }
+    };
+
 
     public enum Kind implements Parcelable {
         FULL, LITE;
@@ -88,23 +114,5 @@ public abstract class AbsPlayer implements Parcelable {
             }
         };
     }
-
-    public static final JsonDeserializer<AbsPlayer> JSON_DESERIALIZER = new JsonDeserializer<AbsPlayer>() {
-        @Override
-        public AbsPlayer deserialize(final JsonElement json, final Type typeOfT,
-                final JsonDeserializationContext context) throws JsonParseException {
-            if (json == null || json.isJsonNull()) {
-                return null;
-            }
-
-            final JsonObject jsonObject = json.getAsJsonObject();
-
-            if (jsonObject.has("aliases") || jsonObject.has("regions") || jsonObject.has("ratings")) {
-                return context.deserialize(json, FullPlayer.class);
-            } else {
-                return context.deserialize(json, LitePlayer.class);
-            }
-        }
-    };
 
 }

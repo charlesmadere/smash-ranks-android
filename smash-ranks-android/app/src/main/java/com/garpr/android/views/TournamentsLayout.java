@@ -1,11 +1,17 @@
-package com.garpr.android.fragments;
+package com.garpr.android.views;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +27,6 @@ import com.garpr.android.models.TournamentsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
-import com.garpr.android.views.RefreshLayout;
 
 import java.util.List;
 
@@ -29,10 +34,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class TournamentsFragment extends BaseSearchableFragment implements
+public class TournamentsLayout extends SearchableFrameLayout implements
         ApiListener<TournamentsBundle>, SwipeRefreshLayout.OnRefreshListener {
-
-    public static final String TAG = "TournamentsFragment";
 
     private TournamentsAdapter mAdapter;
     private TournamentsBundle mTournamentsBundle;
@@ -59,8 +62,24 @@ public class TournamentsFragment extends BaseSearchableFragment implements
     View mError;
 
 
-    public static TournamentsFragment create() {
-        return new TournamentsFragment();
+    public static TournamentsLayout inflate(final ViewGroup parent) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return (TournamentsLayout) inflater.inflate(R.layout.layout_tournaments, parent, false);
+    }
+
+    public TournamentsLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public TournamentsLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public TournamentsLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
@@ -76,45 +95,28 @@ public class TournamentsFragment extends BaseSearchableFragment implements
     }
 
     @Override
-    protected String getFragmentName() {
-        return TAG;
-    }
+    protected void onFinishInflate() {
+        super.onFinishInflate();
 
-    @Override
-    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        if (isInEditMode()) {
+            return;
+        }
+
+        App.get().getAppComponent().inject(this);
+
+        mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new TournamentsAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
 
         fetchTournamentsBundle();
-    }
-
-    @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        App.get().getAppComponent().inject(this);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_tournaments, container, false);
     }
 
     @Override
     public void onRefresh() {
         fetchTournamentsBundle();
-    }
-
-    @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mRefreshLayout.setOnRefreshListener(this);
-        mAdapter = new TournamentsAdapter(getContext());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.VERTICAL));
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

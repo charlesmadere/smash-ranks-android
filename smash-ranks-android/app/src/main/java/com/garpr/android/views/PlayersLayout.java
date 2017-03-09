@@ -1,14 +1,18 @@
-package com.garpr.android.fragments;
+package com.garpr.android.views;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -21,7 +25,6 @@ import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
-import com.garpr.android.views.RefreshLayout;
 
 import java.util.List;
 
@@ -29,10 +32,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class PlayersFragment extends BaseSearchableFragment implements ApiListener<PlayersBundle>,
+public class PlayersLayout extends SearchableFrameLayout implements ApiListener<PlayersBundle>,
         SwipeRefreshLayout.OnRefreshListener {
-
-    public static final String TAG = "PlayersFragment";
 
     private PlayersAdapter mAdapter;
     private PlayersBundle mPlayersBundle;
@@ -42,9 +43,6 @@ public class PlayersFragment extends BaseSearchableFragment implements ApiListen
 
     @Inject
     ServerApi mServerApi;
-
-    @Inject
-    ThreadUtils mThreadUtils;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -59,8 +57,19 @@ public class PlayersFragment extends BaseSearchableFragment implements ApiListen
     View mError;
 
 
-    public static PlayersFragment create() {
-        return new PlayersFragment();
+    public PlayersLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public PlayersLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public PlayersLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
@@ -76,45 +85,27 @@ public class PlayersFragment extends BaseSearchableFragment implements ApiListen
     }
 
     @Override
-    protected String getFragmentName() {
-        return TAG;
-    }
+    protected void onFinishInflate() {
+        super.onFinishInflate();
 
-    @Override
-    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        if (isInEditMode()) {
+            return;
+        }
+
+        App.get().getAppComponent().inject(this);
+
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new PlayersAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
 
         fetchPlayersBundle();
-    }
-
-    @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        App.get().getAppComponent().inject(this);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_players, container, false);
     }
 
     @Override
     public void onRefresh() {
         fetchPlayersBundle();
-    }
-
-    @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mRefreshLayout.setOnRefreshListener(this);
-        mAdapter = new PlayersAdapter(getContext());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.VERTICAL));
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

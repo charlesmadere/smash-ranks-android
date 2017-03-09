@@ -9,6 +9,8 @@ import com.garpr.android.misc.DeepLinkUtils;
 import com.garpr.android.misc.DeepLinkUtilsImpl;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
+import com.garpr.android.misc.FavoritePlayersManager;
+import com.garpr.android.misc.FavoritePlayersManagerImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
 import com.garpr.android.misc.IdentityManager;
@@ -25,6 +27,7 @@ import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Ratings;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
@@ -52,6 +55,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class AppModule {
 
+    private static final String FAVORITE_PLAYERS_KEY_VALUE_STORE = "FAVORITE_PLAYERS_KEY_VALUE_STORE";
     private static final String GENERAL_KEY_VALUE_STORE = "GENERAL_KEY_VALUE_STORE";
     private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
 
@@ -95,6 +99,22 @@ public class AppModule {
 
     @Provides
     @Singleton
+    @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE)
+    KeyValueStore providesFavoritePlayersKeyvalueStore() {
+        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+                ".Preferences.v2.FavoritePlayers");
+    }
+
+    @Provides
+    @Singleton
+    FavoritePlayersManager providesFavoritePlayersManager(final Gson gson,
+            @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE) final KeyValueStore keyValueStore,
+            final Timber timber) {
+        return new FavoritePlayersManagerImpl(gson, keyValueStore, timber);
+    }
+
+    @Provides
+    @Singleton
     GarPrApi providesGarPrApi(final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
@@ -127,6 +147,7 @@ public class AppModule {
         return new GsonBuilder()
                 .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_DESERIALIZER)
                 .registerTypeAdapter(AbsTournament.class, AbsTournament.JSON_DESERIALIZER)
+                .registerTypeAdapter(Ranking.class, Ranking.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_SERIALIZER)

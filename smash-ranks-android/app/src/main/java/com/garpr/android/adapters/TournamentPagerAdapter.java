@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import com.garpr.android.R;
 import com.garpr.android.misc.Searchable;
 import com.garpr.android.models.FullTournament;
-import com.garpr.android.views.TournamentMatchesView;
-import com.garpr.android.views.TournamentPageView;
-import com.garpr.android.views.TournamentPlayersView;
+import com.garpr.android.views.TournamentMatchesLayout;
+import com.garpr.android.views.TournamentPageLayout;
+import com.garpr.android.views.TournamentPlayersLayout;
 
 import java.lang.ref.WeakReference;
 
@@ -24,7 +24,7 @@ public class TournamentPagerAdapter extends PagerAdapter implements Searchable {
 
     private final Context mContext;
     private final FullTournament mTournament;
-    private final SparseArrayCompat<WeakReference<TournamentPageView>> mPages;
+    private final SparseArrayCompat<WeakReference<TournamentPageLayout>> mPages;
 
 
     public TournamentPagerAdapter(@NonNull final Context context,
@@ -57,15 +57,15 @@ public class TournamentPagerAdapter extends PagerAdapter implements Searchable {
 
     @Override
     public Object instantiateItem(final ViewGroup container, final int position) {
-        final TournamentPageView view;
+        final TournamentPageLayout view;
 
         switch (position) {
             case POSITION_MATCHES:
-                view = TournamentMatchesView.inflate(container);
+                view = TournamentMatchesLayout.inflate(container);
                 break;
 
             case POSITION_PLAYERS:
-                view = TournamentPlayersView.inflate(container);
+                view = TournamentPlayersLayout.inflate(container);
                 break;
 
             default:
@@ -87,10 +87,10 @@ public class TournamentPagerAdapter extends PagerAdapter implements Searchable {
     @Override
     public void search(@Nullable final String query) {
         for (int i = 0; i < mPages.size(); ++i) {
-            final WeakReference<TournamentPageView> reference = mPages.get(i);
+            final WeakReference<TournamentPageLayout> reference = mPages.get(i);
 
             if (reference != null) {
-                final TournamentPageView view = reference.get();
+                final TournamentPageLayout view = reference.get();
 
                 if (view != null && view.isAlive()) {
                     view.search(query);

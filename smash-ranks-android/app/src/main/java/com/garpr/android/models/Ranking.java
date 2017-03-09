@@ -4,9 +4,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.garpr.android.misc.MiscUtils;
+import com.garpr.android.misc.ParcelableUtils;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Type;
+
 public class Ranking implements Parcelable {
+
+    @SerializedName("player")
+    private AbsPlayer mPlayer;
 
     @SerializedName("rating")
     private float mRating;
@@ -14,24 +25,22 @@ public class Ranking implements Parcelable {
     @SerializedName("rank")
     private int mRank;
 
-    @SerializedName("id")
-    private String mId;
-
-    @SerializedName("name")
-    private String mName;
-
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof Ranking && mId.equals(((Ranking) obj).getId());
+        return obj instanceof Ranking && getId().equals(((Ranking) obj).getId());
     }
 
     public String getId() {
-        return mId;
+        return mPlayer.getId();
     }
 
     public String getName() {
-        return mName;
+        return mPlayer.getName();
+    }
+
+    public AbsPlayer getPlayer() {
+        return mPlayer;
     }
 
     public int getRank() {
@@ -48,7 +57,7 @@ public class Ranking implements Parcelable {
 
     @Override
     public int hashCode() {
-        return mId.hashCode();
+        return mPlayer.hashCode();
     }
 
     @Override
@@ -63,26 +72,43 @@ public class Ranking implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
+        ParcelableUtils.writeAbsPlayer(mPlayer, dest, flags);
         dest.writeFloat(mRating);
         dest.writeInt(mRank);
-        dest.writeString(mId);
-        dest.writeString(mName);
     }
 
     public static final Creator<Ranking> CREATOR = new Creator<Ranking>() {
         @Override
         public Ranking createFromParcel(final Parcel source) {
             final Ranking r = new Ranking();
+            r.mPlayer = ParcelableUtils.readAbsPlayer(source);
             r.mRating = source.readFloat();
             r.mRank = source.readInt();
-            r.mId = source.readString();
-            r.mName = source.readString();
             return r;
         }
 
         @Override
         public Ranking[] newArray(final int size) {
             return new Ranking[size];
+        }
+    };
+
+    public static final JsonDeserializer<Ranking> JSON_DESERIALIZER = new JsonDeserializer<Ranking>() {
+        @Override
+        public Ranking deserialize(final JsonElement json, final Type typeOfT,
+                final JsonDeserializationContext context) throws JsonParseException {
+            if (json == null || json.isJsonNull()) {
+                return null;
+            }
+
+            final Ranking ranking = new Ranking();
+            ranking.mPlayer = context.deserialize(json, AbsPlayer.class);
+
+            final JsonObject jsonObject = json.getAsJsonObject();
+            ranking.mRating = jsonObject.get("rating").getAsFloat();
+            ranking.mRank = jsonObject.get("rank").getAsInt();
+
+            return ranking;
         }
     };
 

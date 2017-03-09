@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.Constants;
+import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.RegionManager;
@@ -22,6 +23,7 @@ import com.garpr.android.preferences.Preference;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.CheckablePreferenceView;
+import com.garpr.android.views.ClearFavoritePlayersPreferenceView;
 import com.garpr.android.views.DeleteIdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
@@ -36,6 +38,9 @@ import butterknife.OnClick;
 public class SettingsActivity extends BaseActivity {
 
     private static final String TAG = "SettingsActivity";
+
+    @Inject
+    FavoritePlayersManager mFavoritePlayersManager;
 
     @Inject
     GoogleApiWrapper mGoogleApiWrapper;
@@ -63,6 +68,9 @@ public class SettingsActivity extends BaseActivity {
 
     @BindView(R.id.cpvUseRankingsPolling)
     CheckablePreferenceView mUseRankingsPolling;
+
+    @BindView(R.id.clearFavoritePlayersPreferenceView)
+    ClearFavoritePlayersPreferenceView mClearFavoritePlayersPreferenceView;
 
     @BindView(R.id.deleteIdentityPreferenceView)
     DeleteIdentityPreferenceView mDeleteIdentityPreferenceView;
@@ -114,6 +122,7 @@ public class SettingsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+        mFavoritePlayersManager.removeListener(mOnFavoritePlayersChangeListener);
         mIdentityManager.removeListener(mOnIdentityChangeListener);
         mRegionManager.removeListener(mOnRegionChangeListener);
 
@@ -183,6 +192,7 @@ public class SettingsActivity extends BaseActivity {
     protected void onViewsBound() {
         super.onViewsBound();
 
+        mFavoritePlayersManager.addListener(mOnFavoritePlayersChangeListener);
         mIdentityManager.addListener(mOnIdentityChangeListener);
         mRegionManager.addListener(mOnRegionChangeListener);
 
@@ -202,6 +212,7 @@ public class SettingsActivity extends BaseActivity {
 
         mSetIdentityPreferenceView.refresh();
         mDeleteIdentityPreferenceView.refresh();
+        mClearFavoritePlayersPreferenceView.refresh();
 
         if (mIdentityManager.hasIdentity()) {
             mSetIdentityPreferenceView.setVisibility(View.GONE);
@@ -243,6 +254,14 @@ public class SettingsActivity extends BaseActivity {
     protected boolean showUpNavigation() {
         return true;
     }
+
+    private final FavoritePlayersManager.OnFavoritePlayersChangeListener mOnFavoritePlayersChangeListener =
+            new FavoritePlayersManager.OnFavoritePlayersChangeListener() {
+        @Override
+        public void onFavoritePlayersChanged(final FavoritePlayersManager manager) {
+            refresh();
+        }
+    };
 
     private final IdentityManager.OnIdentityChangeListener mOnIdentityChangeListener =
             new IdentityManager.OnIdentityChangeListener() {

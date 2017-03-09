@@ -9,7 +9,7 @@
         android:id="@+id/actionTournaments"
         android:title="@string/tournaments" />
     <item
-        android:icon="@drawable/ic_people_white_24dp"
-        android:id="@+id/actionPlayers"
-        android:title="@string/players" />
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:id="@+id/actionFavoritePlayers"
+        android:title="@string/favorite_players" />
 </menu>

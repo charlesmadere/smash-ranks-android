@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -226,12 +227,14 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new PlayersSelectionAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private void save() {
         mIdentityManager.setIdentity(mSelectedPlayer);
+        Toast.makeText(this, R.string.identity_saved, Toast.LENGTH_LONG).show();
         setResult(ResultCodes.IDENTITY_SELECTED.mValue);
         supportFinishAfterTransition();
     }

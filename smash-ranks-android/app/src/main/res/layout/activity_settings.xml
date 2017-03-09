@@ -34,6 +34,9 @@
                     <com.garpr.android.views.DeleteIdentityPreferenceView
                         android:id="@+id/deleteIdentityPreferenceView"
                         style="@style/PreferenceView" />
+                    <com.garpr.android.views.ClearFavoritePlayersPreferenceView
+                        android:id="@+id/clearFavoritePlayersPreferenceView"
+                        style="@style/PreferenceView" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView

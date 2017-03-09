@@ -234,6 +234,7 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
         super.onViewsBound();
 
         mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new HeadToHeadAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }

@@ -1,12 +1,18 @@
-package com.garpr.android.fragments;
+package com.garpr.android.views;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
+import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +29,6 @@ import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
-import com.garpr.android.views.RefreshLayout;
 
 import java.util.List;
 
@@ -31,10 +36,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class RankingsFragment extends BaseSearchableFragment implements ApiListener<RankingsBundle>,
+public class RankingsLayout extends SearchableFrameLayout implements ApiListener<RankingsBundle>,
         SwipeRefreshLayout.OnRefreshListener {
-
-    public static final String TAG = "RankingsFragment";
 
     private Listener mListener;
     private RankingsAdapter mAdapter;
@@ -62,8 +65,32 @@ public class RankingsFragment extends BaseSearchableFragment implements ApiListe
     View mError;
 
 
-    public static RankingsFragment create() {
-        return new RankingsFragment();
+    public static RankingsLayout inflate(final ViewGroup parent) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return (RankingsLayout) inflater.inflate(R.layout.layout_rankings, parent, false);
+    }
+
+    public RankingsLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public RankingsLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public RankingsLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void attach() {
+        final Activity activity = MiscUtils.optActivity(getContext());
+
+        if (activity instanceof Listener) {
+            mListener = (Listener) activity;
+        }
     }
 
     @Override
@@ -80,52 +107,42 @@ public class RankingsFragment extends BaseSearchableFragment implements ApiListe
     }
 
     @Override
-    protected String getFragmentName() {
-        return TAG;
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        attach();
     }
 
     @Override
-    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mListener = null;
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+        if (isInEditMode()) {
+            return;
+        }
+
+        App.get().getAppComponent().inject(this);
+
+        attach();
+
+        mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new RankingsAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
 
         fetchRankingsBundle();
-    }
-
-    @Override
-    public void onAttach(final Context context) {
-        super.onAttach(context);
-
-        mListener = (Listener) MiscUtils.getActivity(context);
-    }
-
-    @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        App.get().getAppComponent().inject(this);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_rankings, container, false);
     }
 
     @Override
     public void onRefresh() {
         fetchRankingsBundle();
-    }
-
-    @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mRefreshLayout.setOnRefreshListener(this);
-        mAdapter = new RankingsAdapter(getContext());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.VERTICAL));
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

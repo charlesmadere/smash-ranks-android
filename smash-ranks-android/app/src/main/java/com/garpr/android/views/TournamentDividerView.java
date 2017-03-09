@@ -16,7 +16,7 @@ import com.garpr.android.models.AbsTournament;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TournamentItemView extends FrameLayout implements BaseAdapterView<AbsTournament>,
+public class TournamentDividerView extends FrameLayout implements BaseAdapterView<AbsTournament>,
         View.OnClickListener {
 
     private AbsTournament mContent;
@@ -28,17 +28,17 @@ public class TournamentItemView extends FrameLayout implements BaseAdapterView<A
     TextView mName;
 
 
-    public TournamentItemView(final Context context, final AttributeSet attrs) {
+    public TournamentDividerView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TournamentItemView(final Context context, final AttributeSet attrs,
+    public TournamentDividerView(final Context context, final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TournamentItemView(final Context context, final AttributeSet attrs,
+    public TournamentDividerView(final Context context, final AttributeSet attrs,
             final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -61,7 +61,7 @@ public class TournamentItemView extends FrameLayout implements BaseAdapterView<A
         mContent = content;
 
         mName.setText(mContent.getName());
-        mDate.setText(mContent.getDate().getShortForm());
+        mDate.setText(mContent.getDate().getMediumForm());
     }
 
 }

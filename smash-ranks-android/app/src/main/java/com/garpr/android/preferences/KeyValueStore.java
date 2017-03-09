@@ -3,11 +3,16 @@ package com.garpr.android.preferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Map;
+
 public interface KeyValueStore {
 
     void clear();
 
     boolean contains(@NonNull final String key);
+
+    @Nullable
+    Map<String, ?> getAll();
 
     boolean getBoolean(@NonNull final String key, final boolean fallbackValue);
 
