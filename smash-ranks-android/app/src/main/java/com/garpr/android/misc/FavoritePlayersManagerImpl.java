@@ -194,4 +194,10 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
         return true;
     }
 
+    @Override
+    public int size() {
+        final Map<String, ?> all = mKeyValueStore.getAll();
+        return all == null ? 0 : all.size();
+    }
+
 }

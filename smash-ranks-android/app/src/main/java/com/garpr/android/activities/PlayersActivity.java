@@ -8,7 +8,6 @@ import android.text.TextUtils;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
-import com.garpr.android.fragments.PlayersFragment;
 import com.garpr.android.misc.RegionManager;
 
 import javax.inject.Inject;
@@ -45,13 +44,7 @@ public class PlayersActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_players);
-
         setSubtitle(mRegionManager.getRegion(this));
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.flFragment, PlayersFragment.create(), PlayersFragment.TAG)
-                .commit();
     }
 
     @Override

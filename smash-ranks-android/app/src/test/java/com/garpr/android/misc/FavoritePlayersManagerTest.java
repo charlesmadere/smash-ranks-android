@@ -210,4 +210,23 @@ public class FavoritePlayersManagerTest extends BaseTest {
         assertTrue(players == null || players.isEmpty());
     }
 
+    @Test
+    public void testSize() throws Exception {
+        assertEquals(mFavoritePlayersManager.size(), 0);
+
+        final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
+        mFavoritePlayersManager.addPlayer(hmw);
+        assertEquals(mFavoritePlayersManager.size(), 1);
+
+        final AbsPlayer spark = mGson.fromJson(JSON_PLAYER_2, AbsPlayer.class);
+        mFavoritePlayersManager.addPlayer(spark);
+        assertEquals(mFavoritePlayersManager.size(), 2);
+
+        mFavoritePlayersManager.removePlayer(hmw);
+        assertEquals(mFavoritePlayersManager.size(), 1);
+
+        mFavoritePlayersManager.clear();
+        assertEquals(mFavoritePlayersManager.size(), 0);
+    }
+
 }

@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
-import com.garpr.android.fragments.TournamentsFragment;
 import com.garpr.android.misc.RegionManager;
 
 import javax.inject.Inject;
@@ -36,13 +35,7 @@ public class TournamentsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_tournaments);
-
         setSubtitle(mRegionManager.getRegion(this));
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.flFragment, TournamentsFragment.create(), TournamentsFragment.TAG)
-                .commit();
     }
 
     @Override

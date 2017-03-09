@@ -12,7 +12,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -27,7 +29,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class FavoritePlayersLayout extends SearchableFrameLayout implements
         FavoritePlayersManager.OnFavoritePlayersChangeListener {
@@ -43,6 +44,12 @@ public class FavoritePlayersLayout extends SearchableFrameLayout implements
     @BindView(R.id.empty)
     View mEmpty;
 
+
+    public static FavoritePlayersLayout inflate(final ViewGroup parent) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return (FavoritePlayersLayout) inflater.inflate(R.layout.layout_favorite_players, parent,
+                false);
+    }
 
     public FavoritePlayersLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
@@ -87,7 +94,6 @@ public class FavoritePlayersLayout extends SearchableFrameLayout implements
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ButterKnife.bind(this);
 
         if (isInEditMode()) {
             return;
@@ -105,7 +111,7 @@ public class FavoritePlayersLayout extends SearchableFrameLayout implements
         refresh();
     }
 
-    public void refresh() {
+    private void refresh() {
         if (mFavoritePlayersManager.isEmpty()) {
             mAdapter.clear();
             mRecyclerView.setVisibility(GONE);

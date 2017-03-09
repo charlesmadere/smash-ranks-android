@@ -7,16 +7,65 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.garpr.android.App;
+import com.garpr.android.R;
+import com.garpr.android.adapters.TournamentsAdapter;
+import com.garpr.android.misc.ListUtils;
+import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.TournamentsBundle;
+import com.garpr.android.networking.ApiCall;
+import com.garpr.android.networking.ApiListener;
+import com.garpr.android.networking.ServerApi;
 
-import butterknife.ButterKnife;
+import java.util.List;
 
-public class TournamentsLayout extends SearchableFrameLayout {
+import javax.inject.Inject;
 
-    // TODO
+import butterknife.BindView;
 
+public class TournamentsLayout extends SearchableFrameLayout implements
+        ApiListener<TournamentsBundle>, SwipeRefreshLayout.OnRefreshListener {
+
+    private TournamentsAdapter mAdapter;
+    private TournamentsBundle mTournamentsBundle;
+
+    @Inject
+    RegionManager mRegionManager;
+
+    @Inject
+    ServerApi mServerApi;
+
+    @Inject
+    ThreadUtils mThreadUtils;
+
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+
+    @BindView(R.id.refreshLayout)
+    RefreshLayout mRefreshLayout;
+
+    @BindView(R.id.empty)
+    View mEmpty;
+
+    @BindView(R.id.error)
+    View mError;
+
+
+    public static TournamentsLayout inflate(final ViewGroup parent) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return (TournamentsLayout) inflater.inflate(R.layout.layout_tournaments, parent, false);
+    }
 
     public TournamentsLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
@@ -34,20 +83,100 @@ public class TournamentsLayout extends SearchableFrameLayout {
     }
 
     @Override
+    public void failure() {
+        mTournamentsBundle = null;
+        showError();
+    }
+
+    private void fetchTournamentsBundle() {
+        mTournamentsBundle = null;
+        mRefreshLayout.setRefreshing(true);
+        mServerApi.getTournaments(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
+    }
+
+    @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ButterKnife.bind(this);
 
         if (isInEditMode()) {
             return;
         }
 
         App.get().getAppComponent().inject(this);
+
+        mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new TournamentsAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
+
+        fetchTournamentsBundle();
+    }
+
+    @Override
+    public void onRefresh() {
+        fetchTournamentsBundle();
     }
 
     @Override
     public void search(@Nullable final String query) {
-        // TODO
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<AbsTournament> mList;
+
+            @Override
+            public void onBackground() {
+                if (!isAlive()) {
+                    return;
+                }
+
+                mList = ListUtils.searchTournamentList(query, mTournamentsBundle.getTournaments());
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+            }
+        });
+    }
+
+    private void showEmpty() {
+        mAdapter.clear();
+        mRecyclerView.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    private void showError() {
+        mAdapter.clear();
+        mRecyclerView.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    private void showTournamentsBundle() {
+        mAdapter.set(ListUtils.createTournamentList(mTournamentsBundle));
+        mEmpty.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void success(@Nullable final TournamentsBundle tournamentsBundle) {
+        mTournamentsBundle = tournamentsBundle;
+
+        if (mTournamentsBundle != null && mTournamentsBundle.hasTournaments()) {
+            showTournamentsBundle();
+        } else {
+            showEmpty();
+        }
     }
 
 }

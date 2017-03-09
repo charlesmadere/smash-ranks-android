@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.TournamentsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tournamentsLayout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <com.garpr.android.views.RefreshLayout
+        style="@style/RefreshLayout">
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                style="@style/RecyclerView" />
+            <LinearLayout
+                style="@style/RecyclerViewMessage.Empty">
+                <TextView
+                    android:text="@string/no_tournaments"
+                    style="@style/RecyclerViewLine.1" />
+                <TextView
+                    android:text="@string/swipe_to_refresh_to_check_again"
+                    style="@style/RecyclerViewLine.2" />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/RecyclerViewMessage.Error">
+                <TextView
+                    android:text="@string/error_loading_tournaments"
+                    style="@style/RecyclerViewLine.1" />
+                <TextView
+                    android:text="@string/swipe_to_refresh_to_try_again"
+                    style="@style/RecyclerViewLine.2" />
+            </LinearLayout>
+        </FrameLayout>
+    </com.garpr.android.views.RefreshLayout>
+</com.garpr.android.views.TournamentsLayout>

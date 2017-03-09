@@ -34,6 +34,8 @@ public interface FavoritePlayersManager {
     boolean showAddOrRemovePlayerDialog(@NonNull Context context,
             @Nullable final AbsPlayer player);
 
+    int size();
+
 
     interface OnFavoritePlayersChangeListener {
         void onFavoritePlayersChanged(final FavoritePlayersManager manager);

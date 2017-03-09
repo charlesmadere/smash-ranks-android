@@ -16,13 +16,13 @@ import android.view.MenuItem;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
-import com.garpr.android.adapters.HomeFragmentAdapter;
-import com.garpr.android.fragments.RankingsFragment;
+import com.garpr.android.adapters.HomePagerAdapter;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.sync.RankingsPollingSyncManager;
+import com.garpr.android.views.RankingsLayout;
 
 import javax.inject.Inject;
 
@@ -31,8 +31,8 @@ import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
-        MenuItemCompat.OnActionExpandListener, RankingsFragment.Listener,
-        SearchQueryHandle, SearchView.OnQueryTextListener {
+        MenuItemCompat.OnActionExpandListener, RankingsLayout.Listener, SearchQueryHandle,
+        SearchView.OnQueryTextListener {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
@@ -43,7 +43,7 @@ public class HomeActivity extends BaseActivity implements
     public static final int POSITION_TOURNAMENTS = 1;
     public static final int POSITION_FAVORITE_PLAYERS = 2;
 
-    private HomeFragmentAdapter mAdapter;
+    private HomePagerAdapter mAdapter;
     private MenuItem mSearchMenuItem;
     private SearchView mSearchView;
 
@@ -225,7 +225,7 @@ public class HomeActivity extends BaseActivity implements
         mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.root_padding));
         mViewPager.setOffscreenPageLimit(3);
 
-        mAdapter = new HomeFragmentAdapter(getSupportFragmentManager());
+        mAdapter = new HomePagerAdapter();
         mViewPager.setAdapter(mAdapter);
     }
 

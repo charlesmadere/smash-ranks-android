@@ -2,7 +2,9 @@ package com.garpr.android.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -15,7 +17,8 @@ import java.text.NumberFormat;
 import javax.inject.Inject;
 
 public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView implements
-        FavoritePlayersManager.OnFavoritePlayersChangeListener, View.OnClickListener {
+        DialogInterface.OnClickListener, FavoritePlayersManager.OnFavoritePlayersChangeListener,
+        View.OnClickListener {
 
     private NumberFormat mNumberFormat;
 
@@ -47,11 +50,21 @@ public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView imp
         }
 
         mFavoritePlayersManager.addListener(this);
+        refresh();
+    }
+
+    @Override
+    public void onClick(final DialogInterface dialog, final int which) {
+        mFavoritePlayersManager.clear();
     }
 
     @Override
     public void onClick(final View v) {
-
+        new AlertDialog.Builder(getContext())
+                .setMessage(R.string.are_you_sure_you_want_to_clear_all_your_favorites)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.yes, this)
+                .show();
     }
 
     @Override

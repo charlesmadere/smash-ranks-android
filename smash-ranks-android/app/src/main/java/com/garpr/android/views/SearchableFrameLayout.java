@@ -18,6 +18,8 @@ import com.garpr.android.misc.ThreadUtils;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+
 public abstract class SearchableFrameLayout extends LifecycleFrameLayout implements Searchable,
         SearchQueryHandle {
 
@@ -56,6 +58,7 @@ public abstract class SearchableFrameLayout extends LifecycleFrameLayout impleme
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        ButterKnife.bind(this);
 
         if (isInEditMode()) {
             return;

@@ -1,22 +1,74 @@
 package com.garpr.android.views;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.garpr.android.App;
+import com.garpr.android.R;
+import com.garpr.android.adapters.RankingsAdapter;
+import com.garpr.android.misc.ListUtils;
+import com.garpr.android.misc.MiscUtils;
+import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.models.Ranking;
+import com.garpr.android.models.RankingsBundle;
+import com.garpr.android.networking.ApiCall;
+import com.garpr.android.networking.ApiListener;
+import com.garpr.android.networking.ServerApi;
 
-import butterknife.ButterKnife;
+import java.util.List;
 
-public class RankingsLayout extends SearchableFrameLayout {
+import javax.inject.Inject;
 
-    // TODO
+import butterknife.BindView;
 
+public class RankingsLayout extends SearchableFrameLayout implements ApiListener<RankingsBundle>,
+        SwipeRefreshLayout.OnRefreshListener {
+
+    private Listener mListener;
+    private RankingsAdapter mAdapter;
+    private RankingsBundle mRankingsBundle;
+
+    @Inject
+    RegionManager mRegionManager;
+
+    @Inject
+    ServerApi mServerApi;
+
+    @Inject
+    ThreadUtils mThreadUtils;
+
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+
+    @BindView(R.id.refreshLayout)
+    RefreshLayout mRefreshLayout;
+
+    @BindView(R.id.empty)
+    View mEmpty;
+
+    @BindView(R.id.error)
+    View mError;
+
+
+    public static RankingsLayout inflate(final ViewGroup parent) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return (RankingsLayout) inflater.inflate(R.layout.layout_rankings, parent, false);
+    }
 
     public RankingsLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
@@ -33,21 +85,131 @@ public class RankingsLayout extends SearchableFrameLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    private void attach() {
+        final Activity activity = MiscUtils.optActivity(getContext());
+
+        if (activity instanceof Listener) {
+            mListener = (Listener) activity;
+        }
+    }
+
+    @Override
+    public void failure() {
+        mRankingsBundle = null;
+        mListener.onRankingsBundleFetched(null);
+        showError();
+    }
+
+    private void fetchRankingsBundle() {
+        mRankingsBundle = null;
+        mRefreshLayout.setRefreshing(true);
+        mServerApi.getRankings(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        attach();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mListener = null;
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ButterKnife.bind(this);
 
         if (isInEditMode()) {
             return;
         }
 
         App.get().getAppComponent().inject(this);
+
+        attach();
+
+        mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new RankingsAdapter(getContext());
+        mRecyclerView.setAdapter(mAdapter);
+
+        fetchRankingsBundle();
+    }
+
+    @Override
+    public void onRefresh() {
+        fetchRankingsBundle();
     }
 
     @Override
     public void search(@Nullable final String query) {
-        // TODO
+        mThreadUtils.run(new ThreadUtils.Task() {
+            private List<Ranking> mList;
+
+            @Override
+            public void onBackground() {
+                if (!isAlive()) {
+                    return;
+                }
+
+                mList = ListUtils.searchRankingList(query, mRankingsBundle.getRankings());
+            }
+
+            @Override
+            public void onUi() {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
+                    return;
+                }
+
+                mAdapter.set(mList);
+            }
+        });
+    }
+
+    private void showEmpty() {
+        mAdapter.clear();
+        mRecyclerView.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    private void showError() {
+        mAdapter.clear();
+        mRecyclerView.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    private void showRankingsBundle() {
+        mAdapter.set(mRankingsBundle);
+        mEmpty.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void success(@Nullable final RankingsBundle rankingsBundle) {
+        mRankingsBundle = rankingsBundle;
+
+        if (mRankingsBundle != null && mRankingsBundle.hasRankings()) {
+            mListener.onRankingsBundleFetched(mRankingsBundle);
+            showRankingsBundle();
+        } else {
+            mListener.onRankingsBundleFetched(null);
+            showEmpty();
+        }
+    }
+
+
+    public interface Listener {
+        void onRankingsBundleFetched(@Nullable final RankingsBundle rankingsBundle);
     }
 
 }
