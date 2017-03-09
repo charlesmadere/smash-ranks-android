@@ -109,7 +109,7 @@ public class SimpleDateTest extends BaseTest {
 
         assertEquals(calendar.get(Calendar.YEAR), 2017);
         assertEquals(calendar.get(Calendar.MONTH), Calendar.JANUARY);
-        assertEquals(calendar.get(Calendar.DAY_OF_MONTH), 1);
+        assertEquals(calendar.get(Calendar.DAY_OF_MONTH), 5);
     }
 
     @Test
