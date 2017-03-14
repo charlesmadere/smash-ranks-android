@@ -98,10 +98,10 @@ public final class ListUtils {
         String tournamentId = null;
 
         for (final Match match : matchesCopy) {
-            if (tournamentId == null || !match.getTournamentId().equals(tournamentId)) {
-                tournamentId = match.getTournamentId();
-                list.add(new LiteTournament(tournamentId, match.getTournamentName(),
-                        match.getTournamentDate()));
+            if (tournamentId == null || !match.getTournament().getId().equals(tournamentId)) {
+                tournamentId = match.getTournament().getId();
+                list.add(new LiteTournament(tournamentId, match.getTournament().getName(),
+                        match.getTournament().getDate()));
             }
 
             list.add(match);
@@ -252,7 +252,7 @@ public final class ListUtils {
                     if (objectJ instanceof Match) {
                         final Match match = (Match) objectJ;
 
-                        if (match.getOpponentName().toLowerCase().contains(query)) {
+                        if (match.getOpponent().getName().toLowerCase().contains(query)) {
                             if (!addedTournament) {
                                 addedTournament = true;
                                 newList.add(tournament);

@@ -30,14 +30,6 @@ public class Match implements Parcelable {
         return mOpponent;
     }
 
-    public String getOpponentId() {
-        return mOpponent.getId();
-    }
-
-    public String getOpponentName() {
-        return mOpponent.getName();
-    }
-
     public Result getResult() {
         return mResult;
     }
@@ -46,21 +38,9 @@ public class Match implements Parcelable {
         return mTournament;
     }
 
-    public SimpleDate getTournamentDate() {
-        return mTournament.getDate();
-    }
-
-    public String getTournamentId() {
-        return mTournament.getId();
-    }
-
-    public String getTournamentName() {
-        return mTournament.getName();
-    }
-
     @Override
     public String toString() {
-        return getOpponentName();
+        return mOpponent.toString();
     }
 
     @Override
@@ -94,8 +74,8 @@ public class Match implements Parcelable {
     public static final Comparator<Match> CHRONOLOGICAL_ORDER = new Comparator<Match>() {
         @Override
         public int compare(final Match o1, final Match o2) {
-            return SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.getTournamentDate(),
-                    o2.getTournamentDate());
+            return SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.getTournament().getDate(),
+                    o2.getTournament().getDate());
         }
     };
 
@@ -119,6 +99,7 @@ public class Match implements Parcelable {
             final Match match = new Match();
             match.mOpponent = new LitePlayer(jsonObject.get("opponent_id").getAsString(),
                     jsonObject.get("opponent_name").getAsString());
+            match.mResult = context.deserialize(jsonObject.get("result"), Result.class);
             match.mTournament = new LiteTournament(
                     jsonObject.get("tournament_id").getAsString(),
                     jsonObject.get("tournament_name").getAsString(),

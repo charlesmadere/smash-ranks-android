@@ -54,7 +54,7 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
 
     @Override
     protected String getIdentityId() {
-        return mContent.getOpponentId();
+        return mContent.getOpponent().getId();
     }
 
     @Override
@@ -77,8 +77,8 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
         if (activity instanceof OnClickListener) {
             ((OnClickListener) activity).onClick(this);
         } else {
-            context.startActivity(PlayerActivity.getLaunchIntent(context, mContent.getOpponentId(),
-                    mContent.getOpponentName()));
+            context.startActivity(PlayerActivity.getLaunchIntent(context,
+                    mContent.getOpponent().getId(), mContent.getOpponent().getName()));
         }
     }
 
@@ -106,7 +106,7 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
     public void setContent(final Match content) {
         mContent = content;
 
-        mName.setText(mContent.getOpponentName());
+        mName.setText(mContent.getOpponent().getName());
 
         switch (mContent.getResult()) {
             case EXCLUDED:
