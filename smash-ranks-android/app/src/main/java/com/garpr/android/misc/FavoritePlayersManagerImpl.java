@@ -24,14 +24,17 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
     private static final String TAG = "FavoritePlayersManagerImpl";
 
     private final Gson mGson;
+    private final IdentityManager mIdentityManager;
     private final KeyValueStore mKeyValueStore;
     private final List<WeakReference<OnFavoritePlayersChangeListener>> mListeners;
     private final Timber mTimber;
 
 
     public FavoritePlayersManagerImpl(@NonNull final Gson gson,
+            @NonNull final IdentityManager identityManager,
             @NonNull final KeyValueStore keyValueStore, @NonNull final Timber timber) {
         mGson = gson;
+        mIdentityManager = identityManager;
         mKeyValueStore = keyValueStore;
         mListeners = new LinkedList<>();
         mTimber = timber;

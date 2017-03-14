@@ -2,8 +2,18 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 public class LitePlayer extends AbsPlayer implements Parcelable {
+
+    public LitePlayer() {
+
+    }
+
+    public LitePlayer(@NonNull final String id, @NonNull final String name) {
+        mId = id;
+        mName = name;
+    }
 
     @Override
     public Kind getKind() {

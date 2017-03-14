@@ -24,6 +24,7 @@ import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ResultCodes;
+import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.PlayersBundle;
@@ -41,7 +42,7 @@ import butterknife.BindView;
 
 public class SetIdentityActivity extends BaseActivity implements ApiListener<PlayersBundle>,
         MenuItemCompat.OnActionExpandListener, PlayerSelectionItemView.Listeners,
-        SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+        SearchQueryHandle, SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "SetIdentityActivity";
 
@@ -102,7 +103,8 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     @Nullable
-    private CharSequence getSearchQuery() {
+    @Override
+    public CharSequence getSearchQuery() {
         return mSearchView == null ? null : mSearchView.getQuery();
     }
 
@@ -169,6 +171,10 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
 
         mSaveMenuItem = menu.findItem(R.id.miSave);
 
+        if (mRefreshLayout.isRefreshing()) {
+            setMenuItemsVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -192,15 +198,6 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(final Menu menu) {
-        if (mRefreshLayout.isRefreshing()) {
-            setMenuItemsVisible(false);
-        }
-
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -306,6 +303,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         mRecyclerView.setVisibility(View.VISIBLE);
         setMenuItemsVisible(true);
         mRefreshLayout.setRefreshing(false);
+        mRefreshLayout.setEnabled(false);
     }
 
     @Override

@@ -16,10 +16,10 @@ import java.util.Comparator;
 public abstract class AbsPlayer implements Parcelable {
 
     @SerializedName("id")
-    private String mId;
+    protected String mId;
 
     @SerializedName("name")
-    private String mName;
+    protected String mName;
 
 
     @Override

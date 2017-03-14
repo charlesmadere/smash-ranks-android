@@ -1,6 +1,7 @@
 package com.garpr.android.views;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.AttrRes;
@@ -18,6 +19,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayersAdapter;
 import com.garpr.android.misc.ListUtils;
+import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
@@ -84,6 +86,11 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
         mServerApi.getPlayers(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
 
+    @Nullable
+    public PlayersBundle getPlayersBundle() {
+        return mPlayersBundle;
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -94,6 +101,7 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
 
         App.get().getAppComponent().inject(this);
 
+        mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         mRecyclerView.setHasFixedSize(true);
@@ -101,6 +109,18 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
         mRecyclerView.setAdapter(mAdapter);
 
         fetchPlayersBundle();
+    }
+
+    private void onPlayersBundleFetched() {
+        if (!isAlive()) {
+            return;
+        }
+
+        final Activity activity = MiscUtils.optActivity(getContext());
+
+        if (activity instanceof Listener) {
+            ((Listener) activity).onPlayersBundleFetched(this);
+        }
     }
 
     @Override
@@ -160,12 +180,18 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
     @Override
     public void success(@Nullable final PlayersBundle playersBundle) {
         mPlayersBundle = playersBundle;
+        onPlayersBundleFetched();
 
         if (mPlayersBundle != null && mPlayersBundle.hasPlayers()) {
             showPlayersBundle();
         } else {
             showEmpty();
         }
+    }
+
+
+    public interface Listener {
+        void onPlayersBundleFetched(final PlayersLayout layout);
     }
 
 }

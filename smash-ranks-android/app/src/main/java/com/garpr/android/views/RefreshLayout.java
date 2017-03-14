@@ -75,6 +75,9 @@ public class RefreshLayout extends SwipeRefreshLayout {
                 R.array.spinner_colors);
         setColorSchemeColors(getResources().getIntArray(spinnerColorsResId));
 
+        setProgressBackgroundColorSchemeResource(ta.getResourceId(R.styleable.RefreshLayout_spinnerBackground,
+                R.color.card_background));
+
         if (ta.hasValue(R.styleable.RefreshLayout_scrollingChild)) {
             scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0);
         }

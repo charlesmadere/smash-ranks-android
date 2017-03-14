@@ -200,7 +200,9 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public void onRankingsBundleFetched(@Nullable final RankingsBundle rankingsBundle) {
+    public void onRankingsBundleFetched(final RankingsLayout layout) {
+        final RankingsBundle rankingsBundle = layout.getRankingsBundle();
+
         if (rankingsBundle == null) {
             setSubtitle("");
         } else {
