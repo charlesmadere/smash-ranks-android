@@ -26,7 +26,6 @@ public class PlayersActivity extends BaseActivity implements MenuItemCompat.OnAc
 
     private static final String TAG = "PlayersActivity";
 
-    private MenuItem mSearchMenuItem;
     private SearchView mSearchView;
 
     @Inject
@@ -75,9 +74,11 @@ public class PlayersActivity extends BaseActivity implements MenuItemCompat.OnAc
 
         final PlayersBundle playersBundle = mPlayersLayout.getPlayersBundle();
         if (playersBundle != null && playersBundle.hasPlayers()) {
-            mSearchMenuItem = menu.findItem(R.id.miSearch);
-            MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
-            mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+            final MenuItem searchMenuItem = menu.findItem(R.id.miSearch);
+            searchMenuItem.setVisible(true);
+
+            MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
+            mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
             mSearchView.setQueryHint(getText(R.string.search_players_));
             mSearchView.setOnQueryTextListener(this);
         }
