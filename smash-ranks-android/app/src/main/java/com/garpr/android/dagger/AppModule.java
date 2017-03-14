@@ -27,6 +27,7 @@ import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.Match;
 import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Ratings;
 import com.garpr.android.models.SimpleDate;
@@ -148,6 +149,7 @@ public class AppModule {
         return new GsonBuilder()
                 .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_DESERIALIZER)
                 .registerTypeAdapter(AbsTournament.class, AbsTournament.JSON_DESERIALIZER)
+                .registerTypeAdapter(Match.class, Match.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ranking.class, Ranking.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
