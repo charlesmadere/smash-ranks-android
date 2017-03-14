@@ -4,9 +4,11 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -44,6 +46,16 @@ public class SimplePreferenceView extends FrameLayout {
             final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         parseAttributes(attrs);
+    }
+
+    @Override
+    protected void dispatchRestoreInstanceState(final SparseArray<Parcelable> container) {
+        dispatchThawSelfOnly(container);
+    }
+
+    @Override
+    protected void dispatchSaveInstanceState(final SparseArray<Parcelable> container) {
+        dispatchFreezeSelfOnly(container);
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 public class LiteTournament extends AbsTournament implements Parcelable {
 
     public LiteTournament() {
-        // only here for GSON purposes
+
     }
 
     public LiteTournament(@NonNull final String id, @NonNull final String name,

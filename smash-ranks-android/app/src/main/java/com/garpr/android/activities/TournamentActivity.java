@@ -81,8 +81,8 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final Match match) {
-        return getLaunchIntent(context, match.getTournamentId(), match.getTournamentName(),
-                match.getTournamentDate());
+        return getLaunchIntent(context, match.getTournament().getId(),
+                match.getTournament().getName(), match.getTournament().getDate());
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String tournamentId,

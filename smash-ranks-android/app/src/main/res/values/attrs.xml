@@ -17,6 +17,7 @@
 
     <declare-styleable name="RefreshLayout">
         <attr name="scrollingChild" format="reference" />
+        <attr name="spinnerBackground" format="color" />
         <attr name="spinnerColors" format="reference" />
     </declare-styleable>
 

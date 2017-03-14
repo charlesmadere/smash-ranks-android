@@ -9,19 +9,26 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
+import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.models.Match;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MatchItemView extends IdentityFrameLayout implements BaseAdapterView<Match>,
-        View.OnClickListener {
+        View.OnClickListener, View.OnLongClickListener {
 
     private Match mContent;
+
+    @Inject
+    FavoritePlayersManager mFavoritePlayersManager;
 
     @BindView(R.id.tvName)
     TextView mName;
@@ -47,7 +54,7 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
 
     @Override
     protected String getIdentityId() {
-        return mContent.getOpponentId();
+        return mContent.getOpponent().getId();
     }
 
     @Override
@@ -70,8 +77,8 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
         if (activity instanceof OnClickListener) {
             ((OnClickListener) activity).onClick(this);
         } else {
-            context.startActivity(PlayerActivity.getLaunchIntent(context, mContent.getOpponentId(),
-                    mContent.getOpponentName()));
+            context.startActivity(PlayerActivity.getLaunchIntent(context,
+                    mContent.getOpponent().getId(), mContent.getOpponent().getName()));
         }
     }
 
@@ -80,13 +87,26 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
         super.onFinishInflate();
         ButterKnife.bind(this);
         setOnClickListener(this);
+        setOnLongClickListener(this);
+
+        if (isInEditMode()) {
+            return;
+        }
+
+        App.get().getAppComponent().inject(this);
+    }
+
+    @Override
+    public boolean onLongClick(final View v) {
+        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(getContext(),
+                mContent.getOpponent());
     }
 
     @Override
     public void setContent(final Match content) {
         mContent = content;
 
-        mName.setText(mContent.getOpponentName());
+        mName.setText(mContent.getOpponent().getName());
 
         switch (mContent.getResult()) {
             case EXCLUDED:

@@ -77,8 +77,8 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
 
     public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player,
             @NonNull final Match match) {
-        return getLaunchIntent(context, player.getId(), player.getName(), match.getOpponentId(),
-                match.getOpponentName());
+        return getLaunchIntent(context, player.getId(), player.getName(),
+                match.getOpponent().getId(), match.getOpponent().getName());
     }
 
     public static Intent getLaunchIntent(final Context context,

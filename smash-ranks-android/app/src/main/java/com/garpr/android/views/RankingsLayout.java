@@ -39,7 +39,6 @@ import butterknife.BindView;
 public class RankingsLayout extends SearchableFrameLayout implements ApiListener<RankingsBundle>,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private Listener mListener;
     private RankingsAdapter mAdapter;
     private RankingsBundle mRankingsBundle;
 
@@ -85,18 +84,10 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private void attach() {
-        final Activity activity = MiscUtils.optActivity(getContext());
-
-        if (activity instanceof Listener) {
-            mListener = (Listener) activity;
-        }
-    }
-
     @Override
     public void failure() {
         mRankingsBundle = null;
-        mListener.onRankingsBundleFetched(null);
+        onRankingsBundleFetched();
         showError();
     }
 
@@ -106,16 +97,9 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
         mServerApi.getRankings(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        attach();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mListener = null;
+    @Nullable
+    public RankingsBundle getRankingsBundle() {
+        return mRankingsBundle;
     }
 
     @Override
@@ -128,8 +112,6 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
 
         App.get().getAppComponent().inject(this);
 
-        attach();
-
         mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
@@ -138,6 +120,18 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
         mRecyclerView.setAdapter(mAdapter);
 
         fetchRankingsBundle();
+    }
+
+    private void onRankingsBundleFetched() {
+        if (!isAlive()) {
+            return;
+        }
+
+        final Activity activity = MiscUtils.optActivity(getContext());
+
+        if (activity instanceof Listener) {
+            ((Listener) activity).onRankingsBundleFetched(this);
+        }
     }
 
     @Override
@@ -197,19 +191,18 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
     @Override
     public void success(@Nullable final RankingsBundle rankingsBundle) {
         mRankingsBundle = rankingsBundle;
+        onRankingsBundleFetched();
 
         if (mRankingsBundle != null && mRankingsBundle.hasRankings()) {
-            mListener.onRankingsBundleFetched(mRankingsBundle);
             showRankingsBundle();
         } else {
-            mListener.onRankingsBundleFetched(null);
             showEmpty();
         }
     }
 
 
     public interface Listener {
-        void onRankingsBundleFetched(@Nullable final RankingsBundle rankingsBundle);
+        void onRankingsBundleFetched(final RankingsLayout layout);
     }
 
 }
