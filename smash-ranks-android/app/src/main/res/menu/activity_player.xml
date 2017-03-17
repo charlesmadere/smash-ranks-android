@@ -50,4 +50,9 @@
         android:title="@string/aliases"
         android:visible="false"
         compat:showAsAction="never" />
+    <item
+        android:id="@+id/miViewYourselfVsThisOpponent"
+        android:title="@string/view_yourself_vs_this_opponent"
+        android:visible="false"
+        compat:showAsAction="never" />
 </menu>

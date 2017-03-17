@@ -108,6 +108,9 @@
     <string name="view_opponent">View opponent</string>
     <string name="view_player">View player</string>
     <string name="view_tournament_page">View tournament page</string>
+    <string name="view_yourself">View yourself</string>
+    <string name="view_yourself_vs_this_opponent">View yourself vs this opponent</string>
+    <string name="view_yourself_vs_x">View yourself vs %1$s</string>
     <string name="x_vs_y">%1$s vs %2$s</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
@@ -120,8 +123,8 @@
     <string name="yes">Yes</string>
     <string name="you_can_add_a_player_to_your_favorites">You can add a player to your favorites when viewing their profile screen, or by long-pressing on their name in player lists.</string>
     <string name="youve_selected_an_identity_but_havent_saved">You\'ve selected an identity but haven\'t saved. Are you sure you still want to close this screen?</string>
-    
-    
+
+
     <plurals name="x_favorites">
         <item quantity="one">%1$s favorite</item>
         <item quantity="other">%1$s favorites</item>

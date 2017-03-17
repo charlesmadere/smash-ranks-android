@@ -109,10 +109,9 @@ public class AppModule {
     @Provides
     @Singleton
     FavoritePlayersManager providesFavoritePlayersManager(final Gson gson,
-            final IdentityManager identityManager,
             @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE) final KeyValueStore keyValueStore,
             final Timber timber) {
-        return new FavoritePlayersManagerImpl(gson, identityManager, keyValueStore, timber);
+        return new FavoritePlayersManagerImpl(gson, keyValueStore, timber);
     }
 
     @Provides

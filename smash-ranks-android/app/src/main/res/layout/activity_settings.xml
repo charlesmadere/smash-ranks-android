@@ -28,11 +28,8 @@
                     <com.garpr.android.views.ThemePreferenceView
                         android:id="@+id/themePreferenceView"
                         style="@style/PreferenceView" />
-                    <com.garpr.android.views.SetIdentityPreferenceView
-                        android:id="@+id/setIdentityPreferenceView"
-                        style="@style/PreferenceView" />
-                    <com.garpr.android.views.DeleteIdentityPreferenceView
-                        android:id="@+id/deleteIdentityPreferenceView"
+                    <com.garpr.android.views.IdentityPreferenceView
+                        android:id="@+id/identityPreferenceView"
                         style="@style/PreferenceView" />
                     <com.garpr.android.views.ClearFavoritePlayersPreferenceView
                         android:id="@+id/clearFavoritePlayersPreferenceView"

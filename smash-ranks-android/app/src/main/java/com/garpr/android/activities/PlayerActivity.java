@@ -19,6 +19,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayerAdapter;
 import com.garpr.android.misc.FavoritePlayersManager;
+import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
@@ -29,6 +30,7 @@ import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Ranking;
+import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.MatchItemView;
@@ -42,7 +44,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PlayerActivity extends BaseActivity implements
-        FavoritePlayersManager.OnFavoritePlayersChangeListener, MatchItemView.OnClickListener,
+        FavoritePlayersManager.OnFavoritePlayersChangeListener,
+        IdentityManager.OnIdentityChangeListener, MatchItemView.OnClickListener,
         MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener,
         SwipeRefreshLayout.OnRefreshListener {
 
@@ -52,6 +55,7 @@ public class PlayerActivity extends BaseActivity implements
     private static final String EXTRA_PLAYER_NAME = CNAME + ".PlayerName";
 
     private ArrayList<Object> mList;
+    private DataListener mDataListener;
     private FullPlayer mFullPlayer;
     private MatchesBundle mMatchesBundle;
     private Match.Result mResult;
@@ -61,6 +65,9 @@ public class PlayerActivity extends BaseActivity implements
 
     @Inject
     FavoritePlayersManager mFavoritePlayersManager;
+
+    @Inject
+    IdentityManager mIdentityManager;
 
     @Inject
     RegionManager mRegionManager;
@@ -130,7 +137,8 @@ public class PlayerActivity extends BaseActivity implements
         mMatchesBundle = null;
         mResult = null;
         mRefreshLayout.setRefreshing(true);
-        new DataListener();
+        mDataListener = new DataListener(mRegionManager.getRegion(this));
+        mDataListener.fetch();
     }
 
     private void filter(@Nullable final Match.Result result) {
@@ -187,6 +195,7 @@ public class PlayerActivity extends BaseActivity implements
         }
 
         mFavoritePlayersManager.addListener(this);
+        mIdentityManager.addListener(this);
         fetchData();
     }
 
@@ -218,7 +227,15 @@ public class PlayerActivity extends BaseActivity implements
                 menu.findItem(R.id.miAddToFavorites).setVisible(true);
             }
 
-            menu.findItem(R.id.miAliases).setVisible(mFullPlayer.hasAliases());
+            if (mFullPlayer.hasAliases()) {
+                menu.findItem(R.id.miAliases).setVisible(true);
+            }
+
+            if (mIdentityManager.hasIdentity()) {
+                final MenuItem menuItem = menu.findItem(R.id.miViewYourselfVsThisOpponent);
+                menuItem.setTitle(getString(R.string.view_yourself_vs_x, mFullPlayer.getName()));
+                menuItem.setVisible(true);
+            }
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -227,11 +244,18 @@ public class PlayerActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mDataListener = null;
         mFavoritePlayersManager.removeListener(this);
+        mIdentityManager.removeListener(this);
     }
 
     @Override
     public void onFavoritePlayersChanged(final FavoritePlayersManager manager) {
+        supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    public void onIdentityChange(final IdentityManager identityManager) {
         supportInvalidateOptionsMenu();
     }
 
@@ -275,6 +299,12 @@ public class PlayerActivity extends BaseActivity implements
 
             case R.id.miShare:
                 mShareUtils.sharePlayer(this, mFullPlayer);
+                return true;
+
+            case R.id.miViewYourselfVsThisOpponent:
+                // noinspection ConstantConditions
+                startActivity(HeadToHeadActivity.getLaunchIntent(this,
+                        mIdentityManager.getIdentity(), mFullPlayer));
                 return true;
         }
 
@@ -394,11 +424,15 @@ public class PlayerActivity extends BaseActivity implements
         private boolean mMatchesBundleFound;
         private FullPlayer mFullPlayer;
         private MatchesBundle mMatchesBundle;
+        private final String mRegion;
 
-        private DataListener() {
-            final String region = mRegionManager.getRegion(PlayerActivity.this);
-            mServerApi.getMatches(region, mPlayerId, mMatchesBundleListener);
-            mServerApi.getPlayer(region, mPlayerId, mFullPlayerListener);
+        private DataListener(@NonNull final String region) {
+            mRegion = region;
+        }
+
+        private void fetch() {
+            mServerApi.getMatches(mRegion, mPlayerId, new ApiCall<>(mMatchesBundleListener));
+            mServerApi.getPlayer(mRegion, mPlayerId, new ApiCall<>(mFullPlayerListener));
         }
 
         private void proceed() {

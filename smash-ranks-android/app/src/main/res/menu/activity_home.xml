@@ -9,6 +9,11 @@
         compat:actionViewClass="android.support.v7.widget.SearchView"
         compat:showAsAction="collapseActionView|ifRoom" />
     <item
+        android:id="@+id/miViewYourself"
+        android:title="@string/view_yourself"
+        android:visible="false"
+        compat:showAsAction="never" />
+    <item
         android:id="@+id/miPlayers"
         android:title="@string/view_all_players"
         compat:showAsAction="never" />
