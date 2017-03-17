@@ -55,6 +55,7 @@ public class PlayerActivity extends BaseActivity implements
     private static final String EXTRA_PLAYER_NAME = CNAME + ".PlayerName";
 
     private ArrayList<Object> mList;
+    private DataListener mDataListener;
     private FullPlayer mFullPlayer;
     private MatchesBundle mMatchesBundle;
     private Match.Result mResult;
@@ -136,7 +137,8 @@ public class PlayerActivity extends BaseActivity implements
         mMatchesBundle = null;
         mResult = null;
         mRefreshLayout.setRefreshing(true);
-        new DataListener();
+        mDataListener = new DataListener(mRegionManager.getRegion(this));
+        mDataListener.fetch();
     }
 
     private void filter(@Nullable final Match.Result result) {
@@ -242,6 +244,7 @@ public class PlayerActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mDataListener = null;
         mFavoritePlayersManager.removeListener(this);
         mIdentityManager.removeListener(this);
     }
@@ -421,11 +424,15 @@ public class PlayerActivity extends BaseActivity implements
         private boolean mMatchesBundleFound;
         private FullPlayer mFullPlayer;
         private MatchesBundle mMatchesBundle;
+        private final String mRegion;
 
-        private DataListener() {
-            final String region = mRegionManager.getRegion(PlayerActivity.this);
-            mServerApi.getMatches(region, mPlayerId, new ApiCall<>(mMatchesBundleListener));
-            mServerApi.getPlayer(region, mPlayerId, new ApiCall<>(mFullPlayerListener));
+        private DataListener(@NonNull final String region) {
+            mRegion = region;
+        }
+
+        private void fetch() {
+            mServerApi.getMatches(mRegion, mPlayerId, new ApiCall<>(mMatchesBundleListener));
+            mServerApi.getPlayer(mRegion, mPlayerId, new ApiCall<>(mFullPlayerListener));
         }
 
         private void proceed() {
