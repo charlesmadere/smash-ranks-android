@@ -24,10 +24,9 @@ import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.CheckablePreferenceView;
 import com.garpr.android.views.ClearFavoritePlayersPreferenceView;
-import com.garpr.android.views.DeleteIdentityPreferenceView;
+import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
-import com.garpr.android.views.SetIdentityPreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
 
 import javax.inject.Inject;
@@ -72,17 +71,14 @@ public class SettingsActivity extends BaseActivity {
     @BindView(R.id.clearFavoritePlayersPreferenceView)
     ClearFavoritePlayersPreferenceView mClearFavoritePlayersPreferenceView;
 
-    @BindView(R.id.deleteIdentityPreferenceView)
-    DeleteIdentityPreferenceView mDeleteIdentityPreferenceView;
+    @BindView(R.id.identityPreferenceView)
+    IdentityPreferenceView mIdentityPreferenceView;
 
     @BindView(R.id.lastPollPreferenceView)
     LastPollPreferenceView mLastPoll;
 
     @BindView(R.id.pollFrequencyPreferenceView)
     PollFrequencyPreferenceView mPollFrequency;
-
-    @BindView(R.id.setIdentityPreferenceView)
-    SetIdentityPreferenceView mSetIdentityPreferenceView;
 
     @BindView(R.id.tvGooglePlayServicesError)
     TextView mGooglePlayServicesError;
@@ -210,17 +206,8 @@ public class SettingsActivity extends BaseActivity {
     private void refresh() {
         mTheme.refresh();
 
-        mSetIdentityPreferenceView.refresh();
-        mDeleteIdentityPreferenceView.refresh();
+        mIdentityPreferenceView.refresh();
         mClearFavoritePlayersPreferenceView.refresh();
-
-        if (mIdentityManager.hasIdentity()) {
-            mSetIdentityPreferenceView.setVisibility(View.GONE);
-            mDeleteIdentityPreferenceView.setVisibility(View.VISIBLE);
-        } else {
-            mSetIdentityPreferenceView.setVisibility(View.VISIBLE);
-            mDeleteIdentityPreferenceView.setVisibility(View.GONE);
-        }
 
         mUseRankingsPolling.refresh();
         mPollFrequency.refresh();
