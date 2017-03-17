@@ -2,8 +2,10 @@ package com.garpr.android.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -15,24 +17,25 @@ import com.garpr.android.models.AbsPlayer;
 
 import javax.inject.Inject;
 
-public class SetIdentityPreferenceView extends SimplePreferenceView implements
-        IdentityManager.OnIdentityChangeListener, View.OnClickListener {
+public class IdentityPreferenceView extends SimplePreferenceView implements
+        DialogInterface.OnClickListener, IdentityManager.OnIdentityChangeListener,
+        View.OnClickListener {
 
     @Inject
     IdentityManager mIdentityManager;
 
 
-    public SetIdentityPreferenceView(final Context context, final AttributeSet attrs) {
+    public IdentityPreferenceView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SetIdentityPreferenceView(final Context context, final AttributeSet attrs,
+    public IdentityPreferenceView(final Context context, final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SetIdentityPreferenceView(final Context context, final AttributeSet attrs,
+    public IdentityPreferenceView(final Context context, final AttributeSet attrs,
             final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -50,9 +53,23 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements
     }
 
     @Override
+    public void onClick(final DialogInterface dialog, final int which) {
+        mIdentityManager.setIdentity(null);
+    }
+
+    @Override
     public void onClick(final View v) {
         final Context context = getContext();
-        context.startActivity(SetIdentityActivity.getLaunchIntent(getContext()));
+
+        if (mIdentityManager.hasIdentity()) {
+            new AlertDialog.Builder(context)
+                    .setMessage(R.string.are_you_sure_you_want_to_delete_your_identity)
+                    .setNegativeButton(R.string.cancel, null)
+                    .setPositiveButton(R.string.yes, this)
+                    .show();
+        } else {
+            context.startActivity(SetIdentityActivity.getLaunchIntent(getContext()));
+        }
     }
 
     @Override
@@ -71,6 +88,7 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements
 
         setOnClickListener(this);
         setTitleText(R.string.set_your_identity);
+        setDescriptionText(R.string.easily_find_yourself_throughout_the_app);
 
         if (isInEditMode()) {
             return;
@@ -94,9 +112,11 @@ public class SetIdentityPreferenceView extends SimplePreferenceView implements
         final AbsPlayer player = mIdentityManager.getIdentity();
 
         if (player == null) {
+            setTitleText(R.string.set_your_identity);
             setDescriptionText(R.string.easily_find_yourself_throughout_the_app);
         } else {
-            setDescriptionText(getResources().getString(R.string.identity_is_x, player.getName()));
+            setTitleText(R.string.delete_identity);
+            setDescriptionText(player.getName());
         }
     }
 

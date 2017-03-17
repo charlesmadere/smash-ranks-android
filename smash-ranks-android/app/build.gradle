@@ -73,7 +73,7 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.5.1'
 
     // Robolectric
-    testCompile "org.robolectric:robolectric:3.2.2"
+    testCompile "org.robolectric:robolectric:3.3.1"
 
     // Square's Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
