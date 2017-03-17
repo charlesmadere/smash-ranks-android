@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.HomePagerAdapter;
+import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
@@ -31,8 +32,8 @@ import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
-        MenuItemCompat.OnActionExpandListener, RankingsLayout.Listener, SearchQueryHandle,
-        SearchView.OnQueryTextListener {
+        IdentityManager.OnIdentityChangeListener, MenuItemCompat.OnActionExpandListener,
+        RankingsLayout.Listener, SearchQueryHandle, SearchView.OnQueryTextListener {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
@@ -46,6 +47,9 @@ public class HomeActivity extends BaseActivity implements
     private HomePagerAdapter mAdapter;
     private MenuItem mSearchMenuItem;
     private SearchView mSearchView;
+
+    @Inject
+    IdentityManager mIdentityManager;
 
     @Inject
     NotificationManager mNotificationManager;
@@ -113,6 +117,8 @@ public class HomeActivity extends BaseActivity implements
         mNotificationManager.cancelAll();
 
         setInitialPosition(savedInstanceState);
+
+        mIdentityManager.addListener(this);
     }
 
     @Override
@@ -129,7 +135,22 @@ public class HomeActivity extends BaseActivity implements
             mSearchView.setOnQueryTextListener(this);
         }
 
+        if (mIdentityManager.hasIdentity()) {
+            menu.findItem(R.id.miViewYourself).setVisible(true);
+        }
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mIdentityManager.removeListener(this);
+    }
+
+    @Override
+    public void onIdentityChange(final IdentityManager identityManager) {
+        supportInvalidateOptionsMenu();
     }
 
     @Override
@@ -176,6 +197,11 @@ public class HomeActivity extends BaseActivity implements
 
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
+                return true;
+
+            case R.id.miViewYourself:
+                // noinspection ConstantConditions
+                startActivity(PlayerActivity.getLaunchIntent(this, mIdentityManager.getIdentity()));
                 return true;
         }
 
