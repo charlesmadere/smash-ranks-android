@@ -4,6 +4,10 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -34,17 +38,18 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
     TextView mName;
 
 
-    public MatchItemView(final Context context, final AttributeSet attrs) {
+    public MatchItemView(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MatchItemView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public MatchItemView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public MatchItemView(final Context context, final AttributeSet attrs, final int defStyleAttr,
-            final int defStyleRes) {
+    public MatchItemView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

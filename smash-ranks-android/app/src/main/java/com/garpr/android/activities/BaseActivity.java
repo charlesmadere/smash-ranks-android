@@ -69,7 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
         return !isFinishing() && !isDestroyed();
     }
 
-    private void navigateUp() {
+    protected void navigateUp() {
         final Intent upIntent = NavUtils.getParentActivityIntent(this);
 
         if (upIntent == null) {
@@ -79,7 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
                     .addNextIntentWithParentStack(upIntent)
                     .startActivities();
         } else {
-            NavUtils.navigateUpTo(this, upIntent);
+            supportNavigateUpTo(upIntent);
         }
     }
 

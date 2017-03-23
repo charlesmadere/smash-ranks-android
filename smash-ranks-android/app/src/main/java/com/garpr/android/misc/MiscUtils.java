@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.text.DecimalFormat;
@@ -21,6 +22,7 @@ public final class MiscUtils {
         DECIMAL_FORMAT.setMinimumFractionDigits(3);
     }
 
+    @NonNull
     public static Activity getActivity(final Context context) {
         final Activity activity = optActivity(context);
 

@@ -3,6 +3,10 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -28,18 +32,19 @@ public class TournamentDividerView extends FrameLayout implements BaseAdapterVie
     TextView mName;
 
 
-    public TournamentDividerView(final Context context, final AttributeSet attrs) {
+    public TournamentDividerView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TournamentDividerView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public TournamentDividerView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TournamentDividerView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public TournamentDividerView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

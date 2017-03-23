@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,11 +25,11 @@ public class RatingItemView extends LinearLayout implements BaseAdapterView<Rati
     TextView mUnadjusted;
 
 
-    public RatingItemView(final Context context, final AttributeSet attrs) {
+    public RatingItemView(final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public RatingItemView(final Context context, final AttributeSet attrs,
+    public RatingItemView(final Context context, @Nullable final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }

@@ -25,7 +25,7 @@ public class Region implements Parcelable {
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof Region && mId.equals(((Region) obj).getId());
+        return obj instanceof Region && mId.equalsIgnoreCase(((Region) obj).getId());
     }
 
     public String getDisplayName() {

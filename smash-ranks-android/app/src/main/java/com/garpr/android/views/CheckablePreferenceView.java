@@ -4,7 +4,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -43,20 +46,22 @@ public class CheckablePreferenceView extends FrameLayout implements
     TextView mTitle;
 
 
-    public CheckablePreferenceView(final Context context, final AttributeSet attrs) {
+    public CheckablePreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         super(context, attrs);
         parseAttributes(attrs);
     }
 
-    public CheckablePreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public CheckablePreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         parseAttributes(attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CheckablePreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public CheckablePreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr,
+            @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         parseAttributes(attrs);
     }

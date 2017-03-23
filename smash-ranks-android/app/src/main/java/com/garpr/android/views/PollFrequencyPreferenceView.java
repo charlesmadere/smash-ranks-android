@@ -4,6 +4,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
@@ -25,18 +29,20 @@ public class PollFrequencyPreferenceView extends SimplePreferenceView implements
     RankingsPollingPreferenceStore mRankingsPollingPreferenceStore;
 
 
-    public PollFrequencyPreferenceView(final Context context, final AttributeSet attrs) {
+    public PollFrequencyPreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public PollFrequencyPreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public PollFrequencyPreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public PollFrequencyPreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public PollFrequencyPreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr,
+            @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

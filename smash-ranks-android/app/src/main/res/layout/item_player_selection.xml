@@ -15,6 +15,9 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_large"
         tools:text="Charlezard" />
+    <android.support.v4.widget.Space
+        android:layout_height="1dp"
+        android:layout_width="@dimen/root_padding" />
     <RadioButton
         android:background="@null"
         android:clickable="false"

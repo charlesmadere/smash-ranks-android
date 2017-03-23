@@ -38,6 +38,21 @@
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
                 android:layout_marginBottom="@dimen/root_padding"
+                android:visibility="visible"
+                tools:visibility="visible"
+                style="@style/SettingsCard">
+                <LinearLayout
+                    style="@style/SettingsCardContainer">
+                    <TextView
+                        android:text="@string/region"
+                        style="@style/SettingsCardTitle" />
+                    <com.garpr.android.views.RegionPreferenceView
+                        android:id="@+id/regionPreferenceView"
+                        style="@style/PreferenceView" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_marginBottom="@dimen/root_padding"
                 style="@style/SettingsCard">
                 <LinearLayout
                     style="@style/SettingsCardContainer">
