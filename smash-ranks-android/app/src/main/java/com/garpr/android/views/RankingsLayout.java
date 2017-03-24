@@ -55,7 +55,7 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
     RecyclerView mRecyclerView;
 
     @BindView(R.id.refreshLayout)
-    RefreshLayout mRefreshLayout;
+    SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R.id.empty)
     View mEmpty;

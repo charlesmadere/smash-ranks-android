@@ -28,7 +28,6 @@ import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
-import com.garpr.android.views.RefreshLayout;
 
 import javax.inject.Inject;
 
@@ -59,7 +58,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     ShareUtils mShareUtils;
 
     @BindView(R.id.refreshLayout)
-    RefreshLayout mRefreshLayout;
+    SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;

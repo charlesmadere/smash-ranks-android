@@ -25,7 +25,6 @@ import com.garpr.android.models.Match;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
-import com.garpr.android.views.RefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     RecyclerView mRecyclerView;
 
     @BindView(R.id.refreshLayout)
-    RefreshLayout mRefreshLayout;
+    SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R.id.empty)
     View mEmpty;

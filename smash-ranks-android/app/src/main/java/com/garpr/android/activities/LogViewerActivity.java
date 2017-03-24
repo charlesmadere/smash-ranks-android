@@ -14,7 +14,6 @@ import android.view.View;
 import com.garpr.android.R;
 import com.garpr.android.adapters.TimberEntriesAdapter;
 import com.garpr.android.misc.Timber;
-import com.garpr.android.views.RefreshLayout;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class LogViewerActivity extends BaseActivity implements
     RecyclerView mRecyclerView;
 
     @BindView(R.id.refreshLayout)
-    RefreshLayout mRefreshLayout;
+    SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R.id.empty)
     View mEmpty;

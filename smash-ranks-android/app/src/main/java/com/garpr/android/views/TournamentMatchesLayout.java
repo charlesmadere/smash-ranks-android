@@ -3,7 +3,10 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v7.widget.DividerItemDecoration;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -30,18 +33,21 @@ public class TournamentMatchesLayout extends TournamentPageLayout {
                 parent, false);
     }
 
-    public TournamentMatchesLayout(final Context context, final AttributeSet attrs) {
+    public TournamentMatchesLayout(@NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TournamentMatchesLayout(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public TournamentMatchesLayout(@NonNull final Context context,
+            @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TournamentMatchesLayout(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public TournamentMatchesLayout(@NonNull final Context context,
+            @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr,
+            @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

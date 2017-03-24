@@ -68,7 +68,7 @@ public class IdentityPreferenceView extends SimplePreferenceView implements
                     .setPositiveButton(R.string.yes, this)
                     .show();
         } else {
-            context.startActivity(SetIdentityActivity.getLaunchIntent(getContext()));
+            context.startActivity(SetIdentityActivity.getLaunchIntent(context));
         }
     }
 

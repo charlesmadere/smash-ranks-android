@@ -34,7 +34,6 @@ import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.MatchItemView;
-import com.garpr.android.views.RefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,7 @@ public class PlayerActivity extends BaseActivity implements
     RecyclerView mRecyclerView;
 
     @BindView(R.id.refreshLayout)
-    RefreshLayout mRefreshLayout;
+    SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R.id.empty)
     View mEmpty;

@@ -78,6 +78,16 @@
         </activity>
 
         <activity
+            android:label="@string/set_region"
+            android:launchMode="singleTop"
+            android:name=".activities.SetRegionActivity"
+            android:parentActivityName=".activities.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SettingsActivity" />
+        </activity>
+
+        <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:name=".activities.SettingsActivity" />

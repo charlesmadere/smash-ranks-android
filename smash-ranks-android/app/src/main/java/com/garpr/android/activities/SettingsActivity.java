@@ -27,6 +27,7 @@ import com.garpr.android.views.ClearFavoritePlayersPreferenceView;
 import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
+import com.garpr.android.views.RegionPreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
 
 import javax.inject.Inject;
@@ -80,11 +81,14 @@ public class SettingsActivity extends BaseActivity {
     @BindView(R.id.pollFrequencyPreferenceView)
     PollFrequencyPreferenceView mPollFrequency;
 
+    @BindView(R.id.regionPreferenceView)
+    RegionPreferenceView mRegionPreferenceView;
+
     @BindView(R.id.tvGooglePlayServicesError)
     TextView mGooglePlayServicesError;
 
     @BindView(R.id.themePreferenceView)
-    ThemePreferenceView mTheme;
+    ThemePreferenceView mThemePreferenceView;
 
 
     public static Intent getLaunchIntent(final Context context) {
@@ -204,10 +208,12 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void refresh() {
-        mTheme.refresh();
+        mThemePreferenceView.refresh();
 
         mIdentityPreferenceView.refresh();
         mClearFavoritePlayersPreferenceView.refresh();
+
+        mRegionPreferenceView.refresh();
 
         mUseRankingsPolling.refresh();
         mPollFrequency.refresh();

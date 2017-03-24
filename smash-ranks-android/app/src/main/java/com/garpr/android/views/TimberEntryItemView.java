@@ -3,6 +3,7 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
@@ -28,11 +29,11 @@ public class TimberEntryItemView extends LinearLayout implements BaseAdapterView
     TextView mTagAndMessage;
 
 
-    public TimberEntryItemView(final Context context, final AttributeSet attrs) {
+    public TimberEntryItemView(final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TimberEntryItemView(final Context context, final AttributeSet attrs,
+    public TimberEntryItemView(final Context context, @Nullable final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }

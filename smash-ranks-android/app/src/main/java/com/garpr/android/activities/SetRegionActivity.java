@@ -5,13 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,50 +16,35 @@ import android.widget.Toast;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
-import com.garpr.android.adapters.PlayersSelectionAdapter;
-import com.garpr.android.misc.IdentityManager;
-import com.garpr.android.misc.ListUtils;
+import com.garpr.android.adapters.RegionsSelectionAdapter;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ResultCodes;
-import com.garpr.android.misc.SearchQueryHandle;
-import com.garpr.android.misc.ThreadUtils;
-import com.garpr.android.models.AbsPlayer;
-import com.garpr.android.models.PlayersBundle;
+import com.garpr.android.models.Region;
+import com.garpr.android.models.RegionsBundle;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
-import com.garpr.android.views.PlayerSelectionItemView;
-
-import java.util.List;
+import com.garpr.android.views.RegionSelectionItemView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class SetIdentityActivity extends BaseActivity implements ApiListener<PlayersBundle>,
-        MenuItemCompat.OnActionExpandListener, PlayerSelectionItemView.Listeners,
-        SearchQueryHandle, SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+public class SetRegionActivity extends BaseActivity implements ApiListener<RegionsBundle>,
+        RegionSelectionItemView.Listeners, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG = "SetIdentityActivity";
+    private static final String TAG = "SetRegionActivity";
 
-    private AbsPlayer mSelectedPlayer;
     private MenuItem mSaveMenuItem;
-    private MenuItem mSearchMenuItem;
-    private PlayersBundle mPlayersBundle;
-    private PlayersSelectionAdapter mAdapter;
-    private SearchView mSearchView;
-
-    @Inject
-    IdentityManager mIdentityManager;
+    private Region mSelectedRegion;
+    private RegionsBundle mRegionsBundle;
+    private RegionsSelectionAdapter mAdapter;
 
     @Inject
     RegionManager mRegionManager;
 
     @Inject
     ServerApi mServerApi;
-
-    @Inject
-    ThreadUtils mThreadUtils;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -78,21 +60,21 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
 
 
     public static Intent getLaunchIntent(final Context context) {
-        return new Intent(context, SetIdentityActivity.class);
+        return new Intent(context, SetRegionActivity.class);
     }
 
     @Override
     public void failure() {
-        mSelectedPlayer = null;
-        mPlayersBundle = null;
+        mSelectedRegion = null;
+        mRegionsBundle = null;
         showError();
     }
 
-    private void fetchPlayersBundle() {
-        mSelectedPlayer = null;
-        mPlayersBundle = null;
+    private void fetchRegionsBundle() {
+        mSelectedRegion = null;
+        mRegionsBundle = null;
         mRefreshLayout.setRefreshing(true);
-        mServerApi.getPlayers(mRegionManager.getRegion(this), new ApiCall<>(this));
+        mServerApi.getRegions(new ApiCall<>(this));
     }
 
     @Override
@@ -102,34 +84,28 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
 
     @Nullable
     @Override
-    public CharSequence getSearchQuery() {
-        return mSearchView == null ? null : mSearchView.getQuery();
-    }
-
-    @Nullable
-    @Override
-    public AbsPlayer getSelectedPlayer() {
-        if (mSelectedPlayer == null) {
-            return mIdentityManager.getIdentity();
+    public String getSelectedRegion() {
+        if (mSelectedRegion == null) {
+            return mRegionManager.getRegion();
         } else {
-            return mSelectedPlayer;
+            return mSelectedRegion.getId();
         }
     }
 
     @Override
     protected void navigateUp() {
-        if (mSelectedPlayer == null) {
+        if (mSelectedRegion == null) {
             super.navigateUp();
             return;
         }
 
         new AlertDialog.Builder(this)
-                .setMessage(R.string.youve_selected_an_identity_but_havent_saved)
+                .setMessage(R.string.youve_selected_a_region_but_havent_saved)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        SetIdentityActivity.super.navigateUp();
+                        SetRegionActivity.super.navigateUp();
                     }
                 })
                 .show();
@@ -137,36 +113,31 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
 
     @Override
     public void onBackPressed() {
-        if (mSelectedPlayer == null) {
+        if (mSelectedRegion == null) {
             super.onBackPressed();
             return;
         }
 
-        if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
-            MenuItemCompat.collapseActionView(mSearchMenuItem);
-            return;
-        }
-
         new AlertDialog.Builder(this)
-                .setMessage(R.string.youve_selected_an_identity_but_havent_saved)
+                .setMessage(R.string.youve_selected_a_region_but_havent_saved)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        SetIdentityActivity.super.onBackPressed();
+                        SetRegionActivity.super.onBackPressed();
                     }
                 })
                 .show();
     }
 
     @Override
-    public void onClick(final PlayerSelectionItemView v) {
-        final AbsPlayer player = v.getContent();
+    public void onClick(final RegionSelectionItemView v) {
+        final Region region = v.getContent();
 
-        if (player.equals(mIdentityManager.getIdentity())) {
-            mSelectedPlayer = null;
+        if (region.getId().equalsIgnoreCase(mRegionManager.getRegion())) {
+            mSelectedRegion = null;
         } else {
-            mSelectedPlayer = player;
+            mSelectedRegion = region;
         }
 
         refreshMenu();
@@ -177,36 +148,18 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
-        setContentView(R.layout.activity_set_identity);
+        setContentView(R.layout.activity_set_region);
 
-        fetchPlayersBundle();
+        fetchRegionsBundle();
     }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_set_identity, menu);
-
-        mSearchMenuItem = menu.findItem(R.id.miSearch);
-        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
-        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
-        mSearchView.setQueryHint(getText(R.string.search_players_));
-        mSearchView.setOnQueryTextListener(this);
-
+        getMenuInflater().inflate(R.menu.activity_set_region, menu);
         mSaveMenuItem = menu.findItem(R.id.miSave);
         refreshMenu();
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onMenuItemActionCollapse(final MenuItem item) {
-        search(null);
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemActionExpand(final MenuItem item) {
-        return true;
     }
 
     @Override
@@ -221,20 +174,8 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     @Override
-    public boolean onQueryTextChange(final String newText) {
-        search(newText);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(final String query) {
-        search(query);
-        return false;
-    }
-
-    @Override
     public void onRefresh() {
-        fetchPlayersBundle();
+        fetchRegionsBundle();
     }
 
     @Override
@@ -245,12 +186,12 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new PlayersSelectionAdapter(this);
+        mAdapter = new RegionsSelectionAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private void refreshMenu() {
-        if (mSaveMenuItem == null || mSearchMenuItem == null || mSearchView == null) {
+        if (mSaveMenuItem == null) {
             return;
         }
 
@@ -258,44 +199,17 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
                 mEmpty.getVisibility() == View.VISIBLE || mError.getVisibility() == View.VISIBLE) {
             mSaveMenuItem.setEnabled(false);
             mSaveMenuItem.setVisible(false);
-            MenuItemCompat.collapseActionView(mSearchMenuItem);
-            mSearchMenuItem.setVisible(false);
         } else {
-            mSaveMenuItem.setEnabled(mSelectedPlayer != null);
+            mSaveMenuItem.setEnabled(mSelectedRegion != null);
             mSaveMenuItem.setVisible(true);
-            mSearchMenuItem.setVisible(true);
         }
     }
 
     private void save() {
-        mIdentityManager.setIdentity(mSelectedPlayer);
-        Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show();
-        setResult(ResultCodes.IDENTITY_SELECTED.mValue);
+        mRegionManager.setRegion(mSelectedRegion.getId());
+        Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show();
+        setResult(ResultCodes.REGION_SELECTED.mValue);
         supportFinishAfterTransition();
-    }
-
-    private void search(@Nullable final String query) {
-        mThreadUtils.run(new ThreadUtils.Task() {
-            private List<AbsPlayer> mList;
-
-            @Override
-            public void onBackground() {
-                if (!isAlive()) {
-                    return;
-                }
-
-                mList = ListUtils.searchPlayerList(query, mPlayersBundle.getPlayers());
-            }
-
-            @Override
-            public void onUi() {
-                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
-                    return;
-                }
-
-                mAdapter.set(mList);
-            }
-        });
     }
 
     private void showEmpty() {
@@ -316,8 +230,8 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         refreshMenu();
     }
 
-    private void showPlayersBundle() {
-        mAdapter.set(mPlayersBundle);
+    private void showRegionsBundle() {
+        mAdapter.set(mRegionsBundle);
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -332,11 +246,11 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     @Override
-    public void success(@Nullable final PlayersBundle playersBundle) {
-        mPlayersBundle = playersBundle;
+    public void success(@Nullable final RegionsBundle regionsBundle) {
+        mRegionsBundle = regionsBundle;
 
-        if (mPlayersBundle != null && mPlayersBundle.hasPlayers()) {
-            showPlayersBundle();
+        if (mRegionsBundle != null && mRegionsBundle.hasRegions()) {
+            showRegionsBundle();
         } else {
             showEmpty();
         }

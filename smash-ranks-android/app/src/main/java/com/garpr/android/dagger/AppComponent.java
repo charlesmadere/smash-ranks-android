@@ -9,6 +9,7 @@ import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.activities.PlayersActivity;
 import com.garpr.android.activities.RankingsActivity;
 import com.garpr.android.activities.SetIdentityActivity;
+import com.garpr.android.activities.SetRegionActivity;
 import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.activities.TournamentsActivity;
@@ -48,6 +49,7 @@ public interface AppComponent {
     void inject(PlayersActivity activity);
     void inject(RankingsActivity activity);
     void inject(SetIdentityActivity activity);
+    void inject(SetRegionActivity activity);
     void inject(SettingsActivity activity);
     void inject(TournamentActivity activity);
     void inject(TournamentsActivity activity);

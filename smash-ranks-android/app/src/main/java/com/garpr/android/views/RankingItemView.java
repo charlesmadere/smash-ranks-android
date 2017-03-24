@@ -3,6 +3,10 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -40,18 +44,18 @@ public class RankingItemView extends IdentityFrameLayout implements BaseAdapterV
     TextView mRating;
 
 
-    public RankingItemView(final Context context, final AttributeSet attrs) {
+    public RankingItemView(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public RankingItemView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public RankingItemView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public RankingItemView(final Context context, final AttributeSet attrs, final int defStyleAttr,
-            final int defStyleRes) {
+    public RankingItemView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

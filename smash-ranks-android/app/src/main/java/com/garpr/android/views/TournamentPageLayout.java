@@ -3,6 +3,10 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -23,18 +27,19 @@ public abstract class TournamentPageLayout extends SearchableFrameLayout impleme
     protected View mEmpty;
 
 
-    public TournamentPageLayout(final Context context, final AttributeSet attrs) {
+    public TournamentPageLayout(@NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TournamentPageLayout(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public TournamentPageLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TournamentPageLayout(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public TournamentPageLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

@@ -3,6 +3,7 @@ package com.garpr.android.models;
 import com.garpr.android.BaseTest;
 import com.garpr.android.BuildConfig;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +19,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -57,6 +60,12 @@ public class SimpleDateTest extends BaseTest {
     }
 
     @Test
+    public void testFromEmptyString() throws Exception {
+        final SimpleDate simpleDate = mGson.fromJson("", SimpleDate.class);
+        assertNull(simpleDate);
+    }
+
+    @Test
     public void testFromJson() throws Exception {
         SimpleDate simpleDate = mGson.fromJson(JSON_ONE, SimpleDate.class);
         assertNotNull(simpleDate);
@@ -66,9 +75,23 @@ public class SimpleDateTest extends BaseTest {
     }
 
     @Test
-    public void testFromNull() throws Exception {
+    public void testFromNullJsonElement() throws Exception {
+        final SimpleDate simpleDate = mGson.fromJson((JsonElement) null, SimpleDate.class);
+        assertNull(simpleDate);
+    }
+
+    @Test
+    public void testFromNullString() throws Exception {
         final SimpleDate simpleDate = mGson.fromJson((String) null, SimpleDate.class);
         assertNull(simpleDate);
+    }
+
+    @Test
+    public void testHappenedAfter() throws Exception {
+        final SimpleDate simpleDate1 = mGson.fromJson(JSON_ONE, SimpleDate.class);
+        final SimpleDate simpleDate2 = mGson.fromJson(JSON_TWO, SimpleDate.class);
+        assertTrue(simpleDate1.happenedAfter(simpleDate2));
+        assertFalse(simpleDate2.happenedAfter(simpleDate1));
     }
 
     @Test

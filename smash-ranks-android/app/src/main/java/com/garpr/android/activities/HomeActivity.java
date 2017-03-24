@@ -99,8 +99,8 @@ public class HomeActivity extends BaseActivity implements
             return;
         }
 
-        if (mViewPager.getCurrentItem() != 0) {
-            mViewPager.setCurrentItem(0);
+        if (mViewPager != null && mViewPager.getCurrentItem() != 0) {
+            mViewPager.setCurrentItem(0, false);
             return;
         }
 
@@ -172,15 +172,15 @@ public class HomeActivity extends BaseActivity implements
 
         switch (item.getItemId()) {
             case R.id.actionFavoritePlayers:
-                mViewPager.setCurrentItem(POSITION_FAVORITE_PLAYERS);
+                mViewPager.setCurrentItem(POSITION_FAVORITE_PLAYERS, false);
                 return true;
 
             case R.id.actionRankings:
-                mViewPager.setCurrentItem(POSITION_RANKINGS);
+                mViewPager.setCurrentItem(POSITION_RANKINGS, false);
                 return true;
 
             case R.id.actionTournaments:
-                mViewPager.setCurrentItem(POSITION_TOURNAMENTS);
+                mViewPager.setCurrentItem(POSITION_TOURNAMENTS, false);
                 return true;
 
             default:

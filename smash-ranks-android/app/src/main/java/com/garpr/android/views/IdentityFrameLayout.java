@@ -5,7 +5,10 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -28,18 +31,18 @@ public abstract class IdentityFrameLayout extends FrameLayout implements
     protected IdentityManager mIdentityManager;
 
 
-    public IdentityFrameLayout(final Context context, final AttributeSet attrs) {
+    public IdentityFrameLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public IdentityFrameLayout(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public IdentityFrameLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public IdentityFrameLayout(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public IdentityFrameLayout(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

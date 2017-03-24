@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Parcelable;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -30,20 +33,21 @@ public class SimplePreferenceView extends FrameLayout {
     TextView mTitle;
 
 
-    public SimplePreferenceView(final Context context, final AttributeSet attrs) {
+    public SimplePreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         super(context, attrs);
         parseAttributes(attrs);
     }
 
-    public SimplePreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public SimplePreferenceView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         parseAttributes(attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SimplePreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public SimplePreferenceView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         parseAttributes(attrs);
     }

@@ -4,6 +4,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
@@ -32,18 +36,18 @@ public class ThemePreferenceView extends SimplePreferenceView implements
     Timber mTimber;
 
 
-    public ThemePreferenceView(final Context context, final AttributeSet attrs) {
+    public ThemePreferenceView(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ThemePreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public ThemePreferenceView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ThemePreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public ThemePreferenceView(@NonNull final Context context, @Nullable final AttributeSet attrs,
+            @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

@@ -4,6 +4,11 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
@@ -20,24 +25,24 @@ public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView imp
         DialogInterface.OnClickListener, FavoritePlayersManager.OnFavoritePlayersChangeListener,
         View.OnClickListener {
 
-    private NumberFormat mNumberFormat;
-
     @Inject
     FavoritePlayersManager mFavoritePlayersManager;
 
 
-    public ClearFavoritePlayersPreferenceView(final Context context, final AttributeSet attrs) {
+    public ClearFavoritePlayersPreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ClearFavoritePlayersPreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr) {
+    public ClearFavoritePlayersPreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ClearFavoritePlayersPreferenceView(final Context context, final AttributeSet attrs,
-            final int defStyleAttr, final int defStyleRes) {
+    public ClearFavoritePlayersPreferenceView(@NonNull final Context context,
+            @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr,
+            @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -61,7 +66,7 @@ public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView imp
     @Override
     public void onClick(final View v) {
         new AlertDialog.Builder(getContext())
-                .setMessage(R.string.are_you_sure_you_want_to_clear_all_your_favorites)
+                .setMessage(R.string.are_you_sure_you_want_to_clear_all_of_your_favorites)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes, this)
                 .show();
@@ -75,14 +80,15 @@ public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView imp
 
     @Override
     public void onFavoritePlayersChanged(final FavoritePlayersManager manager) {
-        refresh();
+        if (ViewCompat.isAttachedToWindow(this)) {
+            refresh();
+        }
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         setOnClickListener(this);
-        mNumberFormat = java.text.NumberFormat.getInstance();
 
         if (!isInEditMode()) {
             App.get().getAppComponent().inject(this);
@@ -106,7 +112,7 @@ public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView imp
         final int size = mFavoritePlayersManager.size();
         setEnabled(size != 0);
         setDescriptionText(getResources().getQuantityString(R.plurals.x_favorites,
-                size, mNumberFormat.format(size)));
+                size, NumberFormat.getInstance().format(size)));
     }
 
 }

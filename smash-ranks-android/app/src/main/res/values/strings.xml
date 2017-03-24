@@ -5,7 +5,7 @@
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="aliases">Aliases</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
-    <string name="are_you_sure_you_want_to_clear_all_your_favorites">Are you sure you want to clear all your favorites?</string>
+    <string name="are_you_sure_you_want_to_clear_all_of_your_favorites">Are you sure you want to clear all of your favorites?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
     <string name="build_info_format">%1$s (%2$d)</string>
@@ -24,6 +24,7 @@
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
+    <string name="error_loading_regions">Error loading regions!</string>
     <string name="error_loading_tournament">Error loading tournament!</string>
     <string name="error_loading_tournaments">Error loading tournaments!</string>
     <string name="every_2_days">Every 2 days</string>
@@ -42,7 +43,7 @@
     <string name="hello_x">Hello %1$s!</string>
     <string name="identity_has_not_been_set">Identity has not been set</string>
     <string name="identity_is_x">Identity is %1$s</string>
-    <string name="identity_saved">Identity saved!</string>
+    <string name="identity_saved_">Identity saved!</string>
     <string name="last_poll">Last poll</string>
     <string name="log_viewer">Log Viewer</string>
     <string name="matches">Matches</string>
@@ -59,6 +60,7 @@
     <string name="no_player_data">No player data</string>
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
+    <string name="no_regions">No regions</string>
     <string name="no_tournaments">No tournaments</string>
     <string name="ok">OK</string>
     <string name="open_source_on_github">Open source on GitHub</string>
@@ -72,6 +74,7 @@
     <string name="rankings_polling_requires_google_play_services">Rankings polling requires Google Play Services in order to function. Click here to try to resolve the issues with your Google Play services installation.</string>
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
+    <string name="region_saved_">Region saved!</string>
     <string name="remove_from_favorites">Remove from favorites</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>
     <string name="save">Save</string>
@@ -81,14 +84,16 @@
     <string name="search_players_">Search players…</string>
     <string name="settings">Settings</string>
     <string name="set_identity">Set Identity</string>
+    <string name="set_region">Set Region</string>
     <string name="set_your_identity">Set your identity</string>
+    <string name="set_your_region">Set your region</string>
     <string name="share">Share</string>
     <string name="share_x">Share %1$s</string>
     <string name="show_all">Show all</string>
     <string name="show_losses">Show losses</string>
     <string name="show_wins">Show wins</string>
-    <string name="swipe_to_refresh_to_check_again">Swipe to refresh to check again</string>
-    <string name="swipe_to_refresh_to_try_again">Swipe to refresh to try again</string>
+    <string name="swipe_to_refresh_to_check_again">Swipe down to refresh to check again</string>
+    <string name="swipe_to_refresh_to_try_again">Swipe down to refresh to try again</string>
     <string name="system">System</string>
     <string name="tag_and_message">%1$s: %2$s</string>
     <string name="theme">Theme</string>
@@ -122,6 +127,7 @@
     <string name="will_rumble_when_rankings_are_updated">Will rumble when rankings are updated</string>
     <string name="yes">Yes</string>
     <string name="you_can_add_a_player_to_your_favorites">You can add a player to your favorites when viewing their profile screen, or by long-pressing on their name in player lists.</string>
+    <string name="youve_selected_a_region_but_havent_saved">You\'ve selected a region but haven\'t saved. Are you sure you still want to close this screen?</string>
     <string name="youve_selected_an_identity_but_havent_saved">You\'ve selected an identity but haven\'t saved. Are you sure you still want to close this screen?</string>
 
 
