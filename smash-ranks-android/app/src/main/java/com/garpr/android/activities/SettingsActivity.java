@@ -88,7 +88,7 @@ public class SettingsActivity extends BaseActivity {
     TextView mGooglePlayServicesError;
 
     @BindView(R.id.themePreferenceView)
-    ThemePreferenceView mTheme;
+    ThemePreferenceView mThemePreferenceView;
 
 
     public static Intent getLaunchIntent(final Context context) {
@@ -208,7 +208,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void refresh() {
-        mTheme.refresh();
+        mThemePreferenceView.refresh();
 
         mIdentityPreferenceView.refresh();
         mClearFavoritePlayersPreferenceView.refresh();
