@@ -126,8 +126,8 @@ public class IdentityManagerImpl implements IdentityManager {
 
     @Override
     public void setIdentity(@Nullable final AbsPlayer player) {
-        mTimber.d(TAG, "Old identity is " + getPlayerString(getIdentity()) + ", new identity is "
-                + getPlayerString(player) + ".");
+        mTimber.d(TAG, "old identity is \"" + getPlayerString(getIdentity()) + "\"" +
+                ", new identity is \"" + getPlayerString(player) + "\"");
 
         mIdentity.set(player);
         notifyListeners();
