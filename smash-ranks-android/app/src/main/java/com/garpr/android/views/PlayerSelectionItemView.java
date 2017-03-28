@@ -23,7 +23,6 @@ public class PlayerSelectionItemView extends LinearLayout implements BaseAdapter
         View.OnClickListener {
 
     private AbsPlayer mContent;
-    private Listeners mListeners;
 
     @BindView(R.id.radioButton)
     RadioButton mRadioButton;
@@ -47,37 +46,17 @@ public class PlayerSelectionItemView extends LinearLayout implements BaseAdapter
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private void attach() {
-        final Activity activity = MiscUtils.optActivity(getContext());
-
-        if (activity instanceof Listeners) {
-            mListeners = (Listeners) activity;
-        } else {
-            mListeners = null;
-        }
-    }
-
     public AbsPlayer getContent() {
         return mContent;
     }
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        attach();
-    }
-
-    @Override
     public void onClick(final View v) {
-        if (mListeners != null) {
-            mListeners.onClick(this);
-        }
-    }
+        final Activity activity = MiscUtils.optActivity(getContext());
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mListeners = null;
+        if (activity instanceof Listeners) {
+            ((Listeners) activity).onClick(this);
+        }
     }
 
     @Override
@@ -85,7 +64,6 @@ public class PlayerSelectionItemView extends LinearLayout implements BaseAdapter
         super.onFinishInflate();
         ButterKnife.bind(this);
         setOnClickListener(this);
-        attach();
     }
 
     @Override
@@ -93,8 +71,13 @@ public class PlayerSelectionItemView extends LinearLayout implements BaseAdapter
         mContent = content;
 
         mName.setText(mContent.getName());
-        mRadioButton.setChecked(mContent.equals(mListeners == null ? null :
-                mListeners.getSelectedPlayer()));
+
+        final Activity activity = MiscUtils.optActivity(getContext());
+        if (activity instanceof Listeners) {
+            mRadioButton.setChecked(mContent.equals(((Listeners) activity).getSelectedPlayer()));
+        } else {
+            mRadioButton.setChecked(false);
+        }
     }
 
 

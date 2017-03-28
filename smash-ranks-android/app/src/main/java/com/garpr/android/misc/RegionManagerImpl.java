@@ -121,7 +121,7 @@ public class RegionManagerImpl implements RegionManager {
 
     @Override
     public void setRegion(@NonNull final String region) {
-        mTimber.d(TAG, "Old region is " + getRegion() + ", new region is " + region + ".");
+        mTimber.d(TAG, "old region is \"" + getRegion() + "\", new region is \"" + region + "\"");
 
         mRegion.set(region);
         notifyListeners();

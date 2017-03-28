@@ -22,7 +22,6 @@ import butterknife.ButterKnife;
 public class RegionSelectionItemView extends LinearLayout implements BaseAdapterView<Region>,
         View.OnClickListener {
 
-    private Listeners mListeners;
     private Region mContent;
 
     @BindView(R.id.radioButton)
@@ -50,37 +49,17 @@ public class RegionSelectionItemView extends LinearLayout implements BaseAdapter
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private void attach() {
-        final Activity activity = MiscUtils.optActivity(getContext());
-
-        if (activity instanceof Listeners) {
-            mListeners = (Listeners) activity;
-        } else {
-            mListeners = null;
-        }
-    }
-
     public Region getContent() {
         return mContent;
     }
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        attach();
-    }
-
-    @Override
     public void onClick(final View v) {
-        if (mListeners != null) {
-            mListeners.onClick(this);
-        }
-    }
+        final Activity activity = MiscUtils.optActivity(getContext());
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mListeners = null;
+        if (activity instanceof Listeners) {
+            ((Listeners) activity).onClick(this);
+        }
     }
 
     @Override
@@ -88,7 +67,6 @@ public class RegionSelectionItemView extends LinearLayout implements BaseAdapter
         super.onFinishInflate();
         ButterKnife.bind(this);
         setOnClickListener(this);
-        attach();
     }
 
     @Override
@@ -97,8 +75,14 @@ public class RegionSelectionItemView extends LinearLayout implements BaseAdapter
 
         mDisplayName.setText(mContent.getDisplayName());
         mId.setText(mContent.getId());
-        mRadioButton.setChecked(mContent.getId().equalsIgnoreCase(mListeners == null ? null :
-                mListeners.getSelectedRegion()));
+
+        final Activity activity = MiscUtils.optActivity(getContext());
+        if (activity instanceof Listeners) {
+            mRadioButton.setChecked(mContent.getId().equalsIgnoreCase(
+                    ((Listeners) activity).getSelectedRegion()));
+        } else {
+            mRadioButton.setChecked(false);
+        }
     }
 
 

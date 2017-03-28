@@ -17,11 +17,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
+import com.garpr.android.misc.Refreshable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SimplePreferenceView extends FrameLayout {
+public class SimplePreferenceView extends FrameLayout implements Refreshable {
 
     private CharSequence mDescriptionText;
     private CharSequence mTitleText;
@@ -82,6 +83,7 @@ public class SimplePreferenceView extends FrameLayout {
         ta.recycle();
     }
 
+    @Override
     public void refresh() {
         // intentionally empty, children can override
     }

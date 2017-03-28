@@ -23,7 +23,7 @@ import com.garpr.android.preferences.Preference;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.CheckablePreferenceView;
-import com.garpr.android.views.ClearFavoritePlayersPreferenceView;
+import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
@@ -69,8 +69,8 @@ public class SettingsActivity extends BaseActivity {
     @BindView(R.id.cpvUseRankingsPolling)
     CheckablePreferenceView mUseRankingsPolling;
 
-    @BindView(R.id.clearFavoritePlayersPreferenceView)
-    ClearFavoritePlayersPreferenceView mClearFavoritePlayersPreferenceView;
+    @BindView(R.id.deleteFavoritePlayersPreferenceView)
+    DeleteFavoritePlayersPreferenceView mDeleteFavoritePlayersPreferenceView;
 
     @BindView(R.id.identityPreferenceView)
     IdentityPreferenceView mIdentityPreferenceView;
@@ -209,9 +209,8 @@ public class SettingsActivity extends BaseActivity {
 
     private void refresh() {
         mThemePreferenceView.refresh();
-
         mIdentityPreferenceView.refresh();
-        mClearFavoritePlayersPreferenceView.refresh();
+        mDeleteFavoritePlayersPreferenceView.refresh();
 
         mRegionPreferenceView.refresh();
 

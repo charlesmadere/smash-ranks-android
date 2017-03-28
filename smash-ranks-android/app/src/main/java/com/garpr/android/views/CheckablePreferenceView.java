@@ -19,13 +19,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.garpr.android.R;
+import com.garpr.android.misc.Refreshable;
 import com.garpr.android.preferences.Preference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CheckablePreferenceView extends FrameLayout implements
-        Preference.OnPreferenceChangeListener<Boolean>, View.OnClickListener {
+        Preference.OnPreferenceChangeListener<Boolean>, Refreshable, View.OnClickListener {
 
     private static final int CHECKABLE_TYPE_CHECKBOX = 0;
     private static final int CHECKABLE_TYPE_SWITCH_COMPAT = 1;
@@ -151,6 +152,7 @@ public class CheckablePreferenceView extends FrameLayout implements
         ta.recycle();
     }
 
+    @Override
     public void refresh() {
         if (mPreference == null) {
             mTitle.setText("");

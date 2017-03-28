@@ -31,15 +31,13 @@
                     <com.garpr.android.views.IdentityPreferenceView
                         android:id="@+id/identityPreferenceView"
                         style="@style/PreferenceView" />
-                    <com.garpr.android.views.ClearFavoritePlayersPreferenceView
-                        android:id="@+id/clearFavoritePlayersPreferenceView"
+                    <com.garpr.android.views.DeleteFavoritePlayersPreferenceView
+                        android:id="@+id/deleteFavoritePlayersPreferenceView"
                         style="@style/PreferenceView" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
                 android:layout_marginBottom="@dimen/root_padding"
-                android:visibility="gone"
-                tools:visibility="visible"
                 style="@style/SettingsCard">
                 <LinearLayout
                     style="@style/SettingsCardContainer">
