@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.garpr.android.activities.HomeActivity;
+import com.garpr.android.misc.Refreshable;
 import com.garpr.android.misc.Searchable;
 import com.garpr.android.views.FavoritePlayersLayout;
 import com.garpr.android.views.RankingsLayout;
@@ -15,7 +16,7 @@ import com.garpr.android.views.TournamentsLayout;
 
 import java.lang.ref.WeakReference;
 
-public class HomePagerAdapter extends PagerAdapter implements Searchable {
+public class HomePagerAdapter extends PagerAdapter implements Refreshable, Searchable {
 
     private static final int POSITION_FAVORITE_PLAYERS = HomeActivity.POSITION_FAVORITE_PLAYERS;
     private static final int POSITION_RANKINGS = HomeActivity.POSITION_RANKINGS;
@@ -69,6 +70,21 @@ public class HomePagerAdapter extends PagerAdapter implements Searchable {
     @Override
     public boolean isViewFromObject(final View view, final Object object) {
         return view == object;
+    }
+
+    @Override
+    public void refresh() {
+        for (int i = 0; i < mPages.size(); ++i) {
+            final WeakReference<SearchableFrameLayout> reference = mPages.get(i);
+
+            if (reference != null) {
+                final SearchableFrameLayout view = reference.get();
+
+                if (view instanceof Refreshable && view.isAlive()) {
+                    ((Refreshable) view).refresh();
+                }
+            }
+        }
     }
 
     @Override
