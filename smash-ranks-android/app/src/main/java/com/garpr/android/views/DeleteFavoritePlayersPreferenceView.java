@@ -21,7 +21,7 @@ import java.text.NumberFormat;
 
 import javax.inject.Inject;
 
-public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView implements
+public class DeleteFavoritePlayersPreferenceView extends SimplePreferenceView implements
         DialogInterface.OnClickListener, FavoritePlayersManager.OnFavoritePlayersChangeListener,
         View.OnClickListener {
 
@@ -29,18 +29,18 @@ public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView imp
     FavoritePlayersManager mFavoritePlayersManager;
 
 
-    public ClearFavoritePlayersPreferenceView(@NonNull final Context context,
+    public DeleteFavoritePlayersPreferenceView(@NonNull final Context context,
             @Nullable final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ClearFavoritePlayersPreferenceView(@NonNull final Context context,
+    public DeleteFavoritePlayersPreferenceView(@NonNull final Context context,
             @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ClearFavoritePlayersPreferenceView(@NonNull final Context context,
+    public DeleteFavoritePlayersPreferenceView(@NonNull final Context context,
             @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr,
             @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -66,7 +66,7 @@ public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView imp
     @Override
     public void onClick(final View v) {
         new AlertDialog.Builder(getContext())
-                .setMessage(R.string.are_you_sure_you_want_to_clear_all_of_your_favorites)
+                .setMessage(R.string.are_you_sure_you_want_to_delete_all_of_your_favorite_players)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes, this)
                 .show();
@@ -96,7 +96,7 @@ public class ClearFavoritePlayersPreferenceView extends SimplePreferenceView imp
         }
 
         setOnClickListener(this);
-        setTitleText(R.string.clear_favorite_players);
+        setTitleText(R.string.delete_favorite_players);
 
         if (isInEditMode()) {
             return;
