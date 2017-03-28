@@ -63,8 +63,8 @@ public class RankingsPollingSyncManagerImpl implements RankingsPollingSyncManage
             builder.setRequiredNetwork(Task.NETWORK_STATE_CONNECTED);
         }
 
-        final PeriodicTask periodicTask = builder.build();
         final GcmNetworkManager gcmNetworkManager = mGoogleApiWrapper.getGcmNetworkManager();
+        final PeriodicTask periodicTask = builder.build();
         gcmNetworkManager.schedule(periodicTask);
 
         mTimber.d(TAG, "Sync has been enabled");
