@@ -22,6 +22,7 @@ import com.garpr.android.R;
 import com.garpr.android.adapters.RankingsAdapter;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.MiscUtils;
+import com.garpr.android.misc.Refreshable;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.Ranking;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class RankingsLayout extends SearchableFrameLayout implements ApiListener<RankingsBundle>,
-        SwipeRefreshLayout.OnRefreshListener {
+        Refreshable, SwipeRefreshLayout.OnRefreshListener {
 
     private RankingsAdapter mAdapter;
     private RankingsBundle mRankingsBundle;
@@ -136,6 +137,11 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
 
     @Override
     public void onRefresh() {
+        fetchRankingsBundle();
+    }
+
+    @Override
+    public void refresh() {
         fetchRankingsBundle();
     }
 

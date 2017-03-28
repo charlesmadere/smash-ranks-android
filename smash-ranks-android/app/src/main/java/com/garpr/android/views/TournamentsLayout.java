@@ -20,6 +20,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.TournamentsAdapter;
 import com.garpr.android.misc.ListUtils;
+import com.garpr.android.misc.Refreshable;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsTournament;
@@ -35,7 +36,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class TournamentsLayout extends SearchableFrameLayout implements
-        ApiListener<TournamentsBundle>, SwipeRefreshLayout.OnRefreshListener {
+        ApiListener<TournamentsBundle>, Refreshable, SwipeRefreshLayout.OnRefreshListener {
 
     private TournamentsAdapter mAdapter;
     private TournamentsBundle mTournamentsBundle;
@@ -116,6 +117,11 @@ public class TournamentsLayout extends SearchableFrameLayout implements
 
     @Override
     public void onRefresh() {
+        fetchTournamentsBundle();
+    }
+
+    @Override
+    public void refresh() {
         fetchTournamentsBundle();
     }
 
