@@ -18,6 +18,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.HomePagerAdapter;
 import com.garpr.android.misc.IdentityManager;
+import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
@@ -33,7 +34,8 @@ import butterknife.OnPageChange;
 public class HomeActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
         IdentityManager.OnIdentityChangeListener, MenuItemCompat.OnActionExpandListener,
-        RankingsLayout.Listener, SearchQueryHandle, SearchView.OnQueryTextListener {
+        RankingsLayout.Listener, RegionManager.OnRegionChangeListener, SearchQueryHandle,
+        SearchView.OnQueryTextListener {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
@@ -119,6 +121,7 @@ public class HomeActivity extends BaseActivity implements
         setInitialPosition(savedInstanceState);
 
         mIdentityManager.addListener(this);
+        mRegionManager.addListener(this);
     }
 
     @Override
@@ -146,6 +149,7 @@ public class HomeActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mIdentityManager.removeListener(this);
+        mRegionManager.removeListener(this);
     }
 
     @Override
@@ -237,6 +241,20 @@ public class HomeActivity extends BaseActivity implements
         }
 
         supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    public void onRegionChange(final RegionManager regionManager) {
+        if (mAdapter == null) {
+            return;
+        }
+
+        if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
+            MenuItemCompat.collapseActionView(mSearchMenuItem);
+        }
+
+        MiscUtils.closeKeyboard(this);
+        mAdapter.refresh();
     }
 
     @Override
