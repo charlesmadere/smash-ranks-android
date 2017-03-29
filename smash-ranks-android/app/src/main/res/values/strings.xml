@@ -51,6 +51,7 @@
     <string name="must_be_charging">Must be charging</string>
     <string name="must_be_on_wifi">Must be on wifi</string>
     <string name="night">Night</string>
+    <string name="not_gar_pr">Not GAR PR</string>
     <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
     <string name="no_head_to_head_data">No head to head data</string>

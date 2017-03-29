@@ -53,9 +53,9 @@ public class App extends Application {
 
     private void initializeAppComponent() {
         mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this, Constants.GAR_PR_API_URL, Constants.GAR_PR_WEB_URL,
-                        Constants.DEFAULT_REGION))
+                .appModule(new AppModule(this, Constants.DEFAULT_REGION))
                 .build();
+
         mAppComponent.inject(this);
     }
 

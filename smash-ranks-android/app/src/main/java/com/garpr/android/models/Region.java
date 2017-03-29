@@ -2,19 +2,28 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.garpr.android.misc.ParcelableUtils;
 import com.google.gson.annotations.SerializedName;
 
 public class Region implements Parcelable {
 
+    @SerializedName("endpoint")
+    private Endpoint mEndpoint;
+
+    @Nullable
     @SerializedName("ranking_activity_day_limit")
-    private int mRankingActivityDayLimit;
+    private Integer mRankingActivityDayLimit;
 
+    @Nullable
     @SerializedName("ranking_num_tourneys_attended")
-    private int mRankingNumTourneysAttended;
+    private Integer mRankingNumTourneysAttended;
 
+    @Nullable
     @SerializedName("tournament_qualified_day_limit")
-    private int mTournamentQualifiedDayLimit;
+    private Integer mTournamentQualifiedDayLimit;
 
     @SerializedName("display_name")
     private String mDisplayName;
@@ -22,6 +31,17 @@ public class Region implements Parcelable {
     @SerializedName("id")
     private String mId;
 
+
+    public Region() {
+
+    }
+
+    public Region(@NonNull final String displayName, @NonNull final String id,
+            @NonNull final Endpoint endpoint) {
+        mDisplayName = displayName;
+        mId = id;
+        mEndpoint = endpoint;
+    }
 
     @Override
     public boolean equals(final Object obj) {
@@ -32,25 +52,36 @@ public class Region implements Parcelable {
         return mDisplayName;
     }
 
+    public Endpoint getEndpoint() {
+        return mEndpoint;
+    }
+
     public String getId() {
         return mId;
     }
 
-    public int getRankingActivityDayLimit() {
+    @Nullable
+    public Integer getRankingActivityDayLimit() {
         return mRankingActivityDayLimit;
     }
 
-    public int getRankingNumTourneysAttended() {
+    @Nullable
+    public Integer getRankingNumTourneysAttended() {
         return mRankingNumTourneysAttended;
     }
 
-    public int getTournamentQualifiedDayLimit() {
+    @Nullable
+    public Integer getTournamentQualifiedDayLimit() {
         return mTournamentQualifiedDayLimit;
     }
 
     @Override
     public int hashCode() {
         return mId.hashCode();
+    }
+
+    public void setEndpoint(@NonNull final Endpoint endpoint) {
+        mEndpoint = endpoint;
     }
 
     @Override
@@ -65,9 +96,10 @@ public class Region implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
-        dest.writeInt(mRankingActivityDayLimit);
-        dest.writeInt(mRankingNumTourneysAttended);
-        dest.writeInt(mTournamentQualifiedDayLimit);
+        dest.writeParcelable(mEndpoint, flags);
+        ParcelableUtils.writeInteger(mRankingActivityDayLimit, dest);
+        ParcelableUtils.writeInteger(mRankingNumTourneysAttended, dest);
+        ParcelableUtils.writeInteger(mTournamentQualifiedDayLimit, dest);
         dest.writeString(mDisplayName);
         dest.writeString(mId);
     }
@@ -76,9 +108,10 @@ public class Region implements Parcelable {
         @Override
         public Region createFromParcel(final Parcel source) {
             final Region r = new Region();
-            r.mRankingActivityDayLimit = source.readInt();
-            r.mRankingNumTourneysAttended = source.readInt();
-            r.mTournamentQualifiedDayLimit = source.readInt();
+            r.mEndpoint = source.readParcelable(Endpoint.class.getClassLoader());
+            r.mRankingActivityDayLimit = ParcelableUtils.readInteger(source);
+            r.mRankingNumTourneysAttended = ParcelableUtils.readInteger(source);
+            r.mTournamentQualifiedDayLimit = ParcelableUtils.readInteger(source);
             r.mDisplayName = source.readString();
             r.mId = source.readString();
             return r;

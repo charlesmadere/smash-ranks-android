@@ -30,6 +30,7 @@ import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Ratings;
+import com.garpr.android.models.Region;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
@@ -61,16 +62,11 @@ public class AppModule {
     private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
 
     private final Application mApplication;
-    private final String mDefaultRegion;
-    private final String mGarPrApiUrl;
-    private final String mGarPrWebUrl;
+    private final Region mDefaultRegion;
 
 
-    public AppModule(@NonNull final Application application, @NonNull final String garPrApiUrl,
-            @NonNull final String garPrWebUrl, @NonNull final String defaultRegion) {
+    public AppModule(@NonNull final Application application, @NonNull final Region defaultRegion) {
         mApplication = application;
-        mGarPrApiUrl = garPrApiUrl;
-        mGarPrWebUrl = garPrWebUrl;
         mDefaultRegion = defaultRegion;
     }
 
