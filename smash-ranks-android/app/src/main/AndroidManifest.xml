@@ -28,6 +28,10 @@
                 <data android:host="garpr.com" android:scheme="https" />
                 <data android:host="www.garpr.com" android:scheme="http" />
                 <data android:host="www.garpr.com" android:scheme="https" />
+                <data android:host="notgarpr.com" android:scheme="http" />
+                <data android:host="notgarpr.com" android:scheme="https" />
+                <data android:host="www.notgarpr.com" android:scheme="http" />
+                <data android:host="www.notgarpr.com" android:scheme="https" />
             </intent-filter>
         </activity>
 

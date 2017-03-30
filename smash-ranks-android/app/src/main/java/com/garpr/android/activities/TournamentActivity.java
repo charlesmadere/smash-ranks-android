@@ -24,6 +24,7 @@ import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.Match;
+import com.garpr.android.models.Region;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
@@ -91,7 +92,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String tournamentId,
             @Nullable final String tournamentName, @Nullable final SimpleDate tournamentDate,
-            @Nullable final String region) {
+            @Nullable final Region region) {
         final Intent intent = new Intent(context, TournamentActivity.class)
                 .putExtra(EXTRA_TOURNAMENT_ID, tournamentId);
 
@@ -103,7 +104,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
             intent.putExtra(EXTRA_TOURNAMENT_DATE, tournamentDate);
         }
 
-        if (!TextUtils.isEmpty(region)) {
+        if (region != null) {
             intent.putExtra(EXTRA_REGION, region);
         }
 

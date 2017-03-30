@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.garpr.android.R;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.Region;
 
 public class ShareUtilsImpl implements ShareUtils {
 
@@ -21,14 +22,12 @@ public class ShareUtilsImpl implements ShareUtils {
     private static final String PLAIN_TEXT = "text/plain";
 
     private final RegionManager mRegionManager;
-    private final String mBaseWebUrl;
     private final Timber mTimber;
 
 
     public ShareUtilsImpl(@NonNull final RegionManager regionManager,
-            @NonNull final String baseWebUrl, @NonNull final Timber timber) {
+            @NonNull final Timber timber) {
         mRegionManager = regionManager;
-        mBaseWebUrl = baseWebUrl;
         mTimber = timber;
     }
 
@@ -51,11 +50,11 @@ public class ShareUtilsImpl implements ShareUtils {
 
     @Override
     public void sharePlayer(@NonNull final Activity activity, @NonNull final AbsPlayer player) {
-        final String region = mRegionManager.getRegion(activity);
+        final Region region = mRegionManager.getRegion(activity);
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_x, player.getName()))
-                .setText(mBaseWebUrl + region + "/players/" + player.getId())
+                .setText(region.getEndpoint().getPlayerWebPath(region.getId(), player.getId()))
                 .setType(PLAIN_TEXT)
                 .startChooser();
     }
@@ -63,11 +62,11 @@ public class ShareUtilsImpl implements ShareUtils {
     @Override
     public void shareTournament(@NonNull final Activity activity,
             @NonNull final AbsTournament tournament) {
-        final String region = mRegionManager.getRegion(activity);
+        final Region region = mRegionManager.getRegion(activity);
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_x, tournament.getName()))
-                .setText(mBaseWebUrl + region + "/tournaments/" + tournament.getId())
+                .setText(region.getEndpoint().getTournamentWebPath(region.getId(), tournament.getId()))
                 .setType(PLAIN_TEXT)
                 .startChooser();
     }

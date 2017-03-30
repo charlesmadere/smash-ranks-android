@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,6 +14,7 @@ import com.garpr.android.R;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.models.PlayersBundle;
+import com.garpr.android.models.Region;
 import com.garpr.android.views.PlayersLayout;
 
 import javax.inject.Inject;
@@ -39,10 +39,10 @@ public class PlayersActivity extends BaseActivity implements MenuItemCompat.OnAc
         return getLaunchIntent(context, null);
     }
 
-    public static Intent getLaunchIntent(final Context context, @Nullable final String region) {
+    public static Intent getLaunchIntent(final Context context, @Nullable final Region region) {
         final Intent intent = new Intent(context, PlayersActivity.class);
 
-        if (!TextUtils.isEmpty(region)) {
+        if (region != null) {
             intent.putExtra(EXTRA_REGION, region);
         }
 
@@ -65,7 +65,7 @@ public class PlayersActivity extends BaseActivity implements MenuItemCompat.OnAc
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_players);
-        setSubtitle(mRegionManager.getRegion(this));
+        setSubtitle(mRegionManager.getRegion(this).getDisplayName());
     }
 
     @Override

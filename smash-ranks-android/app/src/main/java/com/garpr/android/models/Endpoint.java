@@ -1,5 +1,6 @@
 package com.garpr.android.models;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -34,7 +35,12 @@ public enum Endpoint implements Parcelable {
 
     @NonNull
     public String getApiPath() {
-        return mPath + ":" + mPort + "/";
+        return getBasePath() + ":" + mPort + "/";
+    }
+
+    @NonNull
+    public String getBasePath() {
+        return mPath;
     }
 
     @StringRes
@@ -43,8 +49,114 @@ public enum Endpoint implements Parcelable {
     }
 
     @NonNull
+    public String getHeadToHeadApiPath(@NonNull final String regionId,
+            @NonNull final String playerId, @NonNull final String opponentId) {
+        return Uri.parse(getMatchesApiPath(regionId, playerId))
+                .buildUpon()
+                .appendQueryParameter("opponent", opponentId)
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getMatchesApiPath(@NonNull final String regionId, @NonNull final String playerId) {
+        return Uri.parse(getApiPath())
+                .buildUpon()
+                .appendPath(regionId)
+                .appendPath("matches")
+                .appendPath(playerId)
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getPlayerApiPath(@NonNull final String regionId, @NonNull final String playerId) {
+        return Uri.parse(getApiPath())
+                .buildUpon()
+                .appendPath(regionId)
+                .appendPath("players")
+                .appendPath(playerId)
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getPlayersApiPath(@NonNull final String regionId) {
+        return Uri.parse(getApiPath())
+                .buildUpon()
+                .appendPath(regionId)
+                .appendPath("players")
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getPlayerWebPath(@NonNull final String regionId, @NonNull final String playerId) {
+        return Uri.parse(getWebPath())
+                .buildUpon()
+                .appendPath(regionId)
+                .appendPath("players")
+                .appendPath(playerId)
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getRankingsApiPath(@NonNull final String regionId) {
+        return Uri.parse(getApiPath())
+                .buildUpon()
+                .appendPath(regionId)
+                .appendPath("rankings")
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getRegionsApiPath() {
+        return Uri.parse(getApiPath())
+                .buildUpon()
+                .appendPath("regions")
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getTournamentApiPath(@NonNull final String regionId,
+            @NonNull final String tournamentId) {
+        return Uri.parse(getApiPath())
+                .buildUpon()
+                .appendPath(regionId)
+                .appendPath("tournaments")
+                .appendPath(tournamentId)
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getTournamentsApiPath(@NonNull final String regionId) {
+        return Uri.parse(getApiPath())
+                .buildUpon()
+                .appendPath(regionId)
+                .appendPath("tournaments")
+                .build()
+                .toString();
+    }
+
+    @NonNull
+    public String getTournamentWebPath(@NonNull final String regionId,
+            @NonNull final String tournamentId) {
+        return Uri.parse(getWebPath())
+                .buildUpon()
+                .appendPath(regionId)
+                .appendPath("tournaments")
+                .appendPath(tournamentId)
+                .build()
+                .toString();
+    }
+
+    @NonNull
     public String getWebPath() {
-        return mPath + "/";
+        return getBasePath() + "/#/";
     }
 
     @Override

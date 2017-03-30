@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import com.garpr.android.misc.ParcelableUtils;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
+
 public class Region implements Parcelable {
 
     @SerializedName("endpoint")
@@ -53,6 +55,10 @@ public class Region implements Parcelable {
     }
 
     public Endpoint getEndpoint() {
+        if (mEndpoint == null) {
+            throw new IllegalStateException("mEndpoint is null");
+        }
+
         return mEndpoint;
     }
 
@@ -86,7 +92,7 @@ public class Region implements Parcelable {
 
     @Override
     public String toString() {
-        return getDisplayName();
+        return getId();
     }
 
     @Override
@@ -120,6 +126,13 @@ public class Region implements Parcelable {
         @Override
         public Region[] newArray(final int size) {
             return new Region[size];
+        }
+    };
+
+    public static final Comparator<Region> ALPHABETICAL_ORDER = new Comparator<Region>() {
+        @Override
+        public int compare(final Region o1, final Region o2) {
+            return o1.getDisplayName().compareToIgnoreCase(o2.getDisplayName());
         }
     };
 

@@ -93,6 +93,11 @@ public class App extends Application {
         }
 
         lastVersionPref.set(BuildConfig.VERSION_CODE);
+
+        if (lastVersion == null || lastVersion < 1011) {
+            // this preference used to be a String but was changed to a Region
+            mGeneralPreferenceStore.getCurrentRegion().delete();
+        }
     }
 
 }

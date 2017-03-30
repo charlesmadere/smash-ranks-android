@@ -56,7 +56,7 @@ public final class ListUtils {
     public static ArrayList<Object> createPlayerMatchesList(@NonNull final Context context,
             @NonNull final RegionManager regionManager, @NonNull final FullPlayer fullPlayer,
             @Nullable final MatchesBundle bundle) {
-        final String region = regionManager.getRegion(context);
+        final String region = regionManager.getRegion(context).getId();
 
         // noinspection ConstantConditions
         final Rating rating = fullPlayer.hasRatings() ? fullPlayer.getRatings().getRegion(region)

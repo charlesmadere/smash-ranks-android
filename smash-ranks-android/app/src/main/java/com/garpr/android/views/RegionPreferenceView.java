@@ -96,7 +96,7 @@ public class RegionPreferenceView extends SimplePreferenceView implements
     public void refresh() {
         super.refresh();
 
-        setDescriptionText(mRegionManager.getRegion());
+        setDescriptionText(mRegionManager.getRegion().getDisplayName());
     }
 
 }

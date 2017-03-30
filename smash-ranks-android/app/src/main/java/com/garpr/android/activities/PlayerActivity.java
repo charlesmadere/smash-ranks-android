@@ -30,6 +30,7 @@ import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
 import com.garpr.android.models.Ranking;
+import com.garpr.android.models.Region;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
@@ -107,7 +108,7 @@ public class PlayerActivity extends BaseActivity implements
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String playerId,
-            @Nullable final String playerName, @Nullable final String region) {
+            @Nullable final String playerName, @Nullable final Region region) {
         final Intent intent = new Intent(context, PlayerActivity.class)
                 .putExtra(EXTRA_PLAYER_ID, playerId);
 
@@ -115,7 +116,7 @@ public class PlayerActivity extends BaseActivity implements
             intent.putExtra(EXTRA_PLAYER_NAME, playerName);
         }
 
-        if (!TextUtils.isEmpty(region)) {
+        if (region != null) {
             intent.putExtra(EXTRA_REGION, region);
         }
 
@@ -136,7 +137,7 @@ public class PlayerActivity extends BaseActivity implements
         mMatchesBundle = null;
         mResult = null;
         mRefreshLayout.setRefreshing(true);
-        mDataListener = new DataListener(mRegionManager.getRegion(this));
+        mDataListener = new DataListener();
         mDataListener.fetch();
     }
 
@@ -423,10 +424,10 @@ public class PlayerActivity extends BaseActivity implements
         private boolean mMatchesBundleFound;
         private FullPlayer mFullPlayer;
         private MatchesBundle mMatchesBundle;
-        private final String mRegion;
+        private final Region mRegion;
 
-        private DataListener(@NonNull final String region) {
-            mRegion = region;
+        private DataListener() {
+            mRegion = mRegionManager.getRegion(PlayerActivity.this);
         }
 
         private void fetch() {

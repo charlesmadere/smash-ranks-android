@@ -85,7 +85,7 @@ public class AppModule {
     @Provides
     @Singleton
     DeepLinkUtils providesDeepLinkUtils(final RegionManager regionManager, final Timber timber) {
-        return new DeepLinkUtilsImpl(regionManager, mGarPrWebUrl, timber);
+        return new DeepLinkUtilsImpl(regionManager, timber);
     }
 
     @Provides
@@ -202,7 +202,6 @@ public class AppModule {
     Retrofit providesRetrofit(final Gson gson) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(mGarPrApiUrl)
                 .build();
     }
 
@@ -217,7 +216,7 @@ public class AppModule {
     @Provides
     @Singleton
     ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
-        return new ShareUtilsImpl(regionManager, mGarPrWebUrl, timber);
+        return new ShareUtilsImpl(regionManager, timber);
     }
 
     @Provides

@@ -78,8 +78,7 @@ public class RegionSelectionItemView extends LinearLayout implements BaseAdapter
 
         final Activity activity = MiscUtils.optActivity(getContext());
         if (activity instanceof Listeners) {
-            mRadioButton.setChecked(mContent.getId().equalsIgnoreCase(
-                    ((Listeners) activity).getSelectedRegion()));
+            mRadioButton.setChecked(mContent.equals(((Listeners) activity).getSelectedRegion()));
         } else {
             mRadioButton.setChecked(false);
         }
@@ -88,7 +87,7 @@ public class RegionSelectionItemView extends LinearLayout implements BaseAdapter
 
     public interface Listeners {
         @Nullable
-        String getSelectedRegion();
+        Region getSelectedRegion();
 
         void onClick(final RegionSelectionItemView v);
     }

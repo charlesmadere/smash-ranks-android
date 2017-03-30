@@ -20,6 +20,7 @@
     <string name="delete_identity">Delete identity</string>
     <string name="easily_find_yourself_throughout_the_app">Easily find yourself throughout the app</string>
     <string name="x_em_dash_y">%1$s &#8211; %2$s</string>
+    <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
