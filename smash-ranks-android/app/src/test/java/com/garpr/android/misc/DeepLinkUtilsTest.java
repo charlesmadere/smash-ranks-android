@@ -14,6 +14,7 @@ import org.robolectric.annotation.Config;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -26,7 +27,11 @@ public class DeepLinkUtilsTest extends BaseTest {
 
     private static final String PLAYER_SFAT = "https://www.garpr.com/#/norcal/players/588852e8d2994e3bbfa52d88";
 
+    private static final String PLAYERS_GEORGIA = "https://www.notgarpr.com/#/georgia/players";
+
     private static final String TOURNAMENT_NORCAL_VALIDATED_2 = "https://www.garpr.com/#/norcal/tournaments/58a00514d2994e4d0f2e25a6";
+
+    private static final String TOURNAMENTS_NYC = "https://www.notgarpr.com/#/nyc/tournaments";
 
     @Inject
     Application mApplication;
@@ -63,11 +68,21 @@ public class DeepLinkUtilsTest extends BaseTest {
     }
 
     @Test
+    public void testGoogleMtvRankingsIsValidUri() throws Exception {
+        assertTrue(mDeepLinkUtils.isValidUri(GOOGLEMTV_RANKINGS));
+    }
+
+    @Test
     public void testNorcalPlayersBuildIntentStack() throws Exception {
         // TODO
 //        final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(mApplication, NORCAL_PLAYERS);
 //        assertNotNull(intentStack);
 //        assertEquals(intentStack.length, 2);
+    }
+
+    @Test
+    public void testNorcalPlayersIsValidUri() throws Exception {
+        assertTrue(mDeepLinkUtils.isValidUri(NORCAL_PLAYERS));
     }
 
     @Test
@@ -79,6 +94,11 @@ public class DeepLinkUtilsTest extends BaseTest {
     }
 
     @Test
+    public void testNorcalRankingsIsValidUri() throws Exception {
+        assertTrue(mDeepLinkUtils.isValidUri(NORCAL_RANKINGS));
+    }
+
+    @Test
     public void testNorcalValidated2BuildIntentStack() throws Exception {
         // TODO
 //        final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(mApplication,
@@ -86,6 +106,11 @@ public class DeepLinkUtilsTest extends BaseTest {
 //
 //        assertNotNull(intentStack);
 //        assertEquals(intentStack.length, 2);
+    }
+
+    @Test
+    public void testNorcalValidated2IsValidUri() throws Exception {
+        assertTrue(mDeepLinkUtils.isValidUri(TOURNAMENT_NORCAL_VALIDATED_2));
     }
 
     @Test
@@ -115,11 +140,26 @@ public class DeepLinkUtilsTest extends BaseTest {
     }
 
     @Test
+    public void testPlayersGeorgiaIsValidUri() throws Exception {
+        assertTrue(mDeepLinkUtils.isValidUri(PLAYERS_GEORGIA));
+    }
+
+    @Test
     public void testSfatBuildIntentStack() throws Exception {
         // TODO
 //        final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYER_SFAT);
 //        assertNotNull(intentStack);
 //        assertEquals(intentStack.length, 3);
+    }
+
+    @Test
+    public void testSfatIsValidUri() throws Exception {
+        assertTrue(mDeepLinkUtils.isValidUri(PLAYER_SFAT));
+    }
+
+    @Test
+    public void testTournamentsNycIsValidUri() throws Exception {
+        assertTrue(mDeepLinkUtils.isValidUri(TOURNAMENTS_NYC));
     }
 
     @Test
