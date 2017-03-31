@@ -3,6 +3,7 @@ package com.garpr.android.dagger;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
@@ -13,15 +14,14 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class TestAppModule extends AppModule {
+public class TestAppModule extends BaseAppModule {
 
-    public TestAppModule(@NonNull final Application application, @NonNull final Region defaultRegion) {
+    public TestAppModule(@NonNull final Application application,
+            @NonNull final Region defaultRegion) {
         super(application, defaultRegion);
     }
 
-    /*
     @Provides
-    @Override
     @Singleton
     CrashlyticsWrapper providesCrashlyticsWrapper() {
         return new CrashlyticsWrapper() {
@@ -56,7 +56,6 @@ public class TestAppModule extends AppModule {
             }
         };
     }
-    */
 
     @Provides
     @Singleton
