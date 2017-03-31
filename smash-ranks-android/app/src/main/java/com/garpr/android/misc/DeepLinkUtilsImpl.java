@@ -1,6 +1,5 @@
 package com.garpr.android.misc;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,8 +10,11 @@ import android.text.TextUtils;
 import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.activities.PlayersActivity;
+import com.garpr.android.activities.RankingsActivity;
 import com.garpr.android.activities.TournamentActivity;
+import com.garpr.android.activities.TournamentsActivity;
 import com.garpr.android.models.Endpoint;
+import com.garpr.android.models.Region;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,50 +62,35 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
 
     @Nullable
     @Override
-    public Details buildIntentStack(@NonNull final Activity activity) {
-        return buildIntentStack(activity, activity.getIntent());
-    }
-
-    @Nullable
-    @Override
-    public Details buildIntentStack(@NonNull final Context context,
-            @Nullable final Intent intent) {
+    public Intent[] buildIntentStack(@NonNull final Context context,
+            @Nullable final Intent intent, @NonNull final Region region) {
         if (intent == null) {
             mTimber.d(TAG, "Can't deep link, Intent is null");
             return null;
         } else {
-            return buildIntentStack(context, intent.getData());
+            return buildIntentStack(context, intent.getData(), region);
         }
     }
 
     @Nullable
     @Override
-    public Details buildIntentStack(@NonNull final Context context, @Nullable final String uri) {
+    public Intent[] buildIntentStack(@NonNull final Context context, @Nullable final String uri,
+            @NonNull final Region region) {
         if (TextUtils.isEmpty(uri) || TextUtils.getTrimmedLength(uri) == 0) {
             mTimber.d(TAG, "Can't deep link, uri is null / empty / whitespace");
             return null;
         }
 
-        mTimber.d(TAG, "Attempting to deep link to \"" + uri + "\", current region is \"" +
-                mRegionManager.getRegion() + "\"");
+        mTimber.d(TAG, "Attempting to deep link to \"" + uri + "\"");
 
-        String path = null;
-        boolean validUri = false;
+        final Endpoint endpoint = getEndpoint(uri);
 
-        for (final Endpoint endpoint : Endpoint.values()) {
-            final String basePath = endpoint.getBasePath();
-
-            if (uri.startsWith(basePath)) {
-                path = uri.substring(basePath.length(), uri.length());
-                validUri = true;
-                break;
-            }
-        }
-
-        if (!validUri) {
+        if (endpoint == null) {
             mTimber.e(TAG, "Deep link path isn't for GAR PR");
             return null;
         }
+
+        final String path = uri.substring(endpoint.getWebPath().length(), uri.length());
 
         if (TextUtils.isEmpty(path) || TextUtils.getTrimmedLength(path) == 0) {
             mTimber.d(TAG, "Deep link path is null / empty / whitespace");
@@ -117,14 +104,14 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
             return null;
         }
 
-        final String region = splits[0];
+        final String regionId = splits[0];
 
-        if (TextUtils.isEmpty(region) || TextUtils.getTrimmedLength(region) == 0) {
-            mTimber.w(TAG, "Region is null / empty / whitespace");
+        if (TextUtils.isEmpty(regionId) || TextUtils.getTrimmedLength(regionId) == 0) {
+            mTimber.w(TAG, "Region ID is null / empty / whitespace");
             return null;
         }
 
-        final boolean sameRegion = region.equalsIgnoreCase(mRegionManager.getRegion().getId());
+        final boolean sameRegion = regionId.equalsIgnoreCase(mRegionManager.getRegion().getId());
 
         if (sameRegion && splits.length == 1) {
             return null;
@@ -148,17 +135,18 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
 
     @Nullable
     @Override
-    public Details buildIntentStack(@NonNull final Context context, @Nullable final Uri uri) {
+    public Intent[] buildIntentStack(@NonNull final Context context, @Nullable final Uri uri,
+            @NonNull final Region region) {
         if (uri == null) {
             mTimber.d(TAG, "Can't deep link, Uri is null");
             return null;
         } else {
-            return buildIntentStack(context, uri.toString());
+            return buildIntentStack(context, uri.toString(), region);
         }
     }
 
     @Nullable
-    private Details buildIntentStack(@Nullable final List<Intent> intentStack) {
+    private Intent[] buildIntentStack(@Nullable final List<Intent> intentStack) {
         if (intentStack == null || intentStack.isEmpty()) {
             return null;
         }
@@ -167,19 +155,17 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
         final Intent[] intentArray = new Intent[intentStack.size()];
         intentStack.toArray(intentArray);
 
-        // TODO
-        return new Details(null, intentArray, null);
+        return intentArray;
     }
 
     private void buildPlayersIntentStack(final Context context, final List<Intent> intentStack,
-            final String region, final boolean sameRegion, final String[] splits) {
+            final Region region, final boolean sameRegion, final String[] splits) {
         intentStack.add(HomeActivity.getLaunchIntent(context));
 
         if (sameRegion) {
             intentStack.add(PlayersActivity.getLaunchIntent(context));
         } else {
-            // TODO
-//            intentStack.add(PlayersActivity.getLaunchIntent(context, region));
+            intentStack.add(PlayersActivity.getLaunchIntent(context, region));
         }
 
         if (splits.length < 3) {
@@ -195,30 +181,27 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
         if (sameRegion) {
             intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null));
         } else {
-            // TODO
-//            intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null, region));
+            intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null, region));
         }
     }
 
     private void buildRankingsIntentStack(final Context context, final List<Intent> intentStack,
-            final String region, final boolean sameRegion) {
+            final Region region, final boolean sameRegion) {
         if (sameRegion) {
             intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_RANKINGS));
         } else {
             intentStack.add(HomeActivity.getLaunchIntent(context));
-            // TODO
-//            intentStack.add(RankingsActivity.getLaunchIntent(context, region));
+            intentStack.add(RankingsActivity.getLaunchIntent(context, region));
         }
     }
 
     private void buildTournamentsIntentStack(final Context context, final List<Intent> intentStack,
-            final String region, final boolean sameRegion, final String[] splits) {
+            final Region region, final boolean sameRegion, final String[] splits) {
         if (sameRegion) {
             intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_TOURNAMENTS));
         } else {
             intentStack.add(HomeActivity.getLaunchIntent(context));
-            // TODO
-//            intentStack.add(TournamentsActivity.getLaunchIntent(context, region));
+            intentStack.add(TournamentsActivity.getLaunchIntent(context, region));
         }
 
         if (splits.length < 3) {
@@ -232,70 +215,63 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
         }
 
         if (sameRegion) {
-            intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null));
+            intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null,
+                    null));
         } else {
-            // TODO
-//            intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null,
-//                    region));
+            intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null,
+                    region));
         }
     }
 
     @Nullable
     @Override
-    public Endpoint getEndpoint(@NonNull final Activity activity) {
-        return getEndpoint(activity, activity.getIntent());
-    }
-
-    @Nullable
-    @Override
-    public Endpoint getEndpoint(@NonNull final Context context, @Nullable final Intent intent) {
+    public Endpoint getEndpoint(@Nullable final Intent intent) {
         if (intent == null) {
-            mTimber.d(TAG, "Can't find endpoint, Intent is null");
             return null;
         } else {
-            return getEndpoint(context, intent.getData());
+            return getEndpoint(intent.getData());
         }
     }
 
     @Nullable
     @Override
-    public Endpoint getEndpoint(@NonNull final Context context, @Nullable final String uri) {
+    public Endpoint getEndpoint(@Nullable final String uri) {
         if (TextUtils.isEmpty(uri) || TextUtils.getTrimmedLength(uri) == 0) {
-            mTimber.d(TAG, "Can't deep link, uri is null / empty / whitespace");
             return null;
         }
 
-        // TODO
+        for (final Endpoint endpoint : Endpoint.values()) {
+            if (uri.startsWith(endpoint.getBasePath())) {
+                return endpoint;
+            }
+        }
 
         return null;
     }
 
     @Nullable
     @Override
-    public Endpoint getEndpoint(@NonNull final Context context, @Nullable final Uri uri) {
+    public Endpoint getEndpoint(@Nullable final Uri uri) {
         if (uri == null) {
-            mTimber.d(TAG, "Can't find endpoint, Uri is null");
             return null;
         } else {
-            return getEndpoint(context, uri.toString());
+            return getEndpoint(uri.toString());
         }
     }
 
     @Override
+    public boolean isValidUri(@Nullable final Intent intent) {
+        return intent != null && isValidUri(intent.getData());
+    }
+
+    @Override
     public boolean isValidUri(@Nullable final String uri) {
-        if (TextUtils.isEmpty(uri) || TextUtils.getTrimmedLength(uri) == 0) {
-            return false;
-        }
+        return getEndpoint(uri) != null;
+    }
 
-        for (final Endpoint endpoint : Endpoint.values()) {
-            final String basePath = endpoint.getBasePath();
-
-            if (uri.startsWith(basePath)) {
-                return true;
-            }
-        }
-
-        return false;
+    @Override
+    public boolean isValidUri(@Nullable final Uri uri) {
+        return uri != null && isValidUri(uri.toString());
     }
 
 }
