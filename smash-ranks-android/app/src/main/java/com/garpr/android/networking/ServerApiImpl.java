@@ -2,7 +2,6 @@ package com.garpr.android.networking;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.SparseBooleanArray;
 
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.Timber;
@@ -180,7 +179,7 @@ public class ServerApiImpl implements ServerApi {
     @Override
     public void getRegions(@NonNull final ApiListener<RegionsBundle> listener) {
         Endpoint[] endpoints = Endpoint.values();
-        final SparseBooleanArray map = new SparseBooleanArray(endpoints.length);
+        final boolean[] array = new boolean[endpoints.length];
         final RegionsBundle regionsBundle = new RegionsBundle();
 
         for (int i = 0; i < endpoints.length; ++i) {
@@ -189,7 +188,7 @@ public class ServerApiImpl implements ServerApi {
             getRegions(endpoints[i], new ApiListener<RegionsBundle>() {
                 @Override
                 public void failure() {
-                    map.put(index, true);
+                    array[index] = true;
                     proceed();
                 }
 
@@ -199,8 +198,8 @@ public class ServerApiImpl implements ServerApi {
                 }
 
                 private void proceed() {
-                    for (int i = 0; i < map.size(); ++i) {
-                        if (!map.get(i)) {
+                    for (int i = 0; i < array.length; ++i) {
+                        if (!array[i]) {
                             return;
                         }
                     }
@@ -213,7 +212,7 @@ public class ServerApiImpl implements ServerApi {
                 @Override
                 public void success(@Nullable final RegionsBundle object) {
                     regionsBundle.merge(object);
-                    map.put(index, true);
+                    array[index] = true;
                     proceed();
                 }
             });
