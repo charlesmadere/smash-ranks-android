@@ -9,6 +9,7 @@ import com.garpr.android.dagger.DaggerAppComponent;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
+import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.models.NightMode;
 import com.garpr.android.preferences.GeneralPreferenceStore;
@@ -29,6 +30,9 @@ public class App extends Application {
 
     @Inject
     DeviceUtils mDeviceUtils;
+
+    @Inject
+    FavoritePlayersManager mFavoritePlayersManager;
 
     @Inject
     GeneralPreferenceStore mGeneralPreferenceStore;
@@ -97,6 +101,9 @@ public class App extends Application {
         if (lastVersion == null || lastVersion < 1011) {
             // this preference used to be a String but was changed to a Region
             mGeneralPreferenceStore.getCurrentRegion().delete();
+
+            // favorite players are missing necessary data :(
+            mFavoritePlayersManager.clear();
         }
     }
 

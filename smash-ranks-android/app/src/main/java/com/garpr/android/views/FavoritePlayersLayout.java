@@ -117,7 +117,7 @@ public class FavoritePlayersLayout extends SearchableFrameLayout implements
             mRecyclerView.setVisibility(GONE);
             mEmpty.setVisibility(VISIBLE);
         } else {
-            mAdapter.set(mFavoritePlayersManager.getPlayers());
+            mAdapter.set(mFavoritePlayersManager.getAbsPlayers());
             mEmpty.setVisibility(GONE);
             mRecyclerView.setVisibility(VISIBLE);
         }
@@ -130,7 +130,7 @@ public class FavoritePlayersLayout extends SearchableFrameLayout implements
 
             @Override
             public void onBackground() {
-                mList = ListUtils.searchPlayerList(query, mFavoritePlayersManager.getPlayers());
+                mList = ListUtils.searchPlayerList(query, mFavoritePlayersManager.getAbsPlayers());
             }
 
             @Override

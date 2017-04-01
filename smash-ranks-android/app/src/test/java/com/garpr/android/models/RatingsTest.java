@@ -13,8 +13,8 @@ import org.robolectric.annotation.Config;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -68,6 +68,69 @@ public class RatingsTest extends BaseTest {
     public void testFromNull() throws Exception {
         final Ratings ratings = mGson.fromJson((String) null, Ratings.class);
         assertNull(ratings);
+    }
+
+    @Test
+    public void testGetRegionEmptyString() throws Exception {
+        final Ratings ratings = mGson.fromJson(JSON_ONE_REGION, Ratings.class);
+        assertNull(ratings.getRegion(""));
+    }
+
+    @Test
+    public void testGetRegionNull() throws Exception {
+        final Ratings ratings = mGson.fromJson(JSON_ONE_REGION, Ratings.class);
+        assertNull(ratings.getRegion(null));
+    }
+
+    @Test
+    public void testGetRegionOneRegion() throws Exception {
+        final Ratings ratings = mGson.fromJson(JSON_ONE_REGION, Ratings.class);
+        assertNotNull(ratings.getRegion("norcal"));
+        assertNull(ratings.getRegion("georgia"));
+    }
+
+    @Test
+    public void testGetRegionTwoRegions() throws Exception {
+        final Ratings ratings = mGson.fromJson(JSON_TWO_REGIONS, Ratings.class);
+        assertNotNull(ratings.getRegion("googlemtv"));
+        assertNotNull(ratings.getRegion("norcal"));
+        assertNull(ratings.getRegion("nyc"));
+    }
+
+    @Test
+    public void testToJsonEmptyNull() throws Exception {
+        final Ratings ratings = mGson.fromJson(JSON_EMPTY, Ratings.class);
+        assertNull(ratings);
+    }
+
+    @Test
+    public void testToJsonOneRegionNotNull() throws Exception {
+        final Ratings ratings = mGson.fromJson(JSON_ONE_REGION, Ratings.class);
+        assertNotNull(mGson.toJson(ratings, Ratings.class));
+    }
+
+    @Test
+    public void testToJsonTwoRegionsNotNull() throws Exception {
+        final Ratings ratings = mGson.fromJson(JSON_TWO_REGIONS, Ratings.class);
+        assertNotNull(mGson.toJson(ratings, Ratings.class));
+    }
+
+    @Test
+    public void testToJsonAndBackOneRegion() throws Exception {
+        Ratings ratings = mGson.fromJson(JSON_ONE_REGION, Ratings.class);
+        final String json = mGson.toJson(ratings, Ratings.class);
+        ratings = mGson.fromJson(json, Ratings.class);
+        assertNotNull(ratings);
+        assertEquals(ratings.size(), 1);
+    }
+
+    @Test
+    public void testToJsonAndBackTwoRegions() throws Exception {
+        Ratings ratings = mGson.fromJson(JSON_TWO_REGIONS, Ratings.class);
+        final String json = mGson.toJson(ratings, Ratings.class);
+        ratings = mGson.fromJson(json, Ratings.class);
+        assertNotNull(ratings);
+        assertEquals(ratings.size(), 2);
     }
 
 }

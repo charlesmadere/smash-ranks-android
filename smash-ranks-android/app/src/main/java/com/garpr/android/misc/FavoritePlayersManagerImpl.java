@@ -8,6 +8,8 @@ import android.support.v7.app.AlertDialog;
 
 import com.garpr.android.R;
 import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.FavoritePlayer;
+import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.google.gson.Gson;
 
@@ -61,17 +63,16 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
     }
 
     @Override
-    public void addPlayer(@NonNull final AbsPlayer player) {
+    public void addPlayer(@NonNull final AbsPlayer player, @NonNull final Region region) {
         if (containsPlayer(player)) {
             mTimber.d(TAG, "Not adding favorite, it already exists in the store");
             return;
         }
 
-        final List<AbsPlayer> players = getPlayers();
-        mTimber.d(TAG, "Adding favorite (there are currently " +
-                (players == null ? 0 : players.size()) + " favorite(s))");
+        mTimber.d(TAG, "Adding favorite (there are currently " + size() + " favorite(s))");
 
-        final String playerJson = mGson.toJson(player, AbsPlayer.class);
+        final FavoritePlayer favoritePlayer = new FavoritePlayer(player, region);
+        final String playerJson = mGson.toJson(favoritePlayer, FavoritePlayer.class);
         mKeyValueStore.setString(player.getId(), playerJson);
         notifyListeners();
     }
@@ -94,18 +95,30 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
 
     @Nullable
     @Override
-    public List<AbsPlayer> getPlayers() {
+    public List<AbsPlayer> getAbsPlayers() {
+        final List<FavoritePlayer> players = getPlayers();
+
+        if (players == null || players.isEmpty()) {
+            return null;
+        }
+
+        return new ArrayList<AbsPlayer>(players);
+    }
+
+    @Nullable
+    @Override
+    public List<FavoritePlayer> getPlayers() {
         final Map<String, ?> all = mKeyValueStore.getAll();
 
         if (all == null || all.isEmpty()) {
             return null;
         }
 
-        final List<AbsPlayer> players = new ArrayList<>(all.size());
+        final List<FavoritePlayer> players = new ArrayList<>(all.size());
 
         for (final Map.Entry<String, ?> entry : all.entrySet()) {
             final String json = (String) entry.getValue();
-            players.add(mGson.fromJson(json, AbsPlayer.class));
+            players.add(mGson.fromJson(json, FavoritePlayer.class));
         }
 
         Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER);
@@ -164,7 +177,7 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
 
     @Override
     public boolean showAddOrRemovePlayerDialog(@NonNull Context context,
-            @Nullable final AbsPlayer player) {
+            @Nullable final AbsPlayer player, @NonNull final Region region) {
         if (player == null) {
             return false;
         }
@@ -185,7 +198,7 @@ public class FavoritePlayersManagerImpl implements FavoritePlayersManager {
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
-                            addPlayer(player);
+                            addPlayer(player, region);
                         }
                     });
         }

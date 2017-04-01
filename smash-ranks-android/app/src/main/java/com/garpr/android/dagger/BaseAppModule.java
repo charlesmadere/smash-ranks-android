@@ -138,10 +138,12 @@ public abstract class BaseAppModule {
     Gson providesGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_DESERIALIZER)
+                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_SERIALIZER)
                 .registerTypeAdapter(AbsTournament.class, AbsTournament.JSON_DESERIALIZER)
                 .registerTypeAdapter(Match.class, Match.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ranking.class, Ranking.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
+                .registerTypeAdapter(Ratings.class, Ratings.JSON_SERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_SERIALIZER)
                 .create();

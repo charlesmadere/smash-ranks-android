@@ -26,6 +26,7 @@ import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.FavoritePlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
@@ -95,7 +96,10 @@ public class PlayerActivity extends BaseActivity implements
 
 
     public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player) {
-        return getLaunchIntent(context, player.getId(), player.getName());
+        final Region region = player instanceof FavoritePlayer ?
+                ((FavoritePlayer) player).getRegion() : null;
+
+        return getLaunchIntent(context, player.getId(), player.getName(), region);
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final Ranking ranking) {
@@ -274,7 +278,7 @@ public class PlayerActivity extends BaseActivity implements
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miAddToFavorites:
-                mFavoritePlayersManager.addPlayer(mFullPlayer);
+                mFavoritePlayersManager.addPlayer(mFullPlayer, mRegionManager.getRegion(this));
                 return true;
 
             case R.id.miAliases:

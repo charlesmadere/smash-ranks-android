@@ -2,14 +2,16 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -17,41 +19,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class Ratings extends ArrayList<Rating> implements Parcelable {
-
-    @Nullable
-    public static Ratings fromJson(@Nullable final JsonElement json) throws JsonParseException {
-        if (json == null || json.isJsonNull()) {
-            return null;
-        }
-
-        final JsonObject jsonObject = json.getAsJsonObject();
-        final Set<Entry<String, JsonElement>> entries = jsonObject.entrySet();
-
-        if (entries == null || entries.isEmpty()) {
-            return null;
-        }
-
-        final Ratings ratings = new Ratings(entries.size());
-
-        for (final Entry<String, JsonElement> entry : entries) {
-            final String region = entry.getKey();
-            final JsonElement value = entry.getValue();
-
-            if (value != null && !value.isJsonNull()) {
-                final JsonObject valueObject = value.getAsJsonObject();
-                final float mu = valueObject.get("mu").getAsFloat();
-                final float sigma = valueObject.get("sigma").getAsFloat();
-                ratings.add(new Rating(region, mu, sigma));
-            }
-        }
-
-        if (ratings.isEmpty()) {
-            return null;
-        } else {
-            ratings.trimToSize();
-            return ratings;
-        }
-    }
 
     private Ratings(final int initialCapacity) {
         super(initialCapacity);
@@ -74,7 +41,11 @@ public class Ratings extends ArrayList<Rating> implements Parcelable {
     }
 
     @Nullable
-    public Rating getRegion(@NonNull final String region) {
+    public Rating getRegion(@Nullable final String region) {
+        if (TextUtils.isEmpty(region)) {
+            return null;
+        }
+
         for (final Rating rating : this) {
             if (region.equals(rating.getRegion())) {
                 return rating;
@@ -119,7 +90,58 @@ public class Ratings extends ArrayList<Rating> implements Parcelable {
         @Override
         public Ratings deserialize(final JsonElement json, final Type typeOfT,
                 final JsonDeserializationContext context) throws JsonParseException {
-            return fromJson(json);
+            if (json == null || json.isJsonNull()) {
+                return null;
+            }
+
+            final JsonObject jsonObject = json.getAsJsonObject();
+            final Set<Entry<String, JsonElement>> entries = jsonObject.entrySet();
+
+            if (entries == null || entries.isEmpty()) {
+                return null;
+            }
+
+            final Ratings ratings = new Ratings(entries.size());
+
+            for (final Entry<String, JsonElement> entry : entries) {
+                final String region = entry.getKey();
+                final JsonElement value = entry.getValue();
+
+                if (value != null && !value.isJsonNull()) {
+                    final JsonObject valueObject = value.getAsJsonObject();
+                    final float mu = valueObject.get("mu").getAsFloat();
+                    final float sigma = valueObject.get("sigma").getAsFloat();
+                    ratings.add(new Rating(region, mu, sigma));
+                }
+            }
+
+            if (ratings.isEmpty()) {
+                return null;
+            } else {
+                ratings.trimToSize();
+                return ratings;
+            }
+        }
+    };
+
+    public static final JsonSerializer<Ratings> JSON_SERIALIZER = new JsonSerializer<Ratings>() {
+        @Override
+        public JsonElement serialize(final Ratings src, final Type typeOfSrc,
+                final JsonSerializationContext context) {
+            if (src == null || src.isEmpty()) {
+                return null;
+            }
+
+            final JsonObject jsonObject = new JsonObject();
+
+            for (final Rating rating : src) {
+                final JsonObject ratingJson = new JsonObject();
+                ratingJson.addProperty("mu", rating.getMu());
+                ratingJson.addProperty("sigma", rating.getSigma());
+                jsonObject.add(rating.getRegion(), ratingJson);
+            }
+
+            return jsonObject;
         }
     };
 

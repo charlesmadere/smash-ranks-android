@@ -3,6 +3,7 @@ package com.garpr.android.misc;
 import com.garpr.android.BaseTest;
 import com.garpr.android.BuildConfig;
 import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.FavoritePlayer;
 import com.google.gson.Gson;
 
 import org.junit.Before;
@@ -34,6 +35,9 @@ public class FavoritePlayersManagerTest extends BaseTest {
     @Inject
     Gson mGson;
 
+    @Inject
+    RegionManager mRegionManager;
+
 
     @Before
     @Override
@@ -58,7 +62,7 @@ public class FavoritePlayersManagerTest extends BaseTest {
         assertNull(array[0]);
 
         final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(hmw);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
         assertNotNull(array[0]);
         assertEquals(array[0].size(), 1);
         assertEquals(array[0].get(0), hmw);
@@ -71,10 +75,10 @@ public class FavoritePlayersManagerTest extends BaseTest {
     public void testAddPlayers() throws Exception {
         final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
         final AbsPlayer spark = mGson.fromJson(JSON_PLAYER_2, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(hmw);
-        mFavoritePlayersManager.addPlayer(spark);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
+        mFavoritePlayersManager.addPlayer(spark, mRegionManager.getRegion());
 
-        final List<AbsPlayer> players = mFavoritePlayersManager.getPlayers();
+        final List<AbsPlayer> players = mFavoritePlayersManager.getAbsPlayers();
         assertNotNull(players);
         assertEquals(players.size(), 2);
         assertTrue(players.contains(hmw));
@@ -87,13 +91,13 @@ public class FavoritePlayersManagerTest extends BaseTest {
         assertTrue(mFavoritePlayersManager.isEmpty());
 
         final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(hmw);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
         mFavoritePlayersManager.clear();
         assertTrue(mFavoritePlayersManager.isEmpty());
 
         final AbsPlayer spark = mGson.fromJson(JSON_PLAYER_2, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(spark);
-        mFavoritePlayersManager.addPlayer(hmw);
+        mFavoritePlayersManager.addPlayer(spark, mRegionManager.getRegion());
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
         mFavoritePlayersManager.clear();
         assertTrue(mFavoritePlayersManager.isEmpty());
 
@@ -109,7 +113,7 @@ public class FavoritePlayersManagerTest extends BaseTest {
         assertFalse(mFavoritePlayersManager.containsPlayer(spark));
         assertFalse(mFavoritePlayersManager.containsPlayer(spark.getId()));
 
-        mFavoritePlayersManager.addPlayer(hmw);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
         assertTrue(mFavoritePlayersManager.containsPlayer(hmw));
         assertTrue(mFavoritePlayersManager.containsPlayer(hmw.getId()));
         assertFalse(mFavoritePlayersManager.containsPlayer(spark));
@@ -127,7 +131,7 @@ public class FavoritePlayersManagerTest extends BaseTest {
         assertFalse(mFavoritePlayersManager.containsPlayer(spark));
         assertFalse(mFavoritePlayersManager.containsPlayer(spark.getId()));
 
-        mFavoritePlayersManager.addPlayer(spark);
+        mFavoritePlayersManager.addPlayer(spark, mRegionManager.getRegion());
         assertFalse(mFavoritePlayersManager.containsPlayer(hmw));
         assertFalse(mFavoritePlayersManager.containsPlayer(hmw.getId()));
         assertTrue(mFavoritePlayersManager.containsPlayer(spark));
@@ -135,19 +139,47 @@ public class FavoritePlayersManagerTest extends BaseTest {
     }
 
     @Test
-    public void testGetPlayers() throws Exception {
-        List<AbsPlayer> players = mFavoritePlayersManager.getPlayers();
+    public void testAbsGetPlayers() throws Exception {
+        List<AbsPlayer> players = mFavoritePlayersManager.getAbsPlayers();
         assertTrue(players == null || players.isEmpty());
 
         final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
         final AbsPlayer spark = mGson.fromJson(JSON_PLAYER_2, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(hmw);
-        mFavoritePlayersManager.addPlayer(spark);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
+        mFavoritePlayersManager.addPlayer(spark, mRegionManager.getRegion());
 
-        players = mFavoritePlayersManager.getPlayers();
+        players = mFavoritePlayersManager.getAbsPlayers();
         assertEquals(players.size(), 2);
         assertTrue(players.contains(hmw));
         assertTrue(players.contains(spark));
+    }
+
+    @Test
+    public void testGetPlayers() throws Exception {
+        List<FavoritePlayer> players = mFavoritePlayersManager.getPlayers();
+        assertNull(players);
+
+        List<AbsPlayer> absPlayers = mFavoritePlayersManager.getAbsPlayers();
+        assertNull(absPlayers);
+
+        final AbsPlayer spark = mGson.fromJson(JSON_PLAYER_2, AbsPlayer.class);
+        mFavoritePlayersManager.addPlayer(spark, mRegionManager.getRegion());
+
+        players = mFavoritePlayersManager.getPlayers();
+        assertNotNull(players);
+        assertEquals(players.size(), 1);
+
+        absPlayers = mFavoritePlayersManager.getAbsPlayers();
+        assertNotNull(absPlayers);
+        assertEquals(absPlayers.size(), 1);
+
+        mFavoritePlayersManager.removePlayer(spark);
+
+        players = mFavoritePlayersManager.getPlayers();
+        assertNull(players);
+
+        absPlayers = mFavoritePlayersManager.getAbsPlayers();
+        assertNull(absPlayers);
     }
 
     @Test
@@ -155,7 +187,7 @@ public class FavoritePlayersManagerTest extends BaseTest {
         assertTrue(mFavoritePlayersManager.isEmpty());
 
         final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(hmw);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
         assertFalse(mFavoritePlayersManager.isEmpty());
 
         mFavoritePlayersManager.removePlayer(hmw);
@@ -178,7 +210,7 @@ public class FavoritePlayersManagerTest extends BaseTest {
         assertNull(array[0]);
 
         final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(hmw);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
         assertNotNull(array[0]);
         assertEquals(array[0].size(), 1);
         assertEquals(array[0].get(0), hmw);
@@ -194,19 +226,19 @@ public class FavoritePlayersManagerTest extends BaseTest {
     public void testRemovePlayers() throws Exception {
         final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
         final AbsPlayer spark = mGson.fromJson(JSON_PLAYER_2, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(hmw);
-        mFavoritePlayersManager.addPlayer(spark);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
+        mFavoritePlayersManager.addPlayer(spark, mRegionManager.getRegion());
 
         mFavoritePlayersManager.removePlayer(hmw);
         mFavoritePlayersManager.removePlayer(spark);
-        List<AbsPlayer> players = mFavoritePlayersManager.getPlayers();
+        List<AbsPlayer> players = mFavoritePlayersManager.getAbsPlayers();
         assertTrue(players == null || players.isEmpty());
 
-        mFavoritePlayersManager.addPlayer(spark);
-        mFavoritePlayersManager.addPlayer(hmw);
+        mFavoritePlayersManager.addPlayer(spark, mRegionManager.getRegion());
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
         mFavoritePlayersManager.removePlayer(spark.getId());
         mFavoritePlayersManager.removePlayer(hmw.getId());
-        players = mFavoritePlayersManager.getPlayers();
+        players = mFavoritePlayersManager.getAbsPlayers();
         assertTrue(players == null || players.isEmpty());
     }
 
@@ -215,11 +247,11 @@ public class FavoritePlayersManagerTest extends BaseTest {
         assertEquals(mFavoritePlayersManager.size(), 0);
 
         final AbsPlayer hmw = mGson.fromJson(JSON_PLAYER_1, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(hmw);
+        mFavoritePlayersManager.addPlayer(hmw, mRegionManager.getRegion());
         assertEquals(mFavoritePlayersManager.size(), 1);
 
         final AbsPlayer spark = mGson.fromJson(JSON_PLAYER_2, AbsPlayer.class);
-        mFavoritePlayersManager.addPlayer(spark);
+        mFavoritePlayersManager.addPlayer(spark, mRegionManager.getRegion());
         assertEquals(mFavoritePlayersManager.size(), 2);
 
         mFavoritePlayersManager.removePlayer(hmw);
