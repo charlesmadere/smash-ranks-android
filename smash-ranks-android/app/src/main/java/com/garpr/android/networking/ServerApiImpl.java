@@ -3,6 +3,7 @@ package com.garpr.android.networking;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.models.Endpoint;
@@ -55,6 +56,12 @@ public class ServerApiImpl implements ServerApi {
                     mTimber.e(TAG, "getHeadToHead (" + region + ") (" + playerId + ") (" +
                             opponentId + ") failed (code " + response.code() + ")");
                     listener.failure();
+
+                    if (response.code() == Constants.ERROR_CODE_BAD_REQUEST) {
+                        // TODO
+                    } else {
+                        // TODO
+                    }
                 }
             }
 
@@ -197,9 +204,9 @@ public class ServerApiImpl implements ServerApi {
                     return listener.isAlive();
                 }
 
-                private void proceed() {
-                    for (int i = 0; i < array.length; ++i) {
-                        if (!array[i]) {
+                private synchronized void proceed() {
+                    for (final boolean completed : array) {
+                        if (!completed) {
                             return;
                         }
                     }

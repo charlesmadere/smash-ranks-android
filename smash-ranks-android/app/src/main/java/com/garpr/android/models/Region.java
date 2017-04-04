@@ -92,7 +92,7 @@ public class Region implements Parcelable {
 
     @Override
     public String toString() {
-        return getId();
+        return getDisplayName();
     }
 
     @Override

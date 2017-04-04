@@ -178,6 +178,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_set_identity);
+        setSubtitle(mRegionManager.getRegion(this).getDisplayName());
 
         fetchPlayersBundle();
     }

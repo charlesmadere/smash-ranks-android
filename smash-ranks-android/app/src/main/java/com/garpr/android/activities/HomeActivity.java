@@ -236,7 +236,7 @@ public class HomeActivity extends BaseActivity implements
         if (rankingsBundle == null) {
             setSubtitle("");
         } else {
-            setSubtitle(getString(R.string.x_updated_y, mRegionManager.getRegion(this),
+            setSubtitle(getString(R.string.x_updated_y, mRegionManager.getRegion(this).getDisplayName(),
                     rankingsBundle.getTime().getShortForm()));
         }
 
