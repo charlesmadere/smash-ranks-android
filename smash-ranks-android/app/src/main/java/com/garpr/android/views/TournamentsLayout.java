@@ -50,6 +50,9 @@ public class TournamentsLayout extends SearchableFrameLayout implements
     @Inject
     ThreadUtils mThreadUtils;
 
+    @BindView(R.id.error)
+    ErrorLinearLayout mError;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
@@ -58,9 +61,6 @@ public class TournamentsLayout extends SearchableFrameLayout implements
 
     @BindView(R.id.empty)
     View mEmpty;
-
-    @BindView(R.id.error)
-    View mError;
 
 
     public static TournamentsLayout inflate(final ViewGroup parent) {
@@ -84,9 +84,9 @@ public class TournamentsLayout extends SearchableFrameLayout implements
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mTournamentsBundle = null;
-        showError();
+        showError(errorCode);
     }
 
     private void fetchTournamentsBundle() {
@@ -158,11 +158,11 @@ public class TournamentsLayout extends SearchableFrameLayout implements
         mRefreshLayout.setRefreshing(false);
     }
 
-    private void showError() {
+    private void showError(final int errorCode) {
         mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
         mEmpty.setVisibility(View.GONE);
-        mError.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
     }
 

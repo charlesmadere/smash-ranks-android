@@ -6,7 +6,7 @@ import com.garpr.android.misc.Heartbeat;
 
 public interface ApiListener<T> extends Heartbeat {
 
-    void failure();
+    void failure(final int errorCode);
 
     void success(@Nullable final T object);
 

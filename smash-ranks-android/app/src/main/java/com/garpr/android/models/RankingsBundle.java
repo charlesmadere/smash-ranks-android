@@ -56,6 +56,19 @@ public class RankingsBundle implements Parcelable {
         return mId.hashCode();
     }
 
+    public boolean hasPreviousRank() {
+        if (hasRankings()) {
+            // noinspection ConstantConditions
+            for (final Ranking ranking : mRankings) {
+                if (ranking.getPreviousRank() != null) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public boolean hasRankings() {
         return mRankings != null && !mRankings.isEmpty();
     }

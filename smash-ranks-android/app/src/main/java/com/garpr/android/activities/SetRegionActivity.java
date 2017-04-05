@@ -64,7 +64,7 @@ public class SetRegionActivity extends BaseActivity implements ApiListener<Regio
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mSelectedRegion = null;
         mRegionsBundle = null;
         showError();

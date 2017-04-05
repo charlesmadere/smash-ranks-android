@@ -20,8 +20,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class DeepLinkActivity extends BaseActivity implements ApiListener<RegionsBundle>,
-        SwipeRefreshLayout.OnRefreshListener {
+public class DeepLinkActivity extends BaseActivity implements ApiListener<RegionsBundle> {
 
     private static final String TAG = "DeepLinkActivity";
 
@@ -53,8 +52,8 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
     }
 
     @Override
-    public void failure() {
-
+    public void failure(final int errorCode) {
+        // TODO
     }
 
     private void fetchRegions() {
@@ -74,7 +73,7 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_deep_link);
 
-        if (mDeepLinkUtils.isValidUri(getIntent())) {
+        if (!mDeepLinkUtils.isValidUri(getIntent())) {
             startActivity(HomeActivity.getLaunchIntent(this));
             supportFinishAfterTransition();
             return;
@@ -84,20 +83,8 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
     }
 
     @Override
-    public void onRefresh() {
-
-    }
-
-    @Override
-    protected void onViewsBound() {
-        super.onViewsBound();
-
-        mRefreshLayout.setOnRefreshListener(this);
-    }
-
-    @Override
     public void success(@Nullable final RegionsBundle regionsBundle) {
-
+        // TODO
     }
 
 }

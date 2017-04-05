@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.FavoritePlayer;
+import com.garpr.android.models.Region;
 import com.garpr.android.preferences.Preference;
 
 import java.lang.ref.WeakReference;
@@ -17,11 +19,11 @@ public class IdentityManagerImpl implements IdentityManager {
     private static final String TAG = "IdentityManagerImpl";
 
     private final List<WeakReference<OnIdentityChangeListener>> mListeners;
-    private final Preference<AbsPlayer> mIdentity;
+    private final Preference<FavoritePlayer> mIdentity;
     private final Timber mTimber;
 
 
-    public IdentityManagerImpl(@NonNull final Preference<AbsPlayer> identity,
+    public IdentityManagerImpl(@NonNull final Preference<FavoritePlayer> identity,
             @NonNull final Timber timber) {
         mListeners = new LinkedList<>();
         mIdentity = identity;
@@ -53,7 +55,7 @@ public class IdentityManagerImpl implements IdentityManager {
 
     @Nullable
     @Override
-    public AbsPlayer getIdentity() {
+    public FavoritePlayer getIdentity() {
         return mIdentity.get();
     }
 
@@ -125,11 +127,11 @@ public class IdentityManagerImpl implements IdentityManager {
     }
 
     @Override
-    public void setIdentity(@Nullable final AbsPlayer player) {
+    public void setIdentity(@NonNull final AbsPlayer player, @NonNull final Region region) {
         mTimber.d(TAG, "old identity is \"" + getPlayerString(getIdentity()) + "\"" +
                 ", new identity is \"" + getPlayerString(player) + "\"");
 
-        mIdentity.set(player);
+        mIdentity.set(new FavoritePlayer(player, region));
         notifyListeners();
     }
 

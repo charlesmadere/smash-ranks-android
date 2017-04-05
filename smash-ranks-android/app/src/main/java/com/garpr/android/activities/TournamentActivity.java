@@ -29,6 +29,7 @@ import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
+import com.garpr.android.views.ErrorLinearLayout;
 
 import javax.inject.Inject;
 
@@ -58,14 +59,14 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     @Inject
     ShareUtils mShareUtils;
 
+    @BindView(R.id.error)
+    ErrorLinearLayout mError;
+
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
-
-    @BindView(R.id.error)
-    View mError;
 
     @BindView(R.id.empty)
     View mEmpty;
@@ -107,9 +108,9 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mFullTournament = null;
-        showError();
+        showError(errorCode);
     }
 
     private void fetchFullTournament() {
@@ -262,10 +263,10 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         mRefreshLayout.setRefreshing(false);
     }
 
-    private void showError() {
+    private void showError(final int errorCode) {
         mEmpty.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
-        mError.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.VISIBLE, errorCode);
         prepareMenuAndTitles();
         mRefreshLayout.setRefreshing(false);
     }

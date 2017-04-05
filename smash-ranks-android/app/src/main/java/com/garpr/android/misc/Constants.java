@@ -14,6 +14,7 @@ public final class Constants {
 
     // Miscellaneous
     public static final int ERROR_CODE_BAD_REQUEST = 400;
+    public static final int ERROR_CODE_UNKNOWN = Integer.MAX_VALUE;
     public static final String CHARLES_TWITTER_URL = "https://twitter.com/charlesmadere";
     public static final String GAR_TWITTER_URL = "https://twitter.com/garsh0p";
     public static final String GITHUB_URL = "https://github.com/charlesmadere/smash-ranks-android";

@@ -15,11 +15,11 @@ public class ApiCall<T> implements ApiListener<T> {
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         final ApiListener<T> listener = mReference.get();
 
         if (listener != null && listener.isAlive()) {
-            listener.failure();
+            listener.failure(errorCode);
         }
     }
 

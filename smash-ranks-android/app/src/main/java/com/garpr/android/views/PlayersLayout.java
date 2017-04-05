@@ -46,6 +46,9 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
     @Inject
     ServerApi mServerApi;
 
+    @BindView(R.id.error)
+    ErrorLinearLayout mError;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
@@ -54,9 +57,6 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
 
     @BindView(R.id.empty)
     View mEmpty;
-
-    @BindView(R.id.error)
-    View mError;
 
 
     public PlayersLayout(@NonNull final Context context, @Nullable final AttributeSet attrs) {
@@ -75,9 +75,9 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mPlayersBundle = null;
-        showError();
+        showError(errorCode);
     }
 
     private void fetchPlayersBundle() {
@@ -161,11 +161,11 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
         mRefreshLayout.setRefreshing(false);
     }
 
-    private void showError() {
+    private void showError(final int errorCode) {
         mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
         mEmpty.setVisibility(View.GONE);
-        mError.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
     }
 

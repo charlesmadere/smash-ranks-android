@@ -38,6 +38,10 @@ public class RankingItemView extends IdentityFrameLayout implements BaseAdapterV
     @Inject
     RegionManager mRegionManager;
 
+    @Nullable
+    @BindView(R.id.previousRankView)
+    PreviousRankView mPreviousRankView;
+
     @BindView(R.id.tvName)
     TextView mName;
 
@@ -110,6 +114,10 @@ public class RankingItemView extends IdentityFrameLayout implements BaseAdapterV
     @Override
     public void setContent(final Ranking content) {
         mContent = content;
+
+        if (mPreviousRankView != null) {
+            mPreviousRankView.setContent(mContent);
+        }
 
         mRank.setText(mNumberFormat.format(mContent.getRank()));
         mName.setText(mContent.getName());

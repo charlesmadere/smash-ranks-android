@@ -76,6 +76,7 @@
     <string name="rankings_polling_requires_google_play_services">Rankings polling requires Google Play Services in order to function. Click here to try to resolve the issues with your Google Play services installation.</string>
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
+    <string name="region_mismatch_error">A region and / or GAR PR endpoint mismatch error may have occurred.</string>
     <string name="region_saved_">Region saved!</string>
     <string name="remove_from_favorites">Remove from favorites</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>

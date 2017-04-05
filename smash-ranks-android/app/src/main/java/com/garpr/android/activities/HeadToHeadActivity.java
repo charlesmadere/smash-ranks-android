@@ -25,6 +25,7 @@ import com.garpr.android.models.Match;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
+import com.garpr.android.views.ErrorLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,9 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     @Inject
     ThreadUtils mThreadUtils;
 
+    @BindView(R.id.error)
+    ErrorLinearLayout mError;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
@@ -69,9 +73,6 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
 
     @BindView(R.id.empty)
     View mEmpty;
-
-    @BindView(R.id.error)
-    View mError;
 
 
     public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player,
@@ -108,11 +109,11 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mHeadToHead = null;
         mList = null;
         mResult = null;
-        showError();
+        showError(errorCode);
     }
 
     private void fetchHeadToHead() {
@@ -278,11 +279,11 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
         mRefreshLayout.setRefreshing(false);
     }
 
-    private void showError() {
+    private void showError(final int errorCode) {
         mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
         mEmpty.setVisibility(View.GONE);
-        mError.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.VISIBLE, errorCode);
         prepareMenuAndSubtitle();
         mRefreshLayout.setRefreshing(false);
     }

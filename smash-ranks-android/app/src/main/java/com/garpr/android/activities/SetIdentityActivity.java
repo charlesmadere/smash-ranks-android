@@ -82,7 +82,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mSelectedPlayer = null;
         mPlayersBundle = null;
         showError();

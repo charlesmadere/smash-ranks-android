@@ -18,6 +18,7 @@ import android.view.View;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayerAdapter;
+import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.ListUtils;
@@ -35,6 +36,7 @@ import com.garpr.android.models.Region;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
+import com.garpr.android.views.ErrorLinearLayout;
 import com.garpr.android.views.MatchItemView;
 
 import java.util.ArrayList;
@@ -82,6 +84,9 @@ public class PlayerActivity extends BaseActivity implements
     @Inject
     ThreadUtils mThreadUtils;
 
+    @BindView(R.id.error)
+    ErrorLinearLayout mError;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
@@ -90,9 +95,6 @@ public class PlayerActivity extends BaseActivity implements
 
     @BindView(R.id.empty)
     View mEmpty;
-
-    @BindView(R.id.error)
-    View mError;
 
 
     public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player) {
@@ -127,12 +129,12 @@ public class PlayerActivity extends BaseActivity implements
         return intent;
     }
 
-    private void failure() {
+    private void failure(final int errorCode) {
         mFullPlayer = null;
         mList = null;
         mMatchesBundle = null;
         mResult = null;
-        showError();
+        showError(errorCode);
     }
 
     private void fetchData() {
@@ -402,11 +404,11 @@ public class PlayerActivity extends BaseActivity implements
         supportInvalidateOptionsMenu();
     }
 
-    private void showError() {
+    private void showError(final int errorCode) {
         mAdapter.clear();
         mRecyclerView.setVisibility(View.GONE);
         mEmpty.setVisibility(View.GONE);
-        mError.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
     }
 
@@ -427,6 +429,8 @@ public class PlayerActivity extends BaseActivity implements
         private boolean mFullPlayerFound;
         private boolean mMatchesBundleFound;
         private FullPlayer mFullPlayer;
+        private int mFullPlayerErrorCode;
+        private int mMatchesBundleErrorCode;
         private MatchesBundle mMatchesBundle;
         private final Region mRegion;
 
@@ -439,12 +443,15 @@ public class PlayerActivity extends BaseActivity implements
             mServerApi.getPlayer(mRegion, mPlayerId, new ApiCall<>(mFullPlayerListener));
         }
 
-        private void proceed() {
+        private synchronized void proceed() {
             if (mFullPlayerFound && mMatchesBundleFound) {
                 // intentionally not checking to see if mMatchesBundle is null, PlayerActivity is
                 // designed to handle a null MatchesBundle
-                if (mFullPlayer == null) {
-                    failure();
+                if (mFullPlayerErrorCode == Constants.ERROR_CODE_BAD_REQUEST ||
+                        mMatchesBundleErrorCode == Constants.ERROR_CODE_BAD_REQUEST) {
+                    failure(Constants.ERROR_CODE_BAD_REQUEST);
+                } else if (mFullPlayer == null) {
+                    failure(Constants.ERROR_CODE_UNKNOWN);
                 } else {
                     success(mFullPlayer, mMatchesBundle);
                 }
@@ -453,9 +460,10 @@ public class PlayerActivity extends BaseActivity implements
 
         private final ApiListener<FullPlayer> mFullPlayerListener = new ApiListener<FullPlayer>() {
             @Override
-            public void failure() {
-                mFullPlayerFound = true;
+            public void failure(final int errorCode) {
+                mFullPlayerErrorCode = errorCode;
                 mFullPlayer = null;
+                mFullPlayerFound = true;
                 proceed();
             }
 
@@ -466,17 +474,18 @@ public class PlayerActivity extends BaseActivity implements
 
             @Override
             public void success(@Nullable final FullPlayer fullPlayer) {
-                mFullPlayerFound = true;
                 mFullPlayer = fullPlayer;
+                mFullPlayerFound = true;
                 proceed();
             }
         };
 
         private final ApiListener<MatchesBundle> mMatchesBundleListener = new ApiListener<MatchesBundle>() {
             @Override
-            public void failure() {
-                mMatchesBundleFound = true;
+            public void failure(final int errorCode) {
+                mMatchesBundleErrorCode = errorCode;
                 mMatchesBundle = null;
+                mMatchesBundleFound = true;
                 proceed();
             }
 
@@ -487,8 +496,8 @@ public class PlayerActivity extends BaseActivity implements
 
             @Override
             public void success(@Nullable final MatchesBundle matchesBundle) {
-                mMatchesBundleFound = true;
                 mMatchesBundle = matchesBundle;
+                mMatchesBundleFound = true;
                 proceed();
             }
         };

@@ -12,6 +12,10 @@ import com.garpr.android.models.RankingsBundle;
 
 public class RankingsAdapter extends BaseAdapter<Ranking> {
 
+    @LayoutRes
+    private int mLayoutResId;
+
+
     public RankingsAdapter(@NonNull final Context context) {
         super(context);
         setHasStableIds(true);
@@ -30,11 +34,17 @@ public class RankingsAdapter extends BaseAdapter<Ranking> {
     @LayoutRes
     @Override
     public int getItemViewType(final int position) {
-        return R.layout.item_ranking;
+        return mLayoutResId;
     }
 
     public void set(@Nullable final RankingsBundle bundle) {
         if (bundle != null && bundle.hasRankings()) {
+            if (bundle.hasPreviousRank()) {
+                mLayoutResId = R.layout.item_ranking_with_previous_rank;
+            } else {
+                mLayoutResId = R.layout.item_ranking;
+            }
+
             set(bundle.getRankings());
         } else {
             clear();

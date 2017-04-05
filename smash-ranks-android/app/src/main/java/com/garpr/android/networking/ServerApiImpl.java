@@ -55,13 +55,7 @@ public class ServerApiImpl implements ServerApi {
                 } else {
                     mTimber.e(TAG, "getHeadToHead (" + region + ") (" + playerId + ") (" +
                             opponentId + ") failed (code " + response.code() + ")");
-                    listener.failure();
-
-                    if (response.code() == Constants.ERROR_CODE_BAD_REQUEST) {
-                        // TODO
-                    } else {
-                        // TODO
-                    }
+                    listener.failure(response.code());
                 }
             }
 
@@ -69,7 +63,7 @@ public class ServerApiImpl implements ServerApi {
             public void onFailure(final Call<HeadToHead> call, final Throwable t) {
                 mTimber.e(TAG, "getHeadToHead (" + region + ") (" + playerId + ") (" +
                         opponentId + ") failed", t);
-                listener.failure();
+                listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
     }
@@ -88,14 +82,14 @@ public class ServerApiImpl implements ServerApi {
                 } else {
                     mTimber.e(TAG, "getMatches (" + region + ") (" + playerId + ") failed (code "
                             + response.code() + ")");
-                    listener.failure();
+                    listener.failure(response.code());
                 }
             }
 
             @Override
             public void onFailure(final Call<MatchesBundle> call, final Throwable t) {
                 mTimber.e(TAG, "getMatches (" + region + ") (" + playerId + ") failed", t);
-                listener.failure();
+                listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
     }
@@ -113,14 +107,14 @@ public class ServerApiImpl implements ServerApi {
                 } else {
                     mTimber.e(TAG, "getPlayer (" + region + ") (" + playerId + ") failed (code "
                             + response.code() + ")");
-                    listener.failure();
+                    listener.failure(response.code());
                 }
             }
 
             @Override
             public void onFailure(final Call<FullPlayer> call, final Throwable t) {
                 mTimber.e(TAG, "getPlayer (" + region + ") (" + playerId + ") failed", t);
-                listener.failure();
+                listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
     }
@@ -139,14 +133,14 @@ public class ServerApiImpl implements ServerApi {
                 } else {
                     mTimber.e(TAG, "getPlayers (" + region + ") failed (code " + response.code()
                             + ")");
-                    listener.failure();
+                    listener.failure(response.code());
                 }
             }
 
             @Override
             public void onFailure(final Call<PlayersBundle> call, final Throwable t) {
                 mTimber.e(TAG, "getPlayers (" + region + ") failed", t);
-                listener.failure();
+                listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
     }
@@ -171,14 +165,14 @@ public class ServerApiImpl implements ServerApi {
                 } else {
                     mTimber.e(TAG, "getRankings (" + region + ") failed (code " + response.code()
                             + ")");
-                    listener.failure();
+                    listener.failure(response.code());
                 }
             }
 
             @Override
             public void onFailure(final Call<RankingsBundle> call, final Throwable t) {
                 mTimber.e(TAG, "getRankings (" + region + ") failed", t);
-                listener.failure();
+                listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
     }
@@ -194,7 +188,7 @@ public class ServerApiImpl implements ServerApi {
 
             getRegions(endpoints[i], new ApiListener<RegionsBundle>() {
                 @Override
-                public void failure() {
+                public void failure(final int errorCode) {
                     array[index] = true;
                     proceed();
                 }
@@ -247,14 +241,14 @@ public class ServerApiImpl implements ServerApi {
                     listener.success(body);
                 } else {
                     mTimber.e(TAG, "getRegions failed (code " + response.code() + ")");
-                    listener.failure();
+                    listener.failure(response.code());
                 }
             }
 
             @Override
             public void onFailure(final Call<RegionsBundle> call, final Throwable t) {
                 mTimber.e(TAG, "getRegions failed", t);
-                listener.failure();
+                listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
     }
@@ -273,14 +267,14 @@ public class ServerApiImpl implements ServerApi {
                 } else {
                     mTimber.e(TAG, "getTournament (" + region + ") (" + tournamentId +
                             ") failed (code " + response.code() + ")");
-                    listener.failure();
+                    listener.failure(response.code());
                 }
             }
 
             @Override
             public void onFailure(final Call<FullTournament> call, final Throwable t) {
                 mTimber.e(TAG, "getTournament (" + region + ") (" + tournamentId + ") failed", t);
-                listener.failure();
+                listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
     }
@@ -299,14 +293,14 @@ public class ServerApiImpl implements ServerApi {
                 } else {
                     mTimber.e(TAG, "getTournaments (" + region + ") failed (code " +
                             response.code() + ")");
-                    listener.failure();
+                    listener.failure(response.code());
                 }
             }
 
             @Override
             public void onFailure(final Call<TournamentsBundle> call, final Throwable t) {
                 mTimber.e(TAG, "getTournaments (" + region + ") failed", t);
-                listener.failure();
+                listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
     }
