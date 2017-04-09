@@ -1,6 +1,7 @@
 package com.garpr.android.views;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.AttrRes;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.garpr.android.R;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.adapters.BaseAdapterView;
+import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.models.AbsTournament;
 
 import butterknife.BindView;
@@ -48,10 +50,20 @@ public class TournamentDividerView extends FrameLayout implements BaseAdapterVie
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    public AbsTournament getContent() {
+        return mContent;
+    }
+
     @Override
     public void onClick(final View v) {
         final Context context = getContext();
-        context.startActivity(TournamentActivity.getLaunchIntent(context, mContent));
+        final Activity activity = MiscUtils.optActivity(context);
+
+        if (activity instanceof OnClickListener) {
+            ((OnClickListener) activity).onClick(this);
+        } else {
+            context.startActivity(TournamentActivity.getLaunchIntent(context, mContent));
+        }
     }
 
     @Override
@@ -67,6 +79,11 @@ public class TournamentDividerView extends FrameLayout implements BaseAdapterVie
 
         mName.setText(mContent.getName());
         mDate.setText(mContent.getDate().getMediumForm());
+    }
+
+
+    public interface OnClickListener {
+        void onClick(final TournamentDividerView v);
     }
 
 }

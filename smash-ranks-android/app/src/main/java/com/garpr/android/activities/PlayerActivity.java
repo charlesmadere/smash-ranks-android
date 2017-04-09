@@ -27,6 +27,7 @@ import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.FavoritePlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
@@ -38,6 +39,7 @@ import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.ErrorLinearLayout;
 import com.garpr.android.views.MatchItemView;
+import com.garpr.android.views.TournamentDividerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +52,7 @@ public class PlayerActivity extends BaseActivity implements
         FavoritePlayersManager.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener, MatchItemView.OnClickListener,
         MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, TournamentDividerView.OnClickListener {
 
     private static final String TAG = "PlayerActivity";
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
@@ -185,6 +187,13 @@ public class PlayerActivity extends BaseActivity implements
     public void onClick(final MatchItemView v) {
         final Match match = v.getContent();
         startActivity(HeadToHeadActivity.getLaunchIntent(this, mFullPlayer, match));
+    }
+
+    @Override
+    public void onClick(final TournamentDividerView v) {
+        final AbsTournament tournament = v.getContent();
+        startActivity(TournamentActivity.getLaunchIntent(this, tournament.getId(),
+                tournament.getName(), tournament.getDate(), mRegionManager.getRegion(this)));
     }
 
     @Override
