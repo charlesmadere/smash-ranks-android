@@ -9,9 +9,13 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -38,7 +42,7 @@ public class KeyValueStoreTest extends BaseTest {
 
     @Test
     public void testContains() throws Exception {
-        assertFalse(mKeyValueStore.contains("hello"));
+        assertFalse(mKeyValueStore.contains("boolean"));
     }
 
     @Test
@@ -61,6 +65,58 @@ public class KeyValueStoreTest extends BaseTest {
     }
 
     @Test
+    public void testGetAll() throws Exception {
+        final Map<String, ?> all = mKeyValueStore.getAll();
+        assertTrue(all == null || all.isEmpty());
+    }
+
+    @Test
+    public void testGetAllAndSet() throws Exception {
+        Map<String, ?> all = mKeyValueStore.getAll();
+        assertTrue(all == null || all.isEmpty());
+
+        mKeyValueStore.setFloat("float", Float.MIN_VALUE);
+        all = mKeyValueStore.getAll();
+        assertNotNull(all);
+        assertEquals(all.size(), 1);
+
+        mKeyValueStore.setString("String", "Hello, World!");
+        all = mKeyValueStore.getAll();
+        assertNotNull(all);
+        assertEquals(all.size(), 2);
+    }
+
+    @Test
+    public void testGetAllAndSetAndRemove() throws Exception {
+        Map<String, ?> all = mKeyValueStore.getAll();
+        assertTrue(all == null || all.isEmpty());
+
+        mKeyValueStore.setFloat("float", Float.MIN_VALUE);
+        all = mKeyValueStore.getAll();
+        assertNotNull(all);
+        assertEquals(all.size(), 1);
+
+        mKeyValueStore.setString("String", "Hello, World!");
+        all = mKeyValueStore.getAll();
+        assertNotNull(all);
+        assertEquals(all.size(), 2);
+
+        mKeyValueStore.remove("float");
+        all = mKeyValueStore.getAll();
+        assertNotNull(all);
+        assertEquals(all.size(), 1);
+
+        mKeyValueStore.remove("hello");
+        all = mKeyValueStore.getAll();
+        assertNotNull(all);
+        assertEquals(all.size(), 1);
+
+        mKeyValueStore.remove("String");
+        all = mKeyValueStore.getAll();
+        assertTrue(all == null || all.isEmpty());
+    }
+
+    @Test
     public void testGetBoolean() throws Exception {
         assertFalse(mKeyValueStore.getBoolean("boolean", false));
     }
@@ -74,6 +130,24 @@ public class KeyValueStoreTest extends BaseTest {
 
         mKeyValueStore.setBoolean("boolean", false);
         assertFalse(mKeyValueStore.getBoolean("boolean", false));
+    }
+
+    @Test
+    public void testRemove() throws Exception {
+        mKeyValueStore.remove("boolean");
+        assertFalse(mKeyValueStore.contains("boolean"));
+    }
+
+    @Test
+    public void testRemoveAndSet() throws Exception {
+        mKeyValueStore.remove("long");
+        assertFalse(mKeyValueStore.contains("long"));
+
+        mKeyValueStore.setLong("long", 100);
+        assertTrue(mKeyValueStore.contains("long"));
+
+        mKeyValueStore.remove("long");
+        assertFalse(mKeyValueStore.contains("long"));
     }
 
 }
