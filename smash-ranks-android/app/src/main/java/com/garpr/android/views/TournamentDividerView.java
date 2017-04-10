@@ -13,11 +13,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.misc.MiscUtils;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.AbsTournament;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +30,9 @@ public class TournamentDividerView extends FrameLayout implements BaseAdapterVie
         View.OnClickListener {
 
     private AbsTournament mContent;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @BindView(R.id.tvDate)
     TextView mDate;
@@ -62,13 +69,20 @@ public class TournamentDividerView extends FrameLayout implements BaseAdapterVie
         if (activity instanceof OnClickListener) {
             ((OnClickListener) activity).onClick(this);
         } else {
-            context.startActivity(TournamentActivity.getLaunchIntent(context, mContent));
+            context.startActivity(TournamentActivity.getLaunchIntent(context, mContent,
+                    mRegionManager.getRegion(context)));
         }
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+
+        if (isInEditMode()) {
+            return;
+        }
+
+        App.get().getAppComponent().inject(this);
         ButterKnife.bind(this);
         setOnClickListener(this);
     }
