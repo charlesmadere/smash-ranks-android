@@ -2,7 +2,7 @@ package com.garpr.android.preferences;
 
 import android.support.annotation.NonNull;
 
-import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.FavoritePlayer;
 import com.garpr.android.models.NightMode;
 import com.garpr.android.models.Region;
 import com.garpr.android.preferences.persistent.PersistentGsonPreference;
@@ -15,7 +15,7 @@ public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
     private final KeyValueStore mKeyValueStore;
     private final Region mDefaultRegion;
 
-    private Preference<AbsPlayer> mIdentity;
+    private Preference<FavoritePlayer> mIdentity;
     private Preference<Integer> mLastVersion;
     private Preference<NightMode> mNightMode;
     private Preference<Region> mCurrentRegion;
@@ -44,10 +44,10 @@ public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
     }
 
     @Override
-    public Preference<AbsPlayer> getIdentity() {
+    public Preference<FavoritePlayer> getIdentity() {
         if (mIdentity == null) {
             mIdentity = new PersistentGsonPreference<>("IDENTITY", null, mKeyValueStore,
-                    AbsPlayer.class, mGson);
+                    FavoritePlayer.class, mGson);
         }
 
         return mIdentity;

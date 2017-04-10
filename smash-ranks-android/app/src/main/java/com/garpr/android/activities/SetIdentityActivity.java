@@ -269,7 +269,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     private void save() {
-        mIdentityManager.setIdentity(mSelectedPlayer);
+        mIdentityManager.setIdentity(mSelectedPlayer, mRegionManager.getRegion(this));
         Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show();
         setResult(ResultCodes.IDENTITY_SELECTED.mValue);
         supportFinishAfterTransition();

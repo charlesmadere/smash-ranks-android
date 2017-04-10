@@ -102,7 +102,10 @@ public class App extends Application {
             // this preference used to be a String but was changed to a Region
             mGeneralPreferenceStore.getCurrentRegion().delete();
 
-            // favorite players are missing necessary data :(
+            // it used to be an AbsPlayer, is now a FavoritePlayer
+            mGeneralPreferenceStore.getIdentity().delete();
+
+            // same as above :(
             mFavoritePlayersManager.clear();
         }
     }

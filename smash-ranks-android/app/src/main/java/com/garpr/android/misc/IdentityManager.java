@@ -19,6 +19,8 @@ public interface IdentityManager {
 
     boolean isPlayer(@Nullable final AbsPlayer player);
 
+    void removeIdentity();
+
     void removeListener(@Nullable final OnIdentityChangeListener listener);
 
     void setIdentity(@NonNull final AbsPlayer player, @NonNull final Region region);

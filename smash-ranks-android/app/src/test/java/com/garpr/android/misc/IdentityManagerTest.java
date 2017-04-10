@@ -25,11 +25,16 @@ public class IdentityManagerTest extends BaseTest {
 
     private static final String JSON_LITE_PLAYER = "{\"id\":\"583a4a15d2994e0577b05c74\",\"name\":\"homemadewaffles\"}";
 
+    private AbsPlayer mPlayer;
+
     @Inject
     Gson mGson;
 
     @Inject
     IdentityManager mIdentityManager;
+
+    @Inject
+    RegionManager mRegionManager;
 
 
     @Before
@@ -37,6 +42,8 @@ public class IdentityManagerTest extends BaseTest {
     public void setUp() throws Exception {
         super.setUp();
         getTestAppComponent().inject(this);
+
+        mPlayer = mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class);
     }
 
     @Test
@@ -54,11 +61,10 @@ public class IdentityManagerTest extends BaseTest {
         mIdentityManager.addListener(listener);
         assertNull(array[0]);
 
-        final AbsPlayer player = mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class);
-        mIdentityManager.setIdentity(player);
-        assertEquals(player, array[0]);
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion());
+        assertEquals(mPlayer, array[0]);
 
-        mIdentityManager.setIdentity(null);
+        mIdentityManager.removeIdentity();
         assertNull(array[0]);
     }
 
@@ -66,12 +72,11 @@ public class IdentityManagerTest extends BaseTest {
     public void testGetAndSetIdentity() throws Exception {
         assertNull(mIdentityManager.getIdentity());
 
-        final AbsPlayer player = mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class);
-        mIdentityManager.setIdentity(player);
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion());
         assertNotNull(mIdentityManager.getIdentity());
-        assertEquals(mIdentityManager.getIdentity(), player);
+        assertEquals(mIdentityManager.getIdentity(), mPlayer);
 
-        mIdentityManager.setIdentity(null);
+        mIdentityManager.removeIdentity();
         assertNull(mIdentityManager.getIdentity());
     }
 
@@ -79,10 +84,10 @@ public class IdentityManagerTest extends BaseTest {
     public void testHasIdentity() throws Exception {
         assertFalse(mIdentityManager.hasIdentity());
 
-        mIdentityManager.setIdentity(mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class));
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion());
         assertTrue(mIdentityManager.hasIdentity());
 
-        mIdentityManager.setIdentity(null);
+        mIdentityManager.removeIdentity();
         assertFalse(mIdentityManager.hasIdentity());
     }
 
@@ -90,46 +95,44 @@ public class IdentityManagerTest extends BaseTest {
     public void testIsIdWithNull() throws Exception {
         assertFalse(mIdentityManager.isId(null));
 
-        mIdentityManager.setIdentity(mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class));
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion());
         assertFalse(mIdentityManager.isId(null));
 
-        mIdentityManager.setIdentity(null);
+        mIdentityManager.removeIdentity();
         assertFalse(mIdentityManager.isId(null));
     }
 
     @Test
     public void testIsIdWithPlayer() throws Exception {
-        final AbsPlayer player = mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class);
-        assertFalse(mIdentityManager.isId(player.getId()));
+        assertFalse(mIdentityManager.isId(mPlayer.getId()));
 
-        mIdentityManager.setIdentity(player);
-        assertTrue(mIdentityManager.isId(player.getId()));
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion());
+        assertTrue(mIdentityManager.isId(mPlayer.getId()));
 
-        mIdentityManager.setIdentity(null);
-        assertFalse(mIdentityManager.isId(player.getId()));
+        mIdentityManager.removeIdentity();
+        assertFalse(mIdentityManager.isId(mPlayer.getId()));
     }
 
     @Test
     public void testIsPlayerWithNull() throws Exception {
         assertFalse(mIdentityManager.isPlayer(null));
 
-        mIdentityManager.setIdentity(mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class));
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion());
         assertFalse(mIdentityManager.isPlayer(null));
 
-        mIdentityManager.setIdentity(null);
+        mIdentityManager.removeIdentity();
         assertFalse(mIdentityManager.isPlayer(null));
     }
 
     @Test
     public void testIsPlayerWithPlayer() throws Exception {
-        final AbsPlayer player = mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class);
-        assertFalse(mIdentityManager.isPlayer(player));
+        assertFalse(mIdentityManager.isPlayer(mPlayer));
 
-        mIdentityManager.setIdentity(player);
-        assertTrue(mIdentityManager.isPlayer(player));
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion());
+        assertTrue(mIdentityManager.isPlayer(mPlayer));
 
-        mIdentityManager.setIdentity(null);
-        assertFalse(mIdentityManager.isPlayer(player));
+        mIdentityManager.removeIdentity();
+        assertFalse(mIdentityManager.isPlayer(mPlayer));
     }
 
     @Test
@@ -145,13 +148,12 @@ public class IdentityManagerTest extends BaseTest {
         };
 
         mIdentityManager.addListener(listener);
-        final AbsPlayer player = mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer.class);
-        mIdentityManager.setIdentity(player);
-        assertEquals(player, array[0]);
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion());
+        assertEquals(mPlayer, array[0]);
 
         mIdentityManager.removeListener(listener);
-        mIdentityManager.setIdentity(null);
-        assertEquals(player, array[0]);
+        mIdentityManager.removeIdentity();
+        assertEquals(mPlayer, array[0]);
     }
 
 }

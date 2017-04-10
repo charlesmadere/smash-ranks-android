@@ -111,6 +111,15 @@ public class IdentityManagerImpl implements IdentityManager {
     }
 
     @Override
+    public void removeIdentity() {
+        mTimber.d(TAG, "identity is being removed, old identity was \"" +
+                getPlayerString(getIdentity()) + "\"");
+
+        mIdentity.delete();
+        notifyListeners();
+    }
+
+    @Override
     public void removeListener(@Nullable final OnIdentityChangeListener listener) {
         synchronized (mListeners) {
             final Iterator<WeakReference<OnIdentityChangeListener>> iterator = mListeners.iterator();
@@ -128,7 +137,7 @@ public class IdentityManagerImpl implements IdentityManager {
 
     @Override
     public void setIdentity(@NonNull final AbsPlayer player, @NonNull final Region region) {
-        mTimber.d(TAG, "old identity is \"" + getPlayerString(getIdentity()) + "\"" +
+        mTimber.d(TAG, "old identity was \"" + getPlayerString(getIdentity()) + "\"" +
                 ", new identity is \"" + getPlayerString(player) + "\"");
 
         mIdentity.set(new FavoritePlayer(player, region));

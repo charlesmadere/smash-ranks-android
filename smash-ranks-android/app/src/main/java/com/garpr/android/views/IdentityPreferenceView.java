@@ -54,7 +54,7 @@ public class IdentityPreferenceView extends SimplePreferenceView implements
 
     @Override
     public void onClick(final DialogInterface dialog, final int which) {
-        mIdentityManager.setIdentity(null);
+        mIdentityManager.removeIdentity();
     }
 
     @Override
