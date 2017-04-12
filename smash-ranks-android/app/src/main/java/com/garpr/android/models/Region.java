@@ -87,6 +87,10 @@ public class Region implements Parcelable {
     }
 
     public void setEndpoint(@NonNull final Endpoint endpoint) {
+        if (mEndpoint != null) {
+            throw new RuntimeException("mEndpoint is not null");
+        }
+
         mEndpoint = endpoint;
     }
 
