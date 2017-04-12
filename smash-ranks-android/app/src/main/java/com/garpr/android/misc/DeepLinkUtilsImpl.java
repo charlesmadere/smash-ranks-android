@@ -280,7 +280,7 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
 
         // noinspection ConstantConditions
         for (final Region region : regionsBundle.getRegions()) {
-            if (uri.startsWith(region.getEndpoint().getBasePath())) {
+            if (uri.startsWith(region.getEndpoint().getWebPath(region.getId()))) {
                 return region;
             }
         }

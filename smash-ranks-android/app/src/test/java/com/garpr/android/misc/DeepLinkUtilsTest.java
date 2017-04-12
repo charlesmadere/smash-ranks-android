@@ -102,6 +102,16 @@ public class DeepLinkUtilsTest extends BaseTest {
         assertNull(mDeepLinkUtils.getRegion((Uri) null, null));
         assertNull(mDeepLinkUtils.getRegion("", null));
         assertNull(mDeepLinkUtils.getRegion("   ", null));
+        assertNull(mDeepLinkUtils.getRegion((Intent) null, mRegionsBundle));
+        assertNull(mDeepLinkUtils.getRegion((String) null, mRegionsBundle));
+        assertNull(mDeepLinkUtils.getRegion((Uri) null, mRegionsBundle));
+        assertNull(mDeepLinkUtils.getRegion("", mRegionsBundle));
+        assertNull(mDeepLinkUtils.getRegion("   ", mRegionsBundle));
+        assertNull(mDeepLinkUtils.getRegion((Intent) null, mRegionsBundleEmpty));
+        assertNull(mDeepLinkUtils.getRegion((String) null, mRegionsBundleEmpty));
+        assertNull(mDeepLinkUtils.getRegion((Uri) null, mRegionsBundleEmpty));
+        assertNull(mDeepLinkUtils.getRegion("", mRegionsBundleEmpty));
+        assertNull(mDeepLinkUtils.getRegion("   ", mRegionsBundleEmpty));
         assertNull(mDeepLinkUtils.getRegion(PLAYER_GINGER, mRegionsBundleEmpty));
         assertNull(mDeepLinkUtils.getRegion(PLAYER_SFAT, mRegionsBundleEmpty));
         assertNull(mDeepLinkUtils.getRegion(PLAYER_SWEDISH_DELIGHT, mRegionsBundleEmpty));

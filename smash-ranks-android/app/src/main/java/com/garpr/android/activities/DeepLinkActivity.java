@@ -9,7 +9,6 @@ import android.widget.Toast;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.DeepLinkUtils;
-import com.garpr.android.models.Endpoint;
 import com.garpr.android.models.Region;
 import com.garpr.android.models.RegionsBundle;
 import com.garpr.android.networking.ApiCall;
@@ -22,8 +21,6 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
 
     private static final String TAG = "DeepLinkActivity";
 
-    private Region mRegion;
-
     @Inject
     DeepLinkUtils mDeepLinkUtils;
 
@@ -31,8 +28,8 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
     ServerApi mServerApi;
 
 
-    private void deepLink() {
-        final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(this, getIntent(), mRegion);
+    private void deepLink(final Region region) {
+        final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(this, getIntent(), region);
 
         if (intentStack == null || intentStack.length == 0) {
             startActivity(HomeActivity.getLaunchIntent(this));
@@ -54,11 +51,6 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
         error();
     }
 
-    private void fetchRegions() {
-        mRegion = null;
-        mServerApi.getRegions(new ApiCall<>(this));
-    }
-
     @Override
     protected String getActivityName() {
         return TAG;
@@ -70,23 +62,22 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_deep_link);
 
-        if (!mDeepLinkUtils.isValidUri(getIntent())) {
+        if (mDeepLinkUtils.isValidUri(getIntent())) {
+            mServerApi.getRegions(new ApiCall<>(this));
+        } else {
             error();
-            return;
         }
-
-        fetchRegions();
     }
 
     @Override
     public void success(@Nullable final RegionsBundle regionsBundle) {
         if (regionsBundle != null && regionsBundle.hasRegions()) {
-            final Endpoint endpoint = mDeepLinkUtils.getEndpoint(getIntent());
+            final Region region = mDeepLinkUtils.getRegion(getIntent(), regionsBundle);
 
-            if (endpoint == null) {
+            if (region == null) {
                 error();
             } else {
-                deepLink();
+                deepLink(region);
             }
         } else {
             error();
