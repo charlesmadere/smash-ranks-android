@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.View;
 import android.widget.Toast;
 
 import com.garpr.android.App;
@@ -20,8 +18,6 @@ import com.garpr.android.networking.ServerApi;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-
 public class DeepLinkActivity extends BaseActivity implements ApiListener<RegionsBundle> {
 
     private static final String TAG = "DeepLinkActivity";
@@ -33,12 +29,6 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
 
     @Inject
     ServerApi mServerApi;
-
-    @BindView(R.id.error)
-    View mError;
-
-    @BindView(R.id.refreshLayout)
-    SwipeRefreshLayout mRefreshLayout;
 
 
     private void deepLink() {
@@ -66,7 +56,6 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
 
     private void fetchRegions() {
         mRegion = null;
-        mRefreshLayout.setRefreshing(true);
         mServerApi.getRegions(new ApiCall<>(this));
     }
 
