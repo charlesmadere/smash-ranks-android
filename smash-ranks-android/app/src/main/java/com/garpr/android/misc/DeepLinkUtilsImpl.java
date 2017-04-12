@@ -15,6 +15,7 @@ import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.activities.TournamentsActivity;
 import com.garpr.android.models.Endpoint;
 import com.garpr.android.models.Region;
+import com.garpr.android.models.RegionsBundle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,11 +179,8 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
             return;
         }
 
-        if (sameRegion) {
-            intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null));
-        } else {
-            intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null, region));
-        }
+        intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null,
+                sameRegion ? null : region));
     }
 
     private void buildRankingsIntentStack(final Context context, final List<Intent> intentStack,
@@ -257,6 +255,24 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
         } else {
             return getEndpoint(uri.toString());
         }
+    }
+
+    @Nullable
+    @Override
+    public Region getRegion(@Nullable final RegionsBundle regionsBundle,
+            @Nullable final Endpoint endpoint) {
+        if (regionsBundle == null || !regionsBundle.hasRegions() || endpoint == null) {
+            return null;
+        }
+
+        // noinspection ConstantConditions
+        for (final Region region : regionsBundle.getRegions()) {
+            if (endpoint.equals(region.getEndpoint())) {
+                return region;
+            }
+        }
+
+        return null;
     }
 
     @Override

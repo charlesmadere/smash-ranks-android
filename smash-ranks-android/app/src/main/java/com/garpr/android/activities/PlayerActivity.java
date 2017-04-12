@@ -99,20 +99,18 @@ public class PlayerActivity extends BaseActivity implements
     View mEmpty;
 
 
-    public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player) {
-        final Region region = player instanceof FavoritePlayer ?
-                ((FavoritePlayer) player).getRegion() : null;
+    public static Intent getLaunchIntent(final Context context, @NonNull final AbsPlayer player,
+            @Nullable Region region) {
+        if (player instanceof FavoritePlayer) {
+            region = ((FavoritePlayer) player).getRegion();
+        }
 
         return getLaunchIntent(context, player.getId(), player.getName(), region);
     }
 
-    public static Intent getLaunchIntent(final Context context, @NonNull final Ranking ranking) {
-        return getLaunchIntent(context, ranking.getId(), ranking.getName());
-    }
-
-    public static Intent getLaunchIntent(final Context context, @NonNull final String playerId,
-            @Nullable final String playerName) {
-        return getLaunchIntent(context, playerId, playerName, null);
+    public static Intent getLaunchIntent(final Context context, @NonNull final Ranking ranking,
+            @Nullable final Region region) {
+        return getLaunchIntent(context, ranking.getId(), ranking.getName(), region);
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String playerId,

@@ -23,6 +23,7 @@ import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
 import com.garpr.android.models.RankingsBundle;
+import com.garpr.android.models.Region;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.RankingsLayout;
 
@@ -205,7 +206,8 @@ public class HomeActivity extends BaseActivity implements
 
             case R.id.miViewYourself:
                 // noinspection ConstantConditions
-                startActivity(PlayerActivity.getLaunchIntent(this, mIdentityManager.getIdentity()));
+                startActivity(PlayerActivity.getLaunchIntent(this, mIdentityManager.getIdentity(),
+                        mRegionManager.getRegion(this)));
                 return true;
         }
 
@@ -231,12 +233,15 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void onRankingsBundleFetched(final RankingsLayout layout) {
+        final Region region = mRegionManager.getRegion(this);
+        setTitle(region.getEndpoint().getName());
+
         final RankingsBundle rankingsBundle = layout.getRankingsBundle();
 
         if (rankingsBundle == null) {
             setSubtitle("");
         } else {
-            setSubtitle(getString(R.string.x_updated_y, mRegionManager.getRegion(this).getDisplayName(),
+            setSubtitle(getString(R.string.x_updated_y, region.getDisplayName(),
                     rankingsBundle.getTime().getShortForm()));
         }
 
@@ -245,16 +250,18 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void onRegionChange(final RegionManager regionManager) {
-        if (mAdapter == null) {
-            return;
-        }
+        final Region region = mRegionManager.getRegion(this);
+        setTitle(region.getEndpoint().getName());
 
         if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
             MenuItemCompat.collapseActionView(mSearchMenuItem);
         }
 
         MiscUtils.closeKeyboard(this);
-        mAdapter.refresh();
+
+        if (mAdapter != null) {
+            mAdapter.refresh();
+        }
     }
 
     @Override

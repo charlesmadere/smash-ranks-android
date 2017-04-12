@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 
 import com.garpr.android.models.Endpoint;
 import com.garpr.android.models.Region;
+import com.garpr.android.models.RegionsBundle;
 
 public interface DeepLinkUtils {
 
@@ -31,6 +32,9 @@ public interface DeepLinkUtils {
 
     @Nullable
     Endpoint getEndpoint(@Nullable final Uri uri);
+
+    @Nullable
+    Region getRegion(@Nullable final RegionsBundle regionsBundle, @Nullable final Endpoint endpoint);
 
     boolean isValidUri(@Nullable final Intent intent);
 

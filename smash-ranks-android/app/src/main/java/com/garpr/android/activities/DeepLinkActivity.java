@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.Toast;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.DeepLinkUtils;
+import com.garpr.android.models.Endpoint;
 import com.garpr.android.models.Region;
 import com.garpr.android.models.RegionsBundle;
 import com.garpr.android.networking.ApiCall;
@@ -51,9 +53,15 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
         supportFinishAfterTransition();
     }
 
+    private void error() {
+        Toast.makeText(this, R.string.error_loading_deep_link_data, Toast.LENGTH_LONG).show();
+        startActivity(HomeActivity.getLaunchIntent(this));
+        supportFinishAfterTransition();
+    }
+
     @Override
     public void failure(final int errorCode) {
-        // TODO
+        error();
     }
 
     private void fetchRegions() {
@@ -74,8 +82,7 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
         setContentView(R.layout.activity_deep_link);
 
         if (!mDeepLinkUtils.isValidUri(getIntent())) {
-            startActivity(HomeActivity.getLaunchIntent(this));
-            supportFinishAfterTransition();
+            error();
             return;
         }
 
@@ -84,7 +91,17 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
 
     @Override
     public void success(@Nullable final RegionsBundle regionsBundle) {
-        // TODO
+        if (regionsBundle != null && regionsBundle.hasRegions()) {
+            final Endpoint endpoint = mDeepLinkUtils.getEndpoint(getIntent());
+
+            if (endpoint == null) {
+                error();
+            } else {
+                deepLink();
+            }
+        } else {
+            error();
+        }
     }
 
 }

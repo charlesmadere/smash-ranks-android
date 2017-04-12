@@ -13,11 +13,15 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.activities.HeadToHeadActivity;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.FullTournament;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +31,9 @@ public class TournamentMatchItemView extends IdentityFrameLayout implements
         View.OnClickListener {
 
     private FullTournament.Match mContent;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @BindView(R.id.tvLoserName)
     TextView mLoserName;
@@ -59,12 +66,14 @@ public class TournamentMatchItemView extends IdentityFrameLayout implements
         switch (which) {
             case 0:
                 context.startActivity(PlayerActivity.getLaunchIntent(context,
-                        mContent.getWinnerId(), mContent.getWinnerName()));
+                        mContent.getWinnerId(), mContent.getWinnerName(),
+                        mRegionManager.getRegion(context)));
                 break;
 
             case 1:
                 context.startActivity(PlayerActivity.getLaunchIntent(context,
-                        mContent.getLoserId(), mContent.getLoserName()));
+                        mContent.getLoserId(), mContent.getLoserName(),
+                        mRegionManager.getRegion(context)));
                 break;
 
             case 2:
@@ -93,6 +102,12 @@ public class TournamentMatchItemView extends IdentityFrameLayout implements
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+
+        if (isInEditMode()) {
+            return;
+        }
+
+        App.get().getAppComponent().inject(this);
         ButterKnife.bind(this);
         setOnClickListener(this);
     }

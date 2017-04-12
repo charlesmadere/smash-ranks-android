@@ -202,11 +202,13 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
                 return true;
 
             case R.id.miViewOpponent:
-                startActivity(PlayerActivity.getLaunchIntent(this, mOpponentId, mOpponentName));
+                startActivity(PlayerActivity.getLaunchIntent(this, mOpponentId, mOpponentName,
+                        mRegionManager.getRegion(this)));
                 return true;
 
             case R.id.miViewPlayer:
-                startActivity(PlayerActivity.getLaunchIntent(this, mPlayerId, mPlayerName));
+                startActivity(PlayerActivity.getLaunchIntent(this, mPlayerId, mPlayerName,
+                        mRegionManager.getRegion(this)));
                 return true;
         }
 
