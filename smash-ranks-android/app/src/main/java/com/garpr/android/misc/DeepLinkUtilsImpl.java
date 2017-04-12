@@ -259,20 +259,43 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
 
     @Nullable
     @Override
-    public Region getRegion(@Nullable final RegionsBundle regionsBundle,
-            @Nullable final Endpoint endpoint) {
-        if (regionsBundle == null || !regionsBundle.hasRegions() || endpoint == null) {
+    public Region getRegion(@Nullable final Intent intent,
+            @Nullable final RegionsBundle regionsBundle) {
+        if (intent == null) {
+            return null;
+        } else {
+            return getRegion(intent.getData(), regionsBundle);
+        }
+    }
+
+    @Nullable
+    @Override
+    public Region getRegion(@Nullable String uri, @Nullable final RegionsBundle regionsBundle) {
+        if (TextUtils.isEmpty(uri) || TextUtils.getTrimmedLength(uri) == 0 ||
+                regionsBundle == null || !regionsBundle.hasRegions()) {
             return null;
         }
 
+        uri = uri.trim();
+
         // noinspection ConstantConditions
         for (final Region region : regionsBundle.getRegions()) {
-            if (endpoint.equals(region.getEndpoint())) {
+            if (uri.startsWith(region.getEndpoint().getBasePath())) {
                 return region;
             }
         }
 
         return null;
+    }
+
+    @Nullable
+    @Override
+    public Region getRegion(@Nullable final Uri uri, @Nullable final RegionsBundle regionsBundle) {
+        if (uri == null) {
+            return null;
+        } else {
+            return getRegion(uri.toString(), regionsBundle);
+        }
     }
 
     @Override

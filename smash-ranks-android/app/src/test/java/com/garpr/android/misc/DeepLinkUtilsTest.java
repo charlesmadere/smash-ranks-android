@@ -97,17 +97,32 @@ public class DeepLinkUtilsTest extends BaseTest {
 
     @Test
     public void testGetRegion() throws Exception {
-        assertNull(mDeepLinkUtils.getRegion(null, null));
-        assertNull(mDeepLinkUtils.getRegion(null, Endpoint.GAR_PR));
-        assertNull(mDeepLinkUtils.getRegion(mRegionsBundle, null));
-        assertNull(mDeepLinkUtils.getRegion(mRegionsBundleEmpty, null));
-        assertNull(mDeepLinkUtils.getRegion(mRegionsBundleEmpty, Endpoint.NOT_GAR_PR));
+        assertNull(mDeepLinkUtils.getRegion((Intent) null, null));
+        assertNull(mDeepLinkUtils.getRegion((String) null, null));
+        assertNull(mDeepLinkUtils.getRegion((Uri) null, null));
+        assertNull(mDeepLinkUtils.getRegion("", null));
+        assertNull(mDeepLinkUtils.getRegion("   ", null));
+        assertNull(mDeepLinkUtils.getRegion(PLAYER_GINGER, mRegionsBundleEmpty));
+        assertNull(mDeepLinkUtils.getRegion(PLAYER_SFAT, mRegionsBundleEmpty));
+        assertNull(mDeepLinkUtils.getRegion(PLAYER_SWEDISH_DELIGHT, mRegionsBundleEmpty));
+        assertNull(mDeepLinkUtils.getRegion(RANKINGS_LONG_ISLAND, mRegionsBundleEmpty));
+        assertNull(mDeepLinkUtils.getRegion(TOURNAMENTS_NYC, mRegionsBundleEmpty));
 
-        Region region = mDeepLinkUtils.getRegion(mRegionsBundle, Endpoint.GAR_PR);
+        Region region = mDeepLinkUtils.getRegion(PLAYER_GINGER, mRegionsBundle);
         assertNotNull(region);
+        assertEquals(region.getId(), "chicago");
 
-        region = mDeepLinkUtils.getRegion(mRegionsBundle, Endpoint.NOT_GAR_PR);
+        region = mDeepLinkUtils.getRegion(PLAYER_SFAT, mRegionsBundle);
         assertNotNull(region);
+        assertEquals(region.getId(), "norcal");
+
+        region = mDeepLinkUtils.getRegion(RANKINGS_NORCAL, mRegionsBundle);
+        assertNotNull(region);
+        assertEquals(region.getId(), "norcal");
+
+        region = mDeepLinkUtils.getRegion(TOURNAMENT_APOLLO_III, mRegionsBundle);
+        assertNotNull(region);
+        assertEquals(region.getId(), "nyc");
     }
 
     @Test

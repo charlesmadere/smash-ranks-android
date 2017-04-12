@@ -34,7 +34,13 @@ public interface DeepLinkUtils {
     Endpoint getEndpoint(@Nullable final Uri uri);
 
     @Nullable
-    Region getRegion(@Nullable final RegionsBundle regionsBundle, @Nullable final Endpoint endpoint);
+    Region getRegion(@Nullable final Intent intent, @Nullable final RegionsBundle regionsBundle);
+
+    @Nullable
+    Region getRegion(@Nullable final String uri, @Nullable final RegionsBundle regionsBundle);
+
+    @Nullable
+    Region getRegion(@Nullable final Uri uri, @Nullable final RegionsBundle regionsBundle);
 
     boolean isValidUri(@Nullable final Intent intent);
 
