@@ -119,6 +119,7 @@ public class KeyValueStoreTest extends BaseTest {
     @Test
     public void testGetBoolean() throws Exception {
         assertFalse(mKeyValueStore.getBoolean("boolean", false));
+        assertTrue(mKeyValueStore.getBoolean("boolean", true));
     }
 
     @Test
@@ -130,6 +131,32 @@ public class KeyValueStoreTest extends BaseTest {
 
         mKeyValueStore.setBoolean("boolean", false);
         assertFalse(mKeyValueStore.getBoolean("boolean", false));
+    }
+
+    @Test
+    public void testGetFloat() throws Exception {
+        assertEquals(Float.valueOf(mKeyValueStore.getFloat("float", Float.MIN_VALUE)),
+                Float.valueOf(Float.MIN_VALUE));
+
+        assertEquals(Float.valueOf(mKeyValueStore.getFloat("float", Float.MAX_VALUE)),
+                Float.valueOf(Float.MAX_VALUE));
+    }
+
+    @Test
+    public void testGetAndSetFloat() throws Exception {
+        assertEquals(Float.valueOf(mKeyValueStore.getFloat("float", Float.MIN_VALUE)),
+                Float.valueOf(Float.MIN_VALUE));
+
+        assertEquals(Float.valueOf(mKeyValueStore.getFloat("float", Float.MAX_VALUE)),
+                Float.valueOf(Float.MAX_VALUE));
+
+        mKeyValueStore.setFloat("float", Float.MAX_VALUE);
+        assertEquals(Float.valueOf(mKeyValueStore.getFloat("float", Float.MIN_VALUE)),
+                Float.valueOf(Float.MAX_VALUE));
+
+        mKeyValueStore.setFloat("float", Float.MIN_VALUE);
+        assertEquals(Float.valueOf(mKeyValueStore.getFloat("float", Float.MIN_VALUE)),
+                Float.valueOf(Float.MIN_VALUE));
     }
 
     @Test
