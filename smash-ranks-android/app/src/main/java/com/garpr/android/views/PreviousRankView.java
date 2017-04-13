@@ -43,9 +43,10 @@ public class PreviousRankView extends AppCompatImageView implements BaseAdapterV
             tint = R.color.win;
         }
 
-        final Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(getContext(),
+        final Context context = getContext();
+        final Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context,
                 drawableResId));
-        DrawableCompat.setTint(drawable, ContextCompat.getColor(getContext(), tint));
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tint));
         setImageDrawable(drawable);
 
         setVisibility(VISIBLE);
