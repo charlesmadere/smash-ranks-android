@@ -16,6 +16,7 @@ import com.garpr.android.R;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.misc.FavoritePlayersManager;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.Ranking;
 
 import java.text.NumberFormat;
@@ -33,6 +34,13 @@ public class RankingItemView extends IdentityFrameLayout implements BaseAdapterV
 
     @Inject
     FavoritePlayersManager mFavoritePlayersManager;
+
+    @Inject
+    RegionManager mRegionManager;
+
+    @Nullable
+    @BindView(R.id.previousRankView)
+    PreviousRankView mPreviousRankView;
 
     @BindView(R.id.tvName)
     TextView mName;
@@ -79,7 +87,8 @@ public class RankingItemView extends IdentityFrameLayout implements BaseAdapterV
     @Override
     public void onClick(final View v) {
         final Context context = getContext();
-        context.startActivity(PlayerActivity.getLaunchIntent(context, mContent));
+        context.startActivity(PlayerActivity.getLaunchIntent(context, mContent,
+                mRegionManager.getRegion(context)));
     }
 
     @Override
@@ -100,12 +109,16 @@ public class RankingItemView extends IdentityFrameLayout implements BaseAdapterV
     @Override
     public boolean onLongClick(final View v) {
         return mFavoritePlayersManager.showAddOrRemovePlayerDialog(getContext(),
-                mContent.getPlayer());
+                mContent.getPlayer(), mRegionManager.getRegion(getContext()));
     }
 
     @Override
     public void setContent(final Ranking content) {
         mContent = content;
+
+        if (mPreviousRankView != null) {
+            mPreviousRankView.setContent(mContent);
+        }
 
         mRank.setText(mNumberFormat.format(mContent.getRank()));
         mName.setText(mContent.getName());

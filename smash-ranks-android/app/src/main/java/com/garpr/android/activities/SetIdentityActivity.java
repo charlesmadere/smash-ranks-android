@@ -82,7 +82,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mSelectedPlayer = null;
         mPlayersBundle = null;
         showError();
@@ -178,6 +178,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_set_identity);
+        setSubtitle(mRegionManager.getRegion(this).getDisplayName());
 
         fetchPlayersBundle();
     }
@@ -268,7 +269,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     private void save() {
-        mIdentityManager.setIdentity(mSelectedPlayer);
+        mIdentityManager.setIdentity(mSelectedPlayer, mRegionManager.getRegion(this));
         Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show();
         setResult(ResultCodes.IDENTITY_SELECTED.mValue);
         supportFinishAfterTransition();

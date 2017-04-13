@@ -2,27 +2,27 @@ package com.garpr.android.preferences;
 
 import android.support.annotation.NonNull;
 
-import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.FavoritePlayer;
 import com.garpr.android.models.NightMode;
+import com.garpr.android.models.Region;
 import com.garpr.android.preferences.persistent.PersistentGsonPreference;
 import com.garpr.android.preferences.persistent.PersistentIntegerPreference;
-import com.garpr.android.preferences.persistent.PersistentStringPreference;
 import com.google.gson.Gson;
 
 public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
 
     private final Gson mGson;
     private final KeyValueStore mKeyValueStore;
-    private final String mDefaultRegion;
+    private final Region mDefaultRegion;
 
-    private Preference<AbsPlayer> mIdentity;
+    private Preference<FavoritePlayer> mIdentity;
     private Preference<Integer> mLastVersion;
     private Preference<NightMode> mNightMode;
-    private Preference<String> mCurrentRegion;
+    private Preference<Region> mCurrentRegion;
 
 
     public GeneralPreferenceStoreImpl(@NonNull final Gson gson,
-            @NonNull final KeyValueStore keyValueStore, @NonNull final String defaultRegion) {
+            @NonNull final KeyValueStore keyValueStore, @NonNull final Region defaultRegion) {
         mGson = gson;
         mKeyValueStore = keyValueStore;
         mDefaultRegion = defaultRegion;
@@ -34,20 +34,20 @@ public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
     }
 
     @Override
-    public Preference<String> getCurrentRegion() {
+    public Preference<Region> getCurrentRegion() {
         if (mCurrentRegion == null) {
-            mCurrentRegion = new PersistentStringPreference("CURRENT_REGION", mDefaultRegion,
-                    mKeyValueStore);
+            mCurrentRegion = new PersistentGsonPreference<>("CURRENT_REGION", mDefaultRegion,
+                    mKeyValueStore, Region.class, mGson);
         }
 
         return mCurrentRegion;
     }
 
     @Override
-    public Preference<AbsPlayer> getIdentity() {
+    public Preference<FavoritePlayer> getIdentity() {
         if (mIdentity == null) {
             mIdentity = new PersistentGsonPreference<>("IDENTITY", null, mKeyValueStore,
-                    AbsPlayer.class, mGson);
+                    FavoritePlayer.class, mGson);
         }
 
         return mIdentity;

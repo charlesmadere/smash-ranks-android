@@ -27,6 +27,8 @@ import static org.junit.Assert.assertTrue;
 @Config(constants = BuildConfig.class)
 public class AbsPlayerTest extends BaseTest {
 
+    private static final String JSON_FAVORITE_PLAYER = "{\"region\":{\"endpoint\":\"gar_pr\",\"display_name\":\"Norcal\",\"id\":\"norcal\"},\"id\":\"583a4a15d2994e0577b05c74\",\"name\":\"homemadewaffles\"}";
+
     private static final String JSON_FULL_PLAYER = "{\"ratings\":{\"googlemtv\":{\"mu\":37.05546025182014,\"sigma\":2.0824461049194727},\"norcal\":{\"mu\":37.02140742867105,\"sigma\":2.3075802611877165}},\"name\":\"gaR\",\"regions\":[\"norcal\",\"googlemtv\"],\"merge_children\":[\"58523b44d2994e15c7dea945\"],\"id\":\"58523b44d2994e15c7dea945\",\"merged\":false,\"merge_parent\":null}";
 
     private static final String JSON_LITE_PLAYER_1 = "{\"id\":\"583a4a15d2994e0577b05c74\",\"name\":\"homemadewaffles\"}";
@@ -54,6 +56,27 @@ public class AbsPlayerTest extends BaseTest {
         assertEquals(list.get(0), zero);
         assertEquals(list.get(1), one);
         assertEquals(list.get(2), two);
+    }
+
+    @Test
+    public void testFromJsonFavoritePlayer() throws Exception {
+        final AbsPlayer player = mGson.fromJson(JSON_FAVORITE_PLAYER, AbsPlayer.class);
+        assertNotNull(player);
+
+        assertEquals(player.getName(), "homemadewaffles");
+        assertEquals(player.getId(), "583a4a15d2994e0577b05c74");
+
+        assertTrue(player instanceof FavoritePlayer);
+        assertEquals(player.getKind(), AbsPlayer.Kind.FAVORITE);
+
+        final FavoritePlayer favoritePlayer = (FavoritePlayer) player;
+        final Region region = favoritePlayer.getRegion();
+        assertNotNull(region);
+        assertEquals(region.getId(), "norcal");
+
+        final Endpoint endpoint = region.getEndpoint();
+        assertNotNull(endpoint);
+        assertEquals(endpoint, Endpoint.GAR_PR);
     }
 
     @Test
@@ -89,6 +112,26 @@ public class AbsPlayerTest extends BaseTest {
     public void testFromNull() throws Exception {
         final AbsPlayer player = mGson.fromJson((String) null, AbsPlayer.class);
         assertNull(player);
+    }
+
+    @Test
+    public void testToJsonAndBackWithFavoritePlayer() throws Exception {
+        final AbsPlayer before = mGson.fromJson(JSON_FAVORITE_PLAYER, AbsPlayer.class);
+        final String json = mGson.toJson(before, AbsPlayer.class);
+        final AbsPlayer after = mGson.fromJson(json, AbsPlayer.class);
+
+        assertEquals(before, after);
+        assertEquals(before.getKind(), after.getKind());
+    }
+
+    @Test
+    public void testToJsonAndBackWithFullPlayer() throws Exception {
+        final AbsPlayer before = mGson.fromJson(JSON_FULL_PLAYER, AbsPlayer.class);
+        final String json = mGson.toJson(before, AbsPlayer.class);
+        final AbsPlayer after = mGson.fromJson(json, AbsPlayer.class);
+
+        assertEquals(before, after);
+        assertEquals(before.getKind(), after.getKind());
     }
 
     @Test

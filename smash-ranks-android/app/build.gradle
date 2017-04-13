@@ -29,8 +29,8 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 1010
-        versionName '0.10.10'
+        versionCode 1011
+        versionName '0.10.11'
     }
 
     buildTypes {
@@ -57,10 +57,10 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
 
     // Google's Dagger
-    apt 'com.google.dagger:dagger-compiler:2.9'
-    compile 'com.google.dagger:dagger:2.9'
+    apt 'com.google.dagger:dagger-compiler:2.10'
+    compile 'com.google.dagger:dagger:2.10'
     provided 'javax.annotation:jsr250-api:1.0'
-    testApt 'com.google.dagger:dagger-compiler:2.9'
+    testApt 'com.google.dagger:dagger-compiler:2.10'
 
     // Google's GSON
     compile 'com.google.code.gson:gson:2.8.0'
@@ -73,7 +73,7 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.5.1'
 
     // Robolectric
-    testCompile "org.robolectric:robolectric:3.3.1"
+    testCompile "org.robolectric:robolectric:3.3.2"
 
     // Square's Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.2.0'

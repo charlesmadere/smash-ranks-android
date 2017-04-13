@@ -2,6 +2,7 @@ package com.garpr.android.misc;
 
 import android.os.Parcel;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
@@ -134,6 +135,25 @@ public final class ParcelableUtils {
 
         for (int i = 0; i < size; ++i) {
             writeAbsTournament(list.get(i), dest, flags);
+        }
+    }
+
+    @Nullable
+    public static Integer readInteger(final Parcel source) {
+        final String value = source.readString();
+
+        if (TextUtils.isEmpty(value)) {
+            return null;
+        } else {
+            return Integer.valueOf(value);
+        }
+    }
+
+    public static void writeInteger(@Nullable final Integer integer, final Parcel dest) {
+        if (integer == null) {
+            dest.writeString(null);
+        } else {
+            dest.writeString(integer.toString());
         }
     }
 

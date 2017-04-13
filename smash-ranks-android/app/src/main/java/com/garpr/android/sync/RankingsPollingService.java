@@ -61,7 +61,7 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mTimber.e(TAG, "canceling any notifications, failure fetching rankings");
         mNotificationManager.cancelAll();
     }

@@ -24,10 +24,12 @@ import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.Match;
+import com.garpr.android.models.Region;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
+import com.garpr.android.views.ErrorLinearLayout;
 
 import javax.inject.Inject;
 
@@ -57,14 +59,14 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     @Inject
     ShareUtils mShareUtils;
 
+    @BindView(R.id.error)
+    ErrorLinearLayout mError;
+
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
-
-    @BindView(R.id.error)
-    View mError;
 
     @BindView(R.id.empty)
     View mEmpty;
@@ -74,24 +76,20 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
 
     public static Intent getLaunchIntent(final Context context,
-            @NonNull final AbsTournament tournament) {
+            @NonNull final AbsTournament tournament, @Nullable final Region region) {
         return getLaunchIntent(context, tournament.getId(), tournament.getName(),
-                tournament.getDate());
+                tournament.getDate(), region);
     }
 
-    public static Intent getLaunchIntent(final Context context, @NonNull final Match match) {
+    public static Intent getLaunchIntent(final Context context, @NonNull final Match match,
+            @Nullable final Region region) {
         return getLaunchIntent(context, match.getTournament().getId(),
-                match.getTournament().getName(), match.getTournament().getDate());
-    }
-
-    public static Intent getLaunchIntent(final Context context, @NonNull final String tournamentId,
-            @Nullable final String tournamentName, @Nullable final SimpleDate tournamentDate) {
-        return getLaunchIntent(context, tournamentId, tournamentName, tournamentDate, null);
+                match.getTournament().getName(), match.getTournament().getDate(), region);
     }
 
     public static Intent getLaunchIntent(final Context context, @NonNull final String tournamentId,
             @Nullable final String tournamentName, @Nullable final SimpleDate tournamentDate,
-            @Nullable final String region) {
+            @Nullable final Region region) {
         final Intent intent = new Intent(context, TournamentActivity.class)
                 .putExtra(EXTRA_TOURNAMENT_ID, tournamentId);
 
@@ -103,7 +101,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
             intent.putExtra(EXTRA_TOURNAMENT_DATE, tournamentDate);
         }
 
-        if (!TextUtils.isEmpty(region)) {
+        if (region != null) {
             intent.putExtra(EXTRA_REGION, region);
         }
 
@@ -111,9 +109,9 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mFullTournament = null;
-        showError();
+        showError(errorCode);
     }
 
     private void fetchFullTournament() {
@@ -266,10 +264,10 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         mRefreshLayout.setRefreshing(false);
     }
 
-    private void showError() {
+    private void showError(final int errorCode) {
         mEmpty.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
-        mError.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.VISIBLE, errorCode);
         prepareMenuAndTitles();
         mRefreshLayout.setRefreshing(false);
     }

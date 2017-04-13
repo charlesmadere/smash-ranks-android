@@ -17,6 +17,7 @@ import com.garpr.android.R;
 import com.garpr.android.misc.Heartbeat;
 import com.garpr.android.misc.RegionManager.RegionHandle;
 import com.garpr.android.misc.Timber;
+import com.garpr.android.models.Region;
 import com.garpr.android.preferences.GeneralPreferenceStore;
 
 import javax.inject.Inject;
@@ -48,11 +49,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
 
     @Nullable
     @Override
-    public String getCurrentRegion() {
+    public Region getCurrentRegion() {
         final Intent intent = getIntent();
 
         if (intent != null && intent.hasExtra(EXTRA_REGION)) {
-            return intent.getStringExtra(EXTRA_REGION);
+            return intent.getParcelableExtra(EXTRA_REGION);
         } else {
             return null;
         }

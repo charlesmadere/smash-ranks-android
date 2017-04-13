@@ -123,7 +123,11 @@ public abstract class AbsTournament implements Parcelable {
 
 
     public enum Kind implements Parcelable {
-        LITE, FULL;
+        @SerializedName("full")
+        FULL,
+
+        @SerializedName("lite")
+        LITE;
 
         @Override
         public int describeContents() {

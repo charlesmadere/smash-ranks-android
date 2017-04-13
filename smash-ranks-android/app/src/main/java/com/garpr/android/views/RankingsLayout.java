@@ -86,7 +86,7 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mRankingsBundle = null;
         onRankingsBundleFetched();
         showError();

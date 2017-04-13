@@ -20,6 +20,7 @@
     <string name="delete_identity">Delete identity</string>
     <string name="easily_find_yourself_throughout_the_app">Easily find yourself throughout the app</string>
     <string name="x_em_dash_y">%1$s &#8211; %2$s</string>
+    <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
@@ -45,12 +46,14 @@
     <string name="identity_is_x">Identity is %1$s</string>
     <string name="identity_saved_">Identity saved!</string>
     <string name="last_poll">Last poll</string>
+    <string name="loading_deep_link_">Loading deep link…</string>
     <string name="log_viewer">Log Viewer</string>
     <string name="matches">Matches</string>
     <string name="miscellaneous">Miscellaneous</string>
     <string name="must_be_charging">Must be charging</string>
     <string name="must_be_on_wifi">Must be on wifi</string>
     <string name="night">Night</string>
+    <string name="not_gar_pr">Not GAR PR</string>
     <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
     <string name="no_head_to_head_data">No head to head data</string>
@@ -65,6 +68,7 @@
     <string name="ok">OK</string>
     <string name="open_source_on_github">Open source on GitHub</string>
     <string name="players">Players</string>
+    <string name="please_wait_">Please wait…</string>
     <string name="poll_frequency">Poll frequency</string>
     <string name="poll_has_yet_to_occur">Poll has yet to occur</string>
     <string name="rankings">Rankings</string>
@@ -74,6 +78,7 @@
     <string name="rankings_polling_requires_google_play_services">Rankings polling requires Google Play Services in order to function. Click here to try to resolve the issues with your Google Play services installation.</string>
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
+    <string name="region_mismatch_error">A region and / or GAR PR server endpoint mismatch error may have occurred. This is not a resolvable error, sorry!</string>
     <string name="region_saved_">Region saved!</string>
     <string name="remove_from_favorites">Remove from favorites</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>

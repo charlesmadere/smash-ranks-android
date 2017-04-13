@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
@@ -35,44 +34,6 @@ public class SimpleDate implements Parcelable {
     private String mMediumForm;
     private String mShortForm;
 
-
-    @Nullable
-    public static SimpleDate fromJson(@Nullable final JsonElement json) throws JsonParseException {
-        if (json == null || json.isJsonNull()) {
-            return null;
-        }
-
-        final String jsonString = json.getAsString();
-
-        if (TextUtils.isEmpty(jsonString)) {
-            return null;
-        }
-
-        for (final SimpleDateFormat format : FORMATS) {
-            try {
-                return new SimpleDate(format.parse(jsonString));
-            } catch (final ParseException e) {
-                // this Exception can be safely ignored
-            }
-        }
-
-        try {
-            return new SimpleDate(Long.parseLong(jsonString));
-        } catch (final NumberFormatException e) {
-            // this Exception can be safely ignored
-        }
-
-        throw new JsonParseException("unable to parse date: " + json);
-    }
-
-    @Nullable
-    public static JsonElement toJson(@Nullable final SimpleDate date) throws JsonParseException {
-        if (date == null) {
-            return null;
-        } else {
-            return new JsonPrimitive(date.getDate().getTime());
-        }
-    }
 
     public SimpleDate() {
         this(new Date());
@@ -182,7 +143,31 @@ public class SimpleDate implements Parcelable {
         @Override
         public SimpleDate deserialize(final JsonElement json, final Type typeOfT,
                 final JsonDeserializationContext context) throws JsonParseException {
-            return fromJson(json);
+            if (json == null || json.isJsonNull()) {
+                return null;
+            }
+
+            final String jsonString = json.getAsString();
+
+            if (TextUtils.isEmpty(jsonString)) {
+                return null;
+            }
+
+            for (final SimpleDateFormat format : FORMATS) {
+                try {
+                    return new SimpleDate(format.parse(jsonString));
+                } catch (final ParseException e) {
+                    // this Exception can be safely ignored
+                }
+            }
+
+            try {
+                return new SimpleDate(Long.parseLong(jsonString));
+            } catch (final NumberFormatException e) {
+                // this Exception can be safely ignored
+            }
+
+            throw new JsonParseException("unable to parse date: " + json);
         }
     };
 
@@ -190,7 +175,11 @@ public class SimpleDate implements Parcelable {
         @Override
         public JsonElement serialize(final SimpleDate src, final Type typeOfSrc,
                 final JsonSerializationContext context) {
-            return toJson(src);
+            if (src == null) {
+                return null;
+            } else {
+                return new JsonPrimitive(src.getDate().getTime());
+            }
         }
     };
 

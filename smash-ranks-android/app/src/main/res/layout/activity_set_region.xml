@@ -22,7 +22,7 @@
                     android:text="@string/swipe_to_refresh_to_check_again"
                     style="@style/RecyclerViewLine.2" />
             </LinearLayout>
-            <LinearLayout
+            <com.garpr.android.views.ErrorLinearLayout
                 style="@style/RecyclerViewMessage.Error">
                 <TextView
                     android:text="@string/error_loading_regions"
@@ -30,7 +30,7 @@
                 <TextView
                     android:text="@string/swipe_to_refresh_to_try_again"
                     style="@style/RecyclerViewLine.2" />
-            </LinearLayout>
+            </com.garpr.android.views.ErrorLinearLayout>
         </FrameLayout>
     </com.garpr.android.views.RefreshLayout>
 </LinearLayout>

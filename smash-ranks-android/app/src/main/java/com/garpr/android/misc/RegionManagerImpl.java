@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
+import com.garpr.android.models.Region;
 import com.garpr.android.preferences.Preference;
 
 import java.lang.ref.WeakReference;
@@ -18,11 +18,11 @@ public class RegionManagerImpl implements RegionManager {
     private static final String TAG = "RegionManagerImpl";
 
     private final List<WeakReference<OnRegionChangeListener>> mListeners;
-    private final Preference<String> mRegion;
+    private final Preference<Region> mRegion;
     private final Timber mTimber;
 
 
-    public RegionManagerImpl(@NonNull final Preference<String> region,
+    public RegionManagerImpl(@NonNull final Preference<Region> region,
             @NonNull final Timber timber) {
         mListeners = new LinkedList<>();
         mRegion = region;
@@ -54,11 +54,11 @@ public class RegionManagerImpl implements RegionManager {
 
     @NonNull
     @Override
-    public String getRegion() {
-        final String region = mRegion.get();
+    public Region getRegion() {
+        final Region region = mRegion.get();
 
-        if (TextUtils.isEmpty(region)) {
-            throw new IllegalStateException("region is empty!");
+        if (region == null) {
+            throw new IllegalStateException("region is null");
         }
 
         return region;
@@ -66,21 +66,17 @@ public class RegionManagerImpl implements RegionManager {
 
     @NonNull
     @Override
-    public String getRegion(@Nullable final Context context) {
+    public Region getRegion(@Nullable final Context context) {
         if (context instanceof RegionHandle) {
-            final String region = ((RegionHandle) context).getCurrentRegion();
+            final Region region = ((RegionHandle) context).getCurrentRegion();
 
-            if (!TextUtils.isEmpty(region)) {
+            if (region != null) {
                 return region;
             }
         }
 
         if (context instanceof ContextWrapper) {
-            final String region = getRegion(((ContextWrapper) context).getBaseContext());
-
-            if (!TextUtils.isEmpty(region)) {
-                return region;
-            }
+            return getRegion(((ContextWrapper) context).getBaseContext());
         }
 
         return getRegion();
@@ -120,9 +116,8 @@ public class RegionManagerImpl implements RegionManager {
     }
 
     @Override
-    public void setRegion(@NonNull final String region) {
+    public void setRegion(@NonNull final Region region) {
         mTimber.d(TAG, "old region is \"" + getRegion() + "\", new region is \"" + region + "\"");
-
         mRegion.set(region);
         notifyListeners();
     }

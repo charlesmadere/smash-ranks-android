@@ -2,6 +2,7 @@ package com.garpr.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.ParcelableUtils;
@@ -25,6 +26,10 @@ public class Ranking implements Parcelable {
     @SerializedName("rank")
     private int mRank;
 
+    @Nullable
+    @SerializedName("previous_rank")
+    private Integer mPreviousRank;
+
 
     @Override
     public boolean equals(final Object obj) {
@@ -41,6 +46,11 @@ public class Ranking implements Parcelable {
 
     public AbsPlayer getPlayer() {
         return mPlayer;
+    }
+
+    @Nullable
+    public Integer getPreviousRank() {
+        return mPreviousRank;
     }
 
     public int getRank() {
@@ -75,6 +85,7 @@ public class Ranking implements Parcelable {
         ParcelableUtils.writeAbsPlayer(mPlayer, dest, flags);
         dest.writeFloat(mRating);
         dest.writeInt(mRank);
+        ParcelableUtils.writeInteger(mPreviousRank, dest);
     }
 
     public static final Creator<Ranking> CREATOR = new Creator<Ranking>() {
@@ -84,6 +95,7 @@ public class Ranking implements Parcelable {
             r.mPlayer = ParcelableUtils.readAbsPlayer(source);
             r.mRating = source.readFloat();
             r.mRank = source.readInt();
+            r.mPreviousRank = ParcelableUtils.readInteger(source);
             return r;
         }
 
@@ -107,6 +119,14 @@ public class Ranking implements Parcelable {
             final JsonObject jsonObject = json.getAsJsonObject();
             ranking.mRating = jsonObject.get("rating").getAsFloat();
             ranking.mRank = jsonObject.get("rank").getAsInt();
+
+            if (jsonObject.has("previous_rank")) {
+                final JsonElement previousRank = jsonObject.get("previous_rank");
+
+                if (!previousRank.isJsonNull()) {
+                    ranking.mPreviousRank = previousRank.getAsInt();
+                }
+            }
 
             return ranking;
         }

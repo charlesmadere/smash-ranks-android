@@ -4,19 +4,21 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.garpr.android.models.Region;
+
 public interface RegionManager {
 
     void addListener(@NonNull final OnRegionChangeListener listener);
 
     @NonNull
-    String getRegion();
+    Region getRegion();
 
     @NonNull
-    String getRegion(@Nullable final Context context);
+    Region getRegion(@Nullable final Context context);
 
     void removeListener(@Nullable final OnRegionChangeListener listener);
 
-    void setRegion(@NonNull final String region);
+    void setRegion(@NonNull final Region region);
 
 
     interface OnRegionChangeListener {
@@ -25,7 +27,7 @@ public interface RegionManager {
 
     interface RegionHandle {
         @Nullable
-        String getCurrentRegion();
+        Region getCurrentRegion();
     }
 
 }

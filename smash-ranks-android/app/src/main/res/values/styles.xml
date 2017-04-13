@@ -120,12 +120,14 @@
 
     <style name="RecyclerViewLine.1">
         <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:id">@id/recyclerViewLine1</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="RecyclerViewLine.2">
+        <item name="android:id">@id/recyclerViewLine2</item>
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 

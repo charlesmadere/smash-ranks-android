@@ -64,7 +64,7 @@ public class SetRegionActivity extends BaseActivity implements ApiListener<Regio
     }
 
     @Override
-    public void failure() {
+    public void failure(final int errorCode) {
         mSelectedRegion = null;
         mRegionsBundle = null;
         showError();
@@ -84,11 +84,11 @@ public class SetRegionActivity extends BaseActivity implements ApiListener<Regio
 
     @Nullable
     @Override
-    public String getSelectedRegion() {
+    public Region getSelectedRegion() {
         if (mSelectedRegion == null) {
             return mRegionManager.getRegion();
         } else {
-            return mSelectedRegion.getId();
+            return mSelectedRegion;
         }
     }
 
@@ -134,7 +134,7 @@ public class SetRegionActivity extends BaseActivity implements ApiListener<Regio
     public void onClick(final RegionSelectionItemView v) {
         final Region region = v.getContent();
 
-        if (region.getId().equalsIgnoreCase(mRegionManager.getRegion())) {
+        if (region.equals(mRegionManager.getRegion())) {
             mSelectedRegion = null;
         } else {
             mSelectedRegion = region;
@@ -206,7 +206,7 @@ public class SetRegionActivity extends BaseActivity implements ApiListener<Regio
     }
 
     private void save() {
-        mRegionManager.setRegion(mSelectedRegion.getId());
+        mRegionManager.setRegion(mSelectedRegion);
         Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show();
         setResult(ResultCodes.REGION_SELECTED.mValue);
         supportFinishAfterTransition();

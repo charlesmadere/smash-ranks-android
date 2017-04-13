@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RegionsBundle implements Parcelable {
 
@@ -22,6 +23,27 @@ public class RegionsBundle implements Parcelable {
 
     public boolean hasRegions() {
         return mRegions != null && !mRegions.isEmpty();
+    }
+
+    public void merge(@Nullable final RegionsBundle regionsBundle) {
+        if (regionsBundle == null || !regionsBundle.hasRegions()) {
+            return;
+        }
+
+        synchronized (this) {
+            if (mRegions == null) {
+                mRegions = new ArrayList<>();
+            }
+
+            // noinspection ConstantConditions
+            for (final Region region : regionsBundle.getRegions()) {
+                if (!mRegions.contains(region)) {
+                    mRegions.add(region);
+                }
+            }
+
+            Collections.sort(mRegions, Region.ALPHABETICAL_ORDER);
+        }
     }
 
     @Override

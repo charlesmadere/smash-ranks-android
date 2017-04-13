@@ -8,6 +8,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
@@ -80,7 +82,9 @@ public abstract class AbsPlayer implements Parcelable {
 
             final JsonObject jsonObject = json.getAsJsonObject();
 
-            if (jsonObject.has("aliases") || jsonObject.has("regions") || jsonObject.has("ratings")) {
+            if (jsonObject.has("region")) {
+                return context.deserialize(json, FavoritePlayer.class);
+            } else if (jsonObject.has("aliases") || jsonObject.has("regions") || jsonObject.has("ratings")) {
                 return context.deserialize(json, FullPlayer.class);
             } else {
                 return context.deserialize(json, LitePlayer.class);
@@ -88,9 +92,39 @@ public abstract class AbsPlayer implements Parcelable {
         }
     };
 
+    public static final JsonSerializer<AbsPlayer> JSON_SERIALIZER = new JsonSerializer<AbsPlayer>() {
+        @Override
+        public JsonElement serialize(final AbsPlayer src, final Type typeOfSrc,
+                final JsonSerializationContext context) {
+            if (src == null) {
+                return null;
+            }
+
+            switch (src.getKind()) {
+                case FAVORITE:
+                    return context.serialize(src, FavoritePlayer.class);
+
+                case FULL:
+                    return context.serialize(src, FullPlayer.class);
+
+                case LITE:
+                    return context.serialize(src, LitePlayer.class);
+            }
+
+            throw new RuntimeException("unknown kind: \"" + src.getKind() + "\"");
+        }
+    };
+
 
     public enum Kind implements Parcelable {
-        FULL, LITE;
+        @SerializedName("favorite")
+        FAVORITE,
+
+        @SerializedName("full")
+        FULL,
+
+        @SerializedName("lite")
+        LITE;
 
         @Override
         public int describeContents() {

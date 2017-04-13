@@ -7,6 +7,8 @@
     <item name="error" type="id" />
     <item name="icon" type="id" />
     <item name="recyclerView" type="id" />
+    <item name="recyclerViewLine1" type="id" />
+    <item name="recyclerViewLine2" type="id" />
     <item name="refreshLayout" type="id" />
     <item name="tabLayout" type="id" />
     <item name="title" type="id" />

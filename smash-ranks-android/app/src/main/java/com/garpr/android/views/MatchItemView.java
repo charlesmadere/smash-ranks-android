@@ -19,6 +19,8 @@ import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.MiscUtils;
+import com.garpr.android.misc.RegionManager;
+import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.Match;
 
 import javax.inject.Inject;
@@ -33,6 +35,9 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
 
     @Inject
     FavoritePlayersManager mFavoritePlayersManager;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @BindView(R.id.tvName)
     TextView mName;
@@ -82,8 +87,9 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
         if (activity instanceof OnClickListener) {
             ((OnClickListener) activity).onClick(this);
         } else {
-            context.startActivity(PlayerActivity.getLaunchIntent(context,
-                    mContent.getOpponent().getId(), mContent.getOpponent().getName()));
+            final AbsPlayer opponent = mContent.getOpponent();
+            context.startActivity(PlayerActivity.getLaunchIntent(context, opponent.getId(),
+                    opponent.getName(), mRegionManager.getRegion(context)));
         }
     }
 
@@ -104,7 +110,7 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
     @Override
     public boolean onLongClick(final View v) {
         return mFavoritePlayersManager.showAddOrRemovePlayerDialog(getContext(),
-                mContent.getOpponent());
+                mContent.getOpponent(), mRegionManager.getRegion(getContext()));
     }
 
     @Override

@@ -1,15 +1,16 @@
 package com.garpr.android.preferences;
 
-import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.FavoritePlayer;
 import com.garpr.android.models.NightMode;
+import com.garpr.android.models.Region;
 
 public interface GeneralPreferenceStore {
 
     void clear();
 
-    Preference<String> getCurrentRegion();
+    Preference<Region> getCurrentRegion();
 
-    Preference<AbsPlayer> getIdentity();
+    Preference<FavoritePlayer> getIdentity();
 
     Preference<Integer> getLastVersion();
 

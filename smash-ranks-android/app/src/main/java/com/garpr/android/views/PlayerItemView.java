@@ -16,6 +16,7 @@ import com.garpr.android.R;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.adapters.BaseAdapterView;
 import com.garpr.android.misc.FavoritePlayersManager;
+import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.AbsPlayer;
 
 import javax.inject.Inject;
@@ -30,6 +31,9 @@ public class PlayerItemView extends IdentityFrameLayout implements BaseAdapterVi
 
     @Inject
     FavoritePlayersManager mFavoritePlayersManager;
+
+    @Inject
+    RegionManager mRegionManager;
 
     @BindView(R.id.tvName)
     TextView mName;
@@ -70,7 +74,8 @@ public class PlayerItemView extends IdentityFrameLayout implements BaseAdapterVi
     @Override
     public void onClick(final View v) {
         final Context context = getContext();
-        context.startActivity(PlayerActivity.getLaunchIntent(context, mContent));
+        context.startActivity(PlayerActivity.getLaunchIntent(context, mContent,
+                mRegionManager.getRegion(context)));
     }
 
     @Override
@@ -89,7 +94,8 @@ public class PlayerItemView extends IdentityFrameLayout implements BaseAdapterVi
 
     @Override
     public boolean onLongClick(final View v) {
-        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(getContext(), mContent);
+        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(getContext(), mContent,
+                mRegionManager.getRegion(getContext()));
     }
 
     @Override
