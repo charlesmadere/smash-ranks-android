@@ -1,6 +1,9 @@
 package com.garpr.android.views;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
@@ -30,14 +33,21 @@ public class PreviousRankView extends AppCompatImageView implements BaseAdapterV
         }
 
         final int drawableResId;
+        final int tint;
 
         if (previousRank > rank) {
             drawableResId = R.drawable.ic_arrow_downward_white_18dp;
+            tint = R.color.lose;
         } else {
             drawableResId = R.drawable.ic_arrow_upward_white_18dp;
+            tint = R.color.win;
         }
 
-        setImageResource(drawableResId);
+        final Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(getContext(),
+                drawableResId));
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(getContext(), tint));
+        setImageDrawable(drawable);
+
         setVisibility(VISIBLE);
     }
 
