@@ -1,5 +1,7 @@
 package com.garpr.android.models;
 
+import android.os.Parcel;
+
 import com.garpr.android.BaseTest;
 import com.garpr.android.BuildConfig;
 import com.google.gson.Gson;
@@ -95,6 +97,37 @@ public class RatingsTest extends BaseTest {
         assertNotNull(ratings.getRegion("googlemtv"));
         assertNotNull(ratings.getRegion("norcal"));
         assertNull(ratings.getRegion("nyc"));
+    }
+
+    @Test
+    public void testParcelableOneRegion() throws Exception {
+        final Ratings before = mGson.fromJson(JSON_ONE_REGION, Ratings.class);
+
+        final Parcel parcel = Parcel.obtain();
+        parcel.writeParcelable(before, 0);
+        parcel.setDataPosition(0);
+
+        final Ratings after = parcel.readParcelable(Ratings.class.getClassLoader());
+        assertEquals(before.size(), after.size());
+        assertEquals(before.get(0).getRegion(), after.get(0).getRegion());
+
+        parcel.recycle();
+    }
+
+    @Test
+    public void testParcelableTwoRegions() throws Exception {
+        final Ratings before = mGson.fromJson(JSON_TWO_REGIONS, Ratings.class);
+
+        final Parcel parcel = Parcel.obtain();
+        parcel.writeParcelable(before, 0);
+        parcel.setDataPosition(0);
+
+        final Ratings after = parcel.readParcelable(Ratings.class.getClassLoader());
+        assertEquals(before.size(), after.size());
+        assertEquals(before.get(0).getRegion(), after.get(0).getRegion());
+        assertEquals(before.get(1).getRegion(), after.get(1).getRegion());
+
+        parcel.recycle();
     }
 
     @Test

@@ -7,11 +7,19 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.BaseAdapterView;
+import com.garpr.android.misc.PreviousRankUtils;
 import com.garpr.android.models.Ranking;
 
+import javax.inject.Inject;
+
 public class PreviousRankView extends AppCompatImageView implements BaseAdapterView<Ranking> {
+
+    @Inject
+    PreviousRankUtils mPreviousRankUtils;
+
 
     public PreviousRankView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
@@ -23,32 +31,50 @@ public class PreviousRankView extends AppCompatImageView implements BaseAdapterV
     }
 
     @Override
-    public void setContent(final Ranking content) {
-        final Integer previousRank = content.getPreviousRank();
-        final int rank = content.getRank();
+    protected void onFinishInflate() {
+        super.onFinishInflate();
 
-        if (previousRank == null || previousRank == rank) {
+        if (isInEditMode()) {
+            return;
+        }
+
+        App.get().getAppComponent().inject(this);
+    }
+
+    @Override
+    public void setContent(final Ranking content) {
+        final PreviousRankUtils.Info info = mPreviousRankUtils.checkRanking(content);
+
+        if (info == null) {
+            setImageDrawable(null);
             setVisibility(INVISIBLE);
             return;
         }
 
         final int drawableResId;
-        final int tint;
+        final int tintResId;
 
-        if (previousRank > rank) {
-            drawableResId = R.drawable.ic_arrow_downward_white_18dp;
-            tint = R.color.lose;
-        } else {
-            drawableResId = R.drawable.ic_arrow_upward_white_18dp;
-            tint = R.color.win;
+        switch (info) {
+            case DECREASE:
+                drawableResId = R.drawable.ic_arrow_downward_white_18dp;
+                tintResId = R.color.lose;
+                break;
+
+            case INCREASE:
+                drawableResId = R.drawable.ic_arrow_upward_white_18dp;
+                tintResId = R.color.win;
+                break;
+
+            default:
+                throw new RuntimeException("unknown item: " + info);
         }
 
         final Context context = getContext();
         final Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context,
                 drawableResId));
-        DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tint));
-        setImageDrawable(drawable);
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tintResId));
 
+        setImageDrawable(drawable);
         setVisibility(VISIBLE);
     }
 
