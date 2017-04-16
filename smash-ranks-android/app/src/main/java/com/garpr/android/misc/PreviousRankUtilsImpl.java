@@ -20,7 +20,7 @@ public class PreviousRankUtilsImpl implements PreviousRankUtils {
             return null;
         }
 
-        return rank > previousRank ? Info.INCREASE : Info.DECREASE;
+        return rank < previousRank ? Info.INCREASE : Info.DECREASE;
     }
 
 }
