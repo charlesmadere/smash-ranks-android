@@ -13,9 +13,14 @@ public class PreviousRankUtilsImpl implements PreviousRankUtils {
             return null;
         }
 
+        final Integer previousRank = ranking.getPreviousRank();
+        final int rank = ranking.getRank();
 
+        if (previousRank == null || previousRank == rank) {
+            return null;
+        }
 
-        return null;
+        return rank > previousRank ? Info.INCREASE : Info.DECREASE;
     }
 
 }
