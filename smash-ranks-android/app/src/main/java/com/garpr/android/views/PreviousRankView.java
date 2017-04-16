@@ -28,27 +28,28 @@ public class PreviousRankView extends AppCompatImageView implements BaseAdapterV
         final int rank = content.getRank();
 
         if (previousRank == null || previousRank == rank) {
+            setImageDrawable(null);
             setVisibility(INVISIBLE);
             return;
         }
 
         final int drawableResId;
-        final int tint;
+        final int tintResId;
 
         if (previousRank > rank) {
             drawableResId = R.drawable.ic_arrow_downward_white_18dp;
-            tint = R.color.lose;
+            tintResId = R.color.lose;
         } else {
             drawableResId = R.drawable.ic_arrow_upward_white_18dp;
-            tint = R.color.win;
+            tintResId = R.color.win;
         }
 
         final Context context = getContext();
         final Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context,
                 drawableResId));
-        DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tint));
-        setImageDrawable(drawable);
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tintResId));
 
+        setImageDrawable(drawable);
         setVisibility(VISIBLE);
     }
 
