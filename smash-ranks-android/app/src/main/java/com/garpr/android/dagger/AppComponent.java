@@ -23,6 +23,7 @@ import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.PlayersLayout;
 import com.garpr.android.views.PollFrequencyPreferenceView;
+import com.garpr.android.views.PreviousRankView;
 import com.garpr.android.views.RankingItemView;
 import com.garpr.android.views.RankingsLayout;
 import com.garpr.android.views.RegionPreferenceView;
@@ -70,6 +71,7 @@ public interface AppComponent {
     void inject(PlayerItemView view);
     void inject(PlayersLayout view);
     void inject(PollFrequencyPreferenceView view);
+    void inject(PreviousRankView view);
     void inject(RankingItemView view);
     void inject(RankingsLayout view);
     void inject(RegionPreferenceView view);

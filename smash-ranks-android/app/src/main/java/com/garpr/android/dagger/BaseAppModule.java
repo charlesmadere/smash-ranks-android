@@ -17,6 +17,8 @@ import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.IdentityManagerImpl;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.NotificationManagerImpl;
+import com.garpr.android.misc.PreviousRankUtils;
+import com.garpr.android.misc.PreviousRankUtilsImpl;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.ShareUtils;
@@ -160,6 +162,12 @@ public abstract class BaseAppModule {
     @Singleton
     NotificationManager providesNotificationManager() {
         return new NotificationManagerImpl(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    PreviousRankUtils providesPreviousRankUtils() {
+        return new PreviousRankUtilsImpl();
     }
 
     @Provides
