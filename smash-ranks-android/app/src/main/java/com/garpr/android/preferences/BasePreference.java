@@ -6,10 +6,11 @@ import android.support.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public abstract class BasePreference<T> implements Preference<T> {
 
-    private final LinkedList<WeakReference<OnPreferenceChangeListener<T>>> mListeners;
+    private final List<WeakReference<OnPreferenceChangeListener<T>>> mListeners;
     private final String mKey;
     private final T mDefaultValue;
 
