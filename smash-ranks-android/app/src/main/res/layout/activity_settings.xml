@@ -77,6 +77,9 @@
                     <com.garpr.android.views.PollFrequencyPreferenceView
                         android:id="@+id/pollFrequencyPreferenceView"
                         style="@style/PreferenceView" />
+                    <com.garpr.android.views.RingtonePreferenceView
+                        android:id="@+id/ringtonePreferenceView"
+                        style="@style/PreferenceView" />
                     <com.garpr.android.views.CheckablePreferenceView
                         android:id="@+id/cpvMustBeOnWifi"
                         app:disabledDescriptionText="@string/will_poll_on_any_data_connection"

@@ -82,6 +82,7 @@
     <string name="region_saved_">Region saved!</string>
     <string name="remove_from_favorites">Remove from favorites</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>
+    <string name="ringtone">Ringtone</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="search_">Search…</string>

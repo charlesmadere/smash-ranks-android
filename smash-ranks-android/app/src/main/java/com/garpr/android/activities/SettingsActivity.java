@@ -28,6 +28,7 @@ import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.RegionPreferenceView;
+import com.garpr.android.views.RingtonePreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
 
 import javax.inject.Inject;
@@ -83,6 +84,9 @@ public class SettingsActivity extends BaseActivity {
 
     @BindView(R.id.regionPreferenceView)
     RegionPreferenceView mRegionPreferenceView;
+
+    @BindView(R.id.ringtonePreferenceView)
+    RingtonePreferenceView mRingtonePreferenceView;
 
     @BindView(R.id.tvGooglePlayServicesError)
     TextView mGooglePlayServicesError;
@@ -216,6 +220,7 @@ public class SettingsActivity extends BaseActivity {
 
         mUseRankingsPolling.refresh();
         mPollFrequency.refresh();
+        mRingtonePreferenceView.refresh();
         mMustBeOnWifi.refresh();
         mMustBeCharging.refresh();
         mLastPoll.refresh();
@@ -226,10 +231,12 @@ public class SettingsActivity extends BaseActivity {
 
             if (Boolean.TRUE.equals(mRankingsPollingPreferenceStore.getEnabled().get())) {
                 mPollFrequency.setEnabled(true);
+                mRingtonePreferenceView.setEnabled(true);
                 mMustBeOnWifi.setEnabled(true);
                 mMustBeCharging.setEnabled(true);
             } else {
                 mPollFrequency.setEnabled(false);
+                mRingtonePreferenceView.setEnabled(false);
                 mMustBeOnWifi.setEnabled(false);
                 mMustBeCharging.setEnabled(false);
             }
@@ -237,6 +244,7 @@ public class SettingsActivity extends BaseActivity {
             mGooglePlayServicesError.setVisibility(View.VISIBLE);
             mUseRankingsPolling.setEnabled(false);
             mPollFrequency.setEnabled(false);
+            mRingtonePreferenceView.setEnabled(false);
             mMustBeOnWifi.setEnabled(false);
             mMustBeCharging.setEnabled(false);
         }

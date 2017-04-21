@@ -27,6 +27,7 @@ import com.garpr.android.views.PreviousRankView;
 import com.garpr.android.views.RankingItemView;
 import com.garpr.android.views.RankingsLayout;
 import com.garpr.android.views.RegionPreferenceView;
+import com.garpr.android.views.RingtonePreferenceView;
 import com.garpr.android.views.SearchableFrameLayout;
 import com.garpr.android.views.ThemePreferenceView;
 import com.garpr.android.views.TournamentDividerView;
@@ -75,6 +76,7 @@ public interface AppComponent {
     void inject(RankingItemView view);
     void inject(RankingsLayout view);
     void inject(RegionPreferenceView view);
+    void inject(RingtonePreferenceView view);
     void inject(SearchableFrameLayout view);
     void inject(ThemePreferenceView view);
     void inject(TournamentDividerView view);
