@@ -33,8 +33,6 @@ public class RingtonePreferenceView extends SimplePreferenceView implements
 
     private static final String TAG = "RingtonePreferenceView";
 
-    private RingtoneManager mRingtoneManager;
-
     @Inject
     RankingsPollingPreferenceStore mRankingsPollingPreferenceStore;
 
@@ -123,7 +121,6 @@ public class RingtonePreferenceView extends SimplePreferenceView implements
 
         setOnClickListener(this);
         setTitleText(R.string.ringtone);
-        mRingtoneManager = new RingtoneManager(MiscUtils.getActivity(getContext()));
 
         if (isInEditMode()) {
             return;

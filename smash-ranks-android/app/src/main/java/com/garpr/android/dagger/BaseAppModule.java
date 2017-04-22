@@ -160,8 +160,11 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    NotificationManager providesNotificationManager() {
-        return new NotificationManagerImpl(mApplication);
+    NotificationManager providesNotificationManager(
+            final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
+            final RegionManager regionManager) {
+        return new NotificationManagerImpl(mApplication, rankingsPollingPreferenceStore,
+                regionManager);
     }
 
     @Provides

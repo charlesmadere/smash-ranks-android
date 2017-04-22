@@ -55,7 +55,7 @@ public class TestNotificationView extends SimplePreferenceView implements
                 break;
 
             case 1:
-                showTestNotification();
+                mNotificationManager.showRankingsUpdated(getContext());
                 break;
 
             default:
@@ -89,10 +89,6 @@ public class TestNotificationView extends SimplePreferenceView implements
                 resources.getText(R.string.cancel_all),
                 resources.getText(R.string.show)
         };
-    }
-
-    private void showTestNotification() {
-        // TODO
     }
 
 }
