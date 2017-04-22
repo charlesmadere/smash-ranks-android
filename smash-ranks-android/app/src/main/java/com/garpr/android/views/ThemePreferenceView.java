@@ -76,9 +76,9 @@ public class ThemePreferenceView extends SimplePreferenceView implements
 
         mTimber.d(TAG, "Theme was \"" + current + "\", is now \"" + selected + "\"");
 
+        showRestartDialog();
         mGeneralPreferenceStore.getNightMode().set(selected);
         refresh();
-        showRestartDialog();
     }
 
     @Override

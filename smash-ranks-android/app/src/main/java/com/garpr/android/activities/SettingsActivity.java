@@ -3,6 +3,7 @@ package com.garpr.android.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.ResultCodes;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.PollFrequency;
 import com.garpr.android.preferences.Preference;
@@ -28,6 +30,7 @@ import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.RegionPreferenceView;
+import com.garpr.android.views.RingtonePreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
 
 import javax.inject.Inject;
@@ -69,6 +72,9 @@ public class SettingsActivity extends BaseActivity {
     @BindView(R.id.cpvUseRankingsPolling)
     CheckablePreferenceView mUseRankingsPolling;
 
+    @BindView(R.id.cpvVibrate)
+    CheckablePreferenceView mVibrate;
+
     @BindView(R.id.deleteFavoritePlayersPreferenceView)
     DeleteFavoritePlayersPreferenceView mDeleteFavoritePlayersPreferenceView;
 
@@ -83,6 +89,9 @@ public class SettingsActivity extends BaseActivity {
 
     @BindView(R.id.regionPreferenceView)
     RegionPreferenceView mRegionPreferenceView;
+
+    @BindView(R.id.ringtonePreferenceView)
+    RingtonePreferenceView mRingtonePreferenceView;
 
     @BindView(R.id.tvGooglePlayServicesError)
     TextView mGooglePlayServicesError;
@@ -103,6 +112,11 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ResultCodes.RINGTONE_SELECTED.mValue) {
+            mRingtonePreferenceView.onActivityResult(data);
+        }
+
         refresh();
     }
 
@@ -129,6 +143,7 @@ public class SettingsActivity extends BaseActivity {
         mRankingsPollingPreferenceStore.getChargingRequired().removeListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().removeListener(mOnRankingsPollingEnabledChange);
         mRankingsPollingPreferenceStore.getPollFrequency().removeListener(mOnPollFrequencyChange);
+        mRankingsPollingPreferenceStore.getRingtone().removeListener(mOnRingtoneChange);
         mRankingsPollingPreferenceStore.getVibrationEnabled().removeListener(mOnVibrationEnabledChange);
         mRankingsPollingPreferenceStore.getWifiRequired().removeListener(mOnWifiRequiredChange);
     }
@@ -199,10 +214,12 @@ public class SettingsActivity extends BaseActivity {
         mRankingsPollingPreferenceStore.getChargingRequired().addListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().addListener(mOnRankingsPollingEnabledChange);
         mRankingsPollingPreferenceStore.getPollFrequency().addListener(mOnPollFrequencyChange);
+        mRankingsPollingPreferenceStore.getRingtone().addListener(mOnRingtoneChange);
         mRankingsPollingPreferenceStore.getVibrationEnabled().addListener(mOnVibrationEnabledChange);
         mRankingsPollingPreferenceStore.getWifiRequired().addListener(mOnWifiRequiredChange);
 
         mUseRankingsPolling.set(mRankingsPollingPreferenceStore.getEnabled());
+        mVibrate.set(mRankingsPollingPreferenceStore.getVibrationEnabled());
         mMustBeOnWifi.set(mRankingsPollingPreferenceStore.getWifiRequired());
         mMustBeCharging.set(mRankingsPollingPreferenceStore.getChargingRequired());
     }
@@ -216,6 +233,8 @@ public class SettingsActivity extends BaseActivity {
 
         mUseRankingsPolling.refresh();
         mPollFrequency.refresh();
+        mRingtonePreferenceView.refresh();
+        mVibrate.refresh();
         mMustBeOnWifi.refresh();
         mMustBeCharging.refresh();
         mLastPoll.refresh();
@@ -226,10 +245,14 @@ public class SettingsActivity extends BaseActivity {
 
             if (Boolean.TRUE.equals(mRankingsPollingPreferenceStore.getEnabled().get())) {
                 mPollFrequency.setEnabled(true);
+                mRingtonePreferenceView.setEnabled(true);
+                mVibrate.setEnabled(true);
                 mMustBeOnWifi.setEnabled(true);
                 mMustBeCharging.setEnabled(true);
             } else {
                 mPollFrequency.setEnabled(false);
+                mRingtonePreferenceView.setEnabled(false);
+                mVibrate.setEnabled(false);
                 mMustBeOnWifi.setEnabled(false);
                 mMustBeCharging.setEnabled(false);
             }
@@ -237,6 +260,8 @@ public class SettingsActivity extends BaseActivity {
             mGooglePlayServicesError.setVisibility(View.VISIBLE);
             mUseRankingsPolling.setEnabled(false);
             mPollFrequency.setEnabled(false);
+            mRingtonePreferenceView.setEnabled(false);
+            mVibrate.setEnabled(false);
             mMustBeOnWifi.setEnabled(false);
             mMustBeCharging.setEnabled(false);
         }
@@ -286,6 +311,14 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public void onPreferenceChange(final Preference<Boolean> preference) {
             mRankingsPollingSyncManager.enableOrDisable();
+            refresh();
+        }
+    };
+
+    private final Preference.OnPreferenceChangeListener<Uri> mOnRingtoneChange =
+            new Preference.OnPreferenceChangeListener<Uri>() {
+        @Override
+        public void onPreferenceChange(final Preference<Uri> preference) {
             refresh();
         }
     };

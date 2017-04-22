@@ -21,6 +21,7 @@ import com.garpr.android.preferences.persistent.PersistentGsonPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentIntegerPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentLongPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest;
+import com.garpr.android.preferences.persistent.PersistentUriPreferenceTest;
 
 import javax.inject.Singleton;
 
@@ -56,5 +57,6 @@ public interface TestAppComponent {
     void inject(PersistentIntegerPreferenceTest test);
     void inject(PersistentLongPreferenceTest test);
     void inject(PersistentStringPreferenceTest test);
+    void inject(PersistentUriPreferenceTest test);
 
 }

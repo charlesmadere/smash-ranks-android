@@ -77,6 +77,15 @@
                     <com.garpr.android.views.PollFrequencyPreferenceView
                         android:id="@+id/pollFrequencyPreferenceView"
                         style="@style/PreferenceView" />
+                    <com.garpr.android.views.RingtonePreferenceView
+                        android:id="@+id/ringtonePreferenceView"
+                        style="@style/PreferenceView" />
+                    <com.garpr.android.views.CheckablePreferenceView
+                        android:id="@+id/cpvVibrate"
+                        app:disabledDescriptionText="@string/will_not_rumble"
+                        app:enabledDescriptionText="@string/will_rumble_when_rankings_are_updated"
+                        app:titleText="@string/vibrate"
+                        style="@style/PreferenceView" />
                     <com.garpr.android.views.CheckablePreferenceView
                         android:id="@+id/cpvMustBeOnWifi"
                         app:disabledDescriptionText="@string/will_poll_on_any_data_connection"
@@ -91,6 +100,9 @@
                         style="@style/PreferenceView" />
                     <com.garpr.android.views.LastPollPreferenceView
                         android:id="@+id/lastPollPreferenceView"
+                        style="@style/PreferenceView" />
+                    <com.garpr.android.views.TestNotificationView
+                        android:id="@+id/testNotificationView"
                         style="@style/PreferenceView" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>

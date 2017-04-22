@@ -6,7 +6,8 @@ import android.os.Parcelable;
 public enum ResultCodes implements Parcelable {
 
     IDENTITY_SELECTED,
-    REGION_SELECTED;
+    REGION_SELECTED,
+    RINGTONE_SELECTED;
 
     public final int mValue;
 

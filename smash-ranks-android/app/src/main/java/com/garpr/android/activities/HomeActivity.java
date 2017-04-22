@@ -239,7 +239,7 @@ public class HomeActivity extends BaseActivity implements
         final RankingsBundle rankingsBundle = layout.getRankingsBundle();
 
         if (rankingsBundle == null) {
-            setSubtitle("");
+            setSubtitle(region.getDisplayName());
         } else {
             setSubtitle(getString(R.string.x_updated_y, region.getDisplayName(),
                     rankingsBundle.getTime().getShortForm()));

@@ -1,11 +1,13 @@
 package com.garpr.android.preferences;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.garpr.android.models.PollFrequency;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.preferences.persistent.PersistentBooleanPreference;
 import com.garpr.android.preferences.persistent.PersistentGsonPreference;
+import com.garpr.android.preferences.persistent.PersistentUriPreference;
 import com.google.gson.Gson;
 
 public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPreferenceStore {
@@ -20,6 +22,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
     private Preference<PollFrequency> mPollFrequency;
     private Preference<SimpleDate> mLastPoll;
     private Preference<SimpleDate> mRankingsDate;
+    private Preference<Uri> mRingtone;
 
 
     public RankingsPollingPreferenceStoreImpl(@NonNull final Gson gson,
@@ -80,6 +83,15 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         }
 
         return mRankingsDate;
+    }
+
+    @Override
+    public Preference<Uri> getRingtone() {
+        if (mRingtone == null) {
+            mRingtone = new PersistentUriPreference("RINGTONE", null, mKeyValueStore);
+        }
+
+        return mRingtone;
     }
 
     @Override
