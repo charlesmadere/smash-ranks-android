@@ -111,7 +111,7 @@
     <string name="under_construction">Under construction!</string>
     <string name="x_updated_y">%1$s updated %2$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
-    <string name="vibration">Vibration</string>
+    <string name="vibrate">Vibrate</string>
     <string name="view">View</string>
     <string name="view_all_players">View all players</string>
     <string name="view_x">View %1$s</string>

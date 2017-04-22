@@ -72,6 +72,9 @@ public class SettingsActivity extends BaseActivity {
     @BindView(R.id.cpvUseRankingsPolling)
     CheckablePreferenceView mUseRankingsPolling;
 
+    @BindView(R.id.cpvVibrate)
+    CheckablePreferenceView mVibrate;
+
     @BindView(R.id.deleteFavoritePlayersPreferenceView)
     DeleteFavoritePlayersPreferenceView mDeleteFavoritePlayersPreferenceView;
 
@@ -216,6 +219,7 @@ public class SettingsActivity extends BaseActivity {
         mRankingsPollingPreferenceStore.getWifiRequired().addListener(mOnWifiRequiredChange);
 
         mUseRankingsPolling.set(mRankingsPollingPreferenceStore.getEnabled());
+        mVibrate.set(mRankingsPollingPreferenceStore.getVibrationEnabled());
         mMustBeOnWifi.set(mRankingsPollingPreferenceStore.getWifiRequired());
         mMustBeCharging.set(mRankingsPollingPreferenceStore.getChargingRequired());
     }
@@ -230,6 +234,7 @@ public class SettingsActivity extends BaseActivity {
         mUseRankingsPolling.refresh();
         mPollFrequency.refresh();
         mRingtonePreferenceView.refresh();
+        mVibrate.refresh();
         mMustBeOnWifi.refresh();
         mMustBeCharging.refresh();
         mLastPoll.refresh();
@@ -241,11 +246,13 @@ public class SettingsActivity extends BaseActivity {
             if (Boolean.TRUE.equals(mRankingsPollingPreferenceStore.getEnabled().get())) {
                 mPollFrequency.setEnabled(true);
                 mRingtonePreferenceView.setEnabled(true);
+                mVibrate.setEnabled(true);
                 mMustBeOnWifi.setEnabled(true);
                 mMustBeCharging.setEnabled(true);
             } else {
                 mPollFrequency.setEnabled(false);
                 mRingtonePreferenceView.setEnabled(false);
+                mVibrate.setEnabled(false);
                 mMustBeOnWifi.setEnabled(false);
                 mMustBeCharging.setEnabled(false);
             }
@@ -254,6 +261,7 @@ public class SettingsActivity extends BaseActivity {
             mUseRankingsPolling.setEnabled(false);
             mPollFrequency.setEnabled(false);
             mRingtonePreferenceView.setEnabled(false);
+            mVibrate.setEnabled(false);
             mMustBeOnWifi.setEnabled(false);
             mMustBeCharging.setEnabled(false);
         }
