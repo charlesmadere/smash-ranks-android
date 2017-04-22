@@ -69,7 +69,8 @@ public class RingtonePreferenceView extends SimplePreferenceView implements
             return;
         }
 
-
+        mRankingsPollingPreferenceStore.getRingtone().set(pickedUri);
+        refresh();
     }
 
     @Override
@@ -94,9 +95,11 @@ public class RingtonePreferenceView extends SimplePreferenceView implements
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
 
-// TODO
-//                .putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, null)
-// TODO
+        final Uri existingUri = mRankingsPollingPreferenceStore.getRingtone().get();
+
+        if (existingUri != null) {
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, existingUri);
+        }
 
         try {
             activity.startActivityForResult(intent, ResultCodes.RINGTONE_SELECTED.mValue);
