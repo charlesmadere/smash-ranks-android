@@ -17,6 +17,7 @@ import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.RegionManager;
+import com.garpr.android.misc.ResultCodes;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.PollFrequency;
 import com.garpr.android.preferences.Preference;
@@ -107,6 +108,11 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ResultCodes.RINGTONE_SELECTED.mValue) {
+            mRingtonePreferenceView.onActivityResult(data);
+        }
+
         refresh();
     }
 
