@@ -65,11 +65,6 @@ public class RingtonePreferenceView extends SimplePreferenceView implements
         }
 
         final Uri pickedUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-
-        if (pickedUri == null) {
-            return;
-        }
-
         mRankingsPollingPreferenceStore.getRingtone().set(pickedUri);
         refresh();
     }
