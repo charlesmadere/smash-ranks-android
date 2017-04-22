@@ -86,9 +86,13 @@ public class RingtonePreferenceView extends SimplePreferenceView implements View
         final Context context = getContext();
         final Activity activity = MiscUtils.getActivity(context);
 
+        final Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+
         try {
-            activity.startActivityForResult(new Intent(RingtoneManager.ACTION_RINGTONE_PICKER),
-                    ResultCodes.RINGTONE_SELECTED.mValue);
+            activity.startActivityForResult(intent, ResultCodes.RINGTONE_SELECTED.mValue);
         } catch (final ActivityNotFoundException e) {
             mTimber.e(TAG, "Unable to start ringtone picker Activity", e);
             Toast.makeText(context, R.string.unable_to_launch_ringtone_picker, Toast.LENGTH_LONG)
