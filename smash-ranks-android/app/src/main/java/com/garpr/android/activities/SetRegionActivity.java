@@ -149,6 +149,7 @@ public class SetRegionActivity extends BaseActivity implements ApiListener<Regio
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
         setContentView(R.layout.activity_set_region);
+        setSubtitle(mRegionManager.getRegion(this).getDisplayName());
 
         fetchRegionsBundle();
     }
