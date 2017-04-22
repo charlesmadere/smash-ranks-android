@@ -3,7 +3,6 @@ package com.garpr.android.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -22,8 +21,6 @@ import javax.inject.Inject;
 
 public class TestNotificationView extends SimplePreferenceView implements
         DialogInterface.OnClickListener, View.OnClickListener {
-
-    private CharSequence[] mDialogListItems;
 
     @Inject
     NotificationManager mNotificationManager;
@@ -65,9 +62,13 @@ public class TestNotificationView extends SimplePreferenceView implements
 
     @Override
     public void onClick(final View v) {
+        final CharSequence[] items = new CharSequence[] {
+                getResources().getText(R.string.cancel_all),
+                getResources().getText(R.string.show)
+        };
+
         new AlertDialog.Builder(getContext())
-                .setItems(mDialogListItems, this)
-                .setTitle(R.string.test_notifications)
+                .setItems(items, this)
                 .show();
     }
 
@@ -83,12 +84,6 @@ public class TestNotificationView extends SimplePreferenceView implements
         setTitleText(R.string.show_test_notification);
         setDescriptionText(R.string.debug_only);
         setVisibility(BuildConfig.DEBUG ? VISIBLE : GONE);
-
-        final Resources resources = getResources();
-        mDialogListItems = new CharSequence[] {
-                resources.getText(R.string.cancel_all),
-                resources.getText(R.string.show)
-        };
     }
 
 }

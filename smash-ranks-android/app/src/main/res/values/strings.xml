@@ -57,6 +57,7 @@
     <string name="night">Night</string>
     <string name="none">None</string>
     <string name="not_gar_pr">Not GAR PR</string>
+    <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
     <string name="no_head_to_head_data">No head to head data</string>
     <string name="no_identity_has_been_set">No identity has been set</string>
@@ -106,7 +107,6 @@
     <string name="swipe_to_refresh_to_try_again">Swipe down to refresh to try again</string>
     <string name="system">System</string>
     <string name="tag_and_message">%1$s: %2$s</string>
-    <string name="test_notifications">Test notifications</string>
     <string name="theme">Theme</string>
     <string name="the_app_will_now_restart">The app will now restart.</string>
     <string name="tournaments">Tournaments</string>
