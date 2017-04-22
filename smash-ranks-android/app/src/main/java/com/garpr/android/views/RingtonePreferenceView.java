@@ -145,7 +145,7 @@ public class RingtonePreferenceView extends SimplePreferenceView implements
                 getContext(), ringtoneUri);
 
         if (ringtone == null) {
-            setDescriptionText(R.string.not_yet_set);
+            setDescriptionText(R.string.none);
         } else {
             setDescriptionText(ringtone.getTitle(getContext()));
         }
