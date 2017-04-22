@@ -143,13 +143,13 @@ public class RingtonePreferenceView extends SimplePreferenceView implements
     public void refresh() {
         super.refresh();
 
-        final Uri uri = mRankingsPollingPreferenceStore.getRingtone().get();
-        final int position = uri == null ? -1 : mRingtoneManager.getRingtonePosition(uri);
+        final Uri ringtoneUri = mRankingsPollingPreferenceStore.getRingtone().get();
+        final Ringtone ringtone = ringtoneUri == null ? null : RingtoneManager.getRingtone(
+                getContext(), ringtoneUri);
 
-        if (position == -1) {
+        if (ringtone == null) {
             setDescriptionText(R.string.not_yet_set);
         } else {
-            final Ringtone ringtone = mRingtoneManager.getRingtone(position);
             setDescriptionText(ringtone.getTitle(getContext()));
         }
     }
