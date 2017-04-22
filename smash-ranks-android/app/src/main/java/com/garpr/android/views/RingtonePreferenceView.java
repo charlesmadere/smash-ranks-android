@@ -12,6 +12,7 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Toast;
@@ -21,11 +22,13 @@ import com.garpr.android.R;
 import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.ResultCodes;
 import com.garpr.android.misc.Timber;
+import com.garpr.android.preferences.Preference;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 
 import javax.inject.Inject;
 
-public class RingtonePreferenceView extends SimplePreferenceView implements View.OnClickListener {
+public class RingtonePreferenceView extends SimplePreferenceView implements
+        Preference.OnPreferenceChangeListener<Uri>, View.OnClickListener {
 
     private static final String TAG = "RingtonePreferenceView";
 
@@ -77,7 +80,7 @@ public class RingtonePreferenceView extends SimplePreferenceView implements View
             return;
         }
 
-
+        mRankingsPollingPreferenceStore.getRingtone().addListener(this);
         refresh();
     }
 
@@ -91,6 +94,10 @@ public class RingtonePreferenceView extends SimplePreferenceView implements View
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
 
+// TODO
+//                .putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, null)
+// TODO
+
         try {
             activity.startActivityForResult(intent, ResultCodes.RINGTONE_SELECTED.mValue);
         } catch (final ActivityNotFoundException e) {
@@ -103,8 +110,7 @@ public class RingtonePreferenceView extends SimplePreferenceView implements View
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
-
+        mRankingsPollingPreferenceStore.getRingtone().removeListener(this);
     }
 
     @Override
@@ -113,6 +119,7 @@ public class RingtonePreferenceView extends SimplePreferenceView implements View
 
         if (!isInEditMode()) {
             App.get().getAppComponent().inject(this);
+            mRankingsPollingPreferenceStore.getRingtone().addListener(this);
         }
 
         setOnClickListener(this);
@@ -127,10 +134,17 @@ public class RingtonePreferenceView extends SimplePreferenceView implements View
     }
 
     @Override
+    public void onPreferenceChange(final Preference<Uri> preference) {
+        if (ViewCompat.isAttachedToWindow(this)) {
+            refresh();
+        }
+    }
+
+    @Override
     public void refresh() {
         super.refresh();
 
-
+        // TODO
     }
 
 }

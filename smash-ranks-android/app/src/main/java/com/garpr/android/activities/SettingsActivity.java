@@ -3,6 +3,7 @@ package com.garpr.android.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -139,6 +140,7 @@ public class SettingsActivity extends BaseActivity {
         mRankingsPollingPreferenceStore.getChargingRequired().removeListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().removeListener(mOnRankingsPollingEnabledChange);
         mRankingsPollingPreferenceStore.getPollFrequency().removeListener(mOnPollFrequencyChange);
+        mRankingsPollingPreferenceStore.getRingtone().removeListener(mOnRingtoneChange);
         mRankingsPollingPreferenceStore.getVibrationEnabled().removeListener(mOnVibrationEnabledChange);
         mRankingsPollingPreferenceStore.getWifiRequired().removeListener(mOnWifiRequiredChange);
     }
@@ -209,6 +211,7 @@ public class SettingsActivity extends BaseActivity {
         mRankingsPollingPreferenceStore.getChargingRequired().addListener(mOnChargingRequiredChange);
         mRankingsPollingPreferenceStore.getEnabled().addListener(mOnRankingsPollingEnabledChange);
         mRankingsPollingPreferenceStore.getPollFrequency().addListener(mOnPollFrequencyChange);
+        mRankingsPollingPreferenceStore.getRingtone().addListener(mOnRingtoneChange);
         mRankingsPollingPreferenceStore.getVibrationEnabled().addListener(mOnVibrationEnabledChange);
         mRankingsPollingPreferenceStore.getWifiRequired().addListener(mOnWifiRequiredChange);
 
@@ -300,6 +303,14 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public void onPreferenceChange(final Preference<Boolean> preference) {
             mRankingsPollingSyncManager.enableOrDisable();
+            refresh();
+        }
+    };
+
+    private final Preference.OnPreferenceChangeListener<Uri> mOnRingtoneChange =
+            new Preference.OnPreferenceChangeListener<Uri>() {
+        @Override
+        public void onPreferenceChange(final Preference<Uri> preference) {
             refresh();
         }
     };
