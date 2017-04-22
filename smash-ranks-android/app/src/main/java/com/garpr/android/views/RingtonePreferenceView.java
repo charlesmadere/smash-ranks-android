@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -147,7 +148,15 @@ public class RingtonePreferenceView extends SimplePreferenceView implements
     public void refresh() {
         super.refresh();
 
-        // TODO
+        final Uri uri = mRankingsPollingPreferenceStore.getRingtone().get();
+        final int position = uri == null ? -1 : mRingtoneManager.getRingtonePosition(uri);
+
+        if (position == -1) {
+            setDescriptionText(R.string.not_yet_set);
+        } else {
+            final Ringtone ringtone = mRingtoneManager.getRingtone(position);
+            setDescriptionText(ringtone.getTitle(getContext()));
+        }
     }
 
 }
