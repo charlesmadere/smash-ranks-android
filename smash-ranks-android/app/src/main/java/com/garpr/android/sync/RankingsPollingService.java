@@ -106,7 +106,6 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
                 .setAutoCancel(true)
                 .setCategory(NotificationCompat.CATEGORY_SOCIAL)
                 .setContentTitle(getString(R.string.gar_pr))
-                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setSmallIcon(R.drawable.notification)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
@@ -116,6 +115,13 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
 
         builder.setContentText(getString(R.string.x_rankings_have_been_updated,
                         mRegionManager.getRegion()));
+
+        if (Boolean.TRUE.equals(mRankingsPollingPreferenceStore.getVibrationEnabled().get())) {
+            builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS |
+                    NotificationCompat.DEFAULT_VIBRATE);
+        } else {
+            builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS);
+        }
 
         final Drawable largeIconDrawable = ContextCompat.getDrawable(this, R.mipmap.launcher);
         Bitmap largeIconBitmap = null;
