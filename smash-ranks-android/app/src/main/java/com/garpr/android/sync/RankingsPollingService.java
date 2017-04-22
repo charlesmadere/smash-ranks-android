@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
@@ -135,6 +136,12 @@ public class RankingsPollingService extends GcmTaskService implements ApiListene
         }
 
         builder.setLargeIcon(largeIconBitmap);
+
+        final Uri ringtoneUri = mRankingsPollingPreferenceStore.getRingtone().get();
+
+        if (ringtoneUri != null) {
+            builder.setSound(ringtoneUri);
+        }
 
         mNotificationManager.show(builder);
     }
