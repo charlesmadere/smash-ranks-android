@@ -155,6 +155,10 @@ public class PlayerActivity extends BaseActivity implements
 
             @Override
             public void onBackground() {
+                if (!isAlive() || mResult != result) {
+                    return;
+                }
+
                 mList = ListUtils.filterPlayerMatchesList(result, PlayerActivity.this.mList);
             }
 
