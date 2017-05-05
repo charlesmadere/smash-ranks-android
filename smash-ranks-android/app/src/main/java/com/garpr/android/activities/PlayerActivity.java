@@ -138,10 +138,6 @@ public class PlayerActivity extends BaseActivity implements
     }
 
     private void fetchData() {
-        mFullPlayer = null;
-        mList = null;
-        mMatchesBundle = null;
-        mResult = null;
         mRefreshLayout.setRefreshing(true);
         mDataListener = new DataListener();
         mDataListener.fetch();
@@ -155,6 +151,10 @@ public class PlayerActivity extends BaseActivity implements
 
             @Override
             public void onBackground() {
+                if (!isAlive() || mResult != result) {
+                    return;
+                }
+
                 mList = ListUtils.filterPlayerMatchesList(result, PlayerActivity.this.mList);
             }
 
