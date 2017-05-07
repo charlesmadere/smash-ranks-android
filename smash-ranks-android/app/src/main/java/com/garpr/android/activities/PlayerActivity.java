@@ -417,6 +417,7 @@ public class PlayerActivity extends BaseActivity implements
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
+        supportInvalidateOptionsMenu();
     }
 
     @Override
