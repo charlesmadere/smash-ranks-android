@@ -129,6 +129,10 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
 
     @Override
     public void search(@Nullable final String query) {
+        if (mPlayersBundle == null || !mPlayersBundle.hasPlayers()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<AbsPlayer> mList;
 

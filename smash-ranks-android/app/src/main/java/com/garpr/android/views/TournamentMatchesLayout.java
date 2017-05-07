@@ -63,7 +63,7 @@ public class TournamentMatchesLayout extends TournamentPageLayout {
 
     @Override
     public void search(@Nullable final String query) {
-        if (!mContent.hasMatches()) {
+        if (mContent == null || !mContent.hasMatches()) {
             return;
         }
 

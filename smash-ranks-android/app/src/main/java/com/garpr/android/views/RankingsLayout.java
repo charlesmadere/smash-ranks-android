@@ -146,6 +146,10 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
 
     @Override
     public void search(@Nullable final String query) {
+        if (mRankingsBundle == null || !mRankingsBundle.hasRankings()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<Ranking> mList;
 

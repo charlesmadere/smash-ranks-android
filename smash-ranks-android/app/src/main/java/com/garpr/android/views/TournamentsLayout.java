@@ -126,6 +126,10 @@ public class TournamentsLayout extends SearchableFrameLayout implements
 
     @Override
     public void search(@Nullable final String query) {
+        if (mTournamentsBundle == null || !mTournamentsBundle.hasTournaments()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<AbsTournament> mList;
 

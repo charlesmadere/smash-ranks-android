@@ -274,6 +274,10 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     private void search(@Nullable final String query) {
+        if (mPlayersBundle == null || !mPlayersBundle.hasPlayers()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<AbsPlayer> mList;
 

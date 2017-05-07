@@ -125,6 +125,10 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     private void filter(@Nullable final Match.Result result) {
         mResult = result;
 
+        if (mList == null || mList.isEmpty()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<Object> mList;
 

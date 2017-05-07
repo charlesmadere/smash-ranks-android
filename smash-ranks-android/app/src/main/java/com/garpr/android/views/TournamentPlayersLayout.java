@@ -64,7 +64,7 @@ public class TournamentPlayersLayout extends TournamentPageLayout {
 
     @Override
     public void search(@Nullable final String query) {
-        if (!mContent.hasPlayers()) {
+        if (mContent == null || !mContent.hasPlayers()) {
             return;
         }
 
