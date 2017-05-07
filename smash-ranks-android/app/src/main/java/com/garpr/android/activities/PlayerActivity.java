@@ -388,8 +388,8 @@ public class PlayerActivity extends BaseActivity implements
     }
 
     private void showData() {
-        mList = ListUtils.createPlayerMatchesList(this, mRegionManager, mFullPlayer, mMatchesBundle);
-
+        mList = ListUtils.createPlayerMatchesList(this, mRegionManager, mFullPlayer,
+                mMatchesBundle);
         mError.setVisibility(View.GONE);
 
         if (mList == null || mList.isEmpty()) {
@@ -427,7 +427,9 @@ public class PlayerActivity extends BaseActivity implements
     private void success(@NonNull final FullPlayer fullPlayer,
             @Nullable final MatchesBundle matchesBundle) {
         mFullPlayer = fullPlayer;
+        mList = null;
         mMatchesBundle = matchesBundle;
+        mResult = null;
         showData();
     }
 
