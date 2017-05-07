@@ -130,6 +130,10 @@ public class FavoritePlayersLayout extends SearchableFrameLayout implements
 
             @Override
             public void onBackground() {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
+                    return;
+                }
+
                 mList = ListUtils.searchPlayerList(query, mFavoritePlayersManager.getAbsPlayers());
             }
 

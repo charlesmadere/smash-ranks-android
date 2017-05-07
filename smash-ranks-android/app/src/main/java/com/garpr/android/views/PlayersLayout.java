@@ -135,7 +135,7 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 

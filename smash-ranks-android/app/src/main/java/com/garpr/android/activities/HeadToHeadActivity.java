@@ -133,6 +133,10 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
 
             @Override
             public void onBackground() {
+                if (!isAlive() || mResult != result) {
+                    return;
+                }
+
                 mList = ListUtils.filterPlayerMatchesList(result, HeadToHeadActivity.this.mList);
             }
 

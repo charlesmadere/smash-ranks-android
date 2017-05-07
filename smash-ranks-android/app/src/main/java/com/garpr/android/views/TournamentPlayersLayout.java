@@ -73,7 +73,7 @@ public class TournamentPlayersLayout extends TournamentPageLayout {
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 

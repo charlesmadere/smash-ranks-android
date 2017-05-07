@@ -39,8 +39,7 @@ public class TournamentMatchesLayout extends TournamentPageLayout {
     }
 
     public TournamentMatchesLayout(@NonNull final Context context,
-            @Nullable final AttributeSet attrs,
-            @AttrRes final int defStyleAttr) {
+            @Nullable final AttributeSet attrs, @AttrRes final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -73,7 +72,7 @@ public class TournamentMatchesLayout extends TournamentPageLayout {
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 

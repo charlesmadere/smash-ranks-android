@@ -357,7 +357,7 @@ public class PlayerActivity extends BaseActivity implements
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 

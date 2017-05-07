@@ -132,7 +132,7 @@ public class TournamentsLayout extends SearchableFrameLayout implements
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 

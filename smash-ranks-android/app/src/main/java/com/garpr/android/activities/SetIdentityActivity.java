@@ -281,7 +281,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 
