@@ -93,7 +93,6 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
     }
 
     private void fetchRankingsBundle() {
-        mRankingsBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getRankings(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }

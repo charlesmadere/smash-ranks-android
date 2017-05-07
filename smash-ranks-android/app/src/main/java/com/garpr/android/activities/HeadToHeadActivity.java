@@ -117,9 +117,6 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     }
 
     private void fetchHeadToHead() {
-        mHeadToHead = null;
-        mList = null;
-        mResult = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getHeadToHead(mRegionManager.getRegion(this), mPlayerId, mOpponentId,
                 new ApiCall<>(this));

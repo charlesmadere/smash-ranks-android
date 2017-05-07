@@ -90,7 +90,6 @@ public class TournamentsLayout extends SearchableFrameLayout implements
     }
 
     private void fetchTournamentsBundle() {
-        mTournamentsBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getTournaments(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
