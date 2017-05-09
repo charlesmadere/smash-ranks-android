@@ -117,9 +117,6 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     }
 
     private void fetchHeadToHead() {
-        mHeadToHead = null;
-        mList = null;
-        mResult = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getHeadToHead(mRegionManager.getRegion(this), mPlayerId, mOpponentId,
                 new ApiCall<>(this));
@@ -128,11 +125,19 @@ public class HeadToHeadActivity extends BaseActivity implements ApiListener<Head
     private void filter(@Nullable final Match.Result result) {
         mResult = result;
 
+        if (mList == null || mList.isEmpty()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<Object> mList;
 
             @Override
             public void onBackground() {
+                if (!isAlive() || mResult != result) {
+                    return;
+                }
+
                 mList = ListUtils.filterPlayerMatchesList(result, HeadToHeadActivity.this.mList);
             }
 

@@ -146,6 +146,10 @@ public class PlayerActivity extends BaseActivity implements
     private void filter(@Nullable final Match.Result result) {
         mResult = result;
 
+        if (mList == null || mList.isEmpty()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<Object> mList;
 
@@ -357,7 +361,7 @@ public class PlayerActivity extends BaseActivity implements
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 
@@ -388,8 +392,8 @@ public class PlayerActivity extends BaseActivity implements
     }
 
     private void showData() {
-        mList = ListUtils.createPlayerMatchesList(this, mRegionManager, mFullPlayer, mMatchesBundle);
-
+        mList = ListUtils.createPlayerMatchesList(this, mRegionManager, mFullPlayer,
+                mMatchesBundle);
         mError.setVisibility(View.GONE);
 
         if (mList == null || mList.isEmpty()) {
@@ -417,6 +421,7 @@ public class PlayerActivity extends BaseActivity implements
         mEmpty.setVisibility(View.GONE);
         mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
+        supportInvalidateOptionsMenu();
     }
 
     @Override
@@ -427,7 +432,9 @@ public class PlayerActivity extends BaseActivity implements
     private void success(@NonNull final FullPlayer fullPlayer,
             @Nullable final MatchesBundle matchesBundle) {
         mFullPlayer = fullPlayer;
+        mList = null;
         mMatchesBundle = matchesBundle;
+        mResult = null;
         showData();
     }
 

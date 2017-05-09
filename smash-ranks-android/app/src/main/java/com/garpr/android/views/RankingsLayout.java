@@ -93,7 +93,6 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
     }
 
     private void fetchRankingsBundle() {
-        mRankingsBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getRankings(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
@@ -147,12 +146,16 @@ public class RankingsLayout extends SearchableFrameLayout implements ApiListener
 
     @Override
     public void search(@Nullable final String query) {
+        if (mRankingsBundle == null || !mRankingsBundle.hasRankings()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<Ranking> mList;
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 

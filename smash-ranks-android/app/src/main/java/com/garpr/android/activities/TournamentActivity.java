@@ -115,7 +115,6 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     }
 
     private void fetchFullTournament() {
-        mFullTournament = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getTournament(mRegionManager.getRegion(this), mTournamentId, new ApiCall<>(this));
     }

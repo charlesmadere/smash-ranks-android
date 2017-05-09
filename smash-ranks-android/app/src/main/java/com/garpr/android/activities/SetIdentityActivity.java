@@ -89,8 +89,6 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     private void fetchPlayersBundle() {
-        mSelectedPlayer = null;
-        mPlayersBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getPlayers(mRegionManager.getRegion(this), new ApiCall<>(this));
     }
@@ -276,12 +274,16 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
     }
 
     private void search(@Nullable final String query) {
+        if (mPlayersBundle == null || !mPlayersBundle.hasPlayers()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<AbsPlayer> mList;
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 
@@ -334,6 +336,7 @@ public class SetIdentityActivity extends BaseActivity implements ApiListener<Pla
 
     @Override
     public void success(@Nullable final PlayersBundle playersBundle) {
+        mSelectedPlayer = null;
         mPlayersBundle = playersBundle;
 
         if (mPlayersBundle != null && mPlayersBundle.hasPlayers()) {

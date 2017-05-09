@@ -81,7 +81,6 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
     }
 
     private void fetchPlayersBundle() {
-        mPlayersBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getPlayers(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
@@ -130,12 +129,16 @@ public class PlayersLayout extends SearchableFrameLayout implements ApiListener<
 
     @Override
     public void search(@Nullable final String query) {
+        if (mPlayersBundle == null || !mPlayersBundle.hasPlayers()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<AbsPlayer> mList;
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 

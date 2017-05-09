@@ -90,7 +90,6 @@ public class TournamentsLayout extends SearchableFrameLayout implements
     }
 
     private void fetchTournamentsBundle() {
-        mTournamentsBundle = null;
         mRefreshLayout.setRefreshing(true);
         mServerApi.getTournaments(mRegionManager.getRegion(getContext()), new ApiCall<>(this));
     }
@@ -127,12 +126,16 @@ public class TournamentsLayout extends SearchableFrameLayout implements
 
     @Override
     public void search(@Nullable final String query) {
+        if (mTournamentsBundle == null || !mTournamentsBundle.hasTournaments()) {
+            return;
+        }
+
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<AbsTournament> mList;
 
             @Override
             public void onBackground() {
-                if (!isAlive()) {
+                if (!isAlive() || !TextUtils.equals(query, getSearchQuery())) {
                     return;
                 }
 
