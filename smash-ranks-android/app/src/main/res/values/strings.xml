@@ -97,6 +97,8 @@
     <string name="set_your_identity">Set your identity</string>
     <string name="set_your_region">Set your region</string>
     <string name="share">Share</string>
+    <string name="share_rankings">Share rankings</string>
+    <string name="share_tournaments">Share tournaments</string>
     <string name="share_x">Share %1$s</string>
     <string name="show">Show</string>
     <string name="show_all">Show all</string>

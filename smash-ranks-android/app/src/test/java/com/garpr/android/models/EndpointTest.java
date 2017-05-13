@@ -81,6 +81,15 @@ public class EndpointTest extends BaseTest {
     }
 
     @Test
+    public void testGetRankingsWebPath() throws Exception {
+        assertEquals("https://www.garpr.com/#/norcal/rankings",
+                Endpoint.GAR_PR.getRankingsWebPath("norcal"));
+
+        assertEquals("https://www.notgarpr.com/#/newjersey/rankings",
+                Endpoint.NOT_GAR_PR.getRankingsWebPath("newjersey"));
+    }
+
+    @Test
     public void testGetRegionsApiPath() throws Exception {
         assertEquals("https://www.garpr.com:3001/regions", Endpoint.GAR_PR.getRegionsApiPath());
         assertEquals("https://www.notgarpr.com:3001/regions", Endpoint.NOT_GAR_PR.getRegionsApiPath());
@@ -111,6 +120,16 @@ public class EndpointTest extends BaseTest {
 
         assertEquals("https://www.notgarpr.com/#/newjersey/tournaments/58bdc6e31d41c867e937fc15",
                 Endpoint.NOT_GAR_PR.getTournamentWebPath("newjersey", "58bdc6e31d41c867e937fc15"));
+    }
+
+    @Test
+    public void testGetTournamentsWebPath() throws Exception {
+        assertEquals("https://www.garpr.com/#/googlemtv/tournaments",
+                Endpoint.GAR_PR.getTournamentsWebPath("googlemtv"));
+
+        assertEquals("https://www.notgarpr.com/#/nyc/tournaments",
+                Endpoint.NOT_GAR_PR.getTournamentsWebPath("nyc"));
+
     }
 
     @Test
