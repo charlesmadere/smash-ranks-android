@@ -20,7 +20,7 @@
         android:visible="false"
         compat:showAsAction="never" />
     <item
-        android:id="@+id/miPlayers"
+        android:id="@+id/miViewAllPlayers"
         android:title="@string/view_all_players"
         compat:showAsAction="never" />
     <item

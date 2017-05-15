@@ -77,17 +77,19 @@ public class HomeActivity extends BaseActivity implements
 
 
     public static Intent getLaunchIntent(final Context context) {
-        return new Intent(context, HomeActivity.class);
+        return getLaunchIntent(context, null);
     }
 
-    public static Intent getLaunchIntent(final Context context, final int initialPosition) {
-        return new Intent(context, HomeActivity.class)
-                .putExtra(EXTRA_INITIAL_POSITION, initialPosition);
-    }
+    public static Intent getLaunchIntent(final Context context,
+            @Nullable final Integer initialPosition) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent = IntentCompat.makeRestartActivityTask(intent.getComponent());
 
-    public static Intent getRestartLaunchIntent(final Context context) {
-        final Intent intent = new Intent(context, HomeActivity.class);
-        return IntentCompat.makeRestartActivityTask(intent.getComponent());
+        if (initialPosition != null) {
+            intent.putExtra(EXTRA_INITIAL_POSITION, initialPosition.intValue());
+        }
+
+        return intent;
     }
 
     @Override
@@ -204,16 +206,16 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.miPlayers:
-                startActivity(PlayersActivity.getLaunchIntent(this));
+            case R.id.miSettings:
+                startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
 
             case R.id.miShare:
                 share();
                 return true;
 
-            case R.id.miSettings:
-                startActivity(SettingsActivity.getLaunchIntent(this));
+            case R.id.miViewAllPlayers:
+                startActivity(PlayersActivity.getLaunchIntent(this));
                 return true;
 
             case R.id.miViewYourself:
