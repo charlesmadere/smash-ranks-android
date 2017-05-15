@@ -16,10 +16,11 @@ import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Region;
 
+import static com.garpr.android.misc.Constants.PLAIN_TEXT;
+
 public class ShareUtilsImpl implements ShareUtils {
 
     private static final String TAG = "ShareUtilsImpl";
-    private static final String PLAIN_TEXT = "text/plain";
 
     private final RegionManager mRegionManager;
     private final Timber mTimber;
@@ -60,6 +61,17 @@ public class ShareUtilsImpl implements ShareUtils {
     }
 
     @Override
+    public void shareRankings(@NonNull final Activity activity) {
+        final Region region = mRegionManager.getRegion(activity);
+
+        ShareCompat.IntentBuilder.from(activity)
+                .setChooserTitle(activity.getString(R.string.share_rankings))
+                .setText(region.getEndpoint().getRankingsWebPath(region.getId()))
+                .setType(PLAIN_TEXT)
+                .startChooser();
+    }
+
+    @Override
     public void shareTournament(@NonNull final Activity activity,
             @NonNull final AbsTournament tournament) {
         final Region region = mRegionManager.getRegion(activity);
@@ -67,6 +79,17 @@ public class ShareUtilsImpl implements ShareUtils {
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_x, tournament.getName()))
                 .setText(region.getEndpoint().getTournamentWebPath(region.getId(), tournament.getId()))
+                .setType(PLAIN_TEXT)
+                .startChooser();
+    }
+
+    @Override
+    public void shareTournaments(@NonNull final Activity activity) {
+        final Region region = mRegionManager.getRegion(activity);
+
+        ShareCompat.IntentBuilder.from(activity)
+                .setChooserTitle(activity.getString(R.string.share_tournaments))
+                .setText(region.getEndpoint().getTournamentsWebPath(region.getId()))
                 .setType(PLAIN_TEXT)
                 .startChooser();
     }

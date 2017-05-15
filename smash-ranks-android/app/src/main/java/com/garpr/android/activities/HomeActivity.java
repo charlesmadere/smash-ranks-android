@@ -1,6 +1,7 @@
 package com.garpr.android.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -22,6 +24,7 @@ import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
+import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.Region;
 import com.garpr.android.sync.RankingsPollingSyncManager;
@@ -63,6 +66,9 @@ public class HomeActivity extends BaseActivity implements
     @Inject
     RegionManager mRegionManager;
 
+    @Inject
+    ShareUtils mShareUtils;
+
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNavigationView;
 
@@ -71,17 +77,19 @@ public class HomeActivity extends BaseActivity implements
 
 
     public static Intent getLaunchIntent(final Context context) {
-        return new Intent(context, HomeActivity.class);
+        return getLaunchIntent(context, null);
     }
 
-    public static Intent getLaunchIntent(final Context context, final int initialPosition) {
-        return new Intent(context, HomeActivity.class)
-                .putExtra(EXTRA_INITIAL_POSITION, initialPosition);
-    }
+    public static Intent getLaunchIntent(final Context context,
+            @Nullable final Integer initialPosition) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent = IntentCompat.makeRestartActivityTask(intent.getComponent());
 
-    public static Intent getRestartLaunchIntent(final Context context) {
-        final Intent intent = new Intent(context, HomeActivity.class);
-        return IntentCompat.makeRestartActivityTask(intent.getComponent());
+        if (initialPosition != null) {
+            intent.putExtra(EXTRA_INITIAL_POSITION, initialPosition.intValue());
+        }
+
+        return intent;
     }
 
     @Override
@@ -137,6 +145,8 @@ public class HomeActivity extends BaseActivity implements
             mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
             mSearchView.setQueryHint(getText(R.string.search_));
             mSearchView.setOnQueryTextListener(this);
+
+            menu.findItem(R.id.miShare).setVisible(true);
         }
 
         if (mIdentityManager.hasIdentity()) {
@@ -196,12 +206,16 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.miPlayers:
-                startActivity(PlayersActivity.getLaunchIntent(this));
-                return true;
-
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
+                return true;
+
+            case R.id.miShare:
+                share();
+                return true;
+
+            case R.id.miViewAllPlayers:
+                startActivity(PlayersActivity.getLaunchIntent(this));
                 return true;
 
             case R.id.miViewYourself:
@@ -300,6 +314,33 @@ public class HomeActivity extends BaseActivity implements
         if (initialPosition != -1) {
             mViewPager.setCurrentItem(initialPosition);
         }
+    }
+
+    private void share() {
+        CharSequence[] items = {
+                getText(R.string.share_rankings),
+                getText(R.string.share_tournaments)
+        };
+
+        new AlertDialog.Builder(this)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        switch (which) {
+                            case 0:
+                                mShareUtils.shareRankings(HomeActivity.this);
+                                break;
+
+                            case 1:
+                                mShareUtils.shareTournaments(HomeActivity.this);
+                                break;
+
+                            default:
+                                throw new RuntimeException("illegal which: " + which);
+                        }
+                    }
+                })
+                .show();
     }
 
     private void updateSelectedBottomNavigationItem() {

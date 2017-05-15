@@ -14,6 +14,10 @@ public interface ShareUtils {
 
     void sharePlayer(@NonNull final Activity activity, @NonNull final AbsPlayer player);
 
+    void shareRankings(@NonNull final Activity activity);
+
     void shareTournament(@NonNull final Activity activity, @NonNull final AbsTournament tournament);
+
+    void shareTournaments(@NonNull final Activity activity);
 
 }

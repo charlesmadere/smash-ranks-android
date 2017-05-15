@@ -55,7 +55,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         builder.setContentIntent(PendingIntent.getActivity(context, 0,
-                HomeActivity.getRestartLaunchIntent(context), PendingIntent.FLAG_UPDATE_CURRENT));
+                HomeActivity.getLaunchIntent(context), PendingIntent.FLAG_UPDATE_CURRENT));
 
         builder.setContentText(context.getString(R.string.x_rankings_have_been_updated,
                 mRegionManager.getRegion()));

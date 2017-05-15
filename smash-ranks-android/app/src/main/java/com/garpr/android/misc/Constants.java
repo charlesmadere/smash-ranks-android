@@ -18,6 +18,7 @@ public final class Constants {
     public static final String CHARLES_TWITTER_URL = "https://twitter.com/charlesmadere";
     public static final String GAR_TWITTER_URL = "https://twitter.com/garsh0p";
     public static final String GITHUB_URL = "https://github.com/charlesmadere/smash-ranks-android";
+    public static final String PLAIN_TEXT = "text/plain";
 
     // NOT GAR PR Paths
     public static final int NOT_GAR_PR_API_PORT = 3001;

@@ -106,6 +106,11 @@ public enum Endpoint implements Parcelable {
     }
 
     @NonNull
+    public String getRankingsWebPath(@NonNull final String regionId) {
+        return getWebPath(regionId) + "/rankings";
+    }
+
+    @NonNull
     public String getRegionsApiPath() {
         return Uri.parse(getApiPath())
                 .buildUpon()
@@ -139,7 +144,12 @@ public enum Endpoint implements Parcelable {
     @NonNull
     public String getTournamentWebPath(@NonNull final String regionId,
             @NonNull final String tournamentId) {
-        return getWebPath(regionId) + "/tournaments/" + tournamentId;
+        return getTournamentsWebPath(regionId) + "/" + tournamentId;
+    }
+
+    @NonNull
+    public String getTournamentsWebPath(@NonNull final String regionId) {
+        return getWebPath(regionId) + "/tournaments";
     }
 
     @NonNull
