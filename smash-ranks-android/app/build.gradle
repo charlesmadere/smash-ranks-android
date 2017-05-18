@@ -1,4 +1,4 @@
-// Twitter's Fabric
+// Fabric
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -11,15 +11,15 @@ buildscript {
 
 apply plugin: 'com.android.application'
 
-// Twitter's Fabric
+// Fabric
 apply plugin: 'io.fabric'
 
-// Twitter's Fabric
+// Fabric
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-// ButterKnife
+// Jake Wharton's ButterKnife
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
@@ -79,7 +79,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 
-    // Twitter's Fabric
+    // Fabric
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
