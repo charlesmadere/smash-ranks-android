@@ -146,7 +146,9 @@ public class HomeActivity extends BaseActivity implements
             mSearchView.setQueryHint(getText(R.string.search_));
             mSearchView.setOnQueryTextListener(this);
 
+            menu.findItem(R.id.miActivityRequirements).setVisible(true);
             menu.findItem(R.id.miShare).setVisible(true);
+            menu.findItem(R.id.miViewAllPlayers).setVisible(true);
         }
 
         if (mIdentityManager.hasIdentity()) {
@@ -206,6 +208,10 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miActivityRequirements:
+                showActivityRequirements();
+                return true;
+
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
@@ -341,6 +347,10 @@ public class HomeActivity extends BaseActivity implements
                     }
                 })
                 .show();
+    }
+
+    private void showActivityRequirements() {
+        // TODO
     }
 
     private void updateSelectedBottomNavigationItem() {
