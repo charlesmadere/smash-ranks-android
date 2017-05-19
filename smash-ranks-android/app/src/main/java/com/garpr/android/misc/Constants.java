@@ -8,7 +8,7 @@ public final class Constants {
     // Defaults
     // TODO this should be retrieved from the server via a splash screen...
     public static final Region DEFAULT_REGION = new Region("Norcal", "norcal", Endpoint.GAR_PR,
-            2, 30);
+            30, 2);
 
     // GAR PR Paths
     public static final int GAR_PR_API_PORT = 3001;
