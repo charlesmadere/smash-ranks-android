@@ -106,6 +106,7 @@
     <string name="show_losses">Show losses</string>
     <string name="show_test_notification">Show test notification</string>
     <string name="show_wins">Show wins</string>
+    <string name="sorry_this_region_has_no_activity_requirement_information">Sorry, this region has no activity requirement information.</string>
     <string name="swipe_to_refresh_to_check_again">Swipe down to refresh to check again</string>
     <string name="swipe_to_refresh_to_try_again">Swipe down to refresh to try again</string>
     <string name="system">System</string>
@@ -140,15 +141,10 @@
     <string name="will_poll_on_any_data_connection">Will poll on any data connection</string>
     <string name="will_poll_regardless_of_being_plugged_in_or_not">Will poll regardless of being plugged in or not</string>
     <string name="will_rumble_when_rankings_are_updated">Will rumble when rankings are updated</string>
+    <string name="x_within_last_y">%1$s within last %2$s.</string>
     <string name="yes">Yes</string>
     <string name="you_can_add_a_player_to_your_favorites">You can add a player to your favorites when viewing their profile screen, or by long-pressing on their name in player lists.</string>
     <string name="youve_selected_a_region_but_havent_saved">You\'ve selected a region but haven\'t saved. Are you sure you still want to close this screen?</string>
     <string name="youve_selected_an_identity_but_havent_saved">You\'ve selected an identity but haven\'t saved. Are you sure you still want to close this screen?</string>
-
-
-    <plurals name="x_favorites">
-        <item quantity="one">%1$s favorite</item>
-        <item quantity="other">%1$s favorites</item>
-    </plurals>
 
 </resources>

@@ -15,6 +15,7 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -29,6 +30,8 @@ import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.Region;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.RankingsLayout;
+
+import java.text.NumberFormat;
 
 import javax.inject.Inject;
 
@@ -350,7 +353,26 @@ public class HomeActivity extends BaseActivity implements
     }
 
     private void showActivityRequirements() {
-        // TODO
+        final Region region = mRegionManager.getRegion(this);
+        final Integer rankingNumTourneysAttended = region.getRankingNumTourneysAttended();
+        final Integer rankingActivityDayLimit = region.getRankingActivityDayLimit();
+
+        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
+            Toast.makeText(this, R.string.sorry_this_region_has_no_activity_requirement_information,
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        final NumberFormat numberFormat = NumberFormat.getInstance();
+        final String tournaments = getResources().getQuantityString(R.plurals.x_tournaments,
+                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended));
+        final String days = getResources().getQuantityString(R.plurals.x_days,
+                rankingActivityDayLimit, numberFormat.format(rankingActivityDayLimit));
+
+        new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.x_within_last_y, tournaments, days))
+                .setTitle(R.string.activity_requirements)
+                .show();
     }
 
     private void updateSelectedBottomNavigationItem() {
