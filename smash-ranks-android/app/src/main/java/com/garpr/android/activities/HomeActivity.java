@@ -370,7 +370,7 @@ public class HomeActivity extends BaseActivity implements
                 rankingActivityDayLimit, numberFormat.format(rankingActivityDayLimit));
 
         new AlertDialog.Builder(this)
-                .setMessage(getString(R.string.x_within_last_y, tournaments, days))
+                .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
                 .setTitle(R.string.activity_requirements)
                 .show();
     }

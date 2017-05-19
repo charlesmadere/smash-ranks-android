@@ -141,7 +141,7 @@
     <string name="will_poll_on_any_data_connection">Will poll on any data connection</string>
     <string name="will_poll_regardless_of_being_plugged_in_or_not">Will poll regardless of being plugged in or not</string>
     <string name="will_rumble_when_rankings_are_updated">Will rumble when rankings are updated</string>
-    <string name="x_within_last_y">%1$s within last %2$s.</string>
+    <string name="x_within_the_last_y">%1$s within the last %2$s.</string>
     <string name="yes">Yes</string>
     <string name="you_can_add_a_player_to_your_favorites">You can add a player to your favorites when viewing their profile screen, or by long-pressing on their name in player lists.</string>
     <string name="youve_selected_a_region_but_havent_saved">You\'ve selected a region but haven\'t saved. Are you sure you still want to close this screen?</string>
