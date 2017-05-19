@@ -6,6 +6,7 @@ import com.garpr.android.models.Region;
 public final class Constants {
 
     // Defaults
+    // TODO this should be retrieved from the server via a splash screen...
     public static final Region DEFAULT_REGION = new Region("Norcal", "norcal", Endpoint.GAR_PR,
             2, 30);
 
