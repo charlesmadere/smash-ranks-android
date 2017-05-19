@@ -106,7 +106,6 @@
     <string name="show_losses">Show losses</string>
     <string name="show_test_notification">Show test notification</string>
     <string name="show_wins">Show wins</string>
-    <string name="sorry_this_region_has_no_activity_requirement_information">Sorry, this region has no activity requirement information.</string>
     <string name="swipe_to_refresh_to_check_again">Swipe down to refresh to check again</string>
     <string name="swipe_to_refresh_to_try_again">Swipe down to refresh to try again</string>
     <string name="system">System</string>

@@ -15,7 +15,6 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -149,7 +148,14 @@ public class HomeActivity extends BaseActivity implements
             mSearchView.setQueryHint(getText(R.string.search_));
             mSearchView.setOnQueryTextListener(this);
 
-            menu.findItem(R.id.miActivityRequirements).setVisible(true);
+            final Region region = mRegionManager.getRegion(this);
+            final Integer rankingNumTourneysAttended = region.getRankingNumTourneysAttended();
+            final Integer rankingActivityDayLimit = region.getRankingActivityDayLimit();
+
+            if (rankingNumTourneysAttended != null && rankingActivityDayLimit != null) {
+                menu.findItem(R.id.miActivityRequirements).setVisible(true);
+            }
+
             menu.findItem(R.id.miShare).setVisible(true);
             menu.findItem(R.id.miViewAllPlayers).setVisible(true);
         }
@@ -358,9 +364,7 @@ public class HomeActivity extends BaseActivity implements
         final Integer rankingActivityDayLimit = region.getRankingActivityDayLimit();
 
         if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            Toast.makeText(this, R.string.sorry_this_region_has_no_activity_requirement_information,
-                    Toast.LENGTH_LONG).show();
-            return;
+            throw new RuntimeException("Region (" + region + ") is missing necessary data");
         }
 
         final NumberFormat numberFormat = NumberFormat.getInstance();

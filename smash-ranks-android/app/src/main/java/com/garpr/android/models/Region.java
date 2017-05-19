@@ -39,10 +39,13 @@ public class Region implements Parcelable {
     }
 
     public Region(@NonNull final String displayName, @NonNull final String id,
-            @NonNull final Endpoint endpoint) {
+            @NonNull final Endpoint endpoint, @Nullable final Integer rankingActivityDayLimit,
+            @Nullable final Integer rankingNumTourneysAttended) {
         mDisplayName = displayName;
         mId = id;
         mEndpoint = endpoint;
+        mRankingActivityDayLimit = rankingActivityDayLimit;
+        mRankingNumTourneysAttended = rankingNumTourneysAttended;
     }
 
     @Override
