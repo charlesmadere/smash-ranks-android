@@ -149,10 +149,9 @@ public class HomeActivity extends BaseActivity implements
             mSearchView.setOnQueryTextListener(this);
 
             final Region region = mRegionManager.getRegion(this);
-            final Integer rankingNumTourneysAttended = region.getRankingNumTourneysAttended();
-            final Integer rankingActivityDayLimit = region.getRankingActivityDayLimit();
 
-            if (rankingNumTourneysAttended != null && rankingActivityDayLimit != null) {
+            if (region.getRankingNumTourneysAttended() != null &&
+                    region.getRankingActivityDayLimit() != null) {
                 menu.findItem(R.id.miActivityRequirements).setVisible(true);
             }
 
