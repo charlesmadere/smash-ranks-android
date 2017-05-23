@@ -374,7 +374,7 @@ public class HomeActivity extends BaseActivity implements
 
         new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
-                .setTitle(R.string.activity_requirements)
+                .setTitle(getString(R.string.x_activity_requirements, region.getDisplayName()))
                 .show();
     }
 
