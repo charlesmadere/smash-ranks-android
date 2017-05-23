@@ -6,7 +6,9 @@ import com.garpr.android.models.Region;
 public final class Constants {
 
     // Defaults
-    public static final Region DEFAULT_REGION = new Region("Norcal", "norcal", Endpoint.GAR_PR);
+    // TODO this should be retrieved from the server via a splash screen...
+    public static final Region DEFAULT_REGION = new Region("Norcal", "norcal", Endpoint.GAR_PR,
+            30, 2);
 
     // GAR PR Paths
     public static final int GAR_PR_API_PORT = 3001;

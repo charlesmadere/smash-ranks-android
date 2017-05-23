@@ -207,9 +207,7 @@ public class PlayerActivity extends BaseActivity implements
         final Intent intent = getIntent();
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID);
 
-        if (intent.hasExtra(EXTRA_PLAYER_NAME)) {
-            setTitle(intent.getStringExtra(EXTRA_PLAYER_NAME));
-        }
+        setTitle();
 
         mFavoritePlayersManager.addListener(this);
         mIdentityManager.addListener(this);
@@ -379,6 +377,24 @@ public class PlayerActivity extends BaseActivity implements
         });
     }
 
+    private void setTitle() {
+        if (!TextUtils.isEmpty(getTitle())) {
+            return;
+        }
+
+        if (mFullPlayer != null) {
+            setTitle(mFullPlayer.getName());
+        } else {
+            final Intent intent = getIntent();
+
+            if (intent.hasExtra(EXTRA_PLAYER_NAME)) {
+                setTitle(intent.getStringExtra(EXTRA_PLAYER_NAME));
+            }
+        }
+
+        setSubtitle(mRegionManager.getRegion(this).getDisplayName());
+    }
+
     private void showAliases() {
         final ArrayList<String> aliases = mFullPlayer.getAliases();
         // noinspection ConstantConditions
@@ -407,11 +423,7 @@ public class PlayerActivity extends BaseActivity implements
         }
 
         mRefreshLayout.setRefreshing(false);
-
-        if (TextUtils.isEmpty(getTitle())) {
-            setTitle(mFullPlayer.getName());
-        }
-
+        setTitle();
         supportInvalidateOptionsMenu();
     }
 

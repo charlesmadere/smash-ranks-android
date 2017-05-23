@@ -30,6 +30,8 @@ import com.garpr.android.models.Region;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.RankingsLayout;
 
+import java.text.NumberFormat;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -146,7 +148,15 @@ public class HomeActivity extends BaseActivity implements
             mSearchView.setQueryHint(getText(R.string.search_));
             mSearchView.setOnQueryTextListener(this);
 
+            final Region region = mRegionManager.getRegion(this);
+
+            if (region.getRankingNumTourneysAttended() != null &&
+                    region.getRankingActivityDayLimit() != null) {
+                menu.findItem(R.id.miActivityRequirements).setVisible(true);
+            }
+
             menu.findItem(R.id.miShare).setVisible(true);
+            menu.findItem(R.id.miViewAllPlayers).setVisible(true);
         }
 
         if (mIdentityManager.hasIdentity()) {
@@ -206,6 +216,10 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.miActivityRequirements:
+                showActivityRequirements();
+                return true;
+
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
                 return true;
@@ -340,6 +354,27 @@ public class HomeActivity extends BaseActivity implements
                         }
                     }
                 })
+                .show();
+    }
+
+    private void showActivityRequirements() {
+        final Region region = mRegionManager.getRegion(this);
+        final Integer rankingNumTourneysAttended = region.getRankingNumTourneysAttended();
+        final Integer rankingActivityDayLimit = region.getRankingActivityDayLimit();
+
+        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
+            throw new RuntimeException("Region (" + region + ") is missing necessary data");
+        }
+
+        final NumberFormat numberFormat = NumberFormat.getInstance();
+        final String tournaments = getResources().getQuantityString(R.plurals.x_tournaments,
+                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended));
+        final String days = getResources().getQuantityString(R.plurals.x_days,
+                rankingActivityDayLimit, numberFormat.format(rankingActivityDayLimit));
+
+        new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
+                .setTitle(getString(R.string.x_activity_requirements, region.getDisplayName()))
                 .show();
     }
 

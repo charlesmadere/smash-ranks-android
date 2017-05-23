@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.FavoritePlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.LitePlayer;
@@ -25,6 +26,9 @@ public final class ParcelableUtils {
         }
 
         switch (kind) {
+            case FAVORITE:
+                return source.readParcelable(FavoritePlayer.class.getClassLoader());
+
             case FULL:
                 return source.readParcelable(FullPlayer.class.getClassLoader());
 

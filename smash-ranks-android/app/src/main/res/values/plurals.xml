@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="x_days">
+        <item quantity="one">%1$s day</item>
+        <item quantity="other">%1$s days</item>
+    </plurals>
+
+    <plurals name="x_favorites">
+        <item quantity="one">%1$s favorite</item>
+        <item quantity="other">%1$s favorites</item>
+    </plurals>
+
+    <plurals name="x_tournaments">
+        <item quantity="one">%1$s tournament</item>
+        <item quantity="other">%1$s tournaments</item>
+    </plurals>
+
+</resources>
