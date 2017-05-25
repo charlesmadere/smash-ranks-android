@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="end"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:orientation="horizontal">
+    <include
+        layout="@layout/search_layout" />
+    <ImageButton
+        android:contentDescription="@string/search"
+        android:id="@+id/ibSearch"
+        android:src="@drawable/ic_search_white_24dp"
+        style="@style/ToolbarButton" />
+    <ImageButton
+        android:contentDescription="@string/activity_requirements"
+        android:id="@+id/ibActivityRequirements"
+        android:src="@drawable/ic_assessment_white_24dp"
+        style="@style/ToolbarButton" />
+</LinearLayout>

@@ -31,8 +31,13 @@ public final class MiscUtils {
             view = new View(activity);
         }
 
+        closeKeyboard(view);
+    }
+
+    public static void closeKeyboard(@NonNull final View view) {
         view.clearFocus();
-        final InputMethodManager imm = (InputMethodManager) activity.getSystemService(
+
+        final InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
@@ -64,6 +69,14 @@ public final class MiscUtils {
         ta.recycle();
 
         return color;
+    }
+
+    public static void openKeyboard(@NonNull final View view) {
+        view.requestFocus();
+
+        final InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
     @Nullable
