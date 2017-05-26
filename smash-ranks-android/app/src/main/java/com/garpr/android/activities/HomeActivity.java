@@ -12,7 +12,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -29,6 +28,7 @@ import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.Region;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.RankingsLayout;
+import com.garpr.android.views.toolbars.HomeToolbar;
 
 import java.text.NumberFormat;
 
@@ -53,8 +53,6 @@ public class HomeActivity extends BaseActivity implements
     public static final int POSITION_FAVORITE_PLAYERS = 2;
 
     private HomePagerAdapter mAdapter;
-    private MenuItem mSearchMenuItem;
-    private SearchView mSearchView;
 
     @Inject
     IdentityManager mIdentityManager;
@@ -73,6 +71,9 @@ public class HomeActivity extends BaseActivity implements
 
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNavigationView;
+
+    @BindView(R.id.homeToolbar)
+    HomeToolbar mHomeToolbar;
 
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
@@ -102,13 +103,13 @@ public class HomeActivity extends BaseActivity implements
     @Nullable
     @Override
     public CharSequence getSearchQuery() {
-        return mSearchView == null ? null : mSearchView.getQuery();
+        return mHomeToolbar.getSearchQuery();
     }
 
     @Override
     public void onBackPressed() {
-        if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
-            MenuItemCompat.collapseActionView(mSearchMenuItem);
+        if (mHomeToolbar != null && mHomeToolbar.isSearchLayoutExpanded()) {
+            mHomeToolbar.closeSearchLayout();
             return;
         }
 
@@ -137,31 +138,7 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_home, menu);
-
-        if (!TextUtils.isEmpty(getSubtitle())) {
-            mSearchMenuItem = menu.findItem(R.id.miSearch);
-            mSearchMenuItem.setVisible(true);
-
-            MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
-            mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
-            mSearchView.setQueryHint(getText(R.string.search_));
-            mSearchView.setOnQueryTextListener(this);
-
-            final Region region = mRegionManager.getRegion(this);
-
-            if (region.hasActivityRequirements()) {
-                menu.findItem(R.id.miActivityRequirements).setVisible(true);
-            }
-
-            menu.findItem(R.id.miShare).setVisible(true);
-            menu.findItem(R.id.miViewAllPlayers).setVisible(true);
-        }
-
-        if (mIdentityManager.hasIdentity()) {
-            menu.findItem(R.id.miViewYourself).setVisible(true);
-        }
-
+        mHomeToolbar.createOptionsMenu(getMenuInflater(), menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -215,9 +192,9 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.miActivityRequirements:
-                showActivityRequirements();
-                return true;
+//            case R.id.miActivityRequirements:
+//                showActivityRequirements();
+//                return true;
 
             case R.id.miSettings:
                 startActivity(SettingsActivity.getLaunchIntent(this));
@@ -280,9 +257,9 @@ public class HomeActivity extends BaseActivity implements
         final Region region = mRegionManager.getRegion(this);
         setTitle(region.getEndpoint().getName());
 
-        if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
-            MenuItemCompat.collapseActionView(mSearchMenuItem);
-        }
+//        if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
+//            MenuItemCompat.collapseActionView(mSearchMenuItem);
+//        }
 
         MiscUtils.closeKeyboard(this);
 

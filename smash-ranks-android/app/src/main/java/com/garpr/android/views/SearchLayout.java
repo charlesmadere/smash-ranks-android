@@ -15,12 +15,13 @@ import android.widget.LinearLayout;
 
 import com.garpr.android.R;
 import com.garpr.android.misc.MiscUtils;
+import com.garpr.android.misc.SearchQueryHandle;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
-public class SearchLayout extends LinearLayout {
+public class SearchLayout extends LinearLayout implements SearchQueryHandle {
 
     @Nullable
     private Listeners mListeners;
@@ -77,6 +78,12 @@ public class SearchLayout extends LinearLayout {
         if (mListeners != null) {
             mListeners.onSearchFieldExpanded(this);
         }
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getSearchQuery() {
+        return getText();
     }
 
     @Nullable
