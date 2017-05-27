@@ -150,8 +150,7 @@ public class HomeActivity extends BaseActivity implements
 
             final Region region = mRegionManager.getRegion(this);
 
-            if (region.getRankingNumTourneysAttended() != null &&
-                    region.getRankingActivityDayLimit() != null) {
+            if (region.hasActivityRequirements()) {
                 menu.findItem(R.id.miActivityRequirements).setVisible(true);
             }
 
