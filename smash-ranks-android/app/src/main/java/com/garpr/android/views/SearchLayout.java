@@ -19,6 +19,7 @@ import com.garpr.android.misc.SearchQueryHandle;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 public class SearchLayout extends LinearLayout implements SearchQueryHandle {
@@ -101,6 +102,11 @@ public class SearchLayout extends LinearLayout implements SearchQueryHandle {
         return getVisibility() == VISIBLE;
     }
 
+    @OnClick(R.id.searchClear)
+    void onClearClick() {
+        setText("");
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -126,6 +132,10 @@ public class SearchLayout extends LinearLayout implements SearchQueryHandle {
 
     public void setListeners(@Nullable final Listeners listeners) {
         mListeners = listeners;
+    }
+
+    public void setText(@Nullable final CharSequence text) {
+        mField.setText(text);
     }
 
 

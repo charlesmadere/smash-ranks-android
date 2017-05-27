@@ -7,7 +7,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 
 import com.garpr.android.App;
@@ -17,6 +17,7 @@ import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
+import com.garpr.android.models.Region;
 import com.garpr.android.views.SearchLayout;
 
 import javax.inject.Inject;
@@ -26,8 +27,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeToolbar extends Toolbar implements Heartbeat,
-        IdentityManager.OnIdentityChangeListener, RegionManager.OnRegionChangeListener,
-        SearchLayout.Listeners, SearchQueryHandle {
+        IdentityManager.OnIdentityChangeListener, Toolbar.OnMenuItemClickListener,
+        RegionManager.OnRegionChangeListener, SearchLayout.Listeners, SearchQueryHandle {
 
     @Inject
     IdentityManager mIdentityManager;
@@ -60,10 +61,6 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
         }
     }
 
-    public void createOptionsMenu(final MenuInflater inflater, final Menu menu) {
-        inflater.inflate(R.menu.toolbar_home, menu);
-    }
-
     @Nullable
     @Override
     public CharSequence getSearchQuery() {
@@ -91,6 +88,12 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+
+        if (isInEditMode()) {
+            return;
+        }
+
+        refreshMenu();
         mIdentityManager.addListener(this);
         mRegionManager.addListener(this);
     }
@@ -111,38 +114,59 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
         }
 
         ButterKnife.bind(this);
+        inflateMenu(R.menu.toolbar_home);
+        setOnMenuItemClickListener(this);
         mSearchLayout.setListeners(this);
+        refreshMenu();
 
-        if (!isInEditMode()) {
-            mIdentityManager.addListener(this);
-            mRegionManager.addListener(this);
+        if (isInEditMode()) {
+            return;
         }
+
+        mIdentityManager.addListener(this);
+        mRegionManager.addListener(this);
     }
 
     @Override
     public void onIdentityChange(final IdentityManager identityManager) {
+        if (isAlive()) {
+            refreshMenu();
+        }
+    }
 
+    @Override
+    public boolean onMenuItemClick(final MenuItem item) {
+        final Activity activity = MiscUtils.optActivity(getContext());
+
+        if (activity instanceof Listeners) {
+            return ((Listeners) activity).onMenuItemClick(item);
+        } else {
+            return false;
+        }
     }
 
     @Override
     public void onRegionChange(final RegionManager regionManager) {
-
+        if (isAlive()) {
+            mSearchLayout.close();
+            refreshMenu();
+        }
     }
 
     @OnClick(R.id.ibSearch)
     void onSearchButtonClick() {
         mSearchLayout.expand();
-        refreshButtonVisibility();
+        refreshMenu();
     }
 
     @Override
     public void onSearchFieldClosed(final SearchLayout searchLayout) {
-        refreshButtonVisibility();
+        refreshMenu();
     }
 
     @Override
     public void onSearchFieldExpanded(final SearchLayout searchLayout) {
-        refreshButtonVisibility();
+        refreshMenu();
     }
 
     @Override
@@ -154,20 +178,26 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
         }
     }
 
-    private void refreshButtonVisibility() {
+    private void refreshMenu() {
         if (mSearchLayout.isExpanded()) {
             mSearchButton.setVisibility(GONE);
             mActivityRequirementsButton.setVisibility(GONE);
         } else {
             mSearchButton.setVisibility(VISIBLE);
-            mActivityRequirementsButton.setVisibility(VISIBLE);
+
+            final Region region = mRegionManager.getRegion(getContext());
+            mActivityRequirementsButton.setVisibility(region.hasActivityRequirements() ? VISIBLE : GONE);
         }
+
+        final Menu menu = getMenu();
+        menu.findItem(R.id.miViewYourself).setVisible(mIdentityManager.hasIdentity());
     }
 
 
     public interface Listeners {
         void onActivityRequirementsButtonClick();
-        void onSearchFieldTextChanged(@Nullable final SearchLayout searchLayout);
+        boolean onMenuItemClick(final MenuItem item);
+        void onSearchFieldTextChanged(final SearchLayout searchLayout);
     }
 
 }

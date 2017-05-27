@@ -8,11 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.IntentCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.garpr.android.App;
@@ -28,6 +25,7 @@ import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.Region;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.RankingsLayout;
+import com.garpr.android.views.SearchLayout;
 import com.garpr.android.views.toolbars.HomeToolbar;
 
 import java.text.NumberFormat;
@@ -38,10 +36,8 @@ import butterknife.BindView;
 import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener,
-        IdentityManager.OnIdentityChangeListener, MenuItemCompat.OnActionExpandListener,
-        RankingsLayout.Listener, RegionManager.OnRegionChangeListener, SearchQueryHandle,
-        SearchView.OnQueryTextListener {
+        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners,
+        RankingsLayout.Listener, RegionManager.OnRegionChangeListener, SearchQueryHandle {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
@@ -107,6 +103,28 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
+    public void onActivityRequirementsButtonClick() {
+        final Region region = mRegionManager.getRegion(this);
+        final Integer rankingNumTourneysAttended = region.getRankingNumTourneysAttended();
+        final Integer rankingActivityDayLimit = region.getRankingActivityDayLimit();
+
+        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
+            throw new RuntimeException("Region (" + region + ") is missing necessary data");
+        }
+
+        final NumberFormat numberFormat = NumberFormat.getInstance();
+        final String tournaments = getResources().getQuantityString(R.plurals.x_tournaments,
+                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended));
+        final String days = getResources().getQuantityString(R.plurals.x_days,
+                rankingActivityDayLimit, numberFormat.format(rankingActivityDayLimit));
+
+        new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
+                .setTitle(getString(R.string.x_activity_requirements, region.getDisplayName()))
+                .show();
+    }
+
+    @Override
     public void onBackPressed() {
         if (mHomeToolbar != null && mHomeToolbar.isSearchLayoutExpanded()) {
             mHomeToolbar.closeSearchLayout();
@@ -132,37 +150,38 @@ public class HomeActivity extends BaseActivity implements
 
         setInitialPosition(savedInstanceState);
 
-        mIdentityManager.addListener(this);
         mRegionManager.addListener(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        mHomeToolbar.createOptionsMenu(getMenuInflater(), menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mIdentityManager.removeListener(this);
         mRegionManager.removeListener(this);
     }
 
     @Override
-    public void onIdentityChange(final IdentityManager identityManager) {
-        supportInvalidateOptionsMenu();
-    }
+    public boolean onMenuItemClick(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.miSettings:
+                startActivity(SettingsActivity.getLaunchIntent(this));
+                return true;
 
-    @Override
-    public boolean onMenuItemActionCollapse(final MenuItem item) {
-        mAdapter.search(null);
-        return true;
-    }
+            case R.id.miShare:
+                share();
+                return true;
 
-    @Override
-    public boolean onMenuItemActionExpand(final MenuItem item) {
-        return true;
+            case R.id.miViewAllPlayers:
+                startActivity(PlayersActivity.getLaunchIntent(this));
+                return true;
+
+            case R.id.miViewYourself:
+                // noinspection ConstantConditions
+                startActivity(PlayerActivity.getLaunchIntent(this, mIdentityManager.getIdentity(),
+                        mRegionManager.getRegion(this)));
+                return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -189,50 +208,9 @@ public class HomeActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-//            case R.id.miActivityRequirements:
-//                showActivityRequirements();
-//                return true;
-
-            case R.id.miSettings:
-                startActivity(SettingsActivity.getLaunchIntent(this));
-                return true;
-
-            case R.id.miShare:
-                share();
-                return true;
-
-            case R.id.miViewAllPlayers:
-                startActivity(PlayersActivity.getLaunchIntent(this));
-                return true;
-
-            case R.id.miViewYourself:
-                // noinspection ConstantConditions
-                startActivity(PlayerActivity.getLaunchIntent(this, mIdentityManager.getIdentity(),
-                        mRegionManager.getRegion(this)));
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @OnPageChange(R.id.viewPager)
     void onPageChange() {
         updateSelectedBottomNavigationItem();
-    }
-
-    @Override
-    public boolean onQueryTextChange(final String newText) {
-        mAdapter.search(newText);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(final String query) {
-        mAdapter.search(query);
-        return false;
     }
 
     @Override
@@ -275,6 +253,11 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
+    public void onSearchFieldTextChanged(final SearchLayout searchLayout) {
+        mAdapter.search(searchLayout.getText());
+    }
+
+    @Override
     protected void onViewsBound() {
         super.onViewsBound();
 
@@ -308,8 +291,8 @@ public class HomeActivity extends BaseActivity implements
 
     private void share() {
         CharSequence[] items = {
-                getText(R.string.share_rankings),
-                getText(R.string.share_tournaments)
+                getText(R.string.rankings),
+                getText(R.string.tournaments)
         };
 
         new AlertDialog.Builder(this)
@@ -330,27 +313,7 @@ public class HomeActivity extends BaseActivity implements
                         }
                     }
                 })
-                .show();
-    }
-
-    private void showActivityRequirements() {
-        final Region region = mRegionManager.getRegion(this);
-        final Integer rankingNumTourneysAttended = region.getRankingNumTourneysAttended();
-        final Integer rankingActivityDayLimit = region.getRankingActivityDayLimit();
-
-        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw new RuntimeException("Region (" + region + ") is missing necessary data");
-        }
-
-        final NumberFormat numberFormat = NumberFormat.getInstance();
-        final String tournaments = getResources().getQuantityString(R.plurals.x_tournaments,
-                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended));
-        final String days = getResources().getQuantityString(R.plurals.x_days,
-                rankingActivityDayLimit, numberFormat.format(rankingActivityDayLimit));
-
-        new AlertDialog.Builder(this)
-                .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
-                .setTitle(getString(R.string.x_activity_requirements, region.getDisplayName()))
+                .setTitle(R.string.share)
                 .show();
     }
 
