@@ -160,31 +160,6 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onMenuItemClick(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.miSettings:
-                startActivity(SettingsActivity.getLaunchIntent(this));
-                return true;
-
-            case R.id.miShare:
-                share();
-                return true;
-
-            case R.id.miViewAllPlayers:
-                startActivity(PlayersActivity.getLaunchIntent(this));
-                return true;
-
-            case R.id.miViewYourself:
-                // noinspection ConstantConditions
-                startActivity(PlayerActivity.getLaunchIntent(this, mIdentityManager.getIdentity(),
-                        mRegionManager.getRegion(this)));
-                return true;
-        }
-
-        return false;
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
         if (item.isChecked()) {
             return false;
@@ -206,6 +181,31 @@ public class HomeActivity extends BaseActivity implements
             default:
                 throw new RuntimeException("unknown item: " + item.getTitle());
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.miSettings:
+                startActivity(SettingsActivity.getLaunchIntent(this));
+                return true;
+
+            case R.id.miShare:
+                share();
+                return true;
+
+            case R.id.miViewAllPlayers:
+                startActivity(PlayersActivity.getLaunchIntent(this));
+                return true;
+
+            case R.id.miViewYourself:
+                // noinspection ConstantConditions
+                startActivity(PlayerActivity.getLaunchIntent(this, mIdentityManager.getIdentity(),
+                        mRegionManager.getRegion(this)));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @OnPageChange(R.id.viewPager)

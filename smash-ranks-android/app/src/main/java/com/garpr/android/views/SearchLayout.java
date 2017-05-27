@@ -62,6 +62,7 @@ public class SearchLayout extends LinearLayout implements SearchQueryHandle {
 
         if (mListeners != null) {
             mListeners.onSearchFieldClosed(this);
+            setText("");
         }
     }
 

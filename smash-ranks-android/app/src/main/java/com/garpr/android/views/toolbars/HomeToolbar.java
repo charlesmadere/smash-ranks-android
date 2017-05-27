@@ -137,12 +137,7 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
     @Override
     public boolean onMenuItemClick(final MenuItem item) {
         final Activity activity = MiscUtils.optActivity(getContext());
-
-        if (activity instanceof Listeners) {
-            return ((Listeners) activity).onMenuItemClick(item);
-        } else {
-            return false;
-        }
+        return activity != null && activity.onOptionsItemSelected(item);
     }
 
     @Override
@@ -196,7 +191,6 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
 
     public interface Listeners {
         void onActivityRequirementsButtonClick();
-        boolean onMenuItemClick(final MenuItem item);
         void onSearchFieldTextChanged(final SearchLayout searchLayout);
     }
 
