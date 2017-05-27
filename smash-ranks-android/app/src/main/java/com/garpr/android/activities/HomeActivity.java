@@ -16,7 +16,6 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.HomePagerAdapter;
 import com.garpr.android.misc.IdentityManager;
-import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.NotificationManager;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
@@ -234,12 +233,6 @@ public class HomeActivity extends BaseActivity implements
     public void onRegionChange(final RegionManager regionManager) {
         final Region region = mRegionManager.getRegion(this);
         setTitle(region.getEndpoint().getName());
-
-//        if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
-//            MenuItemCompat.collapseActionView(mSearchMenuItem);
-//        }
-
-        MiscUtils.closeKeyboard(this);
 
         if (mAdapter != null) {
             mAdapter.refresh();
