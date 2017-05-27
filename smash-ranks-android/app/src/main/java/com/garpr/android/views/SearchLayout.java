@@ -125,7 +125,7 @@ public class SearchLayout extends LinearLayout implements SearchQueryHandle {
 
     private void refreshClearVisibility() {
         if (TextUtils.isEmpty(getText())) {
-            mClear.setVisibility(GONE);
+            mClear.setVisibility(INVISIBLE);
         } else {
             mClear.setVisibility(VISIBLE);
         }
