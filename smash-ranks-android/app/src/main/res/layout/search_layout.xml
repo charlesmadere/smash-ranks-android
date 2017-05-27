@@ -16,6 +16,8 @@
         android:layout_width="0dp"
         android:lines="1"
         android:maxLines="1"
+        android:paddingEnd="@dimen/root_padding_quarter"
+        android:paddingStart="@dimen/root_padding_quarter"
         tools:ignore="LabelFor" />
     <ImageButton
         android:contentDescription="@string/clear"
