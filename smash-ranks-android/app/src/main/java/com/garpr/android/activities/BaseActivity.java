@@ -10,6 +10,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.garpr.android.App;
@@ -19,6 +20,7 @@ import com.garpr.android.misc.RegionManager.RegionHandle;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.models.Region;
 import com.garpr.android.preferences.GeneralPreferenceStore;
+import com.garpr.android.views.toolbars.MenuToolbar;
 
 import javax.inject.Inject;
 
@@ -95,6 +97,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     }
 
     @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        if (mToolbar instanceof MenuToolbar) {
+            ((MenuToolbar) mToolbar).onCreateOptionsMenu(getMenuInflater(), menu);
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -102,7 +113,22 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
                 return true;
         }
 
+        if (mToolbar instanceof MenuToolbar) {
+            if (((MenuToolbar) mToolbar).onOptionsItemSelected(item)) {
+                return true;
+            }
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        if (mToolbar instanceof MenuToolbar) {
+            ((MenuToolbar) mToolbar).refreshMenu();
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     protected void onViewsBound() {

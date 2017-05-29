@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.garpr.android.App;
@@ -23,12 +23,9 @@ import com.garpr.android.models.Region;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-
-public class HomeToolbar extends Toolbar implements Heartbeat,
+public class HomeToolbar extends MenuToolbar implements Heartbeat,
         IdentityManager.OnIdentityChangeListener, MenuItemCompat.OnActionExpandListener,
-        RegionManager.OnRegionChangeListener, SearchQueryHandle, SearchView.OnQueryTextListener,
-        Toolbar.OnMenuItemClickListener {
+        RegionManager.OnRegionChangeListener, SearchQueryHandle, SearchView.OnQueryTextListener {
 
     private MenuItem mActivityRequirementsMenuItem;
     private MenuItem mSearchMenuItem;
@@ -54,20 +51,6 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
         if (isSearchLayoutExpanded()) {
             MenuItemCompat.collapseActionView(mSearchMenuItem);
         }
-    }
-
-    private void createMenu() {
-        inflateMenu(R.menu.toolbar_home);
-        final Menu menu = getMenu();
-
-        mSearchMenuItem = menu.findItem(R.id.miSearch);
-        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
-
-        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
-        mSearchView.setQueryHint(getResources().getText(R.string.search_));
-        mSearchView.setOnQueryTextListener(this);
-
-        mActivityRequirementsMenuItem = menu.findItem(R.id.miActivityRequirements);
     }
 
     @Nullable
@@ -99,6 +82,21 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
     }
 
     @Override
+    public void onCreateOptionsMenu(final MenuInflater inflater, final Menu menu) {
+        super.onCreateOptionsMenu(inflater, menu);
+        inflater.inflate(R.menu.toolbar_home, menu);
+
+        mSearchMenuItem = menu.findItem(R.id.miSearch);
+        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
+
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+        mSearchView.setQueryHint(getResources().getText(R.string.search_));
+        mSearchView.setOnQueryTextListener(this);
+
+        mActivityRequirementsMenuItem = menu.findItem(R.id.miActivityRequirements);
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mIdentityManager.removeListener(this);
@@ -111,19 +109,9 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
 
         if (!isInEditMode()) {
             App.get().getAppComponent().inject(this);
+            mIdentityManager.addListener(this);
+            mRegionManager.addListener(this);
         }
-
-        ButterKnife.bind(this);
-        setOnMenuItemClickListener(this);
-        createMenu();
-        refreshMenu();
-
-        if (isInEditMode()) {
-            return;
-        }
-
-        mIdentityManager.addListener(this);
-        mRegionManager.addListener(this);
     }
 
     @Override
@@ -143,12 +131,6 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
     public boolean onMenuItemActionExpand(final MenuItem item) {
         postRefreshMenu();
         return true;
-    }
-
-    @Override
-    public boolean onMenuItemClick(final MenuItem item) {
-        final Activity activity = MiscUtils.optActivity(getContext());
-        return activity != null && activity.onOptionsItemSelected(item);
     }
 
     @Override
@@ -186,7 +168,12 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
         });
     }
 
-    private void refreshMenu() {
+    @Override
+    public void refreshMenu() {
+        if (!isMenuCreated()) {
+            return;
+        }
+
         if (isSearchLayoutExpanded()) {
             mSearchMenuItem.setVisible(false);
             mActivityRequirementsMenuItem.setVisible(false);
