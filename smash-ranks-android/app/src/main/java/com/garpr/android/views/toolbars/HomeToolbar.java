@@ -174,11 +174,14 @@ public class HomeToolbar extends MenuToolbar implements Heartbeat,
             return;
         }
 
+        final Activity activity = MiscUtils.optActivity(getContext());
+
         if (isSearchLayoutExpanded()) {
             mSearchMenuItem.setVisible(false);
             mActivityRequirementsMenuItem.setVisible(false);
         } else {
-            mSearchMenuItem.setVisible(true);
+            mSearchMenuItem.setVisible(activity instanceof Listeners &&
+                    ((Listeners) activity).showSearchButton());
 
             final Region region = mRegionManager.getRegion(getContext());
             mActivityRequirementsMenuItem.setVisible(region.hasActivityRequirements());
@@ -186,6 +189,11 @@ public class HomeToolbar extends MenuToolbar implements Heartbeat,
 
         final Menu menu = getMenu();
         menu.findItem(R.id.miViewYourself).setVisible(mIdentityManager.hasIdentity());
+    }
+
+
+    public interface Listeners {
+        boolean showSearchButton();
     }
 
 }

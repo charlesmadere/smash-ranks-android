@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.garpr.android.App;
@@ -35,8 +36,9 @@ import butterknife.BindView;
 import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener, RankingsLayout.Listener,
-        RegionManager.OnRegionChangeListener, Searchable, SearchQueryHandle {
+        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners,
+        RankingsLayout.Listener, RegionManager.OnRegionChangeListener, Searchable,
+        SearchQueryHandle {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();
@@ -311,6 +313,11 @@ public class HomeActivity extends BaseActivity implements
                 .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
                 .setTitle(getString(R.string.x_activity_requirements, region.getDisplayName()))
                 .show();
+    }
+
+    @Override
+    public boolean showSearchButton() {
+        return !TextUtils.isEmpty(getSubtitle());
     }
 
     private void updateSelectedBottomNavigationItem() {
