@@ -3,12 +3,13 @@ package com.garpr.android.views.toolbars;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -17,33 +18,27 @@ import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
+import com.garpr.android.misc.Searchable;
 import com.garpr.android.models.Region;
-import com.garpr.android.views.SearchLayout;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class HomeToolbar extends Toolbar implements Heartbeat,
-        IdentityManager.OnIdentityChangeListener, Toolbar.OnMenuItemClickListener,
-        RegionManager.OnRegionChangeListener, SearchLayout.Listeners, SearchQueryHandle {
+        IdentityManager.OnIdentityChangeListener, MenuItemCompat.OnActionExpandListener,
+        RegionManager.OnRegionChangeListener, SearchQueryHandle, SearchView.OnQueryTextListener,
+        Toolbar.OnMenuItemClickListener {
+
+    private MenuItem mActivityRequirementsMenuItem;
+    private MenuItem mSearchMenuItem;
+    private SearchView mSearchView;
 
     @Inject
     IdentityManager mIdentityManager;
 
     @Inject
     RegionManager mRegionManager;
-
-    @BindView(R.id.ibActivityRequirements)
-    ImageButton mActivityRequirementsButton;
-
-    @BindView(R.id.ibSearch)
-    ImageButton mSearchButton;
-
-    @BindView(R.id.searchLayout)
-    SearchLayout mSearchLayout;
 
 
     public HomeToolbar(final Context context, @Nullable final AttributeSet attrs) {
@@ -57,14 +52,28 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
 
     public void closeSearchLayout() {
         if (isSearchLayoutExpanded()) {
-            mSearchLayout.close();
+            MenuItemCompat.collapseActionView(mSearchMenuItem);
         }
+    }
+
+    private void createMenu() {
+        inflateMenu(R.menu.toolbar_home);
+        final Menu menu = getMenu();
+
+        mSearchMenuItem = menu.findItem(R.id.miSearch);
+        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
+
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+        mSearchView.setQueryHint(getResources().getText(R.string.search_));
+        mSearchView.setOnQueryTextListener(this);
+
+        mActivityRequirementsMenuItem = menu.findItem(R.id.miActivityRequirements);
     }
 
     @Nullable
     @Override
     public CharSequence getSearchQuery() {
-        return mSearchLayout.getSearchQuery();
+        return mSearchView == null ? null : mSearchView.getQuery();
     }
 
     @Override
@@ -73,16 +82,7 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
     }
 
     public boolean isSearchLayoutExpanded() {
-        return mSearchLayout.isExpanded();
-    }
-
-    @OnClick(R.id.ibActivityRequirements)
-    void onActivityRequirementsButtonClick() {
-        final Activity activity = MiscUtils.optActivity(getContext());
-
-        if (activity instanceof Listeners) {
-            ((Listeners) activity).onActivityRequirementsButtonClick();
-        }
+        return mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem);
     }
 
     @Override
@@ -114,9 +114,8 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
         }
 
         ButterKnife.bind(this);
-        inflateMenu(R.menu.toolbar_home);
         setOnMenuItemClickListener(this);
-        mSearchLayout.setListeners(this);
+        createMenu();
         refreshMenu();
 
         if (isInEditMode()) {
@@ -135,63 +134,71 @@ public class HomeToolbar extends Toolbar implements Heartbeat,
     }
 
     @Override
+    public boolean onMenuItemActionCollapse(final MenuItem item) {
+        postRefreshMenu();
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(final MenuItem item) {
+        postRefreshMenu();
+        return true;
+    }
+
+    @Override
     public boolean onMenuItemClick(final MenuItem item) {
         final Activity activity = MiscUtils.optActivity(getContext());
         return activity != null && activity.onOptionsItemSelected(item);
     }
 
     @Override
+    public boolean onQueryTextChange(final String newText) {
+        final Activity activity = MiscUtils.optActivity(getContext());
+
+        if (activity instanceof Searchable) {
+            ((Searchable) activity).search(newText);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(final String query) {
+        return onQueryTextChange(query);
+    }
+
+    @Override
     public void onRegionChange(final RegionManager regionManager) {
         if (isAlive()) {
-            mSearchLayout.close();
+            closeSearchLayout();
             refreshMenu();
         }
     }
 
-    @OnClick(R.id.ibSearch)
-    void onSearchButtonClick() {
-        mSearchLayout.expand();
-        refreshMenu();
-    }
-
-    @Override
-    public void onSearchFieldClosed(final SearchLayout searchLayout) {
-        refreshMenu();
-    }
-
-    @Override
-    public void onSearchFieldExpanded(final SearchLayout searchLayout) {
-        refreshMenu();
-    }
-
-    @Override
-    public void onSearchFieldTextChanged(final SearchLayout searchLayout) {
-        final Activity activity = MiscUtils.optActivity(getContext());
-
-        if (activity instanceof Listeners) {
-            ((Listeners) activity).onSearchFieldTextChanged(mSearchLayout);
-        }
+    private void postRefreshMenu() {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                if (isAlive()) {
+                    refreshMenu();
+                }
+            }
+        });
     }
 
     private void refreshMenu() {
-        if (mSearchLayout.isExpanded()) {
-            mSearchButton.setVisibility(GONE);
-            mActivityRequirementsButton.setVisibility(GONE);
+        if (isSearchLayoutExpanded()) {
+            mSearchMenuItem.setVisible(false);
+            mActivityRequirementsMenuItem.setVisible(false);
         } else {
-            mSearchButton.setVisibility(VISIBLE);
+            mSearchMenuItem.setVisible(true);
 
             final Region region = mRegionManager.getRegion(getContext());
-            mActivityRequirementsButton.setVisibility(region.hasActivityRequirements() ? VISIBLE : GONE);
+            mActivityRequirementsMenuItem.setVisible(region.hasActivityRequirements());
         }
 
         final Menu menu = getMenu();
         menu.findItem(R.id.miViewYourself).setVisible(mIdentityManager.hasIdentity());
-    }
-
-
-    public interface Listeners {
-        void onActivityRequirementsButtonClick();
-        void onSearchFieldTextChanged(final SearchLayout searchLayout);
     }
 
 }
