@@ -67,7 +67,7 @@ public class HomeActivity extends BaseActivity implements
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNavigationView;
 
-    @BindView(R.id.homeToolbar)
+    @BindView(R.id.toolbar)
     HomeToolbar mHomeToolbar;
 
     @BindView(R.id.viewPager)
