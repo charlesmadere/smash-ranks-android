@@ -2,13 +2,16 @@ package com.garpr.android.views.toolbars;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public abstract class MenuToolbar extends Toolbar {
+import com.garpr.android.misc.Heartbeat;
+
+public abstract class MenuToolbar extends Toolbar implements Heartbeat {
 
     private boolean mMenuCreated;
 
@@ -22,6 +25,11 @@ public abstract class MenuToolbar extends Toolbar {
         super(context, attrs, defStyleAttr);
     }
 
+    @Override
+    public boolean isAlive() {
+        return ViewCompat.isAttachedToWindow(this);
+    }
+
     protected boolean isMenuCreated() {
         return mMenuCreated;
     }
@@ -31,11 +39,27 @@ public abstract class MenuToolbar extends Toolbar {
     }
 
     public boolean onOptionsItemSelected(final MenuItem item) {
+        // intentionally empty, children can override
         return false;
     }
 
-    public void refreshMenu() {
+    public abstract void onRefreshMenu();
 
+    protected void postRefreshMenu() {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                if (isAlive()) {
+                    refreshMenu();
+                }
+            }
+        });
+    }
+
+    public final void refreshMenu() {
+        if (isMenuCreated()) {
+            onRefreshMenu();
+        }
     }
 
 }

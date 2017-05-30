@@ -27,6 +27,7 @@ import com.garpr.android.models.Region;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.views.RankingsLayout;
 import com.garpr.android.views.toolbars.HomeToolbar;
+import com.garpr.android.views.toolbars.SearchToolbar;
 
 import java.text.NumberFormat;
 
@@ -36,8 +37,8 @@ import butterknife.BindView;
 import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners,
-        RankingsLayout.Listener, RegionManager.OnRegionChangeListener, Searchable,
+        BottomNavigationView.OnNavigationItemSelectedListener, RankingsLayout.Listener,
+        RegionManager.OnRegionChangeListener, Searchable, SearchToolbar.Listener,
         SearchQueryHandle {
 
     private static final String TAG = "HomeActivity";
