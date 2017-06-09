@@ -62,7 +62,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
 
     // Google Play Services
-    compile 'com.google.android.gms:play-services-gcm:10.2.6'
+    compile 'com.google.android.gms:play-services-gcm:11.0.0'
 
     // Jake Wharton's ButterKnife
     compile 'com.jakewharton:butterknife:8.6.0'
