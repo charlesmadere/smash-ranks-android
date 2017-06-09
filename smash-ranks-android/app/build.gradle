@@ -21,7 +21,7 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         minSdkVersion 17
@@ -54,15 +54,15 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
 
     // Google's Dagger
-    compile 'com.google.dagger:dagger:2.10'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
-    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.10'
+    compile 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
     // Google's GSON
-    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.code.gson:gson:2.8.1'
 
     // Google Play Services
-    compile 'com.google.android.gms:play-services-gcm:10.2.6'
+    compile 'com.google.android.gms:play-services-gcm:11.0.0'
 
     // Jake Wharton's ButterKnife
     compile 'com.jakewharton:butterknife:8.6.0'
