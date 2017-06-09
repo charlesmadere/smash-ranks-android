@@ -82,14 +82,6 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
     }
 
     @Override
-    public void onRegionChange(final RegionManager regionManager) {
-        if (isAlive()) {
-            closeSearchLayout();
-            refreshMenu();
-        }
-    }
-
-    @Override
     public void onRefreshMenu() {
         super.onRefreshMenu();
 
@@ -102,6 +94,14 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
 
         final Menu menu = getMenu();
         menu.findItem(R.id.miViewYourself).setVisible(mIdentityManager.hasIdentity());
+    }
+
+    @Override
+    public void onRegionChange(final RegionManager regionManager) {
+        if (isAlive()) {
+            closeSearchLayout();
+            refreshMenu();
+        }
     }
 
 }
