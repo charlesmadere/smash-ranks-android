@@ -59,7 +59,7 @@ dependencies {
     testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.10'
 
     // Google's GSON
-    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.code.gson:gson:2.8.1'
 
     // Google Play Services
     compile 'com.google.android.gms:play-services-gcm:10.2.6'
