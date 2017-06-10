@@ -137,7 +137,7 @@ public class PlayerToolbar extends SearchToolbar implements
             menu.findItem(R.id.miAliases).setVisible(true);
         }
 
-        if (mIdentityManager.hasIdentity()) {
+        if (mIdentityManager.hasIdentity() && !mIdentityManager.isPlayer(fullPlayer)) {
             final MenuItem menuItem = menu.findItem(R.id.miViewYourselfVsThisOpponent);
             menuItem.setTitle(getResources().getString(R.string.view_yourself_vs_x, fullPlayer.getName()));
             menuItem.setVisible(true);
