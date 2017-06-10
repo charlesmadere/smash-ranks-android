@@ -19,6 +19,7 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
         RegionManager.OnRegionChangeListener {
 
     private MenuItem mActivityRequirementsMenuItem;
+    private MenuItem mViewYourselfMenuItem;
 
     @Inject
     IdentityManager mIdentityManager;
@@ -54,6 +55,7 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
         inflater.inflate(R.menu.toolbar_home, menu);
         super.onCreateOptionsMenu(inflater, menu);
         mActivityRequirementsMenuItem = menu.findItem(R.id.miActivityRequirements);
+        mViewYourselfMenuItem = menu.findItem(R.id.miViewYourself);
     }
 
     @Override
@@ -85,15 +87,11 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
     public void onRefreshMenu() {
         super.onRefreshMenu();
 
-        if (isSearchLayoutExpanded()) {
-            mActivityRequirementsMenuItem.setVisible(false);
-        } else {
+        if (!isSearchLayoutExpanded()) {
             final Region region = mRegionManager.getRegion(getContext());
             mActivityRequirementsMenuItem.setVisible(region.hasActivityRequirements());
+            mViewYourselfMenuItem.setVisible(mIdentityManager.hasIdentity());
         }
-
-        final Menu menu = getMenu();
-        menu.findItem(R.id.miViewYourself).setVisible(mIdentityManager.hasIdentity());
     }
 
     @Override

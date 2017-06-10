@@ -45,7 +45,7 @@ public abstract class MenuToolbar extends Toolbar implements Heartbeat {
 
     public abstract void onRefreshMenu();
 
-    protected void postRefreshMenu() {
+    protected final void postRefreshMenu() {
         post(new Runnable() {
             @Override
             public void run() {

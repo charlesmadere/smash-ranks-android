@@ -18,8 +18,8 @@ import com.garpr.android.misc.Searchable;
 public abstract class SearchToolbar extends MenuToolbar implements
         MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener {
 
-    protected MenuItem mSearchMenuItem;
-    protected SearchView mSearchView;
+    private MenuItem mSearchMenuItem;
+    private SearchView mSearchView;
 
 
     public SearchToolbar(final Context context, @Nullable final AttributeSet attrs) {
@@ -90,9 +90,21 @@ public abstract class SearchToolbar extends MenuToolbar implements
 
     @Override
     public void onRefreshMenu() {
-        final Activity activity = MiscUtils.optActivity(getContext());
-        mSearchMenuItem.setVisible(activity instanceof Listener &&
-                ((Listener) activity).showSearchButton());
+        if (isSearchLayoutExpanded()) {
+            final Menu menu = getMenu();
+
+            for (int i = 0; i < menu.size(); ++i) {
+                final MenuItem menuItem = menu.getItem(i);
+
+                if (menuItem.getItemId() != mSearchMenuItem.getItemId()) {
+                    menuItem.setVisible(false);
+                }
+            }
+        } else {
+            final Activity activity = MiscUtils.optActivity(getContext());
+            mSearchMenuItem.setVisible(activity instanceof Listener &&
+                    ((Listener) activity).showSearchButton());
+        }
     }
 
 
