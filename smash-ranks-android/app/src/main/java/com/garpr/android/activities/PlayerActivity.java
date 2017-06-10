@@ -39,6 +39,7 @@ import com.garpr.android.views.ErrorLinearLayout;
 import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.TournamentDividerView;
 import com.garpr.android.views.toolbars.PlayerToolbar;
+import com.garpr.android.views.toolbars.SearchToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,8 @@ import butterknife.BindView;
 
 public class PlayerActivity extends BaseActivity implements
         MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
-        SwipeRefreshLayout.OnRefreshListener, TournamentDividerView.OnClickListener {
+        SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
+        TournamentDividerView.OnClickListener {
 
     private static final String TAG = "PlayerActivity";
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
@@ -372,6 +374,11 @@ public class PlayerActivity extends BaseActivity implements
         mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
         supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean showSearchMenuItem() {
+        return mFullPlayer != null && mMatchesBundle != null && mMatchesBundle.hasMatches();
     }
 
     @Override

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
     <include
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar_player" />
     <com.garpr.android.views.RefreshLayout
         style="@style/RefreshLayout">
         <FrameLayout

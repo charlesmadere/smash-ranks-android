@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.garpr.android.App;
 import com.garpr.android.R;
@@ -17,9 +16,6 @@ import javax.inject.Inject;
 
 public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
-
-    private MenuItem mActivityRequirementsMenuItem;
-    private MenuItem mViewYourselfMenuItem;
 
     @Inject
     IdentityManager mIdentityManager;
@@ -53,8 +49,6 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
     public void onCreateOptionsMenu(final MenuInflater inflater, final Menu menu) {
         inflater.inflate(R.menu.toolbar_home, menu);
         super.onCreateOptionsMenu(inflater, menu);
-        mActivityRequirementsMenuItem = menu.findItem(R.id.miActivityRequirements);
-        mViewYourselfMenuItem = menu.findItem(R.id.miViewYourself);
     }
 
     @Override
@@ -86,11 +80,14 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
     public void onRefreshMenu() {
         super.onRefreshMenu();
 
-        if (!isSearchLayoutExpanded()) {
-            final Region region = mRegionManager.getRegion(getContext());
-            mActivityRequirementsMenuItem.setVisible(region.hasActivityRequirements());
-            mViewYourselfMenuItem.setVisible(mIdentityManager.hasIdentity());
+        if (isSearchLayoutExpanded()) {
+            return;
         }
+
+        final Menu menu = getMenu();
+        final Region region = mRegionManager.getRegion(getContext());
+        menu.findItem(R.id.miActivityRequirements).setVisible(region.hasActivityRequirements());
+        menu.findItem(R.id.miViewYourself).setVisible(mIdentityManager.hasIdentity());
     }
 
     @Override

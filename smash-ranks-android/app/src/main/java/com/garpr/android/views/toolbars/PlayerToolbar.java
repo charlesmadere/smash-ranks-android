@@ -93,6 +93,10 @@ public class PlayerToolbar extends SearchToolbar implements
     public void onRefreshMenu() {
         super.onRefreshMenu();
 
+        if (isSearchLayoutExpanded()) {
+            return;
+        }
+
         final Activity activity = MiscUtils.optActivity(getContext());
         final FullPlayer fullPlayer;
         final MatchesBundle matchesBundle;
