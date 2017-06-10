@@ -37,14 +37,14 @@ public abstract class SearchToolbar extends MenuToolbar implements
         }
     }
 
-    public boolean isSearchLayoutExpanded() {
-        return mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem);
-    }
-
     @Nullable
     @Override
     public CharSequence getSearchQuery() {
         return mSearchView == null ? null : mSearchView.getQuery();
+    }
+
+    public boolean isSearchLayoutExpanded() {
+        return mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem);
     }
 
     @Override
@@ -70,7 +70,6 @@ public abstract class SearchToolbar extends MenuToolbar implements
         postRefreshMenu();
         return true;
     }
-
 
     @Override
     public boolean onQueryTextChange(final String newText) {
