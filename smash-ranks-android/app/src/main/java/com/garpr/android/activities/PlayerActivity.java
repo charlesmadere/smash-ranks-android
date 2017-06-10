@@ -5,13 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -51,7 +48,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PlayerActivity extends BaseActivity implements
-        MatchItemView.OnClickListener, PlayerToolbar.Listeners, Searchable, SearchQueryHandle,
+        MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
         SwipeRefreshLayout.OnRefreshListener, TournamentDividerView.OnClickListener {
 
     private static final String TAG = "PlayerActivity";
@@ -65,7 +62,6 @@ public class PlayerActivity extends BaseActivity implements
     private MatchesBundle mMatchesBundle;
     private Match.Result mResult;
     private PlayerAdapter mAdapter;
-    private SearchView mSearchView;
     private String mPlayerId;
 
     @Inject
@@ -88,6 +84,9 @@ public class PlayerActivity extends BaseActivity implements
 
     @BindView(R.id.error)
     ErrorLinearLayout mError;
+
+    @BindView(R.id.toolbar)
+    PlayerToolbar mPlayerToolbar;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -179,16 +178,28 @@ public class PlayerActivity extends BaseActivity implements
         return TAG;
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public CharSequence getFullPlayerName() {
-        return mFullPlayer.getName();
+    public FullPlayer getFullPlayer() {
+        return mFullPlayer;
+    }
+
+    @Nullable
+    @Override
+    public MatchesBundle getMatchesBundle() {
+        return mMatchesBundle;
+    }
+
+    @Nullable
+    @Override
+    public Match.Result getResult() {
+        return mResult;
     }
 
     @Nullable
     @Override
     public CharSequence getSearchQuery() {
-        return mSearchView == null ? null : mSearchView.getQuery();
+        return mPlayerToolbar.getSearchQuery();
     }
 
     @Override
@@ -215,48 +226,6 @@ public class PlayerActivity extends BaseActivity implements
 
         setTitle();
         fetchData();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_player, menu);
-
-        if (mFullPlayer != null) {
-            if (mMatchesBundle != null && mMatchesBundle.hasMatches()) {
-                final MenuItem searchMenuItem = menu.findItem(R.id.miSearch);
-                searchMenuItem.setVisible(true);
-
-                MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
-                mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-                mSearchView.setQueryHint(getText(R.string.search_opponents_));
-                mSearchView.setOnQueryTextListener(this);
-
-                menu.findItem(R.id.miFilter).setVisible(true);
-                menu.findItem(R.id.miFilterAll).setVisible(mResult != null);
-                menu.findItem(R.id.miFilterLosses).setVisible(mResult != Match.Result.LOSE);
-                menu.findItem(R.id.miFilterWins).setVisible(mResult != Match.Result.WIN);
-            }
-
-            menu.findItem(R.id.miShare).setVisible(true);
-
-            if (mFavoritePlayersManager.containsPlayer(mPlayerId)) {
-                menu.findItem(R.id.miRemoveFromFavorites).setVisible(true);
-            } else {
-                menu.findItem(R.id.miAddToFavorites).setVisible(true);
-            }
-
-            if (mFullPlayer.hasAliases()) {
-                menu.findItem(R.id.miAliases).setVisible(true);
-            }
-
-            if (mIdentityManager.hasIdentity()) {
-                final MenuItem menuItem = menu.findItem(R.id.miViewYourselfVsThisOpponent);
-                menuItem.setTitle(getString(R.string.view_yourself_vs_x, mFullPlayer.getName()));
-                menuItem.setVisible(true);
-            }
-        }
-
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -376,11 +345,6 @@ public class PlayerActivity extends BaseActivity implements
                 .show();
     }
 
-    @Override
-    public boolean showAliasesMenuItem() {
-        return mFullPlayer != null && mFullPlayer.hasAliases();
-    }
-
     private void showData() {
         mList = ListUtils.createPlayerMatchesList(this, mRegionManager, mFullPlayer,
                 mMatchesBundle);
@@ -408,16 +372,6 @@ public class PlayerActivity extends BaseActivity implements
         mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
         supportInvalidateOptionsMenu();
-    }
-
-    @Override
-    public boolean showSearchMenuItem() {
-        return mFullPlayer != null && mMatchesBundle != null && mMatchesBundle.hasMatches();
-    }
-
-    @Override
-    public boolean showShareMenuItem() {
-        return mFullPlayer != null;
     }
 
     @Override
