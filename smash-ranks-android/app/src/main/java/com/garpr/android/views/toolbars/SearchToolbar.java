@@ -105,13 +105,13 @@ public abstract class SearchToolbar extends MenuToolbar implements
         } else {
             final Activity activity = MiscUtils.optActivity(getContext());
             mSearchMenuItem.setVisible(activity instanceof Listener &&
-                    ((Listener) activity).showSearchButton());
+                    ((Listener) activity).showSearchMenuItem());
         }
     }
 
 
     public interface Listener {
-        boolean showSearchButton();
+        boolean showSearchMenuItem();
     }
 
 }

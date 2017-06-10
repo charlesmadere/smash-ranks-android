@@ -317,7 +317,7 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean showSearchButton() {
+    public boolean showSearchMenuItem() {
         return !TextUtils.isEmpty(getSubtitle());
     }
 
