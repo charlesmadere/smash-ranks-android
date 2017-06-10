@@ -84,6 +84,10 @@ public class Region implements Parcelable {
         return mTournamentQualifiedDayLimit;
     }
 
+    public boolean hasActivityRequirements() {
+        return mRankingActivityDayLimit != null && mRankingNumTourneysAttended != null;
+    }
+
     @Override
     public int hashCode() {
         return mId.hashCode();

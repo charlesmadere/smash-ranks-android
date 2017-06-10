@@ -5,13 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -24,6 +21,7 @@ import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
+import com.garpr.android.misc.Searchable;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
@@ -40,6 +38,8 @@ import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.ErrorLinearLayout;
 import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.TournamentDividerView;
+import com.garpr.android.views.toolbars.PlayerToolbar;
+import com.garpr.android.views.toolbars.SearchToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +49,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PlayerActivity extends BaseActivity implements
-        FavoritePlayersManager.OnFavoritePlayersChangeListener,
-        IdentityManager.OnIdentityChangeListener, MatchItemView.OnClickListener,
-        MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener,
-        SwipeRefreshLayout.OnRefreshListener, TournamentDividerView.OnClickListener {
+        MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
+        SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
+        TournamentDividerView.OnClickListener {
 
     private static final String TAG = "PlayerActivity";
     private static final String CNAME = PlayerActivity.class.getCanonicalName();
@@ -65,7 +64,6 @@ public class PlayerActivity extends BaseActivity implements
     private MatchesBundle mMatchesBundle;
     private Match.Result mResult;
     private PlayerAdapter mAdapter;
-    private SearchView mSearchView;
     private String mPlayerId;
 
     @Inject
@@ -88,6 +86,9 @@ public class PlayerActivity extends BaseActivity implements
 
     @BindView(R.id.error)
     ErrorLinearLayout mError;
+
+    @BindView(R.id.toolbar)
+    PlayerToolbar mPlayerToolbar;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -181,8 +182,26 @@ public class PlayerActivity extends BaseActivity implements
 
     @Nullable
     @Override
+    public FullPlayer getFullPlayer() {
+        return mFullPlayer;
+    }
+
+    @Nullable
+    @Override
+    public MatchesBundle getMatchesBundle() {
+        return mMatchesBundle;
+    }
+
+    @Nullable
+    @Override
+    public Match.Result getResult() {
+        return mResult;
+    }
+
+    @Nullable
+    @Override
     public CharSequence getSearchQuery() {
-        return mSearchView == null ? null : mSearchView.getQuery();
+        return mPlayerToolbar.getSearchQuery();
     }
 
     @Override
@@ -208,81 +227,13 @@ public class PlayerActivity extends BaseActivity implements
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID);
 
         setTitle();
-
-        mFavoritePlayersManager.addListener(this);
-        mIdentityManager.addListener(this);
         fetchData();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_player, menu);
-
-        if (mFullPlayer != null) {
-            if (mMatchesBundle != null && mMatchesBundle.hasMatches()) {
-                final MenuItem searchMenuItem = menu.findItem(R.id.miSearch);
-                searchMenuItem.setVisible(true);
-
-                MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
-                mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-                mSearchView.setQueryHint(getText(R.string.search_opponents_));
-                mSearchView.setOnQueryTextListener(this);
-
-                menu.findItem(R.id.miFilter).setVisible(true);
-                menu.findItem(R.id.miFilterAll).setVisible(mResult != null);
-                menu.findItem(R.id.miFilterLosses).setVisible(mResult != Match.Result.LOSE);
-                menu.findItem(R.id.miFilterWins).setVisible(mResult != Match.Result.WIN);
-            }
-
-            menu.findItem(R.id.miShare).setVisible(true);
-
-            if (mFavoritePlayersManager.containsPlayer(mPlayerId)) {
-                menu.findItem(R.id.miRemoveFromFavorites).setVisible(true);
-            } else {
-                menu.findItem(R.id.miAddToFavorites).setVisible(true);
-            }
-
-            if (mFullPlayer.hasAliases()) {
-                menu.findItem(R.id.miAliases).setVisible(true);
-            }
-
-            if (mIdentityManager.hasIdentity()) {
-                final MenuItem menuItem = menu.findItem(R.id.miViewYourselfVsThisOpponent);
-                menuItem.setTitle(getString(R.string.view_yourself_vs_x, mFullPlayer.getName()));
-                menuItem.setVisible(true);
-            }
-        }
-
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mDataListener = null;
-        mFavoritePlayersManager.removeListener(this);
-        mIdentityManager.removeListener(this);
-    }
-
-    @Override
-    public void onFavoritePlayersChanged(final FavoritePlayersManager manager) {
-        supportInvalidateOptionsMenu();
-    }
-
-    @Override
-    public void onIdentityChange(final IdentityManager identityManager) {
-        supportInvalidateOptionsMenu();
-    }
-
-    @Override
-    public boolean onMenuItemActionCollapse(final MenuItem item) {
-        search(null);
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemActionExpand(final MenuItem item) {
-        return true;
     }
 
     @Override
@@ -327,18 +278,6 @@ public class PlayerActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onQueryTextChange(final String newText) {
-        search(newText);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(final String query) {
-        search(query);
-        return false;
-    }
-
-    @Override
     public void onRefresh() {
         fetchData();
     }
@@ -353,7 +292,8 @@ public class PlayerActivity extends BaseActivity implements
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void search(@Nullable final String query) {
+    @Override
+    public void search(@Nullable final String query) {
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<Object> mList;
 
@@ -434,6 +374,11 @@ public class PlayerActivity extends BaseActivity implements
         mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
         supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean showSearchMenuItem() {
+        return mFullPlayer != null && mMatchesBundle != null && mMatchesBundle.hasMatches();
     }
 
     @Override

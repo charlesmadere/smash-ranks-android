@@ -35,6 +35,8 @@ import com.garpr.android.views.TournamentDividerView;
 import com.garpr.android.views.TournamentItemView;
 import com.garpr.android.views.TournamentMatchItemView;
 import com.garpr.android.views.TournamentsLayout;
+import com.garpr.android.views.toolbars.HomeToolbar;
+import com.garpr.android.views.toolbars.PlayerToolbar;
 
 import javax.inject.Singleton;
 
@@ -62,6 +64,10 @@ public interface AppComponent {
 
     // services
     void inject(RankingsPollingService service);
+
+    // toolbars
+    void inject(HomeToolbar toolbar);
+    void inject(PlayerToolbar toolbar);
 
     // views
     void inject(DeleteFavoritePlayersPreferenceView view);

@@ -15,11 +15,12 @@ import android.view.View;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.activities.SetRegionActivity;
+import com.garpr.android.misc.Heartbeat;
 import com.garpr.android.misc.RegionManager;
 
 import javax.inject.Inject;
 
-public class RegionPreferenceView extends SimplePreferenceView implements
+public class RegionPreferenceView extends SimplePreferenceView implements Heartbeat,
         RegionManager.OnRegionChangeListener, View.OnClickListener {
 
     @Inject
@@ -40,6 +41,11 @@ public class RegionPreferenceView extends SimplePreferenceView implements
     public RegionPreferenceView(@NonNull final Context context, @Nullable final AttributeSet attrs,
             @AttrRes final int defStyleAttr, @StyleRes final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    public boolean isAlive() {
+        return ViewCompat.isAttachedToWindow(this);
     }
 
     @Override
@@ -87,7 +93,7 @@ public class RegionPreferenceView extends SimplePreferenceView implements
 
     @Override
     public void onRegionChange(final RegionManager regionManager) {
-        if (ViewCompat.isAttachedToWindow(this)) {
+        if (isAlive()) {
             refresh();
         }
     }
