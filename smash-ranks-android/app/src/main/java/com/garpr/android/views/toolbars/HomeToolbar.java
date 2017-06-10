@@ -45,7 +45,6 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
             return;
         }
 
-        refreshMenu();
         mIdentityManager.addListener(this);
         mRegionManager.addListener(this);
     }
@@ -79,7 +78,7 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
     @Override
     public void onIdentityChange(final IdentityManager identityManager) {
         if (isAlive()) {
-            refreshMenu();
+            postRefreshMenu();
         }
     }
 
@@ -98,7 +97,7 @@ public class HomeToolbar extends SearchToolbar implements IdentityManager.OnIden
     public void onRegionChange(final RegionManager regionManager) {
         if (isAlive()) {
             closeSearchLayout();
-            refreshMenu();
+            postRefreshMenu();
         }
     }
 

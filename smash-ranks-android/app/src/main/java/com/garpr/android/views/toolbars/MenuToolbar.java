@@ -47,6 +47,17 @@ public abstract class MenuToolbar extends Toolbar implements Heartbeat {
         return mMenuCreated;
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        if (isInEditMode()) {
+            return;
+        }
+
+        refreshMenu();
+    }
+
     public void onCreateOptionsMenu(final MenuInflater inflater, final Menu menu) {
         createSparseMenuItemsArray();
         mMenuCreated = true;

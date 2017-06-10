@@ -38,8 +38,8 @@ import butterknife.OnPageChange;
 
 public class HomeActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener, RankingsLayout.Listener,
-        RegionManager.OnRegionChangeListener, Searchable, SearchToolbar.Listener,
-        SearchQueryHandle {
+        RegionManager.OnRegionChangeListener, Searchable, SearchQueryHandle,
+        SearchToolbar.Listener {
 
     private static final String TAG = "HomeActivity";
     private static final String CNAME = HomeActivity.class.getCanonicalName();

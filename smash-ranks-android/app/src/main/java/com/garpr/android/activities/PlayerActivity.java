@@ -24,6 +24,7 @@ import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.ListUtils;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.SearchQueryHandle;
+import com.garpr.android.misc.Searchable;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.AbsPlayer;
@@ -40,6 +41,7 @@ import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.ErrorLinearLayout;
 import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.TournamentDividerView;
+import com.garpr.android.views.toolbars.PlayerToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +51,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PlayerActivity extends BaseActivity implements
-        FavoritePlayersManager.OnFavoritePlayersChangeListener,
-        IdentityManager.OnIdentityChangeListener, MatchItemView.OnClickListener,
-        MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener,
+        MatchItemView.OnClickListener, PlayerToolbar.Listeners, Searchable, SearchQueryHandle,
         SwipeRefreshLayout.OnRefreshListener, TournamentDividerView.OnClickListener {
 
     private static final String TAG = "PlayerActivity";
@@ -179,6 +179,12 @@ public class PlayerActivity extends BaseActivity implements
         return TAG;
     }
 
+    @NonNull
+    @Override
+    public CharSequence getFullPlayerName() {
+        return mFullPlayer.getName();
+    }
+
     @Nullable
     @Override
     public CharSequence getSearchQuery() {
@@ -208,9 +214,6 @@ public class PlayerActivity extends BaseActivity implements
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID);
 
         setTitle();
-
-        mFavoritePlayersManager.addListener(this);
-        mIdentityManager.addListener(this);
         fetchData();
     }
 
@@ -260,29 +263,6 @@ public class PlayerActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mDataListener = null;
-        mFavoritePlayersManager.removeListener(this);
-        mIdentityManager.removeListener(this);
-    }
-
-    @Override
-    public void onFavoritePlayersChanged(final FavoritePlayersManager manager) {
-        supportInvalidateOptionsMenu();
-    }
-
-    @Override
-    public void onIdentityChange(final IdentityManager identityManager) {
-        supportInvalidateOptionsMenu();
-    }
-
-    @Override
-    public boolean onMenuItemActionCollapse(final MenuItem item) {
-        search(null);
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemActionExpand(final MenuItem item) {
-        return true;
     }
 
     @Override
@@ -327,18 +307,6 @@ public class PlayerActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onQueryTextChange(final String newText) {
-        search(newText);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(final String query) {
-        search(query);
-        return false;
-    }
-
-    @Override
     public void onRefresh() {
         fetchData();
     }
@@ -353,7 +321,8 @@ public class PlayerActivity extends BaseActivity implements
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void search(@Nullable final String query) {
+    @Override
+    public void search(@Nullable final String query) {
         mThreadUtils.run(new ThreadUtils.Task() {
             private List<Object> mList;
 
@@ -407,6 +376,11 @@ public class PlayerActivity extends BaseActivity implements
                 .show();
     }
 
+    @Override
+    public boolean showAliasesMenuItem() {
+        return mFullPlayer != null && mFullPlayer.hasAliases();
+    }
+
     private void showData() {
         mList = ListUtils.createPlayerMatchesList(this, mRegionManager, mFullPlayer,
                 mMatchesBundle);
@@ -434,6 +408,16 @@ public class PlayerActivity extends BaseActivity implements
         mError.setVisibility(View.VISIBLE, errorCode);
         mRefreshLayout.setRefreshing(false);
         supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean showSearchButton() {
+        return mFullPlayer != null && mMatchesBundle != null && mMatchesBundle.hasMatches();
+    }
+
+    @Override
+    public boolean showShareMenuItem() {
+        return mFullPlayer != null;
     }
 
     @Override
