@@ -90,6 +90,8 @@ public abstract class SearchToolbar extends MenuToolbar implements
 
     @Override
     public void onRefreshMenu() {
+        super.onRefreshMenu();
+
         if (isSearchLayoutExpanded()) {
             final Menu menu = getMenu();
 

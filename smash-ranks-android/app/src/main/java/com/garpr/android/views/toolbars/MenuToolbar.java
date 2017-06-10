@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import com.garpr.android.misc.Heartbeat;
 public abstract class MenuToolbar extends Toolbar implements Heartbeat {
 
     private boolean mMenuCreated;
+    private SparseBooleanArray mSparseMenuItemsArray;
 
 
     public MenuToolbar(final Context context, @Nullable final AttributeSet attrs) {
@@ -23,6 +25,17 @@ public abstract class MenuToolbar extends Toolbar implements Heartbeat {
     public MenuToolbar(final Context context, @Nullable final AttributeSet attrs,
             final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    private void createSparseMenuItemsArray() {
+        mSparseMenuItemsArray = new SparseBooleanArray();
+
+        final Menu menu = getMenu();
+
+        for (int i = 0; i < menu.size(); ++i) {
+            final MenuItem menuItem = menu.getItem(i);
+            mSparseMenuItemsArray.put(menuItem.getItemId(), menuItem.isVisible());
+        }
     }
 
     @Override
@@ -35,6 +48,7 @@ public abstract class MenuToolbar extends Toolbar implements Heartbeat {
     }
 
     public void onCreateOptionsMenu(final MenuInflater inflater, final Menu menu) {
+        createSparseMenuItemsArray();
         mMenuCreated = true;
     }
 
@@ -43,7 +57,14 @@ public abstract class MenuToolbar extends Toolbar implements Heartbeat {
         return false;
     }
 
-    public abstract void onRefreshMenu();
+    public void onRefreshMenu() {
+        final Menu menu = getMenu();
+
+        for (int i = 0; i < menu.size(); ++i) {
+            final MenuItem menuItem = menu.getItem(i);
+            menuItem.setVisible(mSparseMenuItemsArray.get(menuItem.getItemId()));
+        }
+    }
 
     protected final void postRefreshMenu() {
         post(new Runnable() {
