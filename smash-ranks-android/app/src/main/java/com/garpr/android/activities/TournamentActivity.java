@@ -6,12 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -30,14 +27,16 @@ import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.ErrorLinearLayout;
+import com.garpr.android.views.toolbars.SearchToolbar;
+import com.garpr.android.views.toolbars.TournamentToolbar;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
 public class TournamentActivity extends BaseActivity implements ApiListener<FullTournament>,
-        MenuItemCompat.OnActionExpandListener, SearchQueryHandle, SearchView.OnQueryTextListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
+        TournamentToolbar.DataProvider {
 
     private static final String TAG = "TournamentActivity";
     private static final String CNAME = TournamentActivity.class.getCanonicalName();
@@ -46,7 +45,6 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
     private static final String EXTRA_TOURNAMENT_NAME = CNAME + ".TournamentName";
 
     private FullTournament mFullTournament;
-    private SearchView mSearchView;
     private String mTournamentId;
     private TournamentPagerAdapter mAdapter;
 
@@ -67,6 +65,9 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
+
+    @BindView(R.id.toolbar)
+    TournamentToolbar mTournamentToolbar;
 
     @BindView(R.id.empty)
     View mEmpty;
@@ -126,8 +127,14 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
 
     @Nullable
     @Override
+    public FullTournament getFullTournament() {
+        return mFullTournament;
+    }
+
+    @Nullable
+    @Override
     public CharSequence getSearchQuery() {
-        return mSearchView == null ? null : mSearchView.getQuery();
+        return mTournamentToolbar.getSearchQuery();
     }
 
     @Override
@@ -140,44 +147,7 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         mTournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID);
 
         prepareMenuAndTitles();
-
-        if (intent.hasExtra(EXTRA_TOURNAMENT_NAME)) {
-            setTitle(intent.getStringExtra(EXTRA_TOURNAMENT_NAME));
-        }
-
         fetchFullTournament();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_tournament, menu);
-
-        if (mFullTournament != null) {
-            final MenuItem searchMenuItem = menu.findItem(R.id.miSearch);
-            searchMenuItem.setVisible(true);
-
-            MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-            mSearchView.setQueryHint(getText(R.string.search_));
-            mSearchView.setOnQueryTextListener(this);
-
-            menu.findItem(R.id.miShare).setVisible(true);
-            menu.findItem(R.id.miViewTournamentPage).setVisible(
-                    !TextUtils.isEmpty(mFullTournament.getUrl()));
-        }
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onMenuItemActionCollapse(final MenuItem item) {
-        mAdapter.search(null);
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemActionExpand(final MenuItem item) {
-        return true;
     }
 
     @Override
@@ -193,18 +163,6 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onQueryTextChange(final String newText) {
-        mAdapter.search(newText);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(final String query) {
-        mAdapter.search(query);
-        return false;
     }
 
     @Override
@@ -280,6 +238,11 @@ public class TournamentActivity extends BaseActivity implements ApiListener<Full
         prepareMenuAndTitles();
         mRefreshLayout.setRefreshing(false);
         mRefreshLayout.setEnabled(false);
+    }
+
+    @Override
+    public boolean showSearchMenuItem() {
+        return mFullTournament != null;
     }
 
     @Override
