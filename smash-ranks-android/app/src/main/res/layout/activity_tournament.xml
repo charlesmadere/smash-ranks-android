@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
     <include
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar_tournament" />
     <android.support.design.widget.TabLayout
         style="@style/TabLayout" />
     <com.garpr.android.views.RefreshLayout
