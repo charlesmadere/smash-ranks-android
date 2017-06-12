@@ -26,6 +26,7 @@
     <string name="x_em_dash_y">%1$s &#8211; %2$s</string>
     <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
+    <string name="error_loading_launch_data">Error loading launch data!</string>
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
@@ -51,6 +52,7 @@
     <string name="identity_saved_">Identity saved!</string>
     <string name="last_poll">Last poll</string>
     <string name="loading_deep_link_">Loading deep link…</string>
+    <string name="loading_first_time_launch_data_">Loading first time launch data…</string>
     <string name="log_viewer">Log Viewer</string>
     <string name="matches">Matches</string>
     <string name="miscellaneous">Miscellaneous</string>
