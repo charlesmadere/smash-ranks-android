@@ -9,6 +9,7 @@ import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.models.RegionsBundle;
+import com.garpr.android.networking.ApiCall;
 import com.garpr.android.networking.ApiListener;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.views.RefreshLayout;
@@ -47,6 +48,7 @@ public class SplashActivity extends BaseActivity implements ApiListener<RegionsB
         mRefreshLayout.setRefreshing(true);
         mError.setVisibility(View.GONE);
         mLoading.setVisibility(View.VISIBLE);
+        mServerApi.getRegions(new ApiCall<>(this));
     }
 
     @Override
@@ -85,7 +87,7 @@ public class SplashActivity extends BaseActivity implements ApiListener<RegionsB
     }
 
     @Override
-    public void success(@Nullable final RegionsBundle object) {
+    public void success(@Nullable final RegionsBundle regionsBundle) {
 
     }
 
