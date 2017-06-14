@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.garpr.android.models.PollFrequency;
 import com.garpr.android.models.SimpleDate;
-import com.garpr.android.preferences.persistent.BasePreferenceStore;
 
 public interface RankingsPollingPreferenceStore extends BasePreferenceStore {
 

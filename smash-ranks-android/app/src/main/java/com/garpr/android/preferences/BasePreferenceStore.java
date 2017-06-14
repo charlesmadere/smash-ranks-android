@@ -1,8 +1,6 @@
-package com.garpr.android.preferences.persistent;
+package com.garpr.android.preferences;
 
 import android.support.annotation.NonNull;
-
-import com.garpr.android.preferences.KeyValueStore;
 
 public interface BasePreferenceStore {
 
