@@ -33,6 +33,7 @@ public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
         mKeyValueStore.clear();
     }
 
+    @NonNull
     @Override
     public Preference<Region> getCurrentRegion() {
         if (mCurrentRegion == null) {
@@ -43,6 +44,7 @@ public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
         return mCurrentRegion;
     }
 
+    @NonNull
     @Override
     public Preference<FavoritePlayer> getIdentity() {
         if (mIdentity == null) {
@@ -53,6 +55,13 @@ public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
         return mIdentity;
     }
 
+    @NonNull
+    @Override
+    public KeyValueStore getKeyValueStore() {
+        return mKeyValueStore;
+    }
+
+    @NonNull
     @Override
     public Preference<Integer> getLastVersion() {
         if (mLastVersion == null) {
@@ -62,6 +71,7 @@ public class GeneralPreferenceStoreImpl implements GeneralPreferenceStore {
         return mLastVersion;
     }
 
+    @NonNull
     @Override
     public Preference<NightMode> getNightMode() {
         if (mNightMode == null) {

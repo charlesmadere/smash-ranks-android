@@ -36,6 +36,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         mKeyValueStore.clear();
     }
 
+    @NonNull
     @Override
     public Preference<Boolean> getChargingRequired() {
         if (mChargingRequired == null) {
@@ -46,6 +47,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         return mChargingRequired;
     }
 
+    @NonNull
     @Override
     public Preference<Boolean> getEnabled() {
         if (mEnabled == null) {
@@ -55,6 +57,13 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         return mEnabled;
     }
 
+    @NonNull
+    @Override
+    public KeyValueStore getKeyValueStore() {
+        return mKeyValueStore;
+    }
+
+    @NonNull
     @Override
     public Preference<SimpleDate> getLastPoll() {
         if (mLastPoll == null) {
@@ -65,6 +74,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         return mLastPoll;
     }
 
+    @NonNull
     @Override
     public Preference<PollFrequency> getPollFrequency() {
         if (mPollFrequency == null) {
@@ -75,6 +85,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         return mPollFrequency;
     }
 
+    @NonNull
     @Override
     public Preference<SimpleDate> getRankingsDate() {
         if (mRankingsDate == null) {
@@ -85,6 +96,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         return mRankingsDate;
     }
 
+    @NonNull
     @Override
     public Preference<Uri> getRingtone() {
         if (mRingtone == null) {
@@ -94,6 +106,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         return mRingtone;
     }
 
+    @NonNull
     @Override
     public Preference<Boolean> getVibrationEnabled() {
         if (mVibrationEnabled == null) {
@@ -104,6 +117,7 @@ public class RankingsPollingPreferenceStoreImpl implements RankingsPollingPrefer
         return mVibrationEnabled;
     }
 
+    @NonNull
     @Override
     public Preference<Boolean> getWifiRequired() {
         if (mWifiRequired == null) {
