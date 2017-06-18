@@ -66,11 +66,12 @@ public class SplashActivity extends BaseActivity implements ApiListener<RegionsB
         super.onCreate(savedInstanceState);
         App.get().getAppComponent().inject(this);
 
-        if (mRegionManager.getRegion() == null) {
+        if (mGeneralPreferenceStore.getKeyValueStore().contains(
+                mGeneralPreferenceStore.getCurrentRegion().getKey())) {
+            goToHomeActivity();
+        } else {
             setContentView(R.layout.activity_splash);
             fetchDefaultRegion();
-        } else {
-            goToHomeActivity();
         }
     }
 
