@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityManagerCompat;
 
 public class DeviceUtilsImpl implements DeviceUtils {
@@ -13,7 +14,7 @@ public class DeviceUtilsImpl implements DeviceUtils {
     private final Application mApplication;
 
 
-    public DeviceUtilsImpl(final Application application) {
+    public DeviceUtilsImpl(@NonNull final Application application) {
         mApplication = application;
     }
 
