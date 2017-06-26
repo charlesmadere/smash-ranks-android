@@ -11,6 +11,7 @@ import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.HeadToHead;
 import com.garpr.android.models.MatchesBundle;
+import com.garpr.android.models.PlayerMatchesBundle;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.Region;
@@ -117,6 +118,12 @@ public class ServerApiImpl implements ServerApi {
                 listener.failure(Constants.ERROR_CODE_UNKNOWN);
             }
         });
+    }
+
+    @Override
+    public void getPlayerMatches(@NonNull final Region region, @NonNull final String playerId,
+            @NonNull final ApiListener<PlayerMatchesBundle> listener) {
+        // TODO
     }
 
     @Override

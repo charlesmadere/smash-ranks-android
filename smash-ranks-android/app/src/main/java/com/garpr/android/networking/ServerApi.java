@@ -6,6 +6,7 @@ import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.FullTournament;
 import com.garpr.android.models.HeadToHead;
 import com.garpr.android.models.MatchesBundle;
+import com.garpr.android.models.PlayerMatchesBundle;
 import com.garpr.android.models.PlayersBundle;
 import com.garpr.android.models.RankingsBundle;
 import com.garpr.android.models.Region;
@@ -22,6 +23,9 @@ public interface ServerApi {
 
     void getPlayer(@NonNull final Region region, @NonNull final String playerId,
             @NonNull final ApiListener<FullPlayer> listener);
+
+    void getPlayerMatches(@NonNull final Region region, @NonNull final String playerId,
+            @NonNull final ApiListener<PlayerMatchesBundle> listener);
 
     void getPlayers(@NonNull final Region region,
             @NonNull final ApiListener<PlayersBundle> listener);
