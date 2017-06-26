@@ -31,6 +31,7 @@ class PlayerMatchesBundleApiCall(
         return listener.isAlive
     }
 
+    @Synchronized
     private fun proceed() {
         if (!fullPlayerFound || !matchesBundleFound) {
             return
