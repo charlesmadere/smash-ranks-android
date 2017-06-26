@@ -11,6 +11,9 @@ buildscript {
 
 apply plugin: 'com.android.application'
 
+// Kotlin
+apply plugin: 'kotlin-android'
+
 // Fabric
 apply plugin: 'io.fabric'
 
@@ -68,8 +71,11 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 
+    // Kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
     // Robolectric
-    testCompile "org.robolectric:robolectric:3.3.2"
+    testCompile 'org.robolectric:robolectric:3.3.2'
 
     // Square's Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -77,6 +83,6 @@ dependencies {
 
     // Fabric
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true;
+        transitive = true
     }
 }
