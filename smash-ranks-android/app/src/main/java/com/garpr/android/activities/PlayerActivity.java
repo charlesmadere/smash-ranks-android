@@ -15,7 +15,6 @@ import android.view.View;
 import com.garpr.android.App;
 import com.garpr.android.R;
 import com.garpr.android.adapters.PlayerAdapter;
-import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.ListUtils;
@@ -30,6 +29,7 @@ import com.garpr.android.models.FavoritePlayer;
 import com.garpr.android.models.FullPlayer;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.MatchesBundle;
+import com.garpr.android.models.PlayerMatchesBundle;
 import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Region;
 import com.garpr.android.networking.ApiCall;
@@ -48,7 +48,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class PlayerActivity extends BaseActivity implements
+public class PlayerActivity extends BaseActivity implements ApiListener<PlayerMatchesBundle>,
         MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
         SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
         TournamentDividerView.OnClickListener {
@@ -59,11 +59,9 @@ public class PlayerActivity extends BaseActivity implements
     private static final String EXTRA_PLAYER_NAME = CNAME + ".PlayerName";
 
     private ArrayList<Object> mList;
-    private DataListener mDataListener;
-    private FullPlayer mFullPlayer;
-    private MatchesBundle mMatchesBundle;
     private Match.Result mResult;
     private PlayerAdapter mAdapter;
+    private PlayerMatchesBundle mPlayerMatchesBundle;
     private String mPlayerId;
 
     @Inject
@@ -130,18 +128,18 @@ public class PlayerActivity extends BaseActivity implements
         return intent;
     }
 
-    private void failure(final int errorCode) {
-        mFullPlayer = null;
+    @Override
+    public void failure(final int errorCode) {
+        mPlayerMatchesBundle = null;
         mList = null;
-        mMatchesBundle = null;
         mResult = null;
         showError(errorCode);
     }
 
-    private void fetchData() {
+    private void fetchPlayerMatchesBundle() {
         mRefreshLayout.setRefreshing(true);
-        mDataListener = new DataListener();
-        mDataListener.fetch();
+        mServerApi.getPlayerMatches(mRegionManager.getRegion(this), mPlayerId,
+                new ApiCall<>(this));
     }
 
     private void filter(@Nullable final Match.Result result) {
@@ -183,13 +181,13 @@ public class PlayerActivity extends BaseActivity implements
     @Nullable
     @Override
     public FullPlayer getFullPlayer() {
-        return mFullPlayer;
+        return mPlayerMatchesBundle == null ? null : mPlayerMatchesBundle.getFullPlayer();
     }
 
     @Nullable
     @Override
     public MatchesBundle getMatchesBundle() {
-        return mMatchesBundle;
+        return mPlayerMatchesBundle == null ? null : mPlayerMatchesBundle.getMatchesBundle();
     }
 
     @Nullable
@@ -207,7 +205,8 @@ public class PlayerActivity extends BaseActivity implements
     @Override
     public void onClick(final MatchItemView v) {
         final Match match = v.getContent();
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, mFullPlayer, match));
+        startActivity(HeadToHeadActivity.getLaunchIntent(this,
+                mPlayerMatchesBundle.getFullPlayer(), match));
     }
 
     @Override
@@ -227,20 +226,15 @@ public class PlayerActivity extends BaseActivity implements
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID);
 
         setTitle();
-        fetchData();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mDataListener = null;
+        fetchPlayerMatchesBundle();
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miAddToFavorites:
-                mFavoritePlayersManager.addPlayer(mFullPlayer, mRegionManager.getRegion(this));
+                mFavoritePlayersManager.addPlayer(mPlayerMatchesBundle.getFullPlayer(),
+                        mRegionManager.getRegion(this));
                 return true;
 
             case R.id.miAliases:
@@ -264,13 +258,13 @@ public class PlayerActivity extends BaseActivity implements
                 return true;
 
             case R.id.miShare:
-                mShareUtils.sharePlayer(this, mFullPlayer);
+                mShareUtils.sharePlayer(this, mPlayerMatchesBundle.getFullPlayer());
                 return true;
 
             case R.id.miViewYourselfVsThisOpponent:
                 // noinspection ConstantConditions
                 startActivity(HeadToHeadActivity.getLaunchIntent(this,
-                        mIdentityManager.getIdentity(), mFullPlayer));
+                        mIdentityManager.getIdentity(), mPlayerMatchesBundle.getFullPlayer()));
                 return true;
         }
 
@@ -279,7 +273,7 @@ public class PlayerActivity extends BaseActivity implements
 
     @Override
     public void onRefresh() {
-        fetchData();
+        fetchPlayerMatchesBundle();
     }
 
     @Override
@@ -322,8 +316,8 @@ public class PlayerActivity extends BaseActivity implements
             return;
         }
 
-        if (mFullPlayer != null) {
-            setTitle(mFullPlayer.getName());
+        if (mPlayerMatchesBundle != null) {
+            setTitle(mPlayerMatchesBundle.getFullPlayer().getName());
         } else {
             final Intent intent = getIntent();
 
@@ -336,7 +330,7 @@ public class PlayerActivity extends BaseActivity implements
     }
 
     private void showAliases() {
-        final ArrayList<String> aliases = mFullPlayer.getAliases();
+        final ArrayList<String> aliases = mPlayerMatchesBundle.getFullPlayer().getAliases();
         // noinspection ConstantConditions
         final CharSequence[] items = new CharSequence[aliases.size()];
         aliases.toArray(items);
@@ -348,8 +342,8 @@ public class PlayerActivity extends BaseActivity implements
     }
 
     private void showData() {
-        mList = ListUtils.createPlayerMatchesList(this, mRegionManager, mFullPlayer,
-                mMatchesBundle);
+        mList = ListUtils.createPlayerMatchesList(this, mRegionManager,
+                mPlayerMatchesBundle.getFullPlayer(), mPlayerMatchesBundle.getMatchesBundle());
         mError.setVisibility(View.GONE);
 
         if (mList == null || mList.isEmpty()) {
@@ -378,7 +372,7 @@ public class PlayerActivity extends BaseActivity implements
 
     @Override
     public boolean showSearchMenuItem() {
-        return mFullPlayer != null && mMatchesBundle != null && mMatchesBundle.hasMatches();
+        return mPlayerMatchesBundle != null && mPlayerMatchesBundle.hasMatchesBundle();
     }
 
     @Override
@@ -386,92 +380,13 @@ public class PlayerActivity extends BaseActivity implements
         return true;
     }
 
-    private void success(@NonNull final FullPlayer fullPlayer,
-            @Nullable final MatchesBundle matchesBundle) {
-        mFullPlayer = fullPlayer;
+
+    @Override
+    public void success(@Nullable final PlayerMatchesBundle playerMatchesBundle) {
+        mPlayerMatchesBundle = playerMatchesBundle;
         mList = null;
-        mMatchesBundle = matchesBundle;
         mResult = null;
         showData();
-    }
-
-
-    private final class DataListener {
-        private boolean mFullPlayerFound;
-        private boolean mMatchesBundleFound;
-        private FullPlayer mFullPlayer;
-        private int mFullPlayerErrorCode;
-        private int mMatchesBundleErrorCode;
-        private MatchesBundle mMatchesBundle;
-        private final Region mRegion;
-
-        private DataListener() {
-            mRegion = mRegionManager.getRegion(PlayerActivity.this);
-        }
-
-        private void fetch() {
-            mServerApi.getMatches(mRegion, mPlayerId, new ApiCall<>(mMatchesBundleListener));
-            mServerApi.getPlayer(mRegion, mPlayerId, new ApiCall<>(mFullPlayerListener));
-        }
-
-        private synchronized void proceed() {
-            if (mFullPlayerFound && mMatchesBundleFound) {
-                // intentionally not checking to see if mMatchesBundle is null, PlayerActivity is
-                // designed to handle a null MatchesBundle
-                if (mFullPlayerErrorCode == Constants.ERROR_CODE_BAD_REQUEST ||
-                        mMatchesBundleErrorCode == Constants.ERROR_CODE_BAD_REQUEST) {
-                    failure(Constants.ERROR_CODE_BAD_REQUEST);
-                } else if (mFullPlayer == null) {
-                    failure(Constants.ERROR_CODE_UNKNOWN);
-                } else {
-                    success(mFullPlayer, mMatchesBundle);
-                }
-            }
-        }
-
-        private final ApiListener<FullPlayer> mFullPlayerListener = new ApiListener<FullPlayer>() {
-            @Override
-            public void failure(final int errorCode) {
-                mFullPlayerErrorCode = errorCode;
-                mFullPlayer = null;
-                mFullPlayerFound = true;
-                proceed();
-            }
-
-            @Override
-            public boolean isAlive() {
-                return PlayerActivity.this.isAlive();
-            }
-
-            @Override
-            public void success(@Nullable final FullPlayer fullPlayer) {
-                mFullPlayer = fullPlayer;
-                mFullPlayerFound = true;
-                proceed();
-            }
-        };
-
-        private final ApiListener<MatchesBundle> mMatchesBundleListener = new ApiListener<MatchesBundle>() {
-            @Override
-            public void failure(final int errorCode) {
-                mMatchesBundleErrorCode = errorCode;
-                mMatchesBundle = null;
-                mMatchesBundleFound = true;
-                proceed();
-            }
-
-            @Override
-            public boolean isAlive() {
-                return PlayerActivity.this.isAlive();
-            }
-
-            @Override
-            public void success(@Nullable final MatchesBundle matchesBundle) {
-                mMatchesBundle = matchesBundle;
-                mMatchesBundleFound = true;
-                proceed();
-            }
-        };
     }
 
 }

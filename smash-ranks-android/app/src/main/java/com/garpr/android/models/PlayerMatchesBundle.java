@@ -27,6 +27,10 @@ public class PlayerMatchesBundle implements Parcelable {
         return mMatchesBundle;
     }
 
+    public boolean hasMatchesBundle() {
+        return mMatchesBundle != null && mMatchesBundle.hasMatches();
+    }
+
     public void setFullPlayer(@NonNull final FullPlayer fullPlayer) {
         mFullPlayer = fullPlayer;
     }

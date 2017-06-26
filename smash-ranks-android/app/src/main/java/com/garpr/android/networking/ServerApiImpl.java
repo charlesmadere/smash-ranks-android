@@ -123,7 +123,7 @@ public class ServerApiImpl implements ServerApi {
     @Override
     public void getPlayerMatches(@NonNull final Region region, @NonNull final String playerId,
             @NonNull final ApiListener<PlayerMatchesBundle> listener) {
-        // TODO
+        new PlayerMatchesBundleApiCall(listener, region, this, playerId).fetch();
     }
 
     @Override
