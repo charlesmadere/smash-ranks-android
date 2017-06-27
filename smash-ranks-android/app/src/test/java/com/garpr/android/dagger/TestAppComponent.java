@@ -15,6 +15,7 @@ import com.garpr.android.models.RatingsTest;
 import com.garpr.android.models.RegionTest;
 import com.garpr.android.models.RegionsBundleTest;
 import com.garpr.android.models.SimpleDateTest;
+import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
 import com.garpr.android.preferences.KeyValueStoreTest;
 import com.garpr.android.preferences.persistent.PersistentBooleanPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentGsonPreferenceTest;
@@ -49,6 +50,9 @@ public interface TestAppComponent {
     void inject(RegionTest test);
     void inject(RegionsBundleTest test);
     void inject(SimpleDateTest test);
+
+    // networking
+    void inject(PlayerMatchesBundleApiCallTest test);
 
     // preferences
     void inject(KeyValueStoreTest test);
