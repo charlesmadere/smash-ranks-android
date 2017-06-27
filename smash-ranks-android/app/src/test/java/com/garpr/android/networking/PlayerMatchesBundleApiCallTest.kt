@@ -2,11 +2,13 @@ package com.garpr.android.networking
 
 import com.garpr.android.BaseTest
 import com.garpr.android.BuildConfig
+import com.garpr.android.misc.Constants
 import com.garpr.android.models.FullPlayer
 import com.garpr.android.models.MatchesBundle
 import com.garpr.android.models.PlayerMatchesBundle
 import com.garpr.android.models.Region
 import com.google.gson.Gson
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -80,7 +82,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
             }
         }
 
-        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK)
+        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK).fetch()
         assertNotNull(result)
         assertNotNull(result?.fullPlayer)
         assertNotNull(result?.matchesBundle)
@@ -88,11 +90,11 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
 
     @Test
     fun testGetPlayerMatchesBundleWithNonNullMatchesNullPlayer() {
-        var result: PlayerMatchesBundle? = null
+        var result: Int? = null
 
         val listener = object : ApiListener<PlayerMatchesBundle> {
             override fun failure(errorCode: Int) {
-                throw RuntimeException()
+                result = errorCode
             }
 
             override fun isAlive(): Boolean {
@@ -100,7 +102,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
             }
 
             override fun success(`object`: PlayerMatchesBundle?) {
-                result = `object`
+                throw RuntimeException()
             }
         }
 
@@ -116,10 +118,9 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
             }
         }
 
-        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK)
+        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK).fetch()
         assertNotNull(result)
-        assertNotNull(result?.fullPlayer)
-        assertNotNull(result?.matchesBundle)
+        assertEquals(Constants.ERROR_CODE_UNKNOWN, result)
     }
 
     @Test
@@ -152,17 +153,19 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
             }
         }
 
-        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK)
+        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK).fetch()
         assertNotNull(result)
+        assertNotNull(result?.fullPlayer)
+        assertNull(result?.matchesBundle)
     }
 
     @Test
     fun testGetPlayerMatchesBundleWithNullMatchesNullPlayer() {
-        var result: PlayerMatchesBundle? = null
+        var result: Int? = null
 
         val listener = object : ApiListener<PlayerMatchesBundle> {
             override fun failure(errorCode: Int) {
-                throw RuntimeException()
+                result = errorCode
             }
 
             override fun isAlive(): Boolean {
@@ -170,7 +173,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
             }
 
             override fun success(`object`: PlayerMatchesBundle?) {
-                result = `object`
+                throw RuntimeException()
             }
         }
 
@@ -186,8 +189,9 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
             }
         }
 
-        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK)
-        assertNull(result)
+        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK).fetch()
+        assertNotNull(result)
+        assertEquals(Constants.ERROR_CODE_UNKNOWN, result)
     }
 
 }
