@@ -7,6 +7,7 @@ import com.garpr.android.models.MatchesBundle
 import com.garpr.android.models.PlayerMatchesBundle
 import com.garpr.android.models.Region
 import com.google.gson.Gson
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
@@ -50,7 +51,113 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
     }
 
     @Test
-    fun testGetPlayerMatchesBundleNullMatchesNullPlayer() {
+    fun testGetPlayerMatchesBundleWithNonNullMatchesNonNullPlayer() {
+        var result: PlayerMatchesBundle? = null
+
+        val listener = object : ApiListener<PlayerMatchesBundle> {
+            override fun failure(errorCode: Int) {
+                throw RuntimeException()
+            }
+
+            override fun isAlive(): Boolean {
+                return true
+            }
+
+            override fun success(`object`: PlayerMatchesBundle?) {
+                result = `object`
+            }
+        }
+
+        val serverApi = object : AbsServerApi() {
+            override fun getMatches(region: Region, playerId: String,
+                    listener: ApiListener<MatchesBundle>) {
+                listener.success(matchesSpark)
+            }
+
+            override fun getPlayer(region: Region, playerId: String,
+                    listener: ApiListener<FullPlayer>) {
+                listener.success(playerSpark)
+            }
+        }
+
+        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK)
+        assertNotNull(result)
+        assertNotNull(result?.fullPlayer)
+        assertNotNull(result?.matchesBundle)
+    }
+
+    @Test
+    fun testGetPlayerMatchesBundleWithNonNullMatchesNullPlayer() {
+        var result: PlayerMatchesBundle? = null
+
+        val listener = object : ApiListener<PlayerMatchesBundle> {
+            override fun failure(errorCode: Int) {
+                throw RuntimeException()
+            }
+
+            override fun isAlive(): Boolean {
+                return true
+            }
+
+            override fun success(`object`: PlayerMatchesBundle?) {
+                result = `object`
+            }
+        }
+
+        val serverApi = object : AbsServerApi() {
+            override fun getMatches(region: Region, playerId: String,
+                    listener: ApiListener<MatchesBundle>) {
+                listener.success(matchesSpark)
+            }
+
+            override fun getPlayer(region: Region, playerId: String,
+                    listener: ApiListener<FullPlayer>) {
+                listener.success(null)
+            }
+        }
+
+        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK)
+        assertNotNull(result)
+        assertNotNull(result?.fullPlayer)
+        assertNotNull(result?.matchesBundle)
+    }
+
+    @Test
+    fun testGetPlayerMatchesBundleWithNullMatchesNonNullPlayer() {
+        var result: PlayerMatchesBundle? = null
+
+        val listener = object : ApiListener<PlayerMatchesBundle> {
+            override fun failure(errorCode: Int) {
+                throw RuntimeException()
+            }
+
+            override fun isAlive(): Boolean {
+                return true
+            }
+
+            override fun success(`object`: PlayerMatchesBundle?) {
+                result = `object`
+            }
+        }
+
+        val serverApi = object : AbsServerApi() {
+            override fun getMatches(region: Region, playerId: String,
+                    listener: ApiListener<MatchesBundle>) {
+                listener.success(null)
+            }
+
+            override fun getPlayer(region: Region, playerId: String,
+                    listener: ApiListener<FullPlayer>) {
+                listener.success(playerSpark)
+            }
+        }
+
+        PlayerMatchesBundleApiCall(listener, norcal, serverApi, PLAYER_ID_SPARK)
+        assertNotNull(result)
+    }
+
+    @Test
+    fun testGetPlayerMatchesBundleWithNullMatchesNullPlayer() {
         var result: PlayerMatchesBundle? = null
 
         val listener = object : ApiListener<PlayerMatchesBundle> {
