@@ -13,6 +13,7 @@ import com.garpr.android.activities.SetRegionActivity;
 import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.activities.TournamentsActivity;
+import com.garpr.android.sync.RankingsPollingJobService;
 import com.garpr.android.sync.RankingsPollingService;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.FavoritePlayersLayout;
@@ -62,8 +63,9 @@ public interface AppComponent {
     void inject(TournamentActivity activity);
     void inject(TournamentsActivity activity);
 
-    // services
-    void inject(RankingsPollingService service);
+    // sync
+    void inject(RankingsPollingJobService sync);
+    void inject(RankingsPollingService sync);
 
     // toolbars
     void inject(HomeToolbar toolbar);
