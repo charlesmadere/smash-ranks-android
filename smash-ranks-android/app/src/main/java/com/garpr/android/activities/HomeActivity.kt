@@ -233,12 +233,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
             initialPosition = savedInstanceState.getInt(KEY_CURRENT_POSITION, -1)
         }
 
-        if (initialPosition == -1) {
-            val intent = intent
-
-            if (intent != null && intent.hasExtra(EXTRA_INITIAL_POSITION)) {
-                initialPosition = intent.getIntExtra(EXTRA_INITIAL_POSITION, -1)
-            }
+        if (initialPosition == -1 && intent != null && intent.hasExtra(EXTRA_INITIAL_POSITION)) {
+            initialPosition = intent.getIntExtra(EXTRA_INITIAL_POSITION, -1)
         }
 
         if (initialPosition != -1) {
