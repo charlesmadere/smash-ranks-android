@@ -17,7 +17,7 @@ class RankingsPollingSyncManagerImpl(
         private val mTimber: Timber
 ) : RankingsPollingSyncManager {
 
-    private companion object {
+    companion object {
         private val TAG = "RankingsPollingSyncManagerImpl"
     }
 

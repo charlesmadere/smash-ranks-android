@@ -161,7 +161,7 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
 
     private void buildPlayersIntentStack(final Context context, final List<Intent> intentStack,
             final Region region, final boolean sameRegion, final String[] splits) {
-        intentStack.add(HomeActivity.getLaunchIntent(context));
+        intentStack.add(HomeActivity.Companion.getLaunchIntent(context));
 
         if (sameRegion) {
             intentStack.add(PlayersActivity.getLaunchIntent(context));
@@ -186,9 +186,10 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
     private void buildRankingsIntentStack(final Context context, final List<Intent> intentStack,
             final Region region, final boolean sameRegion) {
         if (sameRegion) {
-            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_RANKINGS));
+            intentStack.add(HomeActivity.Companion.getLaunchIntent(context,
+                    HomeActivity.Companion.getPositionRankings()));
         } else {
-            intentStack.add(HomeActivity.getLaunchIntent(context));
+            intentStack.add(HomeActivity.Companion.getLaunchIntent(context));
             intentStack.add(RankingsActivity.getLaunchIntent(context, region));
         }
     }
@@ -196,9 +197,10 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
     private void buildTournamentsIntentStack(final Context context, final List<Intent> intentStack,
             final Region region, final boolean sameRegion, final String[] splits) {
         if (sameRegion) {
-            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_TOURNAMENTS));
+            intentStack.add(HomeActivity.Companion.getLaunchIntent(context,
+                    HomeActivity.Companion.getPositionTournaments()));
         } else {
-            intentStack.add(HomeActivity.getLaunchIntent(context));
+            intentStack.add(HomeActivity.Companion.getLaunchIntent(context));
             intentStack.add(TournamentsActivity.getLaunchIntent(context, region));
         }
 

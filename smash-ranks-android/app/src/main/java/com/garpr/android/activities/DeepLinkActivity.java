@@ -32,7 +32,7 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
         final Intent[] intentStack = mDeepLinkUtils.buildIntentStack(this, getIntent(), region);
 
         if (intentStack == null || intentStack.length == 0) {
-            startActivity(HomeActivity.getLaunchIntent(this));
+            startActivity(HomeActivity.Companion.getLaunchIntent(this));
         } else {
             ContextCompat.startActivities(this, intentStack);
         }
@@ -42,7 +42,7 @@ public class DeepLinkActivity extends BaseActivity implements ApiListener<Region
 
     private void error() {
         Toast.makeText(this, R.string.error_loading_deep_link_data, Toast.LENGTH_LONG).show();
-        startActivity(HomeActivity.getLaunchIntent(this));
+        startActivity(HomeActivity.Companion.getLaunchIntent(this));
         supportFinishAfterTransition();
     }
 

@@ -16,32 +16,32 @@ import javax.inject.Inject
 
 class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
-    private companion object {
-        private val TAG = "RankingsPollingJobService"
-    }
-
     private var mIsAlive: Boolean = true
     private var mRetry: Boolean = false
     private var mOldRankingsDate: SimpleDate? = null
 
     @Inject
-    lateinit var mDeviceUtils: DeviceUtils
+    lateinit internal var mDeviceUtils: DeviceUtils
 
     @Inject
-    lateinit var mNotificationManager: NotificationManager
+    lateinit internal var mNotificationManager: NotificationManager
 
     @Inject
-    lateinit var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    lateinit internal var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
-    lateinit var mRegionManager: RegionManager
+    lateinit internal var mRegionManager: RegionManager
 
     @Inject
-    lateinit var mServerApi: ServerApi
+    lateinit internal var mServerApi: ServerApi
 
     @Inject
-    lateinit var mTimber: Timber
+    lateinit internal var mTimber: Timber
 
+
+    companion object {
+        private val TAG = "RankingsPollingJobService"
+    }
 
     init {
         App.get().appComponent.inject(this)

@@ -107,7 +107,7 @@ public class ThemePreferenceView extends SimplePreferenceView implements
     @Override
     public void onDismiss(final DialogInterface dialog) {
         final Context context = getContext();
-        context.startActivity(HomeActivity.getLaunchIntent(context));
+        context.startActivity(HomeActivity.Companion.getLaunchIntent(context));
     }
 
     @Override
