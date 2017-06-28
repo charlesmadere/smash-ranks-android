@@ -105,11 +105,10 @@
             android:value="bd8750ba792168bfa4d0bc52e19ad83a6fad27c3" />
 
         <service
-            android:exported="true"
-            android:name=".sync.RankingsPollingService"
-            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            android:exported="false"
+            android:name=".sync.RankingsPollingJobService">
             <intent-filter>
-                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
 

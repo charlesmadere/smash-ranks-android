@@ -11,6 +11,8 @@ import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.FavoritePlayersManagerImpl;
+import com.garpr.android.misc.FirebaseApiWrapper;
+import com.garpr.android.misc.FirebaseApiWrapperImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
 import com.garpr.android.misc.IdentityManager;
@@ -109,6 +111,12 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    FirebaseApiWrapper providesFirebaseApiWrapper() {
+        return new FirebaseApiWrapperImpl(mApplication);
+    }
+
+    @Provides
+    @Singleton
     GarPrApi providesGarPrApi(final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
@@ -191,11 +199,11 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     RankingsPollingSyncManager providesRankingsPollingSyncManager(
-            final GoogleApiWrapper googleApiWrapper,
+            final FirebaseApiWrapper firebaseApiWrapper, final GoogleApiWrapper googleApiWrapper,
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
             final Timber timber) {
-        return new RankingsPollingSyncManagerImpl(googleApiWrapper, rankingsPollingPreferenceStore,
-                timber);
+        return new RankingsPollingSyncManagerImpl(firebaseApiWrapper, googleApiWrapper,
+                rankingsPollingPreferenceStore, timber);
     }
 
     @Provides

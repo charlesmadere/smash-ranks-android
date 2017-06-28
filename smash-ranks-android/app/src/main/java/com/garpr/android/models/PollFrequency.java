@@ -46,6 +46,10 @@ public enum PollFrequency implements Parcelable {
         return mTimeInMillis;
     }
 
+    public int getTimeInSeconds() {
+        return (int) TimeUnit.MILLISECONDS.toSeconds(mTimeInMillis);
+    }
+
     @Override
     public int describeContents() {
         return 0;

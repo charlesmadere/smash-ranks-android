@@ -7,7 +7,9 @@ import com.crashlytics.android.core.CrashlyticsCore
 
 import io.fabric.sdk.android.Fabric
 
-class CrashlyticsWrapperImpl(private val mApplication: Application) : CrashlyticsWrapper {
+class CrashlyticsWrapperImpl(
+        private val mApplication: Application
+) : CrashlyticsWrapper {
 
     override fun initialize(disabled: Boolean) {
         val crashlyticsCore = CrashlyticsCore.Builder()

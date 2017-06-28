@@ -16,8 +16,9 @@ import javax.inject.Inject
 
 class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
-    @JvmField
-    val TAG = "RankingsPollingJobService"
+    private companion object {
+        private val TAG = "RankingsPollingJobService"
+    }
 
     private var mIsAlive: Boolean = true
     private var mRetry: Boolean = false
