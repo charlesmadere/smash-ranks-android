@@ -164,9 +164,9 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
         intentStack.add(HomeActivity.Companion.getLaunchIntent(context));
 
         if (sameRegion) {
-            intentStack.add(PlayersActivity.getLaunchIntent(context));
+            intentStack.add(PlayersActivity.Companion.getLaunchIntent(context));
         } else {
-            intentStack.add(PlayersActivity.getLaunchIntent(context, region));
+            intentStack.add(PlayersActivity.Companion.getLaunchIntent(context, region));
         }
 
         if (splits.length < 3) {

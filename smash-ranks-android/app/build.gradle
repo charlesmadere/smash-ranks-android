@@ -74,6 +74,9 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 
+    // Jake Wharton's KotterKnife
+    // TODO
+
     // Kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
