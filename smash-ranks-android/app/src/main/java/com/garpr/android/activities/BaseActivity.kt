@@ -17,7 +17,7 @@ import com.garpr.android.misc.Timber
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.views.toolbars.MenuToolbar
-import kotterknife.bindView
+import kotterknife.bindOptionalView
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
@@ -28,7 +28,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     @Inject
     lateinit protected var mTimber: Timber
 
-    protected val mToolbar: Toolbar? by bindView(R.id.toolbar)
+    protected val mToolbar: Toolbar? by bindOptionalView(R.id.toolbar)
 
 
     companion object {
