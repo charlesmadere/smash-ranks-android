@@ -40,18 +40,18 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private var mPlayerName: String? = null
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     @Inject
-    lateinit internal var mServerApi: ServerApi
+    lateinit protected var mServerApi: ServerApi
 
     @Inject
-    lateinit internal var mThreadUtils: ThreadUtils
+    lateinit protected var mThreadUtils: ThreadUtils
 
-    internal val mError: ErrorLinearLayout by bindView(R.id.error)
-    internal val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    internal val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    internal val mEmpty: View by bindView(R.id.empty)
+    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val mEmpty: View by bindView(R.id.empty)
 
 
     companion object {

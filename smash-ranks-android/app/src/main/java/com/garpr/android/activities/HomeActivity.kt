@@ -34,19 +34,19 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     lateinit private var mAdapter: HomePagerAdapter
 
     @Inject
-    lateinit internal var mIdentityManager: IdentityManager
+    lateinit protected var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit internal var mNotificationManager: NotificationManager
+    lateinit protected var mNotificationManager: NotificationManager
 
     @Inject
-    lateinit internal var mRankingsPollingSyncManager: RankingsPollingSyncManager
+    lateinit protected var mRankingsPollingSyncManager: RankingsPollingSyncManager
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     @Inject
-    lateinit internal var mShareUtils: ShareUtils
+    lateinit protected var mShareUtils: ShareUtils
 
     private val mBottomNavigationView: BottomNavigationView by bindView(R.id.bottomNavigationView)
     private val mHomeToolbar: HomeToolbar by bindView(R.id.toolbar)
@@ -173,7 +173,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     }
 
     @OnPageChange(R.id.viewPager)
-    internal fun onPageChange() {
+    protected fun onPageChange() {
         updateSelectedBottomNavigationItem()
     }
 

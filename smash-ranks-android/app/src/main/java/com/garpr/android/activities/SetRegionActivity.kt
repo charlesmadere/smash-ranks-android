@@ -34,15 +34,15 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     lateinit private var mAdapter: RegionsSelectionAdapter
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     @Inject
-    lateinit internal var mServerApi: ServerApi
+    lateinit protected var mServerApi: ServerApi
 
-    internal val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    internal val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    internal val mEmpty: View by bindView(R.id.empty)
-    internal val mError: View by bindView(R.id.error)
+    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val mEmpty: View by bindView(R.id.empty)
+    private val mError: View by bindView(R.id.error)
 
 
     companion object {

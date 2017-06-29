@@ -102,10 +102,8 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
             }
         }
 
-        if (mToolbar is MenuToolbar) {
-            if ((mToolbar as MenuToolbar).onOptionsItemSelected(item)) {
-                return true
-            }
+        if (mToolbar is MenuToolbar && (mToolbar as MenuToolbar).onOptionsItemSelected(item)) {
+            return true
         }
 
         return super.onOptionsItemSelected(item)

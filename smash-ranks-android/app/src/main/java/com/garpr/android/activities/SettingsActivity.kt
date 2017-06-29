@@ -37,38 +37,38 @@ import javax.inject.Inject
 class SettingsActivity : BaseActivity() {
 
     @Inject
-    lateinit internal var mFavoritePlayersManager: FavoritePlayersManager
+    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit internal var mGoogleApiWrapper: GoogleApiWrapper
+    lateinit protected var mGoogleApiWrapper: GoogleApiWrapper
 
     @Inject
-    lateinit internal var mIdentityManager: IdentityManager
+    lateinit protected var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit internal var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    lateinit protected var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
-    lateinit internal var mRankingsPollingSyncManager: RankingsPollingSyncManager
+    lateinit protected var mRankingsPollingSyncManager: RankingsPollingSyncManager
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     @Inject
-    lateinit internal var mShareUtils: ShareUtils
+    lateinit protected var mShareUtils: ShareUtils
 
-    internal val mMustBeCharging: CheckablePreferenceView by bindView(R.id.cpvMustBeCharging)
-    internal val mMustBeOnWifi: CheckablePreferenceView by bindView(R.id.cpvMustBeOnWifi)
-    internal val mUseRankingsPolling: CheckablePreferenceView by bindView(R.id.cpvUseRankingsPolling)
-    internal val mVibrate: CheckablePreferenceView by bindView(R.id.cpvVibrate)
-    internal val mDeleteFavoritePlayersPreferenceView: DeleteFavoritePlayersPreferenceView by bindView(R.id.deleteFavoritePlayersPreferenceView)
-    internal val mIdentityPreferenceView: IdentityPreferenceView by bindView(R.id.identityPreferenceView)
-    internal val mLastPoll: LastPollPreferenceView by bindView(R.id.lastPollPreferenceView)
-    internal val mPollFrequency: PollFrequencyPreferenceView by bindView(R.id.pollFrequencyPreferenceView)
-    internal val mRegionPreferenceView: RegionPreferenceView by bindView(R.id.regionPreferenceView)
-    internal val mRingtonePreferenceView: RingtonePreferenceView by bindView(R.id.ringtonePreferenceView)
-    internal val mGooglePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
-    internal val mThemePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
+    private val mMustBeCharging: CheckablePreferenceView by bindView(R.id.cpvMustBeCharging)
+    private val mMustBeOnWifi: CheckablePreferenceView by bindView(R.id.cpvMustBeOnWifi)
+    private val mUseRankingsPolling: CheckablePreferenceView by bindView(R.id.cpvUseRankingsPolling)
+    private val mVibrate: CheckablePreferenceView by bindView(R.id.cpvVibrate)
+    private val mDeleteFavoritePlayersPreferenceView: DeleteFavoritePlayersPreferenceView by bindView(R.id.deleteFavoritePlayersPreferenceView)
+    private val mIdentityPreferenceView: IdentityPreferenceView by bindView(R.id.identityPreferenceView)
+    private val mLastPoll: LastPollPreferenceView by bindView(R.id.lastPollPreferenceView)
+    private val mPollFrequency: PollFrequencyPreferenceView by bindView(R.id.pollFrequencyPreferenceView)
+    private val mRegionPreferenceView: RegionPreferenceView by bindView(R.id.regionPreferenceView)
+    private val mRingtonePreferenceView: RingtonePreferenceView by bindView(R.id.ringtonePreferenceView)
+    private val mGooglePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
+    private val mThemePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
 
 
     companion object {
@@ -93,7 +93,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     @OnClick(R.id.spvCharlesTwitter)
-    internal fun onCharlesTwitterClick() {
+    protected fun onCharlesTwitterClick() {
         mShareUtils.openUrl(this, Constants.CHARLES_TWITTER_URL)
     }
 
@@ -119,12 +119,12 @@ class SettingsActivity : BaseActivity() {
     }
 
     @OnClick(R.id.spvGarTwitter)
-    internal fun onGarTwitterClick() {
+    protected fun onGarTwitterClick() {
         mShareUtils.openUrl(this, Constants.GAR_TWITTER_URL)
     }
 
     @OnClick(R.id.tvGooglePlayServicesError)
-    internal fun onGooglePlayServicesErrorClick() {
+    protected fun onGooglePlayServicesErrorClick() {
         val connectionStatus = mGoogleApiWrapper.googlePlayServicesConnectionStatus
 
         if (mGoogleApiWrapper.isConnectionStatusSuccess(connectionStatus)) {
@@ -148,12 +148,12 @@ class SettingsActivity : BaseActivity() {
     }
 
     @OnClick(R.id.spvLogViewer)
-    internal fun onLogViewerClick() {
+    protected fun onLogViewerClick() {
         startActivity(LogViewerActivity.getLaunchIntent(this))
     }
 
     @OnClick(R.id.spvGitHub)
-    internal fun onGitHubClick() {
+    protected fun onGitHubClick() {
         mShareUtils.openUrl(this, Constants.GITHUB_URL)
     }
 

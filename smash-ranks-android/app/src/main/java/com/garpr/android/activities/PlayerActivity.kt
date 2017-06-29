@@ -52,28 +52,28 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     lateinit private var mPlayerId: String
 
     @Inject
-    lateinit internal var mFavoritePlayersManager: FavoritePlayersManager
+    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit internal var mIdentityManager: IdentityManager
+    lateinit protected var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     @Inject
-    lateinit internal var mServerApi: ServerApi
+    lateinit protected var mServerApi: ServerApi
 
     @Inject
-    lateinit internal var mShareUtils: ShareUtils
+    lateinit protected var mShareUtils: ShareUtils
 
     @Inject
-    lateinit internal var mThreadUtils: ThreadUtils
+    lateinit protected var mThreadUtils: ThreadUtils
 
-    internal val mError: ErrorLinearLayout by bindView(R.id.error)
-    internal val mPlayerToolbar: PlayerToolbar by bindView(R.id.toolbar)
-    internal val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    internal val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    internal val mEmpty: View by bindView(R.id.empty)
+    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mPlayerToolbar: PlayerToolbar by bindView(R.id.toolbar)
+    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val mEmpty: View by bindView(R.id.empty)
 
 
     companion object {

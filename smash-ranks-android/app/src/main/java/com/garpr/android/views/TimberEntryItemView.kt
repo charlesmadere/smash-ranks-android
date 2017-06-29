@@ -22,10 +22,10 @@ class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
     lateinit private var mColors: SparseIntArray
 
     @BindView(R.id.tvStackTrace)
-    lateinit internal var mStackTrace: TextView
+    lateinit protected var mStackTrace: TextView
 
     @BindView(R.id.tvTagAndMessage)
-    lateinit internal var mTagAndMessage: TextView
+    lateinit protected var mTagAndMessage: TextView
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

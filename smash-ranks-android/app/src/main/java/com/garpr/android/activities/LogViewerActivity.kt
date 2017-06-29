@@ -17,9 +17,9 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     lateinit private var mAdapter: TimberEntriesAdapter
 
-    internal val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    internal val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    internal val mEmpty: View by bindView(R.id.empty)
+    protected val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
+    protected val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    protected val mEmpty: View by bindView(R.id.empty)
 
 
     companion object {

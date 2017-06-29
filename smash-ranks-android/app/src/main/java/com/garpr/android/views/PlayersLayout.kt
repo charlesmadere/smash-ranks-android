@@ -34,22 +34,22 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         private set
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     @Inject
-    lateinit internal var mServerApi: ServerApi
+    lateinit protected var mServerApi: ServerApi
 
     @BindView(R.id.error)
-    lateinit internal var mError: ErrorLinearLayout
+    lateinit protected var mError: ErrorLinearLayout
 
     @BindView(R.id.recyclerView)
-    lateinit internal var mRecyclerView: RecyclerView
+    lateinit protected var mRecyclerView: RecyclerView
 
     @BindView(R.id.refreshLayout)
-    lateinit internal var mRefreshLayout: SwipeRefreshLayout
+    lateinit protected var mRefreshLayout: SwipeRefreshLayout
 
     @BindView(R.id.empty)
-    lateinit internal var mEmpty: View
+    lateinit protected var mEmpty: View
 
 
     interface Listener {

@@ -25,7 +25,7 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
     private var mSearchView: SearchView? = null
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     private val mPlayersLayout: PlayersLayout by bindView(R.id.playersLayout)
 

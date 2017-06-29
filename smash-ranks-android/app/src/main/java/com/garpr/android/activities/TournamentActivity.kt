@@ -46,12 +46,12 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     @Inject
     lateinit protected var mShareUtils: ShareUtils
 
-    protected val mError: ErrorLinearLayout by bindView(R.id.error)
-    protected val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    protected val mTabLayout: TabLayout by bindView(R.id.tabLayout)
-    protected val mTournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
-    protected val mEmpty: View by bindView(R.id.empty)
-    protected val mViewPager: ViewPager by bindView(R.id.viewPager)
+    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val mTabLayout: TabLayout by bindView(R.id.tabLayout)
+    private val mTournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
+    private val mEmpty: View by bindView(R.id.empty)
+    private val mViewPager: ViewPager by bindView(R.id.viewPager)
 
 
     companion object {

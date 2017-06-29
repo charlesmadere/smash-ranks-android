@@ -14,7 +14,7 @@ import javax.inject.Inject
 class TournamentsActivity : BaseActivity() {
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
 
     companion object {
