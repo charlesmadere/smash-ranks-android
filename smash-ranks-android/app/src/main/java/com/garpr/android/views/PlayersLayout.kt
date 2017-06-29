@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
-import butterknife.BindView
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersAdapter
@@ -24,6 +23,7 @@ import com.garpr.android.models.PlayersBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
+import kotterknife.bindView
 import javax.inject.Inject
 
 class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
@@ -39,17 +39,10 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     @Inject
     lateinit protected var mServerApi: ServerApi
 
-    @BindView(R.id.error)
-    lateinit protected var mError: ErrorLinearLayout
-
-    @BindView(R.id.recyclerView)
-    lateinit protected var mRecyclerView: RecyclerView
-
-    @BindView(R.id.refreshLayout)
-    lateinit protected var mRefreshLayout: SwipeRefreshLayout
-
-    @BindView(R.id.empty)
-    lateinit protected var mEmpty: View
+    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val mEmpty: View by bindView(R.id.empty)
 
 
     interface Listener {
