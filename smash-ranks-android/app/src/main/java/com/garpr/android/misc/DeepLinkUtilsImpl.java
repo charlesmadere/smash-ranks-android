@@ -179,7 +179,7 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
             return;
         }
 
-        intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null,
+        intentStack.add(PlayerActivity.Companion.getLaunchIntent(context, playerId, null,
                 sameRegion ? null : region));
     }
 

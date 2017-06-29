@@ -87,7 +87,7 @@ public class RankingItemView extends IdentityFrameLayout implements BaseAdapterV
     @Override
     public void onClick(final View v) {
         final Context context = getContext();
-        context.startActivity(PlayerActivity.getLaunchIntent(context, mContent,
+        context.startActivity(PlayerActivity.Companion.getLaunchIntent(context, mContent,
                 mRegionManager.getRegion(context)));
     }
 

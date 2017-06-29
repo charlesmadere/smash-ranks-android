@@ -65,13 +65,13 @@ public class TournamentMatchItemView extends IdentityFrameLayout implements
 
         switch (which) {
             case 0:
-                context.startActivity(PlayerActivity.getLaunchIntent(context,
+                context.startActivity(PlayerActivity.Companion.getLaunchIntent(context,
                         mContent.getWinnerId(), mContent.getWinnerName(),
                         mRegionManager.getRegion(context)));
                 break;
 
             case 1:
-                context.startActivity(PlayerActivity.getLaunchIntent(context,
+                context.startActivity(PlayerActivity.Companion.getLaunchIntent(context,
                         mContent.getLoserId(), mContent.getLoserName(),
                         mRegionManager.getRegion(context)));
                 break;

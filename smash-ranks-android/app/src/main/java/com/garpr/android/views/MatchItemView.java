@@ -88,8 +88,8 @@ public class MatchItemView extends IdentityFrameLayout implements BaseAdapterVie
             ((OnClickListener) activity).onClick(this);
         } else {
             final AbsPlayer opponent = mContent.getOpponent();
-            context.startActivity(PlayerActivity.getLaunchIntent(context, opponent.getId(),
-                    opponent.getName(), mRegionManager.getRegion(context)));
+            context.startActivity(PlayerActivity.Companion.getLaunchIntent(context,
+                    opponent.getId(), opponent.getName(), mRegionManager.getRegion(context)));
         }
     }
 
