@@ -201,7 +201,7 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
                     HomeActivity.Companion.getPositionTournaments()));
         } else {
             intentStack.add(HomeActivity.Companion.getLaunchIntent(context));
-            intentStack.add(TournamentsActivity.getLaunchIntent(context, region));
+            intentStack.add(TournamentsActivity.Companion.getLaunchIntent(context, region));
         }
 
         if (splits.length < 3) {
