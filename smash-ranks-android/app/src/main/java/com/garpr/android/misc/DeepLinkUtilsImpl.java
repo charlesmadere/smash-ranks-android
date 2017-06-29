@@ -190,7 +190,7 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
                     HomeActivity.Companion.getPositionRankings()));
         } else {
             intentStack.add(HomeActivity.Companion.getLaunchIntent(context));
-            intentStack.add(RankingsActivity.getLaunchIntent(context, region));
+            intentStack.add(RankingsActivity.Companion.getLaunchIntent(context, region));
         }
     }
 
