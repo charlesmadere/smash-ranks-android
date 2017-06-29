@@ -154,10 +154,10 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     }
 
     override fun success(playersBundle: PlayersBundle?) {
-        this.mPlayersBundle = playersBundle
+        mPlayersBundle = playersBundle
         onPlayersBundleFetched()
 
-        if (this.mPlayersBundle != null && this.mPlayersBundle!!.hasPlayers()) {
+        if (playersBundle != null && playersBundle.hasPlayers()) {
             showPlayersBundle()
         } else {
             showEmpty()
