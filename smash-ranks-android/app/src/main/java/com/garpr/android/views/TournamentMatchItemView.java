@@ -77,7 +77,8 @@ public class TournamentMatchItemView extends IdentityFrameLayout implements
                 break;
 
             case 2:
-                context.startActivity(HeadToHeadActivity.getLaunchIntent(context, mContent));
+                context.startActivity(HeadToHeadActivity.Companion.getLaunchIntent(context,
+                        mContent));
                 break;
 
             default:

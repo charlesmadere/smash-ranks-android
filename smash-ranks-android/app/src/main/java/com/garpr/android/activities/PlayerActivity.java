@@ -205,7 +205,7 @@ public class PlayerActivity extends BaseJavaActivity implements ApiListener<Play
     @Override
     public void onClick(final MatchItemView v) {
         final Match match = v.getContent();
-        startActivity(HeadToHeadActivity.getLaunchIntent(this,
+        startActivity(HeadToHeadActivity.Companion.getLaunchIntent(this,
                 mPlayerMatchesBundle.getFullPlayer(), match));
     }
 
@@ -263,7 +263,7 @@ public class PlayerActivity extends BaseJavaActivity implements ApiListener<Play
 
             case R.id.miViewYourselfVsThisOpponent:
                 // noinspection ConstantConditions
-                startActivity(HeadToHeadActivity.getLaunchIntent(this,
+                startActivity(HeadToHeadActivity.Companion.getLaunchIntent(this,
                         mIdentityManager.getIdentity(), mPlayerMatchesBundle.getFullPlayer()));
                 return true;
         }
