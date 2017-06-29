@@ -57,7 +57,7 @@ public class TournamentItemView extends FrameLayout implements BaseAdapterView<A
     @Override
     public void onClick(final View v) {
         final Context context = getContext();
-        context.startActivity(TournamentActivity.getLaunchIntent(context, mContent,
+        context.startActivity(TournamentActivity.Companion.getLaunchIntent(context, mContent,
                 mRegionManager.getRegion(context)));
     }
 

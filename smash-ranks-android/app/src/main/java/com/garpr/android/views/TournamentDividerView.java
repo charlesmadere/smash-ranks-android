@@ -69,7 +69,7 @@ public class TournamentDividerView extends FrameLayout implements BaseAdapterVie
         if (activity instanceof OnClickListener) {
             ((OnClickListener) activity).onClick(this);
         } else {
-            context.startActivity(TournamentActivity.getLaunchIntent(context, mContent,
+            context.startActivity(TournamentActivity.Companion.getLaunchIntent(context, mContent,
                     mRegionManager.getRegion(context)));
         }
     }

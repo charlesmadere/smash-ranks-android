@@ -215,11 +215,11 @@ public class DeepLinkUtilsImpl implements DeepLinkUtils {
         }
 
         if (sameRegion) {
-            intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null,
-                    null));
+            intentStack.add(TournamentActivity.Companion.getLaunchIntent(context, tournamentId,
+                    null, null, null));
         } else {
-            intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null,
-                    region));
+            intentStack.add(TournamentActivity.Companion.getLaunchIntent(context, tournamentId,
+                    null, null, region));
         }
     }
 
