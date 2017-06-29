@@ -29,7 +29,7 @@ import com.garpr.android.views.toolbars.TournamentToolbar
 import kotterknife.bindView
 import javax.inject.Inject
 
-class TournamentActivity : BaseKotlinActivity(), ApiListener<FullTournament>, SearchQueryHandle,
+class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQueryHandle,
         SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
         TournamentToolbar.DataProvider {
 
@@ -177,7 +177,7 @@ class TournamentActivity : BaseKotlinActivity(), ApiListener<FullTournament>, Se
             }
 
             if (subtitle != null) {
-                setSubtitle(subtitle.longForm)
+                subtitle = subtitle.longForm
             }
         }
 

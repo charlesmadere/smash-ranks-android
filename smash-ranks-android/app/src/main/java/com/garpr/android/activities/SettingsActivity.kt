@@ -34,7 +34,7 @@ import com.garpr.android.views.ThemePreferenceView
 import kotterknife.bindView
 import javax.inject.Inject
 
-class SettingsActivity : BaseKotlinActivity() {
+class SettingsActivity : BaseActivity() {
 
     @Inject
     lateinit internal var mFavoritePlayersManager: FavoritePlayersManager

@@ -32,7 +32,7 @@ import com.garpr.android.views.PlayerSelectionItemView
 import kotterknife.bindView
 import javax.inject.Inject
 
-class SetIdentityActivity : BaseKotlinActivity(), ApiListener<PlayersBundle>,
+class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         MenuItemCompat.OnActionExpandListener, PlayerSelectionItemView.Listeners,
         SearchQueryHandle, SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
 

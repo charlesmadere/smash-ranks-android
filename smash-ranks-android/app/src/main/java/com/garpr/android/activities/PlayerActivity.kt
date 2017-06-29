@@ -40,7 +40,7 @@ import kotterknife.bindView
 import java.util.*
 import javax.inject.Inject
 
-class PlayerActivity : BaseKotlinActivity(), ApiListener<PlayerMatchesBundle>,
+class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
         SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
         TournamentDividerView.OnClickListener {

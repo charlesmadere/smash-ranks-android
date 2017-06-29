@@ -18,7 +18,7 @@ import com.garpr.android.views.toolbars.SearchToolbar
 import kotterknife.bindView
 import javax.inject.Inject
 
-class PlayersActivity : BaseKotlinActivity(), MenuItemCompat.OnActionExpandListener,
+class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
         PlayersLayout.Listener, Searchable, SearchQueryHandle, SearchToolbar.Listener,
         SearchView.OnQueryTextListener {
 

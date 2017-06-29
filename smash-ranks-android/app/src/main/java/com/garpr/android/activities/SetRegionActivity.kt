@@ -25,7 +25,7 @@ import com.garpr.android.views.RegionSelectionItemView
 import kotterknife.bindView
 import javax.inject.Inject
 
-class SetRegionActivity : BaseKotlinActivity(), ApiListener<RegionsBundle>,
+class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         RegionSelectionItemView.Listeners, SwipeRefreshLayout.OnRefreshListener {
 
     private var mSaveMenuItem: MenuItem? = null

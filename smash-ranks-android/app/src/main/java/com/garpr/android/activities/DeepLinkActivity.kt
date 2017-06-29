@@ -13,7 +13,7 @@ import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import javax.inject.Inject
 
-class DeepLinkActivity : BaseKotlinActivity(), ApiListener<RegionsBundle> {
+class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     @Inject
     lateinit internal var mDeepLinkUtils: DeepLinkUtils

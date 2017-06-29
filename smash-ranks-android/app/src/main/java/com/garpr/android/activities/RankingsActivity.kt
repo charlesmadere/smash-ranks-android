@@ -11,7 +11,7 @@ import com.garpr.android.models.Region
 
 import javax.inject.Inject
 
-class RankingsActivity : BaseKotlinActivity() {
+class RankingsActivity : BaseActivity() {
 
     @Inject
     lateinit internal var mRegionManager: RegionManager

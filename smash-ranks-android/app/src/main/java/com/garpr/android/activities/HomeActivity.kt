@@ -28,7 +28,7 @@ import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class HomeActivity : BaseKotlinActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
+class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
         RankingsLayout.Listener, RegionManager.OnRegionChangeListener, Searchable,
         SearchQueryHandle, SearchToolbar.Listener {
 

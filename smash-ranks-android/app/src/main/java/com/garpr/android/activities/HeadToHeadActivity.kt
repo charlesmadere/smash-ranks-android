@@ -27,7 +27,7 @@ import kotterknife.bindView
 import java.util.*
 import javax.inject.Inject
 
-class HeadToHeadActivity : BaseKotlinActivity(), ApiListener<HeadToHead>,
+class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         SwipeRefreshLayout.OnRefreshListener {
 
     private var mList: ArrayList<Any>? = null

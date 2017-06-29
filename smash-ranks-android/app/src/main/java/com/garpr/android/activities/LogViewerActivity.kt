@@ -13,7 +13,7 @@ import com.garpr.android.R
 import com.garpr.android.adapters.TimberEntriesAdapter
 import kotterknife.bindView
 
-class LogViewerActivity : BaseKotlinActivity(), SwipeRefreshLayout.OnRefreshListener {
+class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     lateinit private var mAdapter: TimberEntriesAdapter
 

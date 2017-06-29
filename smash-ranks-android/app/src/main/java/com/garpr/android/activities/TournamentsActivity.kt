@@ -11,7 +11,7 @@ import com.garpr.android.models.Region
 
 import javax.inject.Inject
 
-class TournamentsActivity : BaseJavaActivity() {
+class TournamentsActivity : BaseActivity() {
 
     @Inject
     lateinit internal var mRegionManager: RegionManager
