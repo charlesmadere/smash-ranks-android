@@ -176,7 +176,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
             }
 
             if (subtitle != null) {
-                subtitle = subtitle.longForm
+                this.subtitle = subtitle.longForm
             }
         }
 

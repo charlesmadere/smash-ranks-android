@@ -49,8 +49,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     protected var subtitle: CharSequence?
         get() {
-            val actionBar = supportActionBar
-            return actionBar?.subtitle
+            return supportActionBar?.subtitle
         }
         set(subtitle) {
             val actionBar = supportActionBar
