@@ -34,7 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class HeadToHeadActivity extends BaseActivity implements ApiListener<HeadToHead>,
+public class HeadToHeadActivity extends BaseJavaActivity implements ApiListener<HeadToHead>,
         SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "HeadToHeadActivity";

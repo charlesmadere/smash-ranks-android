@@ -39,7 +39,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class SetIdentityActivity extends BaseActivity implements ApiListener<PlayersBundle>,
+public class SetIdentityActivity extends BaseJavaActivity implements ApiListener<PlayersBundle>,
         MenuItemCompat.OnActionExpandListener, PlayerSelectionItemView.Listeners,
         SearchQueryHandle, SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
 

@@ -38,7 +38,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseJavaActivity {
 
     private static final String TAG = "SettingsActivity";
 

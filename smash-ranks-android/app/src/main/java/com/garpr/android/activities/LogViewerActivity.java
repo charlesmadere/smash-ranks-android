@@ -19,7 +19,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class LogViewerActivity extends BaseActivity implements
+public class LogViewerActivity extends BaseJavaActivity implements
         SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "LogViewerActivity";

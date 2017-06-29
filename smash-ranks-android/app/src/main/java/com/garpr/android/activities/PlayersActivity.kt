@@ -7,7 +7,6 @@ import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
-import butterknife.BindView
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.misc.RegionManager
@@ -16,9 +15,10 @@ import com.garpr.android.misc.Searchable
 import com.garpr.android.models.Region
 import com.garpr.android.views.PlayersLayout
 import com.garpr.android.views.toolbars.SearchToolbar
+import kotterknife.bindView
 import javax.inject.Inject
 
-class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
+class PlayersActivity : BaseKotlinActivity(), MenuItemCompat.OnActionExpandListener,
         PlayersLayout.Listener, Searchable, SearchQueryHandle, SearchToolbar.Listener,
         SearchView.OnQueryTextListener {
 
@@ -27,8 +27,7 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
     @Inject
     lateinit internal var mRegionManager: RegionManager
 
-    @BindView(R.id.playersLayout)
-    lateinit internal var mPlayersLayout: PlayersLayout
+    private val mPlayersLayout: PlayersLayout by bindView(R.id.playersLayout)
 
 
     companion object {

@@ -17,7 +17,7 @@ import com.garpr.android.networking.ServerApi;
 
 import javax.inject.Inject;
 
-public class DeepLinkActivity extends BaseActivity implements ApiListener<RegionsBundle> {
+public class DeepLinkActivity extends BaseJavaActivity implements ApiListener<RegionsBundle> {
 
     private static final String TAG = "DeepLinkActivity";
 

@@ -25,16 +25,12 @@ import com.garpr.android.views.toolbars.MenuToolbar;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity implements Heartbeat, RegionHandle {
 
     private static final String TAG = "BaseActivity";
     private static final String CNAME = BaseActivity.class.getCanonicalName();
     protected static final String EXTRA_REGION = CNAME + ".Region";
-
-    private Unbinder mUnbinder;
 
     @Inject
     protected GeneralPreferenceStore mGeneralPreferenceStore;
@@ -46,6 +42,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     @BindView(R.id.toolbar)
     protected Toolbar mToolbar;
 
+
+    abstract void findViews();
 
     protected abstract String getActivityName();
 
@@ -132,11 +130,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Heartbea
     }
 
     protected void onViewsBound() {
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-        }
-
-        mUnbinder = ButterKnife.bind(this);
+        findViews();
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);

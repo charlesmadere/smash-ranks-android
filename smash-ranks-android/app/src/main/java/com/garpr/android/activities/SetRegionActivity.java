@@ -30,7 +30,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class SetRegionActivity extends BaseActivity implements ApiListener<RegionsBundle>,
+public class SetRegionActivity extends BaseJavaActivity implements ApiListener<RegionsBundle>,
         RegionSelectionItemView.Listeners, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "SetRegionActivity";

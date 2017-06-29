@@ -12,7 +12,7 @@ import com.garpr.android.models.Region;
 
 import javax.inject.Inject;
 
-public class RankingsActivity extends BaseActivity {
+public class RankingsActivity extends BaseJavaActivity {
 
     private static final String TAG = "RankingsActivity";
 

@@ -24,10 +24,11 @@ import com.garpr.android.sync.RankingsPollingSyncManager
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
+import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
+class HomeActivity : BaseKotlinActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
         RankingsLayout.Listener, RegionManager.OnRegionChangeListener, Searchable,
         SearchQueryHandle, SearchToolbar.Listener {
 
@@ -48,14 +49,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     @Inject
     lateinit internal var mShareUtils: ShareUtils
 
-    @BindView(R.id.bottomNavigationView)
-    lateinit internal var mBottomNavigationView: BottomNavigationView
-
-    @BindView(R.id.toolbar)
-    lateinit internal var mHomeToolbar: HomeToolbar
-
-    @BindView(R.id.viewPager)
-    lateinit internal var mViewPager: ViewPager
+    private val mBottomNavigationView: BottomNavigationView by bindView(R.id.bottomNavigationView)
+    private val mHomeToolbar: HomeToolbar by bindView(R.id.toolbar)
+    private val mViewPager: ViewPager by bindView(R.id.viewPager)
 
 
     companion object {

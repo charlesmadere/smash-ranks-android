@@ -48,7 +48,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class PlayerActivity extends BaseActivity implements ApiListener<PlayerMatchesBundle>,
+public class PlayerActivity extends BaseJavaActivity implements ApiListener<PlayerMatchesBundle>,
         MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
         SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
         TournamentDividerView.OnClickListener {

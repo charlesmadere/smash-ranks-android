@@ -34,7 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class TournamentActivity extends BaseActivity implements ApiListener<FullTournament>,
+public class TournamentActivity extends BaseJavaActivity implements ApiListener<FullTournament>,
         SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
         TournamentToolbar.DataProvider {
 
