@@ -91,6 +91,9 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         }
     }
 
+    override val activityName: String
+        get() = TAG
+
     override fun failure(errorCode: Int) {
         mHeadToHead = null
         mList = null
@@ -131,10 +134,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
                 supportInvalidateOptionsMenu()
             }
         })
-    }
-
-    override fun getActivityName(): String {
-        return TAG
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

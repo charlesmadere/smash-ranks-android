@@ -79,9 +79,8 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
-    public override fun getActivityName(): String {
-        return TAG
-    }
+    override val activityName: String
+        get() = TAG
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -23,18 +23,18 @@ import javax.inject.Inject
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     @Inject
-    lateinit var mGeneralPreferenceStore: GeneralPreferenceStore
+    lateinit protected var mGeneralPreferenceStore: GeneralPreferenceStore
 
     @Inject
-    lateinit var mTimber: Timber
+    lateinit protected var mTimber: Timber
 
-    internal val mToolbar: Toolbar? by bindView(R.id.toolbar)
+    protected val mToolbar: Toolbar? by bindView(R.id.toolbar)
 
 
     companion object {
         private val TAG = "BaseActivity"
         private val CNAME = BaseActivity::class.java.canonicalName
-        protected val EXTRA_REGION = CNAME + ".Region"
+        internal val EXTRA_REGION = CNAME + ".Region"
     }
 
     protected abstract val activityName: String

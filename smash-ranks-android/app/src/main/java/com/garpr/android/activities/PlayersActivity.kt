@@ -44,9 +44,8 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
         }
     }
 
-    override fun getActivityName(): String {
-        return TAG
-    }
+    override val activityName: String
+        get() = TAG
 
     override fun getSearchQuery(): CharSequence? {
         return if (mSearchView == null) null else mSearchView!!.query

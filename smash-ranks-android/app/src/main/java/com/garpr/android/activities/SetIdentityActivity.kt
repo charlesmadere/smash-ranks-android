@@ -70,6 +70,9 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         }
     }
 
+    override val activityName: String
+        get() = TAG
+
     override fun failure(errorCode: Int) {
         mSelectedPlayer = null
         mPlayersBundle = null
@@ -79,10 +82,6 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     private fun fetchPlayersBundle() {
         mRefreshLayout.isRefreshing = true
         mServerApi.getPlayers(mRegionManager.getRegion(this), ApiCall(this))
-    }
-
-    override fun getActivityName(): String {
-        return TAG
     }
 
     override fun getSearchQuery(): CharSequence? {

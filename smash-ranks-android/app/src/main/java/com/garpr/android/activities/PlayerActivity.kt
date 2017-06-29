@@ -113,6 +113,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         }
     }
 
+    override val activityName: String
+        get() = TAG
+
     override fun failure(errorCode: Int) {
         mPlayerMatchesBundle = null
         mList = null
@@ -152,10 +155,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 supportInvalidateOptionsMenu()
             }
         })
-    }
-
-    override fun getActivityName(): String {
-        return TAG
     }
 
     override fun getFullPlayer(): FullPlayer? {

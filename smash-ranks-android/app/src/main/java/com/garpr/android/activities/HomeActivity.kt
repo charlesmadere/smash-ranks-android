@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.view.MenuItem
-import butterknife.BindView
 import butterknife.OnPageChange
 import com.garpr.android.App
 import com.garpr.android.R
@@ -77,9 +76,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         }
     }
 
-    public override fun getActivityName(): String {
-        return TAG
-    }
+    override val activityName: String
+        get() = TAG
 
     override fun getSearchQuery(): CharSequence? {
         return mHomeToolbar.searchQuery

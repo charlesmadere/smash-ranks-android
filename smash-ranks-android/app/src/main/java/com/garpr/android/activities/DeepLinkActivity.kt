@@ -16,15 +16,18 @@ import javax.inject.Inject
 class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     @Inject
-    lateinit internal var mDeepLinkUtils: DeepLinkUtils
+    lateinit protected var mDeepLinkUtils: DeepLinkUtils
 
     @Inject
-    lateinit internal var mServerApi: ServerApi
+    lateinit protected var mServerApi: ServerApi
 
 
     companion object {
         private val TAG = "DeepLinkActivity"
     }
+
+    override val activityName: String
+        get() = TAG
 
     private fun deepLink(region: Region) {
         val intentStack = mDeepLinkUtils.buildIntentStack(this, intent, region)
@@ -46,10 +49,6 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     override fun failure(errorCode: Int) {
         error()
-    }
-
-    override fun getActivityName(): String {
-        return TAG
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

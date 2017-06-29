@@ -38,20 +38,20 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     lateinit private var mAdapter: TournamentPagerAdapter
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     @Inject
-    lateinit internal var mServerApi: ServerApi
+    lateinit protected var mServerApi: ServerApi
 
     @Inject
-    lateinit internal var mShareUtils: ShareUtils
+    lateinit protected var mShareUtils: ShareUtils
 
-    internal val mError: ErrorLinearLayout by bindView(R.id.error)
-    internal val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    internal val mTabLayout: TabLayout by bindView(R.id.tabLayout)
-    internal val mTournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
-    internal val mEmpty: View by bindView(R.id.empty)
-    internal val mViewPager: ViewPager by bindView(R.id.viewPager)
+    protected val mError: ErrorLinearLayout by bindView(R.id.error)
+    protected val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    protected val mTabLayout: TabLayout by bindView(R.id.tabLayout)
+    protected val mTournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
+    protected val mEmpty: View by bindView(R.id.empty)
+    protected val mViewPager: ViewPager by bindView(R.id.viewPager)
 
 
     companion object {
@@ -91,6 +91,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         }
     }
 
+    override val activityName: String
+        get() = TAG
+
     override fun failure(errorCode: Int) {
         mFullTournament = null
         showError(errorCode)
@@ -99,10 +102,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     private fun fetchFullTournament() {
         mRefreshLayout.isRefreshing = true
         mServerApi.getTournament(mRegionManager.getRegion(this), mTournamentId, ApiCall(this))
-    }
-
-    override fun getActivityName(): String {
-        return TAG
     }
 
     override fun getFullTournament(): FullTournament? {

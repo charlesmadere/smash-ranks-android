@@ -30,6 +30,9 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
+    override val activityName: String
+        get() = TAG
+
     private fun fetchTimberEntries() {
         mRefreshLayout.isRefreshing = true
 
@@ -47,10 +50,6 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
         supportInvalidateOptionsMenu()
         mRefreshLayout.isRefreshing = false
-    }
-
-    override fun getActivityName(): String {
-        return TAG
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

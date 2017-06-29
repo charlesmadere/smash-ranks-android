@@ -31,9 +31,8 @@ class RankingsActivity : BaseActivity() {
         }
     }
 
-    override fun getActivityName(): String {
-        return TAG
-    }
+    override val activityName: String
+        get() = TAG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

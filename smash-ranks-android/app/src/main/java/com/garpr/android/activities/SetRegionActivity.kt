@@ -53,6 +53,9 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         }
     }
 
+    override val activityName: String
+        get() = TAG
+
     override fun failure(errorCode: Int) {
         mSelectedRegion = null
         mRegionsBundle = null
@@ -64,10 +67,6 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         mRegionsBundle = null
         mRefreshLayout.isRefreshing = true
         mServerApi.getRegions(ApiCall(this))
-    }
-
-    override fun getActivityName(): String {
-        return TAG
     }
 
     override fun getSelectedRegion(): Region? {
