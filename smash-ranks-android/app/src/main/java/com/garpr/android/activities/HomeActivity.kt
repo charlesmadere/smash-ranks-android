@@ -181,7 +181,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         val region = mRegionManager.getRegion(this)
         setTitle(region.endpoint.getName())
 
-        val rankingsBundle = layout.rankingsBundle
+        val rankingsBundle = layout.mRankingsBundle
 
         if (rankingsBundle == null) {
             subtitle = region.displayName
