@@ -68,8 +68,8 @@ class GoogleApiWrapperImpl(
     override val isGooglePlayServicesAvailable: Boolean
         get() = isConnectionStatusSuccess(googlePlayServicesConnectionStatus)
 
-    override fun showPlayServicesResolutionDialog(connectionStatus: Int,
-            activity: Activity, onCancelListener: OnCancelListener?): Boolean {
+    override fun showPlayServicesResolutionDialog(connectionStatus: Int, activity: Activity,
+            onCancelListener: OnCancelListener?): Boolean {
         val gaa = GoogleApiAvailability.getInstance()
         val errorString = gaa.getErrorString(connectionStatus)
 
