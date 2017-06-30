@@ -26,9 +26,10 @@ import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
-        RankingsLayout.Listener, RegionManager.OnRegionChangeListener, Searchable,
-        SearchQueryHandle, SearchToolbar.Listener {
+class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
+        BottomNavigationView.OnNavigationItemSelectedListener, RankingsLayout.Listener,
+        RegionManager.OnRegionChangeListener, Searchable, SearchQueryHandle,
+        SearchToolbar.Listener {
 
     lateinit private var mAdapter: HomePagerAdapter
 
@@ -112,6 +113,11 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     override fun onDestroy() {
         super.onDestroy()
         mRegionManager.removeListener(this)
+    }
+
+    override fun onNavigationItemReselected(item: MenuItem) {
+        // TODO
+        throw RuntimeException()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
