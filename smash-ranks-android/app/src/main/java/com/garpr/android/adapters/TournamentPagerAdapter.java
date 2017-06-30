@@ -61,11 +61,11 @@ public class TournamentPagerAdapter extends PagerAdapter implements Searchable {
 
         switch (position) {
             case POSITION_MATCHES:
-                view = TournamentMatchesLayout.inflate(container);
+                view = TournamentMatchesLayout.Companion.inflate(container);
                 break;
 
             case POSITION_PLAYERS:
-                view = TournamentPlayersLayout.inflate(container);
+                view = TournamentPlayersLayout.Companion.inflate(container);
                 break;
 
             default:
