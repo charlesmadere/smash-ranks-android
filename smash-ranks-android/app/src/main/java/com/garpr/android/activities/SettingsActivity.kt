@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import butterknife.OnClick
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.misc.Constants
@@ -30,6 +29,7 @@ import com.garpr.android.views.LastPollPreferenceView
 import com.garpr.android.views.PollFrequencyPreferenceView
 import com.garpr.android.views.RegionPreferenceView
 import com.garpr.android.views.RingtonePreferenceView
+import com.garpr.android.views.SimplePreferenceView
 import com.garpr.android.views.ThemePreferenceView
 import kotterknife.bindView
 import javax.inject.Inject
@@ -67,6 +67,10 @@ class SettingsActivity : BaseActivity() {
     private val mPollFrequency: PollFrequencyPreferenceView by bindView(R.id.pollFrequencyPreferenceView)
     private val mRegionPreferenceView: RegionPreferenceView by bindView(R.id.regionPreferenceView)
     private val mRingtonePreferenceView: RingtonePreferenceView by bindView(R.id.ringtonePreferenceView)
+    private val mCharlesTwitter: SimplePreferenceView by bindView(R.id.spvCharlesTwitter)
+    private val mGarTwitter: SimplePreferenceView by bindView(R.id.spvGarTwitter)
+    private val mGitHub: SimplePreferenceView by bindView(R.id.spvGitHub)
+    private val mLogViewer: SimplePreferenceView by bindView(R.id.spvLogViewer)
     private val mGooglePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
     private val mThemePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
 
@@ -82,49 +86,7 @@ class SettingsActivity : BaseActivity() {
     override val activityName: String
         get() = TAG
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == ResultCodes.RINGTONE_SELECTED.mValue) {
-            mRingtonePreferenceView.onActivityResult(data)
-        }
-
-        refresh()
-    }
-
-    @OnClick(R.id.spvCharlesTwitter)
-    protected fun onCharlesTwitterClick() {
-        mShareUtils.openUrl(this, Constants.CHARLES_TWITTER_URL)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
-        setContentView(R.layout.activity_settings)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        mFavoritePlayersManager.removeListener(mOnFavoritePlayersChangeListener)
-        mIdentityManager.removeListener(mOnIdentityChangeListener)
-        mRegionManager.removeListener(mOnRegionChangeListener)
-
-        mRankingsPollingPreferenceStore.chargingRequired.removeListener(mOnChargingRequiredChange)
-        mRankingsPollingPreferenceStore.enabled.removeListener(mOnRankingsPollingEnabledChange)
-        mRankingsPollingPreferenceStore.pollFrequency.removeListener(mOnPollFrequencyChange)
-        mRankingsPollingPreferenceStore.ringtone.removeListener(mOnRingtoneChange)
-        mRankingsPollingPreferenceStore.vibrationEnabled.removeListener(mOnVibrationEnabledChange)
-        mRankingsPollingPreferenceStore.wifiRequired.removeListener(mOnWifiRequiredChange)
-    }
-
-    @OnClick(R.id.spvGarTwitter)
-    protected fun onGarTwitterClick() {
-        mShareUtils.openUrl(this, Constants.GAR_TWITTER_URL)
-    }
-
-    @OnClick(R.id.tvGooglePlayServicesError)
-    protected fun onGooglePlayServicesErrorClick() {
+    private fun attemptToResolveGooglePlayServicesError() {
         val connectionStatus = mGoogleApiWrapper.googlePlayServicesConnectionStatus
 
         if (mGoogleApiWrapper.isConnectionStatusSuccess(connectionStatus)) {
@@ -147,14 +109,35 @@ class SettingsActivity : BaseActivity() {
                 .show()
     }
 
-    @OnClick(R.id.spvLogViewer)
-    protected fun onLogViewerClick() {
-        startActivity(LogViewerActivity.getLaunchIntent(this))
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == ResultCodes.RINGTONE_SELECTED.mValue) {
+            mRingtonePreferenceView.onActivityResult(data)
+        }
+
+        refresh()
     }
 
-    @OnClick(R.id.spvGitHub)
-    protected fun onGitHubClick() {
-        mShareUtils.openUrl(this, Constants.GITHUB_URL)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        App.get().appComponent.inject(this)
+        setContentView(R.layout.activity_settings)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mFavoritePlayersManager.removeListener(mOnFavoritePlayersChangeListener)
+        mIdentityManager.removeListener(mOnIdentityChangeListener)
+        mRegionManager.removeListener(mOnRegionChangeListener)
+
+        mRankingsPollingPreferenceStore.chargingRequired.removeListener(mOnChargingRequiredChange)
+        mRankingsPollingPreferenceStore.enabled.removeListener(mOnRankingsPollingEnabledChange)
+        mRankingsPollingPreferenceStore.pollFrequency.removeListener(mOnPollFrequencyChange)
+        mRankingsPollingPreferenceStore.ringtone.removeListener(mOnRingtoneChange)
+        mRankingsPollingPreferenceStore.vibrationEnabled.removeListener(mOnVibrationEnabledChange)
+        mRankingsPollingPreferenceStore.wifiRequired.removeListener(mOnWifiRequiredChange)
     }
 
     override fun onResume() {
@@ -180,6 +163,24 @@ class SettingsActivity : BaseActivity() {
         mVibrate.set(mRankingsPollingPreferenceStore.vibrationEnabled)
         mMustBeOnWifi.set(mRankingsPollingPreferenceStore.wifiRequired)
         mMustBeCharging.set(mRankingsPollingPreferenceStore.chargingRequired)
+
+        mGooglePlayServicesError.setOnClickListener { attemptToResolveGooglePlayServicesError() }
+
+        mCharlesTwitter.setOnClickListener {
+            mShareUtils.openUrl(this, Constants.CHARLES_TWITTER_URL)
+        }
+
+        mGarTwitter.setOnClickListener {
+            mShareUtils.openUrl(this, Constants.GAR_TWITTER_URL)
+        }
+
+        mGitHub.setOnClickListener {
+            mShareUtils.openUrl(this, Constants.GITHUB_URL)
+        }
+
+        mLogViewer.setOnClickListener {
+            startActivity(LogViewerActivity.getLaunchIntent(this))
+        }
     }
 
     private fun refresh() {
