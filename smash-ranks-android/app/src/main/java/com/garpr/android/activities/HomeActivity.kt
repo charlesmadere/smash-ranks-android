@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.view.MenuItem
-import butterknife.OnPageChange
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
@@ -172,11 +171,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         return super.onOptionsItemSelected(item)
     }
 
-    @OnPageChange(R.id.viewPager)
-    protected fun onPageChange() {
-        updateSelectedBottomNavigationItem()
-    }
-
     override fun onRankingsBundleFetched(layout: RankingsLayout) {
         val region = mRegionManager.getRegion(this)
         setTitle(region.endpoint.getName())
@@ -209,6 +203,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         super.onViewsBound()
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(this)
+        mViewPager.addOnPageChangeListener(mOnPageChangeListener)
         mViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         mViewPager.offscreenPageLimit = 3
 
@@ -288,6 +283,13 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
                     R.id.actionTournaments).isChecked = true
 
             else -> throw RuntimeException("unknown current item: " + mViewPager.currentItem)
+        }
+    }
+
+    private val mOnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            updateSelectedBottomNavigationItem()
         }
     }
 
