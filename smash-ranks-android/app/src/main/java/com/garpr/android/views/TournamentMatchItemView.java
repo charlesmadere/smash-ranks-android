@@ -115,11 +115,11 @@ public class TournamentMatchItemView extends IdentityFrameLayout implements
 
     @Override
     protected void refreshIdentity() {
-        if (mIdentityManager.isId(mContent.getWinnerId())) {
+        if (getMIdentityManager().isId(mContent.getWinnerId())) {
             styleTextViewForUser(mWinnerName);
             styleTextViewForSomeoneElse(mLoserName);
             identityIsUser();
-        } else if (mIdentityManager.isId(mContent.getLoserId())) {
+        } else if (getMIdentityManager().isId(mContent.getLoserId())) {
             styleTextViewForSomeoneElse(mWinnerName);
             styleTextViewForUser(mLoserName);
             identityIsUser();

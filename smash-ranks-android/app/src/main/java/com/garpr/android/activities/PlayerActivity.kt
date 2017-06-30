@@ -174,7 +174,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override fun onClick(v: MatchItemView) {
-        val match = v.content
+        val match = v.mContent ?: return
         startActivity(HeadToHeadActivity.getLaunchIntent(this,
                 mPlayerMatchesBundle!!.fullPlayer, match))
     }

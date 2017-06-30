@@ -16,7 +16,7 @@ import java.text.NumberFormat
 
 class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
 
-    lateinit private var mNumberFormat: NumberFormat
+    private val mNumberFormat: NumberFormat = NumberFormat.getIntegerInstance()
     lateinit private var mLossesPaint: Paint
     lateinit private var mWinsPaint: Paint
     lateinit private var mLossesRect: Rect
@@ -102,7 +102,6 @@ class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        mNumberFormat = NumberFormat.getInstance()
 
         if (isInEditMode) {
             setContent(WinsLosses(8, 5))
