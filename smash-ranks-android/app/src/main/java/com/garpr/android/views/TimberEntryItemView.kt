@@ -10,22 +10,17 @@ import android.util.AttributeSet
 import android.util.SparseIntArray
 import android.widget.LinearLayout
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Timber
+import kotterknife.bindView
 
 class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
 
-    lateinit private var mColors: SparseIntArray
-
-    @BindView(R.id.tvStackTrace)
-    lateinit protected var mStackTrace: TextView
-
-    @BindView(R.id.tvTagAndMessage)
-    lateinit protected var mTagAndMessage: TextView
+    private val mColors: SparseIntArray = SparseIntArray()
+    private val mStackTrace: TextView by bindView(R.id.tvStackTrace)
+    private val mTagAndMessage: TextView by bindView(R.id.tvTagAndMessage)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -37,10 +32,9 @@ class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
     constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        ButterKnife.bind(this)
-        mColors = SparseIntArray()
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        mColors.clear()
     }
 
     override fun setContent(content: Timber.Entry) {
