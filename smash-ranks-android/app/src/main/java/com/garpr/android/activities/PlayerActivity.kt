@@ -180,7 +180,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override fun onClick(v: TournamentDividerView) {
-        val tournament = v.content
+        val tournament = v.mContent ?: return
         startActivity(TournamentActivity.getLaunchIntent(this, tournament.id, tournament.name,
                 tournament.date, mRegionManager.getRegion(this)))
     }
