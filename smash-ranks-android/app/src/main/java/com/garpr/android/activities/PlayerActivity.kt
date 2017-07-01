@@ -113,8 +113,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     override fun failure(errorCode: Int) {
         mPlayerMatchesBundle = null

@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.kotlin.orFalse
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
@@ -33,7 +34,8 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
     companion object {
         private val TAG = "PlayersActivity"
 
-        @JvmOverloads fun getLaunchIntent(context: Context, region: Region? = null): Intent {
+        @JvmOverloads
+        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
             val intent = Intent(context, PlayersActivity::class.java)
 
             if (region != null) {
@@ -44,12 +46,9 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
-    override fun getSearchQuery(): CharSequence? {
-        return if (mSearchView == null) null else mSearchView!!.query
-    }
+    override fun getSearchQuery(): CharSequence? = mSearchView?.query
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,15 +60,17 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_players, menu)
 
-        val playersBundle = mPlayersLayout.mPlayersBundle
-        if (playersBundle != null && playersBundle.hasPlayers()) {
+        mPlayersLayout.mPlayersBundle?.let {
             val searchMenuItem = menu.findItem(R.id.miSearch)
             searchMenuItem.isVisible = true
 
             MenuItemCompat.setOnActionExpandListener(searchMenuItem, this)
             mSearchView = MenuItemCompat.getActionView(searchMenuItem) as SearchView
-            mSearchView!!.queryHint = getText(R.string.search_players_)
-            mSearchView!!.setOnQueryTextListener(this)
+
+            mSearchView?.let {
+                it.queryHint = getText(R.string.search_players_)
+                it.setOnQueryTextListener(this)
+            } ?: throw RuntimeException("mSearchView is null")
         }
 
         return super.onCreateOptionsMenu(menu)
@@ -80,13 +81,9 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
         return true
     }
 
-    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-        return true
-    }
+    override fun onMenuItemActionExpand(item: MenuItem) = true
 
-    override fun onPlayersBundleFetched(layout: PlayersLayout) {
-        supportInvalidateOptionsMenu()
-    }
+    override fun onPlayersBundleFetched(layout: PlayersLayout) = supportInvalidateOptionsMenu()
 
     override fun onQueryTextChange(newText: String): Boolean {
         search(newText)
@@ -98,17 +95,10 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
         return false
     }
 
-    override fun search(query: String?) {
-        mPlayersLayout.search(query)
-    }
+    override fun search(query: String?) = mPlayersLayout.search(query)
 
-    override fun showSearchMenuItem(): Boolean {
-        val playersBundle = mPlayersLayout.mPlayersBundle
-        return playersBundle != null && playersBundle.hasPlayers()
-    }
+    override fun showSearchMenuItem() = mPlayersLayout.mPlayersBundle?.hasPlayers() ?: false
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override fun showUpNavigation() = true
 
 }

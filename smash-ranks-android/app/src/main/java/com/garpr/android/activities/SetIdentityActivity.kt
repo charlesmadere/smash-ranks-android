@@ -87,14 +87,6 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         return mSearchView?.query
     }
 
-    override fun getSelectedPlayer(): AbsPlayer? {
-        if (mSelectedPlayer == null) {
-            return mIdentityManager.identity
-        } else {
-            return mSelectedPlayer
-        }
-    }
-
     override fun navigateUp() {
         if (mSelectedPlayer == null) {
             super.navigateUp()
@@ -129,7 +121,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override fun onClick(v: PlayerSelectionItemView) {
-        val player = v.content
+        val player = v.mContent
 
         if (player == mIdentityManager.identity) {
             mSelectedPlayer = null
@@ -265,6 +257,9 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
             }
         })
     }
+
+    override val selectedPlayer: AbsPlayer?
+        get() = mSelectedPlayer ?: mIdentityManager.identity
 
     private fun showEmpty() {
         mAdapter.clear()

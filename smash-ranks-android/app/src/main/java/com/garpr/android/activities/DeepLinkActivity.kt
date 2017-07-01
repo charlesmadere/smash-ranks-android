@@ -23,11 +23,10 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
 
     companion object {
-        private val TAG = "DeepLinkActivity"
+        private const val TAG = "DeepLinkActivity"
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     private fun deepLink(region: Region) {
         val intentStack = mDeepLinkUtils.buildIntentStack(this, intent, region)

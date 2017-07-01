@@ -30,8 +30,7 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     private fun fetchTimberEntries() {
         mRefreshLayout.isRefreshing = true

@@ -76,12 +76,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
     }
 
-    override val activityName: String
-        get() = TAG
-
-    override fun getSearchQuery(): CharSequence? {
-        return mHomeToolbar.searchQuery
-    }
+    override val activityName = TAG
 
     override fun onBackPressed() {
         if (mHomeToolbar.isSearchLayoutExpanded) {
@@ -217,9 +212,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         mViewPager.adapter = mAdapter
     }
 
-    override fun search(query: String?) {
-        mAdapter.search(query)
-    }
+    override fun search(query: String?) = mAdapter.search(query)
+
+    override val searchQuery
+        get() = mHomeToolbar.searchQuery
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {
         var initialPosition = -1

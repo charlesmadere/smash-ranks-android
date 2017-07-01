@@ -55,7 +55,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
 
     companion object {
-        private val TAG = "HeadToHeadActivity"
+        private const val TAG = "HeadToHeadActivity"
         private val CNAME = HeadToHeadActivity::class.java.canonicalName
         private val EXTRA_PLAYER_ID = CNAME + ".PlayerId"
         private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
@@ -91,8 +91,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     override fun failure(errorCode: Int) {
         mHeadToHead = null

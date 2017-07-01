@@ -226,9 +226,7 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override fun showUpNavigation() = true
 
     private val mOnFavoritePlayersChangeListener = FavoritePlayersManager.OnFavoritePlayersChangeListener {
         refresh()

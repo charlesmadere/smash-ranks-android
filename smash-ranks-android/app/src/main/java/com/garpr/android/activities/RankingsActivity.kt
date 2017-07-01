@@ -20,7 +20,8 @@ class RankingsActivity : BaseActivity() {
     companion object {
         private val TAG = "RankingsActivity"
 
-        @JvmOverloads fun getLaunchIntent(context: Context, region: Region? = null): Intent {
+        @JvmOverloads
+        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
             val intent = Intent(context, RankingsActivity::class.java)
 
             if (region != null) {
@@ -31,8 +32,7 @@ class RankingsActivity : BaseActivity() {
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +41,6 @@ class RankingsActivity : BaseActivity() {
         subtitle = mRegionManager.getRegion(this).displayName
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override fun showUpNavigation() = true
 
 }

@@ -32,7 +32,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
 
     companion object {
-        private val TAG = "BaseActivity"
+        private const val TAG = "BaseActivity"
         private val CNAME = BaseActivity::class.java.canonicalName
         internal val EXTRA_REGION = CNAME + ".Region"
     }
@@ -48,9 +48,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     protected var subtitle: CharSequence?
-        get() {
-            return supportActionBar?.subtitle
-        }
+        get() = supportActionBar?.subtitle
         set(subtitle) {
             val actionBar = supportActionBar
 
