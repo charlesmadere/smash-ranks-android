@@ -71,7 +71,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-base:11.0.2'
 
     // Jake Wharton's KotterKnife
-    // TODO
+    // this is currently just a standalone file that was copy & pasted in
+    // https://github.com/JakeWharton/kotterknife
 
     // Kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
