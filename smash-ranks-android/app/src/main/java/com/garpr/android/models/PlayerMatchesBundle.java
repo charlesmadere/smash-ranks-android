@@ -19,6 +19,10 @@ public class PlayerMatchesBundle implements Parcelable {
 
     @NonNull
     public FullPlayer getFullPlayer() {
+        if (mFullPlayer == null) {
+            throw new RuntimeException("mFullPlayer is null");
+        }
+
         return mFullPlayer;
     }
 
