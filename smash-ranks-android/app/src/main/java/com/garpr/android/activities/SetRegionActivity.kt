@@ -70,14 +70,6 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         mServerApi.getRegions(ApiCall(this))
     }
 
-    override fun getSelectedRegion(): Region? {
-        if (mSelectedRegion == null) {
-            return mRegionManager.region
-        } else {
-            return mSelectedRegion
-        }
-    }
-
     override fun navigateUp() {
         if (mSelectedRegion == null) {
             super.navigateUp()
@@ -107,7 +99,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     }
 
     override fun onClick(v: RegionSelectionItemView) {
-        val region = v.content
+        val region = v.mContent
 
         if (region == mRegionManager.region) {
             mSelectedRegion = null
@@ -180,6 +172,9 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         setResult(ResultCodes.REGION_SELECTED.mValue)
         supportFinishAfterTransition()
     }
+
+    override val selectedRegion: Region?
+        get() { return if (mSelectedRegion == null) mRegionManager.region else mSelectedRegion }
 
     private fun showEmpty() {
         mAdapter.clear()

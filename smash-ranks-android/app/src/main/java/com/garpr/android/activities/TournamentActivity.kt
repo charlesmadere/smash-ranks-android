@@ -104,9 +104,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         mServerApi.getTournament(mRegionManager.getRegion(this), mTournamentId, ApiCall(this))
     }
 
-    override fun getFullTournament(): FullTournament? {
-        return mFullTournament
-    }
+    override val fullTournament: FullTournament?
+        get() { return mFullTournament }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -211,9 +210,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         mRefreshLayout.isEnabled = false
     }
 
-    override fun showSearchMenuItem(): Boolean {
-        return mFullTournament != null
-    }
+    override val showSearchMenuItem: Boolean
+        get() { return mFullTournament != null }
 
     override val showUpNavigation = true
 

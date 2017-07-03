@@ -157,19 +157,11 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         })
     }
 
-    override fun getFullPlayer(): FullPlayer? {
-        mPlayerMatchesBundle?.let {
-            return it.fullPlayer
-        } ?: return null
-    }
+    override val fullPlayer: FullPlayer?
+        get() { return mPlayerMatchesBundle?.fullPlayer }
 
-    override fun getMatchesBundle(): MatchesBundle? {
-        return if (mPlayerMatchesBundle == null) null else mPlayerMatchesBundle!!.matchesBundle
-    }
-
-    override fun getResult(): Match.Result? {
-        return mResult
-    }
+    override val matchesBundle: MatchesBundle?
+        get() { return mPlayerMatchesBundle?.matchesBundle }
 
     override fun onClick(v: MatchItemView) {
         v.mContent?.let {
@@ -257,6 +249,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         mAdapter = PlayerAdapter(this)
         mRecyclerView.adapter = mAdapter
     }
+
+    override val result: Match.Result?
+        get() { return mResult }
 
     override fun search(query: String?) {
         mThreadUtils.run(object : ThreadUtils.Task {
@@ -346,9 +341,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         supportInvalidateOptionsMenu()
     }
 
-    override fun showSearchMenuItem(): Boolean {
-        return mPlayerMatchesBundle != null && mPlayerMatchesBundle!!.hasMatchesBundle()
-    }
+    override val showSearchMenuItem: Boolean
+        get() { return mPlayerMatchesBundle?.hasMatchesBundle() ?: false }
 
     override val showUpNavigation = true
 

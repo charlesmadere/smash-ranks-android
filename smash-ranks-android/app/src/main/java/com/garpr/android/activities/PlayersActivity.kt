@@ -96,11 +96,10 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
     override fun search(query: String?) = mPlayersLayout.search(query)
 
     override val searchQuery: CharSequence?
-        get() {
-            return mSearchView?.query
-        }
+        get() { return mSearchView?.query }
 
-    override fun showSearchMenuItem() = mPlayersLayout.mPlayersBundle?.hasPlayers() ?: false
+    override val showSearchMenuItem: Boolean
+        get() { return mPlayersLayout.mPlayersBundle?.hasPlayers() ?: false }
 
     override val showUpNavigation = true
 

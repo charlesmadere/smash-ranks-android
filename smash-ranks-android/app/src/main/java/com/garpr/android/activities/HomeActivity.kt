@@ -272,9 +272,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
                 .show()
     }
 
-    override fun showSearchMenuItem(): Boolean {
-        return !TextUtils.isEmpty(subtitle)
-    }
+    override val showSearchMenuItem: Boolean
+        get() {
+            return !TextUtils.isEmpty(subtitle)
+        }
 
     private fun updateSelectedBottomNavigationItem() {
         when (mViewPager.currentItem) {
