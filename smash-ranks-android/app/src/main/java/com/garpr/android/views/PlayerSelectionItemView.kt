@@ -50,7 +50,6 @@ class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.O
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        ButterKnife.bind(this)
         setOnClickListener(this)
     }
 

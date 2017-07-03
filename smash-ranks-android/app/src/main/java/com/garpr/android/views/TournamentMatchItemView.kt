@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
-import butterknife.ButterKnife
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
@@ -77,7 +76,6 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
         }
 
         App.get().appComponent.inject(this)
-        ButterKnife.bind(this)
         setOnClickListener(this)
     }
 

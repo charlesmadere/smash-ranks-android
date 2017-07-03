@@ -14,7 +14,6 @@ import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import butterknife.ButterKnife
 import com.garpr.android.R
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Refreshable
@@ -94,7 +93,6 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
             else -> throw RuntimeException("mCheckableType is an illegal value: " + mCheckableType)
         }
 
-        ButterKnife.bind(this)
         setOnClickListener(this)
 
         if (isInEditMode) {
