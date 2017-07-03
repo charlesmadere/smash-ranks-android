@@ -50,9 +50,10 @@ open class SimplePreferenceView : FrameLayout, Heartbeat, Refreshable {
         dispatchFreezeSelfOnly(container)
     }
 
-    override fun isAlive(): Boolean {
-        return ViewCompat.isAttachedToWindow(this)
-    }
+    override val isAlive: Boolean
+        get() {
+            return ViewCompat.isAttachedToWindow(this)
+        }
 
     override fun onFinishInflate() {
         super.onFinishInflate()

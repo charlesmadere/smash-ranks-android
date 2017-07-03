@@ -180,7 +180,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     }
 
     override val searchQuery: CharSequence?
-        get() = mTournamentToolbar.searchQuery
+        get() {
+            return mTournamentToolbar.searchQuery
+        }
 
     private fun showEmpty() {
         mError.visibility = View.GONE

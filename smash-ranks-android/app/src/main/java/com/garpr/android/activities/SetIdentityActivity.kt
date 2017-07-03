@@ -255,10 +255,14 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override val searchQuery: CharSequence?
-        get() = mSearchView?.query
+        get() {
+            return mSearchView?.query
+        }
 
     override val selectedPlayer: AbsPlayer?
-        get() = mSelectedPlayer ?: mIdentityManager.identity
+        get() {
+            return mSelectedPlayer ?: mIdentityManager.identity
+        }
 
     private fun showEmpty() {
         mAdapter.clear()

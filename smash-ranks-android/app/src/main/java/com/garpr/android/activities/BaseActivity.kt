@@ -47,13 +47,8 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         } ?: return null
     }
 
-    protected var subtitle: CharSequence?
-        get() = supportActionBar?.subtitle
-        set(subtitle) = supportActionBar?.subtitle = subtitle
-
-    override fun isAlive(): Boolean {
-        return !isFinishing && !isDestroyed
-    }
+    override val isAlive
+        get() = !isFinishing && !isDestroyed
 
     protected open fun navigateUp() {
         val upIntent = NavUtils.getParentActivityIntent(this)
@@ -129,6 +124,14 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     protected open val showUpNavigation = false
+
+    protected var subtitle: CharSequence?
+        get() {
+            return supportActionBar?.subtitle
+        }
+        set(subtitle) {
+            supportActionBar?.subtitle = subtitle
+        }
 
     override fun toString(): String {
         return activityName

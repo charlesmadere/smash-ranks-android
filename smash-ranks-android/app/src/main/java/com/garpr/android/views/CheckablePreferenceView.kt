@@ -50,9 +50,10 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
         parseAttributes(attrs)
     }
 
-    override fun isAlive(): Boolean {
-        return ViewCompat.isAttachedToWindow(this)
-    }
+    override val isAlive: Boolean
+        get() {
+            return ViewCompat.isAttachedToWindow(this)
+        }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

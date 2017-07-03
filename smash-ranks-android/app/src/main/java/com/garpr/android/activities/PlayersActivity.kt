@@ -95,7 +95,9 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
     override fun search(query: String?) = mPlayersLayout.search(query)
 
     override val searchQuery: CharSequence?
-        get() = mSearchView?.query
+        get() {
+            return mSearchView?.query
+        }
 
     override fun showSearchMenuItem() = mPlayersLayout.mPlayersBundle?.hasPlayers() ?: false
 

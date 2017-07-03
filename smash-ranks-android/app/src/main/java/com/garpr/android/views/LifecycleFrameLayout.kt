@@ -22,8 +22,9 @@ open class LifecycleFrameLayout : FrameLayout, Heartbeat {
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun isAlive(): Boolean {
-        return ViewCompat.isAttachedToWindow(this)
-    }
+    override val isAlive: Boolean
+        get() {
+            return ViewCompat.isAttachedToWindow(this)
+        }
 
 }

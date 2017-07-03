@@ -214,8 +214,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun search(query: String?) = mAdapter.search(query)
 
-    override val searchQuery
-        get() = mHomeToolbar.searchQuery
+    override val searchQuery: CharSequence?
+        get() {
+            return mHomeToolbar.searchQuery
+        }
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {
         var initialPosition = -1

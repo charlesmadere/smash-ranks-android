@@ -6,7 +6,6 @@ import com.garpr.android.models.FullPlayer
 import com.garpr.android.models.MatchesBundle
 import com.garpr.android.models.PlayerMatchesBundle
 import com.garpr.android.models.Region
-
 class PlayerMatchesBundleApiCall(
         private val listener: ApiListener<PlayerMatchesBundle>,
         private val region: Region,
@@ -27,9 +26,10 @@ class PlayerMatchesBundleApiCall(
         serverApi.getPlayer(region, playerId, fullPlayerListener)
     }
 
-    override fun isAlive(): Boolean {
-        return listener.isAlive
-    }
+    override val isAlive: Boolean
+        get() {
+            return listener.isAlive
+        }
 
     @Synchronized
     private fun proceed() {
@@ -63,9 +63,10 @@ class PlayerMatchesBundleApiCall(
             proceed()
         }
 
-        override fun isAlive(): Boolean {
-            return this@PlayerMatchesBundleApiCall.isAlive
-        }
+        override val isAlive: Boolean
+            get() {
+                return this@PlayerMatchesBundleApiCall.isAlive
+            }
 
         override fun success(`object`: FullPlayer?) {
             fullPlayer = `object`
@@ -82,9 +83,10 @@ class PlayerMatchesBundleApiCall(
             proceed()
         }
 
-        override fun isAlive(): Boolean {
-            return this@PlayerMatchesBundleApiCall.isAlive
-        }
+        override val isAlive: Boolean
+            get() {
+                return this@PlayerMatchesBundleApiCall.isAlive
+            }
 
         override fun success(`object`: MatchesBundle?) {
             matchesBundle = `object`
@@ -94,3 +96,4 @@ class PlayerMatchesBundleApiCall(
     }
 
 }
+

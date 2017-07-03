@@ -279,8 +279,10 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         })
     }
 
-    override val searchQuery
-        get() = mPlayerToolbar.searchQuery
+    override val searchQuery: CharSequence?
+        get() {
+            return mPlayerToolbar.searchQuery
+        }
 
     private fun setTitle() {
         if (!TextUtils.isEmpty(title)) {
