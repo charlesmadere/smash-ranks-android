@@ -43,16 +43,12 @@ class PlayerMatchesBundleApiCall(
             return
         }
 
-        val fullPlayer = fullPlayer
-
-        if (fullPlayer == null) {
-            listener.failure(Constants.ERROR_CODE_UNKNOWN)
-        } else {
+        fullPlayer?.let {
             val playerMatchesBundle = PlayerMatchesBundle()
-            playerMatchesBundle.fullPlayer = fullPlayer
+            playerMatchesBundle.fullPlayer = it
             playerMatchesBundle.matchesBundle = matchesBundle
             listener.success(playerMatchesBundle)
-        }
+        } ?: listener.failure(Constants.ERROR_CODE_UNKNOWN)
     }
 
     private val fullPlayerListener = object : ApiListener<FullPlayer> {
