@@ -40,22 +40,16 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     protected abstract val activityName: String
 
     override fun getCurrentRegion(): Region? {
-        if (intent != null && intent.hasExtra(EXTRA_REGION)) {
-            return intent.getParcelableExtra<Region>(EXTRA_REGION)
-        } else {
-            return null
-        }
+        intent?.let {
+            return if (intent.hasExtra(EXTRA_REGION))
+                intent.getParcelableExtra<Region>(EXTRA_REGION)
+            else null
+        } ?: return null
     }
 
     protected var subtitle: CharSequence?
         get() = supportActionBar?.subtitle
-        set(subtitle) {
-            val actionBar = supportActionBar
-
-            if (actionBar != null) {
-                actionBar.subtitle = subtitle
-            }
-        }
+        set(subtitle) = supportActionBar?.subtitle = subtitle
 
     override fun isAlive(): Boolean {
         return !isFinishing && !isDestroyed
