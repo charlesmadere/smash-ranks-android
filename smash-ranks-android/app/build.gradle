@@ -70,10 +70,6 @@ dependencies {
     // Google Play Services
     compile 'com.google.android.gms:play-services-base:11.0.2'
 
-    // Jake Wharton's ButterKnife
-    compile 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-
     // Jake Wharton's KotterKnife
     // TODO
 
