@@ -271,9 +271,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         mRefreshLayout.isRefreshing = false
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override val showUpNavigation = true
 
     private fun setSubtitle() {
         if (TextUtils.isEmpty(subtitle) && !TextUtils.isEmpty(mPlayerName) &&

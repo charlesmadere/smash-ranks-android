@@ -96,8 +96,6 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         mRecyclerView.adapter = mAdapter
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override val showUpNavigation = true
 
 }

@@ -108,10 +108,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         return mFullTournament
     }
 
-    override fun getSearchQuery(): CharSequence? {
-        return mTournamentToolbar.searchQuery
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
@@ -183,6 +179,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         supportInvalidateOptionsMenu()
     }
 
+    override val searchQuery: CharSequence?
+        get() = mTournamentToolbar.searchQuery
+
     private fun showEmpty() {
         mError.visibility = View.GONE
         mViewPager.visibility = View.GONE
@@ -214,9 +213,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         return mFullTournament != null
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override val showUpNavigation = true
 
     override fun success(fullTournament: FullTournament?) {
         mFullTournament = fullTournament

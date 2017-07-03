@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.kotlin.orFalse
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
@@ -47,8 +46,6 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
     }
 
     override val activityName = TAG
-
-    override fun getSearchQuery(): CharSequence? = mSearchView?.query
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,8 +94,11 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
 
     override fun search(query: String?) = mPlayersLayout.search(query)
 
+    override val searchQuery: CharSequence?
+        get() = mSearchView?.query
+
     override fun showSearchMenuItem() = mPlayersLayout.mPlayersBundle?.hasPlayers() ?: false
 
-    override fun showUpNavigation() = true
+    override val showUpNavigation = true
 
 }

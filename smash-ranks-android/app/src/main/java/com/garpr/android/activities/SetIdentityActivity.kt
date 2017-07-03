@@ -83,10 +83,6 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         mServerApi.getPlayers(mRegionManager.getRegion(this), ApiCall(this))
     }
 
-    override fun getSearchQuery(): CharSequence? {
-        return mSearchView?.query
-    }
-
     override fun navigateUp() {
         if (mSelectedPlayer == null) {
             super.navigateUp()
@@ -258,6 +254,9 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         })
     }
 
+    override val searchQuery: CharSequence?
+        get() = mSearchView?.query
+
     override val selectedPlayer: AbsPlayer?
         get() = mSelectedPlayer ?: mIdentityManager.identity
 
@@ -289,9 +288,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         refreshMenu()
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override val showUpNavigation = true
 
     override fun success(playersBundle: PlayersBundle?) {
         mSelectedPlayer = null

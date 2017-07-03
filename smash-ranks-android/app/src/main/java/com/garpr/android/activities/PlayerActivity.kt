@@ -157,7 +157,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override fun getFullPlayer(): FullPlayer? {
-        return if (mPlayerMatchesBundle == null) null else mPlayerMatchesBundle!!.fullPlayer
+        mPlayerMatchesBundle?.let {
+            return it.fullPlayer
+        } ?: return null
     }
 
     override fun getMatchesBundle(): MatchesBundle? {
@@ -168,20 +170,18 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         return mResult
     }
 
-    override fun getSearchQuery(): CharSequence? {
-        return mPlayerToolbar.searchQuery
-    }
-
     override fun onClick(v: MatchItemView) {
-        val match = v.mContent ?: return
-        startActivity(HeadToHeadActivity.getLaunchIntent(this,
-                mPlayerMatchesBundle!!.fullPlayer, match))
+        v.mContent?.let {
+            startActivity(HeadToHeadActivity.getLaunchIntent(this,
+                    mPlayerMatchesBundle!!.fullPlayer, it))
+        }
     }
 
     override fun onClick(v: TournamentDividerView) {
-        val tournament = v.mContent ?: return
-        startActivity(TournamentActivity.getLaunchIntent(this, tournament.id, tournament.name,
-                tournament.date, mRegionManager.getRegion(this)))
+        v.mContent?.let {
+            startActivity(TournamentActivity.getLaunchIntent(this, it.id, it.name, it.date,
+                    mRegionManager.getRegion(this)))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -279,6 +279,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         })
     }
 
+    override val searchQuery
+        get() = mPlayerToolbar.searchQuery
+
     private fun setTitle() {
         if (!TextUtils.isEmpty(title)) {
             return
@@ -287,8 +290,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         if (mPlayerMatchesBundle != null) {
             title = mPlayerMatchesBundle!!.fullPlayer.name
         } else {
-            val intent = intent
-
             if (intent.hasExtra(EXTRA_PLAYER_NAME)) {
                 title = intent.getStringExtra(EXTRA_PLAYER_NAME)
             }
@@ -298,9 +299,13 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     private fun showAliases() {
-        val aliases = mPlayerMatchesBundle!!.fullPlayer.aliases
+        val aliases = mPlayerMatchesBundle?.fullPlayer?.aliases
 
-        val items = arrayOfNulls<CharSequence>(aliases!!.size)
+        if (aliases == null || aliases.isEmpty()) {
+            return
+        }
+
+        val items = arrayOfNulls<CharSequence>(aliases.size)
         aliases.toTypedArray<CharSequence>()
 
         AlertDialog.Builder(this)
@@ -342,10 +347,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         return mPlayerMatchesBundle != null && mPlayerMatchesBundle!!.hasMatchesBundle()
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
-
+    override val showUpNavigation = true
 
     override fun success(playerMatchesBundle: PlayerMatchesBundle?) {
         mPlayerMatchesBundle = playerMatchesBundle

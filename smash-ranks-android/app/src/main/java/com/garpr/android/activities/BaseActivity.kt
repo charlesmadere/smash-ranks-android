@@ -122,9 +122,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
             setSupportActionBar(mToolbar)
         }
 
-        val actionBar = supportActionBar
-
-        actionBar?.setDisplayHomeAsUpEnabled(showUpNavigation())
+        supportActionBar?.setDisplayHomeAsUpEnabled(showUpNavigation)
     }
 
     override fun setContentView(@LayoutRes layoutResID: Int) {
@@ -136,9 +134,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         subtitle = getText(resId)
     }
 
-    protected open fun showUpNavigation(): Boolean {
-        return false
-    }
+    protected open val showUpNavigation = false
 
     override fun toString(): String {
         return activityName

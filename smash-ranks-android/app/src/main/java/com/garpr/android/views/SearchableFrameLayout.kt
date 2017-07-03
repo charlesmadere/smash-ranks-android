@@ -28,16 +28,6 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, Searchable, SearchQ
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun getSearchQuery(): CharSequence? {
-        val activity = MiscUtils.optActivity(context)
-
-        if (activity is SearchQueryHandle) {
-            return activity.searchQuery
-        } else {
-            return null
-        }
-    }
-
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -47,5 +37,16 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, Searchable, SearchQ
 
         App.get().appComponent.inject(this)
     }
+
+    override val searchQuery: CharSequence?
+        get() {
+            val activity = MiscUtils.optActivity(context)
+
+            if (activity is SearchQueryHandle) {
+                return activity.searchQuery
+            } else {
+                return null
+            }
+        }
 
 }

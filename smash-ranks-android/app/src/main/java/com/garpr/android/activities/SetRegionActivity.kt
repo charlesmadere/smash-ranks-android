@@ -208,9 +208,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         refreshMenu()
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override val showUpNavigation = true
 
     override fun success(regionsBundle: RegionsBundle?) {
         mRegionsBundle = regionsBundle

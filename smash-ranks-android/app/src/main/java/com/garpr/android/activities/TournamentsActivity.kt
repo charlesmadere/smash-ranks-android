@@ -41,8 +41,6 @@ class TournamentsActivity : BaseActivity() {
         subtitle = mRegionManager.getRegion(this).displayName
     }
 
-    override fun showUpNavigation(): Boolean {
-        return true
-    }
+    override val showUpNavigation = true
 
 }
