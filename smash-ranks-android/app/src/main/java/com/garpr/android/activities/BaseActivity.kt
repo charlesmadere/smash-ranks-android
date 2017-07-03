@@ -68,7 +68,9 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.get().appComponent.inject(this)
 
-        delegate.setLocalNightMode(mGeneralPreferenceStore.nightMode.get()!!.themeValue)
+        mGeneralPreferenceStore.nightMode.get()?.let {
+            delegate.setLocalNightMode(it.themeValue)
+        } ?: throw RuntimeException("nightMode is null")
 
         super.onCreate(savedInstanceState)
         mTimber.d(TAG, activityName + " created")
