@@ -15,7 +15,6 @@
         android:visible="false"
         compat:showAsAction="never" />
     <item
-        android:icon="@drawable/ic_link_white_24dp"
         android:id="@+id/miViewTournamentPage"
         android:title="@string/view_tournament_page"
         android:visible="false"
