@@ -17,6 +17,7 @@ import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersSelectionAdapter
+import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.RegionManager
@@ -144,8 +145,11 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         mSearchMenuItem = menu.findItem(R.id.miSearch)
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this)
         mSearchView = MenuItemCompat.getActionView(mSearchMenuItem) as SearchView
-        mSearchView!!.queryHint = getText(R.string.search_players_)
-        mSearchView!!.setOnQueryTextListener(this)
+
+        mSearchView?.let {
+            it.queryHint = getText(R.string.search_)
+            it.setOnQueryTextListener(this)
+        } ?: throw RuntimeException("mSearchView is null")
 
         mSaveMenuItem = menu.findItem(R.id.miSave)
         refreshMenu()

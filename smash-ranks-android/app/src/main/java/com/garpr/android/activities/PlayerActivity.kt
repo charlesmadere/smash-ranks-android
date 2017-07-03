@@ -12,6 +12,7 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
+import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.ListUtils

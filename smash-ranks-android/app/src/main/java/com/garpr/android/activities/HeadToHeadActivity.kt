@@ -12,6 +12,7 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
+import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
@@ -140,7 +141,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_head_to_head)
 
-        val intent = intent
         mOpponentId = intent.getStringExtra(EXTRA_OPPONENT_ID)
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID)
 

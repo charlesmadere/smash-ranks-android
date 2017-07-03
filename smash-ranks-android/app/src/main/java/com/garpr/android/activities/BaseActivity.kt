@@ -2,7 +2,6 @@ package com.garpr.android.activities
 
 import android.os.Bundle
 import android.support.annotation.LayoutRes
-import android.support.annotation.StringRes
 import android.support.v4.app.NavUtils
 import android.support.v4.app.TaskStackBuilder
 import android.support.v7.app.AppCompatActivity
@@ -121,19 +120,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         onViewsBound()
     }
 
-    fun setSubtitle(@StringRes resId: Int) {
-        subtitle = getText(resId)
-    }
-
     protected open val showUpNavigation = false
-
-    protected var subtitle: CharSequence?
-        get() {
-            return supportActionBar?.subtitle
-        }
-        set(subtitle) {
-            supportActionBar?.subtitle = subtitle
-        }
 
     override fun toString(): String {
         return activityName

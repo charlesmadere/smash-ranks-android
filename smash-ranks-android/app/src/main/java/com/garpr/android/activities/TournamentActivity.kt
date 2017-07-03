@@ -12,6 +12,7 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentPagerAdapter
+import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.ShareUtils
@@ -91,8 +92,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     override fun failure(errorCode: Int) {
         mFullTournament = null

@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.RegionsSelectionAdapter
+import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ResultCodes
 import com.garpr.android.models.Region
