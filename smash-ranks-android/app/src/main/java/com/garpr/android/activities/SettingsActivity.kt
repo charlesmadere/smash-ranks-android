@@ -83,8 +83,7 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     private fun attemptToResolveGooglePlayServicesError() {
         val connectionStatus = mGoogleApiWrapper.googlePlayServicesConnectionStatus
