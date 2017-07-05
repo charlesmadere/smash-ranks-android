@@ -13,6 +13,7 @@ apply plugin: 'com.android.application'
 
 // Kotlin
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 // Fabric
 apply plugin: 'io.fabric'
