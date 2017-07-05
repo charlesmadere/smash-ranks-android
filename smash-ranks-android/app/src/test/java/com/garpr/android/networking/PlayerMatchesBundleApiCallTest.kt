@@ -27,7 +27,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
     lateinit private var norcal: Region
 
     @Inject
-    lateinit internal var gson: Gson
+    lateinit protected var gson: Gson
 
 
     companion object {
@@ -56,9 +56,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
                 throw RuntimeException()
             }
 
-            override fun isAlive(): Boolean {
-                return true
-            }
+            override val isAlive = true
 
             override fun success(`object`: PlayerMatchesBundle?) {
                 result = `object`
@@ -92,9 +90,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
                 result = errorCode
             }
 
-            override fun isAlive(): Boolean {
-                return true
-            }
+            override val isAlive = true
 
             override fun success(`object`: PlayerMatchesBundle?) {
                 throw RuntimeException()
@@ -127,9 +123,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
                 throw RuntimeException()
             }
 
-            override fun isAlive(): Boolean {
-                return true
-            }
+            override val isAlive = true
 
             override fun success(`object`: PlayerMatchesBundle?) {
                 result = `object`
@@ -163,9 +157,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
                 result = errorCode
             }
 
-            override fun isAlive(): Boolean {
-                return true
-            }
+            override val isAlive = true
 
             override fun success(`object`: PlayerMatchesBundle?) {
                 throw RuntimeException()
