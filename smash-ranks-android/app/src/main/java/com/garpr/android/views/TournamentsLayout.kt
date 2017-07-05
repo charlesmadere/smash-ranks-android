@@ -101,7 +101,9 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
     }
 
     override fun search(query: String?) {
-        if (mTournamentsBundle == null || !mTournamentsBundle!!.hasTournaments()) {
+        val tournamentsBundle = mTournamentsBundle
+
+        if (tournamentsBundle == null || !tournamentsBundle.hasTournaments()) {
             return
         }
 
@@ -113,7 +115,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
                     return
                 }
 
-                mList = ListUtils.searchTournamentList(query, mTournamentsBundle!!.tournaments)
+                mList = ListUtils.searchTournamentList(query, tournamentsBundle.tournaments)
             }
 
             override fun onUi() {

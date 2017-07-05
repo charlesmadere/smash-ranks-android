@@ -119,7 +119,9 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     }
 
     override fun search(query: String?) {
-        if (mRankingsBundle == null || !mRankingsBundle!!.hasRankings()) {
+        val rankingsBundle = mRankingsBundle
+
+        if (rankingsBundle == null || !rankingsBundle.hasRankings()) {
             return
         }
 
@@ -131,7 +133,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
                     return
                 }
 
-                mList = ListUtils.searchRankingList(query, mRankingsBundle!!.rankings)
+                mList = ListUtils.searchRankingList(query, rankingsBundle.rankings)
             }
 
             override fun onUi() {

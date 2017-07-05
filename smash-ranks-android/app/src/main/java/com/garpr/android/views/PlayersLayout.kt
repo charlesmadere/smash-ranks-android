@@ -104,7 +104,9 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     }
 
     override fun search(query: String?) {
-        if (mPlayersBundle == null || !mPlayersBundle!!.hasPlayers()) {
+        val playersBundle = mPlayersBundle
+
+        if (playersBundle == null || !playersBundle.hasPlayers()) {
             return
         }
 
@@ -116,7 +118,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
                     return
                 }
 
-                mList = ListUtils.searchPlayerList(query, mPlayersBundle!!.players)
+                mList = ListUtils.searchPlayerList(query, playersBundle.players)
             }
 
             override fun onUi() {
