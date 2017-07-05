@@ -276,18 +276,14 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
     private fun updateSelectedBottomNavigationItem() {
-        when (mViewPager.currentItem) {
-            PositionFavoritePlayers -> mBottomNavigationView.menu.findItem(
-                    R.id.actionFavoritePlayers).isChecked = true
-
-            PositionRankings -> mBottomNavigationView.menu.findItem(
-                    R.id.actionRankings).isChecked = true
-
-            PositionTournaments -> mBottomNavigationView.menu.findItem(
-                    R.id.actionTournaments).isChecked = true
-
+        val itemId = when (mViewPager.currentItem) {
+            PositionFavoritePlayers -> R.id.actionFavoritePlayers
+            PositionRankings -> R.id.actionRankings
+            PositionTournaments -> R.id.actionTournaments
             else -> throw RuntimeException("unknown current item: " + mViewPager.currentItem)
         }
+
+        mBottomNavigationView.menu.findItem(itemId).isChecked = true
     }
 
     private val mOnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
