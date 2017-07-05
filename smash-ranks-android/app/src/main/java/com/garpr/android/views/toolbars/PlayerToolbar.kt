@@ -67,7 +67,7 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.sInstance.mAppComponent.inject(this)
+            App.get().appComponent.inject(this)
             mFavoritePlayersManager.addListener(this)
             mIdentityManager.addListener(this)
         }

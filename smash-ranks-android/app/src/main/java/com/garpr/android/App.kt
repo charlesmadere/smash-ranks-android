@@ -38,7 +38,7 @@ class App : Application() {
     companion object {
         private val TAG = "App"
 
-        lateinit var sInstance: App
+        lateinit var Instance: App
             private set
     }
 

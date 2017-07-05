@@ -70,7 +70,7 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<Ranking>, View.OnCl
             return
         }
 
-        App.sInstance.mAppComponent.inject(this)
+        App.get().appComponent.inject(this)
         setOnClickListener(this)
         setOnLongClickListener(this)
     }

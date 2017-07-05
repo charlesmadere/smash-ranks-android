@@ -70,7 +70,7 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout, IdentityManager.OnIde
             return
         }
 
-        App.sInstance.mAppComponent.inject(this)
+        App.get().appComponent.inject(this)
         mIdentityManager.addListener(this)
 
         mOriginalBackground = background

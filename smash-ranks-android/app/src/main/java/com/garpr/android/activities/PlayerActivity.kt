@@ -179,7 +179,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.sInstance.mAppComponent.inject(this)
+        App.get().appComponent.inject(this)
         setContentView(R.layout.activity_player)
 
         val intent = intent

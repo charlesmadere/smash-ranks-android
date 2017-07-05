@@ -132,7 +132,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.sInstance.mAppComponent.inject(this)
+        App.get().appComponent.inject(this)
         setContentView(R.layout.activity_set_identity)
         subtitle = mRegionManager.getRegion(this).displayName
 

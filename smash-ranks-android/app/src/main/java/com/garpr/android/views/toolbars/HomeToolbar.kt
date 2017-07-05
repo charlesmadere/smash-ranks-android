@@ -51,7 +51,7 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.sInstance.mAppComponent.inject(this)
+            App.get().appComponent.inject(this)
             mIdentityManager.addListener(this)
             mRegionManager.addListener(this)
         }

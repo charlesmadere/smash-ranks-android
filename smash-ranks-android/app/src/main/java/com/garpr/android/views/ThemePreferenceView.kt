@@ -100,7 +100,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.sInstance.mAppComponent.inject(this)
+            App.get().appComponent.inject(this)
             mGeneralPreferenceStore.nightMode.addListener(this)
         }
 

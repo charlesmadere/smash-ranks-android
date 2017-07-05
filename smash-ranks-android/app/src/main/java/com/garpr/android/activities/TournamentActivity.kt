@@ -109,7 +109,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.sInstance.mAppComponent.inject(this)
+        App.get().appComponent.inject(this)
         setContentView(R.layout.activity_tournament)
 
         mTournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)

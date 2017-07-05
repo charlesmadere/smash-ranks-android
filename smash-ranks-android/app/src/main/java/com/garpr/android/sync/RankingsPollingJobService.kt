@@ -44,7 +44,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     }
 
     init {
-        App.sInstance.mAppComponent.inject(this)
+        App.get().appComponent.inject(this)
     }
 
     override fun failure(errorCode: Int) {

@@ -97,7 +97,7 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.sInstance.mAppComponent.inject(this)
+            App.get().appComponent.inject(this)
             mRankingsPollingPreferenceStore.ringtone.addListener(this)
         }
 

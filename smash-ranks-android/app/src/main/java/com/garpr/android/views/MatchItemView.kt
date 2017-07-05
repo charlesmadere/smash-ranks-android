@@ -78,7 +78,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
             return
         }
 
-        App.sInstance.mAppComponent.inject(this)
+        App.get().appComponent.inject(this)
         setOnClickListener(this)
         setOnLongClickListener(this)
     }
