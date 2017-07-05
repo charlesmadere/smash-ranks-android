@@ -103,6 +103,13 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         fetchPlayersBundle()
     }
 
+    override val recyclerView: RecyclerView?
+        get() { return mRecyclerView }
+
+    override fun refresh() {
+        fetchPlayersBundle()
+    }
+
     override fun search(query: String?) {
         val playersBundle = mPlayersBundle
 

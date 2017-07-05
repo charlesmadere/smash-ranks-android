@@ -28,4 +28,11 @@ abstract class TournamentPageLayout : SearchableFrameLayout, BaseAdapterView<Ful
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    override val recyclerView: RecyclerView?
+        get() { return mRecyclerView }
+
+    override fun refresh() {
+        throw UnsupportedOperationException()
+    }
+
 }

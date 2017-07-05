@@ -112,15 +112,17 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
-        // TODO
-        throw RuntimeException()
+        val position = when (item.itemId) {
+            R.id.actionFavoritePlayers -> PositionFavoritePlayers
+            R.id.actionRankings -> PositionRankings
+            R.id.actionTournaments -> PositionTournaments
+            else -> throw RuntimeException("unknown item: " + item.title)
+        }
+
+        mAdapter.onNavigationItemReselected(position)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        if (item.isChecked) {
-            return false
-        }
-
         when (item.itemId) {
             R.id.actionFavoritePlayers -> {
                 mViewPager.setCurrentItem(PositionFavoritePlayers, false)

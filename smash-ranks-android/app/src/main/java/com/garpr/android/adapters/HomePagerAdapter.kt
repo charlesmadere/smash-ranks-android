@@ -4,7 +4,6 @@ import android.support.v4.util.SparseArrayCompat
 import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
-
 import com.garpr.android.activities.HomeActivity
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
@@ -12,7 +11,6 @@ import com.garpr.android.views.FavoritePlayersLayout
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.SearchableFrameLayout
 import com.garpr.android.views.TournamentsLayout
-
 import java.lang.ref.WeakReference
 
 class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
@@ -59,6 +57,18 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
         return view === `object`
     }
 
+    fun onNavigationItemReselected(position: Int) {
+        val reference = mPages.get(position)
+
+        if (reference != null) {
+            val view = reference.get()
+
+            if (view != null && view.isAlive) {
+                view.scrollToTop()
+            }
+        }
+    }
+
     override fun refresh() {
         for (i in 0..mPages.size() - 1) {
             val reference = mPages.get(i)
@@ -66,7 +76,7 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
             if (reference != null) {
                 val view = reference.get()
 
-                if (view is Refreshable && view.isAlive) {
+                if (view != null && view.isAlive) {
                     view.refresh()
                 }
             }

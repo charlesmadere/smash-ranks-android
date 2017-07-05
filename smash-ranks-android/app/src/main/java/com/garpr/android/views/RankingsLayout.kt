@@ -114,6 +114,9 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         fetchRankingsBundle()
     }
 
+    override val recyclerView: RecyclerView?
+        get() { return mRecyclerView }
+
     override fun refresh() {
         fetchRankingsBundle()
     }

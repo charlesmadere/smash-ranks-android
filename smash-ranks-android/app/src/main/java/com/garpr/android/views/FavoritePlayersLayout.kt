@@ -92,7 +92,10 @@ class FavoritePlayersLayout : SearchableFrameLayout,
         refresh()
     }
 
-    private fun refresh() {
+    override val recyclerView: RecyclerView?
+        get() { return mRecyclerView }
+
+    override fun refresh() {
         if (mFavoritePlayersManager.isEmpty) {
             mAdapter.clear()
             mRecyclerView.visibility = View.GONE
