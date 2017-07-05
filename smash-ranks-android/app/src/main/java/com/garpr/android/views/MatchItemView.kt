@@ -13,8 +13,9 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.FavoritePlayersManager
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.Match
 import kotterknife.bindView
@@ -60,7 +61,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
 
     override fun onClick(v: View) {
         val content = mContent ?: return
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
 
         if (activity is OnClickListener) {
             activity.onClick(this)
@@ -94,7 +95,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
         mName.text = content.opponent.name
 
         when (content.result) {
-            Match.Result.EXCLUDED -> mName.setTextColor(MiscUtils.getAttrColor(context,
+            Match.Result.EXCLUDED -> mName.setTextColor(context.getAttrColor(
                     android.R.attr.textColorSecondary))
             Match.Result.LOSE -> mName.setTextColor(ContextCompat.getColor(context, R.color.lose))
             Match.Result.WIN -> mName.setTextColor(ContextCompat.getColor(context, R.color.win))

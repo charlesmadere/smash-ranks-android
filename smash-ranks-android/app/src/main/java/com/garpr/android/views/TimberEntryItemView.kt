@@ -12,7 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.misc.MiscUtils
+import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.misc.Timber
 import kotterknife.bindView
 
@@ -52,7 +52,7 @@ class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
         var color = mColors.get(content.mColorAttrResId, -1)
 
         if (color == -1) {
-            color = MiscUtils.getAttrColor(context, content.mColorAttrResId)
+            color = context.getAttrColor(content.mColorAttrResId)
             mColors.put(content.mColorAttrResId, color)
         }
 

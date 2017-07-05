@@ -14,7 +14,7 @@ import android.view.View
 import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.misc.MiscUtils
+import com.garpr.android.extensions.getActivity
 import com.garpr.android.misc.ResultCodes
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
@@ -66,8 +66,6 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
     }
 
     override fun onClick(v: View) {
-        val activity = MiscUtils.getActivity(context)
-
         val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
@@ -78,6 +76,8 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         if (existingUri != null) {
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, existingUri)
         }
+
+        val activity = context.getActivity()
 
         try {
             activity.startActivityForResult(intent, ResultCodes.RINGTONE_SELECTED.mValue)

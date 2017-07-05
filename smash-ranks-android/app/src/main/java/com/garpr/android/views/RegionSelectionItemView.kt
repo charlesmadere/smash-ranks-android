@@ -10,7 +10,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.misc.MiscUtils
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.models.Region
 import kotterknife.bindView
 
@@ -39,7 +39,7 @@ class RegionSelectionItemView : LinearLayout, BaseAdapterView<Region>, View.OnCl
             super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onClick(v: View) {
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
 
         if (activity is Listeners) {
             (activity as Listeners).onClick(this)
@@ -57,9 +57,10 @@ class RegionSelectionItemView : LinearLayout, BaseAdapterView<Region>, View.OnCl
         mDisplayName.text = content.displayName
         mId.text = content.id
 
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
+
         if (activity is Listeners) {
-            mRadioButton.isChecked = mContent == (activity as Listeners).selectedRegion
+            mRadioButton.isChecked = content == (activity as Listeners).selectedRegion
         } else {
             mRadioButton.isChecked = false
         }

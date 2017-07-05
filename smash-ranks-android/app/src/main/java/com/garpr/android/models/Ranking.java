@@ -62,7 +62,7 @@ public class Ranking implements Parcelable {
     }
 
     public String getRatingTruncated() {
-        return MiscUtils.truncateFloat(mRating);
+        return MiscUtils.Companion.truncateFloat(mRating);
     }
 
     @Override

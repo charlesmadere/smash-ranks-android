@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.RankingsAdapter
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Refreshable
@@ -103,7 +104,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
             return
         }
 
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
 
         if (activity is Listener) {
             activity.onRankingsBundleFetched(this)

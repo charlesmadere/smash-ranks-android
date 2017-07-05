@@ -12,7 +12,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.misc.MiscUtils
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.models.AbsPlayer
 import kotterknife.bindView
 
@@ -40,7 +40,7 @@ class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.O
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onClick(v: View) {
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
 
         if (activity is Listeners) {
             activity.onClick(this)
@@ -56,10 +56,10 @@ class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.O
         mContent = content
         mName.text = content.name
 
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
 
         if (activity is Listeners) {
-            mRadioButton.isChecked = mContent == activity.selectedPlayer
+            mRadioButton.isChecked = content == activity.selectedPlayer
         } else {
             mRadioButton.isChecked = false
         }

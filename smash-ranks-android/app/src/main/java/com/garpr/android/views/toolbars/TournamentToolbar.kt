@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
 import com.garpr.android.R
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.models.FullTournament
 
@@ -32,7 +33,7 @@ class TournamentToolbar : SearchToolbar {
             return
         }
 
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
         val fullTournament: FullTournament?
 
         if (activity is DataProvider) {

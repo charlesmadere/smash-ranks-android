@@ -13,6 +13,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.AbsTournament
@@ -47,7 +48,7 @@ class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.
 
     override fun onClick(v: View) {
         val content = mContent ?: return
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
 
         if (activity is OnClickListener) {
             activity.onClick(this)

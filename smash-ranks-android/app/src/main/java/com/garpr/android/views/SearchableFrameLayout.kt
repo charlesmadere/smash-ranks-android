@@ -8,8 +8,8 @@ import android.support.annotation.StyleRes
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import com.garpr.android.App
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.ListLayout
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
@@ -56,7 +56,7 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refresh
 
     override val searchQuery: CharSequence?
         get() {
-            val activity = MiscUtils.optActivity(context)
+            val activity = context.optActivity()
 
             if (activity is SearchQueryHandle) {
                 return activity.searchQuery

@@ -14,8 +14,8 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersAdapter
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.AbsPlayer
@@ -92,7 +92,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
             return
         }
 
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
 
         if (activity is Listener) {
             activity.onPlayersBundleFetched(this)

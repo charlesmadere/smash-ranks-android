@@ -40,7 +40,7 @@ public class Rating implements Parcelable {
     }
 
     public String getMuTruncated() {
-        return MiscUtils.truncateFloat(mMu);
+        return MiscUtils.Companion.truncateFloat(mMu);
     }
 
     public float getRating() {
@@ -48,7 +48,7 @@ public class Rating implements Parcelable {
     }
 
     public String getRatingTruncated() {
-        return MiscUtils.truncateFloat(mRating);
+        return MiscUtils.Companion.truncateFloat(mRating);
     }
 
     public String getRegion() {
@@ -60,7 +60,7 @@ public class Rating implements Parcelable {
     }
 
     public String getSigmaTruncated() {
-        return MiscUtils.truncateFloat(mSigma);
+        return MiscUtils.Companion.truncateFloat(mSigma);
     }
 
     @Override

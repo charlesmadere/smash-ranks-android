@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.MiscUtils
@@ -86,7 +87,7 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
             return
         }
 
-        val activity = MiscUtils.optActivity(context)
+        val activity = context.optActivity()
         val fullPlayer: FullPlayer?
         val matchesBundle: MatchesBundle?
         val result: Match.Result?
