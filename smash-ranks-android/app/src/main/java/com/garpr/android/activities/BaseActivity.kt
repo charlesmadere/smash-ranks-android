@@ -72,7 +72,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         } ?: throw RuntimeException("nightMode is null")
 
         super.onCreate(savedInstanceState)
-        mTimber.d(TAG, activityName + " created")
+        mTimber.d(TAG, "$activityName created")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
