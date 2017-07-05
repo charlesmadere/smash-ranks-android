@@ -109,7 +109,7 @@ class SettingsActivity : BaseActivity() {
                 .show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == ResultCodes.RINGTONE_SELECTED.mValue) {
