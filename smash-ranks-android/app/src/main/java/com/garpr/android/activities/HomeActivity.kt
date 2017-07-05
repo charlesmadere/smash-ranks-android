@@ -201,6 +201,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override fun onViewsBound() {
         super.onViewsBound()
 
+        mBottomNavigationView.setOnNavigationItemReselectedListener(this)
         mBottomNavigationView.setOnNavigationItemSelectedListener(this)
         mViewPager.addOnPageChangeListener(mOnPageChangeListener)
         mViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
