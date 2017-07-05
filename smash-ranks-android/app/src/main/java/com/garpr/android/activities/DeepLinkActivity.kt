@@ -34,7 +34,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
         if (intentStack == null || intentStack.isEmpty()) {
             startActivity(HomeActivity.getLaunchIntent(this))
         } else {
-            ContextCompat.startActivities(this, intentStack)
+            ContextCompat.startActivities(this, intentStack.toTypedArray())
         }
 
         supportFinishAfterTransition()
