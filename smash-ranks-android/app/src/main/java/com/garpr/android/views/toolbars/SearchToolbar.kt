@@ -62,7 +62,7 @@ abstract class SearchToolbar : MenuToolbar, MenuItemCompat.OnActionExpandListene
         mSearchView?.let {
             it.queryHint = resources.getText(R.string.search_)
             it.setOnQueryTextListener(this)
-        }
+        } ?: throw RuntimeException("mSearchView is null")
 
         super.onCreateOptionsMenu(inflater, menu)
     }
