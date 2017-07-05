@@ -64,7 +64,7 @@ class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
         setOnClickListener(this)
     }
 

@@ -37,7 +37,7 @@ class RankingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
         setContentView(R.layout.activity_rankings)
         subtitle = mRegionManager.getRegion(this).displayName
     }

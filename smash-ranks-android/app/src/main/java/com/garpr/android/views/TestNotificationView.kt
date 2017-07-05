@@ -56,7 +56,7 @@ class TestNotificationView : SimplePreferenceView, DialogInterface.OnClickListen
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            App.sInstance.mAppComponent.inject(this)
         }
 
         setOnClickListener(this)

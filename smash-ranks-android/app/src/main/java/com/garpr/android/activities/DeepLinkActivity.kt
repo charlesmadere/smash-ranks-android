@@ -52,7 +52,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
         setContentView(R.layout.activity_deep_link)
 
         if (mDeepLinkUtils.isValidUri(intent)) {

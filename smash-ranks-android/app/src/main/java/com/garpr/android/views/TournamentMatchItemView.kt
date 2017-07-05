@@ -75,7 +75,7 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
         setOnClickListener(this)
     }
 

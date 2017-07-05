@@ -65,7 +65,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
 
         mGeneralPreferenceStore.nightMode.get()?.let {
             delegate.setLocalNightMode(it.themeValue)

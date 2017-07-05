@@ -39,7 +39,7 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refresh
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
     }
 
     override fun scrollToTop() {

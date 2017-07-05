@@ -51,7 +51,7 @@ class TournamentItemView : FrameLayout, BaseAdapterView<AbsTournament>, View.OnC
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
         setOnClickListener(this)
     }
 

@@ -138,7 +138,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
         setContentView(R.layout.activity_head_to_head)
 
         mOpponentId = intent.getStringExtra(EXTRA_OPPONENT_ID)

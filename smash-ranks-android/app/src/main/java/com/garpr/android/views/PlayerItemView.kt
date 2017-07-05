@@ -62,7 +62,7 @@ class PlayerItemView : IdentityFrameLayout, BaseAdapterView<AbsPlayer>, View.OnC
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
         setOnClickListener(this)
         setOnLongClickListener(this)
     }

@@ -80,7 +80,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
 
         mRecyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))

@@ -80,7 +80,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
 
         mRefreshLayout.setOnRefreshListener(this)
         mRecyclerView.addItemDecoration(DividerItemDecoration(context,

@@ -70,7 +70,7 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
         setOnClickListener(this)
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            App.sInstance.mAppComponent.inject(this)
             mFavoritePlayersManager.addListener(this)
         }
 

@@ -30,7 +30,7 @@ class PreviousRankView : AppCompatImageView, BaseAdapterView<Ranking> {
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
     }
 
     override fun setContent(content: Ranking) {

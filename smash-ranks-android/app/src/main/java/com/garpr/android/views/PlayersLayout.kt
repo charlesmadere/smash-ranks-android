@@ -75,7 +75,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
             return
         }
 
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
 
         mRefreshLayout.setOnRefreshListener(this)
         mRecyclerView.addItemDecoration(DividerItemDecoration(context,

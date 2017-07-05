@@ -82,7 +82,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            App.sInstance.mAppComponent.inject(this)
             mRankingsPollingPreferenceStore.pollFrequency.addListener(this)
         }
 

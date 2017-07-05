@@ -49,7 +49,7 @@ class LastPollPreferenceView : SimplePreferenceView,
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            App.sInstance.mAppComponent.inject(this)
             mRankingsPollingPreferenceStore.lastPoll.addListener(this)
         }
 

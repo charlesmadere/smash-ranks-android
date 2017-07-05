@@ -60,9 +60,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         private val EXTRA_INITIAL_POSITION = CNAME + ".InitialPosition"
         private val KEY_CURRENT_POSITION = "CurrentPosition"
 
-        val PositionRankings = 0
-        val PositionTournaments = 1
-        val PositionFavoritePlayers = 2
+        const val PositionRankings = 0
+        const val PositionTournaments = 1
+        const val PositionFavoritePlayers = 2
 
         @JvmOverloads
         fun getLaunchIntent(context: Context, initialPosition: Int? = null): Intent {
@@ -95,7 +95,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        App.sInstance.mAppComponent.inject(this)
         setContentView(R.layout.activity_home)
 
         mRankingsPollingSyncManager.enableOrDisable()
