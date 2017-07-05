@@ -96,6 +96,9 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
         fetchTournamentsBundle()
     }
 
+    override val recyclerView: RecyclerView?
+        get() { return mRecyclerView }
+
     override fun refresh() {
         fetchTournamentsBundle()
     }
