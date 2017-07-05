@@ -177,14 +177,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         val region = mRegionManager.getRegion(this)
         setTitle(region.endpoint.getName())
 
-        val rankingsBundle = layout.mRankingsBundle
-
-        if (rankingsBundle == null) {
-            subtitle = region.displayName
-        } else {
-            subtitle = getString(R.string.x_updated_y, region.displayName,
-                    rankingsBundle.time.shortForm)
-        }
+        subtitle = layout.mRankingsBundle?.let {
+            getString(R.string.x_updated_y, region.displayName, it.time.shortForm)
+        } ?: region.displayName
 
         supportInvalidateOptionsMenu()
     }
