@@ -200,8 +200,11 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     }
 
     private fun showFullTournament() {
-        mAdapter = TournamentPagerAdapter(this, mFullTournament!!)
-        mViewPager.adapter = mAdapter
+        mFullTournament?.let {
+            mAdapter = TournamentPagerAdapter(this, it)
+            mViewPager.adapter = mAdapter
+        } ?: throw RuntimeException()
+
         mEmpty.visibility = View.GONE
         mError.visibility = View.GONE
         mViewPager.visibility = View.VISIBLE
