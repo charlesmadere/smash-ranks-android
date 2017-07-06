@@ -9,7 +9,6 @@ import com.garpr.android.R
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.IdentityManager
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.models.FullPlayer
 import com.garpr.android.models.Match
 import com.garpr.android.models.MatchesBundle

@@ -14,7 +14,6 @@ import com.garpr.android.R
 import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.AbsTournament
 import kotterknife.bindView

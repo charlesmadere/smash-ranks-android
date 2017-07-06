@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import com.garpr.android.R
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.models.FullTournament
 
 class TournamentToolbar : SearchToolbar {
