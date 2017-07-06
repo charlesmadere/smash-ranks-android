@@ -42,7 +42,7 @@ fun Context.optActivity(): Activity? {
     }
 
     if (this is ContextWrapper) {
-        var context = baseContext
+        var context = this
 
         do {
             context = (context as ContextWrapper).baseContext
