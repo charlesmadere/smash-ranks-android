@@ -60,9 +60,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         private val EXTRA_INITIAL_POSITION = CNAME + ".InitialPosition"
         private val KEY_CURRENT_POSITION = "CurrentPosition"
 
-        const val PositionRankings = 0
-        const val PositionTournaments = 1
-        const val PositionFavoritePlayers = 2
+        const val POSITION_RANKINGS = 0
+        const val POSITION_TOURNAMENTS = 1
+        const val POSITION_FAVORITE_PLAYERS = 2
 
         @JvmOverloads
         fun getLaunchIntent(context: Context, initialPosition: Int? = null): Intent {
@@ -113,9 +113,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onNavigationItemReselected(item: MenuItem) {
         val position = when (item.itemId) {
-            R.id.actionFavoritePlayers -> PositionFavoritePlayers
-            R.id.actionRankings -> PositionRankings
-            R.id.actionTournaments -> PositionTournaments
+            R.id.actionFavoritePlayers -> POSITION_FAVORITE_PLAYERS
+            R.id.actionRankings -> POSITION_RANKINGS
+            R.id.actionTournaments -> POSITION_TOURNAMENTS
             else -> throw RuntimeException("unknown item: " + item.title)
         }
 
@@ -125,17 +125,17 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionFavoritePlayers -> {
-                mViewPager.setCurrentItem(PositionFavoritePlayers, false)
+                mViewPager.setCurrentItem(POSITION_FAVORITE_PLAYERS, false)
                 return true
             }
 
             R.id.actionRankings -> {
-                mViewPager.setCurrentItem(PositionRankings, false)
+                mViewPager.setCurrentItem(POSITION_RANKINGS, false)
                 return true
             }
 
             R.id.actionTournaments -> {
-                mViewPager.setCurrentItem(PositionTournaments, false)
+                mViewPager.setCurrentItem(POSITION_TOURNAMENTS, false)
                 return true
             }
 
@@ -277,9 +277,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     private fun updateSelectedBottomNavigationItem() {
         val itemId = when (mViewPager.currentItem) {
-            PositionFavoritePlayers -> R.id.actionFavoritePlayers
-            PositionRankings -> R.id.actionRankings
-            PositionTournaments -> R.id.actionTournaments
+            POSITION_FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
+            POSITION_RANKINGS -> R.id.actionRankings
+            POSITION_TOURNAMENTS -> R.id.actionTournaments
             else -> throw RuntimeException("unknown current item: " + mViewPager.currentItem)
         }
 

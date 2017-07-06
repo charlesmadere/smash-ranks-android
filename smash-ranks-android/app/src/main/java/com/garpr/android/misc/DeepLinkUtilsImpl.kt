@@ -154,7 +154,7 @@ class DeepLinkUtilsImpl(
     private fun buildRankingsIntentStack(context: Context, intentStack: MutableList<Intent>,
             region: Region, sameRegion: Boolean) {
         if (sameRegion) {
-            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.PositionRankings))
+            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_RANKINGS))
         } else {
             intentStack.add(HomeActivity.getLaunchIntent(context))
             intentStack.add(RankingsActivity.getLaunchIntent(context, region))
@@ -164,8 +164,7 @@ class DeepLinkUtilsImpl(
     private fun buildTournamentsIntentStack(context: Context, intentStack: MutableList<Intent>,
             region: Region, sameRegion: Boolean, splits: Array<String>) {
         if (sameRegion) {
-            intentStack.add(HomeActivity.getLaunchIntent(context,
-                    HomeActivity.PositionTournaments))
+            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_TOURNAMENTS))
         } else {
             intentStack.add(HomeActivity.getLaunchIntent(context))
             intentStack.add(TournamentsActivity.getLaunchIntent(context, region))
