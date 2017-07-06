@@ -42,18 +42,14 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onClick(dialog: DialogInterface, which: Int) {
+        val content = mContent ?: return
+
         when (which) {
-            0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                    mContent!!.winnerId, mContent!!.winnerName,
-                    mRegionManager.getRegion(context)))
-
-            1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                    mContent!!.loserId, mContent!!.loserName,
-                    mRegionManager.getRegion(context)))
-
-            2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
-                    mContent!!))
-
+            0 -> context.startActivity(PlayerActivity.getLaunchIntent(context, content.winnerId,
+                    content.winnerName, mRegionManager.getRegion(context)))
+            1 -> context.startActivity(PlayerActivity.getLaunchIntent(context, content.loserId,
+                    content.loserName, mRegionManager.getRegion(context)))
+            2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context, content))
             else -> throw RuntimeException("illegal which: " + which)
         }
     }
@@ -80,11 +76,13 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     }
 
     override fun refreshIdentity() {
-        if (mIdentityManager.isId(mContent!!.winnerId)) {
+        val content = mContent
+
+        if (content != null && mIdentityManager.isId(content.winnerId)) {
             styleTextViewForUser(mWinnerName)
             styleTextViewForSomeoneElse(mLoserName)
             identityIsUser()
-        } else if (mIdentityManager.isId(mContent!!.loserId)) {
+        } else if (content != null && mIdentityManager.isId(content.loserId)) {
             styleTextViewForSomeoneElse(mWinnerName)
             styleTextViewForUser(mLoserName)
             identityIsUser()
