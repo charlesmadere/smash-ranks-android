@@ -21,11 +21,11 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout, IdentityManager.OnIde
 
     private var mOriginalBackground: Drawable? = null
 
-    protected open var mIdentity: AbsPlayer? = null
-        get() = null
+    var mIdentity: AbsPlayer? = null
+        protected set
 
-    protected open val mIdentityId: String?
-        get() = null
+    var mIdentityId: String? = null
+        protected set
 
     @Inject
     lateinit protected var mIdentityManager: IdentityManager

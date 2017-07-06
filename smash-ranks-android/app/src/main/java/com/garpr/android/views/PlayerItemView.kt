@@ -50,9 +50,10 @@ class PlayerItemView : IdentityFrameLayout, BaseAdapterView<AbsPlayer>, View.OnC
     }
 
     override fun onClick(v: View) {
-        val identity = mIdentity ?: return
-        context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
-                mRegionManager.getRegion(context)))
+        mIdentity?.let {
+            context.startActivity(PlayerActivity.getLaunchIntent(context, it,
+                    mRegionManager.getRegion(context)))
+        }
     }
 
     override fun onFinishInflate() {
