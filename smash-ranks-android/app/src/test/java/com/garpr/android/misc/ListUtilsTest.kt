@@ -87,14 +87,14 @@ class ListUtilsTest : BaseTest() {
         val list = ListUtils.createHeadToHeadList(mApplication, mHeadToHead)
 
         assertNotNull(list)
-        assertEquals(list.size.toLong(), 8)
+        assertEquals(8, list.size)
 
         val `object` = list[0]
         assertTrue(`object` is WinsLosses)
 
         val winsLosses = `object` as WinsLosses
-        assertEquals(winsLosses.mWins.toLong(), 3)
-        assertEquals(winsLosses.mLosses.toLong(), 2)
+        assertEquals(3, winsLosses.mWins)
+        assertEquals(2, winsLosses.mLosses)
 
         assertTrue(list[1] is AbsTournament)
         assertTrue(list[2] is Match)
@@ -111,7 +111,7 @@ class ListUtilsTest : BaseTest() {
         val list = ListUtils.createHeadToHeadList(mApplication, null)
 
         assertNotNull(list)
-        assertEquals(list.size.toLong(), 2)
+        assertEquals(2, list.size)
 
         assertTrue(list[0] is WinsLosses)
         assertTrue(list[1] is CharSequence)
@@ -124,28 +124,28 @@ class ListUtilsTest : BaseTest() {
                 mMatchesBundle)
 
         assertNotNull(list)
-        assertEquals(list!!.size.toLong(), 20)
+        assertEquals(20, list?.size)
 
-        assertTrue(list[0] is Rating)
-        assertTrue(list[1] is AbsTournament)
-        assertTrue(list[2] is Match)
-        assertTrue(list[3] is Match)
-        assertTrue(list[4] is AbsTournament)
-        assertTrue(list[5] is Match)
-        assertTrue(list[6] is Match)
-        assertTrue(list[7] is Match)
-        assertTrue(list[8] is Match)
-        assertTrue(list[9] is Match)
-        assertTrue(list[10] is Match)
-        assertTrue(list[11] is AbsTournament)
-        assertTrue(list[12] is Match)
-        assertTrue(list[13] is Match)
-        assertTrue(list[14] is AbsTournament)
-        assertTrue(list[15] is Match)
-        assertTrue(list[16] is Match)
-        assertTrue(list[17] is Match)
-        assertTrue(list[18] is Match)
-        assertTrue(list[19] is Match)
+        assertTrue(list?.get(0) is Rating)
+        assertTrue(list?.get(1) is AbsTournament)
+        assertTrue(list?.get(2) is Match)
+        assertTrue(list?.get(3) is Match)
+        assertTrue(list?.get(4) is AbsTournament)
+        assertTrue(list?.get(5) is Match)
+        assertTrue(list?.get(6) is Match)
+        assertTrue(list?.get(7) is Match)
+        assertTrue(list?.get(8) is Match)
+        assertTrue(list?.get(9) is Match)
+        assertTrue(list?.get(10) is Match)
+        assertTrue(list?.get(11) is AbsTournament)
+        assertTrue(list?.get(12) is Match)
+        assertTrue(list?.get(13) is Match)
+        assertTrue(list?.get(14) is AbsTournament)
+        assertTrue(list?.get(15) is Match)
+        assertTrue(list?.get(16) is Match)
+        assertTrue(list?.get(17) is Match)
+        assertTrue(list?.get(18) is Match)
+        assertTrue(list?.get(19) is Match)
     }
 
     @Test
@@ -155,10 +155,10 @@ class ListUtilsTest : BaseTest() {
                 null)
 
         assertNotNull(list)
-        assertEquals(list!!.size.toLong(), 2)
+        assertEquals(2, list?.size)
 
-        assertTrue(list[0] is Rating)
-        assertTrue(list[1] is CharSequence)
+        assertTrue(list?.get(0) is Rating)
+        assertTrue(list?.get(1) is CharSequence)
     }
 
     @Test
@@ -170,7 +170,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list)
 
         assertNotNull(list)
-        assertNotEquals(list?.size?.toLong(), size?.toLong())
+        assertNotEquals(size, list?.size)
 
         assertTrue(list?.get(0) is WinsLosses)
         assertTrue(list?.get(1) is AbsTournament)
@@ -186,7 +186,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(null, list)
 
         assertNotNull(list)
-        assertEquals(size?.toLong(), list?.size?.toLong())
+        assertEquals(size, list?.size)
     }
 
     @Test
@@ -198,7 +198,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list)
 
         assertNotNull(list)
-        assertNotEquals(list?.size?.toLong(), size?.toLong())
+        assertNotEquals(size, list?.size)
 
         assertTrue(list?.get(0) is WinsLosses)
         assertTrue(list?.get(1) is AbsTournament)
@@ -214,7 +214,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list)
 
         assertNotNull(list)
-        assertEquals(size?.toLong(), list?.size?.toLong())
+        assertEquals(size, list?.size)
 
         assertTrue(list?.get(0) is WinsLosses)
         assertTrue(list?.get(1) is CharSequence)
@@ -229,7 +229,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(null, list)
 
         assertNotNull(list)
-        assertEquals(size?.toLong(), list?.size?.toLong())
+        assertEquals(size, list?.size)
     }
 
     @Test
@@ -241,7 +241,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list)
 
         assertNotNull(list)
-        assertEquals(size?.toLong(), list?.size?.toLong())
+        assertEquals(size, list?.size)
 
         assertTrue(list?.get(0) is WinsLosses)
         assertTrue(list?.get(1) is CharSequence)
@@ -257,8 +257,8 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list)
 
         assertNotNull(list)
-        assertNotEquals(size?.toLong(), list?.size?.toLong())
-        assertEquals(7, list?.size?.toLong())
+        assertNotEquals(size, list?.size)
+        assertEquals(7, list?.size)
 
         assertTrue(list?.get(0) is Rating)
         assertTrue(list?.get(1) is AbsTournament)
@@ -275,7 +275,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(null, list)
 
         assertNotNull(list)
-        assertEquals(size?.toLong(), list?.size?.toLong())
+        assertEquals(size, list?.size)
     }
 
     @Test
@@ -288,8 +288,8 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list)
 
         assertNotNull(list)
-        assertNotEquals(size?.toLong(), list?.size?.toLong())
-        assertEquals(10, list?.size?.toLong())
+        assertNotEquals(size, list?.size)
+        assertEquals(10, list?.size)
     }
 
     @Test
@@ -302,7 +302,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list)
 
         assertNotNull(list)
-        assertEquals(size?.toLong(), list?.size?.toLong())
+        assertEquals(size, list?.size)
     }
 
     @Test
@@ -315,7 +315,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(null, list)
 
         assertNotNull(list)
-        assertEquals(size?.toLong(), list?.size?.toLong())
+        assertEquals(size, list?.size)
     }
 
     @Test
@@ -328,14 +328,14 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list)
 
         assertNotNull(list)
-        assertEquals(size?.toLong(), list?.size?.toLong())
+        assertEquals(size, list?.size)
     }
 
     @Test
     @Throws(Exception::class)
     fun testSearchPlayerListWithAlliance() {
         val players = ListUtils.searchPlayerList("[A]", mPlayersBundle.players)
-        assertEquals(2, players?.size?.toLong())
+        assertEquals(2, players?.size)
     }
 
     @Test
@@ -343,7 +343,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchPlayerListWithEmpty() {
         val size = mPlayersBundle.players?.size
         val players = ListUtils.searchPlayerList("", mPlayersBundle.players)
-        assertEquals(size?.toLong(), players?.size?.toLong())
+        assertEquals(size, players?.size)
     }
 
     @Test
@@ -358,10 +358,10 @@ class ListUtilsTest : BaseTest() {
     @Throws(Exception::class)
     fun testSearchPlayerListWithImyt() {
         var players = ListUtils.searchPlayerList("Imyt", mPlayersBundle.players)
-        assertEquals(1, players?.size?.toLong())
+        assertEquals(1, players?.size)
 
         players = ListUtils.searchPlayerList("  IMYT ", mPlayersBundle.players)
-        assertEquals(1, players?.size?.toLong())
+        assertEquals(1, players?.size)
     }
 
     @Test
@@ -369,7 +369,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchPlayerListWithNull() {
         val size = mPlayersBundle.players?.size
         val players = ListUtils.searchPlayerList(null, mPlayersBundle.players)
-        assertEquals(size?.toLong(), players?.size?.toLong())
+        assertEquals(size, players?.size)
     }
 
     @Test
@@ -377,7 +377,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchPlayerListWithWhitespace() {
         val size = mPlayersBundle.players?.size
         val players = ListUtils.searchPlayerList(" ", mPlayersBundle.players)
-        assertEquals(size?.toLong(), players?.size?.toLong())
+        assertEquals(size, players?.size)
     }
 
     @Test
@@ -395,7 +395,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.searchPlayerMatchesList("", list)
 
         assertNotNull(list)
-        assertEquals(20, list?.size?.toLong())
+        assertEquals(20, list?.size)
 
         assertTrue(list?.get(0) is Rating)
         assertTrue(list?.get(1) is AbsTournament)
@@ -427,7 +427,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.searchPlayerMatchesList(null, list)
 
         assertNotNull(list)
-        assertEquals(20, list?.size?.toLong())
+        assertEquals(20, list?.size)
 
         assertTrue(list?.get(0) is Rating)
         assertTrue(list?.get(1) is AbsTournament)
@@ -459,7 +459,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.searchPlayerMatchesList("ar", list)
 
         assertNotNull(list)
-        assertEquals(7, list?.size?.toLong())
+        assertEquals(7, list?.size)
 
         assertTrue(list?.get(0) is Rating)
         assertTrue(list?.get(1) is AbsTournament)
@@ -478,7 +478,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.searchPlayerMatchesList(" ", list)
 
         assertNotNull(list)
-        assertEquals(list?.size?.toLong(), 20)
+        assertEquals(20, list?.size)
 
         assertTrue(list?.get(0) is Rating)
         assertTrue(list?.get(1) is AbsTournament)
@@ -510,7 +510,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.searchPlayerMatchesList("", list)
 
         assertNotNull(list)
-        assertEquals(2, list?.size?.toLong())
+        assertEquals(2, list?.size)
 
         assertTrue(list?.get(0) is Rating)
         assertTrue(list?.get(1) is CharSequence)
@@ -524,7 +524,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.searchPlayerMatchesList(null, list)
 
         assertNotNull(list)
-        assertEquals(2, list?.size?.toLong())
+        assertEquals(2, list?.size)
 
         assertTrue(list?.get(0) is Rating)
         assertTrue(list?.get(1) is CharSequence)
@@ -538,7 +538,7 @@ class ListUtilsTest : BaseTest() {
         list = ListUtils.searchPlayerMatchesList(" ", list)
 
         assertNotNull(list)
-        assertEquals(2, list?.size?.toLong())
+        assertEquals(2, list?.size)
 
         assertTrue(list?.get(0) is Rating)
         assertTrue(list?.get(1) is CharSequence)
@@ -557,17 +557,17 @@ class ListUtilsTest : BaseTest() {
     fun testSearchRankingListWithEmpty() {
         val size = mRankingsBundle.rankings?.size
         val rankings = ListUtils.searchRankingList("", mRankingsBundle.rankings)
-        assertEquals(size?.toLong(), rankings?.size?.toLong())
+        assertEquals(size, rankings?.size)
     }
 
     @Test
     @Throws(Exception::class)
     fun testSearchRankingListWithImyt() {
         var rankings = ListUtils.searchRankingList("Imyt", mRankingsBundle.rankings)
-        assertEquals(1, rankings?.size?.toLong())
+        assertEquals(1, rankings?.size)
 
         rankings = ListUtils.searchRankingList("  IMYT ", mRankingsBundle.rankings)
-        assertEquals(1, rankings?.size?.toLong())
+        assertEquals(1, rankings?.size)
     }
 
     @Test
@@ -575,17 +575,17 @@ class ListUtilsTest : BaseTest() {
     fun testSearchRankingListWithNull() {
         val size = mRankingsBundle.rankings?.size
         val rankings = ListUtils.searchRankingList(null, mRankingsBundle.rankings)
-        assertEquals(size?.toLong(), rankings?.size?.toLong())
+        assertEquals(size, rankings?.size)
     }
 
     @Test
     @Throws(Exception::class)
     fun testSearchRankingListWithOng() {
         var rankings = ListUtils.searchRankingList("ong", mRankingsBundle.rankings)
-        assertEquals(2, rankings?.size?.toLong())
+        assertEquals(2, rankings?.size)
 
         rankings = ListUtils.searchRankingList("  ONG ", mRankingsBundle.rankings)
-        assertEquals(2, rankings?.size?.toLong())
+        assertEquals(2, rankings?.size)
     }
 
     @Test
@@ -593,7 +593,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchRankingListWithWhitespace() {
         val size = mRankingsBundle.rankings?.size
         val rankings = ListUtils.searchRankingList(" ", mRankingsBundle.rankings)
-        assertEquals(size?.toLong(), rankings?.size?.toLong())
+        assertEquals(size, rankings?.size)
     }
 
     @Test
@@ -609,7 +609,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchTournamentListWithEmpty() {
         val size = mTournamentsBundle.tournaments?.size
         val tournaments = ListUtils.searchTournamentList("", mTournamentsBundle.tournaments)
-        assertEquals(size?.toLong(), tournaments?.size?.toLong())
+        assertEquals(size, tournaments?.size)
     }
 
     @Test
@@ -617,27 +617,27 @@ class ListUtilsTest : BaseTest() {
     fun testSearchTournamentListWithNull() {
         val size = mTournamentsBundle.tournaments?.size
         val tournaments = ListUtils.searchTournamentList(null, mTournamentsBundle.tournaments)
-        assertEquals(size?.toLong(), tournaments?.size?.toLong())
+        assertEquals(size, tournaments?.size)
     }
 
     @Test
     @Throws(Exception::class)
     fun testSearchTournamentListWith105() {
         var tournaments = ListUtils.searchTournamentList("105", mTournamentsBundle.tournaments)
-        assertEquals(1, tournaments?.size?.toLong())
+        assertEquals(1, tournaments?.size)
 
         tournaments = ListUtils.searchTournamentList("  105 ", mTournamentsBundle.tournaments)
-        assertEquals(1, tournaments?.size?.toLong())
+        assertEquals(1, tournaments?.size)
     }
 
     @Test
     @Throws(Exception::class)
     fun testSearchTournamentListWithThe() {
         var tournaments = ListUtils.searchTournamentList("The", mTournamentsBundle.tournaments)
-        assertEquals(7, tournaments?.size?.toLong())
+        assertEquals(7, tournaments?.size)
 
         tournaments = ListUtils.searchTournamentList(" THE ", mTournamentsBundle.tournaments)
-        assertEquals(7, tournaments?.size?.toLong())
+        assertEquals(7, tournaments?.size)
     }
 
     @Test
@@ -645,7 +645,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchTournamentListWithWhitespace() {
         val size = mTournamentsBundle.tournaments?.size
         val tournaments = ListUtils.searchTournamentList(" ", mTournamentsBundle.tournaments)
-        assertEquals(size?.toLong(), mTournamentsBundle.tournaments?.size?.toLong())
+        assertEquals(size, mTournamentsBundle.tournaments?.size)
     }
 
     @Test
@@ -653,7 +653,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchTournamentMatchesWithEmpty() {
         val size = mFullTournament.matches?.size
         val matches = ListUtils.searchTournamentMatchesList("", mFullTournament.matches)
-        assertEquals(size?.toLong(), matches?.size?.toLong())
+        assertEquals(size, matches?.size)
     }
 
     @Test
@@ -661,7 +661,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchTournamentMatchesWithNull() {
         val size = mFullTournament.matches?.size
         val matches = ListUtils.searchTournamentMatchesList(null, mFullTournament.matches)
-        assertEquals(size?.toLong(), matches?.size?.toLong())
+        assertEquals(size, matches?.size)
     }
 
     @Test
@@ -669,17 +669,17 @@ class ListUtilsTest : BaseTest() {
     fun testSearchTournamentMatchesWithWhitespace() {
         val size = mFullTournament.matches?.size
         val matches = ListUtils.searchTournamentMatchesList(" ", mFullTournament.matches)
-        assertEquals(size?.toLong(), matches?.size?.toLong())
+        assertEquals(size, matches?.size)
     }
 
     @Test
     @Throws(Exception::class)
     fun testSearchTournamentMatchesWithZorc() {
         var matches = ListUtils.searchTournamentMatchesList("zorc", mFullTournament.matches)
-        assertEquals(8, matches?.size?.toLong())
+        assertEquals(8, matches?.size)
 
         matches = ListUtils.searchTournamentMatchesList(" ZORC ", mFullTournament.matches)
-        assertEquals(8, matches?.size?.toLong())
+        assertEquals(8, matches?.size)
     }
 
 }
