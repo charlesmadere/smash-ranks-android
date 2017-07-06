@@ -2,7 +2,6 @@ package com.garpr.android.views
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
@@ -21,7 +20,7 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournament.Match>,
-        DialogInterface.OnClickListener, View.OnClickListener {
+        View.OnClickListener {
 
     private var mContent: FullTournament.Match? = null
 
@@ -41,25 +40,28 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun onClick(dialog: DialogInterface, which: Int) {
-        val content = mContent ?: return
-
-        when (which) {
-            0 -> context.startActivity(PlayerActivity.getLaunchIntent(context, content.winnerId,
-                    content.winnerName, mRegionManager.getRegion(context)))
-            1 -> context.startActivity(PlayerActivity.getLaunchIntent(context, content.loserId,
-                    content.loserName, mRegionManager.getRegion(context)))
-            2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context, content))
-            else -> throw RuntimeException("illegal which: " + which)
-        }
-    }
-
     override fun onClick(v: View) {
-        val items = arrayOf(mContent!!.winnerName, mContent!!.loserName,
+        val content = mContent ?: return
+        val items = arrayOf(content.winnerName, content.loserName,
                 resources.getText(R.string.head_to_head))
 
         AlertDialog.Builder(context)
-                .setItems(items, this)
+                .setItems(items, { dialog, which ->
+                    when (which) {
+                        0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
+                                content.winnerId, content.winnerName,
+                                mRegionManager.getRegion(context)))
+
+                        1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
+                                content.loserId, content.loserName,
+                                mRegionManager.getRegion(context)))
+
+                        2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
+                                content))
+
+                        else -> throw RuntimeException("illegal which: " + which)
+                    }
+                })
                 .setTitle(R.string.view)
                 .show()
     }
