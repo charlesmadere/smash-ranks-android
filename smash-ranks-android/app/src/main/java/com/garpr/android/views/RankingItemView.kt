@@ -13,6 +13,7 @@ import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.misc.FavoritePlayersManager
+import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.Ranking
 import kotterknife.bindOptionalView
@@ -87,7 +88,7 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<Ranking>, View.OnCl
         mPreviousRankView?.setContent(content)
         mRank.text = mNumberFormat.format(content.rank.toLong())
         mName.text = content.name
-        mRating.text = content.ratingTruncated
+        mRating.text = MiscUtils.truncateFloat(content.rating)
 
         refreshIdentity()
     }

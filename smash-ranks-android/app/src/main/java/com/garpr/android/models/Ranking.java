@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
-import com.garpr.android.misc.MiscUtils;
 import com.garpr.android.misc.ParcelableUtils;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -59,10 +58,6 @@ public class Ranking implements Parcelable {
 
     public float getRating() {
         return mRating;
-    }
-
-    public String getRatingTruncated() {
-        return MiscUtils.Companion.truncateFloat(mRating);
     }
 
     @Override

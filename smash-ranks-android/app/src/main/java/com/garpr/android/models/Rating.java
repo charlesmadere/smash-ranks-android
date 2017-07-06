@@ -3,7 +3,6 @@ package com.garpr.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.garpr.android.misc.MiscUtils;
 import com.google.gson.annotations.SerializedName;
 
 public class Rating implements Parcelable {
@@ -39,16 +38,8 @@ public class Rating implements Parcelable {
         return mMu;
     }
 
-    public String getMuTruncated() {
-        return MiscUtils.Companion.truncateFloat(mMu);
-    }
-
     public float getRating() {
         return mRating;
-    }
-
-    public String getRatingTruncated() {
-        return MiscUtils.Companion.truncateFloat(mRating);
     }
 
     public String getRegion() {
@@ -57,10 +48,6 @@ public class Rating implements Parcelable {
 
     public float getSigma() {
         return mSigma;
-    }
-
-    public String getSigmaTruncated() {
-        return MiscUtils.Companion.truncateFloat(mSigma);
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.misc.MiscUtils
 import com.garpr.android.models.Rating
 import kotterknife.bindView
 
@@ -29,9 +30,10 @@ class RatingItemView : LinearLayout, BaseAdapterView<Rating> {
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun setContent(content: Rating) {
-        mRating.text = resources.getString(R.string.rating_x, content.ratingTruncated)
-        mUnadjusted.text = resources.getString(R.string.unadjusted_x_y, content.muTruncated,
-                content.sigmaTruncated)
+        mRating.text = resources.getString(R.string.rating_x,
+                MiscUtils.truncateFloat(content.rating))
+        mUnadjusted.text = resources.getString(R.string.unadjusted_x_y,
+                MiscUtils.truncateFloat(content.mu), MiscUtils.truncateFloat(content.sigma))
     }
 
 }
