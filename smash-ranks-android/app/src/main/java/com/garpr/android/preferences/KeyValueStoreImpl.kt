@@ -28,7 +28,7 @@ class KeyValueStoreImpl(
             if (map == null || map.isEmpty()) {
                 return null
             } else {
-                return Collections.unmodifiableMap<String, *>(map)
+                return Collections.unmodifiableMap(map)
             }
         }
 
