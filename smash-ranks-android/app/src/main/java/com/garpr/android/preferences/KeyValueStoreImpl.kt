@@ -12,8 +12,7 @@ class KeyValueStoreImpl(
 ) : KeyValueStore {
 
     override fun clear() {
-        sharedPreferences
-                .edit()
+        sharedPreferences.edit()
                 .clear()
                 .apply()
     }
