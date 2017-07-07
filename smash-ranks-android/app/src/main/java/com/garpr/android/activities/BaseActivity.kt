@@ -38,12 +38,13 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     protected abstract val activityName: String
 
-    override fun getCurrentRegion(): Region? {
-        return intent?.let {
-            if (intent.hasExtra(EXTRA_REGION)) intent.getParcelableExtra<Region>(EXTRA_REGION)
-            else null
+    override val currentRegion: Region?
+        get() {
+            return intent?.let {
+                if (intent.hasExtra(EXTRA_REGION)) intent.getParcelableExtra<Region>(EXTRA_REGION)
+                else null
+            }
         }
-    }
 
     override val isAlive: Boolean
         get() {

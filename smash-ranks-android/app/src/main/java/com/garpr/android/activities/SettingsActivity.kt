@@ -227,12 +227,16 @@ class SettingsActivity : BaseActivity() {
 
     override val showUpNavigation = true
 
-    private val mOnFavoritePlayersChangeListener = FavoritePlayersManager.OnFavoritePlayersChangeListener {
-        refresh()
+    private val mOnFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
+        override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
+            refresh()
+        }
     }
 
-    private val mOnIdentityChangeListener = IdentityManager.OnIdentityChangeListener {
-        refresh()
+    private val mOnIdentityChangeListener = object : IdentityManager.OnIdentityChangeListener {
+        override fun onIdentityChange(identityManager: IdentityManager) {
+            refresh()
+        }
     }
 
     private val mOnChargingRequiredChange = Preference.OnPreferenceChangeListener<Boolean> {
@@ -263,8 +267,10 @@ class SettingsActivity : BaseActivity() {
         refresh()
     }
 
-    private val mOnRegionChangeListener = RegionManager.OnRegionChangeListener {
-        refresh()
+    private val mOnRegionChangeListener = object : RegionManager.OnRegionChangeListener {
+        override fun onRegionChange(regionManager: RegionManager) {
+            refresh()
+        }
     }
 
 }
