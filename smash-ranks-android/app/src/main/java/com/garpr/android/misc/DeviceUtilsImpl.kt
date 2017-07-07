@@ -1,11 +1,10 @@
 package com.garpr.android.misc
 
-import android.app.ActivityManager
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Build
 import android.support.v4.app.ActivityManagerCompat
+import com.garpr.android.extensions.activityManager
+import com.garpr.android.extensions.connectivityManager
 
 class DeviceUtilsImpl(
         private val mApplication: Application
@@ -15,16 +14,12 @@ class DeviceUtilsImpl(
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return true
         } else {
-            val activityManager = mApplication.getSystemService(
-                    Context.ACTIVITY_SERVICE) as ActivityManager
-            return ActivityManagerCompat.isLowRamDevice(activityManager)
+            return ActivityManagerCompat.isLowRamDevice(mApplication.activityManager)
         }
     }
 
     override fun hasNetworkConnection(): Boolean {
-        val connectivityManager = mApplication.getSystemService(
-                Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
+        val networkInfo = mApplication.connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }
 

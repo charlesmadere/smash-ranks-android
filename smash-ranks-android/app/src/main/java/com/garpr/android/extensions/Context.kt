@@ -1,12 +1,24 @@
 package com.garpr.android.extensions
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
+import android.net.ConnectivityManager
 import android.support.annotation.AttrRes
 import android.support.annotation.ColorInt
 import android.view.inputmethod.InputMethodManager
+
+val Context.activityManager: ActivityManager
+    get() {
+        return getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    }
+
+val Context.connectivityManager: ConnectivityManager
+    get() {
+        return getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
 
 fun Context.getActivity(): Activity {
     return optActivity() ?: throw NullPointerException(
