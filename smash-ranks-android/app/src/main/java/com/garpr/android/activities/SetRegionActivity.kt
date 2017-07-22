@@ -47,15 +47,14 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
 
     companion object {
-        private val TAG = "SetRegionActivity"
+        private const val TAG = "SetRegionActivity"
 
         fun getLaunchIntent(context: Context): Intent {
             return Intent(context, SetRegionActivity::class.java)
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     override fun failure(errorCode: Int) {
         mSelectedRegion = null

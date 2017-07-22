@@ -18,12 +18,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersSelectionAdapter
 import com.garpr.android.extensions.subtitle
-import com.garpr.android.misc.IdentityManager
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.ResultCodes
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.*
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.PlayersBundle
 import com.garpr.android.networking.ApiCall
@@ -63,15 +58,14 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
 
     companion object {
-        private val TAG = "SetIdentityActivity"
+        private const val TAG = "SetIdentityActivity"
 
         fun getLaunchIntent(context: Context): Intent {
             return Intent(context, SetIdentityActivity::class.java)
         }
     }
 
-    override val activityName: String
-        get() = TAG
+    override val activityName = TAG
 
     override fun failure(errorCode: Int) {
         mSelectedPlayer = null
@@ -298,11 +292,11 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override val showUpNavigation = true
 
-    override fun success(playersBundle: PlayersBundle?) {
+    override fun success(`object`: PlayersBundle?) {
         mSelectedPlayer = null
-        mPlayersBundle = playersBundle
+        mPlayersBundle = `object`
 
-        if (playersBundle != null && playersBundle.hasPlayers()) {
+        if (`object` != null && `object`.hasPlayers()) {
             showPlayersBundle()
         } else {
             showEmpty()

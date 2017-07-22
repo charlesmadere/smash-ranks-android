@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class RegionsBundle implements Parcelable {
 
@@ -21,12 +22,10 @@ public class RegionsBundle implements Parcelable {
         return mRegions;
     }
 
-    public boolean hasRegions() {
-        return mRegions != null && !mRegions.isEmpty();
-    }
-
     public void merge(@Nullable final RegionsBundle regionsBundle) {
-        if (regionsBundle == null || !regionsBundle.hasRegions()) {
+        final List<Region> regions = regionsBundle == null ? null : regionsBundle.getRegions();
+
+        if (regions == null || regions.isEmpty()) {
             return;
         }
 
@@ -36,7 +35,7 @@ public class RegionsBundle implements Parcelable {
             }
 
             // noinspection ConstantConditions
-            for (final Region region : regionsBundle.getRegions()) {
+            for (final Region region : regions) {
                 if (!mRegions.contains(region)) {
                     mRegions.add(region);
                 }

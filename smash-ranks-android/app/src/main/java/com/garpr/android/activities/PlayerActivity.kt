@@ -13,22 +13,8 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
 import com.garpr.android.extensions.subtitle
-import com.garpr.android.misc.FavoritePlayersManager
-import com.garpr.android.misc.IdentityManager
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ShareUtils
-import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.Match
-import com.garpr.android.models.MatchesBundle
-import com.garpr.android.models.PlayerMatchesBundle
-import com.garpr.android.models.Ranking
-import com.garpr.android.models.Region
+import com.garpr.android.misc.*
+import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
@@ -78,7 +64,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
 
     companion object {
-        private val TAG = "PlayerActivity"
+        private const val TAG = "PlayerActivity"
         private val CNAME = PlayerActivity::class.java.canonicalName
         private val EXTRA_PLAYER_ID = CNAME + ".PlayerId"
         private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
@@ -158,10 +144,10 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override val fullPlayer: FullPlayer?
-        get() { return mPlayerMatchesBundle?.fullPlayer }
+        get() = mPlayerMatchesBundle?.fullPlayer
 
     override val matchesBundle: MatchesBundle?
-        get() { return mPlayerMatchesBundle?.matchesBundle }
+        get() = mPlayerMatchesBundle?.matchesBundle
 
     override fun onClick(v: MatchItemView) {
         v.mContent?.let {
@@ -251,7 +237,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override val result: Match.Result?
-        get() { return mResult }
+        get() = mResult
 
     override fun search(query: String?) {
         mThreadUtils.run(object : ThreadUtils.Task {
@@ -276,21 +262,21 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override val searchQuery: CharSequence?
-        get() {
-            return mPlayerToolbar.searchQuery
-        }
+        get() = mPlayerToolbar.searchQuery
 
     private fun setTitle() {
         if (!TextUtils.isEmpty(title)) {
             return
         }
 
-        if (mPlayerMatchesBundle != null) {
-            title = mPlayerMatchesBundle!!.fullPlayer.name
-        } else {
+        val playerMatchesBundle = mPlayerMatchesBundle
+
+        if (playerMatchesBundle == null) {
             if (intent.hasExtra(EXTRA_PLAYER_NAME)) {
                 title = intent.getStringExtra(EXTRA_PLAYER_NAME)
             }
+        } else {
+            title = playerMatchesBundle.fullPlayer.name
         }
 
         subtitle = mRegionManager.getRegion(this).displayName
@@ -342,12 +328,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override val showSearchMenuItem: Boolean
-        get() { return mPlayerMatchesBundle?.hasMatchesBundle() ?: false }
+        get() = mPlayerMatchesBundle?.hasMatchesBundle() ?: false
 
     override val showUpNavigation = true
 
-    override fun success(playerMatchesBundle: PlayerMatchesBundle?) {
-        mPlayerMatchesBundle = playerMatchesBundle
+    override fun success(`object`: PlayerMatchesBundle?) {
+        mPlayerMatchesBundle = `object`
         mList = null
         mResult = null
         showData()

@@ -11,26 +11,12 @@ import android.widget.TextView
 import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.misc.Constants
-import com.garpr.android.misc.FavoritePlayersManager
-import com.garpr.android.misc.GoogleApiWrapper
-import com.garpr.android.misc.IdentityManager
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.ResultCodes
-import com.garpr.android.misc.ShareUtils
+import com.garpr.android.misc.*
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.RankingsPollingSyncManager
-import com.garpr.android.views.CheckablePreferenceView
-import com.garpr.android.views.DeleteFavoritePlayersPreferenceView
-import com.garpr.android.views.IdentityPreferenceView
-import com.garpr.android.views.LastPollPreferenceView
-import com.garpr.android.views.PollFrequencyPreferenceView
-import com.garpr.android.views.RegionPreferenceView
-import com.garpr.android.views.RingtonePreferenceView
-import com.garpr.android.views.SimplePreferenceView
-import com.garpr.android.views.ThemePreferenceView
+import com.garpr.android.views.*
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -76,7 +62,7 @@ class SettingsActivity : BaseActivity() {
 
 
     companion object {
-        private val TAG = "SettingsActivity"
+        private const val TAG = "SettingsActivity"
 
         fun getLaunchIntent(context: Context): Intent {
             return Intent(context, SettingsActivity::class.java)

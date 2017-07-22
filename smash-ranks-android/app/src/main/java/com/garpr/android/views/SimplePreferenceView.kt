@@ -51,9 +51,7 @@ open class SimplePreferenceView : FrameLayout, Heartbeat, Refreshable {
     }
 
     override val isAlive: Boolean
-        get() {
-            return ViewCompat.isAttachedToWindow(this)
-        }
+        get() = ViewCompat.isAttachedToWindow(this)
 
     override fun onFinishInflate() {
         super.onFinishInflate()

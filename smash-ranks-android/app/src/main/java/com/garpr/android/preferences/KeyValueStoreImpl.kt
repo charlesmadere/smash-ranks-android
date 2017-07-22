@@ -3,8 +3,7 @@ package com.garpr.android.preferences
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-
-import java.util.Collections
+import java.util.*
 
 class KeyValueStoreImpl(
         private val mApplication: Application,

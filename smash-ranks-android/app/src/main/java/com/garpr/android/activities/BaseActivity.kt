@@ -47,9 +47,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         }
 
     override val isAlive: Boolean
-        get() {
-            return !isFinishing && !isDestroyed
-        }
+        get() = !isFinishing && !isDestroyed
 
     protected open fun navigateUp() {
         val upIntent = NavUtils.getParentActivityIntent(this)

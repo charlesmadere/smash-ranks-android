@@ -162,11 +162,11 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         mRefreshLayout.isRefreshing = false
     }
 
-    override fun success(playersBundle: PlayersBundle?) {
-        mPlayersBundle = playersBundle
+    override fun success(`object`: PlayersBundle?) {
+        mPlayersBundle = `object`
         onPlayersBundleFetched()
 
-        if (playersBundle != null && playersBundle.hasPlayers()) {
+        if (`object` != null && `object`.hasPlayers()) {
             showPlayersBundle()
         } else {
             showEmpty()

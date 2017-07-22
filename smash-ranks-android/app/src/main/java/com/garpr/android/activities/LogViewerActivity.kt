@@ -23,7 +23,7 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
 
     companion object {
-        private val TAG = "LogViewerActivity"
+        private const val TAG = "LogViewerActivity"
 
         fun getLaunchIntent(context: Context): Intent {
             return Intent(context, LogViewerActivity::class.java)

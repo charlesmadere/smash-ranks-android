@@ -11,14 +11,10 @@ import android.support.annotation.ColorInt
 import android.view.inputmethod.InputMethodManager
 
 val Context.activityManager: ActivityManager
-    get() {
-        return getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    }
+    get() = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
 val Context.connectivityManager: ConnectivityManager
-    get() {
-        return getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    }
+    get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
 fun Context.getActivity(): Activity {
     return optActivity() ?: throw NullPointerException(
@@ -44,9 +40,7 @@ fun Context.getAttrColor(@AttrRes attrResId: Int): Int {
 }
 
 val Context.inputMethodManager: InputMethodManager
-    get() {
-        return getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    }
+    get() = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
 fun Context.optActivity(): Activity? {
     if (this is Activity) {

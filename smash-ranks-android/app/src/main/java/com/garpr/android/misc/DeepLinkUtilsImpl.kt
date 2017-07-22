@@ -4,12 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.text.TextUtils
-import com.garpr.android.activities.HomeActivity
-import com.garpr.android.activities.PlayerActivity
-import com.garpr.android.activities.PlayersActivity
-import com.garpr.android.activities.RankingsActivity
-import com.garpr.android.activities.TournamentActivity
-import com.garpr.android.activities.TournamentsActivity
+import com.garpr.android.activities.*
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
@@ -223,17 +218,20 @@ class DeepLinkUtilsImpl(
     }
 
     override fun getRegion(uri: String?, regionsBundle: RegionsBundle?): Region? {
-        var uri = uri
+        val _uri = uri?.trim()
 
-        if (uri == null || TextUtils.isEmpty(uri) || TextUtils.getTrimmedLength(uri) == 0 ||
-                regionsBundle == null || !regionsBundle.hasRegions()) {
+        if (_uri == null || TextUtils.isEmpty(_uri)) {
             return null
         }
 
-        uri = uri.trim { it <= ' ' }
+        val regions = regionsBundle?.regions
 
-        for (region in regionsBundle.regions!!) {
-            if (uri.startsWith(region.endpoint.getWebPath(region.id))) {
+        if (regions == null || regions.isEmpty()) {
+            return null
+        }
+
+        for (region in regions) {
+            if (_uri.startsWith(region.endpoint.getWebPath(region.id))) {
                 return region
             }
         }

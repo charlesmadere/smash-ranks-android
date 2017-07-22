@@ -19,7 +19,7 @@ class RankingsActivity : BaseActivity() {
 
 
     companion object {
-        private val TAG = "RankingsActivity"
+        private const val TAG = "RankingsActivity"
 
         @JvmOverloads
         fun getLaunchIntent(context: Context, region: Region? = null): Intent {

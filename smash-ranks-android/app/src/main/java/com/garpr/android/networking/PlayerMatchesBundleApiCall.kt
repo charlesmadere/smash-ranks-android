@@ -27,9 +27,7 @@ class PlayerMatchesBundleApiCall(
     }
 
     override val isAlive: Boolean
-        get() {
-            return listener.isAlive
-        }
+        get() = listener.isAlive
 
     @Synchronized
     private fun proceed() {
@@ -60,9 +58,7 @@ class PlayerMatchesBundleApiCall(
         }
 
         override val isAlive: Boolean
-            get() {
-                return this@PlayerMatchesBundleApiCall.isAlive
-            }
+            get() = this@PlayerMatchesBundleApiCall.isAlive
 
         override fun success(`object`: FullPlayer?) {
             fullPlayer = `object`
@@ -80,9 +76,7 @@ class PlayerMatchesBundleApiCall(
         }
 
         override val isAlive: Boolean
-            get() {
-                return this@PlayerMatchesBundleApiCall.isAlive
-            }
+            get() = this@PlayerMatchesBundleApiCall.isAlive
 
         override fun success(`object`: MatchesBundle?) {
             matchesBundle = `object`

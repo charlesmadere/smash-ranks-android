@@ -116,16 +116,15 @@ class ServerApiImpl(
             override fun onResponse(call: Call<RankingsBundle>, response: Response<RankingsBundle>) {
                 val body = if (response.isSuccessful) response.body() else null
 
-                if (body != null && region == mRegionManager.region) {
-                    mRankingsPollingPreferenceStore.rankingsDate.set(body.time)
-                }
-
-                if (response.isSuccessful) {
-                    listener.success(body)
-                } else {
-                    mTimber.e(TAG, "getRankings ($region) failed (code " + response.code() +
-                            ")")
+                if (body == null) {
+                    mTimber.e(TAG, "getRankings ($region) failed (code " + response.code() + ")")
                     listener.failure(response.code())
+                } else {
+                    if (region == mRegionManager.region) {
+                        mRankingsPollingPreferenceStore.rankingsDate.set(body.time)
+                    }
+
+                    listener.success(body)
                 }
             }
 
@@ -185,8 +184,8 @@ class ServerApiImpl(
                     mTimber.e(TAG, "getRegions failed (code " + response.code() + ")")
                     listener.failure(response.code())
                 } else {
-                    if (body.hasRegions()) {
-                        for (region in body.regions!!) {
+                    body.regions?.let {
+                        for (region in it) {
                             region.endpoint = endpoint
                         }
                     }
@@ -224,8 +223,7 @@ class ServerApiImpl(
         })
     }
 
-    override fun getTournaments(region: Region,
-            listener: ApiListener<TournamentsBundle>) {
+    override fun getTournaments(region: Region, listener: ApiListener<TournamentsBundle>) {
         val url = region.endpoint.getTournamentsApiPath(region.id)
 
         mGarPrApi.getTournaments(url).enqueue(object : Callback<TournamentsBundle> {

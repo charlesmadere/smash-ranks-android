@@ -57,9 +57,7 @@ class TimberImpl(
     }
 
     override val entries: List<Timber.Entry>
-        @Synchronized get() {
-            return ArrayList<Entry>(mEntries)
-        }
+        @Synchronized get() = ArrayList<Entry>(mEntries)
 
     @Synchronized override fun w(tag: String, msg: String) {
         w(tag, msg, null)

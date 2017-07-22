@@ -14,8 +14,8 @@ abstract class BaseMultiAdapter(
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
-        val itemViewType = mLayoutKeyMap[item.javaClass] ?:
-                throw RuntimeException("itemViewType is null (item $item) (position $position)")
+        val itemViewType = mLayoutKeyMap[item.javaClass] ?: throw RuntimeException(
+                "itemViewType is null (item $item) (position $position)")
 
         return itemViewType
     }

@@ -173,11 +173,11 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         mRefreshLayout.isRefreshing = false
     }
 
-    override fun success(rankingsBundle: RankingsBundle?) {
-        mRankingsBundle = rankingsBundle
+    override fun success(`object`: RankingsBundle?) {
+        mRankingsBundle = `object`
         onRankingsBundleFetched()
 
-        if (rankingsBundle != null && rankingsBundle.hasRankings()) {
+        if (`object` != null && `object`.hasRankings()) {
             showRankingsBundle()
         } else {
             showEmpty()

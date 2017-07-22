@@ -9,11 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import com.garpr.android.App
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.ListLayout
-import com.garpr.android.misc.Refreshable
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.*
 import javax.inject.Inject
 
 abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refreshable, Searchable,

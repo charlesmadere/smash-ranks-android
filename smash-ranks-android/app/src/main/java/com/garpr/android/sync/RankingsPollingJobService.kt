@@ -54,9 +54,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     }
 
     override val isAlive: Boolean
-        get() {
-            return mIsAlive
-        }
+        get() = mIsAlive
 
     override fun onStartJob(job: JobParameters?): Boolean {
         mOldRankingsDate = mRankingsPollingPreferenceStore.rankingsDate.get()

@@ -32,7 +32,7 @@ class PlayersActivity : BaseActivity(), MenuItemCompat.OnActionExpandListener,
 
 
     companion object {
-        private val TAG = "PlayersActivity"
+        private const val TAG = "PlayersActivity"
 
         @JvmOverloads
         fun getLaunchIntent(context: Context, region: Region? = null): Intent {

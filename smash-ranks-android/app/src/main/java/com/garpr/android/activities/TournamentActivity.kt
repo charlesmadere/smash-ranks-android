@@ -16,11 +16,7 @@ import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.models.AbsTournament
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.Match
-import com.garpr.android.models.Region
-import com.garpr.android.models.SimpleDate
+import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
@@ -56,7 +52,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
 
 
     companion object {
-        private val TAG = "TournamentActivity"
+        private const val TAG = "TournamentActivity"
         private val CNAME = TournamentActivity::class.java.canonicalName
         private val EXTRA_TOURNAMENT_DATE = CNAME + ".TournamentDate"
         private val EXTRA_TOURNAMENT_ID = CNAME + ".TournamentId"

@@ -280,10 +280,10 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         }
     }
 
-    override fun success(headToHead: HeadToHead?) {
-        mHeadToHead = headToHead
+    override fun success(`object`: HeadToHead?) {
+        mHeadToHead = `object`
 
-        if (mHeadToHead == null) {
+        if (`object` == null) {
             showEmpty()
         } else {
             showData()

@@ -19,9 +19,9 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
 
 
     companion object {
-        private val POSITION_FAVORITE_PLAYERS = HomeActivity.POSITION_FAVORITE_PLAYERS
-        private val POSITION_RANKINGS = HomeActivity.POSITION_RANKINGS
-        private val POSITION_TOURNAMENTS = HomeActivity.POSITION_TOURNAMENTS
+        private const val POSITION_FAVORITE_PLAYERS = HomeActivity.POSITION_FAVORITE_PLAYERS
+        private const val POSITION_RANKINGS = HomeActivity.POSITION_RANKINGS
+        private const val POSITION_TOURNAMENTS = HomeActivity.POSITION_TOURNAMENTS
     }
 
     init {

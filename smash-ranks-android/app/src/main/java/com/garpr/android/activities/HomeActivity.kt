@@ -13,12 +13,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
 import com.garpr.android.extensions.subtitle
-import com.garpr.android.misc.IdentityManager
-import com.garpr.android.misc.NotificationManager
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ShareUtils
+import com.garpr.android.misc.*
 import com.garpr.android.sync.RankingsPollingSyncManager
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
@@ -55,7 +50,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
 
     companion object {
-        private val TAG = "HomeActivity"
+        private const val TAG = "HomeActivity"
         private val CNAME = HomeActivity::class.java.canonicalName
         private val EXTRA_INITIAL_POSITION = CNAME + ".InitialPosition"
         private val KEY_CURRENT_POSITION = "CurrentPosition"

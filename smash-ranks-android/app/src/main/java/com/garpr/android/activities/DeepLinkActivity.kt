@@ -62,17 +62,13 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
         }
     }
 
-    override fun success(regionsBundle: RegionsBundle?) {
-        if (regionsBundle != null && regionsBundle.hasRegions()) {
-            val region = mDeepLinkUtils.getRegion(intent, regionsBundle)
+    override fun success(`object`: RegionsBundle?) {
+        val region = mDeepLinkUtils.getRegion(intent, `object`)
 
-            if (region == null) {
-                error()
-            } else {
-                deepLink(region)
-            }
-        } else {
+        if (region == null) {
             error()
+        } else {
+            deepLink(region)
         }
     }
 

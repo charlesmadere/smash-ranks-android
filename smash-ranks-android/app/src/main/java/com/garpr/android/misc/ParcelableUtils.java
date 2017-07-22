@@ -1,6 +1,7 @@
 package com.garpr.android.misc;
 
 import android.os.Parcel;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -18,7 +19,7 @@ import java.util.List;
 public final class ParcelableUtils {
 
     @Nullable
-    public static AbsPlayer readAbsPlayer(final Parcel source) {
+    public static AbsPlayer readAbsPlayer(@NonNull final Parcel source) {
         final AbsPlayer.Kind kind = source.readParcelable(AbsPlayer.Kind.class.getClassLoader());
 
         if (kind == null) {
@@ -41,7 +42,7 @@ public final class ParcelableUtils {
     }
 
     @Nullable
-    public static ArrayList<AbsPlayer> readAbsPlayerList(final Parcel source) {
+    public static ArrayList<AbsPlayer> readAbsPlayerList(@NonNull final Parcel source) {
         final int size = source.readInt();
 
         if (size == 0) {
@@ -57,7 +58,7 @@ public final class ParcelableUtils {
         return list;
     }
 
-    public static void writeAbsPlayer(@Nullable final AbsPlayer player, final Parcel dest,
+    public static void writeAbsPlayer(@Nullable final AbsPlayer player, @NonNull final Parcel dest,
             final int flags) {
         if (player == null) {
             dest.writeParcelable(null, flags);
@@ -67,8 +68,8 @@ public final class ParcelableUtils {
         }
     }
 
-    public static void writeAbsPlayerList(@Nullable final List<AbsPlayer> list, final Parcel dest,
-            final int flags) {
+    public static void writeAbsPlayerList(@Nullable final List<AbsPlayer> list,
+            @NonNull final Parcel dest, final int flags) {
         final int size = list == null ? 0 : list.size();
         dest.writeInt(size);
 
@@ -82,7 +83,7 @@ public final class ParcelableUtils {
     }
 
     @Nullable
-    public static AbsTournament readAbsTournament(final Parcel source) {
+    public static AbsTournament readAbsTournament(@NonNull final Parcel source) {
         final AbsTournament.Kind kind = source.readParcelable(AbsTournament.Kind.class.getClassLoader());
 
         if (kind == null) {
@@ -102,7 +103,7 @@ public final class ParcelableUtils {
     }
 
     @Nullable
-    public static ArrayList<AbsTournament> readAbsTournamentList(final Parcel source) {
+    public static ArrayList<AbsTournament> readAbsTournamentList(@NonNull final Parcel source) {
         final int size = source.readInt();
 
         if (size == 0) {
@@ -119,7 +120,7 @@ public final class ParcelableUtils {
     }
 
     public static void writeAbsTournament(@Nullable final AbsTournament tournament,
-            final Parcel dest, final int flags) {
+            @NonNull final Parcel dest, final int flags) {
         if (tournament == null) {
             dest.writeParcelable(null, flags);
         } else {
@@ -129,7 +130,7 @@ public final class ParcelableUtils {
     }
 
     public static void writeAbsTournamentList(@Nullable final List<AbsTournament> list,
-            final Parcel dest, final int flags) {
+            @NonNull final Parcel dest, final int flags) {
         final int size = list == null ? 0 : list.size();
         dest.writeInt(size);
 
@@ -143,7 +144,7 @@ public final class ParcelableUtils {
     }
 
     @Nullable
-    public static Integer readInteger(final Parcel source) {
+    public static Integer readInteger(@NonNull final Parcel source) {
         final String value = source.readString();
 
         if (TextUtils.isEmpty(value)) {
@@ -153,7 +154,7 @@ public final class ParcelableUtils {
         }
     }
 
-    public static void writeInteger(@Nullable final Integer integer, final Parcel dest) {
+    public static void writeInteger(@Nullable final Integer integer, @NonNull final Parcel dest) {
         if (integer == null) {
             dest.writeString(null);
         } else {

@@ -1,20 +1,8 @@
 package com.garpr.android.misc
 
 import android.content.Context
-import android.text.TextUtils
 import com.garpr.android.R
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.AbsTournament
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.HeadToHead
-import com.garpr.android.models.LiteTournament
-import com.garpr.android.models.Match
-import com.garpr.android.models.MatchesBundle
-import com.garpr.android.models.Ranking
-import com.garpr.android.models.Rating
-import com.garpr.android.models.TournamentsBundle
-import com.garpr.android.models.WinsLosses
+import com.garpr.android.models.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,14 +19,15 @@ object ListUtils {
         }
 
         list.add(WinsLosses(headToHead.wins, headToHead.losses))
+        val matches = headToHead.matches
 
-        if (!headToHead.hasMatches()) {
+        if (matches == null || matches.isEmpty()) {
             list.add(context.getString(R.string.no_matches))
             list.trimToSize()
             return list
         }
 
-        list.addAll(createSortedTournamentAndMatchList(headToHead.matches!!))
+        list.addAll(createSortedTournamentAndMatchList(matches))
         list.trimToSize()
 
         return list
@@ -48,31 +37,30 @@ object ListUtils {
             fullPlayer: FullPlayer, bundle: MatchesBundle?): ArrayList<Any>? {
         val region = regionManager.getRegion(context).id
         val rating = fullPlayer.ratings?.getRegion(region)
+        val matches = bundle?.matches
 
-        if (rating == null && (bundle == null || !bundle.hasMatches())) {
+        if (rating == null && (matches == null || matches.isEmpty())) {
             return null
         }
 
-        val list = ArrayList<Any>()
+        val newList = ArrayList<Any>()
 
         if (rating != null) {
-            list.add(rating)
+            newList.add(rating)
         }
 
-        if (bundle == null || !bundle.hasMatches()) {
-            if (list.isEmpty()) {
+        if (matches == null || matches.isEmpty()) {
+            if (newList.isEmpty()) {
                 return null
             } else {
-                list.add(context.getString(R.string.no_matches))
-                list.trimToSize()
-                return list
+                newList.add(context.getString(R.string.no_matches))
             }
+        } else {
+            newList.addAll(createSortedTournamentAndMatchList(matches))
         }
 
-        list.addAll(createSortedTournamentAndMatchList(bundle.matches!!))
-        list.trimToSize()
-
-        return list
+        newList.trimToSize()
+        return newList
     }
 
     private fun createSortedTournamentAndMatchList(matches: ArrayList<Match>): ArrayList<Any> {
@@ -168,28 +156,24 @@ object ListUtils {
         return newList
     }
 
-    fun searchPlayerList(query: String?, list: List<AbsPlayer>?): ArrayList<AbsPlayer>? {
+    fun searchPlayerList(query: String?, list: List<AbsPlayer>?) =
         if (list == null || list.isEmpty()) {
-            return null
-        }
+            null
+        } else {
+            val newList: ArrayList<AbsPlayer>
 
-        val newList = ArrayList<AbsPlayer>(list.size)
+            if (query != null && query.isNotBlank()) {
+                val trimmedQuery = query.trim().toLowerCase()
 
-        if (query == null || TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
-            newList.addAll(list)
-            return newList
-        }
-
-        val query = query.trim { it <= ' ' }.toLowerCase()
-
-        for (player in list) {
-            if (player.name.toLowerCase().contains(query)) {
-                newList.add(player)
+                newList = ArrayList<AbsPlayer>(list.filter {
+                    it.name.toLowerCase().contains(trimmedQuery)
+                })
+            } else {
+                newList = ArrayList<AbsPlayer>(list)
             }
-        }
 
-        return newList
-    }
+            newList
+        }
 
     fun searchPlayerMatchesList(query: String?, list: List<Any>?): ArrayList<Any>? {
         if (list == null || list.isEmpty()) {
@@ -198,12 +182,12 @@ object ListUtils {
 
         val newList = ArrayList<Any>(list.size)
 
-        if (query == null || TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
+        if (query == null || query.isBlank()) {
             newList.addAll(list)
             return newList
         }
 
-        val query = query.trim { it <= ' ' }.toLowerCase()
+        val trimmedQuery = query.trim().toLowerCase()
         var addedRating = false
 
         for (i in list.indices) {
@@ -224,7 +208,7 @@ object ListUtils {
                     if (objectJ is Match) {
                         val match = objectJ
 
-                        if (match.opponent.name.toLowerCase().contains(query)) {
+                        if (match.opponent.name.toLowerCase().contains(trimmedQuery)) {
                             if (!addedTournament) {
                                 addedTournament = true
                                 newList.add(objectI)
@@ -244,77 +228,51 @@ object ListUtils {
         return newList
     }
 
-    fun searchRankingList(query: String?, list: List<Ranking>?): ArrayList<Ranking>? {
+    fun searchRankingList(query: String?, list: List<Ranking>?) =
         if (list == null || list.isEmpty()) {
-            return null
+            null
+        } else if (query != null && query.isNotBlank()) {
+            val trimmedQuery = query.trim().toLowerCase()
+
+            ArrayList<Ranking>(list.filter {
+                it.name.toLowerCase().contains(trimmedQuery)
+            })
+        } else {
+            ArrayList<Ranking>(list)
         }
 
-        val newList = ArrayList<Ranking>(list.size)
+    fun searchTournamentList(query: String?, list: List<AbsTournament>?) =
+        if (list == null || list.isEmpty()) {
+            null
+        } else {
+            val newList: ArrayList<AbsTournament>
 
-        if (query == null || TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
-            newList.addAll(list)
-            return newList
-        }
+            if (query != null && query.isNotBlank()) {
+                val trimmedQuery = query.trim().toLowerCase()
 
-        val query = query.trim { it <= ' ' }.toLowerCase()
-
-        for (ranking in list) {
-            if (ranking.name.toLowerCase().contains(query)) {
-                newList.add(ranking)
+                newList = ArrayList<AbsTournament>(list.filter {
+                    it.name.toLowerCase().contains(trimmedQuery)
+                })
+            } else {
+                newList = ArrayList<AbsTournament>(list)
             }
-        }
 
-        return newList
-    }
-
-    fun searchTournamentList(query: String?, list: List<AbsTournament>?): ArrayList<AbsTournament>? {
-        if (list == null || list.isEmpty()) {
-            return null
-        }
-
-        val newList = ArrayList<AbsTournament>(list.size)
-
-        if (query == null || TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
-            newList.addAll(list)
             Collections.sort(newList, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER)
-            return newList
+            newList
         }
 
-        val query = query.trim { it <= ' ' }.toLowerCase()
-
-        for (tournament in list) {
-            if (tournament.name.toLowerCase().contains(query)) {
-                newList.add(tournament)
-            }
-        }
-
-        Collections.sort(newList, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER)
-        return newList
-    }
-
-    fun searchTournamentMatchesList(query: String?, list: List<FullTournament.Match>?):
-            ArrayList<FullTournament.Match>? {
+    fun searchTournamentMatchesList(query: String?, list: List<FullTournament.Match>?) =
         if (list == null || list.isEmpty()) {
-            return null
+            null
+        } else if (query != null && query.isNotBlank()) {
+            val trimmedQuery = query.trim().toLowerCase()
+
+            ArrayList<FullTournament.Match>(list.filter {
+                it.winnerName.toLowerCase().contains(trimmedQuery) ||
+                        it.loserName.toLowerCase().contains(trimmedQuery)
+            })
+        } else {
+            ArrayList<FullTournament.Match>(list)
         }
-
-        val newList = ArrayList<FullTournament.Match>(list.size)
-
-        if (query == null || TextUtils.isEmpty(query) || TextUtils.getTrimmedLength(query) == 0) {
-            newList.addAll(list)
-            return newList
-        }
-
-        val query = query.trim { it <= ' ' }.toLowerCase()
-
-        for (match in list) {
-            if (match.winnerName.toLowerCase().contains(query) ||
-                    match.loserName.toLowerCase().contains(query)) {
-                newList.add(match)
-            }
-        }
-
-        return newList
-    }
 
 }
