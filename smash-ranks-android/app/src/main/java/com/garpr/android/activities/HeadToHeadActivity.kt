@@ -109,8 +109,9 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     private fun filter(result: Match.Result?) {
         mResult = result
+        val list = mList
 
-        if (mList == null || mList!!.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             return
         }
 
@@ -122,7 +123,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
                     return
                 }
 
-                mList = ListUtils.filterPlayerMatchesList(result, this@HeadToHeadActivity.mList)
+                mList = ListUtils.filterPlayerMatchesList(result, list)
             }
 
             override fun onUi() {

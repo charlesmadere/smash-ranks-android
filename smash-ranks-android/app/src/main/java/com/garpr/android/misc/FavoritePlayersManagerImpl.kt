@@ -18,7 +18,7 @@ class FavoritePlayersManagerImpl(
         private val mTimber: Timber
 ) : FavoritePlayersManager {
 
-    private val mListeners: MutableList<WeakReference<OnFavoritePlayersChangeListener>> = LinkedList()
+    private val mListeners: MutableList<WeakReference<OnFavoritePlayersChangeListener>> = mutableListOf()
 
 
     companion object {
@@ -93,7 +93,7 @@ class FavoritePlayersManagerImpl(
                 return null
             }
 
-            val players = ArrayList<FavoritePlayer>(all.size)
+            val players = mutableListOf<FavoritePlayer>()
 
             for ((_, value) in all) {
                 val json = value as String

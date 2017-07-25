@@ -6,14 +6,13 @@ import com.garpr.android.misc.RegionManager.OnRegionChangeListener
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.Preference
 import java.lang.ref.WeakReference
-import java.util.*
 
 class RegionManagerImpl(
         private val mRegion: Preference<Region>,
         private val mTimber: Timber
 ) : RegionManager {
 
-    private val mListeners: MutableList<WeakReference<OnRegionChangeListener>> = LinkedList()
+    private val mListeners: MutableList<WeakReference<OnRegionChangeListener>> = mutableListOf()
 
 
     companion object {

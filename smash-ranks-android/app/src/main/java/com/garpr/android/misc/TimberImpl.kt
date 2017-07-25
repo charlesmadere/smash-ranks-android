@@ -9,14 +9,9 @@ class TimberImpl(
         private val mCrashlyticsWrapper: CrashlyticsWrapper
 ) : Timber {
 
-    private val mMaxSize: Int
-    private val mEntries: MutableList<Timber.Entry>
+    private val mMaxSize: Int = if (isLowRamDevice) 64 else 256
+    private val mEntries: MutableList<Timber.Entry> = mutableListOf()
 
-
-    init {
-        mMaxSize = if (isLowRamDevice) 64 else 256
-        mEntries = ArrayList<Entry>(mMaxSize)
-    }
 
     private fun addEntry(entry: Timber.Entry) {
         if (mEntries.size >= mMaxSize) {

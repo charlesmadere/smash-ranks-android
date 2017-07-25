@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.annotation.LayoutRes
 
 import com.garpr.android.R
+import com.garpr.android.extensions.orFalse
 import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
 
@@ -23,8 +24,10 @@ class RegionsSelectionAdapter(context: Context) : BaseAdapter<Region>(context) {
     }
 
     fun set(bundle: RegionsBundle?) {
-        if (bundle != null && bundle.hasRegions()) {
-            set(bundle.regions)
+        val regions = bundle?.regions
+
+        if (regions?.isNotEmpty().orFalse()) {
+            set(regions)
         } else {
             clear()
         }

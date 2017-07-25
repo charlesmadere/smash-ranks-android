@@ -205,10 +205,10 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
     override val showUpNavigation = true
 
-    override fun success(regionsBundle: RegionsBundle?) {
-        mRegionsBundle = regionsBundle
+    override fun success(`object`: RegionsBundle?) {
+        mRegionsBundle = `object`
 
-        if (regionsBundle != null && regionsBundle.hasRegions()) {
+        if (`object`?.regions?.isNotEmpty() ?: false) {
             showRegionsBundle()
         } else {
             showEmpty()

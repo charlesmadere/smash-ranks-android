@@ -14,11 +14,13 @@ class PreviousRankUtilsImpl : PreviousRankUtils {
         val previousRank = ranking.previousRank
         val rank = ranking.rank
 
-        if (previousRank == null || previousRank === rank) {
+        if (previousRank == null || previousRank == rank) {
             return null
+        } else if (rank < previousRank) {
+            return INCREASE
+        } else {
+            return DECREASE
         }
-
-        return if (rank < previousRank) INCREASE else DECREASE
     }
 
 }

@@ -93,7 +93,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
     }
 
     override val recyclerView: RecyclerView?
-        get() { return mRecyclerView }
+        get() = mRecyclerView
 
     override fun refresh() {
         if (mFavoritePlayersManager.isEmpty) {

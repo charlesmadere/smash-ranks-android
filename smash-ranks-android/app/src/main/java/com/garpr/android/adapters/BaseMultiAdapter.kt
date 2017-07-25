@@ -6,7 +6,9 @@ import android.support.annotation.LayoutRes
 abstract class BaseMultiAdapter(
         context: Context,
         layoutKeyMap: Map<Class<*>, Int>
-) : BaseAdapter<Any>(context) {
+) : BaseAdapter<Any>(
+        context
+) {
 
     private val mLayoutKeyMap: Map<Class<*>, Int> = layoutKeyMap
 

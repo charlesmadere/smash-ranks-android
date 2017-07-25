@@ -34,15 +34,12 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun fetchTimberEntries() {
         mRefreshLayout.isRefreshing = true
+        mAdapter.set(mTimber.entries)
 
-        val entries = mTimber.entries
-
-        if (entries.isEmpty()) {
-            mAdapter.clear()
+        if (mAdapter.isEmpty) {
             mRecyclerView.visibility = View.GONE
             mEmpty.visibility = View.VISIBLE
         } else {
-            mAdapter.set(entries)
             mEmpty.visibility = View.GONE
             mRecyclerView.visibility = View.VISIBLE
         }

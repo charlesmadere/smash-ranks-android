@@ -7,14 +7,13 @@ import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.Preference
 import java.lang.ref.WeakReference
-import java.util.*
 
 class IdentityManagerImpl(
         private val mIdentity: Preference<FavoritePlayer>,
         private val mTimber: Timber
 ) : IdentityManager {
 
-    private val mListeners: MutableList<WeakReference<OnIdentityChangeListener>> = LinkedList()
+    private val mListeners: MutableList<WeakReference<OnIdentityChangeListener>> = mutableListOf()
 
 
     companion object {
@@ -44,9 +43,7 @@ class IdentityManagerImpl(
     }
 
     override val identity: FavoritePlayer?
-        get() {
-            return mIdentity.get()
-        }
+        get() = mIdentity.get()
 
     private fun getPlayerString(player: AbsPlayer?): String {
         if (player == null) {
@@ -79,7 +76,7 @@ class IdentityManagerImpl(
     }
 
     private fun notifyListeners() {
-        synchronized(mListeners) {
+        synchronized (mListeners) {
             val iterator = mListeners.iterator()
 
             while (iterator.hasNext()) {

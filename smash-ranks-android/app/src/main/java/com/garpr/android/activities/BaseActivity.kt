@@ -122,8 +122,6 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     protected open val showUpNavigation = false
 
-    override fun toString(): String {
-        return activityName
-    }
+    override fun toString() = activityName
 
 }

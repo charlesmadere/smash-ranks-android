@@ -5,13 +5,12 @@ import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import java.util.*
 
 abstract class BaseAdapter<T>(
         private val mLayoutInflater: LayoutInflater
 ) : RecyclerView.Adapter<BaseAdapterViewHolder>() {
 
-    private val mItems: MutableList<T> = ArrayList()
+    private val mItems: MutableList<T> = mutableListOf()
 
 
     constructor(context: Context) : this(LayoutInflater.from(context))
@@ -72,7 +71,7 @@ abstract class BaseAdapter<T>(
     fun set(items: List<T>?) {
         mItems.clear()
 
-        if (items != null && !items.isEmpty()) {
+        if (items != null && items.isNotEmpty()) {
             mItems.addAll(items)
         }
 

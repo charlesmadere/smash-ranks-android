@@ -8,9 +8,7 @@ import com.garpr.android.models.MatchesBundle
 import com.garpr.android.models.PlayerMatchesBundle
 import com.garpr.android.models.Region
 import com.google.gson.Gson
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

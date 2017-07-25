@@ -20,16 +20,12 @@ class TournamentPagerAdapter(
         private val mTournament: FullTournament
 ) : PagerAdapter(), Searchable {
 
-    private val mPages: SparseArrayCompat<WeakReference<TournamentPageLayout>>
+    private val mPages: SparseArrayCompat<WeakReference<TournamentPageLayout>> = SparseArrayCompat(count)
 
 
     companion object {
         private const val POSITION_MATCHES = 0
         private const val POSITION_PLAYERS = 1
-    }
-
-    init {
-        mPages = SparseArrayCompat<WeakReference<TournamentPageLayout>>(count)
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

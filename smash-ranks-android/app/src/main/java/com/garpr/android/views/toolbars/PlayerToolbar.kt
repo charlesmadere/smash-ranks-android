@@ -105,7 +105,7 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
             return
         }
 
-        if (matchesBundle != null && matchesBundle.hasMatches()) {
+        matchesBundle?.matches?.isNotEmpty().let {
             menu.findItem(R.id.miFilter).isVisible = true
             menu.findItem(R.id.miFilterAll).isVisible = result != null
             menu.findItem(R.id.miFilterLosses).isVisible = result != Match.Result.LOSE

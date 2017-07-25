@@ -80,15 +80,14 @@ class TournamentPlayersLayout : TournamentPageLayout {
 
     override fun setContent(content: FullTournament) {
         mContent = content
+        mAdapter.set(content)
 
-        if (content.hasPlayers()) {
-            mAdapter.set(content.players)
-            mEmpty.visibility = GONE
-            mRecyclerView.visibility = VISIBLE
-        } else {
-            mAdapter.clear()
+        if (mAdapter.isEmpty) {
             mRecyclerView.visibility = GONE
             mEmpty.visibility = VISIBLE
+        } else {
+            mEmpty.visibility = GONE
+            mRecyclerView.visibility = VISIBLE
         }
     }
 

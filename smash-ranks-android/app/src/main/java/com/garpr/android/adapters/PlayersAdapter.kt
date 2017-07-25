@@ -2,9 +2,9 @@ package com.garpr.android.adapters
 
 import android.content.Context
 import android.support.annotation.LayoutRes
-
 import com.garpr.android.R
 import com.garpr.android.models.AbsPlayer
+import com.garpr.android.models.FullTournament
 import com.garpr.android.models.PlayersBundle
 
 class PlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
@@ -22,12 +22,12 @@ class PlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
         return R.layout.item_player
     }
 
-    fun set(bundle: PlayersBundle?) {
-        if (bundle != null && bundle.hasPlayers()) {
-            set(bundle.players)
-        } else {
-            clear()
-        }
+    fun set(content: PlayersBundle?) {
+        set(content?.players)
+    }
+
+    fun set(content: FullTournament?) {
+        set(content?.players)
     }
 
 }

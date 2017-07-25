@@ -17,8 +17,8 @@ class GoogleApiWrapperImpl(
 ) : GoogleApiWrapper {
 
     companion object {
-        private val TAG = "GoogleApiWrapperImpl"
-        private val PLAY_SERVICES_RESOLUTION_REQUEST = 9000
+        private const val TAG = "GoogleApiWrapperImpl"
+        private const val PLAY_SERVICES_RESOLUTION_REQUEST = 9000
     }
 
     init {

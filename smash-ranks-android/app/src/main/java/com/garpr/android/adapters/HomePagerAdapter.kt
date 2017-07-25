@@ -15,17 +15,13 @@ import java.lang.ref.WeakReference
 
 class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
 
-    private val mPages: SparseArrayCompat<WeakReference<SearchableFrameLayout>>
+    private val mPages: SparseArrayCompat<WeakReference<SearchableFrameLayout>> = SparseArrayCompat(count)
 
 
     companion object {
         private const val POSITION_FAVORITE_PLAYERS = HomeActivity.POSITION_FAVORITE_PLAYERS
         private const val POSITION_RANKINGS = HomeActivity.POSITION_RANKINGS
         private const val POSITION_TOURNAMENTS = HomeActivity.POSITION_TOURNAMENTS
-    }
-
-    init {
-        mPages = SparseArrayCompat<WeakReference<SearchableFrameLayout>>(count)
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

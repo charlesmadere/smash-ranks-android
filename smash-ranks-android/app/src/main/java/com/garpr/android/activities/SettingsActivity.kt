@@ -225,32 +225,44 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
-    private val mOnChargingRequiredChange = Preference.OnPreferenceChangeListener<Boolean> {
-        mRankingsPollingSyncManager.enableOrDisable()
-        refresh()
+    private val mOnChargingRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
+        override fun onPreferenceChange(preference: Preference<Boolean>) {
+            mRankingsPollingSyncManager.enableOrDisable()
+            refresh()
+        }
     }
 
-    private val mOnPollFrequencyChange = Preference.OnPreferenceChangeListener<PollFrequency> {
-        mRankingsPollingSyncManager.enableOrDisable()
-        refresh()
+    private val mOnPollFrequencyChange = object : Preference.OnPreferenceChangeListener<PollFrequency> {
+        override fun onPreferenceChange(preference: Preference<PollFrequency>) {
+            mRankingsPollingSyncManager.enableOrDisable()
+            refresh()
+        }
     }
 
-    private val mOnRankingsPollingEnabledChange = Preference.OnPreferenceChangeListener<Boolean> {
-        mRankingsPollingSyncManager.enableOrDisable()
-        refresh()
+    private val mOnRankingsPollingEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
+        override fun onPreferenceChange(preference: Preference<Boolean>) {
+            mRankingsPollingSyncManager.enableOrDisable()
+            refresh()
+        }
     }
 
-    private val mOnRingtoneChange = Preference.OnPreferenceChangeListener<Uri> {
-        refresh()
+    private val mOnRingtoneChange = object : Preference.OnPreferenceChangeListener<Uri> {
+        override fun onPreferenceChange(preference: Preference<Uri>) {
+            refresh()
+        }
     }
 
-    private val mOnVibrationEnabledChange = Preference.OnPreferenceChangeListener<Boolean> {
-        refresh()
+    private val mOnVibrationEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
+        override fun onPreferenceChange(preference: Preference<Boolean>) {
+            refresh()
+        }
     }
 
-    private val mOnWifiRequiredChange = Preference.OnPreferenceChangeListener<Boolean> {
-        mRankingsPollingSyncManager.enableOrDisable()
-        refresh()
+    private val mOnWifiRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
+        override fun onPreferenceChange(preference: Preference<Boolean>) {
+            mRankingsPollingSyncManager.enableOrDisable()
+            refresh()
+        }
     }
 
     private val mOnRegionChangeListener = object : RegionManager.OnRegionChangeListener {
