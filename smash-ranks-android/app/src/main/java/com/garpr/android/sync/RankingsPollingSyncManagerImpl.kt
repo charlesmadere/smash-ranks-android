@@ -18,7 +18,7 @@ class RankingsPollingSyncManagerImpl(
 ) : RankingsPollingSyncManager {
 
     companion object {
-        private val TAG = "RankingsPollingSyncManagerImpl"
+        private const val TAG = "RankingsPollingSyncManagerImpl"
     }
 
     private fun disable() {

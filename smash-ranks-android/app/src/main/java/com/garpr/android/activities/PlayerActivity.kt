@@ -24,7 +24,6 @@ import com.garpr.android.views.TournamentDividerView
 import com.garpr.android.views.toolbars.PlayerToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import kotterknife.bindView
-import java.util.*
 import javax.inject.Inject
 
 class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
@@ -32,7 +31,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
         TournamentDividerView.OnClickListener {
 
-    private var mList: ArrayList<Any>? = null
+    private var mList: List<Any>? = null
     private var mResult: Match.Result? = null
     lateinit private var mAdapter: PlayerAdapter
     private var mPlayerMatchesBundle: PlayerMatchesBundle? = null
@@ -70,13 +69,13 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region?): Intent {
-            var region = region
+            var _region = region
 
             if (player is FavoritePlayer) {
-                region = player.region
+                _region = player.region
             }
 
-            return getLaunchIntent(context, player.id, player.name, region)
+            return getLaunchIntent(context, player.id, player.name, _region)
         }
 
         fun getLaunchIntent(context: Context, ranking: Ranking, region: Region?): Intent {
@@ -102,6 +101,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override val activityName = TAG
 
+    private fun addToFavorites() {
+        mPlayerMatchesBundle?.fullPlayer?.let {
+            mFavoritePlayersManager.addPlayer(it, mRegionManager.getRegion(this))
+        } ?: throw RuntimeException("fullPlayer is null")
+    }
+
     override fun failure(errorCode: Int) {
         mPlayerMatchesBundle = null
         mList = null
@@ -116,8 +121,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     private fun filter(result: Match.Result?) {
         mResult = result
+        val list = mList
 
-        if (mList == null || mList!!.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             return
         }
 
@@ -129,7 +135,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                     return
                 }
 
-                mList = ListUtils.filterPlayerMatchesList(result, this@PlayerActivity.mList)
+                mList = ListUtils.filterPlayerMatchesList(result, list)
             }
 
             override fun onUi() {
@@ -138,7 +144,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 }
 
                 mAdapter.set(mList)
-                supportInvalidateOptionsMenu()
+                invalidateOptionsMenu()
             }
         })
     }
@@ -150,17 +156,15 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         get() = mPlayerMatchesBundle?.matchesBundle
 
     override fun onClick(v: MatchItemView) {
-        v.mContent?.let {
-            startActivity(HeadToHeadActivity.getLaunchIntent(this,
-                    mPlayerMatchesBundle!!.fullPlayer, it))
-        }
+        val fullPlayer = mPlayerMatchesBundle?.fullPlayer ?: return
+        val content = v.mContent ?: return
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, content))
     }
 
     override fun onClick(v: TournamentDividerView) {
-        v.mContent?.let {
-            startActivity(TournamentActivity.getLaunchIntent(this, it.id, it.name, it.date,
-                    mRegionManager.getRegion(this)))
-        }
+        val content = v.mContent ?: return
+        startActivity(TournamentActivity.getLaunchIntent(this, content.id, content.name,
+                content.date, mRegionManager.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -178,8 +182,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.miAddToFavorites -> {
-                mFavoritePlayersManager.addPlayer(mPlayerMatchesBundle!!.fullPlayer,
-                        mRegionManager.getRegion(this))
+                addToFavorites()
                 return true
             }
 
@@ -209,13 +212,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             }
 
             R.id.miShare -> {
-                mShareUtils.sharePlayer(this, mPlayerMatchesBundle!!.fullPlayer)
+                share()
                 return true
             }
 
             R.id.miViewYourselfVsThisOpponent -> {
-                startActivity(HeadToHeadActivity.getLaunchIntent(this, mIdentityManager.identity!!,
-                        mPlayerMatchesBundle!!.fullPlayer))
+                viewYourselfVsThisOpponent()
                 return true
             }
         }
@@ -240,6 +242,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         get() = mResult
 
     override fun search(query: String?) {
+        val list = mList
+
+        if (list == null || list.isEmpty()) {
+            return
+        }
+
         mThreadUtils.run(object : ThreadUtils.Task {
             private var mList: List<Any>? = null
 
@@ -248,7 +256,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                     return
                 }
 
-                mList = ListUtils.searchPlayerMatchesList(query, this@PlayerActivity.mList)
+                mList = ListUtils.searchPlayerMatchesList(query, list)
             }
 
             override fun onUi() {
@@ -265,7 +273,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         get() = mPlayerToolbar.searchQuery
 
     private fun setTitle() {
-        if (!TextUtils.isEmpty(title)) {
+        if (title.isNotBlank()) {
             return
         }
 
@@ -280,6 +288,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         }
 
         subtitle = mRegionManager.getRegion(this).displayName
+    }
+
+    private fun share() {
+        mPlayerMatchesBundle?.fullPlayer?.let {
+            mShareUtils.sharePlayer(this, it)
+        } ?: throw RuntimeException("fullPlayer is null")
     }
 
     private fun showAliases() {
@@ -299,23 +313,27 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     private fun showData() {
-        mList = ListUtils.createPlayerMatchesList(this, mRegionManager,
-                mPlayerMatchesBundle!!.fullPlayer, mPlayerMatchesBundle!!.matchesBundle)
+        val playerMatchesBundle = mPlayerMatchesBundle ?: throw RuntimeException(
+                "mPlayerMatchesBundle is null")
+        val list = ListUtils.createPlayerMatchesList(this, mRegionManager,
+                playerMatchesBundle.fullPlayer, playerMatchesBundle.matchesBundle)
+        mList = list
+
         mError.visibility = View.GONE
 
-        if (mList == null || mList!!.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             mAdapter.clear()
             mRecyclerView.visibility = View.GONE
             mEmpty.visibility = View.VISIBLE
         } else {
-            mAdapter.set(mList)
+            mAdapter.set(list)
             mEmpty.visibility = View.GONE
             mRecyclerView.visibility = View.VISIBLE
         }
 
         mRefreshLayout.isRefreshing = false
         setTitle()
-        supportInvalidateOptionsMenu()
+        invalidateOptionsMenu()
     }
 
     private fun showError(errorCode: Int) {
@@ -324,11 +342,11 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         mEmpty.visibility = View.GONE
         mError.setVisibility(View.VISIBLE, errorCode)
         mRefreshLayout.isRefreshing = false
-        supportInvalidateOptionsMenu()
+        invalidateOptionsMenu()
     }
 
     override val showSearchMenuItem: Boolean
-        get() = mPlayerMatchesBundle?.hasMatchesBundle() ?: false
+        get() = mPlayerMatchesBundle?.hasMatchesBundle() == true
 
     override val showUpNavigation = true
 
@@ -337,6 +355,13 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         mList = null
         mResult = null
         showData()
+    }
+
+    private fun viewYourselfVsThisOpponent() {
+        val identity = mIdentityManager.identity ?: throw RuntimeException("identity is null")
+        val fullPlayer = mPlayerMatchesBundle?.fullPlayer ?: throw RuntimeException(
+                "fullPlayer is null")
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, identity, fullPlayer))
     }
 
 }

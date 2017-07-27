@@ -13,7 +13,7 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
-import com.garpr.android.misc.NotificationManager
+import com.garpr.android.misc.NotificationsManager
 
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class TestNotificationView : SimplePreferenceView, DialogInterface.OnClickListen
         View.OnClickListener {
 
     @Inject
-    lateinit protected var mNotificationManager: NotificationManager
+    lateinit protected var mNotificationsManager: NotificationsManager
 
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -37,8 +37,8 @@ class TestNotificationView : SimplePreferenceView, DialogInterface.OnClickListen
         dialog.dismiss()
 
         when (which) {
-            0 -> mNotificationManager.cancelAll()
-            1 -> mNotificationManager.showRankingsUpdated(context)
+            0 -> mNotificationsManager.cancelAll()
+            1 -> mNotificationsManager.rankingsUpdated(context)
             else -> throw RuntimeException("illegal which: " + which)
         }
     }

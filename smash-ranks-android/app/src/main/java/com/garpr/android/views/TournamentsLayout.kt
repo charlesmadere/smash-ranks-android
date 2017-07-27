@@ -97,16 +97,16 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
     }
 
     override val recyclerView: RecyclerView?
-        get() { return mRecyclerView }
+        get() = mRecyclerView
 
     override fun refresh() {
         fetchTournamentsBundle()
     }
 
     override fun search(query: String?) {
-        val tournamentsBundle = mTournamentsBundle
+        val tournaments = mTournamentsBundle?.tournaments
 
-        if (tournamentsBundle == null || !tournamentsBundle.hasTournaments()) {
+        if (tournaments == null || tournaments.isEmpty()) {
             return
         }
 
@@ -118,7 +118,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
                     return
                 }
 
-                mList = ListUtils.searchTournamentList(query, tournamentsBundle.tournaments)
+                mList = ListUtils.searchTournamentList(query, tournaments)
             }
 
             override fun onUi() {
@@ -155,10 +155,10 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
         mRefreshLayout.isRefreshing = false
     }
 
-    override fun success(tournamentsBundle: TournamentsBundle?) {
-        mTournamentsBundle = tournamentsBundle
+    override fun success(`object`: TournamentsBundle?) {
+        mTournamentsBundle = `object`
 
-        if (tournamentsBundle != null && tournamentsBundle.hasTournaments()) {
+        if (`object` != null && `object`.hasTournaments()) {
             showTournamentsBundle()
         } else {
             showEmpty()

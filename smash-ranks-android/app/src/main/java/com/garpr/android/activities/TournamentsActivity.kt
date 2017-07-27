@@ -21,7 +21,8 @@ class TournamentsActivity : BaseActivity() {
     companion object {
         private const val TAG = "TournamentsActivity"
 
-        @JvmOverloads fun getLaunchIntent(context: Context, region: Region? = null): Intent {
+        @JvmOverloads
+        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
             val intent = Intent(context, TournamentsActivity::class.java)
 
             if (region != null) {

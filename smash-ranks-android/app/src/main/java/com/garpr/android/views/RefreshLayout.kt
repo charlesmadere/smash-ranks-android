@@ -1,7 +1,7 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.v4.view.ViewCompat
+import android.support.annotation.IdRes
 import android.support.v4.widget.NestedScrollView
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
@@ -17,8 +17,10 @@ import com.garpr.android.R
  */
 class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(context, attrs) {
 
-    private var scrollingChildId: Int = 0
-    private var scrollingChild: View? = null
+    @IdRes
+    private var mScrollingChildId: Int = 0
+
+    private var mScrollingChild: View? = null
 
 
     init {
@@ -29,32 +31,30 @@ class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(
      * http://stackoverflow.com/q/25270171/823952
      */
     override fun canChildScrollUp(): Boolean {
-        if (scrollingChild == null) {
-            return super.canChildScrollUp()
-        } else {
-            return ViewCompat.canScrollVertically(scrollingChild, -1)
-        }
+        return mScrollingChild?.let {
+            it.canScrollVertically(-1)
+        } ?: super.canChildScrollUp()
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (scrollingChildId != 0) {
+        if (mScrollingChildId != 0) {
             findScrollingChild()
         }
     }
 
     private fun findScrollingChild() {
-        val scrollingChild = findViewById(scrollingChildId)
+        val scrollingChild: View? = findViewById(mScrollingChildId)
 
         if (scrollingChild == null) {
             throw NullPointerException("unable to find scrolling child")
         } else if (scrollingChild is AbsListView || scrollingChild is NestedScrollView
                 || scrollingChild is RecyclerView || scrollingChild is ScrollView) {
-            this.scrollingChild = scrollingChild
+            mScrollingChild = scrollingChild
         } else {
-            throw IllegalStateException("scrollingChild (" + scrollingChild +
-                    ") must be an AbsListView, RecyclerView, or ScrollView")
+            throw RuntimeException("scrollingChild ($scrollingChild) must be an " +
+                    "AbsListView, RecyclerView, or ScrollView")
         }
     }
 
@@ -63,8 +63,7 @@ class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(
             return
         }
 
-        val ta = context.obtainStyledAttributes(attrs,
-                R.styleable.RefreshLayout)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.RefreshLayout)
 
         val spinnerColorsResId = ta.getResourceId(R.styleable.RefreshLayout_spinnerColors,
                 R.array.spinner_colors)
@@ -75,7 +74,7 @@ class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(
                         R.color.card_background))
 
         if (ta.hasValue(R.styleable.RefreshLayout_scrollingChild)) {
-            scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)
+            mScrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)
         }
 
         ta.recycle()

@@ -10,16 +10,6 @@ class KeyValueStoreImpl(
         private val mName: String
 ) : KeyValueStore {
 
-    override fun clear() {
-        sharedPreferences.edit()
-                .clear()
-                .apply()
-    }
-
-    override fun contains(key: String): Boolean {
-        return sharedPreferences.contains(key)
-    }
-
     override val all: Map<String, *>?
         get() {
             val map = sharedPreferences.all
@@ -30,6 +20,16 @@ class KeyValueStoreImpl(
                 return Collections.unmodifiableMap(map)
             }
         }
+
+    override fun clear() {
+        sharedPreferences.edit()
+                .clear()
+                .apply()
+    }
+
+    override fun contains(key: String): Boolean {
+        return key in sharedPreferences
+    }
 
     override fun getBoolean(key: String, fallbackValue: Boolean): Boolean {
         return sharedPreferences.getBoolean(key, fallbackValue)
@@ -51,14 +51,14 @@ class KeyValueStoreImpl(
         return sharedPreferences.getString(key, fallbackValue)
     }
 
-    private val sharedPreferences: SharedPreferences
-        get() = mApplication.getSharedPreferences(mName, Context.MODE_PRIVATE)
-
     override fun remove(key: String) {
         sharedPreferences.edit()
                 .remove(key)
                 .apply()
     }
+
+    private val sharedPreferences: SharedPreferences
+        get() = mApplication.getSharedPreferences(mName, Context.MODE_PRIVATE)
 
     override fun setBoolean(key: String, value: Boolean) {
         sharedPreferences.edit()

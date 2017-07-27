@@ -2,11 +2,11 @@ package com.garpr.android.preferences
 
 interface KeyValueStore {
 
+    val all: Map<String, *>?
+
     fun clear()
 
     operator fun contains(key: String): Boolean
-
-    val all: Map<String, *>?
 
     fun getBoolean(key: String, fallbackValue: Boolean): Boolean
 

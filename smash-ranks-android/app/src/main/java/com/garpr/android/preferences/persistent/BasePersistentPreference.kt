@@ -25,7 +25,7 @@ abstract class BasePersistentPreference<T>(
     }
 
     protected fun hasValueInStore(): Boolean {
-        return keyValueStore.contains(key)
+        return key in keyValueStore
     }
 
 }

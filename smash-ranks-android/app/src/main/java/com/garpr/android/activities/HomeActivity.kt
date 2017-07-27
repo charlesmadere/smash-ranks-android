@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.content.IntentCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
@@ -33,7 +32,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     lateinit protected var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit protected var mNotificationManager: NotificationManager
+    lateinit protected var mNotificationsManager: NotificationsManager
 
     @Inject
     lateinit protected var mRankingsPollingSyncManager: RankingsPollingSyncManager
@@ -61,8 +60,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         @JvmOverloads
         fun getLaunchIntent(context: Context, initialPosition: Int? = null): Intent {
-            var intent = Intent(context, HomeActivity::class.java)
-            intent = IntentCompat.makeRestartActivityTask(intent.component)
+            val intent = Intent.makeRestartActivityTask(
+                    Intent(context, HomeActivity::class.java).component)
 
             if (initialPosition != null) {
                 intent.putExtra(EXTRA_INITIAL_POSITION, initialPosition.toInt())
@@ -94,7 +93,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         setContentView(R.layout.activity_home)
 
         mRankingsPollingSyncManager.enableOrDisable()
-        mNotificationManager.cancelAll()
+        mNotificationsManager.cancelAll()
 
         setInitialPosition(savedInstanceState)
 
@@ -178,7 +177,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             getString(R.string.x_updated_y, region.displayName, it.time.shortForm)
         } ?: region.displayName
 
-        supportInvalidateOptionsMenu()
+        invalidateOptionsMenu()
     }
 
     override fun onRegionChange(regionManager: RegionManager) {
@@ -209,9 +208,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override fun search(query: String?) = mAdapter.search(query)
 
     override val searchQuery: CharSequence?
-        get() {
-            return mHomeToolbar.searchQuery
-        }
+        get() = mHomeToolbar.searchQuery
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {
         var initialPosition = -1
@@ -266,9 +263,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override val showSearchMenuItem: Boolean
-        get() {
-            return !TextUtils.isEmpty(subtitle)
-        }
+        get() = !TextUtils.isEmpty(subtitle)
 
     private fun updateSelectedBottomNavigationItem() {
         val itemId = when (mViewPager.currentItem) {

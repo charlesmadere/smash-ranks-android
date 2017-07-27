@@ -25,6 +25,17 @@ class FavoritePlayersManagerImpl(
         private const val TAG = "FavoritePlayersManagerImpl"
     }
 
+    override val absPlayers: List<AbsPlayer>?
+        get() {
+            val players = players
+
+            if (players == null || players.isEmpty()) {
+                return null
+            }
+
+            return ArrayList<AbsPlayer>(players)
+        }
+
     override fun addListener(listener: OnFavoritePlayersChangeListener) {
         synchronized (mListeners) {
             var addListener = true
@@ -71,38 +82,8 @@ class FavoritePlayersManagerImpl(
     }
 
     override fun containsPlayer(playerId: String): Boolean {
-        return mKeyValueStore.contains(playerId)
+        return playerId in mKeyValueStore
     }
-
-    override val absPlayers: List<AbsPlayer>?
-        get() {
-            val players = players
-
-            if (players == null || players.isEmpty()) {
-                return null
-            }
-
-            return ArrayList<AbsPlayer>(players)
-        }
-
-    override val players: List<FavoritePlayer>?
-        get() {
-            val all = mKeyValueStore.all
-
-            if (all == null || all.isEmpty()) {
-                return null
-            }
-
-            val players = mutableListOf<FavoritePlayer>()
-
-            for ((_, value) in all) {
-                val json = value as String
-                players.add(mGson.fromJson(json, FavoritePlayer::class.java))
-            }
-
-            Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
-            return players
-        }
 
     override val isEmpty: Boolean
         get() {
@@ -126,6 +107,25 @@ class FavoritePlayersManagerImpl(
             }
         }
     }
+
+    override val players: List<FavoritePlayer>?
+        get() {
+            val all = mKeyValueStore.all
+
+            if (all == null || all.isEmpty()) {
+                return null
+            }
+
+            val players = mutableListOf<FavoritePlayer>()
+
+            for ((_, value) in all) {
+                val json = value as String
+                players.add(mGson.fromJson(json, FavoritePlayer::class.java))
+            }
+
+            Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
+            return players
+        }
 
     override fun removeListener(listener: OnFavoritePlayersChangeListener?) {
         synchronized (mListeners) {

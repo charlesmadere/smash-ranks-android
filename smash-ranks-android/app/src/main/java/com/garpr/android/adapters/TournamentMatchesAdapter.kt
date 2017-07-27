@@ -13,4 +13,8 @@ class TournamentMatchesAdapter(context: Context) : BaseAdapter<FullTournament.Ma
         return R.layout.item_tournament_match
     }
 
+    fun set(content: FullTournament?) {
+        set(content?.matches)
+    }
+
 }

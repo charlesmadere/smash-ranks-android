@@ -3,7 +3,6 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
@@ -29,8 +28,8 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
-        MenuItemCompat.OnActionExpandListener, PlayerSelectionItemView.Listeners,
-        SearchQueryHandle, SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+        MenuItem.OnActionExpandListener, PlayerSelectionItemView.Listeners, SearchQueryHandle,
+        SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
 
     private var mSelectedPlayer: AbsPlayer? = null
     private var mSaveMenuItem: MenuItem? = null
@@ -98,9 +97,11 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
             return
         }
 
-        if (mSearchMenuItem != null && MenuItemCompat.isActionViewExpanded(mSearchMenuItem)) {
-            MenuItemCompat.collapseActionView(mSearchMenuItem)
-            return
+        mSearchMenuItem?.let {
+            if (it.isActionViewExpanded) {
+                it.collapseActionView()
+                return
+            }
         }
 
         AlertDialog.Builder(this)
@@ -136,14 +137,15 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_set_identity, menu)
 
-        mSearchMenuItem = menu.findItem(R.id.miSearch)
-        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this)
-        mSearchView = MenuItemCompat.getActionView(mSearchMenuItem) as SearchView
+        val searchMenuItem = menu.findItem(R.id.miSearch) ?: throw RuntimeException(
+                "searchMenuItem is null")
+        searchMenuItem.setOnActionExpandListener(this)
+        mSearchMenuItem = searchMenuItem
 
-        mSearchView?.let {
-            it.queryHint = getText(R.string.search_)
-            it.setOnQueryTextListener(this)
-        } ?: throw RuntimeException("mSearchView is null")
+        val searchView = searchMenuItem.actionView as SearchView
+        searchView.queryHint = getText(R.string.search_)
+        searchView.setOnQueryTextListener(this)
+        mSearchView = searchView
 
         mSaveMenuItem = menu.findItem(R.id.miSave)
         refreshMenu()
@@ -156,9 +158,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         return true
     }
 
-    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-        return true
-    }
+    override fun onMenuItemActionExpand(item: MenuItem) = true
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -208,7 +208,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
                 mEmpty.visibility == View.VISIBLE || mError.visibility == View.VISIBLE) {
             saveMenuItem.isEnabled = false
             saveMenuItem.isVisible = false
-            MenuItemCompat.collapseActionView(mSearchMenuItem)
+            searchMenuItem.collapseActionView()
             searchMenuItem.isVisible = false
         } else {
             saveMenuItem.isEnabled = mSelectedPlayer != null
@@ -218,16 +218,17 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     private fun save() {
-        mIdentityManager.setIdentity(mSelectedPlayer!!, mRegionManager.getRegion(this))
+        val selectedPlayer = mSelectedPlayer ?: throw RuntimeException("selectedPlayer is null")
+        mIdentityManager.setIdentity(selectedPlayer, mRegionManager.getRegion(this))
         Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show()
         setResult(ResultCodes.IDENTITY_SELECTED.mValue)
         supportFinishAfterTransition()
     }
 
     private fun search(query: String?) {
-        val playersBundle = mPlayersBundle
+        val players = mPlayersBundle?.players
 
-        if (playersBundle == null || !playersBundle.hasPlayers()) {
+        if (players == null || players.isEmpty()) {
             return
         }
 
@@ -239,7 +240,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
                     return
                 }
 
-                mList = ListUtils.searchPlayerList(query, playersBundle.players)
+                mList = ListUtils.searchPlayerList(query, players)
             }
 
             override fun onUi() {
@@ -253,14 +254,10 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override val searchQuery: CharSequence?
-        get() {
-            return mSearchView?.query
-        }
+        get() = mSearchView?.query
 
     override val selectedPlayer: AbsPlayer?
-        get() {
-            return mSelectedPlayer ?: mIdentityManager.identity
-        }
+        get() = mSelectedPlayer ?: mIdentityManager.identity
 
     private fun showEmpty() {
         mAdapter.clear()

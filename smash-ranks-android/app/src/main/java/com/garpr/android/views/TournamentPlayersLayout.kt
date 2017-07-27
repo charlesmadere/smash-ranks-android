@@ -51,9 +51,9 @@ class TournamentPlayersLayout : TournamentPageLayout {
     }
 
     override fun search(query: String?) {
-        val content = mContent
+        val players = mContent?.players
 
-        if (content == null || !content.hasPlayers()) {
+        if (players == null || players.isEmpty()) {
             return
         }
 
@@ -65,7 +65,7 @@ class TournamentPlayersLayout : TournamentPageLayout {
                     return
                 }
 
-                mList = ListUtils.searchPlayerList(query, content.players)
+                mList = ListUtils.searchPlayerList(query, players)
             }
 
             override fun onUi() {

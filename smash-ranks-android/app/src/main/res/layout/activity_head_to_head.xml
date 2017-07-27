@@ -13,15 +13,6 @@
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
                 style="@style/RecyclerView" />
-            <LinearLayout
-                style="@style/RecyclerViewMessage.Empty">
-                <TextView
-                    android:text="@string/no_head_to_head_data"
-                    style="@style/RecyclerViewLine.1" />
-                <TextView
-                    android:text="@string/swipe_to_refresh_to_check_again"
-                    style="@style/RecyclerViewLine.2" />
-            </LinearLayout>
             <com.garpr.android.views.ErrorLinearLayout
                 style="@style/RecyclerViewMessage.Error">
                 <TextView

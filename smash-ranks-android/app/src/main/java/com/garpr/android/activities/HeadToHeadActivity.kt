@@ -25,13 +25,12 @@ import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorLinearLayout
 import kotterknife.bindView
-import java.util.*
 import javax.inject.Inject
 
 class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private var mList: ArrayList<Any>? = null
+    private var mList: List<Any>? = null
     private var mHeadToHead: HeadToHead? = null
     lateinit private var mAdapter: HeadToHeadAdapter
     private var mResult: Match.Result? = null
@@ -52,7 +51,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private val mError: ErrorLinearLayout by bindView(R.id.error)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mEmpty: View by bindView(R.id.empty)
 
 
     companion object {
@@ -132,7 +130,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
                 }
 
                 mAdapter.set(mList)
-                supportInvalidateOptionsMenu()
+                invalidateOptionsMenu()
             }
         })
     }
@@ -162,6 +160,16 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
             menu.findItem(R.id.miFilterAll).isVisible = mResult != null
             menu.findItem(R.id.miFilterLosses).isVisible = mResult != Match.Result.LOSE
             menu.findItem(R.id.miFilterWins).isVisible = mResult != Match.Result.WIN
+        }
+
+        if (!TextUtils.isEmpty(mOpponentName) && !TextUtils.isEmpty(mPlayerName)) {
+            val viewOpponent = menu.findItem(R.id.miViewOpponent)
+            viewOpponent.title = getString(R.string.view_x, mOpponentName)
+            viewOpponent.isVisible = true
+
+            val viewPlayer = menu.findItem(R.id.miViewPlayer)
+            viewPlayer.title = getString(R.string.view_x, mPlayerName)
+            viewPlayer.isVisible = true
         }
 
         return super.onCreateOptionsMenu(menu)
@@ -200,22 +208,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        menu.findItem(R.id.miFilter).isVisible = mHeadToHead != null
-
-        if (!TextUtils.isEmpty(mOpponentName) && !TextUtils.isEmpty(mPlayerName)) {
-            val viewOpponent = menu.findItem(R.id.miViewOpponent)
-            viewOpponent.title = getString(R.string.view_x, mOpponentName)
-            viewOpponent.isVisible = true
-
-            val viewPlayer = menu.findItem(R.id.miViewPlayer)
-            viewPlayer.title = getString(R.string.view_x, mPlayerName)
-            viewPlayer.isVisible = true
-        }
-
-        return super.onPrepareOptionsMenu(menu)
-    }
-
     override fun onRefresh() {
         fetchHeadToHead()
     }
@@ -241,24 +233,14 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         }
 
         setSubtitle()
-        supportInvalidateOptionsMenu()
+        invalidateOptionsMenu()
     }
 
     private fun showData() {
         mList = ListUtils.createHeadToHeadList(this, mHeadToHead)
         mAdapter.set(mList)
-        mEmpty.visibility = View.GONE
         mError.visibility = View.GONE
         mRecyclerView.visibility = View.VISIBLE
-        prepareMenuAndSubtitle()
-        mRefreshLayout.isRefreshing = false
-    }
-
-    private fun showEmpty() {
-        mAdapter.clear()
-        mRecyclerView.visibility = View.GONE
-        mError.visibility = View.GONE
-        mEmpty.visibility = View.VISIBLE
         prepareMenuAndSubtitle()
         mRefreshLayout.isRefreshing = false
     }
@@ -266,7 +248,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private fun showError(errorCode: Int) {
         mAdapter.clear()
         mRecyclerView.visibility = View.GONE
-        mEmpty.visibility = View.GONE
         mError.setVisibility(View.VISIBLE, errorCode)
         prepareMenuAndSubtitle()
         mRefreshLayout.isRefreshing = false
@@ -283,12 +264,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     override fun success(`object`: HeadToHead?) {
         mHeadToHead = `object`
-
-        if (`object` == null) {
-            showEmpty()
-        } else {
-            showData()
-        }
+        showData()
     }
 
 }

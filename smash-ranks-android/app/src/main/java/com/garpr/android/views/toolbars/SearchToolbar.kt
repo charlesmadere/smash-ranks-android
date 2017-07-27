@@ -1,7 +1,7 @@
 package com.garpr.android.views.toolbars
 
 import android.content.Context
-import android.support.v4.view.MenuItemCompat
+import android.support.annotation.AttrRes
 import android.support.v7.widget.SearchView
 import android.util.AttributeSet
 import android.view.Menu
@@ -12,8 +12,8 @@ import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 
-abstract class SearchToolbar : MenuToolbar, MenuItemCompat.OnActionExpandListener,
-        SearchQueryHandle, SearchView.OnQueryTextListener {
+abstract class SearchToolbar : MenuToolbar, MenuItem.OnActionExpandListener, SearchQueryHandle,
+        SearchView.OnQueryTextListener {
 
     private var mSearchMenuItem: MenuItem? = null
     private var mSearchView: SearchView? = null
@@ -25,44 +25,31 @@ abstract class SearchToolbar : MenuToolbar, MenuItemCompat.OnActionExpandListene
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context,
-            attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
 
     fun closeSearchLayout() {
         if (isSearchLayoutExpanded) {
-            mSearchMenuItem?.let {
-                MenuItemCompat.collapseActionView(it)
-            }
+            mSearchMenuItem?.collapseActionView()
         }
     }
 
     override val searchQuery: CharSequence?
-        get() {
-            mSearchView?.let {
-                return it.query
-            } ?: return null
-        }
+        get() = mSearchView?.query
 
     val isSearchLayoutExpanded: Boolean
-        get() {
-            mSearchMenuItem?.let {
-                return MenuItemCompat.isActionViewExpanded(it)
-            } ?: return false
-        }
+        get() = mSearchMenuItem?.isActionViewExpanded == true
 
     override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
-        mSearchMenuItem = menu.findItem(R.id.miSearch)
+        val searchMenuItem = menu.findItem(R.id.miSearch) ?: throw RuntimeException(
+                "searchMenuItem is null")
+        searchMenuItem.setOnActionExpandListener(this)
+        mSearchMenuItem = searchMenuItem
 
-        mSearchMenuItem?.let {
-            MenuItemCompat.setOnActionExpandListener(it, this)
-        } ?: throw RuntimeException("mSearchMenuItem is null")
-
-        mSearchView = MenuItemCompat.getActionView(mSearchMenuItem) as SearchView
-
-        mSearchView?.let {
-            it.queryHint = resources.getText(R.string.search_)
-            it.setOnQueryTextListener(this)
-        } ?: throw RuntimeException("mSearchView is null")
+        val searchView = searchMenuItem.actionView as SearchView
+        searchView.queryHint = resources.getText(R.string.search_)
+        searchView.setOnQueryTextListener(this)
+        mSearchView = searchView
 
         super.onCreateOptionsMenu(inflater, menu)
     }
@@ -95,20 +82,20 @@ abstract class SearchToolbar : MenuToolbar, MenuItemCompat.OnActionExpandListene
     override fun onRefreshMenu() {
         super.onRefreshMenu()
 
-        mSearchMenuItem?.let {
-            if (isSearchLayoutExpanded) {
-                for (i in 0..menu.size() - 1) {
-                    val menuItem = menu.getItem(i)
+        val searchMenuItem = mSearchMenuItem ?: throw RuntimeException("mSearchMenuItem is null")
 
-                    if (menuItem.itemId != it.itemId) {
-                        menuItem.isVisible = false
-                    }
+        if (isSearchLayoutExpanded) {
+            for (i in 0..menu.size() - 1) {
+                val menuItem = menu.getItem(i)
+
+                if (menuItem.itemId != searchMenuItem.itemId) {
+                    menuItem.isVisible = false
                 }
-            } else {
-                val activity = context.optActivity()
-                it.isVisible = activity is Listener && (activity as Listener).showSearchMenuItem
             }
-        } ?: throw RuntimeException("mSearchMenuItem is null")
+        } else {
+            val activity = context.optActivity()
+            searchMenuItem.isVisible = activity is Listener && (activity as Listener).showSearchMenuItem
+        }
     }
 
 }

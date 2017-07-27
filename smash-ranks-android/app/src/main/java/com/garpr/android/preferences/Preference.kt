@@ -8,6 +8,8 @@ interface Preference<T> {
 
     fun addListener(listener: OnPreferenceChangeListener<T>)
 
+    val defaultValue: T?
+
     fun delete()
 
     fun delete(notifyListeners: Boolean)
@@ -15,8 +17,6 @@ interface Preference<T> {
     fun exists(): Boolean
 
     fun get(): T?
-
-    val defaultValue: T?
 
     val key: String
 

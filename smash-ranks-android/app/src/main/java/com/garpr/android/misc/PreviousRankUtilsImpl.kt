@@ -16,11 +16,11 @@ class PreviousRankUtilsImpl : PreviousRankUtils {
 
         if (previousRank == null || previousRank == rank) {
             return null
-        } else if (rank < previousRank) {
-            return INCREASE
-        } else {
-            return DECREASE
         }
+
+        // The below if statement appears backwards because a HIGHER rank corresponds to a LOWER
+        // number. As a player's rank moves closer to 1, their rank INCREASES.
+        return if (previousRank > rank) INCREASE else DECREASE
     }
 
 }

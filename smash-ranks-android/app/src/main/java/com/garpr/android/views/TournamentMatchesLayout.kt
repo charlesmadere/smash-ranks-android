@@ -51,9 +51,9 @@ class TournamentMatchesLayout : TournamentPageLayout {
     }
 
     override fun search(query: String?) {
-        val content = mContent
+        val matches = mContent?.matches
 
-        if (content == null || !content.hasMatches()) {
+        if (matches == null || matches.isEmpty()) {
             return
         }
 
@@ -65,7 +65,7 @@ class TournamentMatchesLayout : TournamentPageLayout {
                     return
                 }
 
-                mList = ListUtils.searchTournamentMatchesList(query, content.matches)
+                mList = ListUtils.searchTournamentMatchesList(query, matches)
             }
 
             override fun onUi() {
@@ -80,15 +80,14 @@ class TournamentMatchesLayout : TournamentPageLayout {
 
     override fun setContent(content: FullTournament) {
         mContent = content
+        mAdapter.set(content)
 
-        if (content.hasMatches()) {
-            mAdapter.set(content.matches)
-            mEmpty.visibility = GONE
-            mRecyclerView.visibility = VISIBLE
-        } else {
-            mAdapter.clear()
+        if (mAdapter.isEmpty) {
             mRecyclerView.visibility = GONE
             mEmpty.visibility = VISIBLE
+        } else {
+            mEmpty.visibility = GONE
+            mRecyclerView.visibility = VISIBLE
         }
     }
 

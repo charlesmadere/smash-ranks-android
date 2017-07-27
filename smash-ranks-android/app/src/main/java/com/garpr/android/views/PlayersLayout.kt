@@ -104,16 +104,16 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     }
 
     override val recyclerView: RecyclerView?
-        get() { return mRecyclerView }
+        get() = mRecyclerView
 
     override fun refresh() {
         fetchPlayersBundle()
     }
 
     override fun search(query: String?) {
-        val playersBundle = mPlayersBundle
+        val players = mPlayersBundle?.players
 
-        if (playersBundle == null || !playersBundle.hasPlayers()) {
+        if (players == null || players.isEmpty()) {
             return
         }
 
@@ -125,7 +125,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
                     return
                 }
 
-                mList = ListUtils.searchPlayerList(query, playersBundle.players)
+                mList = ListUtils.searchPlayerList(query, players)
             }
 
             override fun onUi() {

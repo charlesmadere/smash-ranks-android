@@ -54,41 +54,29 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
     }
 
     fun onNavigationItemReselected(position: Int) {
-        val reference = mPages.get(position)
+        val view = mPages[position]?.get()
 
-        if (reference != null) {
-            val view = reference.get()
-
-            if (view != null && view.isAlive) {
-                view.scrollToTop()
-            }
+        if (view != null && view.isAlive) {
+            view.scrollToTop()
         }
     }
 
     override fun refresh() {
         for (i in 0..mPages.size() - 1) {
-            val reference = mPages.get(i)
+            val view = mPages[i]?.get()
 
-            if (reference != null) {
-                val view = reference.get()
-
-                if (view != null && view.isAlive) {
-                    view.refresh()
-                }
+            if (view != null && view.isAlive) {
+                view.refresh()
             }
         }
     }
 
     override fun search(query: String?) {
         for (i in 0..mPages.size() - 1) {
-            val reference = mPages.get(i)
+            val view = mPages[i]?.get()
 
-            if (reference != null) {
-                val view = reference.get()
-
-                if (view != null && view.isAlive) {
-                    view.search(query)
-                }
+            if (view != null && view.isAlive) {
+                view.search(query)
             }
         }
     }

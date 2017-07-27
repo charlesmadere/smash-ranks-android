@@ -22,12 +22,8 @@ class PlayersSelectionAdapter(context: Context) : BaseAdapter<AbsPlayer>(context
         return R.layout.item_player_selection
     }
 
-    fun set(bundle: PlayersBundle?) {
-        if (bundle != null && bundle.hasPlayers()) {
-            set(bundle.players)
-        } else {
-            clear()
-        }
+    fun set(content: PlayersBundle?) {
+        set(content?.players)
     }
 
 }

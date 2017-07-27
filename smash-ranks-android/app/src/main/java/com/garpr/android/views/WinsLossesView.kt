@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.support.annotation.AttrRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
@@ -26,8 +27,8 @@ class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs,
-            defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
 
     init {
         initialize()

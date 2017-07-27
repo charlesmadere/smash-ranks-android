@@ -12,6 +12,8 @@ interface FavoritePlayersManager {
         fun onFavoritePlayersChanged(manager: FavoritePlayersManager)
     }
 
+    val absPlayers: List<AbsPlayer>?
+
     fun addListener(listener: OnFavoritePlayersChangeListener)
 
     fun addPlayer(player: AbsPlayer, region: Region)
@@ -22,11 +24,9 @@ interface FavoritePlayersManager {
 
     fun containsPlayer(playerId: String): Boolean
 
-    val absPlayers: List<AbsPlayer>?
+    val isEmpty: Boolean
 
     val players: List<FavoritePlayer>?
-
-    val isEmpty: Boolean
 
     fun removeListener(listener: OnFavoritePlayersChangeListener?)
 

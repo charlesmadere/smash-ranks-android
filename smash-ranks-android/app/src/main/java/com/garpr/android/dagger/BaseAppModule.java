@@ -17,8 +17,8 @@ import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.IdentityManagerImpl;
-import com.garpr.android.misc.NotificationManager;
-import com.garpr.android.misc.NotificationManagerImpl;
+import com.garpr.android.misc.NotificationsManager;
+import com.garpr.android.misc.NotificationsManagerImpl;
 import com.garpr.android.misc.PreviousRankUtils;
 import com.garpr.android.misc.PreviousRankUtilsImpl;
 import com.garpr.android.misc.RegionManager;
@@ -168,10 +168,10 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    NotificationManager providesNotificationManager(
+    NotificationsManager providesNotificationManager(
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
             final RegionManager regionManager) {
-        return new NotificationManagerImpl(mApplication, rankingsPollingPreferenceStore,
+        return new NotificationsManagerImpl(mApplication, rankingsPollingPreferenceStore,
                 regionManager);
     }
 

@@ -4,7 +4,7 @@ import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
 import com.garpr.android.App
 import com.garpr.android.misc.DeviceUtils
-import com.garpr.android.misc.NotificationManager
+import com.garpr.android.misc.NotificationsManager
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.RankingsBundle
@@ -21,26 +21,26 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     private var mOldRankingsDate: SimpleDate? = null
 
     @Inject
-    lateinit internal var mDeviceUtils: DeviceUtils
+    lateinit protected var mDeviceUtils: DeviceUtils
 
     @Inject
-    lateinit internal var mNotificationManager: NotificationManager
+    lateinit protected var mNotificationsManager: NotificationsManager
 
     @Inject
-    lateinit internal var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    lateinit protected var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
-    lateinit internal var mRegionManager: RegionManager
+    lateinit protected var mRegionManager: RegionManager
 
     @Inject
-    lateinit internal var mServerApi: ServerApi
+    lateinit protected var mServerApi: ServerApi
 
     @Inject
-    lateinit internal var mTimber: Timber
+    lateinit protected var mTimber: Timber
 
 
     companion object {
-        private val TAG = "RankingsPollingJobService"
+        private const val TAG = "RankingsPollingJobService"
     }
 
     init {
@@ -49,7 +49,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
     override fun failure(errorCode: Int) {
         mTimber.e(TAG, "canceling any notifications, failure fetching rankings")
-        mNotificationManager.cancelAll()
+        mNotificationsManager.cancelAll()
         mRetry = true
     }
 
@@ -87,18 +87,23 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     override fun success(`object`: RankingsBundle?) {
         if (`object` == null) {
             mTimber.d(TAG, "canceling any notifications, received a null rankings bundle")
-            mNotificationManager.cancelAll()
+            mNotificationsManager.cancelAll()
             return
         }
 
         val newRankingsDate = mRankingsPollingPreferenceStore.rankingsDate.get()
+        val oldRankingsDate = mOldRankingsDate
 
         if (newRankingsDate == null) {
             // should be impossible
-            mTimber.e(TAG, "new rankings date is null! caneling any notifications")
-            mNotificationManager.cancelAll()
-        } else if (newRankingsDate.happenedAfter(mOldRankingsDate!!)) {
-            mNotificationManager.showRankingsUpdated(this)
+            mTimber.e(TAG, "new rankings date is null! canceling any notifications")
+            mNotificationsManager.cancelAll()
+        } else if (oldRankingsDate == null) {
+            // should be impossible
+            mTimber.e(TAG, "old rankings date is null! canceling any notifications")
+            mNotificationsManager.cancelAll()
+        } else if (newRankingsDate.happenedAfter(oldRankingsDate)) {
+            mNotificationsManager.rankingsUpdated(this)
         }
     }
 

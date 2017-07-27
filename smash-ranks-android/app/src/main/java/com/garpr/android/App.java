@@ -57,7 +57,7 @@ public class App extends Application {
 
     private void initializeAppComponent() {
         mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this, Constants.DEFAULT_REGION))
+                .appModule(new AppModule(this, Constants.INSTANCE.getDefaultRegion()))
                 .build();
 
         mAppComponent.inject(this);

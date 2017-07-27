@@ -2,6 +2,7 @@ package com.garpr.android.extensions
 
 import android.app.Activity
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
@@ -41,6 +42,9 @@ fun Context.getAttrColor(@AttrRes attrResId: Int): Int {
 
 val Context.inputMethodManager: InputMethodManager
     get() = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+val Context.notificationManager: NotificationManager
+    get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 fun Context.optActivity(): Activity? {
     if (this is Activity) {

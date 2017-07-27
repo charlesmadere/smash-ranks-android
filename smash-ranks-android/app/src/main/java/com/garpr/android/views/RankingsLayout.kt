@@ -115,16 +115,16 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     }
 
     override val recyclerView: RecyclerView?
-        get() { return mRecyclerView }
+        get() = mRecyclerView
 
     override fun refresh() {
         fetchRankingsBundle()
     }
 
     override fun search(query: String?) {
-        val rankingsBundle = mRankingsBundle
+        val rankings = mRankingsBundle?.rankings
 
-        if (rankingsBundle == null || !rankingsBundle.hasRankings()) {
+        if (rankings == null || rankings.isEmpty()) {
             return
         }
 
@@ -136,7 +136,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
                     return
                 }
 
-                mList = ListUtils.searchRankingList(query, rankingsBundle.rankings)
+                mList = ListUtils.searchRankingList(query, rankings)
             }
 
             override fun onUi() {

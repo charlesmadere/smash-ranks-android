@@ -44,7 +44,7 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             mRecyclerView.visibility = View.VISIBLE
         }
 
-        supportInvalidateOptionsMenu()
+        invalidateOptionsMenu()
         mRefreshLayout.isRefreshing = false
     }
 
@@ -56,6 +56,7 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_log_viewer, menu)
+        menu.findItem(R.id.miClearLog).isEnabled = !mAdapter.isEmpty
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -69,14 +70,6 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        if (!mAdapter.isEmpty) {
-            menu.findItem(R.id.miClearLog).isEnabled = true
-        }
-
-        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onRefresh() {

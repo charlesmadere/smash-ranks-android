@@ -3,6 +3,8 @@ package com.garpr.android.views
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
+import android.support.annotation.AttrRes
+import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
@@ -31,12 +33,12 @@ class RegionSelectionItemView : LinearLayout, BaseAdapterView<Region>, View.OnCl
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context,
-            attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) :
-            super(context, attrs, defStyleAttr, defStyleRes)
+    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
+            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onClick(v: View) {
         val activity = context.optActivity()

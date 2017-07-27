@@ -3,7 +3,6 @@ package com.garpr.android.misc
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.text.TextUtils
 import com.garpr.android.activities.*
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
@@ -56,8 +55,8 @@ class DeepLinkUtilsImpl(
     }
 
     override fun buildIntentStack(context: Context, uri: String?, region: Region): List<Intent>? {
-        if (uri == null || TextUtils.isEmpty(uri) || TextUtils.getTrimmedLength(uri) == 0) {
-            mTimber.d(TAG, "Can't deep link, uri is null / empty / whitespace")
+        if (uri == null || uri.isBlank()) {
+            mTimber.d(TAG, "Can't deep link, uri is null / blank")
             return null
         }
 
@@ -72,8 +71,8 @@ class DeepLinkUtilsImpl(
 
         val path = uri.substring(endpoint.webPath.length, uri.length)
 
-        if (TextUtils.isEmpty(path) || TextUtils.getTrimmedLength(path) == 0) {
-            mTimber.d(TAG, "Deep link path is null / empty / whitespace")
+        if (path.isNullOrBlank()) {
+            mTimber.d(TAG, "Deep link path is null / blank")
             return null
         }
 
@@ -86,8 +85,8 @@ class DeepLinkUtilsImpl(
 
         val regionId = splits[0]
 
-        if (TextUtils.isEmpty(regionId) || TextUtils.getTrimmedLength(regionId) == 0) {
-            mTimber.w(TAG, "Region ID is null / empty / whitespace")
+        if (regionId.isNullOrBlank()) {
+            mTimber.w(TAG, "Region ID is null / blank")
             return null
         }
 
@@ -138,7 +137,7 @@ class DeepLinkUtilsImpl(
 
         val playerId = splits[2]
 
-        if (TextUtils.isEmpty(playerId) || TextUtils.getTrimmedLength(playerId) == 0) {
+        if (playerId.isNullOrBlank()) {
             return
         }
 
@@ -171,7 +170,7 @@ class DeepLinkUtilsImpl(
 
         val tournamentId = splits[2]
 
-        if (TextUtils.isEmpty(tournamentId) || TextUtils.getTrimmedLength(tournamentId) == 0) {
+        if (tournamentId.isNullOrBlank()) {
             return
         }
 
@@ -188,7 +187,7 @@ class DeepLinkUtilsImpl(
     }
 
     override fun getEndpoint(uri: String?): Endpoint? {
-        if (uri == null || TextUtils.isEmpty(uri) || TextUtils.getTrimmedLength(uri) == 0) {
+        if (uri == null || uri.isNullOrBlank()) {
             return null
         }
 
@@ -220,7 +219,7 @@ class DeepLinkUtilsImpl(
     override fun getRegion(uri: String?, regionsBundle: RegionsBundle?): Region? {
         val _uri = uri?.trim()
 
-        if (_uri == null || TextUtils.isEmpty(_uri)) {
+        if (_uri == null || uri.isNullOrBlank()) {
             return null
         }
 
