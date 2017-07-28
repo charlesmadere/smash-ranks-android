@@ -211,6 +211,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 return true
             }
 
+            R.id.miSetAsYourIdentity -> {
+                val player = fullPlayer ?: throw RuntimeException("fullPlayer is null")
+                mIdentityManager.setIdentity(player, mRegionManager.getRegion(this))
+                return true
+            }
+
             R.id.miShare -> {
                 share()
                 return true

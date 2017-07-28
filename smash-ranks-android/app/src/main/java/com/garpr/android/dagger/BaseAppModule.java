@@ -19,6 +19,8 @@ import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.IdentityManagerImpl;
 import com.garpr.android.misc.NotificationsManager;
 import com.garpr.android.misc.NotificationsManagerImpl;
+import com.garpr.android.misc.PlayerToolbarManager;
+import com.garpr.android.misc.PlayerToolbarManagerImpl;
 import com.garpr.android.misc.PreviousRankUtils;
 import com.garpr.android.misc.PreviousRankUtilsImpl;
 import com.garpr.android.misc.RegionManager;
@@ -173,6 +175,14 @@ public abstract class BaseAppModule {
             final RegionManager regionManager) {
         return new NotificationsManagerImpl(mApplication, rankingsPollingPreferenceStore,
                 regionManager);
+    }
+
+    @Provides
+    @Singleton
+    PlayerToolbarManager providesPlayerToolbarManager(
+            final FavoritePlayersManager favoritePlayersManager,
+            final IdentityManager identityManager) {
+        return new PlayerToolbarManagerImpl(favoritePlayersManager, identityManager);
     }
 
     @Provides

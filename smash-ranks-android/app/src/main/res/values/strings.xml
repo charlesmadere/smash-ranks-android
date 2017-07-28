@@ -98,8 +98,10 @@
     <string name="search_opponents_">Search opponents…</string>
     <string name="search_players_">Search players…</string>
     <string name="settings">Settings</string>
+    <string name="set_x_as_your_identity">Set %1$s as your identity</string>
     <string name="set_identity">Set Identity</string>
     <string name="set_region">Set Region</string>
+    <string name="set_this_player_as_your_identity">Set this player as your identity</string>
     <string name="set_your_identity">Set your identity</string>
     <string name="set_your_region">Set your region</string>
     <string name="share">Share</string>

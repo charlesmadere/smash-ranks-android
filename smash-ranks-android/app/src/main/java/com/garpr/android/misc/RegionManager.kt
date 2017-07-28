@@ -16,9 +16,9 @@ interface RegionManager {
 
     fun addListener(listener: OnRegionChangeListener)
 
-    var region: Region
-
     fun getRegion(context: Context?): Region
+
+    var region: Region
 
     fun removeListener(listener: OnRegionChangeListener?)
 

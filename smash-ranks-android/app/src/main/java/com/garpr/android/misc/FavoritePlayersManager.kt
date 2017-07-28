@@ -20,9 +20,9 @@ interface FavoritePlayersManager {
 
     fun clear()
 
-    fun containsPlayer(player: AbsPlayer): Boolean
+    operator fun contains(player: AbsPlayer): Boolean
 
-    fun containsPlayer(playerId: String): Boolean
+    operator fun contains(playerId: String): Boolean
 
     val isEmpty: Boolean
 
@@ -36,6 +36,6 @@ interface FavoritePlayersManager {
 
     fun showAddOrRemovePlayerDialog(context: Context, player: AbsPlayer?, region: Region): Boolean
 
-    fun size(): Int
+    val size: Int
 
 }

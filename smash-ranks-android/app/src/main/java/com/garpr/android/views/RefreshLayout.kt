@@ -31,9 +31,7 @@ class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(
      * http://stackoverflow.com/q/25270171/823952
      */
     override fun canChildScrollUp(): Boolean {
-        return mScrollingChild?.let {
-            it.canScrollVertically(-1)
-        } ?: super.canChildScrollUp()
+        return mScrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
     }
 
     override fun onFinishInflate() {
@@ -64,14 +62,12 @@ class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(
         }
 
         val ta = context.obtainStyledAttributes(attrs, R.styleable.RefreshLayout)
-
         val spinnerColorsResId = ta.getResourceId(R.styleable.RefreshLayout_spinnerColors,
                 R.array.spinner_colors)
         setColorSchemeColors(*resources.getIntArray(spinnerColorsResId))
 
-        setProgressBackgroundColorSchemeResource(
-                ta.getResourceId(R.styleable.RefreshLayout_spinnerBackground,
-                        R.color.card_background))
+        setProgressBackgroundColorSchemeResource(ta.getResourceId(
+                R.styleable.RefreshLayout_spinnerBackground, R.color.card_background))
 
         if (ta.hasValue(R.styleable.RefreshLayout_scrollingChild)) {
             mScrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)

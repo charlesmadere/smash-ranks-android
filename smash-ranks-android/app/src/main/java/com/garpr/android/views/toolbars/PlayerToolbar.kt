@@ -9,6 +9,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.IdentityManager
+import com.garpr.android.misc.PlayerToolbarManager
 import com.garpr.android.models.FullPlayer
 import com.garpr.android.models.Match
 import com.garpr.android.models.MatchesBundle
@@ -22,6 +23,9 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
 
     @Inject
     lateinit protected var mIdentityManager: IdentityManager
+
+    @Inject
+    lateinit protected var mPlayerToolbarManager: PlayerToolbarManager
 
 
     interface DataProvider {
@@ -89,45 +93,40 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         val activity = context.optActivity()
         val fullPlayer: FullPlayer?
         val matchesBundle: MatchesBundle?
-        val result: Match.Result?
+        val matchResult: Match.Result?
 
         if (activity is DataProvider) {
-            fullPlayer = (activity as DataProvider).fullPlayer
-            matchesBundle = (activity as DataProvider).matchesBundle
-            result = (activity as DataProvider).result
+            fullPlayer = activity.fullPlayer
+            matchesBundle = activity.matchesBundle
+            matchResult = activity.result
         } else {
             fullPlayer = null
             matchesBundle = null
-            result = null
+            matchResult = null
         }
 
-        if (fullPlayer == null) {
-            return
+        val presentation = mPlayerToolbarManager.getPresentation(resources, fullPlayer,
+                matchesBundle, matchResult)
+
+        menu.findItem(R.id.miAddToFavorites).isVisible = presentation.mIsAddToFavoritesVisible
+        menu.findItem(R.id.miAliases).isVisible = presentation.mIsAliasesVisible
+        menu.findItem(R.id.miFilter).isVisible = presentation.mIsFilterVisible
+        menu.findItem(R.id.miFilterAll).isVisible = presentation.mIsFilterAllVisible
+        menu.findItem(R.id.miFilterLosses).isVisible = presentation.mIsFilterLossesVisible
+        menu.findItem(R.id.miFilterWins).isVisible = presentation.mIsFilterWinsVisible
+        menu.findItem(R.id.miRemoveFromFavorites).isVisible = presentation.mIsRemoveFromFavoritesVisible
+        menu.findItem(R.id.miShare).isVisible = presentation.mIsShareVisible
+
+        val setAsYourIdentity = menu.findItem(R.id.miSetAsYourIdentity)
+        setAsYourIdentity.isVisible = presentation.mIsSetAsYourIdentityVisible
+        if (presentation.mSetAsYourIdentityTitle?.isNotBlank() == true) {
+            setAsYourIdentity.title = presentation.mSetAsYourIdentityTitle
         }
 
-        matchesBundle?.matches?.isNotEmpty().let {
-            menu.findItem(R.id.miFilter).isVisible = true
-            menu.findItem(R.id.miFilterAll).isVisible = result != null
-            menu.findItem(R.id.miFilterLosses).isVisible = result != Match.Result.LOSE
-            menu.findItem(R.id.miFilterWins).isVisible = result != Match.Result.WIN
-        }
-
-        menu.findItem(R.id.miShare).isVisible = true
-
-        if (mFavoritePlayersManager.containsPlayer(fullPlayer)) {
-            menu.findItem(R.id.miRemoveFromFavorites).isVisible = true
-        } else {
-            menu.findItem(R.id.miAddToFavorites).isVisible = true
-        }
-
-        if (fullPlayer.hasAliases()) {
-            menu.findItem(R.id.miAliases).isVisible = true
-        }
-
-        if (mIdentityManager.hasIdentity() && !mIdentityManager.isPlayer(fullPlayer)) {
-            val menuItem = menu.findItem(R.id.miViewYourselfVsThisOpponent)
-            menuItem.title = resources.getString(R.string.view_yourself_vs_x, fullPlayer.name)
-            menuItem.isVisible = true
+        val viewYourselfVsThisOpponent = menu.findItem(R.id.miViewYourselfVsThisOpponent)
+        viewYourselfVsThisOpponent.isVisible = presentation.mIsViewYourselfVsThisOpponentVisible
+        if (presentation.mViewYourselfVsThisOpponentTitle?.isNotBlank() == true) {
+            viewYourselfVsThisOpponent.title = presentation.mViewYourselfVsThisOpponentTitle
         }
     }
 

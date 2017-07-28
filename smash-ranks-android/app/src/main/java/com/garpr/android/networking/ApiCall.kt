@@ -2,7 +2,7 @@ package com.garpr.android.networking
 
 import java.lang.ref.WeakReference
 
-class ApiCall<T>(listener: ApiListener<T>) : ApiListener<T> {
+class ApiCall<in T>(listener: ApiListener<T>) : ApiListener<T> {
 
     private val mReference: WeakReference<ApiListener<T>> = WeakReference(listener)
 

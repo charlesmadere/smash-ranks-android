@@ -4,6 +4,7 @@ import com.garpr.android.misc.DeepLinkUtilsTest;
 import com.garpr.android.misc.FavoritePlayersManagerTest;
 import com.garpr.android.misc.IdentityManagerTest;
 import com.garpr.android.misc.ListUtilsTest;
+import com.garpr.android.misc.PlayerToolbarManagerTest;
 import com.garpr.android.misc.PreviousRankUtilsTest;
 import com.garpr.android.misc.RegionManagerTest;
 import com.garpr.android.misc.TimberTest;
@@ -37,6 +38,7 @@ public interface TestAppComponent {
     void inject(FavoritePlayersManagerTest test);
     void inject(IdentityManagerTest test);
     void inject(ListUtilsTest test);
+    void inject(PlayerToolbarManagerTest test);
     void inject(PreviousRankUtilsTest test);
     void inject(RegionManagerTest test);
     void inject(TimberTest test);

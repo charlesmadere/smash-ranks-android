@@ -33,7 +33,10 @@ class FavoritePlayersManagerImpl(
                 return null
             }
 
-            return ArrayList<AbsPlayer>(players)
+            val list = mutableListOf<AbsPlayer>()
+            list.addAll(players)
+
+            return list
         }
 
     override fun addListener(listener: OnFavoritePlayersChangeListener) {
@@ -59,12 +62,12 @@ class FavoritePlayersManagerImpl(
     }
 
     override fun addPlayer(player: AbsPlayer, region: Region) {
-        if (containsPlayer(player)) {
+        if (player in this) {
             mTimber.d(TAG, "Not adding favorite, it already exists in the store")
             return
         }
 
-        mTimber.d(TAG, "Adding favorite (there are currently " + size() + " favorite(s))")
+        mTimber.d(TAG, "Adding favorite (there are currently $size favorite(s))")
 
         val favoritePlayer = FavoritePlayer(player, region)
         val playerJson = mGson.toJson(favoritePlayer, FavoritePlayer::class.java)
@@ -77,11 +80,11 @@ class FavoritePlayersManagerImpl(
         notifyListeners()
     }
 
-    override fun containsPlayer(player: AbsPlayer): Boolean {
-        return containsPlayer(player.id)
+    override fun contains(player: AbsPlayer): Boolean {
+        return player.id in this
     }
 
-    override fun containsPlayer(playerId: String): Boolean {
+    override fun contains(playerId: String): Boolean {
         return playerId in mKeyValueStore
     }
 
@@ -159,7 +162,7 @@ class FavoritePlayersManagerImpl(
         val builder = AlertDialog.Builder(context)
                 .setNegativeButton(R.string.cancel, null)
 
-        if (containsPlayer(player)) {
+        if (player in this) {
             builder.setMessage(context.getString(R.string.remove_x_from_favorites, player.name))
                     .setPositiveButton(R.string.yes) { dialog, which -> removePlayer(player) }
         } else {
@@ -171,9 +174,10 @@ class FavoritePlayersManagerImpl(
         return true
     }
 
-    override fun size(): Int {
-        val all = mKeyValueStore.all
-        return all?.size ?: 0
-    }
+    override val size: Int
+        get() {
+            val all = mKeyValueStore.all
+            return all?.size ?: 0
+        }
 
 }

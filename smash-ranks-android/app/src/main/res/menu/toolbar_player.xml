@@ -51,6 +51,11 @@
         android:visible="false"
         compat:showAsAction="never" />
     <item
+        android:id="@+id/miSetAsYourIdentity"
+        android:title="@string/set_this_player_as_your_identity"
+        android:visible="false"
+        compat:showAsAction="never" />
+    <item
         android:id="@+id/miViewYourselfVsThisOpponent"
         android:title="@string/view_yourself_vs_this_opponent"
         android:visible="false"

@@ -33,8 +33,7 @@ class GoogleApiWrapperImpl(
         var pi: PackageInfo? = null
 
         try {
-            val pm = mApplication.packageManager
-            pi = pm.getPackageInfo("com.google.android.gms", 0)
+            pi = mApplication.packageManager.getPackageInfo("com.google.android.gms", 0)
         } catch (e: PackageManager.NameNotFoundException) {
             mTimber.w(TAG, "Error occurred when retrieving Google Play Services package info", e)
         }
@@ -75,20 +74,19 @@ class GoogleApiWrapperImpl(
 
         if (!gaa.isUserResolvableError(connectionStatus)) {
             mTimber.w(TAG, "Play Services error is not user resolvable, not showing" +
-                    " resolution dialog (" + connectionStatus + "): " + errorString)
+                    " resolution dialog ($connectionStatus): $errorString")
             return false
         } else if (activity.isFinishing) {
-            mTimber.w(TAG, "activity is finishing, not showing Play Services resolution dialog ("
-                    + connectionStatus + "): " + errorString)
+            mTimber.w(TAG, "activity is finishing, not showing Play Services " +
+                    "resolution dialog ($connectionStatus): $errorString")
             return false
         } else if (activity.isDestroyed) {
-            mTimber.w(TAG, "activity is destroyed, not showing Play Services resolution dialog ("
-                    + connectionStatus + "): " + errorString)
+            mTimber.w(TAG, "activity is destroyed, not showing Play Services " +
+                    "resolution dialog ($connectionStatus): $errorString")
             return false
         }
 
-        mTimber.d(TAG, "Showing Play Services resolution dialog (" + connectionStatus +
-                "): " + errorString)
+        mTimber.d(TAG, "Showing Play Services resolution dialog ($connectionStatus): $errorString")
         gaa.showErrorDialogFragment(activity, connectionStatus, PLAY_SERVICES_RESOLUTION_REQUEST,
                 onCancelListener)
 

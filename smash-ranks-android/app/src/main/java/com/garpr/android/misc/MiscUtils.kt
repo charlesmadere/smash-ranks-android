@@ -4,11 +4,10 @@ import java.text.DecimalFormat
 
 object MiscUtils {
 
-    private val DECIMAL_FORMAT: DecimalFormat
+    private val DECIMAL_FORMAT: DecimalFormat = DecimalFormat("#.###")
 
 
     init {
-        DECIMAL_FORMAT = DecimalFormat("#.###")
         DECIMAL_FORMAT.minimumFractionDigits = 3
     }
 

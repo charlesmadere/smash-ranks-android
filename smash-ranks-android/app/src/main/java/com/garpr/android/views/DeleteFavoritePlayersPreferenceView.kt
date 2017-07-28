@@ -87,10 +87,10 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
     override fun refresh() {
         super.refresh()
 
-        val size = mFavoritePlayersManager.size()
+        val size = mFavoritePlayersManager.size
         isEnabled = size != 0
         setDescriptionText(resources.getQuantityString(R.plurals.x_favorites, size,
-                NumberFormat.getInstance().format(size.toLong())))
+                NumberFormat.getInstance().format(size)))
     }
 
 }
