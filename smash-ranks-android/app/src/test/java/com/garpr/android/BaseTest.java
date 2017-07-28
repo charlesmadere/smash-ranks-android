@@ -26,7 +26,7 @@ public abstract class BaseTest {
     public void setUp() throws Exception {
         mTestAppComponent = DaggerTestAppComponent.builder()
                 .testAppModule(new TestAppModule(RuntimeEnvironment.application,
-                        Constants.INSTANCE.getDEFAULT_REGION()))
+                        Constants.INSTANCE.getDefaultRegion()))
                 .build();
     }
 
