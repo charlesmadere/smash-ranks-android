@@ -220,6 +220,15 @@ class FavoritePlayersManagerTest : BaseTest() {
         mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.region)
         players = mFavoritePlayersManager.players
         assertNotNull(players)
+        assertEquals(2, players?.size)
+
+        absPlayers = mFavoritePlayersManager.absPlayers
+        assertNotNull(absPlayers)
+        assertEquals(2, absPlayers?.size)
+
+        mFavoritePlayersManager.removePlayer(mPlayer1)
+        players = mFavoritePlayersManager.players
+        assertNotNull(players)
         assertEquals(1, players?.size)
 
         absPlayers = mFavoritePlayersManager.absPlayers
@@ -228,10 +237,10 @@ class FavoritePlayersManagerTest : BaseTest() {
 
         mFavoritePlayersManager.removePlayer(mPlayer2)
         players = mFavoritePlayersManager.players
-        assertNull(players)
+        assertTrue(players == null || players.isEmpty())
 
         absPlayers = mFavoritePlayersManager.absPlayers
-        assertNull(absPlayers)
+        assertTrue(absPlayers == null || absPlayers.isEmpty())
     }
 
     @Test
@@ -251,13 +260,13 @@ class FavoritePlayersManagerTest : BaseTest() {
         mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.region)
         assertNotNull(array[0])
         assertEquals(1, array[0]?.size)
-        assertEquals(mPlayer1, array[0])
+        assertEquals(mPlayer1, array[0]?.get(0))
 
         mFavoritePlayersManager.removeListener(listener)
         mFavoritePlayersManager.removePlayer(mPlayer1)
         assertNotNull(array[0])
         assertEquals(1, array[0]?.size)
-        assertEquals(mPlayer1, array[0])
+        assertEquals(mPlayer1, array[0]?.get(0))
     }
 
     @Test

@@ -74,7 +74,7 @@ public class Match implements Parcelable {
     public static final Comparator<Match> CHRONOLOGICAL_ORDER = new Comparator<Match>() {
         @Override
         public int compare(final Match o1, final Match o2) {
-            return SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.getTournament().getDate(),
+            return SimpleDate.Companion.getCHRONOLOGICAL_ORDER().compare(o1.getTournament().getDate(),
                     o2.getTournament().getDate());
         }
     };

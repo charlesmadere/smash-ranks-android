@@ -38,15 +38,15 @@ class KeyValueStoreTest : BaseTest() {
         var all = mKeyValueStore.all
         assertTrue(all == null || all.isEmpty())
 
-        mKeyValueStore.setFloat("float", java.lang.Float.MIN_VALUE)
+        mKeyValueStore.setFloat("float", Float.MIN_VALUE)
         all = mKeyValueStore.all
         assertNotNull(all)
-        assertEquals(all?.size?.toLong(), 1)
+        assertEquals(1, all?.size)
 
         mKeyValueStore.setString("String", "Hello, World!")
         all = mKeyValueStore.all
         assertNotNull(all)
-        assertEquals(all?.size?.toLong(), 2)
+        assertEquals(2, all?.size)
     }
 
     @Test
@@ -103,25 +103,25 @@ class KeyValueStoreTest : BaseTest() {
         var all = mKeyValueStore.all
         assertTrue(all == null || all.isEmpty())
 
-        mKeyValueStore.setFloat("float", java.lang.Float.MIN_VALUE)
+        mKeyValueStore.setFloat("float", Float.MIN_VALUE)
         all = mKeyValueStore.all
         assertNotNull(all)
-        assertEquals(all?.size?.toLong(), 1)
+        assertEquals(1, all?.size)
 
         mKeyValueStore.setString("String", "Hello, World!")
         all = mKeyValueStore.all
         assertNotNull(all)
-        assertEquals(all?.size?.toLong(), 2)
+        assertEquals(2, all?.size)
 
         mKeyValueStore.remove("float")
         all = mKeyValueStore.all
         assertNotNull(all)
-        assertEquals(all?.size?.toLong(), 1)
+        assertEquals(1, all?.size)
 
         mKeyValueStore.remove("hello")
         all = mKeyValueStore.all
         assertNotNull(all)
-        assertEquals(all?.size?.toLong(), 1)
+        assertEquals(1, all?.size)
 
         mKeyValueStore.remove("String")
         all = mKeyValueStore.all

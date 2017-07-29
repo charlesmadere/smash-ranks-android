@@ -51,7 +51,7 @@ public class SimpleDateTest extends BaseTest {
         list.add(new SimpleDate(5));
         list.add(new SimpleDate(20));
 
-        Collections.sort(list, SimpleDate.CHRONOLOGICAL_ORDER);
+        Collections.sort(list, SimpleDate.Companion.getCHRONOLOGICAL_ORDER());
         assertEquals(list.get(0).getDate().getTime(), 0);
         assertEquals(list.get(1).getDate().getTime(), 1);
         assertEquals(list.get(2).getDate().getTime(), 2);
@@ -103,7 +103,7 @@ public class SimpleDateTest extends BaseTest {
         list.add(new SimpleDate(5));
         list.add(new SimpleDate(20));
 
-        Collections.sort(list, SimpleDate.REVERSE_CHRONOLOGICAL_ORDER);
+        Collections.sort(list, SimpleDate.Companion.getREVERSE_CHRONOLOGICAL_ORDER());
         assertEquals(list.get(0).getDate().getTime(), 20);
         assertEquals(list.get(1).getDate().getTime(), 5);
         assertEquals(list.get(2).getDate().getTime(), 2);

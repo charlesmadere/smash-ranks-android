@@ -16,35 +16,35 @@ class MiscUtilsTest : BaseTest() {
     @Throws(Exception::class)
     fun testTruncateFloatImytRanking() {
         val value = MiscUtils.truncateFloat(31.384343063802955f)
-        assertEquals(value, "31.384")
+        assertEquals("31.384", value)
     }
 
     @Test
     @Throws(Exception::class)
     fun testTruncateFloatMaxValue() {
-        val value = MiscUtils.truncateFloat(java.lang.Float.MAX_VALUE)
-        assertEquals(value, "340282346638528860000000000000000000000.000")
+        val value = MiscUtils.truncateFloat(Float.MAX_VALUE)
+        assertEquals("340282346638528860000000000000000000000.000", value)
     }
 
     @Test
     @Throws(Exception::class)
     fun testTruncateFloatMinValue() {
-        val value = MiscUtils.truncateFloat(java.lang.Float.MIN_VALUE)
-        assertEquals(value, "0.000")
+        val value = MiscUtils.truncateFloat(Float.MIN_VALUE)
+        assertEquals("0.000", value)
     }
 
     @Test
     @Throws(Exception::class)
     fun testTruncateFloatPi() {
         val value = MiscUtils.truncateFloat(Math.PI.toFloat())
-        assertEquals(value, "3.142")
+        assertEquals("3.142", value)
     }
 
     @Test
     @Throws(Exception::class)
     fun testTruncateFloatSfatRanking() {
         val value = MiscUtils.truncateFloat(41.906930141097256f)
-        assertEquals(value, "41.907")
+        assertEquals("41.907", value)
     }
 
 }

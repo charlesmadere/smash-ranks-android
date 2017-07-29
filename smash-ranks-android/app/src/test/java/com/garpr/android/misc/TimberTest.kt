@@ -50,7 +50,7 @@ class TimberTest : BaseTest() {
     fun testGetEntriesWithOne() {
         mTimber.d(TAG, "one")
         val entries = mTimber.entries
-        assertEquals(entries.size.toLong(), 1)
+        assertEquals(1, entries.size)
     }
 
     @Test
@@ -59,7 +59,7 @@ class TimberTest : BaseTest() {
         mTimber.d(TAG, "one")
         mTimber.w(TAG, "two")
         val entries = mTimber.entries
-        assertEquals(entries.size.toLong(), 2)
+        assertEquals(2, entries.size)
     }
 
     @Test
@@ -69,7 +69,7 @@ class TimberTest : BaseTest() {
         mTimber.w(TAG, "two")
         mTimber.e(TAG, "three")
         val entries = mTimber.entries
-        assertEquals(entries.size.toLong(), 3)
+        assertEquals(3, entries.size)
     }
 
 }

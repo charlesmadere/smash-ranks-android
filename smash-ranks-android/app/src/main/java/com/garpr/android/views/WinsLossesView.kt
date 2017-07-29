@@ -125,9 +125,8 @@ class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
     override fun setContent(content: WinsLosses) {
         mContent = content
 
-        text = resources.getString(R.string.x_em_dash_y,
-                mNumberFormat.format(content.mWins.toLong()),
-                mNumberFormat.format(content.mLosses.toLong()))
+        text = resources.getString(R.string.x_em_dash_y, mNumberFormat.format(content.mWins),
+                mNumberFormat.format(content.mLosses))
 
         calculateRects()
         invalidate()

@@ -92,7 +92,7 @@ public abstract class AbsTournament implements Parcelable {
     public static final Comparator<AbsTournament> CHRONOLOGICAL_ORDER = new Comparator<AbsTournament>() {
         @Override
         public int compare(final AbsTournament o1, final AbsTournament o2) {
-            return SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.getDate(), o2.getDate());
+            return SimpleDate.Companion.getCHRONOLOGICAL_ORDER().compare(o1.getDate(), o2.getDate());
         }
     };
 

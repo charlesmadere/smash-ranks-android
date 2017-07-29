@@ -156,8 +156,8 @@ public abstract class BaseAppModule {
                 .registerTypeAdapter(Ranking.class, Ranking.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_SERIALIZER)
-                .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
-                .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_SERIALIZER)
+                .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_SERIALIZER())
                 .create();
     }
 

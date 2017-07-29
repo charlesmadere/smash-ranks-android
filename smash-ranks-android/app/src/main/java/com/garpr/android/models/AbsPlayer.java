@@ -29,11 +29,6 @@ public abstract class AbsPlayer implements Parcelable {
         return obj instanceof AbsPlayer && mId.equals(((AbsPlayer) obj).getId());
     }
 
-    @Override
-    public int hashCode() {
-        return mId.hashCode();
-    }
-
     public String getId() {
         return mId;
     }
@@ -42,6 +37,11 @@ public abstract class AbsPlayer implements Parcelable {
 
     public String getName() {
         return mName;
+    }
+
+    @Override
+    public int hashCode() {
+        return mId.hashCode();
     }
 
     @Override
