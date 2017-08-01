@@ -32,13 +32,13 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
 
 
     companion object {
-        private val TAG = "RingtonePreferenceView"
+        private const val TAG = "RingtonePreferenceView"
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs!!, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,

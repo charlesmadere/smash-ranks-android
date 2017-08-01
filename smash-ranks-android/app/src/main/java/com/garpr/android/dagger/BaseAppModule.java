@@ -149,9 +149,10 @@ public abstract class BaseAppModule {
     @Singleton
     Gson providesGson() {
         return new GsonBuilder()
-                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_DESERIALIZER)
-                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_SERIALIZER)
-                .registerTypeAdapter(AbsTournament.class, AbsTournament.JSON_DESERIALIZER)
+                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_SERIALIZER())
+                .registerTypeAdapter(AbsTournament.class,
+                        AbsTournament.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(Match.class, Match.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ranking.class, Ranking.JSON_DESERIALIZER)
                 .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)

@@ -30,7 +30,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
 
 
     companion object {
-        private val TAG = "ThemePreferenceView"
+        private const val TAG = "ThemePreferenceView"
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)

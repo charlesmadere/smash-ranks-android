@@ -51,7 +51,7 @@ public class AbsTournamentTest extends BaseTest {
         final AbsTournament three = mGson.fromJson(JSON_LITE_TOURNAMENT_3, AbsTournament.class);
         final List<AbsTournament> list = new ArrayList<>(Arrays.asList(two, one, three, zero));
 
-        Collections.sort(list, AbsTournament.CHRONOLOGICAL_ORDER);
+        Collections.sort(list, AbsTournament.Companion.getCHRONOLOGICAL_ORDER());
         assertEquals(list.get(0), zero);
         assertEquals(list.get(1), one);
         assertEquals(list.get(2), two);
@@ -66,7 +66,7 @@ public class AbsTournamentTest extends BaseTest {
         final AbsTournament three = mGson.fromJson(JSON_LITE_TOURNAMENT_1, AbsTournament.class);
         final List<AbsTournament> list = new ArrayList<>(Arrays.asList(one, two, zero, three));
 
-        Collections.sort(list, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER);
+        Collections.sort(list, AbsTournament.Companion.getREVERSE_CHRONOLOGICAL_ORDER());
         assertEquals(list.get(0), zero);
         assertEquals(list.get(1), one);
         assertEquals(list.get(2), two);

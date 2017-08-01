@@ -57,6 +57,11 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
         get() = mIsAlive
 
     override fun onStartJob(job: JobParameters?): Boolean {
+        if (mRankingsPollingPreferenceStore.enabled.get() != true) {
+            mTimber.e(TAG, "canceling sync, the feature is not enabled!")
+            return false
+        }
+
         mOldRankingsDate = mRankingsPollingPreferenceStore.rankingsDate.get()
 
         if (mOldRankingsDate == null) {

@@ -117,12 +117,14 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.miShare -> {
-                mShareUtils.shareTournament(this, mFullTournament!!)
+                val fullTournament = mFullTournament ?: throw RuntimeException()
+                mShareUtils.shareTournament(this, fullTournament)
                 return true
             }
 
             R.id.miViewTournamentPage -> {
-                mShareUtils.openUrl(this, mFullTournament!!.url)
+                val fullTournament = mFullTournament ?: throw RuntimeException()
+                mShareUtils.shareTournament(this, fullTournament)
                 return true
             }
         }
@@ -143,25 +145,27 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     }
 
     private fun prepareMenuAndTitles() {
-        if (TextUtils.isEmpty(title)) {
+        if (title.isNullOrBlank()) {
             var title: String? = null
+            val fullTournament = mFullTournament
 
-            if (mFullTournament != null) {
-                title = mFullTournament!!.name
+            if (fullTournament != null) {
+                title = fullTournament.name
             } else if (intent.hasExtra(EXTRA_TOURNAMENT_NAME)) {
                 title = intent.getStringExtra(EXTRA_TOURNAMENT_NAME)
             }
 
-            if (!TextUtils.isEmpty(title)) {
-                setTitle(title)
+            if (title != null) {
+                this.title = title
             }
         }
 
-        if (TextUtils.isEmpty(subtitle)) {
+        if (subtitle.isNullOrBlank()) {
             var subtitle: SimpleDate? = null
+            val fullTournament = mFullTournament
 
-            if (mFullTournament != null) {
-                subtitle = mFullTournament!!.date
+            if (fullTournament != null) {
+                subtitle = fullTournament.date
             } else if (intent.hasExtra(EXTRA_TOURNAMENT_DATE)) {
                 subtitle = intent.getParcelableExtra<SimpleDate>(EXTRA_TOURNAMENT_DATE)
             }

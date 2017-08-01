@@ -3,7 +3,6 @@ package com.garpr.android.models
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.TextUtils
 import android.text.format.DateUtils
 import com.garpr.android.extensions.createParcel
 import com.google.gson.JsonDeserializer
@@ -16,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class SimpleDate @JvmOverloads constructor(
-        val date: Date = Date()
+        private val mDate: Date = Date()
 ) : Parcelable {
 
     companion object {
@@ -25,7 +24,7 @@ class SimpleDate @JvmOverloads constructor(
         val CREATOR = createParcel { SimpleDate(it) }
 
         val CHRONOLOGICAL_ORDER: Comparator<SimpleDate> = Comparator { o1, o2 ->
-            o1.date.compareTo(o2.date)
+            o1.mDate.compareTo(o2.mDate)
         }
 
         val REVERSE_CHRONOLOGICAL_ORDER: Comparator<SimpleDate> = Comparator { o1, o2 ->
@@ -39,7 +38,7 @@ class SimpleDate @JvmOverloads constructor(
 
             val jsonString = json.asString
 
-            if (TextUtils.isEmpty(jsonString)) {
+            if (jsonString.isNullOrBlank()) {
                 return@JsonDeserializer null
             }
 
@@ -49,11 +48,10 @@ class SimpleDate @JvmOverloads constructor(
                 } catch (e: ParseException) {
                     // this Exception can be safely ignored
                 }
-
             }
 
             try {
-                return@JsonDeserializer SimpleDate(java.lang.Long.parseLong(jsonString))
+                return@JsonDeserializer SimpleDate(jsonString.toLong())
             } catch (e: NumberFormatException) {
                 // this Exception can be safely ignored
             }
@@ -65,7 +63,7 @@ class SimpleDate @JvmOverloads constructor(
             if (src == null) {
                 null
             } else {
-                JsonPrimitive(src.date.time)
+                JsonPrimitive(src.mDate.time)
             }
         }
     }
@@ -75,36 +73,30 @@ class SimpleDate @JvmOverloads constructor(
     private constructor(source: Parcel) : this(source.readLong())
 
     override fun equals(other: Any?): Boolean {
-        return other is SimpleDate && date == other.date
+        return other is SimpleDate && mDate == other.mDate
     }
 
     fun getRelativeDateTimeText(context: Context): CharSequence {
-        return DateUtils.getRelativeDateTimeString(context, date.time, DateUtils.DAY_IN_MILLIS,
+        return DateUtils.getRelativeDateTimeString(context, mDate.time, DateUtils.DAY_IN_MILLIS,
                 DateUtils.WEEK_IN_MILLIS, 0)
     }
 
     fun happenedAfter(simpleDate: SimpleDate): Boolean {
-        return date.time > simpleDate.date.time
+        return mDate.time > simpleDate.mDate.time
     }
 
-    override fun hashCode(): Int {
-        return date.hashCode()
-    }
+    override fun hashCode() = mDate.hashCode()
 
-    val longForm: CharSequence = DateFormat.getDateInstance(DateFormat.LONG).format(date)
+    val longForm: CharSequence = DateFormat.getDateInstance(DateFormat.LONG).format(mDate)
 
-    val mediumForm: CharSequence = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date)
+    val mediumForm: CharSequence = DateFormat.getDateInstance(DateFormat.MEDIUM).format(mDate)
 
-    val shortForm: CharSequence = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
-
-    override fun toString(): String {
-        return date.toString()
-    }
+    val shortForm: CharSequence = DateFormat.getDateInstance(DateFormat.SHORT).format(mDate)
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeLong(date.time)
+        dest.writeLong(mDate.time)
     }
 
 }

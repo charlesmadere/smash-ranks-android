@@ -64,7 +64,8 @@ object ListUtils {
     }
 
     private fun createSortedTournamentAndMatchList(matches: ArrayList<Match>): ArrayList<Any> {
-        val matchesCopy = ArrayList(matches)
+        val matchesCopy = mutableListOf<Match>()
+        matchesCopy.addAll(matches)
         Collections.sort(matchesCopy, Match.REVERSE_CHRONOLOGICAL_ORDER)
 
         val list = ArrayList<Any>()
@@ -73,7 +74,7 @@ object ListUtils {
         for (match in matchesCopy) {
             if (tournamentId == null || match.tournament.id != tournamentId) {
                 tournamentId = match.tournament.id
-                list.add(LiteTournament(tournamentId!!, match.tournament.name,
+                list.add(LiteTournament(tournamentId, match.tournament.name,
                         match.tournament.date))
             }
 
@@ -83,13 +84,17 @@ object ListUtils {
         return list
     }
 
-    fun createTournamentList(bundle: TournamentsBundle?): ArrayList<AbsTournament>? {
-        bundle?.tournaments?.let {
-            val tournaments = ArrayList(it)
-            Collections.sort(tournaments, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER)
+    fun createTournamentList(bundle: TournamentsBundle?): List<AbsTournament>? {
+        val tournaments = bundle?.tournaments
 
-            return tournaments
-        } ?: return null
+        if (tournaments?.isNotEmpty() == true) {
+            val tournamentsCopy = mutableListOf<AbsTournament>()
+            tournamentsCopy.addAll(tournaments)
+            Collections.sort(tournamentsCopy, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER)
+            return tournamentsCopy
+        } else {
+            return null
+        }
     }
 
     fun filterPlayerMatchesList(result: Match.Result?, list: List<Any>?): ArrayList<Any>? {

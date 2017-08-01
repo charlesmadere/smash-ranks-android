@@ -166,14 +166,14 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     }
 
     private fun save() {
-        mRegionManager.region = mSelectedRegion!!
+        mRegionManager.region = mSelectedRegion ?: throw RuntimeException("mSelectedRegion is null")
         Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
         setResult(ResultCodes.REGION_SELECTED.mValue)
         supportFinishAfterTransition()
     }
 
     override val selectedRegion: Region?
-        get() { return if (mSelectedRegion == null) mRegionManager.region else mSelectedRegion }
+        get() = if (mSelectedRegion == null) mRegionManager.region else mSelectedRegion
 
     private fun showEmpty() {
         mAdapter.clear()
@@ -208,7 +208,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     override fun success(`object`: RegionsBundle?) {
         mRegionsBundle = `object`
 
-        if (`object`?.regions?.isNotEmpty() ?: false) {
+        if (`object`?.regions?.isNotEmpty() == true) {
             showRegionsBundle()
         } else {
             showEmpty()

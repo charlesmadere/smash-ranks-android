@@ -64,7 +64,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
                     Intent(context, HomeActivity::class.java).component)
 
             if (initialPosition != null) {
-                intent.putExtra(EXTRA_INITIAL_POSITION, initialPosition.toInt())
+                intent.putExtra(EXTRA_INITIAL_POSITION, initialPosition)
             }
 
             return intent
@@ -160,7 +160,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             }
 
             R.id.miViewYourself -> {
-                startActivity(PlayerActivity.getLaunchIntent(this, mIdentityManager.identity!!,
+                val identity = mIdentityManager.identity ?: throw RuntimeException()
+                startActivity(PlayerActivity.getLaunchIntent(this, identity,
                         mRegionManager.getRegion(this)))
                 return true
             }
@@ -232,8 +233,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         AlertDialog.Builder(this)
                 .setItems(items) { dialog, which ->
                     when (which) {
-                        0 -> mShareUtils.shareRankings(this@HomeActivity)
-                        1 -> mShareUtils.shareTournaments(this@HomeActivity)
+                        0 -> mShareUtils.shareRankings(this)
+                        1 -> mShareUtils.shareTournaments(this)
                         else -> throw RuntimeException("illegal which: " + which)
                     }
                 }
