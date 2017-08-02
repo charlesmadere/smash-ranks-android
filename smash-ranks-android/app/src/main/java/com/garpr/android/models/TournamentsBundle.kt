@@ -3,24 +3,22 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-
+import com.garpr.android.misc.ParcelableUtils
 import com.google.gson.annotations.SerializedName
 
-data class WinsLosses(
-        @SerializedName("wins") val wins: Int,
-        @SerializedName("losses") val losses: Int
+data class TournamentsBundle(
+        @SerializedName("tournaments") val tournaments: List<AbsTournament>? = null
 ) : Parcelable {
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { WinsLosses(it.readInt(), it.readInt()) }
+        val CREATOR = createParcel { TournamentsBundle(ParcelableUtils.readAbsTournamentList(it)) }
     }
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeInt(wins)
-        dest.writeInt(losses)
+        ParcelableUtils.writeAbsTournamentList(tournaments, dest, flags)
     }
 
 }

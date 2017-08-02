@@ -6,6 +6,7 @@ import com.garpr.android.extensions.createParcel
 class LitePlayer : AbsPlayer, Parcelable {
 
     companion object {
+        @JvmField
         val CREATOR = createParcel {
             val lp = LitePlayer()
             lp.readFromParcel(it)

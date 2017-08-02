@@ -21,6 +21,7 @@ class SimpleDate @JvmOverloads constructor(
     companion object {
         private val FORMATS = arrayOf(SimpleDateFormat("MM/dd/yy", Locale.US))
 
+        @JvmField
         val CREATOR = createParcel { SimpleDate(it) }
 
         val CHRONOLOGICAL_ORDER: Comparator<SimpleDate> = Comparator { o1, o2 ->

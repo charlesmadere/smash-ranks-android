@@ -162,13 +162,16 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
             menu.findItem(R.id.miFilterWins).isVisible = mResult != Match.Result.WIN
         }
 
-        if (!TextUtils.isEmpty(mOpponentName) && !TextUtils.isEmpty(mPlayerName)) {
+        val opponentName = mOpponentName
+        val playerName = mPlayerName
+
+        if (opponentName?.isNotBlank() == true && playerName?.isNotBlank() == true) {
             val viewOpponent = menu.findItem(R.id.miViewOpponent)
-            viewOpponent.title = getString(R.string.view_x, mOpponentName)
+            viewOpponent.title = getString(R.string.view_x, opponentName)
             viewOpponent.isVisible = true
 
             val viewPlayer = menu.findItem(R.id.miViewPlayer)
-            viewPlayer.title = getString(R.string.view_x, mPlayerName)
+            viewPlayer.title = getString(R.string.view_x, playerName)
             viewPlayer.isVisible = true
         }
 
@@ -193,14 +196,14 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
             }
 
             R.id.miViewOpponent -> {
-                startActivity(PlayerActivity.getLaunchIntent(this, mOpponentId, mOpponentName,
-                        mRegionManager.getRegion(this)))
+                startActivity(PlayerActivity.getLaunchIntent(this, mOpponentId,
+                        mOpponentName, mRegionManager.getRegion(this)))
                 return true
             }
 
             R.id.miViewPlayer -> {
-                startActivity(PlayerActivity.getLaunchIntent(this, mPlayerId, mPlayerName,
-                        mRegionManager.getRegion(this)))
+                startActivity(PlayerActivity.getLaunchIntent(this, mPlayerId,
+                        mPlayerName, mRegionManager.getRegion(this)))
                 return true
             }
         }
@@ -258,9 +261,13 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override val showUpNavigation = true
 
     private fun setSubtitle() {
-        if (TextUtils.isEmpty(subtitle) && !TextUtils.isEmpty(mPlayerName) &&
-                !TextUtils.isEmpty(mOpponentName)) {
-            subtitle = getString(R.string.x_vs_y, mPlayerName, mOpponentName)
+        if (subtitle.isNullOrBlank()) {
+            val playerName = mPlayerName
+            val opponentName = mOpponentName
+
+            if (playerName?.isNotBlank() == true && opponentName?.isNotBlank() == true) {
+                subtitle = getString(R.string.x_vs_y, playerName, opponentName)
+            }
         }
     }
 

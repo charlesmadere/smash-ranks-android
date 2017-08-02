@@ -10,6 +10,7 @@ import java.util.*
 class FullTournament : AbsTournament(), Parcelable {
 
     companion object {
+        @JvmField
         val CREATOR = createParcel {
             val ft = FullTournament()
             ft.readFromParcel(it)
@@ -36,14 +37,6 @@ class FullTournament : AbsTournament(), Parcelable {
 
     override val kind = AbsTournament.Kind.FULL
 
-    fun hasMatches(): Boolean {
-        return matches != null && !matches!!.isEmpty()
-    }
-
-    fun hasPlayers(): Boolean {
-        return players != null && !players!!.isEmpty()
-    }
-
     override fun readFromParcel(source: Parcel) {
         super.readFromParcel(source)
         players = ParcelableUtils.readAbsPlayerList(source)
@@ -63,6 +56,7 @@ class FullTournament : AbsTournament(), Parcelable {
 
     class Match : Parcelable {
         companion object {
+            @JvmField
             val CREATOR = createParcel {
                 val m = Match()
                 m.isExcluded = it.readInt() != 0
@@ -80,32 +74,30 @@ class FullTournament : AbsTournament(), Parcelable {
             private set
 
         @SerializedName("loser_id")
-        var loserId: String? = null
+        lateinit var loserId: String
             private set
 
         @SerializedName("loser_name")
-        var loserName: String? = null
+        lateinit var loserName: String
             private set
 
         @SerializedName("match_id")
-        var matchId: String? = null
+        lateinit var matchId: String
             private set
 
         @SerializedName("winner_id")
-        var winnerId: String? = null
+        lateinit var winnerId: String
             private set
 
         @SerializedName("winner_name")
-        var winnerName: String? = null
+        lateinit var winnerName: String
             private set
 
         override fun equals(other: Any?): Boolean {
             return other is Match && matchId == other.matchId
         }
 
-        override fun hashCode(): Int {
-            return matchId!!.hashCode()
-        }
+        override fun hashCode() = matchId.hashCode()
 
         override fun describeContents() = 0
 

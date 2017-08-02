@@ -84,6 +84,7 @@ abstract class AbsTournament : Parcelable {
         LITE;
 
         companion object {
+            @JvmField
             val CREATOR = createParcel { values()[it.readInt()] }
         }
 

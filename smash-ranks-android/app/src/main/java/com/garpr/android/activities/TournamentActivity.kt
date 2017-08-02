@@ -219,7 +219,10 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     override fun success(`object`: FullTournament?) {
         mFullTournament = `object`
 
-        if (`object` != null && (`object`.hasMatches() || `object`.hasPlayers())) {
+        val matches = `object`?.matches
+        val players = `object`?.players
+
+        if (matches != null && matches.isNotEmpty() || players != null && players.isNotEmpty()) {
             showFullTournament()
         } else {
             showEmpty()

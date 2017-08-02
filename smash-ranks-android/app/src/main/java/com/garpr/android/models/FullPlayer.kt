@@ -22,6 +22,7 @@ class FullPlayer : AbsPlayer(), Parcelable {
 
 
     companion object {
+        @JvmField
         val CREATOR = createParcel {
             val fp = FullPlayer()
             fp.readFromParcel(it)

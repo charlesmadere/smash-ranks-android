@@ -58,7 +58,7 @@ class RankingsPollingSyncManagerImpl(
             pollFrequency = PollFrequency.DAILY
         }
 
-        jobBuilder.trigger = Trigger.executionWindow(0, pollFrequency.timeInSeconds)
+        jobBuilder.trigger = Trigger.executionWindow(0, pollFrequency.timeInSeconds.toInt())
         jobDispatcher.mustSchedule(jobBuilder.build())
 
         mTimber.d(TAG, "sync has been enabled")

@@ -91,6 +91,7 @@ abstract class AbsPlayer : Parcelable {
         LITE;
 
         companion object {
+            @JvmField
             val CREATOR = createParcel { values()[it.readInt()] }
         }
 

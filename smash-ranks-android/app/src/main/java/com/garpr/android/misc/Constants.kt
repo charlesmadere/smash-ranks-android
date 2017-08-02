@@ -7,7 +7,8 @@ object Constants {
 
     // Defaults
     // TODO maybe this should be retrieved from the server via a splash screen...
-    val DefaultRegion = Region("Norcal", "norcal", Endpoint.GAR_PR, 45, 2)
+    val DefaultRegion = Region(Endpoint.GAR_PR, 45, 2,
+            1000, "Norcal", "norcal")
 
     // GAR PR Paths
     const val GAR_PR_API_PORT = 3001

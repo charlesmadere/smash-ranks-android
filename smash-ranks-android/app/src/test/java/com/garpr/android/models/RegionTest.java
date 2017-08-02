@@ -63,7 +63,7 @@ public class RegionTest extends BaseTest {
         final ArrayList<Region> regions = regionsBundle.getRegions();
         assertNotNull(regions);
 
-        Collections.sort(regions, Region.ALPHABETICAL_ORDER);
+        Collections.sort(regions, Region.Companion.getALPHABETICAL_ORDER());
         assertEquals(regions.get(0).getId(), "alabama");
         assertEquals(regions.get(1).getId(), "cfl");
         assertEquals(regions.get(2).getId(), "chicago");

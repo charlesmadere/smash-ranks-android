@@ -13,6 +13,7 @@ class FavoritePlayer : AbsPlayer, Parcelable {
 
 
     companion object {
+        @JvmField
         val CREATOR = createParcel {
             val fp = FavoritePlayer()
             fp.readFromParcel(it)
@@ -32,7 +33,7 @@ class FavoritePlayer : AbsPlayer, Parcelable {
 
     override fun readFromParcel(source: Parcel) {
         super.readFromParcel(source)
-        region = source.readParcelable<Region>(Region::class.java.classLoader)
+        region = source.readParcelable(Region::class.java.classLoader)
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
