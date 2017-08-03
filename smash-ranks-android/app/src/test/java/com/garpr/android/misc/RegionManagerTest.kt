@@ -3,7 +3,7 @@ package com.garpr.android.misc
 import android.app.Application
 import com.garpr.android.BaseTest
 import com.garpr.android.BuildConfig
-import com.garpr.android.models.Region
+import com.garpr.android.models.LiteRegion
 import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Before
@@ -17,9 +17,9 @@ import javax.inject.Inject
 @Config(constants = BuildConfig::class)
 class RegionManagerTest : BaseTest() {
 
-    lateinit private var mAlabama: Region
-    lateinit private var mGeorgia: Region
-    lateinit private var mNyc: Region
+    lateinit private var mAlabama: LiteRegion
+    lateinit private var mGeorgia: LiteRegion
+    lateinit private var mNyc: LiteRegion
 
     @Inject
     lateinit protected var mApplication: Application
@@ -43,15 +43,15 @@ class RegionManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mAlabama = mGson.fromJson(JSON_REGION_ALABAMA, Region::class.java)
-        mGeorgia = mGson.fromJson(JSON_REGION_GEORGIA, Region::class.java)
-        mNyc = mGson.fromJson(JSON_REGION_NYC, Region::class.java)
+        mAlabama = mGson.fromJson(JSON_REGION_ALABAMA, LiteRegion::class.java)
+        mGeorgia = mGson.fromJson(JSON_REGION_GEORGIA, LiteRegion::class.java)
+        mNyc = mGson.fromJson(JSON_REGION_NYC, LiteRegion::class.java)
     }
 
     @Test
     @Throws(Exception::class)
     fun testAddListener() {
-        val array = arrayOfNulls<Region>(1)
+        val array = arrayOfNulls<LiteRegion>(1)
 
         val listener = object : RegionManager.OnRegionChangeListener {
             override fun onRegionChange(regionManager: RegionManager) {
@@ -81,7 +81,7 @@ class RegionManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testRemoveListener() {
-        val array = arrayOfNulls<Region>(1)
+        val array = arrayOfNulls<LiteRegion>(1)
 
         val listener = object : RegionManager.OnRegionChangeListener {
             override fun onRegionChange(regionManager: RegionManager) {

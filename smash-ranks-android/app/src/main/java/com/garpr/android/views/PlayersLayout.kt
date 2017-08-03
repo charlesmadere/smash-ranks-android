@@ -166,7 +166,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         mPlayersBundle = `object`
         onPlayersBundleFetched()
 
-        if (`object` != null && `object`.hasPlayers()) {
+        if (`object`?.players?.isNotEmpty() == true) {
             showPlayersBundle()
         } else {
             showEmpty()

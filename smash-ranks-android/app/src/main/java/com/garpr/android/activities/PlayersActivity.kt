@@ -12,7 +12,7 @@ import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.models.Region
+import com.garpr.android.models.AbsRegion
 import com.garpr.android.views.PlayersLayout
 import com.garpr.android.views.toolbars.SearchToolbar
 import kotterknife.bindView
@@ -33,7 +33,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
         private const val TAG = "PlayersActivity"
 
         @JvmOverloads
-        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
+        fun getLaunchIntent(context: Context, region: AbsRegion? = null): Intent {
             val intent = Intent(context, PlayersActivity::class.java)
 
             if (region != null) {
@@ -94,7 +94,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
         get() = mSearchView?.query
 
     override val showSearchMenuItem: Boolean
-        get() = mPlayersLayout.mPlayersBundle?.hasPlayers() == true
+        get() = mPlayersLayout.mPlayersBundle?.players?.isNotEmpty() == true
 
     override val showUpNavigation = true
 

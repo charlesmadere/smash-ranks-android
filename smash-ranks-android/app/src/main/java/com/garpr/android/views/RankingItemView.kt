@@ -87,7 +87,7 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<Ranking>, View.OnCl
 
         mPreviousRankView?.setContent(content)
         mRank.text = mNumberFormat.format(content.rank)
-        mName.text = content.name
+        mName.text = content.player.name
         mRating.text = MiscUtils.truncateFloat(content.rating)
 
         refreshIdentity()

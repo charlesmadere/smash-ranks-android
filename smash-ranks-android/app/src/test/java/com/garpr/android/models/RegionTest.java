@@ -43,16 +43,16 @@ public class RegionTest extends BaseTest {
 
     @Test
     public void testHasActivityRequirements() throws Exception {
-        final Region chicago = mGson.fromJson(JSON_CHICAGO, Region.class);
+        final LiteRegion chicago = mGson.fromJson(JSON_CHICAGO, LiteRegion.class);
         assertFalse(chicago.hasActivityRequirements());
 
-        final Region google = mGson.fromJson(JSON_GOOGLE, Region.class);
+        final LiteRegion google = mGson.fromJson(JSON_GOOGLE, LiteRegion.class);
         assertFalse(google.hasActivityRequirements());
 
-        final Region norcal = mGson.fromJson(JSON_NORCAL, Region.class);
+        final LiteRegion norcal = mGson.fromJson(JSON_NORCAL, LiteRegion.class);
         assertTrue(norcal.hasActivityRequirements());
 
-        final Region nyc = mGson.fromJson(JSON_NYC, Region.class);
+        final LiteRegion nyc = mGson.fromJson(JSON_NYC, LiteRegion.class);
         assertFalse(nyc.hasActivityRequirements());
     }
 
@@ -60,10 +60,10 @@ public class RegionTest extends BaseTest {
     public void testComparatorAlphabeticalOrder() throws Exception {
         final RegionsBundle regionsBundle = mGson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle.class);
 
-        final ArrayList<Region> regions = regionsBundle.getRegions();
+        final ArrayList<LiteRegion> regions = regionsBundle.getRegions();
         assertNotNull(regions);
 
-        Collections.sort(regions, Region.Companion.getALPHABETICAL_ORDER());
+        Collections.sort(regions, LiteRegion.Companion.getALPHABETICAL_ORDER());
         assertEquals(regions.get(0).getId(), "alabama");
         assertEquals(regions.get(1).getId(), "cfl");
         assertEquals(regions.get(2).getId(), "chicago");

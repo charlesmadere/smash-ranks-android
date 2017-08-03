@@ -4,24 +4,24 @@ import com.garpr.android.models.*
 
 interface ServerApi {
 
-    fun getHeadToHead(region: Region, playerId: String, opponentId: String,
+    fun getHeadToHead(region: LiteRegion, playerId: String, opponentId: String,
             listener: ApiListener<HeadToHead>)
 
-    fun getMatches(region: Region, playerId: String, listener: ApiListener<MatchesBundle>)
+    fun getMatches(region: LiteRegion, playerId: String, listener: ApiListener<MatchesBundle>)
 
-    fun getPlayer(region: Region, playerId: String, listener: ApiListener<FullPlayer>)
+    fun getPlayer(region: LiteRegion, playerId: String, listener: ApiListener<FullPlayer>)
 
-    fun getPlayerMatches(region: Region, playerId: String,
+    fun getPlayerMatches(region: LiteRegion, playerId: String,
             listener: ApiListener<PlayerMatchesBundle>)
 
-    fun getPlayers(region: Region, listener: ApiListener<PlayersBundle>)
+    fun getPlayers(region: LiteRegion, listener: ApiListener<PlayersBundle>)
 
-    fun getRankings(region: Region, listener: ApiListener<RankingsBundle>)
+    fun getRankings(region: AbsRegion, listener: ApiListener<RankingsBundle>)
 
     fun getRegions(listener: ApiListener<RegionsBundle>)
 
-    fun getTournament(region: Region, tournamentId: String, listener: ApiListener<FullTournament>)
+    fun getTournament(region: AbsRegion, tournamentId: String, listener: ApiListener<FullTournament>)
 
-    fun getTournaments(region: Region, listener: ApiListener<TournamentsBundle>)
+    fun getTournaments(region: AbsRegion, listener: ApiListener<TournamentsBundle>)
 
 }

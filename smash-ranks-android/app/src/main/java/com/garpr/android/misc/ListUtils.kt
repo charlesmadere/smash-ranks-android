@@ -35,8 +35,8 @@ object ListUtils {
 
     fun createPlayerMatchesList(context: Context, regionManager: RegionManager,
             fullPlayer: FullPlayer, bundle: MatchesBundle?): ArrayList<Any>? {
-        val region = regionManager.getRegion(context).id
-        val rating = fullPlayer.ratings?.getRegion(region)
+        val region = regionManager.getRegion(context)
+        val rating = fullPlayer.ratings?.get(region.id)
         val matches = bundle?.matches
 
         if (rating == null && (matches == null || matches.isEmpty())) {
@@ -63,7 +63,7 @@ object ListUtils {
         return newList
     }
 
-    private fun createSortedTournamentAndMatchList(matches: ArrayList<Match>): ArrayList<Any> {
+    private fun createSortedTournamentAndMatchList(matches: List<Match>): ArrayList<Any> {
         val matchesCopy = mutableListOf<Match>()
         matchesCopy.addAll(matches)
         Collections.sort(matchesCopy, Match.REVERSE_CHRONOLOGICAL_ORDER)
@@ -240,7 +240,7 @@ object ListUtils {
             val trimmedQuery = query.trim().toLowerCase()
 
             ArrayList<Ranking>(list.filter {
-                it.name.toLowerCase().contains(trimmedQuery)
+                it.player.name.toLowerCase().contains(trimmedQuery)
             })
         } else {
             ArrayList<Ranking>(list)

@@ -293,7 +293,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         mSelectedPlayer = null
         mPlayersBundle = `object`
 
-        if (`object` != null && `object`.hasPlayers()) {
+        if (`object` != null && `object`.players?.isNotEmpty() == true) {
             showPlayersBundle()
         } else {
             showEmpty()

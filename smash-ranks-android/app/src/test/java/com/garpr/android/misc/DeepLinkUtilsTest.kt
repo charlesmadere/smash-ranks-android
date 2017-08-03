@@ -6,7 +6,7 @@ import android.net.Uri
 import com.garpr.android.BaseTest
 import com.garpr.android.BuildConfig
 import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
+import com.garpr.android.models.LiteRegion
 import com.garpr.android.models.RegionsBundle
 import com.google.gson.Gson
 import org.junit.Assert.*
@@ -21,11 +21,11 @@ import javax.inject.Inject
 @Config(constants = BuildConfig::class)
 class DeepLinkUtilsTest : BaseTest() {
 
-    lateinit private var mChicago: Region
-    lateinit private var mGeorgia: Region
-    lateinit private var mGoogleMtv: Region
-    lateinit private var mNorcal: Region
-    lateinit private var mNyc: Region
+    lateinit private var mChicago: LiteRegion
+    lateinit private var mGeorgia: LiteRegion
+    lateinit private var mGoogleMtv: LiteRegion
+    lateinit private var mNorcal: LiteRegion
+    lateinit private var mNyc: LiteRegion
     lateinit private var mRegionsBundle: RegionsBundle
     lateinit private var mRegionsBundleEmpty: RegionsBundle
 
@@ -73,11 +73,11 @@ class DeepLinkUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mChicago = mGson.fromJson(JSON_REGION_CHICAGO, Region::class.java)
-        mGeorgia = mGson.fromJson(JSON_REGION_GEORGIA, Region::class.java)
-        mGoogleMtv = mGson.fromJson(JSON_REGION_GOOGLE_MTV, Region::class.java)
-        mNorcal = mGson.fromJson(JSON_REGION_NORCAL, Region::class.java)
-        mNyc = mGson.fromJson(JSON_REGION_NYC, Region::class.java)
+        mChicago = mGson.fromJson(JSON_REGION_CHICAGO, LiteRegion::class.java)
+        mGeorgia = mGson.fromJson(JSON_REGION_GEORGIA, LiteRegion::class.java)
+        mGoogleMtv = mGson.fromJson(JSON_REGION_GOOGLE_MTV, LiteRegion::class.java)
+        mNorcal = mGson.fromJson(JSON_REGION_NORCAL, LiteRegion::class.java)
+        mNyc = mGson.fromJson(JSON_REGION_NYC, LiteRegion::class.java)
 
         mRegionsBundle = mGson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
         mRegionsBundle.regions?.let {

@@ -6,7 +6,7 @@ import com.garpr.android.misc.Constants
 import com.garpr.android.models.FullPlayer
 import com.garpr.android.models.MatchesBundle
 import com.garpr.android.models.PlayerMatchesBundle
-import com.garpr.android.models.Region
+import com.garpr.android.models.LiteRegion
 import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Before
@@ -22,7 +22,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
 
     lateinit private var matchesSpark: MatchesBundle
     lateinit private var playerSpark: FullPlayer
-    lateinit private var norcal: Region
+    lateinit private var norcal: LiteRegion
 
     @Inject
     lateinit protected var gson: Gson
@@ -42,7 +42,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
 
         matchesSpark = gson.fromJson(JSON_MATCHES_SPARK, MatchesBundle::class.java)
         playerSpark = gson.fromJson(JSON_PLAYER_SPARK, FullPlayer::class.java)
-        norcal = gson.fromJson(JSON_REGION_NORCAL, Region::class.java)
+        norcal = gson.fromJson(JSON_REGION_NORCAL, LiteRegion::class.java)
     }
 
     @Test
@@ -62,12 +62,12 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
         }
 
         val serverApi = object : AbsServerApi() {
-            override fun getMatches(region: Region, playerId: String,
+            override fun getMatches(region: LiteRegion, playerId: String,
                     listener: ApiListener<MatchesBundle>) {
                 listener.success(matchesSpark)
             }
 
-            override fun getPlayer(region: Region, playerId: String,
+            override fun getPlayer(region: LiteRegion, playerId: String,
                     listener: ApiListener<FullPlayer>) {
                 listener.success(playerSpark)
             }
@@ -96,12 +96,12 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
         }
 
         val serverApi = object : AbsServerApi() {
-            override fun getMatches(region: Region, playerId: String,
+            override fun getMatches(region: LiteRegion, playerId: String,
                     listener: ApiListener<MatchesBundle>) {
                 listener.success(matchesSpark)
             }
 
-            override fun getPlayer(region: Region, playerId: String,
+            override fun getPlayer(region: LiteRegion, playerId: String,
                     listener: ApiListener<FullPlayer>) {
                 listener.success(null)
             }
@@ -129,12 +129,12 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
         }
 
         val serverApi = object : AbsServerApi() {
-            override fun getMatches(region: Region, playerId: String,
+            override fun getMatches(region: LiteRegion, playerId: String,
                     listener: ApiListener<MatchesBundle>) {
                 listener.success(null)
             }
 
-            override fun getPlayer(region: Region, playerId: String,
+            override fun getPlayer(region: LiteRegion, playerId: String,
                     listener: ApiListener<FullPlayer>) {
                 listener.success(playerSpark)
             }
@@ -163,12 +163,12 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
         }
 
         val serverApi = object : AbsServerApi() {
-            override fun getMatches(region: Region, playerId: String,
+            override fun getMatches(region: LiteRegion, playerId: String,
                     listener: ApiListener<MatchesBundle>) {
                 listener.success(null)
             }
 
-            override fun getPlayer(region: Region, playerId: String,
+            override fun getPlayer(region: LiteRegion, playerId: String,
                     listener: ApiListener<FullPlayer>) {
                 listener.success(null)
             }

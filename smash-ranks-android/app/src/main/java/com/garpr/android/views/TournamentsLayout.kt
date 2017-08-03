@@ -158,7 +158,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
     override fun success(`object`: TournamentsBundle?) {
         mTournamentsBundle = `object`
 
-        if (`object` != null && `object`.hasTournaments()) {
+        if (`object`?.tournaments?.isNotEmpty() == true) {
             showTournamentsBundle()
         } else {
             showEmpty()

@@ -3,12 +3,13 @@ package com.garpr.android.misc
 import android.content.Context
 import android.content.ContextWrapper
 import com.garpr.android.misc.RegionManager.OnRegionChangeListener
-import com.garpr.android.models.Region
+import com.garpr.android.models.AbsRegion
+import com.garpr.android.models.LiteRegion
 import com.garpr.android.preferences.Preference
 import java.lang.ref.WeakReference
 
 class RegionManagerImpl(
-        private val mRegion: Preference<Region>,
+        private val mRegion: Preference<LiteRegion>,
         private val mTimber: Timber
 ) : RegionManager {
 
@@ -41,7 +42,7 @@ class RegionManagerImpl(
         }
     }
 
-    override fun getRegion(context: Context?): Region {
+    override fun getRegion(context: Context?): AbsRegion {
         if (context is RegionManager.RegionHandle) {
             val region = (context as RegionManager.RegionHandle).currentRegion
 
@@ -74,7 +75,7 @@ class RegionManagerImpl(
         }
     }
 
-    override var region: Region
+    override var region: LiteRegion
         get() = mRegion.get() ?: throw IllegalStateException("region is null")
         set(region) {
             mTimber.d(TAG, "old region is \"$region\", new region is \"$region\"")

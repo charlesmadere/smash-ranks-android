@@ -36,7 +36,7 @@ import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Ratings;
-import com.garpr.android.models.Region;
+import com.garpr.android.models.LiteRegion;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
@@ -68,11 +68,11 @@ public abstract class BaseAppModule {
     private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
 
     private final Application mApplication;
-    private final Region mDefaultRegion;
+    private final LiteRegion mDefaultRegion;
 
 
     public BaseAppModule(@NonNull final Application application,
-            @NonNull final Region defaultRegion) {
+            @NonNull final LiteRegion defaultRegion) {
         mApplication = application;
         mDefaultRegion = defaultRegion;
     }

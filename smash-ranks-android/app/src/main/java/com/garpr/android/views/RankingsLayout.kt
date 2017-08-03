@@ -177,7 +177,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         mRankingsBundle = `object`
         onRankingsBundleFetched()
 
-        if (`object` != null && `object`.hasRankings()) {
+        if (`object`?.rankings?.isNotEmpty() == true) {
             showRankingsBundle()
         } else {
             showEmpty()

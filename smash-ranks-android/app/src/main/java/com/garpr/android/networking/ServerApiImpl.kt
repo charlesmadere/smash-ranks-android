@@ -20,7 +20,7 @@ class ServerApiImpl(
         private const val TAG = "ServerApiImpl"
     }
 
-    override fun getHeadToHead(region: Region, playerId: String, opponentId: String,
+    override fun getHeadToHead(region: LiteRegion, playerId: String, opponentId: String,
             listener: ApiListener<HeadToHead>) {
         val url = region.endpoint.getHeadToHeadApiPath(region.id, playerId, opponentId)
 
@@ -42,7 +42,7 @@ class ServerApiImpl(
         })
     }
 
-    override fun getMatches(region: Region, playerId: String, listener: ApiListener<MatchesBundle>) {
+    override fun getMatches(region: LiteRegion, playerId: String, listener: ApiListener<MatchesBundle>) {
         val url = region.endpoint.getMatchesApiPath(region.id, playerId)
 
         mGarPrApi.getMatches(url).enqueue(object : Callback<MatchesBundle> {
@@ -63,7 +63,7 @@ class ServerApiImpl(
         })
     }
 
-    override fun getPlayer(region: Region, playerId: String, listener: ApiListener<FullPlayer>) {
+    override fun getPlayer(region: LiteRegion, playerId: String, listener: ApiListener<FullPlayer>) {
         val url = region.endpoint.getPlayerApiPath(region.id, playerId)
 
         mGarPrApi.getPlayer(url).enqueue(object : Callback<FullPlayer> {
@@ -84,12 +84,12 @@ class ServerApiImpl(
         })
     }
 
-    override fun getPlayerMatches(region: Region, playerId: String,
+    override fun getPlayerMatches(region: LiteRegion, playerId: String,
             listener: ApiListener<PlayerMatchesBundle>) {
         PlayerMatchesBundleApiCall(listener, region, this, playerId).fetch()
     }
 
-    override fun getPlayers(region: Region, listener: ApiListener<PlayersBundle>) {
+    override fun getPlayers(region: LiteRegion, listener: ApiListener<PlayersBundle>) {
         val url = region.endpoint.getPlayersApiPath(region.id)
 
         mGarPrApi.getPlayers(url).enqueue(object : Callback<PlayersBundle> {
@@ -109,7 +109,7 @@ class ServerApiImpl(
         })
     }
 
-    override fun getRankings(region: Region, listener: ApiListener<RankingsBundle>) {
+    override fun getRankings(region: LiteRegion, listener: ApiListener<RankingsBundle>) {
         val url = region.endpoint.getRankingsApiPath(region.id)
 
         mGarPrApi.getRankings(url).enqueue(object : Callback<RankingsBundle> {
@@ -201,7 +201,7 @@ class ServerApiImpl(
         })
     }
 
-    override fun getTournament(region: Region, tournamentId: String,
+    override fun getTournament(region: LiteRegion, tournamentId: String,
             listener: ApiListener<FullTournament>) {
         val url = region.endpoint.getTournamentApiPath(region.id, tournamentId)
 
@@ -223,7 +223,7 @@ class ServerApiImpl(
         })
     }
 
-    override fun getTournaments(region: Region, listener: ApiListener<TournamentsBundle>) {
+    override fun getTournaments(region: LiteRegion, listener: ApiListener<TournamentsBundle>) {
         val url = region.endpoint.getTournamentsApiPath(region.id)
 
         mGarPrApi.getTournaments(url).enqueue(object : Callback<TournamentsBundle> {

@@ -58,17 +58,17 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         private val EXTRA_TOURNAMENT_ID = CNAME + ".TournamentId"
         private val EXTRA_TOURNAMENT_NAME = CNAME + ".TournamentName"
 
-        fun getLaunchIntent(context: Context, tournament: AbsTournament, region: Region?): Intent {
+        fun getLaunchIntent(context: Context, tournament: AbsTournament, region: LiteRegion?): Intent {
             return getLaunchIntent(context, tournament.id, tournament.name, tournament.date, region)
         }
 
-        fun getLaunchIntent(context: Context, match: Match, region: Region?): Intent {
+        fun getLaunchIntent(context: Context, match: Match, region: LiteRegion?): Intent {
             return getLaunchIntent(context, match.tournament.id, match.tournament.name,
                     match.tournament.date, region)
         }
 
         fun getLaunchIntent(context: Context, tournamentId: String, tournamentName: String?,
-                tournamentDate: SimpleDate?, region: Region?): Intent {
+                tournamentDate: SimpleDate?, region: AbsRegion?): Intent {
             val intent = Intent(context, TournamentActivity::class.java)
                     .putExtra(EXTRA_TOURNAMENT_ID, tournamentId)
 

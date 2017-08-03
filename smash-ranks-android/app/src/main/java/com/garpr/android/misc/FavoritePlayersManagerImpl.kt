@@ -6,7 +6,7 @@ import com.garpr.android.R
 import com.garpr.android.misc.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.Region
+import com.garpr.android.models.LiteRegion
 import com.garpr.android.preferences.KeyValueStore
 import com.google.gson.Gson
 import java.lang.ref.WeakReference
@@ -61,7 +61,7 @@ class FavoritePlayersManagerImpl(
         }
     }
 
-    override fun addPlayer(player: AbsPlayer, region: Region) {
+    override fun addPlayer(player: AbsPlayer, region: LiteRegion) {
         if (player in this) {
             mTimber.d(TAG, "Not adding favorite, it already exists in the store")
             return
@@ -69,7 +69,7 @@ class FavoritePlayersManagerImpl(
 
         mTimber.d(TAG, "Adding favorite (there are currently $size favorite(s))")
 
-        val favoritePlayer = FavoritePlayer(player, region)
+        val favoritePlayer = FavoritePlayer(player.id, player.name, region)
         val playerJson = mGson.toJson(favoritePlayer, FavoritePlayer::class.java)
         mKeyValueStore.setString(player.id, playerJson)
         notifyListeners()
@@ -154,7 +154,7 @@ class FavoritePlayersManagerImpl(
         notifyListeners()
     }
 
-    override fun showAddOrRemovePlayerDialog(context: Context, player: AbsPlayer?, region: Region): Boolean {
+    override fun showAddOrRemovePlayerDialog(context: Context, player: AbsPlayer?, region: LiteRegion): Boolean {
         if (player == null) {
             return false
         }

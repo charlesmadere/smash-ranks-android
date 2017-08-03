@@ -27,7 +27,7 @@ class RankingsAdapter(context: Context) : BaseAdapter<Ranking>(context) {
     }
 
     fun set(bundle: RankingsBundle?) {
-        if (bundle != null && bundle.hasRankings()) {
+        if (bundle?.rankings?.isNotEmpty() == true) {
             if (bundle.hasPreviousRank()) {
                 mLayoutResId = R.layout.item_ranking_with_previous_rank
             } else {

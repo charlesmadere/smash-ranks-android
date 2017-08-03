@@ -248,7 +248,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         val rankingActivityDayLimit = region.rankingActivityDayLimit
 
         if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw RuntimeException("Region ($region) is missing necessary data")
+            throw RuntimeException("LiteRegion ($region) is missing necessary data")
         }
 
         val numberFormat = NumberFormat.getInstance()

@@ -3,6 +3,8 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.writeInteger
 import com.garpr.android.misc.ParcelableUtils
 import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
@@ -26,35 +28,35 @@ data class Ranking(
         ParcelableUtils.writeAbsPlayer(player, dest, flags)
         dest.writeFloat(rating)
         dest.writeInt(rank)
-        ParcelableUtils.writeInteger(previousRank, dest)
+        dest.writeInteger(previousRank)
     }
 
     companion object {
         @JvmField
         val CREATOR = createParcel { Ranking(ParcelableUtils.readAbsPlayer(it), it.readFloat(),
-                it.readInt(), ParcelableUtils.readInteger(it)) }
+                it.readInt(), it.readInteger()) }
 
         val JSON_DESERIALIZER: JsonDeserializer<Ranking> = JsonDeserializer<Ranking> { json, typeOfT, context ->
             if (json == null || json.isJsonNull) {
                 return@JsonDeserializer null
             }
 
-            val ranking = Ranking()
-            ranking.player = context.deserialize<AbsPlayer>(json, AbsPlayer::class.java)
+            val player = context.deserialize<AbsPlayer>(json, AbsPlayer::class.java)
 
             val jsonObject = json.asJsonObject
-            ranking.rating = jsonObject.get("rating").asFloat
-            ranking.rank = jsonObject.get("rank").asInt
+            val rating = jsonObject.get("rating").asFloat
+            val rank = jsonObject.get("rank").asInt
 
+            var previousRank : Int? = null
             if (jsonObject.has("previous_rank")) {
-                val previousRank = jsonObject.get("previous_rank")
+                val previousRankJson = jsonObject.get("previous_rank")
 
-                if (!previousRank.isJsonNull) {
-                    ranking.previousRank = previousRank.asInt
+                if (!previousRankJson.isJsonNull) {
+                    previousRank = previousRankJson.asInt
                 }
             }
 
-            ranking
+            Ranking(player, rating, rank, previousRank)
         }
     }
 

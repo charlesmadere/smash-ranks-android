@@ -3,22 +3,17 @@ package com.garpr.android.models
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 
-class LitePlayer : AbsPlayer, Parcelable {
+class LitePlayer(
+        id: String,
+        name: String
+) : AbsPlayer(
+        id,
+        name
+), Parcelable {
 
     companion object {
         @JvmField
-        val CREATOR = createParcel {
-            val lp = LitePlayer()
-            lp.readFromParcel(it)
-            lp
-        }
-    }
-
-    constructor()
-
-    constructor(id: String, name: String) {
-        this.id = id
-        this.name = name
+        val CREATOR = createParcel { LitePlayer(it.readString(), it.readString()) }
     }
 
     override val kind = AbsPlayer.Kind.LITE

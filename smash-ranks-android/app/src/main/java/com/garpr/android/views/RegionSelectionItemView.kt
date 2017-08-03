@@ -13,12 +13,12 @@ import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.models.Region
+import com.garpr.android.models.LiteRegion
 import kotterknife.bindView
 
-class RegionSelectionItemView : LinearLayout, BaseAdapterView<Region>, View.OnClickListener {
+class RegionSelectionItemView : LinearLayout, BaseAdapterView<LiteRegion>, View.OnClickListener {
 
-    var mContent: Region? = null
+    var mContent: LiteRegion? = null
         private set
 
     private val mRadioButton: RadioButton by bindView(R.id.radioButton)
@@ -28,7 +28,7 @@ class RegionSelectionItemView : LinearLayout, BaseAdapterView<Region>, View.OnCl
 
     interface Listeners {
         fun onClick(v: RegionSelectionItemView)
-        val selectedRegion: Region?
+        val selectedRegion: LiteRegion?
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -53,7 +53,7 @@ class RegionSelectionItemView : LinearLayout, BaseAdapterView<Region>, View.OnCl
         setOnClickListener(this)
     }
 
-    override fun setContent(content: Region) {
+    override fun setContent(content: LiteRegion) {
         mContent = content
 
         mDisplayName.text = content.displayName

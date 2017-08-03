@@ -49,17 +49,17 @@ class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
         val top = (height - barThickness) / 2
         val bottom = top + barThickness
 
-        if (content.mLosses == 0 && content.mWins == 0) {
+        if (content.losses == 0 && content.wins == 0) {
             mLossesRect.setEmpty()
             mWinsRect.setEmpty()
-        } else if (content.mLosses == 0) {
+        } else if (content.losses == 0) {
             mLossesRect.setEmpty()
             mWinsRect.set(0, top, width, bottom)
-        } else if (content.mWins == 0) {
+        } else if (content.wins == 0) {
             mLossesRect.set(0, top, width, bottom)
             mWinsRect.setEmpty()
         } else {
-            val winsPercent = content.mWins.toFloat() / (content.mLosses + content.mWins).toFloat()
+            val winsPercent = content.wins.toFloat() / (content.losses + content.wins).toFloat()
             val start = Math.round(winsPercent * width.toFloat())
             mLossesRect.set(start, top, width, bottom)
             mWinsRect.set(0, top, start, bottom)
@@ -125,8 +125,8 @@ class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
     override fun setContent(content: WinsLosses) {
         mContent = content
 
-        text = resources.getString(R.string.x_em_dash_y, mNumberFormat.format(content.mWins),
-                mNumberFormat.format(content.mLosses))
+        text = resources.getString(R.string.x_em_dash_y, mNumberFormat.format(content.wins),
+                mNumberFormat.format(content.losses))
 
         calculateRects()
         invalidate()

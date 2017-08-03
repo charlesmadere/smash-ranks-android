@@ -3,59 +3,34 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.misc.ParcelableUtils
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
-class FullPlayer : AbsPlayer(), Parcelable {
-
-    @SerializedName("aliases")
-    var aliases: ArrayList<String>? = null
-        private set
-
-    @SerializedName("regions")
-    var regions: ArrayList<String>? = null
-        private set
-
-    @SerializedName("ratings")
-    var ratings: Ratings? = null
-        private set
-
+class FullPlayer(
+        id: String,
+        name: String,
+        @SerializedName("aliases") val aliases: List<String>? = null,
+        @SerializedName("regions") val regions: List<String>? = null,
+        @SerializedName("ratings") val ratings: Map<String, Rating>? = null
+) : AbsPlayer(
+        id,
+        name
+), Parcelable {
 
     companion object {
         @JvmField
-        val CREATOR = createParcel {
-            val fp = FullPlayer()
-            fp.readFromParcel(it)
-            fp
-        }
+        val CREATOR = createParcel { FullPlayer(it.readString(), it.readString(),
+                it.createStringArrayList(), it.createStringArrayList(),
+                ParcelableUtils.readRatingsMap(it)) }
     }
 
     override val kind = AbsPlayer.Kind.FULL
-
-    fun hasAliases(): Boolean {
-        return aliases != null && !aliases!!.isEmpty()
-    }
-
-    fun hasRatings(): Boolean {
-        return ratings != null && !ratings!!.isEmpty()
-    }
-
-    fun hasRegions(): Boolean {
-        return regions != null && !regions!!.isEmpty()
-    }
-
-    override fun readFromParcel(source: Parcel) {
-        super.readFromParcel(source)
-        aliases = source.createStringArrayList()
-        regions = source.createStringArrayList()
-        ratings = source.readParcelable<Ratings>(Ratings::class.java.classLoader)
-    }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
         dest.writeStringList(aliases)
         dest.writeStringList(regions)
-        dest.writeParcelable(ratings, flags)
+        ParcelableUtils.writeRatingsMap(ratings, dest, flags)
     }
 
 }
