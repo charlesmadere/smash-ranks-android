@@ -2,8 +2,7 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.createParcel
-import com.garpr.android.misc.ParcelableUtils
+import com.garpr.android.extensions.*
 import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -16,8 +15,8 @@ data class Match(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { Match(ParcelableUtils.readAbsPlayer(it),
-            ParcelableUtils.readAbsTournament(it), it.readParcelable(Result::class.java.classLoader)) }
+        val CREATOR = createParcel { Match(it.readAbsPlayer(), it.readAbsTournament(),
+                it.readParcelable(Result::class.java.classLoader)) }
 
         val CHRONOLOGICAL_ORDER: Comparator<Match> = Comparator { o1, o2 ->
             SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.tournament.date, o2.tournament.date)
@@ -49,8 +48,8 @@ data class Match(
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        ParcelableUtils.writeAbsPlayer(opponent, dest, flags)
-        ParcelableUtils.writeAbsTournament(tournament, dest, flags)
+        dest.writeAbsPlayer(opponent, flags)
+        dest.writeAbsTournament(tournament, flags)
         dest.writeParcelable(result, flags)
     }
 

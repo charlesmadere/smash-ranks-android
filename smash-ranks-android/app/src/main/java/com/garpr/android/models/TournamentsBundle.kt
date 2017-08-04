@@ -3,7 +3,8 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.misc.ParcelableUtils
+import com.garpr.android.extensions.readAbsTournamentList
+import com.garpr.android.extensions.writeAbsTournamentList
 import com.google.gson.annotations.SerializedName
 
 data class TournamentsBundle(
@@ -12,13 +13,13 @@ data class TournamentsBundle(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { TournamentsBundle(ParcelableUtils.readAbsTournamentList(it)) }
+        val CREATOR = createParcel { TournamentsBundle(it.readAbsTournamentList()) }
     }
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        ParcelableUtils.writeAbsTournamentList(tournaments, dest, flags)
+        dest.writeAbsTournamentList(tournaments, flags)
     }
 
 }

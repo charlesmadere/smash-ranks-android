@@ -3,7 +3,8 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.misc.ParcelableUtils
+import com.garpr.android.extensions.readAbsPlayerList
+import com.garpr.android.extensions.writeAbsPlayerList
 import com.google.gson.annotations.SerializedName
 
 data class PlayersBundle(
@@ -12,13 +13,13 @@ data class PlayersBundle(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { PlayersBundle(ParcelableUtils.readAbsPlayerList(it)) }
+        val CREATOR = createParcel { PlayersBundle(it.readAbsPlayerList()) }
     }
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        ParcelableUtils.writeAbsPlayerList(players, dest, flags)
+        dest.writeAbsPlayerList(players, flags)
     }
 
 }

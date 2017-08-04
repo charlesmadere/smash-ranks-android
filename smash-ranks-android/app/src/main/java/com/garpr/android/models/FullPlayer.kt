@@ -3,7 +3,8 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.misc.ParcelableUtils
+import com.garpr.android.extensions.readRatingsMap
+import com.garpr.android.extensions.writeRatingsMap
 import com.google.gson.annotations.SerializedName
 
 class FullPlayer(
@@ -20,8 +21,7 @@ class FullPlayer(
     companion object {
         @JvmField
         val CREATOR = createParcel { FullPlayer(it.readString(), it.readString(),
-                it.createStringArrayList(), it.createStringArrayList(),
-                ParcelableUtils.readRatingsMap(it)) }
+                it.createStringArrayList(), it.createStringArrayList(), it.readRatingsMap()) }
     }
 
     override val kind = AbsPlayer.Kind.FULL
@@ -30,7 +30,7 @@ class FullPlayer(
         super.writeToParcel(dest, flags)
         dest.writeStringList(aliases)
         dest.writeStringList(regions)
-        ParcelableUtils.writeRatingsMap(ratings, dest, flags)
+        dest.writeRatingsMap(ratings, flags)
     }
 
 }

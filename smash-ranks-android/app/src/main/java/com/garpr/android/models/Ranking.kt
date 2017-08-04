@@ -2,10 +2,7 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readInteger
-import com.garpr.android.extensions.writeInteger
-import com.garpr.android.misc.ParcelableUtils
+import com.garpr.android.extensions.*
 import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
 
@@ -18,8 +15,8 @@ data class Ranking(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { Ranking(ParcelableUtils.readAbsPlayer(it), it.readFloat(),
-                it.readInt(), it.readInteger()) }
+        val CREATOR = createParcel { Ranking(it.readAbsPlayer(), it.readFloat(), it.readInt(),
+                it.readInteger()) }
 
         val JSON_DESERIALIZER: JsonDeserializer<Ranking> = JsonDeserializer<Ranking> { json, typeOfT, context ->
             if (json == null || json.isJsonNull) {
@@ -54,7 +51,7 @@ data class Ranking(
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        ParcelableUtils.writeAbsPlayer(player, dest, flags)
+        dest.writeAbsPlayer(player, flags)
         dest.writeFloat(rating)
         dest.writeInt(rank)
         dest.writeInteger(previousRank)
