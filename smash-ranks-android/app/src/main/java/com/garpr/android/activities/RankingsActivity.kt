@@ -7,7 +7,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.RegionManager
-import com.garpr.android.models.AbsRegion
+import com.garpr.android.models.Region
 import javax.inject.Inject
 
 class RankingsActivity : BaseActivity() {
@@ -19,8 +19,7 @@ class RankingsActivity : BaseActivity() {
     companion object {
         private const val TAG = "RankingsActivity"
 
-        @JvmOverloads
-        fun getLaunchIntent(context: Context, region: AbsRegion? = null): Intent {
+        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
             val intent = Intent(context, RankingsActivity::class.java)
 
             if (region != null) {

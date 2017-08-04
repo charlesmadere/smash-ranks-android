@@ -6,7 +6,7 @@ import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.misc.DeepLinkUtils
-import com.garpr.android.models.AbsRegion
+import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
@@ -28,7 +28,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     override val activityName = TAG
 
-    private fun deepLink(region: AbsRegion) {
+    private fun deepLink(region: Region) {
         val intentStack = mDeepLinkUtils.buildIntentStack(this, intent, region)
 
         if (intentStack == null || intentStack.isEmpty()) {

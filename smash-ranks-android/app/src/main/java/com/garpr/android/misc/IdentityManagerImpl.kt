@@ -4,7 +4,7 @@ import android.text.TextUtils
 import com.garpr.android.misc.IdentityManager.OnIdentityChangeListener
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 import com.garpr.android.preferences.Preference
 import java.lang.ref.WeakReference
 
@@ -115,7 +115,7 @@ class IdentityManagerImpl(
         }
     }
 
-    override fun setIdentity(player: AbsPlayer, region: LiteRegion) {
+    override fun setIdentity(player: AbsPlayer, region: Region) {
         mTimber.d(TAG, "old identity was \"" + getPlayerString(identity) + "\"" +
                 ", new identity is \"" + getPlayerString(player) + "\"")
 

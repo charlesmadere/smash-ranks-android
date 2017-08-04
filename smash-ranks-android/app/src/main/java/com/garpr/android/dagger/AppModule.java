@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.CrashlyticsWrapperImpl;
-import com.garpr.android.models.LiteRegion;
+import com.garpr.android.models.Region;
 
 import javax.inject.Singleton;
 
@@ -15,7 +15,7 @@ import dagger.Provides;
 @Module
 public class AppModule extends BaseAppModule {
 
-    public AppModule(@NonNull final Application application, @NonNull final LiteRegion defaultRegion) {
+    public AppModule(@NonNull final Application application, @NonNull final Region defaultRegion) {
         super(application, defaultRegion);
     }
 

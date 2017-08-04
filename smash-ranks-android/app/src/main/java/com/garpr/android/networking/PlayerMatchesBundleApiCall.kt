@@ -5,11 +5,11 @@ import com.garpr.android.misc.Heartbeat
 import com.garpr.android.models.FullPlayer
 import com.garpr.android.models.MatchesBundle
 import com.garpr.android.models.PlayerMatchesBundle
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 
 class PlayerMatchesBundleApiCall(
         private val listener: ApiListener<PlayerMatchesBundle>,
-        private val region: LiteRegion,
+        private val region: Region,
         private val serverApi: ServerApi,
         private val playerId: String
 ) : Heartbeat {

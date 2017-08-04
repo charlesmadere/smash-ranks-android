@@ -3,98 +3,62 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.misc.ParcelableUtils
+import com.garpr.android.extensions.readAbsPlayerList
+import com.garpr.android.extensions.writeAbsPlayerList
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
-class FullTournament : AbsTournament(), Parcelable {
+class FullTournament(
+        @SerializedName("players") val players: List<AbsPlayer>? = null,
+        @SerializedName("matches") val matches: List<Match>? = null,
+        regions: List<String>? = null,
+        date: SimpleDate,
+        id: String,
+        name: String,
+        @SerializedName("rawId") val rawId: String?,
+        @SerializedName("url") val url: String?
+) : AbsTournament(
+        regions,
+        date,
+        id,
+        name
+), Parcelable {
 
     companion object {
         @JvmField
-        val CREATOR = createParcel {
-            val ft = FullTournament()
-            ft.readFromParcel(it)
-            ft
-        }
+        val CREATOR = createParcel { FullTournament(it.readAbsPlayerList(),
+                it.createTypedArrayList(Match.CREATOR), it.createStringArrayList(),
+                it.readParcelable(SimpleDate::class.java.classLoader), it.readString(),
+                it.readString(), it.readString(), it.readString()) }
     }
-
-    @SerializedName("players")
-    var players: ArrayList<AbsPlayer>? = null
-        private set
-
-    @SerializedName("matches")
-    var matches: ArrayList<Match>? = null
-        private set
-
-    @SerializedName("raw_id")
-    var rawId: String? = null
-        private set
-
-    @SerializedName("url")
-    var url: String? = null
-        private set
 
 
     override val kind = AbsTournament.Kind.FULL
 
-    override fun readFromParcel(source: Parcel) {
-        super.readFromParcel(source)
-        players = ParcelableUtils.readAbsPlayerList(source)
-        matches = source.createTypedArrayList(Match.CREATOR)
-        rawId = source.readString()
-        url = source.readString()
-    }
-
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        ParcelableUtils.writeAbsPlayerList(players, dest, flags)
+        dest.writeAbsPlayerList(players, flags)
         dest.writeTypedList(matches)
         dest.writeString(rawId)
         dest.writeString(url)
     }
 
 
-    class Match : Parcelable {
+    class Match(
+            @SerializedName("excluded") val isExcluded: Boolean,
+            @SerializedName("loser_id") val loserId: String,
+            @SerializedName("loser_name") val loserName: String,
+            @SerializedName("match_id") val matchId: String,
+            @SerializedName("winner_id") val winnerId: String,
+            @SerializedName("winner_name") val winnerName: String
+    ) : Parcelable {
         companion object {
             @JvmField
-            val CREATOR = createParcel {
-                val m = Match()
-                m.isExcluded = it.readInt() != 0
-                m.loserId = it.readString()
-                m.loserName = it.readString()
-                m.matchId = it.readString()
-                m.winnerId = it.readString()
-                m.winnerName = it.readString()
-                m
-            }
+            val CREATOR = createParcel { Match(it.readInt() != 0, it.readString(), it.readString(),
+                    it.readString(), it.readString(), it.readString()) }
         }
 
-        @SerializedName("excluded")
-        var isExcluded: Boolean = false
-            private set
-
-        @SerializedName("loser_id")
-        lateinit var loserId: String
-            private set
-
-        @SerializedName("loser_name")
-        lateinit var loserName: String
-            private set
-
-        @SerializedName("match_id")
-        lateinit var matchId: String
-            private set
-
-        @SerializedName("winner_id")
-        lateinit var winnerId: String
-            private set
-
-        @SerializedName("winner_name")
-        lateinit var winnerName: String
-            private set
-
         override fun equals(other: Any?): Boolean {
-            return other is Match && matchId == other.matchId
+            return other is Match && matchId.equals(other.matchId, ignoreCase = true)
         }
 
         override fun hashCode() = matchId.hashCode()

@@ -16,21 +16,6 @@ data class Ranking(
         @SerializedName("previous_rank") val previousRank: Int? = null
 ) : Parcelable {
 
-    override fun equals(other: Any?): Boolean {
-        return other is Ranking && player.id == other.player.id
-    }
-
-    override fun hashCode() = player.hashCode()
-
-    override fun describeContents() = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        ParcelableUtils.writeAbsPlayer(player, dest, flags)
-        dest.writeFloat(rating)
-        dest.writeInt(rank)
-        dest.writeInteger(previousRank)
-    }
-
     companion object {
         @JvmField
         val CREATOR = createParcel { Ranking(ParcelableUtils.readAbsPlayer(it), it.readFloat(),
@@ -58,6 +43,21 @@ data class Ranking(
 
             Ranking(player, rating, rank, previousRank)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Ranking && player.id.equals(other.player.id, ignoreCase = true)
+    }
+
+    override fun hashCode() = player.hashCode()
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        ParcelableUtils.writeAbsPlayer(player, dest, flags)
+        dest.writeFloat(rating)
+        dest.writeInt(rank)
+        dest.writeInteger(previousRank)
     }
 
 }

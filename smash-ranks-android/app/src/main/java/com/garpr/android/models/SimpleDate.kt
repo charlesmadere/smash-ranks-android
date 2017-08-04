@@ -14,7 +14,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SimpleDate @JvmOverloads constructor(
+data class SimpleDate(
         private val mDate: Date = Date()
 ) : Parcelable {
 
@@ -22,7 +22,7 @@ class SimpleDate @JvmOverloads constructor(
         private val FORMATS = arrayOf(SimpleDateFormat("MM/dd/yy", Locale.US))
 
         @JvmField
-        val CREATOR = createParcel { SimpleDate(it) }
+        val CREATOR = createParcel { SimpleDate(Date(it.readLong())) }
 
         val CHRONOLOGICAL_ORDER: Comparator<SimpleDate> = Comparator { o1, o2 ->
             o1.mDate.compareTo(o2.mDate)
@@ -52,7 +52,7 @@ class SimpleDate @JvmOverloads constructor(
             }
 
             try {
-                return@JsonDeserializer SimpleDate(jsonString.toLong())
+                return@JsonDeserializer SimpleDate(Date(jsonString.toLong()))
             } catch (e: NumberFormatException) {
                 // this Exception can be safely ignored
             }
@@ -68,10 +68,6 @@ class SimpleDate @JvmOverloads constructor(
             }
         }
     }
-
-    constructor(date: Long) : this(Date(date))
-
-    private constructor(source: Parcel) : this(source.readLong())
 
     override fun equals(other: Any?): Boolean {
         return other is SimpleDate && mDate == other.mDate

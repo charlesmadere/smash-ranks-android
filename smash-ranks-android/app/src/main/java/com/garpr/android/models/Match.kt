@@ -36,10 +36,10 @@ data class Match(
 
             val player = LitePlayer(jsonObject.get("opponent_id").asString,
                     jsonObject.get("opponent_name").asString)
-            val tournament = LiteTournament(jsonObject.get("tournament_id").asString,
-                    jsonObject.get("tournament_name").asString,
-                    context.deserialize<SimpleDate>(jsonObject.get("tournament_date"),
-                            SimpleDate::class.java))
+            val tournament = LiteTournament(null,
+                    context.deserialize(jsonObject.get("tournament_date"), SimpleDate::class.java),
+                    jsonObject.get("tournament_id").asString,
+                    jsonObject.get("tournament_name").asString)
             val result = context.deserialize<Result>(jsonObject.get("result"), Result::class.java)
 
             Match(player, tournament, result)

@@ -68,7 +68,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         private val EXTRA_PLAYER_ID = CNAME + ".PlayerId"
         private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
 
-        fun getLaunchIntent(context: Context, player: AbsPlayer, region: LiteRegion?): Intent {
+        fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region?): Intent {
             var _region = region
 
             if (player is FavoritePlayer) {
@@ -78,12 +78,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             return getLaunchIntent(context, player.id, player.name, _region)
         }
 
-        fun getLaunchIntent(context: Context, ranking: Ranking, region: LiteRegion?): Intent {
+        fun getLaunchIntent(context: Context, ranking: Ranking, region: Region?): Intent {
             return getLaunchIntent(context, ranking.player.id, ranking.player.name, region)
         }
 
         fun getLaunchIntent(context: Context, playerId: String, playerName: String?,
-                region: AbsRegion?): Intent {
+                region: Region?): Intent {
             val intent = Intent(context, PlayerActivity::class.java)
                     .putExtra(EXTRA_PLAYER_ID, playerId)
 

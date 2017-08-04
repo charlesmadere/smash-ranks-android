@@ -1,13 +1,13 @@
 package com.garpr.android.misc
 
 import com.garpr.android.models.Endpoint
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 
 object Constants {
 
     // Defaults
     // TODO maybe this should be retrieved from the server via a splash screen...
-    val DefaultRegion = LiteRegion(Endpoint.GAR_PR, 45, 2,
+    val DefaultRegion = Region(Endpoint.GAR_PR, 45, 2,
             1000, "Norcal", "norcal")
 
     // GAR PR Paths

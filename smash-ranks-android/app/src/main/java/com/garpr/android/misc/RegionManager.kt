@@ -1,9 +1,7 @@
 package com.garpr.android.misc
 
 import android.content.Context
-import com.garpr.android.models.AbsRegion
-
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 
 interface RegionManager {
 
@@ -12,14 +10,14 @@ interface RegionManager {
     }
 
     interface RegionHandle {
-        val currentRegion: AbsRegion?
+        val currentRegion: Region?
     }
 
     fun addListener(listener: OnRegionChangeListener)
 
-    fun getRegion(context: Context?): AbsRegion
+    fun getRegion(context: Context?): Region
 
-    var region: LiteRegion
+    var region: Region
 
     fun removeListener(listener: OnRegionChangeListener?)
 

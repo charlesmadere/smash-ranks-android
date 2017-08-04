@@ -58,7 +58,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         const val POSITION_TOURNAMENTS = 1
         const val POSITION_FAVORITE_PLAYERS = 2
 
-        @JvmOverloads
         fun getLaunchIntent(context: Context, initialPosition: Int? = null): Intent {
             val intent = Intent.makeRestartActivityTask(
                     Intent(context, HomeActivity::class.java).component)

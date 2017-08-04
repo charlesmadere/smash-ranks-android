@@ -1,20 +1,19 @@
 package com.garpr.android.misc
 
 import android.content.Context
+import android.util.Log
 import com.garpr.android.R
 import com.garpr.android.models.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 object ListUtils {
 
-    fun createHeadToHeadList(context: Context, headToHead: HeadToHead?): ArrayList<Any> {
-        val list = ArrayList<Any>()
+    fun createHeadToHeadList(context: Context, headToHead: HeadToHead?): MutableList<Any> {
+        val list = mutableListOf<Any>()
 
         if (headToHead == null) {
             list.add(WinsLosses(0, 0))
             list.add(context.getString(R.string.no_matches))
-            list.trimToSize()
             return list
         }
 
@@ -23,27 +22,26 @@ object ListUtils {
 
         if (matches == null || matches.isEmpty()) {
             list.add(context.getString(R.string.no_matches))
-            list.trimToSize()
             return list
         }
 
         list.addAll(createSortedTournamentAndMatchList(matches))
-        list.trimToSize()
-
         return list
     }
 
     fun createPlayerMatchesList(context: Context, regionManager: RegionManager,
-            fullPlayer: FullPlayer, bundle: MatchesBundle?): ArrayList<Any>? {
+            fullPlayer: FullPlayer, bundle: MatchesBundle?): MutableList<Any>? {
         val region = regionManager.getRegion(context)
+        Log.d("blah", "" + fullPlayer.ratings)
         val rating = fullPlayer.ratings?.get(region.id)
+        Log.d("blah", "" + rating)
         val matches = bundle?.matches
 
         if (rating == null && (matches == null || matches.isEmpty())) {
             return null
         }
 
-        val newList = ArrayList<Any>()
+        val newList = mutableListOf<Any>()
 
         if (rating != null) {
             newList.add(rating)
@@ -59,23 +57,22 @@ object ListUtils {
             newList.addAll(createSortedTournamentAndMatchList(matches))
         }
 
-        newList.trimToSize()
         return newList
     }
 
-    private fun createSortedTournamentAndMatchList(matches: List<Match>): ArrayList<Any> {
+    private fun createSortedTournamentAndMatchList(matches: List<Match>): MutableList<Any> {
         val matchesCopy = mutableListOf<Match>()
         matchesCopy.addAll(matches)
         Collections.sort(matchesCopy, Match.REVERSE_CHRONOLOGICAL_ORDER)
 
-        val list = ArrayList<Any>()
+        val list = mutableListOf<Any>()
         var tournamentId: String? = null
 
         for (match in matchesCopy) {
             if (tournamentId == null || match.tournament.id != tournamentId) {
                 tournamentId = match.tournament.id
-                list.add(LiteTournament(tournamentId, match.tournament.name,
-                        match.tournament.date))
+                list.add(LiteTournament(null, match.tournament.date, tournamentId,
+                        match.tournament.name))
             }
 
             list.add(match)
@@ -97,12 +94,12 @@ object ListUtils {
         }
     }
 
-    fun filterPlayerMatchesList(result: Match.Result?, list: List<Any>?): ArrayList<Any>? {
+    fun filterPlayerMatchesList(result: Match.Result?, list: List<Any>?): MutableList<Any>? {
         if (list == null || list.isEmpty()) {
             return null
         }
 
-        val newList = ArrayList<Any>(list.size)
+        val newList = mutableListOf<Any>()
 
         if (result == null) {
             newList.addAll(list)
@@ -165,27 +162,27 @@ object ListUtils {
         if (list == null || list.isEmpty()) {
             null
         } else {
-            val newList: ArrayList<AbsPlayer>
+            val newList = mutableListOf<AbsPlayer>()
 
-            if (query != null && query.isNotBlank()) {
+            if (query?.isNotBlank() == true) {
                 val trimmedQuery = query.trim().toLowerCase()
 
-                newList = ArrayList<AbsPlayer>(list.filter {
+                newList.addAll(list.filter {
                     it.name.toLowerCase().contains(trimmedQuery)
                 })
             } else {
-                newList = ArrayList<AbsPlayer>(list)
+                newList.addAll(list)
             }
 
             newList
         }
 
-    fun searchPlayerMatchesList(query: String?, list: List<Any>?): ArrayList<Any>? {
+    fun searchPlayerMatchesList(query: String?, list: List<Any>?): MutableList<Any>? {
         if (list == null || list.isEmpty()) {
             return null
         }
 
-        val newList = ArrayList<Any>(list.size)
+        val newList = mutableListOf<Any>()
 
         if (query == null || query.isBlank()) {
             newList.addAll(list)
@@ -236,30 +233,36 @@ object ListUtils {
     fun searchRankingList(query: String?, list: List<Ranking>?) =
         if (list == null || list.isEmpty()) {
             null
-        } else if (query != null && query.isNotBlank()) {
-            val trimmedQuery = query.trim().toLowerCase()
-
-            ArrayList<Ranking>(list.filter {
-                it.player.name.toLowerCase().contains(trimmedQuery)
-            })
         } else {
-            ArrayList<Ranking>(list)
+            val newList = mutableListOf<Ranking>()
+
+            if (query?.isNotBlank() == true) {
+                val trimmedQuery = query.trim().toLowerCase()
+
+                newList.addAll(list.filter {
+                    it.player.name.toLowerCase().contains(trimmedQuery)
+                })
+            } else {
+                newList.addAll(list)
+            }
+
+            newList
         }
 
     fun searchTournamentList(query: String?, list: List<AbsTournament>?) =
         if (list == null || list.isEmpty()) {
             null
         } else {
-            val newList: ArrayList<AbsTournament>
+            val newList = mutableListOf<AbsTournament>()
 
-            if (query != null && query.isNotBlank()) {
+            if (query?.isNotBlank() == true) {
                 val trimmedQuery = query.trim().toLowerCase()
 
-                newList = ArrayList<AbsTournament>(list.filter {
+                newList.addAll(list.filter {
                     it.name.toLowerCase().contains(trimmedQuery)
                 })
             } else {
-                newList = ArrayList<AbsTournament>(list)
+                newList.addAll(list)
             }
 
             Collections.sort(newList, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER)
@@ -269,15 +272,19 @@ object ListUtils {
     fun searchTournamentMatchesList(query: String?, list: List<FullTournament.Match>?) =
         if (list == null || list.isEmpty()) {
             null
-        } else if (query != null && query.isNotBlank()) {
-            val trimmedQuery = query.trim().toLowerCase()
-
-            ArrayList<FullTournament.Match>(list.filter {
-                it.winnerName.toLowerCase().contains(trimmedQuery) ||
-                        it.loserName.toLowerCase().contains(trimmedQuery)
-            })
         } else {
-            ArrayList<FullTournament.Match>(list)
+            val newList = mutableListOf<FullTournament.Match>()
+
+            if (query?.isNotBlank() == true) {
+                val trimmedQuery = query.trim().toLowerCase()
+
+                newList.addAll(list.filter { it.winnerName.toLowerCase().contains(trimmedQuery) ||
+                            it.loserName.toLowerCase().contains(trimmedQuery) })
+            } else {
+                newList.addAll(list)
+            }
+
+            newList
         }
 
 }

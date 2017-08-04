@@ -7,24 +7,12 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-abstract class AbsTournament : Parcelable {
-
-    @SerializedName("regions")
-    var regions: ArrayList<String>? = null
-        protected set
-
-    @SerializedName("date")
-    lateinit var date: SimpleDate
-        protected set
-
-    @SerializedName("id")
-    lateinit var id: String
-        protected set
-
-    @SerializedName("name")
-    lateinit var name: String
-        protected set
-
+abstract class AbsTournament(
+        @SerializedName("regions") val regions: List<String>? = null,
+        @SerializedName("date") val date: SimpleDate,
+        @SerializedName("id") val id: String,
+        @SerializedName("name") val name: String
+) : Parcelable {
 
     companion object {
         val CHRONOLOGICAL_ORDER: Comparator<AbsTournament> = Comparator { o1, o2 ->
@@ -52,7 +40,7 @@ abstract class AbsTournament : Parcelable {
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is AbsTournament && id == other.id
+        return other is AbsTournament && id.equals(other.id, ignoreCase = true)
     }
 
     abstract val kind: Kind
@@ -60,13 +48,6 @@ abstract class AbsTournament : Parcelable {
     override fun hashCode() = id.hashCode()
 
     override fun describeContents() = 0
-
-    protected open fun readFromParcel(source: Parcel) {
-        regions = source.createStringArrayList()
-        date = source.readParcelable<SimpleDate>(SimpleDate::class.java.classLoader)
-        id = source.readString()
-        name = source.readString()
-    }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeStringList(regions)

@@ -3,7 +3,8 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.misc.ParcelableUtils
+import com.garpr.android.extensions.readAbsPlayer
+import com.garpr.android.extensions.writeAbsPlayer
 import com.google.gson.annotations.SerializedName
 
 data class HeadToHead(
@@ -16,17 +17,16 @@ data class HeadToHead(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { HeadToHead(ParcelableUtils.readAbsPlayer(it),
-                ParcelableUtils.readAbsPlayer(it), it.readInt(), it.readInt(),
-                it.createTypedArrayList(Match.CREATOR))
+        val CREATOR = createParcel { HeadToHead(it.readAbsPlayer(), it.readAbsPlayer(),
+                it.readInt(), it.readInt(), it.createTypedArrayList(Match.CREATOR))
         }
     }
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        ParcelableUtils.writeAbsPlayer(opponent, dest, flags)
-        ParcelableUtils.writeAbsPlayer(player, dest, flags)
+        dest.writeAbsPlayer(opponent, flags)
+        dest.writeAbsPlayer(player, flags)
         dest.writeInt(losses)
         dest.writeInt(wins)
         dest.writeTypedList(matches)

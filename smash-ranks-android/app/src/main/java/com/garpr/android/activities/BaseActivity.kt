@@ -13,7 +13,7 @@ import com.garpr.android.R
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.RegionManager.RegionHandle
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.AbsRegion
+import com.garpr.android.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.views.toolbars.MenuToolbar
 import kotterknife.bindOptionalView
@@ -38,10 +38,10 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     protected abstract val activityName: String
 
-    override val currentRegion: AbsRegion?
+    override val currentRegion: Region?
         get() {
             return intent?.let {
-                if (intent.hasExtra(EXTRA_REGION)) intent.getParcelableExtra<AbsRegion>(EXTRA_REGION)
+                if (intent.hasExtra(EXTRA_REGION)) intent.getParcelableExtra<Region>(EXTRA_REGION)
                 else null
             }
         }

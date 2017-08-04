@@ -35,8 +35,7 @@ import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Ranking;
-import com.garpr.android.models.Ratings;
-import com.garpr.android.models.LiteRegion;
+import com.garpr.android.models.Region;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
@@ -68,11 +67,11 @@ public abstract class BaseAppModule {
     private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
 
     private final Application mApplication;
-    private final LiteRegion mDefaultRegion;
+    private final Region mDefaultRegion;
 
 
     public BaseAppModule(@NonNull final Application application,
-            @NonNull final LiteRegion defaultRegion) {
+            @NonNull final Region defaultRegion) {
         mApplication = application;
         mDefaultRegion = defaultRegion;
     }
@@ -151,12 +150,9 @@ public abstract class BaseAppModule {
         return new GsonBuilder()
                 .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_SERIALIZER())
-                .registerTypeAdapter(AbsTournament.class,
-                        AbsTournament.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(AbsTournament.class, AbsTournament.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(Match.class, Match.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(Ranking.class, Ranking.Companion.getJSON_DESERIALIZER())
-                .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
-                .registerTypeAdapter(Ratings.class, Ratings.JSON_SERIALIZER)
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_SERIALIZER())
                 .create();

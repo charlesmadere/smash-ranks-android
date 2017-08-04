@@ -17,7 +17,7 @@ import com.garpr.android.adapters.RegionsSelectionAdapter
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ResultCodes
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
@@ -30,7 +30,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         RegionSelectionItemView.Listeners, SwipeRefreshLayout.OnRefreshListener {
 
     private var mSaveMenuItem: MenuItem? = null
-    private var mSelectedRegion: LiteRegion? = null
+    private var mSelectedRegion: Region? = null
     private var mRegionsBundle: RegionsBundle? = null
     lateinit private var mAdapter: RegionsSelectionAdapter
 
@@ -172,7 +172,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         supportFinishAfterTransition()
     }
 
-    override val selectedRegion: LiteRegion?
+    override val selectedRegion: Region?
         get() = if (mSelectedRegion == null) mRegionManager.region else mSelectedRegion
 
     private fun showEmpty() {

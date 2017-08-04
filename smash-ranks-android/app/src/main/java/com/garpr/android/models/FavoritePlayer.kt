@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 class FavoritePlayer(
         id: String,
         name: String,
-        @SerializedName("region") val region: LiteRegion
+        @SerializedName("region") val region: Region
 ) : AbsPlayer(
         id,
         name
@@ -17,7 +17,7 @@ class FavoritePlayer(
     companion object {
         @JvmField
         val CREATOR = createParcel { FavoritePlayer(it.readString(), it.readString(),
-                it.readParcelable(LiteRegion::class.java.classLoader)) }
+                it.readParcelable(Region::class.java.classLoader)) }
     }
 
     override val kind = AbsPlayer.Kind.FAVORITE

@@ -1,7 +1,7 @@
 package com.garpr.android.misc
 
 import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 
 interface IdentityManager {
 
@@ -23,6 +23,6 @@ interface IdentityManager {
 
     fun removeListener(listener: OnIdentityChangeListener?)
 
-    fun setIdentity(player: AbsPlayer, region: LiteRegion)
+    fun setIdentity(player: AbsPlayer, region: Region)
 
 }

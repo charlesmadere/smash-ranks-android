@@ -4,7 +4,7 @@ import android.content.Context
 
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 
 interface FavoritePlayersManager {
 
@@ -16,7 +16,7 @@ interface FavoritePlayersManager {
 
     fun addListener(listener: OnFavoritePlayersChangeListener)
 
-    fun addPlayer(player: AbsPlayer, region: LiteRegion)
+    fun addPlayer(player: AbsPlayer, region: Region)
 
     fun clear()
 
@@ -34,7 +34,7 @@ interface FavoritePlayersManager {
 
     fun removePlayer(playerId: String)
 
-    fun showAddOrRemovePlayerDialog(context: Context, player: AbsPlayer?, region: LiteRegion): Boolean
+    fun showAddOrRemovePlayerDialog(context: Context, player: AbsPlayer?, region: Region): Boolean
 
     val size: Int
 

@@ -4,9 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.garpr.android.activities.*
-import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.Endpoint
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
 import java.util.*
 
@@ -46,7 +45,7 @@ class DeepLinkUtilsImpl(
         // https://www.notgarpr.com/#/nyc/players/545b240b8ab65f7a95f74940
     }
 
-    override fun buildIntentStack(context: Context, intent: Intent?, region: AbsRegion): List<Intent>? {
+    override fun buildIntentStack(context: Context, intent: Intent?, region: Region): List<Intent>? {
         if (intent == null) {
             mTimber.d(TAG, "Can't deep link, Intent is null")
             return null
@@ -55,7 +54,7 @@ class DeepLinkUtilsImpl(
         }
     }
 
-    override fun buildIntentStack(context: Context, uri: String?, region: AbsRegion): List<Intent>? {
+    override fun buildIntentStack(context: Context, uri: String?, region: Region): List<Intent>? {
         if (uri == null || uri.isBlank()) {
             mTimber.d(TAG, "Can't deep link, uri is null / blank")
             return null
@@ -87,7 +86,7 @@ class DeepLinkUtilsImpl(
         val regionId = splits[0]
 
         if (regionId.isNullOrBlank()) {
-            mTimber.w(TAG, "LiteRegion ID is null / blank")
+            mTimber.w(TAG, "Region ID is null / blank")
             return null
         }
 
@@ -113,7 +112,7 @@ class DeepLinkUtilsImpl(
         return intentStack
     }
 
-    override fun buildIntentStack(context: Context, uri: Uri?, region: AbsRegion): List<Intent>? {
+    override fun buildIntentStack(context: Context, uri: Uri?, region: Region): List<Intent>? {
         if (uri == null) {
             mTimber.d(TAG, "Can't deep link, Uri is null")
             return null
@@ -123,7 +122,7 @@ class DeepLinkUtilsImpl(
     }
 
     private fun buildPlayersIntentStack(context: Context, intentStack: MutableList<Intent>,
-            region: AbsRegion, sameRegion: Boolean, splits: Array<String>) {
+            region: Region, sameRegion: Boolean, splits: Array<String>) {
         intentStack.add(HomeActivity.getLaunchIntent(context))
 
         if (sameRegion) {
@@ -147,7 +146,7 @@ class DeepLinkUtilsImpl(
     }
 
     private fun buildRankingsIntentStack(context: Context, intentStack: MutableList<Intent>,
-            region: AbsRegion, sameRegion: Boolean) {
+            region: Region, sameRegion: Boolean) {
         if (sameRegion) {
             intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_RANKINGS))
         } else {
@@ -157,7 +156,7 @@ class DeepLinkUtilsImpl(
     }
 
     private fun buildTournamentsIntentStack(context: Context, intentStack: MutableList<Intent>,
-            region: AbsRegion, sameRegion: Boolean, splits: Array<String>) {
+            region: Region, sameRegion: Boolean, splits: Array<String>) {
         if (sameRegion) {
             intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_TOURNAMENTS))
         } else {
@@ -209,7 +208,7 @@ class DeepLinkUtilsImpl(
         }
     }
 
-    override fun getRegion(intent: Intent?, regionsBundle: RegionsBundle?): LiteRegion? {
+    override fun getRegion(intent: Intent?, regionsBundle: RegionsBundle?): Region? {
         if (intent == null) {
             return null
         } else {
@@ -217,7 +216,7 @@ class DeepLinkUtilsImpl(
         }
     }
 
-    override fun getRegion(uri: String?, regionsBundle: RegionsBundle?): LiteRegion? {
+    override fun getRegion(uri: String?, regionsBundle: RegionsBundle?): Region? {
         val _uri = uri?.trim()
 
         if (_uri == null || uri.isNullOrBlank()) {
@@ -239,7 +238,7 @@ class DeepLinkUtilsImpl(
         return null
     }
 
-    override fun getRegion(uri: Uri?, regionsBundle: RegionsBundle?): LiteRegion? {
+    override fun getRegion(uri: Uri?, regionsBundle: RegionsBundle?): Region? {
         if (uri == null) {
             return null
         } else {
