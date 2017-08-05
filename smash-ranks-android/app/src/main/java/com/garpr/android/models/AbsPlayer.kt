@@ -26,13 +26,13 @@ abstract class AbsPlayer(
             val jsonObject = json.asJsonObject
 
             if (jsonObject.has("region")) {
-                context.deserialize(json, FavoritePlayer::class.java)
+                context.deserialize<FavoritePlayer>(json, FavoritePlayer::class.java)
             } else if (jsonObject.has("aliases") ||
                     jsonObject.has("regions") ||
                     jsonObject.has("ratings")) {
-                context.deserialize(json, FullPlayer::class.java)
+                context.deserialize<FullPlayer>(json, FullPlayer::class.java)
             } else {
-                context.deserialize(json, LitePlayer::class.java)
+                context.deserialize<LitePlayer>(json, LitePlayer::class.java)
             }
         }
 
@@ -42,14 +42,9 @@ abstract class AbsPlayer(
             }
 
             when (src.kind) {
-                AbsPlayer.Kind.FAVORITE -> return@JsonSerializer context.serialize(src,
-                        FavoritePlayer::class.java)
-
-                AbsPlayer.Kind.FULL -> return@JsonSerializer context.serialize(src,
-                        FullPlayer::class.java)
-
-                AbsPlayer.Kind.LITE -> return@JsonSerializer context.serialize(src,
-                        LitePlayer::class.java)
+                Kind.FAVORITE -> return@JsonSerializer context.serialize(src, FavoritePlayer::class.java)
+                Kind.FULL -> return@JsonSerializer context.serialize(src, FullPlayer::class.java)
+                Kind.LITE -> return@JsonSerializer context.serialize(src, LitePlayer::class.java)
             }
         }
     }

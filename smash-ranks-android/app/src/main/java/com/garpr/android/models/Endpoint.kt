@@ -83,12 +83,6 @@ enum class Endpoint(
         return getWebPath(regionId) + "/rankings"
     }
 
-    val regionsApiPath = Uri.parse(apiPath)
-                .buildUpon()
-                .appendPath("regions")
-                .build()
-                .toString()
-
     fun getTournamentApiPath(regionId: String, tournamentId: String): String {
         return Uri.parse(apiPath)
                 .buildUpon()
@@ -126,6 +120,12 @@ enum class Endpoint(
 
         return stringBuilder.toString()
     }
+
+    val regionsApiPath = Uri.parse(apiPath)
+            .buildUpon()
+            .appendPath("regions")
+            .build()
+            .toString()
 
     override fun describeContents() = 0
 

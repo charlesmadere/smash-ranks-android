@@ -34,17 +34,17 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
     private val mTitle: TextView by bindView(R.id.title)
 
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         parseAttributes(attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int) :
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr) {
         parseAttributes(attrs)
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
         parseAttributes(attrs)
     }
@@ -113,15 +113,12 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
         }
     }
 
-    private fun parseAttributes(attrs: AttributeSet) {
+    private fun parseAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
-        mDisabledDescriptionText = ta.getText(
-                R.styleable.CheckablePreferenceView_disabledDescriptionText)
-        mEnabledDescriptionText = ta.getText(
-                R.styleable.CheckablePreferenceView_enabledDescriptionText)
+        mDisabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
+        mEnabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_enabledDescriptionText)
         mTitleText = ta.getText(R.styleable.CheckablePreferenceView_titleText)
-        mCheckableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType,
-                CHECKABLE_TYPE_CHECKBOX)
+        mCheckableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType, CHECKABLE_TYPE_CHECKBOX)
         ta.recycle()
     }
 

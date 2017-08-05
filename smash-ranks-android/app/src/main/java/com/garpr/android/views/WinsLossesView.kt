@@ -25,9 +25,9 @@ class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
     private var mContent: WinsLosses? = null
 
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int) :
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
     init {

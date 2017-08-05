@@ -30,8 +30,9 @@ abstract class AbsTournament(
 
             val jsonObject = json.asJsonObject
 
-            if (jsonObject.has("matches") || jsonObject.has("players") || jsonObject.has(
-                    "raw_id")) {
+            if (jsonObject.has("matches") ||
+                    jsonObject.has("players") ||
+                    jsonObject.has("raw_id")) {
                 context.deserialize<AbsTournament>(json, FullTournament::class.java)
             } else {
                 context.deserialize<AbsTournament>(json, LiteTournament::class.java)

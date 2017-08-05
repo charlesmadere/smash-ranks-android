@@ -9,9 +9,9 @@ import com.garpr.android.adapters.BaseAdapterView
 
 class StringItemView : AppCompatTextView, BaseAdapterView<String> {
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int) :
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
     override fun setContent(content: String) {

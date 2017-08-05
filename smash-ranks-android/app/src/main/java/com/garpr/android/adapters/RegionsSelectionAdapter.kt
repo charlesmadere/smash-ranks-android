@@ -3,10 +3,10 @@ package com.garpr.android.adapters
 import android.content.Context
 import android.support.annotation.LayoutRes
 import com.garpr.android.R
-import com.garpr.android.models.Region
+import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.RegionsBundle
 
-class RegionsSelectionAdapter(context: Context) : BaseAdapter<Region>(context) {
+class RegionsSelectionAdapter(context: Context) : BaseAdapter<AbsRegion>(context) {
 
     init {
         setHasStableIds(true)

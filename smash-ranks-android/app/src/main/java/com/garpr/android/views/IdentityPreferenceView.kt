@@ -4,6 +4,8 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
+import android.support.annotation.AttrRes
+import android.support.annotation.StyleRes
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
@@ -20,14 +22,14 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
     lateinit protected var mIdentityManager: IdentityManager
 
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context,
-            attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) :
-            super(context, attrs, defStyleAttr, defStyleRes)
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
+            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

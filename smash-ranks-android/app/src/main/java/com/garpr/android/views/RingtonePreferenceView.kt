@@ -35,13 +35,13 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         private const val TAG = "RingtonePreferenceView"
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int) :
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     fun onActivityResult(data: Intent?) {
@@ -122,11 +122,8 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
 
         val ringtoneUri = mRankingsPollingPreferenceStore.ringtone.get()
 
-        val ringtone = if (ringtoneUri == null) {
-            null
-        } else {
-            RingtoneManager.getRingtone(context, ringtoneUri)
-        }
+        val ringtone = if (ringtoneUri == null) null
+            else RingtoneManager.getRingtone(context, ringtoneUri)
 
         if (ringtone == null) {
             setDescriptionText(R.string.none)

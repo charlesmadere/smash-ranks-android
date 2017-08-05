@@ -18,7 +18,7 @@ interface ServerApi {
 
     fun getRankings(region: Region, listener: ApiListener<RankingsBundle>)
 
-    fun getRegions(listener: ApiListener<RegionsBundle>)
+    fun getRegions(endpoint: Endpoint? = null, listener: ApiListener<RegionsBundle>)
 
     fun getTournament(region: Region, tournamentId: String, listener: ApiListener<FullTournament>)
 

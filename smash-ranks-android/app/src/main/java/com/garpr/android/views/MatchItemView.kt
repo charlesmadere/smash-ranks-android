@@ -95,11 +95,9 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
         mName.text = content.opponent.name
 
         when (content.result) {
-            Match.Result.EXCLUDED -> mName.setTextColor(context.getAttrColor(
-                    android.R.attr.textColorSecondary))
+            Match.Result.EXCLUDED -> mName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
             Match.Result.LOSE -> mName.setTextColor(ContextCompat.getColor(context, R.color.lose))
             Match.Result.WIN -> mName.setTextColor(ContextCompat.getColor(context, R.color.win))
-            else -> throw RuntimeException("unknown result: " + content.result)
         }
 
         refreshIdentity()

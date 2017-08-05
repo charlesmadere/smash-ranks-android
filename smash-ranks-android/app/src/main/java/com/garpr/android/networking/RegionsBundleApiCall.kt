@@ -1,6 +1,7 @@
 package com.garpr.android.networking
 
 import com.garpr.android.misc.Heartbeat
+import com.garpr.android.models.Endpoint
 import com.garpr.android.models.RegionsBundle
 
 class RegionsBundleApiCall(
@@ -8,24 +9,31 @@ class RegionsBundleApiCall(
         private val serverApi: ServerApi
 ) : Heartbeat {
 
-    fun fetch() {
+    private var mGarPrRegionsFound = false
+    private var mGarPrRegions: RegionsBundle? = null
+    private var mNotGarPrRegionsFound = false
+    private var mNotGarPrRegions: RegionsBundle? = null
 
+
+    fun fetch() {
+        serverApi.getRegions(Endpoint.GAR_PR, mGarPrListener)
+        serverApi.getRegions(Endpoint.NOT_GAR_PR, mNotGarPrListener)
     }
 
     override val isAlive: Boolean
         get() = listener.isAlive
 
-    private fun mergeRegionsStructs() {
-
-    }
-
     @Synchronized
     private fun proceed() {
+        if (!mGarPrRegionsFound || !mNotGarPrRegionsFound) {
+            return
+        }
 
+        // TODO
     }
 
     /*
-            val endpoints = Endpoint.values()
+        val endpoints = Endpoint.values()
         val array = BooleanArray(endpoints.size)
         val regionsBundle = RegionsBundle()
 
@@ -61,7 +69,7 @@ class RegionsBundleApiCall(
             })
         }
 
-            private fun getRegions(endpoint: Endpoint, listener: ApiListener<RegionsBundle>) {
+    private fun getRegions(endpoint: Endpoint, listener: ApiListener<RegionsBundle>) {
         val url = endpoint.regionsApiPath
 
         mGarPrApi.getRegions(url).enqueue(object : Callback<RegionsBundle> {
@@ -89,5 +97,39 @@ class RegionsBundleApiCall(
         })
     }
      */
+
+    private val mGarPrListener = object : ApiListener<RegionsBundle> {
+        override fun failure(errorCode: Int) {
+            mGarPrRegions = null
+            mGarPrRegionsFound = true
+            proceed()
+        }
+
+        override val isAlive: Boolean
+            get() = this@RegionsBundleApiCall.isAlive
+
+        override fun success(`object`: RegionsBundle?) {
+            mGarPrRegions = `object`
+            mGarPrRegionsFound = true
+            proceed()
+        }
+    }
+
+    private val mNotGarPrListener = object : ApiListener<RegionsBundle> {
+        override fun failure(errorCode: Int) {
+            mNotGarPrRegions = null
+            mNotGarPrRegionsFound = true
+            proceed()
+        }
+
+        override val isAlive: Boolean
+            get() = this@RegionsBundleApiCall.isAlive
+
+        override fun success(`object`: RegionsBundle?) {
+            mNotGarPrRegions = `object`
+            mNotGarPrRegionsFound = true
+            proceed()
+        }
+    }
 
 }

@@ -21,9 +21,9 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
     lateinit protected var mRegionManager: RegionManager
 
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int) :
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -77,7 +77,7 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
     override fun refresh() {
         super.refresh()
 
-        setDescriptionText(mRegionManager.region.displayName)
+        setDescriptionText(mRegionManager.getRegion().displayName)
     }
 
 }

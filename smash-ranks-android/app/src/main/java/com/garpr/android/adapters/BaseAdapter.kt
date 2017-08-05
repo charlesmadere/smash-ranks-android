@@ -41,9 +41,6 @@ abstract class BaseAdapter<T>(
         }
     }
 
-    val context: Context
-        get() = mLayoutInflater.context
-
     fun getItem(position: Int): T {
         return mItems[position]
     }

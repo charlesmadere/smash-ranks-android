@@ -33,13 +33,13 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         private const val TAG = "ThemePreferenceView"
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int) :
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onAttachedToWindow() {

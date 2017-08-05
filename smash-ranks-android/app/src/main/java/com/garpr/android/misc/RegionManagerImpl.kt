@@ -42,19 +42,21 @@ class RegionManagerImpl(
     }
 
     override fun getRegion(context: Context?): Region {
-        if (context is RegionManager.RegionHandle) {
-            val region = (context as RegionManager.RegionHandle).currentRegion
+        if (context != null) {
+            if (context is RegionManager.RegionHandle) {
+                val region = (context as RegionManager.RegionHandle).currentRegion
 
-            if (region != null) {
-                return region
+                if (region != null) {
+                    return region
+                }
+            }
+
+            if (context is ContextWrapper) {
+                return getRegion(context.baseContext)
             }
         }
 
-        if (context is ContextWrapper) {
-            return getRegion(context.baseContext)
-        }
-
-        return region
+        return mRegion.get() ?: throw IllegalStateException("region is null")
     }
 
     private fun notifyListeners() {
@@ -74,14 +76,6 @@ class RegionManagerImpl(
         }
     }
 
-    override var region: Region
-        get() = mRegion.get() ?: throw IllegalStateException("region is null")
-        set(region) {
-            mTimber.d(TAG, "old region is \"$region\", new region is \"$region\"")
-            mRegion.set(region)
-            notifyListeners()
-        }
-
     override fun removeListener(listener: OnRegionChangeListener?) {
         synchronized (mListeners) {
             val iterator = mListeners.iterator()
@@ -95,6 +89,12 @@ class RegionManagerImpl(
                 }
             }
         }
+    }
+
+    override fun setRegion(region: Region) {
+        mTimber.d(TAG, "old region is \"${mRegion.get()}\", new region is \"$region\"")
+        mRegion.set(region)
+        notifyListeners()
     }
 
 }

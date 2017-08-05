@@ -100,7 +100,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     override fun onClick(v: RegionSelectionItemView) {
         val region = v.mContent
 
-        if (region == mRegionManager.region) {
+        if (region == mRegionManager.getRegion()) {
             mSelectedRegion = null
         } else {
             mSelectedRegion = region
@@ -166,14 +166,14 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     }
 
     private fun save() {
-        mRegionManager.region = mSelectedRegion ?: throw RuntimeException("mSelectedRegion is null")
+        mRegionManager.setRegion(mSelectedRegion ?: throw RuntimeException("mSelectedRegion is null"))
         Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
         setResult(ResultCodes.REGION_SELECTED.mValue)
         supportFinishAfterTransition()
     }
 
     override val selectedRegion: Region?
-        get() = if (mSelectedRegion == null) mRegionManager.region else mSelectedRegion
+        get() = mSelectedRegion?.let { it } ?: mRegionManager.getRegion()
 
     private fun showEmpty() {
         mAdapter.clear()

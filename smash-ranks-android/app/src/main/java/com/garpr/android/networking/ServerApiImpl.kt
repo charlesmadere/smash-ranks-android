@@ -120,7 +120,7 @@ class ServerApiImpl(
                     mTimber.e(TAG, "getRankings ($region) failed (code " + response.code() + ")")
                     listener.failure(response.code())
                 } else {
-                    if (region == mRegionManager.region) {
+                    if (region == mRegionManager.getRegion()) {
                         mRankingsPollingPreferenceStore.rankingsDate.set(body.time)
                     }
 
@@ -135,8 +135,28 @@ class ServerApiImpl(
         })
     }
 
-    override fun getRegions(listener: ApiListener<RegionsBundle>) {
-        RegionsBundleApiCall(listener, this).fetch()
+    override fun getRegions(endpoint: Endpoint?, listener: ApiListener<RegionsBundle>) {
+        if (endpoint == null) {
+            RegionsBundleApiCall(listener, this).fetch()
+        } else {
+            mGarPrApi.getRegions(endpoint.regionsApiPath).enqueue(object : Callback<RegionsBundle> {
+                override fun onResponse(call: Call<RegionsBundle>, response: Response<RegionsBundle>) {
+                    val body = if (response.isSuccessful) response.body() else null
+
+                    if (body == null) {
+                        mTimber.e(TAG, "getRegions($endpoint) failed (code " + response.code() + ")")
+                        listener.failure(response.code())
+                    } else {
+                        listener.success(body)
+                    }
+                }
+
+                override fun onFailure(call: Call<RegionsBundle>?, t: Throwable?) {
+                    mTimber.e(TAG, "getRegions($endpoint) failed", t)
+                    listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                }
+            })
+        }
     }
 
     override fun getTournament(region: Region, tournamentId: String,

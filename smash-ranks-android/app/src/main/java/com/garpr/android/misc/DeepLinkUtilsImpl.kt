@@ -90,7 +90,7 @@ class DeepLinkUtilsImpl(
             return null
         }
 
-        val sameRegion = regionId.equals(mRegionManager.region.id, ignoreCase = true)
+        val sameRegion = regionId.equals(mRegionManager.getRegion().id, ignoreCase = true)
 
         if (sameRegion && splits.size == 1) {
             return null
@@ -217,9 +217,9 @@ class DeepLinkUtilsImpl(
     }
 
     override fun getRegion(uri: String?, regionsBundle: RegionsBundle?): Region? {
-        val _uri = uri?.trim()
+        val trimmedUri = uri?.trim()
 
-        if (_uri == null || uri.isNullOrBlank()) {
+        if (trimmedUri == null || uri.isNullOrBlank()) {
             return null
         }
 
@@ -229,13 +229,9 @@ class DeepLinkUtilsImpl(
             return null
         }
 
-        for (region in regions) {
-            if (_uri.startsWith(region.endpoint.getWebPath(region.id))) {
-                return region
-            }
-        }
-
-        return null
+        return regions
+                .filterIsInstance<Region>()
+                .firstOrNull { trimmedUri.startsWith(it.endpoint.getWebPath(it.id)) }
     }
 
     override fun getRegion(uri: Uri?, regionsBundle: RegionsBundle?): Region? {

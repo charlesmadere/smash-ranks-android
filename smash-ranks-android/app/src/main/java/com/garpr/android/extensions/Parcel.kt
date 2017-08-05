@@ -15,6 +15,17 @@ fun Parcel.readAbsPlayer(): AbsPlayer {
     return readOptionalAbsPlayer() ?: throw NullPointerException()
 }
 
+fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
+    val kind = readParcelable<AbsPlayer.Kind>(AbsPlayer.Kind::class.java.classLoader) ?: return null
+
+    when (kind) {
+        AbsPlayer.Kind.FAVORITE -> return readParcelable(FavoritePlayer::class.java.classLoader)
+        AbsPlayer.Kind.FULL -> return readParcelable(FullPlayer::class.java.classLoader)
+        AbsPlayer.Kind.LITE -> return readParcelable(LitePlayer::class.java.classLoader)
+        else -> throw RuntimeException("illegal kind: " + kind)
+    }
+}
+
 fun Parcel.readAbsPlayerList(): MutableList<AbsPlayer>? {
     val size = readInt()
 
@@ -29,17 +40,6 @@ fun Parcel.readAbsPlayerList(): MutableList<AbsPlayer>? {
     }
 
     return list
-}
-
-fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
-    val kind = readParcelable<AbsPlayer.Kind>(AbsPlayer.Kind::class.java.classLoader) ?: return null
-
-    when (kind) {
-        AbsPlayer.Kind.FAVORITE -> return readParcelable(FavoritePlayer::class.java.classLoader)
-        AbsPlayer.Kind.FULL -> return readParcelable(FullPlayer::class.java.classLoader)
-        AbsPlayer.Kind.LITE -> return readParcelable(LitePlayer::class.java.classLoader)
-        else -> throw RuntimeException("illegal kind: " + kind)
-    }
 }
 
 fun Parcel.writeAbsPlayer(player: AbsPlayer?, flags: Int) {
@@ -61,6 +61,58 @@ fun Parcel.writeAbsPlayerList(list: List<AbsPlayer>?, flags: Int) {
 
     for (i in 0..size - 1) {
         writeAbsPlayer(list!![i], flags)
+    }
+}
+
+fun Parcel.readAbsRegion(): AbsRegion {
+    return readOptionalAbsRegion() ?: throw NullPointerException()
+}
+
+fun Parcel.readOptionalAbsRegion(): AbsRegion? {
+    val kind = readParcelable<AbsRegion.Kind>(AbsRegion::class.java.classLoader) ?: return null
+
+    when (kind) {
+        AbsRegion.Kind.LITE -> return readParcelable(LiteRegion::class.java.classLoader)
+        AbsRegion.Kind.FULL -> return readParcelable(Region::class.java.classLoader)
+        else -> throw RuntimeException("illegal kind: " + kind)
+    }
+}
+
+fun Parcel.readAbsRegionList(): List<AbsRegion>? {
+    val size = readInt()
+
+    if (size == 0) {
+        return null
+    }
+
+    val list = mutableListOf<AbsRegion>()
+
+    for (i in 0..size - 1) {
+        list.add(readAbsRegion())
+    }
+
+    return list
+}
+
+fun Parcel.writeAbsRegion(region: AbsRegion?, flags: Int) {
+    if (region == null) {
+        writeParcelable(null, flags)
+    } else {
+        writeParcelable(region.kind, flags)
+        writeParcelable(region, flags)
+    }
+}
+
+fun Parcel.writeAbsRegionList(list: List<AbsRegion>?, flags: Int) {
+    val size = list?.size ?: 0
+    writeInt(size)
+
+    if (size == 0) {
+        return
+    }
+
+    for (i in 0..size - 1) {
+        writeAbsRegion(list!![i], flags)
     }
 }
 

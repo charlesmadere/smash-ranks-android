@@ -80,7 +80,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
         mRankingsPollingPreferenceStore.lastPoll.set(currentPoll)
         mTimber.d(TAG, "syncing now... last poll: $lastPoll current poll: $currentPoll")
 
-        mServerApi.getRankings(mRegionManager.region, this)
+        mServerApi.getRankings(mRegionManager.getRegion(), this)
         return true
     }
 
