@@ -16,10 +16,10 @@ import javax.inject.Inject
 @Config(constants = BuildConfig::class)
 class AbsTournamentTest : BaseTest() {
 
-    lateinit protected var mFullTournament: AbsTournament
-    lateinit protected var mLiteTournament1: AbsTournament
-    lateinit protected var mLiteTournament2: AbsTournament
-    lateinit protected var mLiteTournament3: AbsTournament
+    lateinit private var mFullTournament: AbsTournament
+    lateinit private var mLiteTournament1: AbsTournament
+    lateinit private var mLiteTournament2: AbsTournament
+    lateinit private var mLiteTournament3: AbsTournament
 
     @Inject
     lateinit protected var mGson: Gson
