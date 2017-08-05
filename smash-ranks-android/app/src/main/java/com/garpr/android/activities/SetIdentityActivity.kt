@@ -221,7 +221,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         val selectedPlayer = mSelectedPlayer ?: throw RuntimeException("selectedPlayer is null")
         mIdentityManager.setIdentity(selectedPlayer, mRegionManager.getRegion(this))
         Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show()
-        setResult(ResultCodes.IDENTITY_SELECTED.mValue)
+        setResult(ResultCodes.IDENTITY_SELECTED.value)
         supportFinishAfterTransition()
     }
 

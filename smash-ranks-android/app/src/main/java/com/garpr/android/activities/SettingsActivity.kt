@@ -97,7 +97,7 @@ class SettingsActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == ResultCodes.RINGTONE_SELECTED.mValue) {
+        if (requestCode == ResultCodes.RINGTONE_SELECTED.value) {
             mRingtonePreferenceView.onActivityResult(data)
         }
 

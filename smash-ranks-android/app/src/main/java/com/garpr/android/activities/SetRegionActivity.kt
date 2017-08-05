@@ -66,7 +66,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         mSelectedRegion = null
         mRegionsBundle = null
         mRefreshLayout.isRefreshing = true
-        mServerApi.getRegions(ApiCall(this))
+        mServerApi.getRegions(listener = ApiCall(this))
     }
 
     override fun navigateUp() {
@@ -168,7 +168,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     private fun save() {
         mRegionManager.setRegion(mSelectedRegion ?: throw RuntimeException("mSelectedRegion is null"))
         Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
-        setResult(ResultCodes.REGION_SELECTED.mValue)
+        setResult(ResultCodes.REGION_SELECTED.value)
         supportFinishAfterTransition()
     }
 

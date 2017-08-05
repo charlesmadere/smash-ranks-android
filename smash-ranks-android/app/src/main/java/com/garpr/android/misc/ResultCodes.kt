@@ -10,13 +10,13 @@ enum class ResultCodes : Parcelable {
     REGION_SELECTED,
     RINGTONE_SELECTED;
 
-    val mValue: Int = ordinal + 1000
-
 
     companion object {
         @JvmField
         val CREATOR = createParcel { values()[it.readInt()] }
     }
+
+    val value = ordinal + 1000
 
     override fun describeContents() = 0
 

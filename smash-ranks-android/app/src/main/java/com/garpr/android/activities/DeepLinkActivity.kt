@@ -56,7 +56,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
         setContentView(R.layout.activity_deep_link)
 
         if (mDeepLinkUtils.isValidUri(intent)) {
-            mServerApi.getRegions(ApiCall(this))
+            mServerApi.getRegions(listener = ApiCall(this))
         } else {
             error()
         }

@@ -80,7 +80,7 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         val activity = context.getActivity()
 
         try {
-            activity.startActivityForResult(intent, ResultCodes.RINGTONE_SELECTED.mValue)
+            activity.startActivityForResult(intent, ResultCodes.RINGTONE_SELECTED.value)
         } catch (e: ActivityNotFoundException) {
             mTimber.e(TAG, "Unable to start ringtone picker Activity", e)
             Toast.makeText(context, R.string.unable_to_launch_ringtone_picker, Toast.LENGTH_LONG)
