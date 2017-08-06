@@ -32,6 +32,7 @@ import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.AbsRegion;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Ranking;
@@ -150,6 +151,8 @@ public abstract class BaseAppModule {
         return new GsonBuilder()
                 .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_SERIALIZER())
+                .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_SERIALIZER())
                 .registerTypeAdapter(AbsTournament.class, AbsTournament.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(Match.class, Match.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(Ranking.class, Ranking.Companion.getJSON_DESERIALIZER())
