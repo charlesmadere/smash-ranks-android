@@ -91,7 +91,7 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.mSetAsYourIdentityTitle?.isNotBlank() == true)
         assertNull(presentation.mViewYourselfVsThisOpponentTitle)
 
-        mFavoritePlayersManager.addPlayer(mFullPlayer1, mRegionManager.region)
+        mFavoritePlayersManager.addPlayer(mFullPlayer1, mRegionManager.getRegion())
 
         presentation = mPlayerToolbarManager.getPresentation(mApplication.resources,
                 mFullPlayer1, null, null)
@@ -109,7 +109,7 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.mSetAsYourIdentityTitle?.isNotBlank() == true)
         assertNull(presentation.mViewYourselfVsThisOpponentTitle)
 
-        mIdentityManager.setIdentity(mFullPlayer2, mRegionManager.region)
+        mIdentityManager.setIdentity(mFullPlayer2, mRegionManager.getRegion())
 
         presentation = mPlayerToolbarManager.getPresentation(mApplication.resources,
                 mFullPlayer1, null, null)

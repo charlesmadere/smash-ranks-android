@@ -149,8 +149,8 @@ class EndpointTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testGetWebPath() {
-        assertEquals("https://www.garpr.com/#/", Endpoint.GAR_PR.webPath)
-        assertEquals("https://www.notgarpr.com/#/", Endpoint.NOT_GAR_PR.webPath)
+        assertEquals("https://www.garpr.com/#/", Endpoint.GAR_PR.getWebPath())
+        assertEquals("https://www.notgarpr.com/#/", Endpoint.NOT_GAR_PR.getWebPath())
 
         assertEquals("https://www.garpr.com/#/norcal", Endpoint.GAR_PR.getWebPath("norcal"))
         assertEquals("https://www.notgarpr.com/#/chicago", Endpoint.NOT_GAR_PR.getWebPath("chicago"))

@@ -6,7 +6,7 @@ import android.net.Uri
 import com.garpr.android.BaseTest
 import com.garpr.android.BuildConfig
 import com.garpr.android.models.Endpoint
-import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
 import com.google.gson.Gson
 import org.junit.Assert.*
@@ -21,11 +21,11 @@ import javax.inject.Inject
 @Config(constants = BuildConfig::class)
 class DeepLinkUtilsTest : BaseTest() {
 
-    lateinit private var mChicago: LiteRegion
-    lateinit private var mGeorgia: LiteRegion
-    lateinit private var mGoogleMtv: LiteRegion
-    lateinit private var mNorcal: LiteRegion
-    lateinit private var mNyc: LiteRegion
+    lateinit private var mChicago: Region
+    lateinit private var mGeorgia: Region
+    lateinit private var mGoogleMtv: Region
+    lateinit private var mNorcal: Region
+    lateinit private var mNyc: Region
     lateinit private var mRegionsBundle: RegionsBundle
     lateinit private var mRegionsBundleEmpty: RegionsBundle
 
@@ -57,11 +57,11 @@ class DeepLinkUtilsTest : BaseTest() {
         private const val TOURNAMENTS_NORCAL = "https://www.garpr.com/#/norcal/tournaments"
         private const val TOURNAMENTS_NYC = "https://www.notgarpr.com/#/nyc/tournaments"
 
-        private const val JSON_REGION_CHICAGO = "{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"Chicago\",\"id\":\"chicago\",\"tournament_qualified_day_limit\":999}"
-        private const val JSON_REGION_GEORGIA = "{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":75,\"display_name\":\"Georgia\",\"id\":\"georgia\",\"tournament_qualified_day_limit\":180}"
-        private const val JSON_REGION_GOOGLE_MTV = "{\"ranking_num_tourneys_attended\":1,\"ranking_activity_day_limit\":60,\"display_name\":\"Google MTV\",\"id\":\"googlemtv\",\"tournament_qualified_day_limit\":999}"
-        private const val JSON_REGION_NORCAL = "{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":30,\"display_name\":\"Norcal\",\"id\":\"norcal\",\"tournament_qualified_day_limit\":1000}"
-        private const val JSON_REGION_NYC = "{\"ranking_num_tourneys_attended\":6,\"ranking_activity_day_limit\":90,\"display_name\":\"NYC Metro Area\",\"id\":\"nyc\",\"tournament_qualified_day_limit\":999}"
+        private const val JSON_REGION_CHICAGO = "{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"Chicago\",\"id\":\"chicago\",\"tournament_qualified_day_limit\":999,\"endpoint\":\"not_gar_pr\"}"
+        private const val JSON_REGION_GEORGIA = "{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":75,\"display_name\":\"Georgia\",\"id\":\"georgia\",\"tournament_qualified_day_limit\":180,\"endpoint\":\"not_gar_pr\"}"
+        private const val JSON_REGION_GOOGLE_MTV = "{\"ranking_num_tourneys_attended\":1,\"ranking_activity_day_limit\":60,\"display_name\":\"Google MTV\",\"id\":\"googlemtv\",\"tournament_qualified_day_limit\":999,\"endpoint\":\"gar_pr\"}"
+        private const val JSON_REGION_NORCAL = "{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":30,\"display_name\":\"Norcal\",\"id\":\"norcal\",\"tournament_qualified_day_limit\":1000,\"endpoint\":\"gar_pr\"}"
+        private const val JSON_REGION_NYC = "{\"ranking_num_tourneys_attended\":6,\"ranking_activity_day_limit\":90,\"display_name\":\"NYC Metro Area\",\"id\":\"nyc\",\"tournament_qualified_day_limit\":999,\"endpoint\":\"not_gar_pr\"}"
 
         private const val JSON_REGIONS_BUNDLE = "{\"regions\":[{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"Chicago\",\"id\":\"chicago\",\"tournament_qualified_day_limit\":999},{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":75,\"display_name\":\"Georgia\",\"id\":\"georgia\",\"tournament_qualified_day_limit\":180},{\"ranking_num_tourneys_attended\":6,\"ranking_activity_day_limit\":90,\"display_name\":\"NYC Metro Area\",\"id\":\"nyc\",\"tournament_qualified_day_limit\":99999},{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":90,\"display_name\":\"New Jersey\",\"id\":\"newjersey\",\"tournament_qualified_day_limit\":9999999},{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":30,\"display_name\":\"Norcal\",\"id\":\"norcal\",\"tournament_qualified_day_limit\":1000}]}"
         private const val JSON_REGIONS_BUNDLE_EMPTY = "{\"regions\":[]}"
@@ -73,21 +73,13 @@ class DeepLinkUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mChicago = mGson.fromJson(JSON_REGION_CHICAGO, LiteRegion::class.java)
-        mGeorgia = mGson.fromJson(JSON_REGION_GEORGIA, LiteRegion::class.java)
-        mGoogleMtv = mGson.fromJson(JSON_REGION_GOOGLE_MTV, LiteRegion::class.java)
-        mNorcal = mGson.fromJson(JSON_REGION_NORCAL, LiteRegion::class.java)
-        mNyc = mGson.fromJson(JSON_REGION_NYC, LiteRegion::class.java)
+        mChicago = mGson.fromJson(JSON_REGION_CHICAGO, Region::class.java)
+        mGeorgia = mGson.fromJson(JSON_REGION_GEORGIA, Region::class.java)
+        mGoogleMtv = mGson.fromJson(JSON_REGION_GOOGLE_MTV, Region::class.java)
+        mNorcal = mGson.fromJson(JSON_REGION_NORCAL, Region::class.java)
+        mNyc = mGson.fromJson(JSON_REGION_NYC, Region::class.java)
 
         mRegionsBundle = mGson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
-        mRegionsBundle.regions?.let {
-            it[0].endpoint = Endpoint.NOT_GAR_PR
-            it[1].endpoint = Endpoint.NOT_GAR_PR
-            it[2].endpoint = Endpoint.NOT_GAR_PR
-            it[3].endpoint = Endpoint.NOT_GAR_PR
-            it[4].endpoint = Endpoint.GAR_PR
-        } ?: throw RuntimeException("")
-
         mRegionsBundleEmpty = mGson.fromJson(JSON_REGIONS_BUNDLE_EMPTY, RegionsBundle::class.java)
     }
 
@@ -117,19 +109,19 @@ class DeepLinkUtilsTest : BaseTest() {
 
         var region = mDeepLinkUtils.getRegion(PLAYER_GINGER, mRegionsBundle)
         assertNotNull(region)
-        assertEquals(region?.id, "chicago")
+        assertEquals("chicago", region?.id)
 
         region = mDeepLinkUtils.getRegion(PLAYER_SFAT, mRegionsBundle)
         assertNotNull(region)
-        assertEquals(region?.id, "norcal")
+        assertEquals("norcal", region?.id)
 
         region = mDeepLinkUtils.getRegion(RANKINGS_NORCAL, mRegionsBundle)
         assertNotNull(region)
-        assertEquals(region?.id, "norcal")
+        assertEquals("norcal", region?.id)
 
         region = mDeepLinkUtils.getRegion(TOURNAMENT_APOLLO_III, mRegionsBundle)
         assertNotNull(region)
-        assertEquals(region?.id, "nyc")
+        assertEquals("nyc", region?.id)
     }
 
     @Test
@@ -203,7 +195,7 @@ class DeepLinkUtilsTest : BaseTest() {
     fun testPlayerGingerBuildIntentStack() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYER_GINGER, mChicago)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 3)
+        assertEquals(3, intentStack?.size)
     }
 
     @Test
@@ -225,7 +217,7 @@ class DeepLinkUtilsTest : BaseTest() {
     fun testPlayerSfatBuildIntentStack() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYER_SFAT, mNorcal)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 3)
+        assertEquals(3, intentStack?.size)
     }
 
     @Test
@@ -241,7 +233,7 @@ class DeepLinkUtilsTest : BaseTest() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYER_SWEDISH_DELIGHT,
                 mNyc)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 3)
+        assertEquals(3, intentStack?.size)
     }
 
     @Test
@@ -263,7 +255,7 @@ class DeepLinkUtilsTest : BaseTest() {
     fun testPlayersNorcalBuildIntentStack() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYERS_NORCAL, mNorcal)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 2)
+        assertEquals(2, intentStack?.size)
     }
 
     @Test
@@ -286,7 +278,7 @@ class DeepLinkUtilsTest : BaseTest() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, RANKINGS_GOOGLEMTV,
                 mGoogleMtv)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 2)
+        assertEquals(2, intentStack?.size)
     }
 
     @Test
@@ -308,7 +300,7 @@ class DeepLinkUtilsTest : BaseTest() {
     fun testRankingsNorcalBuildIntentStack() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, RANKINGS_NORCAL, mNorcal)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 1)
+        assertEquals(1, intentStack?.size)
     }
 
     @Test
@@ -330,7 +322,7 @@ class DeepLinkUtilsTest : BaseTest() {
     fun testTournamentApolloIiiBuildIntentStack() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, TOURNAMENT_APOLLO_III, mNyc)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 3)
+        assertEquals(3, intentStack?.size)
     }
 
     @Test
@@ -353,7 +345,7 @@ class DeepLinkUtilsTest : BaseTest() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication,
                 TOURNAMENT_NORCAL_VALIDATED_2, mNorcal)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 2)
+        assertEquals(2, intentStack?.size)
     }
 
     @Test
@@ -368,7 +360,7 @@ class DeepLinkUtilsTest : BaseTest() {
     fun testTournamentsNycBuildIntentStack() {
         val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, TOURNAMENTS_NYC, mNyc)
         assertNotNull(intentStack)
-        assertEquals(intentStack?.size, 2)
+        assertEquals(2, intentStack?.size)
     }
 
     @Test

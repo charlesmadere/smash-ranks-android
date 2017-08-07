@@ -55,7 +55,7 @@ class IdentityManagerTest : BaseTest() {
         mIdentityManager.addListener(listener)
         assertNull(array[0])
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.region)
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
         assertEquals(mPlayer, array[0])
 
         mIdentityManager.removeIdentity()
@@ -67,7 +67,7 @@ class IdentityManagerTest : BaseTest() {
     fun testGetAndSetIdentity() {
         assertNull(mIdentityManager.identity)
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.region)
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
         assertNotNull(mIdentityManager.identity)
         assertEquals(mIdentityManager.identity, mPlayer)
 
@@ -80,7 +80,7 @@ class IdentityManagerTest : BaseTest() {
     fun testHasIdentity() {
         assertFalse(mIdentityManager.hasIdentity())
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.region)
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
         assertTrue(mIdentityManager.hasIdentity())
 
         mIdentityManager.removeIdentity()
@@ -92,7 +92,7 @@ class IdentityManagerTest : BaseTest() {
     fun testIsIdWithNull() {
         assertFalse(mIdentityManager.isId(null))
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.region)
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
         assertFalse(mIdentityManager.isId(null))
 
         mIdentityManager.removeIdentity()
@@ -104,7 +104,7 @@ class IdentityManagerTest : BaseTest() {
     fun testIsIdWithPlayer() {
         assertFalse(mIdentityManager.isId(mPlayer.id))
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.region)
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
         assertTrue(mIdentityManager.isId(mPlayer.id))
 
         mIdentityManager.removeIdentity()
@@ -116,7 +116,7 @@ class IdentityManagerTest : BaseTest() {
     fun testIsPlayerWithNull() {
         assertFalse(mIdentityManager.isPlayer(null))
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.region)
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
         assertFalse(mIdentityManager.isPlayer(null))
 
         mIdentityManager.removeIdentity()
@@ -128,7 +128,7 @@ class IdentityManagerTest : BaseTest() {
     fun testIsPlayerWithPlayer() {
         assertFalse(mIdentityManager.isPlayer(mPlayer))
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.region)
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
         assertTrue(mIdentityManager.isPlayer(mPlayer))
 
         mIdentityManager.removeIdentity()
@@ -147,7 +147,7 @@ class IdentityManagerTest : BaseTest() {
         }
 
         mIdentityManager.addListener(listener)
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.region)
+        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
         assertEquals(mPlayer, array[0])
 
         mIdentityManager.removeListener(listener)

@@ -59,11 +59,11 @@ class AbsPlayerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testFromJsonFavoritePlayer() {
-        val player = mGson!!.fromJson(JSON_FAVORITE_PLAYER, AbsPlayer::class.java)
+        val player = mGson.fromJson(JSON_FAVORITE_PLAYER_1, AbsPlayer::class.java)
         assertNotNull(player)
 
-        assertEquals(player.name, "homemadewaffles")
-        assertEquals(player.id, "583a4a15d2994e0577b05c74")
+        assertEquals("homemadewaffles", player.name)
+        assertEquals("583a4a15d2994e0577b05c74", player.id)
 
         assertTrue(player is FavoritePlayer)
         assertEquals(player.kind, AbsPlayer.Kind.FAVORITE)
@@ -71,7 +71,7 @@ class AbsPlayerTest : BaseTest() {
         val favoritePlayer = player as FavoritePlayer
         val region = favoritePlayer.region
         assertNotNull(region)
-        assertEquals(region.id, "norcal")
+        assertEquals("norcal", region.id)
 
         val endpoint = region.endpoint
         assertNotNull(endpoint)
@@ -81,25 +81,25 @@ class AbsPlayerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testFromJsonFullPlayer() {
-        val player = mGson!!.fromJson(JSON_FULL_PLAYER, AbsPlayer::class.java)
+        val player = mGson.fromJson(JSON_FULL_PLAYER_1, AbsPlayer::class.java)
         assertNotNull(player)
 
-        assertEquals(player.name, "gaR")
-        assertEquals(player.id, "58523b44d2994e15c7dea945")
+        assertEquals("gaR", player.name)
+        assertEquals("58523b44d2994e15c7dea945", player.id)
 
         assertTrue(player is FullPlayer)
-        assertEquals(player.kind, AbsPlayer.Kind.FULL)
+        assertEquals(AbsPlayer.Kind.FULL, player.kind)
 
         val fullPlayer = player as FullPlayer
-        assertFalse(fullPlayer.hasAliases())
-        assertTrue(fullPlayer.hasRatings())
-        assertTrue(fullPlayer.hasRegions())
+        assertTrue(fullPlayer.aliases?.isEmpty() == true)
+        assertTrue(fullPlayer.ratings?.isNotEmpty() == true)
+        assertTrue(fullPlayer.regions?.isNotEmpty() == true)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromJsonLitePlayer() {
-        val player = mGson!!.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
+        val player = mGson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
         assertNotNull(player)
 
         assertEquals(player.name, "homemadewaffles")
@@ -112,16 +112,16 @@ class AbsPlayerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testFromNull() {
-        val player = mGson!!.fromJson(null as String?, AbsPlayer::class.java)
+        val player = mGson.fromJson(null as String?, AbsPlayer::class.java)
         assertNull(player)
     }
 
     @Test
     @Throws(Exception::class)
     fun testToJsonAndBackWithFavoritePlayer() {
-        val before = mGson!!.fromJson(JSON_FAVORITE_PLAYER, AbsPlayer::class.java)
-        val json = mGson!!.toJson(before, AbsPlayer::class.java)
-        val after = mGson!!.fromJson(json, AbsPlayer::class.java)
+        val before = mGson.fromJson(JSON_FAVORITE_PLAYER_1, AbsPlayer::class.java)
+        val json = mGson.toJson(before, AbsPlayer::class.java)
+        val after = mGson.fromJson(json, AbsPlayer::class.java)
 
         assertEquals(before, after)
         assertEquals(before.kind, after.kind)
@@ -130,9 +130,9 @@ class AbsPlayerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testToJsonAndBackWithFullPlayer() {
-        val before = mGson!!.fromJson(JSON_FULL_PLAYER, AbsPlayer::class.java)
-        val json = mGson!!.toJson(before, AbsPlayer::class.java)
-        val after = mGson!!.fromJson(json, AbsPlayer::class.java)
+        val before = mGson.fromJson(JSON_FULL_PLAYER_1, AbsPlayer::class.java)
+        val json = mGson.toJson(before, AbsPlayer::class.java)
+        val after = mGson.fromJson(json, AbsPlayer::class.java)
 
         assertEquals(before, after)
         assertEquals(before.kind, after.kind)
@@ -141,9 +141,9 @@ class AbsPlayerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testToJsonAndBackWithLitePlayer() {
-        val before = mGson!!.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
-        val json = mGson!!.toJson(before, AbsPlayer::class.java)
-        val after = mGson!!.fromJson(json, AbsPlayer::class.java)
+        val before = mGson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
+        val json = mGson.toJson(before, AbsPlayer::class.java)
+        val after = mGson.fromJson(json, AbsPlayer::class.java)
 
         assertEquals(before, after)
         assertEquals(before.kind, after.kind)

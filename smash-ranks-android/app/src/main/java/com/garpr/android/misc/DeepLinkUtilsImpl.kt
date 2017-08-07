@@ -191,13 +191,10 @@ class DeepLinkUtilsImpl(
             return null
         }
 
-        for (endpoint in Endpoint.values()) {
-            if (uri.startsWith(endpoint.basePath)) {
-                return endpoint
-            }
-        }
+        val trimmedUri = uri.trim()
 
-        return null
+        return Endpoint.values()
+                .firstOrNull { trimmedUri.startsWith(it.basePath) }
     }
 
     override fun getEndpoint(uri: Uri?): Endpoint? {

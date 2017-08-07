@@ -4,7 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.garpr.android.misc.CrashlyticsWrapper;
-import com.garpr.android.models.LiteRegion;
+import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
 
@@ -17,7 +17,7 @@ import dagger.Provides;
 public class TestAppModule extends BaseAppModule {
 
     public TestAppModule(@NonNull final Application application,
-            @NonNull final LiteRegion defaultRegion) {
+            @NonNull final Region defaultRegion) {
         super(application, defaultRegion);
     }
 

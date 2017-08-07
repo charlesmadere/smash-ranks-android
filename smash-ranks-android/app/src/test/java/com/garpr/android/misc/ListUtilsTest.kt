@@ -79,8 +79,8 @@ class ListUtilsTest : BaseTest() {
         assertTrue(`object` is WinsLosses)
 
         val winsLosses = `object` as WinsLosses
-        assertEquals(3, winsLosses.mWins)
-        assertEquals(2, winsLosses.mLosses)
+        assertEquals(3, winsLosses.wins)
+        assertEquals(2, winsLosses.losses)
 
         assertTrue(list[1] is AbsTournament)
         assertTrue(list[2] is Match)
@@ -631,7 +631,7 @@ class ListUtilsTest : BaseTest() {
     fun testSearchTournamentListWithWhitespace() {
         val size = mTournamentsBundle.tournaments?.size
         val tournaments = ListUtils.searchTournamentList(" ", mTournamentsBundle.tournaments)
-        assertEquals(size, mTournamentsBundle.tournaments?.size)
+        assertEquals(size, tournaments?.size)
     }
 
     @Test
