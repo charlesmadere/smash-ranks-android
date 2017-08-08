@@ -48,7 +48,6 @@ public interface TestAppComponent {
     void inject(AbsRegionTest test);
     void inject(AbsTournamentTest test);
     void inject(MatchTest test);
-    void inject(RankingTest test);
     void inject(RegionTest test);
     void inject(SimpleDateTest test);
 
