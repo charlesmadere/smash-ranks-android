@@ -12,7 +12,6 @@ import com.garpr.android.models.AbsPlayerTest;
 import com.garpr.android.models.AbsRegionTest;
 import com.garpr.android.models.AbsTournamentTest;
 import com.garpr.android.models.MatchTest;
-import com.garpr.android.models.RankingTest;
 import com.garpr.android.models.RegionTest;
 import com.garpr.android.models.SimpleDateTest;
 import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
