@@ -9,13 +9,14 @@ import com.garpr.android.misc.PreviousRankUtilsTest;
 import com.garpr.android.misc.RegionManagerTest;
 import com.garpr.android.misc.TimberTest;
 import com.garpr.android.models.AbsPlayerTest;
+import com.garpr.android.models.AbsRegionTest;
 import com.garpr.android.models.AbsTournamentTest;
 import com.garpr.android.models.MatchTest;
 import com.garpr.android.models.RankingTest;
 import com.garpr.android.models.RegionTest;
-import com.garpr.android.models.RegionsBundleTest;
 import com.garpr.android.models.SimpleDateTest;
 import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
+import com.garpr.android.networking.RegionsBundleApiCallTest;
 import com.garpr.android.preferences.KeyValueStoreTest;
 import com.garpr.android.preferences.persistent.PersistentBooleanPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentGsonPreferenceTest;
@@ -44,15 +45,16 @@ public interface TestAppComponent {
 
     // models
     void inject(AbsPlayerTest test);
+    void inject(AbsRegionTest test);
     void inject(AbsTournamentTest test);
     void inject(MatchTest test);
     void inject(RankingTest test);
     void inject(RegionTest test);
-    void inject(RegionsBundleTest test);
     void inject(SimpleDateTest test);
 
     // networking
     void inject(PlayerMatchesBundleApiCallTest test);
+    void inject(RegionsBundleApiCallTest test);
 
     // preferences
     void inject(KeyValueStoreTest test);

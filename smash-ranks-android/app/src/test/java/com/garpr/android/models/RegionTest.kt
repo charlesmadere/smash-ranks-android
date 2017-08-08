@@ -49,11 +49,26 @@ class RegionTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testComparatorAlphabeticalOrder() {
+        val regions = mRegionsBundle.regions ?: throw NullPointerException()
+        Collections.sort(regions, AbsRegion.ALPHABETICAL_ORDER)
+
+        assertEquals("alabama", regions[0].id)
+        assertEquals("cfl", regions[1].id)
+        assertEquals("chicago", regions[2].id)
+        assertEquals("georgia", regions[3].id)
+        assertEquals("newengland", regions[8].id)
+        assertEquals("pittsburgh", regions[14].id)
+        assertEquals("westchester", regions[16].id)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testHasActivityRequirements() {
         assertFalse(mChicago.hasActivityRequirements())
         assertFalse(mGoogle.hasActivityRequirements())
         assertTrue(mNorcal.hasActivityRequirements())
-        assertFalse(mNyc.hasActivityRequirements())
+        assertTrue(mNyc.hasActivityRequirements())
     }
 
     @Test
@@ -63,25 +78,6 @@ class RegionTest : BaseTest() {
         assertEquals(AbsRegion.Kind.LITE, mGoogle.kind)
         assertEquals(AbsRegion.Kind.FULL, mNorcal.kind)
         assertEquals(AbsRegion.Kind.FULL, mNyc.kind)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testComparatorAlphabeticalOrder() {
-        val regionsBundle = mGson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
-        assertNotNull(regionsBundle)
-
-        val regions = regionsBundle.regions ?: throw NullPointerException()
-        assertNotNull(regions)
-
-        Collections.sort(regions, AbsRegion.ALPHABETICAL_ORDER)
-        assertEquals("alabama", regions[0].id)
-        assertEquals("cfl", regions[1].id)
-        assertEquals("chicago", regions[2].id)
-        assertEquals("georgia", regions[3].id)
-        assertEquals("newengland", regions[8].id)
-        assertEquals("pittsburgh", regions[14].id)
-        assertEquals("westchester", regions[16].id)
     }
 
 }

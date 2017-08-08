@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 data class SimpleDate(
-        private val mDate: Date = Date()
+        val date: Date = Date()
 ) : Parcelable {
 
     companion object {
@@ -25,7 +25,7 @@ data class SimpleDate(
         val CREATOR = createParcel { SimpleDate(Date(it.readLong())) }
 
         val CHRONOLOGICAL_ORDER: Comparator<SimpleDate> = Comparator { o1, o2 ->
-            o1.mDate.compareTo(o2.mDate)
+            o1.date.compareTo(o2.date)
         }
 
         val REVERSE_CHRONOLOGICAL_ORDER: Comparator<SimpleDate> = Comparator { o1, o2 ->
@@ -64,36 +64,36 @@ data class SimpleDate(
             if (src == null) {
                 null
             } else {
-                JsonPrimitive(src.mDate.time)
+                JsonPrimitive(src.date.time)
             }
         }
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is SimpleDate && mDate == other.mDate
+        return other is SimpleDate && date == other.date
     }
 
     fun getRelativeDateTimeText(context: Context): CharSequence {
-        return DateUtils.getRelativeDateTimeString(context, mDate.time, DateUtils.DAY_IN_MILLIS,
+        return DateUtils.getRelativeDateTimeString(context, date.time, DateUtils.DAY_IN_MILLIS,
                 DateUtils.WEEK_IN_MILLIS, 0)
     }
 
     fun happenedAfter(simpleDate: SimpleDate): Boolean {
-        return mDate.time > simpleDate.mDate.time
+        return date.time > simpleDate.date.time
     }
 
-    override fun hashCode() = mDate.hashCode()
+    override fun hashCode() = date.hashCode()
 
-    val longForm: CharSequence = DateFormat.getDateInstance(DateFormat.LONG).format(mDate)
+    val longForm: CharSequence = DateFormat.getDateInstance(DateFormat.LONG).format(date)
 
-    val mediumForm: CharSequence = DateFormat.getDateInstance(DateFormat.MEDIUM).format(mDate)
+    val mediumForm: CharSequence = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date)
 
-    val shortForm: CharSequence = DateFormat.getDateInstance(DateFormat.SHORT).format(mDate)
+    val shortForm: CharSequence = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeLong(mDate.time)
+        dest.writeLong(date.time)
     }
 
 }

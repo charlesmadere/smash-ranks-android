@@ -187,11 +187,7 @@ class DeepLinkUtilsImpl(
     }
 
     override fun getEndpoint(uri: String?): Endpoint? {
-        if (uri == null || uri.isNullOrBlank()) {
-            return null
-        }
-
-        val trimmedUri = uri.trim()
+        val trimmedUri = uri?.trim() ?: return null
 
         return Endpoint.values()
                 .firstOrNull { trimmedUri.startsWith(it.basePath) }
@@ -216,7 +212,7 @@ class DeepLinkUtilsImpl(
     override fun getRegion(uri: String?, regionsBundle: RegionsBundle?): Region? {
         val trimmedUri = uri?.trim()
 
-        if (trimmedUri == null || uri.isNullOrBlank()) {
+        if (trimmedUri == null || trimmedUri.isBlank()) {
             return null
         }
 

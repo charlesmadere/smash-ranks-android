@@ -1,5 +1,6 @@
 package com.garpr.android.extensions
 
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.models.*
@@ -169,50 +170,37 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
 }
 
 fun Parcel.readInteger(): Int? {
-    val value = readString()
-
-    if (value.isNullOrEmpty()) {
-        return null
-    } else {
-        return value.toInt()
-    }
+    return readValue(Integer::class.java.classLoader) as Int?
 }
 
 fun Parcel.writeInteger(integer: Int?) {
-    if (integer == null) {
-        writeString(null)
-    } else {
-        writeString(integer.toString())
-    }
+    writeValue(integer)
 }
 
-
 fun Parcel.readRatingsMap(): Map<String, Rating>? {
-    val size = readInt()
-
-    if (size == 0) {
-        return null
-    }
-
+    val bundle = readBundle(Rating::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, Rating>()
 
-    for (i in 0..size - 1) {
-        map.put(readString(), readParcelable<Parcelable>(Rating::class.java.classLoader) as Rating)
+    for (key in bundle.keySet()) {
+        map.put(key, bundle.getParcelable(key))
     }
 
     return map
 }
 
-fun Parcel.writeRatingsMap(map: Map<String, Rating>?, flags: Int) {
+fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
     val size = map?.size ?: 0
-    writeInt(size)
 
     if (size == 0) {
+        writeBundle(null)
         return
     }
 
-    for (entry in map!!.entries) {
-        writeString(entry.key)
-        writeParcelable(entry.value, flags)
+    val bundle = Bundle(size)
+
+    for ((key, value) in map!!) {
+        bundle.putParcelable(key, value)
     }
+
+    writeBundle(bundle)
 }

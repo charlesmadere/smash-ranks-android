@@ -30,7 +30,7 @@ class ServerApiImpl(
                     listener.success(response.body())
                 } else {
                     mTimber.e(TAG, "getHeadToHead ($region) ($playerId) ($opponentId) " +
-                            "failed (code " + response.code() + ")")
+                            "failed (code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
@@ -144,7 +144,7 @@ class ServerApiImpl(
                     val body = if (response.isSuccessful) response.body() else null
 
                     if (body == null) {
-                        mTimber.e(TAG, "getRegions($endpoint) failed (code " + response.code() + ")")
+                        mTimber.e(TAG, "getRegions($endpoint) failed (code ${response.code()})")
                         listener.failure(response.code())
                     } else {
                         listener.success(body)
@@ -190,8 +190,7 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getTournaments ($region) failed (code " +
-                            response.code() + ")")
+                    mTimber.e(TAG, "getTournaments ($region) failed (code ${response.code()})")
                     listener.failure(response.code())
                 }
             }

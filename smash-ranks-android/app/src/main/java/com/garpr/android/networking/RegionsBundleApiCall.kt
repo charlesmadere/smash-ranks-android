@@ -1,18 +1,22 @@
 package com.garpr.android.networking
 
+import com.garpr.android.misc.Constants
 import com.garpr.android.misc.Heartbeat
+import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.Endpoint
+import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
+import java.util.*
 
 class RegionsBundleApiCall(
         private val listener: ApiListener<RegionsBundle>,
         private val serverApi: ServerApi
 ) : Heartbeat {
 
-    private var mGarPrRegionsFound = false
-    private var mGarPrRegions: RegionsBundle? = null
-    private var mNotGarPrRegionsFound = false
-    private var mNotGarPrRegions: RegionsBundle? = null
+    private var garPrRegionsFound = false
+    private var garPrRegions: RegionsBundle? = null
+    private var notGarPrRegionsFound = false
+    private var notGarPrRegions: RegionsBundle? = null
 
 
     fun fetch() {
@@ -25,83 +29,34 @@ class RegionsBundleApiCall(
 
     @Synchronized
     private fun proceed() {
-        if (!mGarPrRegionsFound || !mNotGarPrRegionsFound) {
+        if (!garPrRegionsFound || !notGarPrRegionsFound) {
             return
         }
 
-        // TODO
-    }
+        val regionsSet = mutableSetOf<AbsRegion>()
 
-    /*
-        val endpoints = Endpoint.values()
-        val array = BooleanArray(endpoints.size)
-        val regionsBundle = RegionsBundle()
-
-        for (i in endpoints.indices) {
-            val index = i
-
-            getRegions(endpoints[i], object : ApiListener<RegionsBundle> {
-                override fun failure(errorCode: Int) {
-                    array[index] = true
-                    proceed()
-                }
-
-                override val isAlive: Boolean
-                    get() = listener.isAlive
-
-                @Synchronized private fun proceed() {
-                    for (completed in array) {
-                        if (!completed) {
-                            return
-                        }
-                    }
-
-                    if (isAlive) {
-                        listener.success(regionsBundle)
-                    }
-                }
-
-                override fun success(`object`: RegionsBundle?) {
-                    regionsBundle.merge(`object`)
-                    array[index] = true
-                    proceed()
-                }
-            })
+        garPrRegions?.regions?.let {
+            it.mapTo(regionsSet) { Region(it, Endpoint.GAR_PR) }
         }
 
-    private fun getRegions(endpoint: Endpoint, listener: ApiListener<RegionsBundle>) {
-        val url = endpoint.regionsApiPath
+        notGarPrRegions?.regions?.let {
+            it.mapTo(regionsSet) { Region(it, Endpoint.NOT_GAR_PR) }
+        }
 
-        mGarPrApi.getRegions(url).enqueue(object : Callback<RegionsBundle> {
-            override fun onResponse(call: Call<RegionsBundle>, response: Response<RegionsBundle>) {
-                val body = if (response.isSuccessful) response.body() else null
+        if (regionsSet.isEmpty()) {
+            listener.failure(Constants.ERROR_CODE_UNKNOWN)
+            return
+        }
 
-                if (body == null) {
-                    mTimber.e(TAG, "getRegions failed (code " + response.code() + ")")
-                    listener.failure(response.code())
-                } else {
-                    body.regions?.let {
-                        for (region in it) {
-                            region.endpoint = endpoint
-                        }
-                    }
-
-                    listener.success(body)
-                }
-            }
-
-            override fun onFailure(call: Call<RegionsBundle>, t: Throwable) {
-                mTimber.e(TAG, "getRegions failed", t)
-                listener.failure(Constants.ERROR_CODE_UNKNOWN)
-            }
-        })
+        val regionsList = regionsSet.toList()
+        Collections.sort(regionsList, AbsRegion.ALPHABETICAL_ORDER)
+        listener.success(RegionsBundle(regionsList))
     }
-     */
 
     private val mGarPrListener = object : ApiListener<RegionsBundle> {
         override fun failure(errorCode: Int) {
-            mGarPrRegions = null
-            mGarPrRegionsFound = true
+            garPrRegions = null
+            garPrRegionsFound = true
             proceed()
         }
 
@@ -109,16 +64,16 @@ class RegionsBundleApiCall(
             get() = this@RegionsBundleApiCall.isAlive
 
         override fun success(`object`: RegionsBundle?) {
-            mGarPrRegions = `object`
-            mGarPrRegionsFound = true
+            garPrRegions = `object`
+            garPrRegionsFound = true
             proceed()
         }
     }
 
     private val mNotGarPrListener = object : ApiListener<RegionsBundle> {
         override fun failure(errorCode: Int) {
-            mNotGarPrRegions = null
-            mNotGarPrRegionsFound = true
+            notGarPrRegions = null
+            notGarPrRegionsFound = true
             proceed()
         }
 
@@ -126,8 +81,8 @@ class RegionsBundleApiCall(
             get() = this@RegionsBundleApiCall.isAlive
 
         override fun success(`object`: RegionsBundle?) {
-            mNotGarPrRegions = `object`
-            mNotGarPrRegionsFound = true
+            notGarPrRegions = `object`
+            notGarPrRegionsFound = true
             proceed()
         }
     }

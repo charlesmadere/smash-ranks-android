@@ -30,7 +30,7 @@ class FullPlayer(
         super.writeToParcel(dest, flags)
         dest.writeStringList(aliases)
         dest.writeStringList(regions)
-        dest.writeRatingsMap(ratings, flags)
+        dest.writeRatingsMap(ratings)
     }
 
 }
