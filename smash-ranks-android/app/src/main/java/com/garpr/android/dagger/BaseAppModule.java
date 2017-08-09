@@ -35,7 +35,6 @@ import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsRegion;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Match;
-import com.garpr.android.models.Ranking;
 import com.garpr.android.models.Region;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;

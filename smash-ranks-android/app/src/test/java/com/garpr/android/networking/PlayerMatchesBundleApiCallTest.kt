@@ -1,20 +1,20 @@
 package com.garpr.android.networking
 
 import com.garpr.android.BaseTest
-import com.garpr.android.BuildConfig
 import com.garpr.android.misc.Constants
-import com.garpr.android.models.*
+import com.garpr.android.models.FullPlayer
+import com.garpr.android.models.MatchesBundle
+import com.garpr.android.models.PlayerMatchesBundle
+import com.garpr.android.models.Region
 import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class PlayerMatchesBundleApiCallTest : BaseTest() {
 
     lateinit private var matchesSpark: MatchesBundle
@@ -33,6 +33,7 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
     }
 
     @Before
+    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)

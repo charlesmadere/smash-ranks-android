@@ -21,7 +21,7 @@ import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.Ranking
+import com.garpr.android.models.RankedPlayer
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
@@ -129,7 +129,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         }
 
         mThreadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<Ranking>? = null
+            private var mList: List<RankedPlayer>? = null
 
             override fun onBackground() {
                 if (!isAlive || !TextUtils.equals(query, searchQuery)) {

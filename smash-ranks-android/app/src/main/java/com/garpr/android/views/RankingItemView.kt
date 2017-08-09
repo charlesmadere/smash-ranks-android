@@ -15,17 +15,17 @@ import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.RegionManager
-import com.garpr.android.models.Ranking
+import com.garpr.android.models.RankedPlayer
 import kotterknife.bindOptionalView
 import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class RankingItemView : IdentityFrameLayout, BaseAdapterView<Ranking>, View.OnClickListener,
+class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View.OnClickListener,
         View.OnLongClickListener {
 
     private val mNumberFormat: NumberFormat = NumberFormat.getNumberInstance()
-    private var mContent: Ranking? = null
+    private var mContent: RankedPlayer? = null
 
     @Inject
     lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
@@ -78,16 +78,16 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<Ranking>, View.OnCl
 
     override fun onLongClick(v: View): Boolean {
         val content = mContent ?: return false
-        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, content.player,
+        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, content,
                 mRegionManager.getRegion(context))
     }
 
-    override fun setContent(content: Ranking) {
+    override fun setContent(content: RankedPlayer) {
         mContent = content
 
         mPreviousRankView?.setContent(content)
         mRank.text = mNumberFormat.format(content.rank)
-        mName.text = content.player.name
+        mName.text = content.name
         mRating.text = MiscUtils.truncateFloat(content.rating)
 
         refreshIdentity()

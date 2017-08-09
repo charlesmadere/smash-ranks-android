@@ -37,7 +37,7 @@ class PlayerToolbarManagerImpl(
 
         presentation.mIsShareVisible = true
 
-        if (mIdentityManager.hasIdentity()) {
+        if (mIdentityManager.hasIdentity) {
             if (!mIdentityManager.isPlayer(fullPlayer)) {
                 presentation.mViewYourselfVsThisOpponentTitle = resources.getString(
                         R.string.view_yourself_vs_x, fullPlayer.name)

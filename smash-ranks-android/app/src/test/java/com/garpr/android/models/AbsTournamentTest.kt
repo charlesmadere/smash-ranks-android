@@ -1,25 +1,22 @@
 package com.garpr.android.models
 
 import com.garpr.android.BaseTest
-import com.garpr.android.BuildConfig
 import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.util.*
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class AbsTournamentTest : BaseTest() {
 
-    lateinit private var mFullTournament: AbsTournament
-    lateinit private var mLiteTournament1: AbsTournament
-    lateinit private var mLiteTournament2: AbsTournament
-    lateinit private var mLiteTournament3: AbsTournament
+    lateinit private var fullTournament: AbsTournament
+    lateinit private var liteTournament1: AbsTournament
+    lateinit private var liteTournament2: AbsTournament
+    lateinit private var liteTournament3: AbsTournament
 
     @Inject
     lateinit protected var mGson: Gson
@@ -39,45 +36,45 @@ class AbsTournamentTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mFullTournament = mGson.fromJson(JSON_FULL_TOURNAMENT, AbsTournament::class.java)
-        mLiteTournament1 = mGson.fromJson(JSON_LITE_TOURNAMENT_1, AbsTournament::class.java)
-        mLiteTournament2 = mGson.fromJson(JSON_LITE_TOURNAMENT_2, AbsTournament::class.java)
-        mLiteTournament3 = mGson.fromJson(JSON_LITE_TOURNAMENT_3, AbsTournament::class.java)
+        fullTournament = mGson.fromJson(JSON_FULL_TOURNAMENT, AbsTournament::class.java)
+        liteTournament1 = mGson.fromJson(JSON_LITE_TOURNAMENT_1, AbsTournament::class.java)
+        liteTournament2 = mGson.fromJson(JSON_LITE_TOURNAMENT_2, AbsTournament::class.java)
+        liteTournament3 = mGson.fromJson(JSON_LITE_TOURNAMENT_3, AbsTournament::class.java)
     }
 
     @Test
     @Throws(Exception::class)
     fun testComparatorChronologicalOrder() {
-        val list = listOf(mLiteTournament2, mFullTournament, mLiteTournament3, mLiteTournament1)
+        val list = listOf(liteTournament2, fullTournament, liteTournament3, liteTournament1)
 
         Collections.sort(list, AbsTournament.CHRONOLOGICAL_ORDER)
-        assertEquals(mLiteTournament1, list[0])
-        assertEquals(mFullTournament, list[1])
-        assertEquals(mLiteTournament2, list[2])
-        assertEquals(mLiteTournament3, list[3])
+        assertEquals(liteTournament1, list[0])
+        assertEquals(fullTournament, list[1])
+        assertEquals(liteTournament2, list[2])
+        assertEquals(liteTournament3, list[3])
     }
 
     @Test
     @Throws(Exception::class)
     fun testComparatorReverseChronologicalOrder() {
-        val list = listOf(mLiteTournament2, mFullTournament, mLiteTournament3, mLiteTournament1)
+        val list = listOf(liteTournament2, fullTournament, liteTournament3, liteTournament1)
 
-        Collections.sort(list, AbsTournament.CHRONOLOGICAL_ORDER)
-        assertEquals(mLiteTournament3, list[0])
-        assertEquals(mLiteTournament2, list[1])
-        assertEquals(mFullTournament, list[2])
-        assertEquals(mLiteTournament1, list[3])
+        Collections.sort(list, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER)
+        assertEquals(liteTournament3, list[0])
+        assertEquals(liteTournament2, list[1])
+        assertEquals(fullTournament, list[2])
+        assertEquals(liteTournament1, list[3])
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromJsonFullTournament() {
-        assertEquals("Melee @ the Made 23", mFullTournament.name)
-        assertEquals("5888282dd2994e0d53b14559", mFullTournament.id)
-        assertEquals(AbsTournament.Kind.FULL, mFullTournament.kind)
-        assertTrue(mFullTournament is FullTournament)
+        assertEquals("Melee @ the Made 23", fullTournament.name)
+        assertEquals("5888282dd2994e0d53b14559", fullTournament.id)
+        assertEquals(AbsTournament.Kind.FULL, fullTournament.kind)
+        assertTrue(fullTournament is FullTournament)
 
-        val fullTournament = mFullTournament as FullTournament
+        val fullTournament = fullTournament as FullTournament
         assertTrue(fullTournament.matches?.isNotEmpty() == true)
         assertTrue(fullTournament.players?.isNotEmpty() == true)
     }
@@ -85,28 +82,28 @@ class AbsTournamentTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testFromJsonLiteTournament1() {
-        assertEquals("The Beat Down Ep.14", mLiteTournament1.name)
-        assertEquals("588827bad2994e0d53b14556", mLiteTournament1.id)
-        assertEquals(AbsTournament.Kind.LITE, mLiteTournament1.kind)
-        assertTrue(mLiteTournament1 is LiteTournament)
+        assertEquals("The Beat Down Ep.14", liteTournament1.name)
+        assertEquals("588827bad2994e0d53b14556", liteTournament1.id)
+        assertEquals(AbsTournament.Kind.LITE, liteTournament1.kind)
+        assertTrue(liteTournament1 is LiteTournament)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromJsonLiteTournament2() {
-        assertEquals("Get MADE at the Foundry", mLiteTournament2.name)
-        assertEquals("58ad3b1cd2994e756952adba", mLiteTournament2.id)
-        assertEquals(AbsTournament.Kind.LITE, mLiteTournament2.kind)
-        assertTrue(mLiteTournament2 is LiteTournament)
+        assertEquals("Get MADE at the Foundry", liteTournament2.name)
+        assertEquals("58ad3b1cd2994e756952adba", liteTournament2.id)
+        assertEquals(AbsTournament.Kind.LITE, liteTournament2.kind)
+        assertTrue(liteTournament2 is LiteTournament)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromJsonLiteTournament3() {
-        assertEquals("GENESIS: RED", mLiteTournament3.name)
-        assertEquals("597d2903d2994e34028b4cc4", mLiteTournament3.id)
-        assertEquals(AbsTournament.Kind.LITE, mLiteTournament3.kind)
-        assertTrue(mLiteTournament3 is LiteTournament)
+        assertEquals("GENESIS: RED", liteTournament3.name)
+        assertEquals("597d2903d2994e34028b4cc4", liteTournament3.id)
+        assertEquals(AbsTournament.Kind.LITE, liteTournament3.kind)
+        assertTrue(liteTournament3 is LiteTournament)
     }
 
     @Test

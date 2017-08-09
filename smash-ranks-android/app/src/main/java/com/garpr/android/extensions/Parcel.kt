@@ -23,6 +23,7 @@ fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
         AbsPlayer.Kind.FAVORITE -> return readParcelable(FavoritePlayer::class.java.classLoader)
         AbsPlayer.Kind.FULL -> return readParcelable(FullPlayer::class.java.classLoader)
         AbsPlayer.Kind.LITE -> return readParcelable(LitePlayer::class.java.classLoader)
+        AbsPlayer.Kind.RANKED -> return readParcelable(RankedPlayer::class.java.classLoader)
         else -> throw RuntimeException("illegal kind: " + kind)
     }
 }

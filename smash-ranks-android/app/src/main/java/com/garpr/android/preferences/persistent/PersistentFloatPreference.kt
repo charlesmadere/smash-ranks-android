@@ -13,7 +13,7 @@ class PersistentFloatPreference(
 ) {
 
     override fun get(): Float? {
-        if (hasValueInStore()) {
+        if (hasValueInStore) {
             // at this point, returning the fallback value is impossible
             return keyValueStore.getFloat(key, 0f)
         } else {

@@ -1,7 +1,6 @@
 package com.garpr.android.networking
 
 import com.garpr.android.BaseTest
-import com.garpr.android.BuildConfig
 import com.garpr.android.misc.Constants
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.RegionsBundle
@@ -12,11 +11,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class RegionsBundleApiCallTest : BaseTest() {
 
     lateinit private var garPrRegionsBundle: RegionsBundle
@@ -32,6 +29,7 @@ class RegionsBundleApiCallTest : BaseTest() {
     }
 
     @Before
+    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)

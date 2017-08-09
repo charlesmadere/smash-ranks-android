@@ -16,6 +16,7 @@ class LitePlayer(
         val CREATOR = createParcel { LitePlayer(it.readString(), it.readString()) }
     }
 
-    override val kind = AbsPlayer.Kind.LITE
+    override val kind
+        get() = Kind.LITE
 
 }

@@ -13,7 +13,7 @@ class PersistentIntegerPreference(
 ) {
 
     override fun get(): Int? {
-        if (hasValueInStore()) {
+        if (hasValueInStore) {
             // at this point, returning the fallback value is impossible
             return keyValueStore.getInteger(key, 0)
         } else {

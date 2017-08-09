@@ -1,7 +1,6 @@
 package com.garpr.android.models
 
 import com.garpr.android.BaseTest
-import com.garpr.android.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import org.junit.Assert.*
@@ -9,12 +8,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.util.*
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class SimpleDateTest : BaseTest() {
 
     @Inject
@@ -36,7 +33,7 @@ class SimpleDateTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testChronologicalOrder() {
-        val list = mutableListOf(SimpleDate(Date(2)), SimpleDate(Date(0)), SimpleDate(Date(1)),
+        val list = listOf(SimpleDate(Date(2)), SimpleDate(Date(0)), SimpleDate(Date(1)),
                 SimpleDate(Date(5)), SimpleDate(Date(20)))
 
         Collections.sort(list, SimpleDate.CHRONOLOGICAL_ORDER)
@@ -90,7 +87,7 @@ class SimpleDateTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testReverseChronologicalOrder() {
-        val list = mutableListOf(SimpleDate(Date(2)), SimpleDate(Date(0)), SimpleDate(Date(1)),
+        val list = listOf(SimpleDate(Date(2)), SimpleDate(Date(0)), SimpleDate(Date(1)),
                 SimpleDate(Date(5)), SimpleDate(Date(20)))
 
         Collections.sort(list, SimpleDate.REVERSE_CHRONOLOGICAL_ORDER)

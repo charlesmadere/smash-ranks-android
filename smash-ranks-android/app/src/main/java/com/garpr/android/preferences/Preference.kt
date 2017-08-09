@@ -10,11 +10,9 @@ interface Preference<T> {
 
     val defaultValue: T?
 
-    fun delete()
+    fun delete(notifyListeners: Boolean = true)
 
-    fun delete(notifyListeners: Boolean)
-
-    fun exists(): Boolean
+    val exists: Boolean
 
     fun get(): T?
 
@@ -22,12 +20,8 @@ interface Preference<T> {
 
     fun removeListener(listener: OnPreferenceChangeListener<T>)
 
-    fun set(newValue: T?)
+    fun set(newValue: T?, notifyListeners: Boolean = true)
 
-    operator fun set(newValue: T?, notifyListeners: Boolean)
-
-    fun set(preference: Preference<T>)
-
-    operator fun set(preference: Preference<T>, notifyListeners: Boolean)
+    fun set(preference: Preference<T>, notifyListeners: Boolean = true)
 
 }

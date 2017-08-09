@@ -31,6 +31,9 @@ abstract class AbsPlayer(
                     jsonObject.has("regions") ||
                     jsonObject.has("ratings")) {
                 context.deserialize<FullPlayer>(json, FullPlayer::class.java)
+            } else if (jsonObject.has("ranked") ||
+                    jsonObject.has("rating")) {
+                context.deserialize<RankedPlayer>(json, RankedPlayer::class.java)
             } else {
                 context.deserialize<LitePlayer>(json, LitePlayer::class.java)
             }
@@ -45,6 +48,7 @@ abstract class AbsPlayer(
                 Kind.FAVORITE -> return@JsonSerializer context.serialize(src, FavoritePlayer::class.java)
                 Kind.FULL -> return@JsonSerializer context.serialize(src, FullPlayer::class.java)
                 Kind.LITE -> return@JsonSerializer context.serialize(src, LitePlayer::class.java)
+                Kind.RANKED -> return@JsonSerializer context.serialize(src, RankedPlayer::class.java)
             }
         }
     }
@@ -73,7 +77,10 @@ abstract class AbsPlayer(
         FULL,
 
         @SerializedName("lite")
-        LITE;
+        LITE,
+
+        @SerializedName("ranked")
+        RANKED;
 
         companion object {
             @JvmField

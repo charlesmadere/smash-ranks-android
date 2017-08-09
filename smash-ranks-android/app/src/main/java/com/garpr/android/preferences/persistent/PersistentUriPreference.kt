@@ -13,15 +13,13 @@ class PersistentUriPreference(
         keyValueStore
 ) {
 
-    private val mBackingPreference = PersistentStringPreference(key, null, keyValueStore)
+    private val backingPreference = PersistentStringPreference(key, null, keyValueStore)
 
-
-    override fun exists(): Boolean {
-        return mBackingPreference.exists() || defaultValue != null
-    }
+    override val exists: Boolean
+        get() = backingPreference.exists || defaultValue != null
 
     override fun get(): Uri? {
-        val string = mBackingPreference.get()
+        val string = backingPreference.get()
 
         if (string == null) {
             return defaultValue
@@ -31,7 +29,7 @@ class PersistentUriPreference(
     }
 
     override fun performSet(newValue: Uri, notifyListeners: Boolean) {
-        mBackingPreference[newValue.toString()] = notifyListeners
+        backingPreference.set(newValue.toString(), notifyListeners)
     }
 
 }

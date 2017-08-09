@@ -1,20 +1,23 @@
 package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.Ranking
+import com.garpr.android.models.RankedPlayer
 import com.google.gson.Gson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import javax.inject.Inject
 
+@RunWith(RobolectricTestRunner::class)
 class PreviousRankUtilsTest : BaseTest() {
 
-    lateinit private var mDecreased: Ranking
-    lateinit private var mIncreased: Ranking
-    lateinit private var mNull: Ranking
-    lateinit private var mUnchanged: Ranking
+    lateinit private var mDecreased: RankedPlayer
+    lateinit private var mIncreased: RankedPlayer
+    lateinit private var mNull: RankedPlayer
+    lateinit private var mUnchanged: RankedPlayer
 
     @Inject
     lateinit protected var mGson: Gson
@@ -36,10 +39,10 @@ class PreviousRankUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mDecreased = mGson.fromJson(JSON_RANKING_DECREASED, Ranking::class.java)
-        mIncreased = mGson.fromJson(JSON_RANKING_INCREASED, Ranking::class.java)
-        mNull = mGson.fromJson(JSON_RANKING_NULL, Ranking::class.java)
-        mUnchanged = mGson.fromJson(JSON_RANKING_UNCHANGED, Ranking::class.java)
+        mDecreased = mGson.fromJson(JSON_RANKING_DECREASED, RankedPlayer::class.java)
+        mIncreased = mGson.fromJson(JSON_RANKING_INCREASED, RankedPlayer::class.java)
+        mNull = mGson.fromJson(JSON_RANKING_NULL, RankedPlayer::class.java)
+        mUnchanged = mGson.fromJson(JSON_RANKING_UNCHANGED, RankedPlayer::class.java)
     }
 
     @Test

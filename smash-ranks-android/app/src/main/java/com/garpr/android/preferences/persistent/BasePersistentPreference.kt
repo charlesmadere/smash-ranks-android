@@ -6,7 +6,7 @@ import com.garpr.android.preferences.KeyValueStore
 abstract class BasePersistentPreference<T>(
         key: String,
         defaultValue: T?,
-        protected val keyValueStore: KeyValueStore
+        val keyValueStore: KeyValueStore
 ) : BasePreference<T>(
         key,
         defaultValue
@@ -20,12 +20,10 @@ abstract class BasePersistentPreference<T>(
         }
     }
 
-    override fun exists(): Boolean {
-        return hasValueInStore() || defaultValue != null
-    }
+    override val exists: Boolean
+        get() = hasValueInStore || defaultValue != null
 
-    protected fun hasValueInStore(): Boolean {
-        return key in keyValueStore
-    }
+    protected val hasValueInStore: Boolean
+        get() = key in keyValueStore
 
 }

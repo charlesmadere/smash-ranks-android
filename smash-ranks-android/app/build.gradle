@@ -44,6 +44,12 @@ android {
     aaptOptions {
         cruncherEnabled false
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

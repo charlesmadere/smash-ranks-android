@@ -1,7 +1,6 @@
 package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
-import com.garpr.android.BuildConfig
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.preferences.KeyValueStore
 import com.google.gson.Gson
@@ -10,11 +9,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class PersistentGsonPreferenceTest : BaseTest() {
 
     @Inject
@@ -62,10 +59,10 @@ class PersistentGsonPreferenceTest : BaseTest() {
         val player = gson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
         val preference = PersistentGsonPreference("gson", player, keyValueStore,
                 AbsPlayer::class.java, gson)
-        assertTrue(preference.exists())
+        assertTrue(preference.exists)
 
         preference.delete()
-        assertTrue(preference.exists())
+        assertTrue(preference.exists)
     }
 
     @Test
@@ -73,10 +70,10 @@ class PersistentGsonPreferenceTest : BaseTest() {
     fun testExistsWithNullDefaultValue() {
         val preference = PersistentGsonPreference<AbsPlayer>("gson", null,
                 keyValueStore, AbsPlayer::class.java, gson)
-        assertFalse(preference.exists())
+        assertFalse(preference.exists)
 
         preference.delete()
-        assertFalse(preference.exists())
+        assertFalse(preference.exists)
     }
 
     @Test

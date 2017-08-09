@@ -2,7 +2,6 @@ package com.garpr.android.misc
 
 import android.app.Application
 import com.garpr.android.BaseTest
-import com.garpr.android.BuildConfig
 import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.Region
 import com.google.gson.Gson
@@ -11,11 +10,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class RegionManagerTest : BaseTest() {
 
     lateinit private var mAlabama: Region

@@ -8,13 +8,13 @@ abstract class BasePreference<T>(
         override val defaultValue: T?
 ) : Preference<T> {
 
-    private val mListeners: MutableList<WeakReference<OnPreferenceChangeListener<T>>> = mutableListOf()
+    private val listeners: MutableList<WeakReference<OnPreferenceChangeListener<T>>> = mutableListOf()
 
 
     override fun addListener(listener: OnPreferenceChangeListener<T>) {
-        synchronized (mListeners) {
+        synchronized (listeners) {
             var addListener = true
-            val iterator = mListeners.iterator()
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -28,18 +28,14 @@ abstract class BasePreference<T>(
             }
 
             if (addListener) {
-                mListeners.add(WeakReference<OnPreferenceChangeListener<T>>(listener))
+                listeners.add(WeakReference<OnPreferenceChangeListener<T>>(listener))
             }
         }
     }
 
-    override fun delete() {
-        delete(true)
-    }
-
     protected fun notifyListeners() {
-        synchronized(mListeners) {
-            val iterator = mListeners.iterator()
+        synchronized(listeners) {
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -54,11 +50,11 @@ abstract class BasePreference<T>(
         }
     }
 
-    protected abstract fun performSet(newValue: T, notifyListeners: Boolean)
+    protected abstract fun performSet(newValue: T, notifyListeners: Boolean = true)
 
     override fun removeListener(listener: OnPreferenceChangeListener<T>) {
-        synchronized (mListeners) {
-            val iterator = mListeners.iterator()
+        synchronized (listeners) {
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val next = iterator.next()
@@ -69,14 +65,6 @@ abstract class BasePreference<T>(
                 }
             }
         }
-    }
-
-    override fun set(newValue: T?) {
-        set(newValue, true)
-    }
-
-    override fun set(preference: Preference<T>) {
-        set(preference.get())
     }
 
     override fun set(preference: Preference<T>, notifyListeners: Boolean) {

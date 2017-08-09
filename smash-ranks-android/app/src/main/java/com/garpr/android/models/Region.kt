@@ -24,14 +24,15 @@ class Region(
     companion object {
         @JvmField
         val CREATOR = createParcel { Region(it.readInteger(), it.readInteger(), it.readInteger(),
-                it.readString(), it.readString(), it.readParcelable<Endpoint>(Endpoint::class.java.classLoader)) }
+                it.readString(), it.readString(), it.readParcelable(Endpoint::class.java.classLoader)) }
     }
 
     constructor(region: AbsRegion, endpoint: Endpoint) : this(region.rankingActivityDayLimit,
             region.rankingNumTourneysAttended, region.tournamentQualifiedDayLimit,
             region.displayName, region.id, endpoint)
 
-    override val kind = Kind.FULL
+    override val kind
+        get() = Kind.FULL
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)

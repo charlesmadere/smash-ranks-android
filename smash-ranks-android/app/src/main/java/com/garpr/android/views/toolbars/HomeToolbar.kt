@@ -72,8 +72,8 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
         }
 
         val region = mRegionManager.getRegion(context)
-        menu.findItem(R.id.miActivityRequirements).isVisible = region.hasActivityRequirements()
-        menu.findItem(R.id.miViewYourself).isVisible = mIdentityManager.hasIdentity()
+        menu.findItem(R.id.miActivityRequirements).isVisible = region.hasActivityRequirements
+        menu.findItem(R.id.miViewYourself).isVisible = mIdentityManager.hasIdentity
     }
 
     override fun onRegionChange(regionManager: RegionManager) {

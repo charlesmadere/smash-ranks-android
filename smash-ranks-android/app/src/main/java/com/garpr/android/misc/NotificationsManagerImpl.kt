@@ -101,6 +101,11 @@ class NotificationsManagerImpl(
             builder.setSound(it)
         }
 
+        mRankingsPollingPreferenceStore.rankingsDate.get()?.let {
+            builder.setWhen(it.date.time)
+                    .setShowWhen(true)
+        }
+
         show(RANKINGS_ID, builder)
     }
 

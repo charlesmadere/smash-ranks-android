@@ -6,8 +6,8 @@ import com.garpr.android.extensions.createParcel
 
 import com.google.gson.annotations.SerializedName
 
-data class RankingsBundle(
-        @SerializedName("ranking") val rankings: List<Ranking>? = null,
+class RankingsBundle(
+        @SerializedName("ranking") val rankings: List<RankedPlayer>? = null,
         @SerializedName("tournaments") val tournaments: List<String>? = null,
         @SerializedName("time") val time: SimpleDate,
         @SerializedName("id") val id: String,
@@ -16,13 +16,13 @@ data class RankingsBundle(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { RankingsBundle(it.createTypedArrayList(Ranking.CREATOR),
+        val CREATOR = createParcel { RankingsBundle(it.createTypedArrayList(RankedPlayer.CREATOR),
                 it.createStringArrayList(), it.readParcelable(SimpleDate::class.java.classLoader),
                 it.readString(), it.readString()) }
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is RankingsBundle && id == other.id
+        return other is RankingsBundle && id.equals(other.id, ignoreCase = true)
     }
 
     override fun hashCode() = id.hashCode()

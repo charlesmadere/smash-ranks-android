@@ -9,10 +9,10 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.misc.PreviousRankUtils
-import com.garpr.android.models.Ranking
+import com.garpr.android.models.RankedPlayer
 import javax.inject.Inject
 
-class PreviousRankView : AppCompatImageView, BaseAdapterView<Ranking> {
+class PreviousRankView : AppCompatImageView, BaseAdapterView<RankedPlayer> {
 
     @Inject
     lateinit protected var mPreviousRankUtils: PreviousRankUtils
@@ -33,7 +33,7 @@ class PreviousRankView : AppCompatImageView, BaseAdapterView<Ranking> {
         App.get().appComponent.inject(this)
     }
 
-    override fun setContent(content: Ranking) {
+    override fun setContent(content: RankedPlayer) {
         val info = mPreviousRankUtils.checkRanking(content)
 
         if (info == null) {

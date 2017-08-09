@@ -20,7 +20,8 @@ class FavoritePlayer(
                 it.readParcelable(Region::class.java.classLoader)) }
     }
 
-    override val kind = AbsPlayer.Kind.FAVORITE
+    override val kind
+        get() = Kind.FAVORITE
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)

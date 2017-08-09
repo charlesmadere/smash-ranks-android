@@ -8,12 +8,12 @@ import com.garpr.android.extensions.writeAbsPlayerList
 import com.google.gson.annotations.SerializedName
 
 class FullTournament(
-        @SerializedName("players") val players: List<AbsPlayer>? = null,
-        @SerializedName("matches") val matches: List<Match>? = null,
         regions: List<String>? = null,
         date: SimpleDate,
         id: String,
         name: String,
+        @SerializedName("players") val players: List<AbsPlayer>? = null,
+        @SerializedName("matches") val matches: List<Match>? = null,
         @SerializedName("rawId") val rawId: String?,
         @SerializedName("url") val url: String?
 ) : AbsTournament(
@@ -25,14 +25,15 @@ class FullTournament(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { FullTournament(it.readAbsPlayerList(),
-                it.createTypedArrayList(Match.CREATOR), it.createStringArrayList(),
+        val CREATOR = createParcel { FullTournament(it.createStringArrayList(),
                 it.readParcelable(SimpleDate::class.java.classLoader), it.readString(),
-                it.readString(), it.readString(), it.readString()) }
+                it.readString(), it.readAbsPlayerList(),
+                it.createTypedArrayList(FullTournament.Match.CREATOR), it.readString(),
+                it.readString()) }
     }
 
-
-    override val kind = AbsTournament.Kind.FULL
+    override val kind
+        get() = Kind.FULL
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)

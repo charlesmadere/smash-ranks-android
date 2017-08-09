@@ -13,7 +13,7 @@ interface IdentityManager {
 
     val identity: AbsPlayer?
 
-    fun hasIdentity(): Boolean
+    val hasIdentity: Boolean
 
     fun isId(id: String?): Boolean
 

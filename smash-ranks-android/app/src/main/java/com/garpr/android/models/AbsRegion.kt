@@ -52,8 +52,8 @@ abstract class AbsRegion(
         return other is AbsRegion && id.equals(other.id, ignoreCase = true)
     }
 
-    fun hasActivityRequirements() = rankingActivityDayLimit != null &&
-            rankingNumTourneysAttended != null
+    val hasActivityRequirements
+        get() = rankingActivityDayLimit != null && rankingNumTourneysAttended != null
 
     override fun hashCode() = id.hashCode()
 

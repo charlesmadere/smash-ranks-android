@@ -13,7 +13,7 @@ class PersistentBooleanPreference(
 ) {
 
     override fun get(): Boolean? {
-        if (hasValueInStore()) {
+        if (hasValueInStore) {
             // at this point, returning the fallback value is impossible
             return keyValueStore.getBoolean(key, false)
         } else {

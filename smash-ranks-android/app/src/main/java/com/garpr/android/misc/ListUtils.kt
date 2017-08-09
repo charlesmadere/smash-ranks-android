@@ -230,18 +230,15 @@ object ListUtils {
         return newList
     }
 
-    fun searchRankingList(query: String?, list: List<Ranking>?) =
+    fun searchRankingList(query: String?, list: List<RankedPlayer>?) =
         if (list == null || list.isEmpty()) {
             null
         } else {
-            val newList = mutableListOf<Ranking>()
+            val newList = mutableListOf<RankedPlayer>()
 
             if (query?.isNotBlank() == true) {
                 val trimmedQuery = query.trim().toLowerCase()
-
-                newList.addAll(list.filter {
-                    it.player.name.toLowerCase().contains(trimmedQuery)
-                })
+                newList.addAll(list.filter { it.name.toLowerCase().contains(trimmedQuery) })
             } else {
                 newList.addAll(list)
             }
@@ -257,10 +254,7 @@ object ListUtils {
 
             if (query?.isNotBlank() == true) {
                 val trimmedQuery = query.trim().toLowerCase()
-
-                newList.addAll(list.filter {
-                    it.name.toLowerCase().contains(trimmedQuery)
-                })
+                newList.addAll(list.filter { it.name.toLowerCase().contains(trimmedQuery) })
             } else {
                 newList.addAll(list)
             }
@@ -278,8 +272,8 @@ object ListUtils {
             if (query?.isNotBlank() == true) {
                 val trimmedQuery = query.trim().toLowerCase()
 
-                newList.addAll(list.filter { it.winnerName.toLowerCase().contains(trimmedQuery) ||
-                            it.loserName.toLowerCase().contains(trimmedQuery) })
+                newList.addAll(list.filter { it.winnerName.toLowerCase().contains(trimmedQuery)
+                        || it.loserName.toLowerCase().contains(trimmedQuery) })
             } else {
                 newList.addAll(list)
             }

@@ -1,17 +1,14 @@
 package com.garpr.android.preferences
 
 import com.garpr.android.BaseTest
-import com.garpr.android.BuildConfig
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class KeyValueStoreTest : BaseTest() {
 
     @Inject

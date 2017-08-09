@@ -8,31 +8,30 @@ class PersistentGsonPreference<T>(
         key: String,
         defaultValue: T?,
         keyValueStore: KeyValueStore,
-        private val mType: Type,
-        private val mGson: Gson
+        private val type: Type,
+        private val gson: Gson
 ) : BasePersistentPreference<T>(
         key,
         defaultValue,
         keyValueStore
 ) {
 
-    private val mBackingPreference = PersistentStringPreference(key, null, keyValueStore)
+    private val backingPreference = PersistentStringPreference(key, null, keyValueStore)
 
 
-    override fun exists(): Boolean {
-        return mBackingPreference.exists() || defaultValue != null
-    }
+    override val exists: Boolean
+        get() = backingPreference.exists || defaultValue != null
 
     override fun get(): T? {
-        if (mBackingPreference.exists()) {
-            return mGson.fromJson<T>(mBackingPreference.get(), mType)
+        if (backingPreference.exists) {
+            return gson.fromJson<T>(backingPreference.get(), type)
         } else {
             return defaultValue
         }
     }
 
     override fun performSet(newValue: T, notifyListeners: Boolean) {
-        mBackingPreference[mGson.toJson(newValue, mType)] = notifyListeners
+        backingPreference.set(gson.toJson(newValue, type), notifyListeners)
     }
 
 }

@@ -2,17 +2,17 @@ package com.garpr.android.misc
 
 import com.garpr.android.misc.PreviousRankUtils.Info.DECREASE
 import com.garpr.android.misc.PreviousRankUtils.Info.INCREASE
-import com.garpr.android.models.Ranking
+import com.garpr.android.models.RankedPlayer
 
 class PreviousRankUtilsImpl : PreviousRankUtils {
 
-    override fun checkRanking(ranking: Ranking?): PreviousRankUtils.Info? {
-        if (ranking == null) {
+    override fun checkRanking(rankedPlayer: RankedPlayer?): PreviousRankUtils.Info? {
+        if (rankedPlayer == null) {
             return null
         }
 
-        val previousRank = ranking.previousRank
-        val rank = ranking.rank
+        val previousRank = rankedPlayer.previousRank
+        val rank = rankedPlayer.rank
 
         if (previousRank == null || previousRank == rank) {
             return null

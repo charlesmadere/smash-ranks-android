@@ -53,9 +53,8 @@ class IdentityManagerImpl(
         }
     }
 
-    override fun hasIdentity(): Boolean {
-        return mIdentity.exists()
-    }
+    override val hasIdentity: Boolean
+        get() = mIdentity.exists
 
     override fun isId(id: String?): Boolean {
         if (TextUtils.isEmpty(id)) {

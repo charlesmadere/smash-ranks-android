@@ -1,7 +1,6 @@
 package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
-import com.garpr.android.BuildConfig
 import com.garpr.android.models.AbsPlayer
 import com.google.gson.Gson
 import org.junit.Assert.*
@@ -9,11 +8,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class IdentityManagerTest : BaseTest() {
 
     lateinit private var mPlayer: AbsPlayer
@@ -78,13 +75,13 @@ class IdentityManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testHasIdentity() {
-        assertFalse(mIdentityManager.hasIdentity())
+        assertFalse(mIdentityManager.hasIdentity)
 
         mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertTrue(mIdentityManager.hasIdentity())
+        assertTrue(mIdentityManager.hasIdentity)
 
         mIdentityManager.removeIdentity()
-        assertFalse(mIdentityManager.hasIdentity())
+        assertFalse(mIdentityManager.hasIdentity)
     }
 
     @Test

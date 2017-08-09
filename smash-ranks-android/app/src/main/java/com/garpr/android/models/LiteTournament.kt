@@ -22,6 +22,7 @@ class LiteTournament(
                 it.readString()) }
     }
 
-    override val kind = AbsTournament.Kind.LITE
+    override val kind
+        get() = Kind.LITE
 
 }

@@ -47,7 +47,7 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
     }
 
     override fun onClick(v: View) {
-        if (mIdentityManager.hasIdentity()) {
+        if (mIdentityManager.hasIdentity) {
             AlertDialog.Builder(context)
                     .setMessage(R.string.are_you_sure_you_want_to_delete_your_identity)
                     .setNegativeButton(R.string.cancel, null)

@@ -24,7 +24,8 @@ class FullPlayer(
                 it.createStringArrayList(), it.createStringArrayList(), it.readRatingsMap()) }
     }
 
-    override val kind = AbsPlayer.Kind.FULL
+    override val kind
+        get() = Kind.FULL
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)

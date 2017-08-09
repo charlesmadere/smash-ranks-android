@@ -2,12 +2,11 @@ package com.garpr.android.adapters
 
 import android.content.Context
 import android.support.annotation.LayoutRes
-
 import com.garpr.android.R
-import com.garpr.android.models.Ranking
+import com.garpr.android.models.RankedPlayer
 import com.garpr.android.models.RankingsBundle
 
-class RankingsAdapter(context: Context) : BaseAdapter<Ranking>(context) {
+class RankingsAdapter(context: Context) : BaseAdapter<RankedPlayer>(context) {
 
     @LayoutRes
     private var mLayoutResId: Int = 0

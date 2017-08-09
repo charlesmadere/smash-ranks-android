@@ -24,6 +24,7 @@ class LiteRegion(
                 it.readInteger(), it.readString(), it.readString()) }
     }
 
-    override val kind = Kind.LITE
+    override val kind
+        get() = Kind.LITE
 
 }

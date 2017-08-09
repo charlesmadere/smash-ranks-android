@@ -12,7 +12,7 @@ import com.garpr.android.models.AbsPlayerTest;
 import com.garpr.android.models.AbsRegionTest;
 import com.garpr.android.models.AbsTournamentTest;
 import com.garpr.android.models.MatchTest;
-import com.garpr.android.models.RegionTest;
+import com.garpr.android.models.RegionsBundleTest;
 import com.garpr.android.models.SimpleDateTest;
 import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
 import com.garpr.android.networking.RegionsBundleApiCallTest;
@@ -47,7 +47,7 @@ public interface TestAppComponent {
     void inject(AbsRegionTest test);
     void inject(AbsTournamentTest test);
     void inject(MatchTest test);
-    void inject(RegionTest test);
+    void inject(RegionsBundleTest test);
     void inject(SimpleDateTest test);
 
     // networking

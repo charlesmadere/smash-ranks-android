@@ -1,6 +1,6 @@
 package com.garpr.android.misc
 
-import com.garpr.android.models.Ranking
+import com.garpr.android.models.RankedPlayer
 
 interface PreviousRankUtils {
 
@@ -8,6 +8,6 @@ interface PreviousRankUtils {
         DECREASE, INCREASE
     }
 
-    fun checkRanking(ranking: Ranking?): Info?
+    fun checkRanking(rankedPlayer: RankedPlayer?): Info?
 
 }

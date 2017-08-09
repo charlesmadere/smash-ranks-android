@@ -78,10 +78,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             return getLaunchIntent(context, player.id, player.name, _region)
         }
 
-        fun getLaunchIntent(context: Context, ranking: Ranking, region: Region?): Intent {
-            return getLaunchIntent(context, ranking.player.id, ranking.player.name, region)
-        }
-
         fun getLaunchIntent(context: Context, playerId: String, playerName: String?,
                 region: Region?): Intent {
             val intent = Intent(context, PlayerActivity::class.java)
