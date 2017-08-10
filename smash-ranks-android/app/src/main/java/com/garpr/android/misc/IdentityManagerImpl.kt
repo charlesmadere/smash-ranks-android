@@ -1,6 +1,5 @@
 package com.garpr.android.misc
 
-import android.text.TextUtils
 import com.garpr.android.misc.IdentityManager.OnIdentityChangeListener
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FavoritePlayer
@@ -57,12 +56,11 @@ class IdentityManagerImpl(
         get() = mIdentity.exists
 
     override fun isId(id: String?): Boolean {
-        if (TextUtils.isEmpty(id)) {
+        if (id.isNullOrBlank()) {
             return false
         }
 
-        val identity = identity
-        return identity != null && identity.id == id
+        return identity?.id?.equals(id, ignoreCase = true) ?: false
     }
 
     override fun isPlayer(player: AbsPlayer?): Boolean {
@@ -70,8 +68,7 @@ class IdentityManagerImpl(
             return false
         }
 
-        val identity = identity
-        return identity != null && identity == player
+        return identity?.let { it == player } ?: false
     }
 
     private fun notifyListeners() {

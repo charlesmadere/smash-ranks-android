@@ -2,15 +2,20 @@ package com.garpr.android.views.toolbars
 
 import android.content.Context
 import android.support.annotation.AttrRes
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
 import com.garpr.android.R
 import com.garpr.android.extensions.optActivity
+import com.garpr.android.misc.TournamentToolbarManager
 import com.garpr.android.models.FullTournament
+import javax.inject.Inject
 
 class TournamentToolbar : SearchToolbar {
+
+    @Inject
+    lateinit protected var tournamentToolbarManager: TournamentToolbarManager
+
 
     interface DataProvider {
         val fullTournament: FullTournament?
@@ -34,23 +39,12 @@ class TournamentToolbar : SearchToolbar {
         }
 
         val activity = context.optActivity()
-        val fullTournament: FullTournament?
+        val fullTournament: FullTournament? = if (activity is DataProvider)
+            activity.fullTournament else null
 
-        if (activity is DataProvider) {
-            fullTournament = (activity as DataProvider).fullTournament
-        } else {
-            fullTournament = null
-        }
-
-        if (fullTournament == null) {
-            return
-        }
-
-        menu.findItem(R.id.miShare).isVisible = true
-
-        if (!TextUtils.isEmpty(fullTournament.url)) {
-            menu.findItem(R.id.miViewTournamentPage).isVisible = true
-        }
+        val presentation = tournamentToolbarManager.getPresentation(fullTournament)
+        menu.findItem(R.id.miShare).isVisible = presentation.mIsShareVisible
+        menu.findItem(R.id.miViewTournamentPage).isVisible = presentation.mIsViewTournamentPageVisible
     }
 
 }

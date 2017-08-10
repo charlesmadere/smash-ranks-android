@@ -15,6 +15,8 @@ import com.garpr.android.misc.FirebaseApiWrapper;
 import com.garpr.android.misc.FirebaseApiWrapperImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
+import com.garpr.android.misc.HomeToolbarManager;
+import com.garpr.android.misc.HomeToolbarManagerImpl;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.IdentityManagerImpl;
 import com.garpr.android.misc.NotificationsManager;
@@ -31,6 +33,8 @@ import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
+import com.garpr.android.misc.TournamentToolbarManager;
+import com.garpr.android.misc.TournamentToolbarManagerImpl;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsRegion;
 import com.garpr.android.models.AbsTournament;
@@ -161,6 +165,13 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    HomeToolbarManager providesHomeToolbarManager(final IdentityManager identityManager,
+            final RegionManager regionManager) {
+        return new HomeToolbarManagerImpl(identityManager, regionManager);
+    }
+
+    @Provides
+    @Singleton
     IdentityManager providesIdentityManager(final GeneralPreferenceStore generalPreferenceStore,
             final Timber timber) {
         return new IdentityManagerImpl(generalPreferenceStore.getIdentity(), timber);
@@ -254,6 +265,12 @@ public abstract class BaseAppModule {
     @Singleton
     Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
         return new TimberImpl(deviceUtils.hasLowRam(), crashlyticsWrapper);
+    }
+
+    @Provides
+    @Singleton
+    TournamentToolbarManager providesTournamentToolbarManager() {
+        return new TournamentToolbarManagerImpl();
     }
 
 }

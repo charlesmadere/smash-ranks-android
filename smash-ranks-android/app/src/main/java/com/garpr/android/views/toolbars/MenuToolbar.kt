@@ -15,7 +15,7 @@ abstract class MenuToolbar : Toolbar, Heartbeat {
 
     protected var isMenuCreated: Boolean = false
         private set
-    private val mSparseMenuItemsArray: SparseBooleanArray = SparseBooleanArray()
+    private val sparseMenuItemsArray: SparseBooleanArray = SparseBooleanArray()
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -26,7 +26,7 @@ abstract class MenuToolbar : Toolbar, Heartbeat {
     private fun createSparseMenuItemsArray() {
         for (i in 0..menu.size() - 1) {
             val menuItem = menu.getItem(i)
-            mSparseMenuItemsArray.put(menuItem.itemId, menuItem.isVisible)
+            sparseMenuItemsArray.put(menuItem.itemId, menuItem.isVisible)
         }
     }
 
@@ -56,7 +56,7 @@ abstract class MenuToolbar : Toolbar, Heartbeat {
     open fun onRefreshMenu() {
         for (i in 0..menu.size() - 1) {
             val menuItem = menu.getItem(i)
-            menuItem.isVisible = mSparseMenuItemsArray.get(menuItem.itemId)
+            menuItem.isVisible = sparseMenuItemsArray.get(menuItem.itemId)
         }
     }
 

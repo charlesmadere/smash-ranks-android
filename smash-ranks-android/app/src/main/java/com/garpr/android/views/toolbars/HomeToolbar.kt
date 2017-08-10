@@ -7,12 +7,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.misc.HomeToolbarManager
 import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.RegionManager
 import javax.inject.Inject
 
 class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
+
+    @Inject
+    lateinit protected var mHomeToolbarManager: HomeToolbarManager
 
     @Inject
     lateinit protected var mIdentityManager: IdentityManager
@@ -71,9 +75,9 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
             return
         }
 
-        val region = mRegionManager.getRegion(context)
-        menu.findItem(R.id.miActivityRequirements).isVisible = region.hasActivityRequirements
-        menu.findItem(R.id.miViewYourself).isVisible = mIdentityManager.hasIdentity
+        val presentation = mHomeToolbarManager.getPresentation(context)
+        menu.findItem(R.id.miActivityRequirements).isVisible = presentation.mIsActivityRequirementsVisible
+        menu.findItem(R.id.miViewYourself).isVisible = presentation.mIsViewYourselfVisible
     }
 
     override fun onRegionChange(regionManager: RegionManager) {

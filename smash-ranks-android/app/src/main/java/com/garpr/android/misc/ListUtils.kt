@@ -1,7 +1,6 @@
 package com.garpr.android.misc
 
 import android.content.Context
-import android.util.Log
 import com.garpr.android.R
 import com.garpr.android.models.*
 import java.util.*
@@ -32,9 +31,7 @@ object ListUtils {
     fun createPlayerMatchesList(context: Context, regionManager: RegionManager,
             fullPlayer: FullPlayer, bundle: MatchesBundle?): MutableList<Any>? {
         val region = regionManager.getRegion(context)
-        Log.d("blah", "" + fullPlayer.ratings)
         val rating = fullPlayer.ratings?.get(region.id)
-        Log.d("blah", "" + rating)
         val matches = bundle?.matches
 
         if (rating == null && (matches == null || matches.isEmpty())) {

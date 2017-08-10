@@ -2,11 +2,12 @@ package com.garpr.android.networking
 
 import com.garpr.android.BaseTest
 import com.garpr.android.misc.Constants
+import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.Endpoint
+import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
 import com.google.gson.Gson
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,6 +37,69 @@ class RegionsBundleApiCallTest : BaseTest() {
 
         garPrRegionsBundle = gson.fromJson(JSON_REGIONS_BUNDLE_GAR_PR, RegionsBundle::class.java)
         notGarPrRegionsBundle = gson.fromJson(JSON_REGIONS_BUNDLE_NOT_GAR_PR, RegionsBundle::class.java)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testGetRegionsBundleIsSorted() {
+        var result: RegionsBundle? = null
+
+        val listener = object : AbsApiListener<RegionsBundle>() {
+            override fun success(`object`: RegionsBundle?) {
+                result = `object`
+            }
+        }
+
+        val serverApi = object : AbsServerApi() {
+            override fun getRegions(endpoint: Endpoint?, listener: ApiListener<RegionsBundle>) {
+                when (endpoint) {
+                    Endpoint.GAR_PR -> { listener.success(garPrRegionsBundle) }
+                    Endpoint.NOT_GAR_PR -> { listener.success(notGarPrRegionsBundle) }
+                    else -> { throw RuntimeException() }
+                }
+            }
+        }
+
+        RegionsBundleApiCall(listener, serverApi).fetch()
+        assertEquals("alabama", result?.regions?.get(0)?.id)
+        assertEquals("austin", result?.regions?.get(1)?.id)
+        assertEquals("cfl", result?.regions?.get(2)?.id)
+        assertEquals("chicago", result?.regions?.get(3)?.id)
+        assertEquals("googlemtv", result?.regions?.get(8)?.id)
+        assertEquals("newjersey", result?.regions?.get(11)?.id)
+        assertEquals("norcal", result?.regions?.get(12)?.id)
+        assertEquals("southcarolina", result?.regions?.get(20)?.id)
+        assertEquals("westchester", result?.regions?.get(22)?.id)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testGetRegionsBundleIsRegionType() {
+        var result: RegionsBundle? = null
+
+        val listener = object : AbsApiListener<RegionsBundle>() {
+            override fun success(`object`: RegionsBundle?) {
+                result = `object`
+            }
+        }
+
+        val serverApi = object : AbsServerApi() {
+            override fun getRegions(endpoint: Endpoint?, listener: ApiListener<RegionsBundle>) {
+                when (endpoint) {
+                    Endpoint.GAR_PR -> { listener.success(garPrRegionsBundle) }
+                    Endpoint.NOT_GAR_PR -> { listener.success(notGarPrRegionsBundle) }
+                    else -> { throw RuntimeException() }
+                }
+            }
+        }
+
+        RegionsBundleApiCall(listener, serverApi).fetch()
+
+        for (region in result?.regions ?: throw NullPointerException()) {
+            assertEquals(AbsRegion.Kind.FULL, region.kind)
+            assertTrue(region is Region)
+            assertNotNull((region as Region).endpoint)
+        }
     }
 
     @Test

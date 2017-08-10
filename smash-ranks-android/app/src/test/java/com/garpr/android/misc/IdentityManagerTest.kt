@@ -13,20 +13,22 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class IdentityManagerTest : BaseTest() {
 
-    lateinit private var mPlayer: AbsPlayer
+    lateinit private var litePlayer: AbsPlayer
+    lateinit private var rankedPlayer: AbsPlayer
 
     @Inject
-    lateinit protected var mGson: Gson
+    lateinit protected var gson: Gson
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    lateinit protected var identityManager: IdentityManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    lateinit protected var regionManager: RegionManager
 
 
     companion object {
         private const val JSON_LITE_PLAYER = "{\"id\":\"583a4a15d2994e0577b05c74\",\"name\":\"homemadewaffles\"}"
+        private const val JSON_RANKED_PLAYER = "{\"rating\":41.565775187219025,\"name\":\"NMW\",\"rank\":3,\"previous_rank\":3,\"id\":\"583a4a15d2994e0577b05c8a\"}"
     }
 
     @Before
@@ -35,7 +37,8 @@ class IdentityManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mPlayer = mGson.fromJson(JSON_LITE_PLAYER, AbsPlayer::class.java)
+        litePlayer = gson.fromJson(JSON_LITE_PLAYER, AbsPlayer::class.java)
+        rankedPlayer = gson.fromJson(JSON_RANKED_PLAYER, AbsPlayer::class.java)
     }
 
     @Test
@@ -49,87 +52,127 @@ class IdentityManagerTest : BaseTest() {
             }
         }
 
-        mIdentityManager.addListener(listener)
+        identityManager.addListener(listener)
         assertNull(array[0])
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertEquals(mPlayer, array[0])
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertEquals(litePlayer, array[0])
 
-        mIdentityManager.removeIdentity()
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertEquals(litePlayer, array[0])
+
+        identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
+        assertEquals(rankedPlayer, array[0])
+
+        identityManager.removeIdentity()
         assertNull(array[0])
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetAndSetIdentity() {
-        assertNull(mIdentityManager.identity)
+        assertNull(identityManager.identity)
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertNotNull(mIdentityManager.identity)
-        assertEquals(mIdentityManager.identity, mPlayer)
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertEquals(litePlayer, identityManager.identity)
 
-        mIdentityManager.removeIdentity()
-        assertNull(mIdentityManager.identity)
+        identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
+        assertEquals(rankedPlayer, identityManager.identity)
+
+        identityManager.removeIdentity()
+        assertNull(identityManager.identity)
     }
 
     @Test
     @Throws(Exception::class)
     fun testHasIdentity() {
-        assertFalse(mIdentityManager.hasIdentity)
+        assertFalse(identityManager.hasIdentity)
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertTrue(mIdentityManager.hasIdentity)
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertTrue(identityManager.hasIdentity)
 
-        mIdentityManager.removeIdentity()
-        assertFalse(mIdentityManager.hasIdentity)
+        identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
+        assertTrue(identityManager.hasIdentity)
+
+        identityManager.removeIdentity()
+        assertFalse(identityManager.hasIdentity)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testIsIdWithEmptyString() {
+        assertFalse(identityManager.isId(""))
+
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertFalse(identityManager.isId(""))
+
+        identityManager.removeIdentity()
+        assertFalse(identityManager.isId(""))
     }
 
     @Test
     @Throws(Exception::class)
     fun testIsIdWithNull() {
-        assertFalse(mIdentityManager.isId(null))
+        assertFalse(identityManager.isId(null))
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertFalse(mIdentityManager.isId(null))
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertFalse(identityManager.isId(null))
 
-        mIdentityManager.removeIdentity()
-        assertFalse(mIdentityManager.isId(null))
+        identityManager.removeIdentity()
+        assertFalse(identityManager.isId(null))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testIsIdWithWhitespace() {
+        assertFalse(identityManager.isId(" "))
+
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertFalse(identityManager.isId("  "))
+
+        identityManager.removeIdentity()
+        assertFalse(identityManager.isId("   "))
     }
 
     @Test
     @Throws(Exception::class)
     fun testIsIdWithPlayer() {
-        assertFalse(mIdentityManager.isId(mPlayer.id))
+        assertFalse(identityManager.isId(litePlayer.id))
+        assertFalse(identityManager.isId(rankedPlayer.id))
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertTrue(mIdentityManager.isId(mPlayer.id))
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertTrue(identityManager.isId(litePlayer.id))
+        assertFalse(identityManager.isId(rankedPlayer.id))
 
-        mIdentityManager.removeIdentity()
-        assertFalse(mIdentityManager.isId(mPlayer.id))
+        identityManager.removeIdentity()
+        assertFalse(identityManager.isId(litePlayer.id))
+        assertFalse(identityManager.isId(rankedPlayer.id))
     }
 
     @Test
     @Throws(Exception::class)
     fun testIsPlayerWithNull() {
-        assertFalse(mIdentityManager.isPlayer(null))
+        assertFalse(identityManager.isPlayer(null))
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertFalse(mIdentityManager.isPlayer(null))
+        identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
+        assertFalse(identityManager.isPlayer(null))
 
-        mIdentityManager.removeIdentity()
-        assertFalse(mIdentityManager.isPlayer(null))
+        identityManager.removeIdentity()
+        assertFalse(identityManager.isPlayer(null))
     }
 
     @Test
     @Throws(Exception::class)
     fun testIsPlayerWithPlayer() {
-        assertFalse(mIdentityManager.isPlayer(mPlayer))
+        assertFalse(identityManager.isPlayer(litePlayer))
 
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertTrue(mIdentityManager.isPlayer(mPlayer))
+        identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
+        assertFalse(identityManager.isPlayer(litePlayer))
+        assertTrue(identityManager.isPlayer(rankedPlayer))
 
-        mIdentityManager.removeIdentity()
-        assertFalse(mIdentityManager.isPlayer(mPlayer))
+        identityManager.removeIdentity()
+        assertFalse(identityManager.isPlayer(litePlayer))
+        assertFalse(identityManager.isPlayer(rankedPlayer))
     }
 
     @Test
@@ -143,13 +186,13 @@ class IdentityManagerTest : BaseTest() {
             }
         }
 
-        mIdentityManager.addListener(listener)
-        mIdentityManager.setIdentity(mPlayer, mRegionManager.getRegion())
-        assertEquals(mPlayer, array[0])
+        identityManager.addListener(listener)
+        identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
+        assertEquals(rankedPlayer, array[0])
 
-        mIdentityManager.removeListener(listener)
-        mIdentityManager.removeIdentity()
-        assertEquals(mPlayer, array[0])
+        identityManager.removeListener(listener)
+        identityManager.removeIdentity()
+        assertEquals(rankedPlayer, array[0])
     }
 
 }

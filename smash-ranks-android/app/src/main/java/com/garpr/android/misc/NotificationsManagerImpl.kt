@@ -76,7 +76,7 @@ class NotificationsManagerImpl(
                 HomeActivity.getLaunchIntent(context), PendingIntent.FLAG_UPDATE_CURRENT))
 
         builder.setContentText(context.getString(R.string.x_rankings_have_been_updated,
-                mRegionManager.getRegion()))
+                mRegionManager.getRegion().displayName))
 
         if (mRankingsPollingPreferenceStore.vibrationEnabled.get() == true) {
             builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS or NotificationCompat.DEFAULT_VIBRATE)

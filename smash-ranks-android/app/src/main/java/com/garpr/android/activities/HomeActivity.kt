@@ -171,7 +171,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onRankingsBundleFetched(layout: RankingsLayout) {
         val region = mRegionManager.getRegion(this)
-        setTitle(region.endpoint.name)
+        setTitle(region.endpoint.title)
 
         subtitle = layout.mRankingsBundle?.let {
             getString(R.string.x_updated_y, region.displayName, it.time.shortForm)
@@ -182,7 +182,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onRegionChange(regionManager: RegionManager) {
         val region = mRegionManager.getRegion(this)
-        setTitle(region.endpoint.name)
+        setTitle(region.endpoint.title)
 
         mAdapter.refresh()
     }

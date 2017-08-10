@@ -13,11 +13,14 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class AbsPlayerTest : BaseTest() {
 
-    private lateinit var favoritePlayer1: AbsPlayer
-    private lateinit var favoritePlayer2: AbsPlayer
-    private lateinit var fullPlayer1: AbsPlayer
-    private lateinit var litePlayer1: AbsPlayer
-    private lateinit var litePlayer2: AbsPlayer
+    lateinit private var favoritePlayer1: AbsPlayer
+    lateinit private var favoritePlayer2: AbsPlayer
+    lateinit private var fullPlayer1: AbsPlayer
+    lateinit private var litePlayer1: AbsPlayer
+    lateinit private var litePlayer2: AbsPlayer
+    lateinit private var rankedPlayer1: AbsPlayer
+    lateinit private var rankedPlayer2: AbsPlayer
+
 
     @Inject
     lateinit protected var gson: Gson
@@ -29,6 +32,8 @@ class AbsPlayerTest : BaseTest() {
         private const val JSON_FULL_PLAYER_1 = "{\"ratings\":{\"googlemtv\":{\"mu\":37.05546025182014,\"sigma\":2.0824461049194727},\"norcal\":{\"mu\":37.02140742867105,\"sigma\":2.3075802611877165}},\"name\":\"gaR\",\"regions\":[\"norcal\",\"googlemtv\"],\"merge_children\":[\"58523b44d2994e15c7dea945\"],\"id\":\"58523b44d2994e15c7dea945\",\"merged\":false,\"merge_parent\":null}"
         private const val JSON_LITE_PLAYER_1 = "{\"id\":\"583a4a15d2994e0577b05c74\",\"name\":\"homemadewaffles\"}"
         private const val JSON_LITE_PLAYER_2 = "{\"id\":\"5877eb55d2994e15c7dea97e\",\"name\":\"Spark\"}"
+        private const val JSON_RANKED_PLAYER_1 = "{\"rating\":36.81988474543549,\"name\":\"ycz6\",\"rank\":13,\"previous_rank\":16,\"id\":\"5888542ad2994e3bbfa52de4\"}"
+        private const val JSON_RANKED_PLAYER_2 = "{\"id\":\"53c64dba8ab65f6e6651f7bc\",\"name\":\"Hax\",\"rank\":2,\"rating\":37.975921649503086}"
     }
 
     @Before
@@ -42,6 +47,8 @@ class AbsPlayerTest : BaseTest() {
         fullPlayer1 = gson.fromJson(JSON_FULL_PLAYER_1, AbsPlayer::class.java)
         litePlayer1 = gson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
         litePlayer2 = gson.fromJson(JSON_LITE_PLAYER_2, AbsPlayer::class.java)
+        rankedPlayer1 = gson.fromJson(JSON_RANKED_PLAYER_1, AbsPlayer::class.java)
+        rankedPlayer2 = gson.fromJson(JSON_RANKED_PLAYER_2, AbsPlayer::class.java)
     }
 
     @Test
@@ -125,6 +132,36 @@ class AbsPlayerTest : BaseTest() {
     fun testFromJsonNull() {
         val player = gson.fromJson(null as String?, AbsPlayer::class.java)
         assertNull(player)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testFromJsonRankedPlayer1() {
+        assertEquals("ycz6", rankedPlayer1.name)
+        assertEquals("5888542ad2994e3bbfa52de4", rankedPlayer1.id)
+
+        assertTrue(rankedPlayer1 is RankedPlayer)
+        assertEquals(AbsPlayer.Kind.RANKED, rankedPlayer1.kind)
+
+        val rankedPlayer = rankedPlayer1 as RankedPlayer
+        assertEquals(13, rankedPlayer.rank)
+        assertNotNull(rankedPlayer.rating)
+        assertEquals(16, rankedPlayer.previousRank)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testFromJsonRankedPlayer2() {
+        assertEquals("Hax", rankedPlayer2.name)
+        assertEquals("53c64dba8ab65f6e6651f7bc", rankedPlayer2.id)
+
+        assertTrue(rankedPlayer2 is RankedPlayer)
+        assertEquals(AbsPlayer.Kind.RANKED, rankedPlayer2.kind)
+
+        val rankedPlayer = rankedPlayer2 as RankedPlayer
+        assertEquals(2, rankedPlayer.rank)
+        assertNotNull(rankedPlayer.rating)
+        assertNull(rankedPlayer.previousRank)
     }
 
     @Test
