@@ -88,7 +88,7 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout, IdentityManager.OnIde
             return
         }
 
-        if (mIdentityManager.isId(mIdentityId)) {
+        if (mIdentityManager.isPlayer(mIdentityId)) {
             identityIsUser()
             return
         }

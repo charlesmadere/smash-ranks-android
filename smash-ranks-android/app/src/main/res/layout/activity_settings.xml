@@ -107,7 +107,7 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
-                android:layout_marginBottom="@dimen/root_padding_double"
+                android:layout_marginBottom="@dimen/root_padding"
                 style="@style/SettingsCard">
                 <LinearLayout
                     style="@style/SettingsCardContainer">
@@ -136,14 +136,6 @@
                         style="@style/PreferenceView" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
-            <com.garpr.android.views.BuildInfoTextView
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/root_padding_double"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/text_size_small"
-                android:typeface="monospace" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

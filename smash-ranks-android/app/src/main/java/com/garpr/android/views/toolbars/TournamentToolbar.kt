@@ -5,6 +5,7 @@ import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
+import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.TournamentToolbarManager
@@ -29,6 +30,14 @@ class TournamentToolbar : SearchToolbar {
     override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
         inflater.inflate(R.menu.toolbar_tournament, menu)
         super.onCreateOptionsMenu(inflater, menu)
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
+        }
     }
 
     override fun onRefreshMenu() {

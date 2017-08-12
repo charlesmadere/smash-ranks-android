@@ -48,6 +48,8 @@ abstract class AbsTournament(
 
     override fun hashCode() = id.hashCode()
 
+    override fun toString() = name
+
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

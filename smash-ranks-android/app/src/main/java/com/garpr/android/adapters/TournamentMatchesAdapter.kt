@@ -8,6 +8,14 @@ import com.garpr.android.models.FullTournament
 
 class TournamentMatchesAdapter(context: Context) : BaseAdapter<FullTournament.Match>(context) {
 
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).hashCode().toLong()
+    }
+
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_tournament_match

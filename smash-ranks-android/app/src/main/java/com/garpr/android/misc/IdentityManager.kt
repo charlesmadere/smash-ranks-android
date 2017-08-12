@@ -15,9 +15,9 @@ interface IdentityManager {
 
     val hasIdentity: Boolean
 
-    fun isId(id: String?): Boolean
-
     fun isPlayer(player: AbsPlayer?): Boolean
+
+    fun isPlayer(id: String?): Boolean
 
     fun removeIdentity()
 

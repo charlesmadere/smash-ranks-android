@@ -66,6 +66,26 @@ class AbsPlayerTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testEquals() {
+        assertEquals(favoritePlayer1, favoritePlayer1)
+        assertEquals(favoritePlayer2, favoritePlayer2)
+        assertNotEquals(favoritePlayer1, favoritePlayer2)
+
+        assertEquals(fullPlayer1, fullPlayer1)
+        assertNotEquals(fullPlayer1, litePlayer1)
+        assertNotEquals(fullPlayer1, rankedPlayer1)
+
+        assertEquals(litePlayer1, litePlayer1)
+        assertEquals(litePlayer2, litePlayer2)
+        assertNotEquals(litePlayer1, litePlayer2)
+
+        assertEquals(rankedPlayer1, rankedPlayer1)
+        assertEquals(rankedPlayer2, rankedPlayer2)
+        assertNotEquals(rankedPlayer1, rankedPlayer2)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testFromJsonFavoritePlayer1() {
         assertEquals("mikkuz", favoritePlayer1.name)
         assertEquals("583a4a15d2994e0577b05c74", favoritePlayer1.id)
@@ -162,6 +182,18 @@ class AbsPlayerTest : BaseTest() {
         assertEquals(2, rankedPlayer.rank)
         assertNotNull(rankedPlayer.rating)
         assertNull(rankedPlayer.previousRank)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testHashCode() {
+        assertEquals("583a4a15d2994e0577b05c74".hashCode(), favoritePlayer1.hashCode())
+        assertEquals("583a4a15d2994e0577b05c86".hashCode(), favoritePlayer2.hashCode())
+        assertEquals("58523b44d2994e15c7dea945".hashCode(), fullPlayer1.hashCode())
+        assertEquals("583a4a15d2994e0577b05c74".hashCode(), litePlayer1.hashCode())
+        assertEquals("5877eb55d2994e15c7dea97e".hashCode(), litePlayer2.hashCode())
+        assertEquals("5888542ad2994e3bbfa52de4".hashCode(), rankedPlayer1.hashCode())
+        assertEquals("53c64dba8ab65f6e6651f7bc".hashCode(), rankedPlayer2.hashCode())
     }
 
     @Test

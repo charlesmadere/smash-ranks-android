@@ -44,7 +44,7 @@ class FullTournament(
     }
 
 
-    class Match(
+    data class Match(
             @SerializedName("excluded") val isExcluded: Boolean,
             @SerializedName("loser_id") val loserId: String,
             @SerializedName("loser_name") val loserName: String,

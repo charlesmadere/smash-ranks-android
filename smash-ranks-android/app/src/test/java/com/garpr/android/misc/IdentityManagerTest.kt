@@ -70,6 +70,12 @@ class IdentityManagerTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testGetIdentity() {
+        assertNull(identityManager.identity)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testGetAndSetIdentity() {
         assertNull(identityManager.identity)
 
@@ -100,65 +106,53 @@ class IdentityManagerTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testIsIdWithEmptyString() {
-        assertFalse(identityManager.isId(""))
+    fun testIsPlayerWithEmptyString() {
+        assertFalse(identityManager.isPlayer(""))
 
         identityManager.setIdentity(litePlayer, regionManager.getRegion())
-        assertFalse(identityManager.isId(""))
+        assertFalse(identityManager.isPlayer(""))
 
         identityManager.removeIdentity()
-        assertFalse(identityManager.isId(""))
+        assertFalse(identityManager.isPlayer(""))
     }
 
     @Test
     @Throws(Exception::class)
-    fun testIsIdWithNull() {
-        assertFalse(identityManager.isId(null))
+    fun testIsPlayerWithIdString() {
+        assertFalse(identityManager.isPlayer(litePlayer.id))
+        assertFalse(identityManager.isPlayer(rankedPlayer.id))
 
         identityManager.setIdentity(litePlayer, regionManager.getRegion())
-        assertFalse(identityManager.isId(null))
+        assertTrue(identityManager.isPlayer(litePlayer.id))
+        assertFalse(identityManager.isPlayer(rankedPlayer.id))
 
         identityManager.removeIdentity()
-        assertFalse(identityManager.isId(null))
+        assertFalse(identityManager.isPlayer(litePlayer.id))
+        assertFalse(identityManager.isPlayer(rankedPlayer.id))
     }
 
     @Test
     @Throws(Exception::class)
-    fun testIsIdWithWhitespace() {
-        assertFalse(identityManager.isId(" "))
-
-        identityManager.setIdentity(litePlayer, regionManager.getRegion())
-        assertFalse(identityManager.isId("  "))
-
-        identityManager.removeIdentity()
-        assertFalse(identityManager.isId("   "))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testIsIdWithPlayer() {
-        assertFalse(identityManager.isId(litePlayer.id))
-        assertFalse(identityManager.isId(rankedPlayer.id))
-
-        identityManager.setIdentity(litePlayer, regionManager.getRegion())
-        assertTrue(identityManager.isId(litePlayer.id))
-        assertFalse(identityManager.isId(rankedPlayer.id))
-
-        identityManager.removeIdentity()
-        assertFalse(identityManager.isId(litePlayer.id))
-        assertFalse(identityManager.isId(rankedPlayer.id))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testIsPlayerWithNull() {
-        assertFalse(identityManager.isPlayer(null))
+    fun testIsPlayerWithNullPlayer() {
+        assertFalse(identityManager.isPlayer(null as AbsPlayer?))
 
         identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
-        assertFalse(identityManager.isPlayer(null))
+        assertFalse(identityManager.isPlayer(null as AbsPlayer?))
 
         identityManager.removeIdentity()
-        assertFalse(identityManager.isPlayer(null))
+        assertFalse(identityManager.isPlayer(null as AbsPlayer?))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testIsPlayerWithNullString() {
+        assertFalse(identityManager.isPlayer(null as String?))
+
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertFalse(identityManager.isPlayer(null as String?))
+
+        identityManager.removeIdentity()
+        assertFalse(identityManager.isPlayer(null as String?))
     }
 
     @Test
@@ -173,6 +167,18 @@ class IdentityManagerTest : BaseTest() {
         identityManager.removeIdentity()
         assertFalse(identityManager.isPlayer(litePlayer))
         assertFalse(identityManager.isPlayer(rankedPlayer))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testIsPlayerWithWhitespaceString() {
+        assertFalse(identityManager.isPlayer(" "))
+
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertFalse(identityManager.isPlayer("  "))
+
+        identityManager.removeIdentity()
+        assertFalse(identityManager.isPlayer("   "))
     }
 
     @Test

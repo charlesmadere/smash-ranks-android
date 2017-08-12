@@ -31,6 +31,15 @@ class Region(
             region.rankingNumTourneysAttended, region.tournamentQualifiedDayLimit,
             region.displayName, region.id, endpoint)
 
+    override fun equals(other: Any?): Boolean =
+        super.equals(other) && other is Region && endpoint == other.endpoint
+
+    override fun hashCode(): Int{
+        var result = super.hashCode()
+        result = 31 * result + endpoint.hashCode()
+        return result
+    }
+
     override val kind
         get() = Kind.FULL
 

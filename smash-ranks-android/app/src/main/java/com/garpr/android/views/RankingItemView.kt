@@ -15,6 +15,7 @@ import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.RegionManager
+import com.garpr.android.misc.Timber
 import com.garpr.android.models.RankedPlayer
 import kotterknife.bindOptionalView
 import kotterknife.bindView
@@ -25,13 +26,15 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View
         View.OnLongClickListener {
 
     private val mNumberFormat: NumberFormat = NumberFormat.getNumberInstance()
-    private var mContent: RankedPlayer? = null
 
     @Inject
     lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
 
     @Inject
     lateinit protected var mRegionManager: RegionManager
+
+    @Inject
+    lateinit var mTimber: Timber
 
     private val mPreviousRankView: PreviousRankView? by bindOptionalView(R.id.previousRankView)
     private val mName: TextView by bindView(R.id.tvName)
@@ -59,7 +62,7 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View
     }
 
     override fun onClick(v: View) {
-        val content = mContent ?: return
+        val content = mIdentity ?: return
         context.startActivity(PlayerActivity.getLaunchIntent(context, content,
                 mRegionManager.getRegion(context)))
     }
@@ -77,13 +80,13 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View
     }
 
     override fun onLongClick(v: View): Boolean {
-        val content = mContent ?: return false
+        val content = mIdentity ?: return false
         return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, content,
                 mRegionManager.getRegion(context))
     }
 
     override fun setContent(content: RankedPlayer) {
-        mContent = content
+        mIdentity = content
 
         mPreviousRankView?.setContent(content)
         mRank.text = mNumberFormat.format(content.rank)

@@ -90,6 +90,8 @@ data class SimpleDate(
 
     val shortForm: CharSequence = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
 
+    override fun toString() = date.toString()
+
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

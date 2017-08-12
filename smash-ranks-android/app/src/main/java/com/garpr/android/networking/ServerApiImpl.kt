@@ -50,8 +50,8 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getMatches ($region) ($playerId) failed (code " +
-                            response.code() + ")")
+                    mTimber.e(TAG, "getMatches ($region) ($playerId) failed " +
+                            "(code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
@@ -71,8 +71,8 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getPlayer ($region) ($playerId) failed (code " +
-                            response.code() + ")")
+                    mTimber.e(TAG, "getPlayer ($region) ($playerId) failed " +
+                            "(code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
@@ -97,7 +97,7 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getPlayers ($region) failed (code " + response.code() + ")")
+                    mTimber.e(TAG, "getPlayers ($region) failed (code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
@@ -117,7 +117,7 @@ class ServerApiImpl(
                 val body = if (response.isSuccessful) response.body() else null
 
                 if (body == null) {
-                    mTimber.e(TAG, "getRankings ($region) failed (code " + response.code() + ")")
+                    mTimber.e(TAG, "getRankings ($region) failed (code ${response.code()})")
                     listener.failure(response.code())
                 } else {
                     if (region == mRegionManager.getRegion()) {
@@ -168,8 +168,8 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getTournament ($region) ($tournamentId) failed (code " +
-                            response.code() + ")")
+                    mTimber.e(TAG, "getTournament ($region) ($tournamentId) failed " +
+                            "(code ${response.code()})")
                     listener.failure(response.code())
                 }
             }

@@ -109,7 +109,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             R.id.actionFavoritePlayers -> POSITION_FAVORITE_PLAYERS
             R.id.actionRankings -> POSITION_RANKINGS
             R.id.actionTournaments -> POSITION_TOURNAMENTS
-            else -> throw RuntimeException("unknown item: " + item.title)
+            else -> throw RuntimeException("unknown item: ${item.title}")
         }
 
         mAdapter.onNavigationItemReselected(position)
@@ -132,7 +132,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
                 return true
             }
 
-            else -> throw RuntimeException("unknown item: " + item.title)
+            else -> throw RuntimeException("unknown item: ${item.title}")
         }
     }
 
@@ -234,7 +234,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
                     when (which) {
                         0 -> mShareUtils.shareRankings(this)
                         1 -> mShareUtils.shareTournaments(this)
-                        else -> throw RuntimeException("illegal which: " + which)
+                        else -> throw RuntimeException("illegal which: $which")
                     }
                 }
                 .setTitle(R.string.share)
@@ -247,7 +247,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         val rankingActivityDayLimit = region.rankingActivityDayLimit
 
         if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw RuntimeException("LiteRegion ($region) is missing necessary data")
+            throw RuntimeException("Region (${region.displayName}) is missing necessary data")
         }
 
         val numberFormat = NumberFormat.getInstance()
@@ -270,7 +270,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             POSITION_FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
             POSITION_RANKINGS -> R.id.actionRankings
             POSITION_TOURNAMENTS -> R.id.actionTournaments
-            else -> throw RuntimeException("unknown current item: " + mViewPager.currentItem)
+            else -> throw RuntimeException("unknown current item: ${mViewPager.currentItem}")
         }
 
         mBottomNavigationView.menu.findItem(itemId).isChecked = true

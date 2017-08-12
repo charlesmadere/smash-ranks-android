@@ -15,7 +15,8 @@ data class Rating(
         val CREATOR = createParcel { Rating(it.readFloat(), it.readFloat()) }
     }
 
-    val rating: Float = mu - (3f * sigma)
+    val rating: Float
+        get() = mu - (3f * sigma)
 
     override fun describeContents() = 0
 

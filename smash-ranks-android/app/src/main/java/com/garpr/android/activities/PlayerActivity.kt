@@ -305,11 +305,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             return
         }
 
-        val items = arrayOfNulls<CharSequence>(aliases.size)
-        aliases.toTypedArray<CharSequence>()
-
         AlertDialog.Builder(this)
-                .setItems(items, null)
+                .setItems(aliases.toTypedArray<CharSequence>(), null)
                 .setTitle(R.string.aliases)
                 .show()
     }

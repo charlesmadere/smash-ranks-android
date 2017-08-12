@@ -11,6 +11,9 @@ class CrashlyticsWrapperImpl(
         private val mApplication: Application
 ) : CrashlyticsWrapper {
 
+    lateinit private var mCrashlytics: Crashlytics
+
+
     override fun initialize(disabled: Boolean) {
         val crashlyticsCore = CrashlyticsCore.Builder()
                 .disabled(disabled)
@@ -21,26 +24,27 @@ class CrashlyticsWrapperImpl(
                 .build()
 
         Fabric.with(mApplication, crashlytics)
+        mCrashlytics = Crashlytics.getInstance()
     }
 
     override fun log(priority: Int, tag: String, msg: String) {
-        Crashlytics.log(priority, tag, msg)
+        mCrashlytics.core.log(priority, tag, msg)
     }
 
     override fun logException(tr: Throwable) {
-        Crashlytics.logException(tr)
+        mCrashlytics.core.logException(tr)
     }
 
     override fun setBool(key: String, value: Boolean) {
-        Crashlytics.setBool(key, value)
+        mCrashlytics.core.setBool(key, value)
     }
 
     override fun setInt(key: String, value: Int) {
-        Crashlytics.setInt(key, value)
+        mCrashlytics.core.setInt(key, value)
     }
 
     override fun setString(key: String, value: String) {
-        Crashlytics.setString(key, value)
+        mCrashlytics.core.setString(key, value)
     }
 
 }

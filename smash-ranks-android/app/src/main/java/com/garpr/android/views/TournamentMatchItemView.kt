@@ -59,7 +59,7 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
                         2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
                                 content))
 
-                        else -> throw RuntimeException("illegal which: " + which)
+                        else -> throw RuntimeException("illegal which: $which")
                     }
                 })
                 .setTitle(R.string.view)
@@ -78,13 +78,11 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     }
 
     override fun refreshIdentity() {
-        val content = mContent
-
-        if (content != null && mIdentityManager.isId(content.winnerId)) {
+        if (mIdentityManager.isPlayer(mContent?.winnerId)) {
             styleTextViewForUser(mWinnerName)
             styleTextViewForSomeoneElse(mLoserName)
             identityIsUser()
-        } else if (content != null && mIdentityManager.isId(content.loserId)) {
+        } else if (mIdentityManager.isPlayer(mContent?.loserId)) {
             styleTextViewForSomeoneElse(mWinnerName)
             styleTextViewForUser(mLoserName)
             identityIsUser()

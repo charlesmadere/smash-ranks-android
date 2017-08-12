@@ -55,20 +55,12 @@ class IdentityManagerImpl(
     override val hasIdentity: Boolean
         get() = mIdentity.exists
 
-    override fun isId(id: String?): Boolean {
-        if (id.isNullOrBlank()) {
-            return false
-        }
-
-        return identity?.id?.equals(id, ignoreCase = true) ?: false
+    override fun isPlayer(player: AbsPlayer?): Boolean {
+        return identity?.let { it == player } ?: false
     }
 
-    override fun isPlayer(player: AbsPlayer?): Boolean {
-        if (player == null) {
-            return false
-        }
-
-        return identity?.let { it == player } ?: false
+    override fun isPlayer(id: String?): Boolean {
+        return identity?.id?.equals(id, ignoreCase = true) ?: false
     }
 
     private fun notifyListeners() {

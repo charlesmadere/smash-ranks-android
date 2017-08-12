@@ -55,9 +55,15 @@ abstract class AbsRegion(
     val hasActivityRequirements
         get() = rankingActivityDayLimit != null && rankingNumTourneysAttended != null
 
-    override fun hashCode() = id.hashCode()
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
 
     abstract val kind: Kind
+
+    override fun toString(): String {
+        return displayName
+    }
 
     override fun describeContents() = 0
 

@@ -12,9 +12,11 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentPagerAdapter
+import com.garpr.android.extensions.closeKeyboard
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
@@ -26,8 +28,8 @@ import com.garpr.android.views.toolbars.TournamentToolbar
 import kotterknife.bindView
 import javax.inject.Inject
 
-class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQueryHandle,
-        SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
+class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchable,
+        SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
         TournamentToolbar.DataProvider {
 
     private var mFullTournament: FullTournament? = null
@@ -124,7 +126,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
 
             R.id.miViewTournamentPage -> {
                 val fullTournament = mFullTournament ?: throw RuntimeException()
-                mShareUtils.shareTournament(this, fullTournament)
+                mShareUtils.openUrl(this, fullTournament.url)
                 return true
             }
         }
@@ -142,6 +144,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         mRefreshLayout.setOnRefreshListener(this)
         mViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         mTabLayout.setupWithViewPager(mViewPager)
+        mViewPager.addOnPageChangeListener(mOnPageChangeListener)
     }
 
     private fun prepareMenuAndTitles() {
@@ -178,6 +181,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
         invalidateOptionsMenu()
     }
 
+    override fun search(query: String?) = mAdapter.search(query)
+
     override val searchQuery: CharSequence?
         get() = mTournamentToolbar.searchQuery
 
@@ -198,10 +203,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     }
 
     private fun showFullTournament() {
-        mFullTournament?.let {
-            mAdapter = TournamentPagerAdapter(this, it)
-            mViewPager.adapter = mAdapter
-        } ?: throw RuntimeException()
+        val fullTournament = mFullTournament ?: throw RuntimeException()
+        mAdapter = TournamentPagerAdapter(this, fullTournament)
+        mViewPager.adapter = mAdapter
 
         mEmpty.visibility = View.GONE
         mError.visibility = View.GONE
@@ -219,13 +223,17 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, SearchQu
     override fun success(`object`: FullTournament?) {
         mFullTournament = `object`
 
-        val matches = `object`?.matches
-        val players = `object`?.players
-
-        if (matches != null && matches.isNotEmpty() || players != null && players.isNotEmpty()) {
+        if (`object`?.matches?.isNotEmpty() == true || `object`?.players?.isNotEmpty() == true) {
             showFullTournament()
         } else {
             showEmpty()
+        }
+    }
+
+    private val mOnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            closeKeyboard()
         }
     }
 

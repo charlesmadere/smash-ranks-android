@@ -31,7 +31,7 @@ public class TestAppModule extends BaseAppModule {
             }
 
             @Override
-            public void log(final int priority, final String tag, final String msg) {
+            public void log(final int priority, @NonNull final String tag, @NonNull final String msg) {
                 // intentionally empty
             }
 
@@ -51,7 +51,7 @@ public class TestAppModule extends BaseAppModule {
             }
 
             @Override
-            public void setString(@NonNull final String key, final String value) {
+            public void setString(@NonNull final String key, @NonNull final String value) {
                 // intentionally empty
             }
         };

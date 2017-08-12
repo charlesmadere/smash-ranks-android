@@ -9,14 +9,11 @@ import com.garpr.android.models.Rating
 class PlayerAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
 
     companion object {
-        private val LAYOUT_KEY_MAP: MutableMap<Class<*>, Int> = mutableMapOf()
-
-        init {
-            LAYOUT_KEY_MAP.put(LiteTournament::class.java, R.layout.divider_tournament)
-            LAYOUT_KEY_MAP.put(Match::class.java, R.layout.item_match)
-            LAYOUT_KEY_MAP.put(Rating::class.java, R.layout.item_rating)
-            LAYOUT_KEY_MAP.put(String::class.java, R.layout.item_string)
-        }
+        private val LAYOUT_KEY_MAP: Map<Class<*>, Int> = mapOf(
+                LiteTournament::class.java to R.layout.divider_tournament,
+                Match::class.java to R.layout.item_match,
+                Rating::class.java to R.layout.item_rating,
+                String::class.java to R.layout.item_string)
     }
 
 }

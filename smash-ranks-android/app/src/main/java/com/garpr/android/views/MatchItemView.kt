@@ -92,6 +92,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
 
     override fun setContent(content: Match) {
         mContent = content
+        mIdentity = content.opponent
         mName.text = content.opponent.name
 
         when (content.result) {

@@ -6,7 +6,7 @@ import com.garpr.android.extensions.createParcel
 
 import com.google.gson.annotations.SerializedName
 
-class RankingsBundle(
+data class RankingsBundle(
         @SerializedName("ranking") val rankings: List<RankedPlayer>? = null,
         @SerializedName("tournaments") val tournaments: List<String>? = null,
         @SerializedName("time") val time: SimpleDate,
