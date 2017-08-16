@@ -33,7 +33,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     companion object {
         private const val TAG = "BaseActivity"
         private val CNAME = BaseActivity::class.java.canonicalName
-        internal val EXTRA_REGION = CNAME + ".LiteRegion"
+        internal val EXTRA_REGION = CNAME + ".Region"
     }
 
     protected abstract val activityName: String
