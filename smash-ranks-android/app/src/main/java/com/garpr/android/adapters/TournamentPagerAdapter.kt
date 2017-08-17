@@ -24,8 +24,8 @@ class TournamentPagerAdapter(
 
 
     companion object {
-        private const val POSITION_MATCHES = 0
-        private const val POSITION_PLAYERS = 1
+        const val POSITION_MATCHES = 0
+        const val POSITION_PLAYERS = 1
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -33,9 +33,7 @@ class TournamentPagerAdapter(
         mPages.removeAt(position)
     }
 
-    override fun getCount(): Int {
-        return 2
-    }
+    override fun getCount() = 2
 
     override fun getPageTitle(position: Int): CharSequence {
         when (position) {
@@ -46,11 +44,9 @@ class TournamentPagerAdapter(
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val view: TournamentPageLayout
-
-        when (position) {
-            POSITION_MATCHES -> view = TournamentMatchesLayout.inflate(container)
-            POSITION_PLAYERS -> view = TournamentPlayersLayout.inflate(container)
+        val view = when (position) {
+            POSITION_MATCHES -> TournamentMatchesLayout.inflate(container)
+            POSITION_PLAYERS -> TournamentPlayersLayout.inflate(container)
             else -> throw RuntimeException("illegal position: " + position)
         }
 
@@ -63,6 +59,14 @@ class TournamentPagerAdapter(
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view === `object`
+    }
+
+    fun onTabReselected(position: Int) {
+        val view = mPages[position]?.get()
+
+        if (view != null && view.isAlive) {
+            view.scrollToTop()
+        }
     }
 
     override fun search(query: String?) {

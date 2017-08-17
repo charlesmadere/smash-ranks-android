@@ -17,9 +17,7 @@ class RegionsSelectionAdapter(context: Context) : BaseAdapter<AbsRegion>(context
     }
 
     @LayoutRes
-    override fun getItemViewType(position: Int): Int {
-        return R.layout.item_region_selection
-    }
+    override fun getItemViewType(position: Int) = R.layout.item_region_selection
 
     fun set(content: RegionsBundle?) {
         set(content?.regions)

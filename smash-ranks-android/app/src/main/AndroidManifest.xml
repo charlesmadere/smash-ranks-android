@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.garpr.android">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,8 +13,11 @@
         android:icon="@mipmap/launcher"
         android:label="@string/gar_pr"
         android:name=".App"
+        android:resizeableActivity="true"
+        android:roundIcon="@mipmap/launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="UnusedAttribute">
 
         <activity
             android:label="@string/gar_pr"
@@ -99,6 +103,10 @@
         <activity
             android:label="@string/tournaments"
             android:name=".activities.TournamentsActivity" />
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

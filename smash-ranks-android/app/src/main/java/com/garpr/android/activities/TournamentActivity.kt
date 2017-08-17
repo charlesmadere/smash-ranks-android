@@ -144,6 +144,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         mRefreshLayout.setOnRefreshListener(this)
         mViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         mTabLayout.setupWithViewPager(mViewPager)
+        mTabLayout.addOnTabSelectedListener(mOnTabSelectedListener)
         mViewPager.addOnPageChangeListener(mOnPageChangeListener)
     }
 
@@ -234,6 +235,22 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             closeKeyboard()
+        }
+    }
+
+    private val mOnTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+        override fun onTabReselected(tab: TabLayout.Tab?) {
+            if (tab != null) {
+                mAdapter.onTabReselected(tab.position)
+            }
+        }
+
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+            // intentionally empty
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
+            // intentionally empty
         }
     }
 

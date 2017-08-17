@@ -9,8 +9,6 @@ import com.garpr.android.misc.Timber
 class TimberEntriesAdapter(context: Context) : BaseAdapter<Timber.Entry>(context) {
 
     @LayoutRes
-    override fun getItemViewType(position: Int): Int {
-        return R.layout.item_timber_entry
-    }
+    override fun getItemViewType(position: Int) = R.layout.item_timber_entry
 
 }

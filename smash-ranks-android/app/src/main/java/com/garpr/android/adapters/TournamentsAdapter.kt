@@ -17,8 +17,6 @@ class TournamentsAdapter(context: Context) : BaseAdapter<AbsTournament>(context)
     }
 
     @LayoutRes
-    override fun getItemViewType(position: Int): Int {
-        return R.layout.item_tournament
-    }
+    override fun getItemViewType(position: Int) = R.layout.item_tournament
 
 }

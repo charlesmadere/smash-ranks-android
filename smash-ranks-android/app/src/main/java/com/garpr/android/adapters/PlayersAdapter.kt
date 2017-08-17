@@ -18,9 +18,7 @@ class PlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
     }
 
     @LayoutRes
-    override fun getItemViewType(position: Int): Int {
-        return R.layout.item_player
-    }
+    override fun getItemViewType(position: Int) = R.layout.item_player
 
     fun set(content: PlayersBundle?) {
         set(content?.players)

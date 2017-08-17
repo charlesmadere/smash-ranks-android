@@ -29,17 +29,13 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
         mPages.removeAt(position)
     }
 
-    override fun getCount(): Int {
-        return 3
-    }
+    override fun getCount() = 3
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val view: SearchableFrameLayout
-
-        when (position) {
-            POSITION_FAVORITE_PLAYERS -> view = FavoritePlayersLayout.inflate(container)
-            POSITION_TOURNAMENTS -> view = TournamentsLayout.inflate(container)
-            POSITION_RANKINGS -> view = RankingsLayout.inflate(container)
+        val view = when (position) {
+            POSITION_FAVORITE_PLAYERS -> FavoritePlayersLayout.inflate(container)
+            POSITION_TOURNAMENTS -> TournamentsLayout.inflate(container)
+            POSITION_RANKINGS -> RankingsLayout.inflate(container)
             else -> throw RuntimeException("illegal position: " + position)
         }
 
