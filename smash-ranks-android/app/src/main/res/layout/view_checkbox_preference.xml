@@ -10,6 +10,7 @@
         style="@style/PreferenceViewTitle" />
     <TextView
         android:layout_below="@id/title"
+        tools:ignore="UnknownId"
         tools:text="@string/will_poll_regardless_of_being_plugged_in_or_not"
         style="@style/PreferenceViewDescription" />
 </RelativeLayout>
