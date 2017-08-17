@@ -57,7 +57,7 @@ public class App extends Application {
 
     private void initializeAppComponent() {
         mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this, Constants.DEFAULT_REGION))
+                .appModule(new AppModule(this, Constants.INSTANCE.getDefaultRegion()))
                 .build();
 
         mAppComponent.inject(this);
@@ -96,14 +96,14 @@ public class App extends Application {
             return;
         }
 
-        lastVersionPref.set(BuildConfig.VERSION_CODE);
+        lastVersionPref.set(BuildConfig.VERSION_CODE, true);
 
         if (lastVersion == null || lastVersion < 1011) {
-            // this preference used to be a String but was changed to a Region
-            mGeneralPreferenceStore.getCurrentRegion().delete();
+            // this preference used to be a String but was changed to an AbsRegion
+            mGeneralPreferenceStore.getCurrentRegion().delete(true);
 
             // it used to be an AbsPlayer, is now a FavoritePlayer
-            mGeneralPreferenceStore.getIdentity().delete();
+            mGeneralPreferenceStore.getIdentity().delete(true);
 
             // same as above :(
             mFavoritePlayersManager.clear();

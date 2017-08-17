@@ -7,7 +7,6 @@
 
     <style name="AppTheme" parent="AppThemeBase">
         <item name="android:alertDialogTheme">@style/AlertDialogTheme_v21</item>
-        <item name="android:navigationBarColor">?attr/colorPrimaryDark</item>
     </style>
 
 </resources>

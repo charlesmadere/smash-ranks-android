@@ -11,12 +11,18 @@ import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.FavoritePlayersManagerImpl;
+import com.garpr.android.misc.FirebaseApiWrapper;
+import com.garpr.android.misc.FirebaseApiWrapperImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
+import com.garpr.android.misc.HomeToolbarManager;
+import com.garpr.android.misc.HomeToolbarManagerImpl;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.IdentityManagerImpl;
-import com.garpr.android.misc.NotificationManager;
-import com.garpr.android.misc.NotificationManagerImpl;
+import com.garpr.android.misc.NotificationsManager;
+import com.garpr.android.misc.NotificationsManagerImpl;
+import com.garpr.android.misc.PlayerToolbarManager;
+import com.garpr.android.misc.PlayerToolbarManagerImpl;
 import com.garpr.android.misc.PreviousRankUtils;
 import com.garpr.android.misc.PreviousRankUtilsImpl;
 import com.garpr.android.misc.RegionManager;
@@ -27,11 +33,12 @@ import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
+import com.garpr.android.misc.TournamentToolbarManager;
+import com.garpr.android.misc.TournamentToolbarManagerImpl;
 import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.AbsRegion;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Match;
-import com.garpr.android.models.Ranking;
-import com.garpr.android.models.Ratings;
 import com.garpr.android.models.Region;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
@@ -109,6 +116,12 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    FirebaseApiWrapper providesFirebaseApiWrapper() {
+        return new FirebaseApiWrapperImpl(mApplication);
+    }
+
+    @Provides
+    @Singleton
     GarPrApi providesGarPrApi(final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
@@ -139,16 +152,22 @@ public abstract class BaseAppModule {
     @Singleton
     Gson providesGson() {
         return new GsonBuilder()
-                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_DESERIALIZER)
-                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.JSON_SERIALIZER)
-                .registerTypeAdapter(AbsTournament.class, AbsTournament.JSON_DESERIALIZER)
-                .registerTypeAdapter(Match.class, Match.JSON_DESERIALIZER)
-                .registerTypeAdapter(Ranking.class, Ranking.JSON_DESERIALIZER)
-                .registerTypeAdapter(Ratings.class, Ratings.JSON_DESERIALIZER)
-                .registerTypeAdapter(Ratings.class, Ratings.JSON_SERIALIZER)
-                .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_DESERIALIZER)
-                .registerTypeAdapter(SimpleDate.class, SimpleDate.JSON_SERIALIZER)
+                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_SERIALIZER())
+                .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_SERIALIZER())
+                .registerTypeAdapter(AbsTournament.class, AbsTournament.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(Match.class, Match.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_SERIALIZER())
                 .create();
+    }
+
+    @Provides
+    @Singleton
+    HomeToolbarManager providesHomeToolbarManager(final IdentityManager identityManager,
+            final RegionManager regionManager) {
+        return new HomeToolbarManagerImpl(identityManager, regionManager);
     }
 
     @Provides
@@ -160,11 +179,19 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    NotificationManager providesNotificationManager(
+    NotificationsManager providesNotificationManager(
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
             final RegionManager regionManager) {
-        return new NotificationManagerImpl(mApplication, rankingsPollingPreferenceStore,
+        return new NotificationsManagerImpl(mApplication, rankingsPollingPreferenceStore,
                 regionManager);
+    }
+
+    @Provides
+    @Singleton
+    PlayerToolbarManager providesPlayerToolbarManager(
+            final FavoritePlayersManager favoritePlayersManager,
+            final IdentityManager identityManager) {
+        return new PlayerToolbarManagerImpl(favoritePlayersManager, identityManager);
     }
 
     @Provides
@@ -191,11 +218,11 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     RankingsPollingSyncManager providesRankingsPollingSyncManager(
-            final GoogleApiWrapper googleApiWrapper,
+            final FirebaseApiWrapper firebaseApiWrapper, final GoogleApiWrapper googleApiWrapper,
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
             final Timber timber) {
-        return new RankingsPollingSyncManagerImpl(googleApiWrapper, rankingsPollingPreferenceStore,
-                timber);
+        return new RankingsPollingSyncManagerImpl(firebaseApiWrapper, googleApiWrapper,
+                rankingsPollingPreferenceStore, timber);
     }
 
     @Provides
@@ -238,6 +265,12 @@ public abstract class BaseAppModule {
     @Singleton
     Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
         return new TimberImpl(deviceUtils.hasLowRam(), crashlyticsWrapper);
+    }
+
+    @Provides
+    @Singleton
+    TournamentToolbarManager providesTournamentToolbarManager() {
+        return new TournamentToolbarManagerImpl();
     }
 
 }

@@ -9,11 +9,10 @@
         compat:actionViewClass="android.support.v7.widget.SearchView"
         compat:showAsAction="collapseActionView|ifRoom" />
     <item
-        android:icon="@drawable/ic_assessment_white_24dp"
         android:id="@+id/miActivityRequirements"
         android:title="@string/activity_requirements"
         android:visible="false"
-        compat:showAsAction="ifRoom" />
+        compat:showAsAction="never" />
     <item
         android:icon="@drawable/ic_share_white_24dp"
         android:id="@+id/miShare"
