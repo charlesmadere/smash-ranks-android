@@ -40,8 +40,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     override val currentRegion: Region?
         get() {
             return intent?.let {
-                if (intent.hasExtra(EXTRA_REGION)) intent.getParcelableExtra(EXTRA_REGION)
-                else null
+                if (it.hasExtra(EXTRA_REGION)) it.getParcelableExtra(EXTRA_REGION) else null
             }
         }
 
