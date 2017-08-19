@@ -7,7 +7,6 @@ import com.garpr.android.activities.*
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
-import java.util.*
 
 class DeepLinkUtilsImpl(
         private val mRegionManager: RegionManager,
@@ -96,7 +95,7 @@ class DeepLinkUtilsImpl(
             return null
         }
 
-        val intentStack = ArrayList<Intent>()
+        val intentStack = mutableListOf<Intent>()
         val page = splits[1]
 
         if (PLAYERS.equals(page, ignoreCase = true)) {
