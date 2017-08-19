@@ -1,8 +1,6 @@
 package com.garpr.android.misc
 
 import android.util.Log
-import com.garpr.android.misc.Timber.Entry
-import java.util.*
 
 class TimberImpl(
         isLowRamDevice: Boolean,
@@ -52,7 +50,15 @@ class TimberImpl(
     }
 
     override val entries: List<Timber.Entry>
-        @Synchronized get() = ArrayList<Entry>(mEntries)
+        get() {
+            val list = mutableListOf<Timber.Entry>()
+
+            synchronized (this) {
+                list.addAll(mEntries)
+            }
+
+            return list
+        }
 
     @Synchronized override fun w(tag: String, msg: String) {
         w(tag, msg, null)
