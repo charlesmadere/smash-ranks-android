@@ -2,7 +2,6 @@ package com.garpr.android.activities
 
 import android.os.Bundle
 import android.support.annotation.LayoutRes
-import android.support.v4.app.NavUtils
 import android.support.v4.app.TaskStackBuilder
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -50,16 +49,16 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         get() = !isFinishing && !isDestroyed
 
     protected open fun navigateUp() {
-        val upIntent = NavUtils.getParentActivityIntent(this)
+        val intent = supportParentActivityIntent
 
-        if (upIntent == null) {
+        if (intent == null) {
             supportFinishAfterTransition()
-        } else if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+        } else if (supportShouldUpRecreateTask(intent)) {
             TaskStackBuilder.create(this)
-                    .addNextIntentWithParentStack(upIntent)
+                    .addNextIntentWithParentStack(intent)
                     .startActivities()
         } else {
-            supportNavigateUpTo(upIntent)
+            supportNavigateUpTo(intent)
         }
     }
 
