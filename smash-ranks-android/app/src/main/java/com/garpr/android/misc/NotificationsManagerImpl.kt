@@ -5,10 +5,10 @@ import android.content.Context
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
-import android.support.v4.app.NotificationManagerCompat
 import com.garpr.android.R
 import com.garpr.android.activities.HomeActivity
 import com.garpr.android.extensions.notificationManager
+import com.garpr.android.extensions.notificationManagerCompat
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 
 class NotificationsManagerImpl(
@@ -17,7 +17,7 @@ class NotificationsManagerImpl(
         private val mRegionManager: RegionManager
 ) : NotificationsManager {
 
-    private val mImpl: BaseImpl
+    private val mImpl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Api26Impl() else BaseImpl()
 
 
     private open class BaseImpl {
@@ -53,16 +53,8 @@ class NotificationsManagerImpl(
         private const val RANKINGS_ID = 1001
     }
 
-    init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mImpl = Api26Impl()
-        } else {
-            mImpl = BaseImpl()
-        }
-    }
-
     override fun cancelAll() {
-        NotificationManagerCompat.from(mApplication).cancelAll()
+        mApplication.notificationManagerCompat.cancelAll()
     }
 
     override fun rankingsUpdated(context: Context) {
@@ -85,8 +77,8 @@ class NotificationsManagerImpl(
         }
 
         mRankingsPollingPreferenceStore.rankingsDate.get()?.let {
-            builder.setWhen(it.date.time)
-                    .setShowWhen(true)
+            builder.setShowWhen(true)
+                    .setWhen(it.date.time)
         }
 
         show(RANKINGS_ID, builder)
@@ -97,7 +89,7 @@ class NotificationsManagerImpl(
     }
 
     override fun show(id: Int, notification: Notification) {
-        NotificationManagerCompat.from(mApplication).notify(id, notification)
+        mApplication.notificationManagerCompat.notify(id, notification)
     }
 
 }

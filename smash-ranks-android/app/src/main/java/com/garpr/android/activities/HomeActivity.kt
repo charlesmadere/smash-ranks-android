@@ -32,9 +32,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     lateinit protected var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit protected var mNotificationsManager: NotificationsManager
-
-    @Inject
     lateinit protected var mRankingsPollingSyncManager: RankingsPollingSyncManager
 
     @Inject
@@ -90,12 +87,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_home)
-
-        mRankingsPollingSyncManager.enableOrDisable()
-        mNotificationsManager.cancelAll()
-
         setInitialPosition(savedInstanceState)
-
         mRegionManager.addListener(this)
     }
 
@@ -159,7 +151,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             }
 
             R.id.miViewYourself -> {
-                val identity = mIdentityManager.identity ?: throw RuntimeException()
+                val identity = mIdentityManager.identity ?: throw NullPointerException("identity is null")
                 startActivity(PlayerActivity.getLaunchIntent(this, identity,
                         mRegionManager.getRegion(this)))
                 return true
@@ -185,6 +177,11 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         setTitle(region.endpoint.title)
 
         mAdapter.refresh()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mRankingsPollingSyncManager.enableOrDisable()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -217,8 +214,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             initialPosition = savedInstanceState.getInt(KEY_CURRENT_POSITION, -1)
         }
 
-        if (initialPosition == -1 && intent != null && intent.hasExtra(EXTRA_INITIAL_POSITION)) {
-            initialPosition = intent.getIntExtra(EXTRA_INITIAL_POSITION, -1)
+        if (initialPosition == -1) {
+            intent?.let { initialPosition = it.getIntExtra(EXTRA_INITIAL_POSITION, -1) }
         }
 
         if (initialPosition != -1) {
