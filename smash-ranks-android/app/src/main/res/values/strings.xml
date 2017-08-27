@@ -83,7 +83,7 @@
     <string name="rankings_polling">Rankings Polling</string>
     <string name="rankings_polling_description">This feature will periodically poll your region\'s GAR PR (or Not GAR PR) and let you know if its rankings have been updated. Note that the poll frequency is just an estimate, it\'s not guaranteed to run at these exact intervals.</string>
     <string name="rankings_polling_requires_google_play_services">Rankings polling requires Google Play Services in order to function. Click here to try to resolve the issues with your Google Play Services installation.</string>
-    <string name="rankings_update_description">Notification that rankings have been updated.</string>
+    <string name="rankings_update_description">Notification that shows whenever your region\'s rankings have been updated.</string>
     <string name="rankings_update_notifications">Rankings Update Notifications</string>
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
