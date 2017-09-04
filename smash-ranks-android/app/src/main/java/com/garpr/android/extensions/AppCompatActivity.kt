@@ -9,6 +9,6 @@ fun AppCompatActivity.subtitle(@StringRes subtitle: Int) {
 
 var AppCompatActivity.subtitle: CharSequence?
     get() = supportActionBar?.subtitle
-    set(value) {
-        supportActionBar?.subtitle = value
+    set(subtitle) {
+        supportActionBar?.subtitle = subtitle
     }
