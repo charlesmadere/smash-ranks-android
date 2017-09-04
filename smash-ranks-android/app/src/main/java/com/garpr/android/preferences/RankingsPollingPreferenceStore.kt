@@ -5,7 +5,7 @@ import android.net.Uri
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.models.SimpleDate
 
-interface RankingsPollingPreferenceStore : BasePreferenceStore {
+interface RankingsPollingPreferenceStore : PreferenceStore {
 
     val chargingRequired: Preference<Boolean>
 

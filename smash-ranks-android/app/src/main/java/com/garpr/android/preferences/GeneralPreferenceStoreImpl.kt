@@ -9,13 +9,11 @@ import com.google.gson.Gson
 
 class GeneralPreferenceStoreImpl(
         gson: Gson,
-        override val keyValueStore: KeyValueStore,
+        keyValueStore: KeyValueStore,
         defaultRegion: Region
-) : GeneralPreferenceStore {
-
-    override fun clear() {
-        keyValueStore.clear()
-    }
+) : BasePreferenceStore(
+        keyValueStore
+), GeneralPreferenceStore {
 
     override val currentRegion = PersistentGsonPreference("CURRENT_REGION", defaultRegion,
             keyValueStore, Region::class.java, gson)
