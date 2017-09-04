@@ -20,11 +20,11 @@ class PlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
     @LayoutRes
     override fun getItemViewType(position: Int) = R.layout.item_player
 
-    fun set(content: PlayersBundle?) {
+    fun set(content: FullTournament?) {
         set(content?.players)
     }
 
-    fun set(content: FullTournament?) {
+    fun set(content: PlayersBundle?) {
         set(content?.players)
     }
 
