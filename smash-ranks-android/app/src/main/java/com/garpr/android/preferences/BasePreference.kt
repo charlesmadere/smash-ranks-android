@@ -28,7 +28,7 @@ abstract class BasePreference<T>(
             }
 
             if (addListener) {
-                listeners.add(WeakReference<OnPreferenceChangeListener<T>>(listener))
+                listeners.add(WeakReference(listener))
             }
         }
     }
