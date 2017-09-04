@@ -12,7 +12,7 @@
         android:orientation="vertical">
         <TextView
             android:ellipsize="end"
-            android:id="@+id/tvDisplayName"
+            android:id="@+id/tvName"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:maxLines="2"
@@ -21,7 +21,7 @@
             tools:text="Charlezard" />
         <TextView
             android:ellipsize="end"
-            android:id="@+id/tvId"
+            android:id="@+id/tvRegion"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:maxLines="1"

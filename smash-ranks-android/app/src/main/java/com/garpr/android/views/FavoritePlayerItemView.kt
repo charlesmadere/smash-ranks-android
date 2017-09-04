@@ -28,6 +28,7 @@ class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlay
     lateinit protected var mRegionManager: RegionManager
 
     private val mName: TextView by bindView(R.id.tvName)
+    private val mRegion: TextView by bindView(R.id.tvRegion)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -52,7 +53,7 @@ class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlay
     override fun onClick(v: View) {
         mIdentity?.let {
             context.startActivity(PlayerActivity.getLaunchIntent(context, it,
-                    mRegionManager.getRegion(context)))
+                    (it as FavoritePlayer).region))
         }
     }
 
@@ -76,6 +77,7 @@ class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlay
     override fun setContent(content: FavoritePlayer) {
         mIdentity = content
         mName.text = content.name
+        mRegion.text = content.region.displayName
         refreshIdentity()
     }
 
