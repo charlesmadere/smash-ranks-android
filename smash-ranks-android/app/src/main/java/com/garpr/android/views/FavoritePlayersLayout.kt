@@ -14,7 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.adapters.PlayersAdapter
+import com.garpr.android.adapters.FavoritePlayersAdapter
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.ThreadUtils
@@ -25,7 +25,7 @@ import javax.inject.Inject
 class FavoritePlayersLayout : SearchableFrameLayout,
         FavoritePlayersManager.OnFavoritePlayersChangeListener {
 
-    lateinit private var mAdapter: PlayersAdapter
+    lateinit private var mAdapter: FavoritePlayersAdapter
 
     @Inject
     lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
@@ -85,7 +85,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
         mRecyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         mRecyclerView.setHasFixedSize(true)
-        mAdapter = PlayersAdapter(context)
+        mAdapter = FavoritePlayersAdapter(context)
         mRecyclerView.adapter = mAdapter
         mFavoritePlayersManager.addListener(this)
 
