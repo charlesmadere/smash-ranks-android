@@ -34,6 +34,11 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
     private val mTitle: TextView by bindView(R.id.title)
 
 
+    companion object {
+        private const val CHECKABLE_TYPE_CHECKBOX = 0
+        private const val CHECKABLE_TYPE_SWITCH_COMPAT = 1
+    }
+
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         parseAttributes(attrs)
     }
@@ -153,12 +158,6 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
         mTitle.isEnabled = enabled
         mDescription.isEnabled = enabled
         mCheckable.isEnabled = enabled
-    }
-
-    companion object {
-
-        private val CHECKABLE_TYPE_CHECKBOX = 0
-        private val CHECKABLE_TYPE_SWITCH_COMPAT = 1
     }
 
 }
