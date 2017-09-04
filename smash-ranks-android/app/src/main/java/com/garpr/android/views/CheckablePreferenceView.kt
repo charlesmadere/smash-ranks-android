@@ -3,11 +3,13 @@ package com.garpr.android.views
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
+import android.os.Parcelable
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.support.v4.view.ViewCompat
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
@@ -52,6 +54,14 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
         parseAttributes(attrs)
+    }
+
+    override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>?) {
+        dispatchThawSelfOnly(container)
+    }
+
+    override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>?) {
+        dispatchFreezeSelfOnly(container)
     }
 
     override val isAlive: Boolean
