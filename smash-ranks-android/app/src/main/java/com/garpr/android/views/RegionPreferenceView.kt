@@ -58,7 +58,7 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
         }
 
         setOnClickListener(this)
-        setTitleText(R.string.set_your_region)
+        titleText = resources.getText(R.string.set_your_region)
 
         if (isInEditMode) {
             return
@@ -77,7 +77,7 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
     override fun refresh() {
         super.refresh()
 
-        setDescriptionText(mRegionManager.getRegion().displayName)
+        descriptionText = mRegionManager.getRegion().displayName
     }
 
 }

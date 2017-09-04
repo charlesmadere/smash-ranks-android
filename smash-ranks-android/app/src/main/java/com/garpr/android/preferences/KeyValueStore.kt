@@ -16,7 +16,7 @@ interface KeyValueStore {
 
     fun getLong(key: String, fallbackValue: Long): Long
 
-    fun getString(key: String, fallbackValue: String?): String
+    fun getString(key: String, fallbackValue: String?): String?
 
     fun remove(key: String)
 

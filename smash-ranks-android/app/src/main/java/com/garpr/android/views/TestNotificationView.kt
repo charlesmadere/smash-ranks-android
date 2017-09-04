@@ -60,8 +60,8 @@ class TestNotificationView : SimplePreferenceView, DialogInterface.OnClickListen
         }
 
         setOnClickListener(this)
-        setTitleText(R.string.show_test_notification)
-        setDescriptionText(R.string.debug_only)
+        titleText = resources.getText(R.string.show_test_notification)
+        descriptionText = resources.getText(R.string.debug_only)
         visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
     }
 

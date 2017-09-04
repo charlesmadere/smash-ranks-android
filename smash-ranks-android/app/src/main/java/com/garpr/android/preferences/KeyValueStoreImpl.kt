@@ -14,10 +14,10 @@ class KeyValueStoreImpl(
         get() {
             val map = sharedPreferences.all
 
-            if (map == null || map.isEmpty()) {
-                return null
+            return if (map == null || map.isEmpty()) {
+                null
             } else {
-                return Collections.unmodifiableMap(map)
+                Collections.unmodifiableMap(map)
             }
         }
 
@@ -27,38 +27,28 @@ class KeyValueStoreImpl(
                 .apply()
     }
 
-    override fun contains(key: String): Boolean {
-        return key in sharedPreferences
-    }
+    override fun contains(key: String) = key in sharedPreferences
 
-    override fun getBoolean(key: String, fallbackValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(key, fallbackValue)
-    }
+    override fun getBoolean(key: String, fallbackValue: Boolean) =
+        sharedPreferences.getBoolean(key, fallbackValue)
 
-    override fun getFloat(key: String, fallbackValue: Float): Float {
-        return sharedPreferences.getFloat(key, fallbackValue)
-    }
+    override fun getFloat(key: String, fallbackValue: Float) =
+        sharedPreferences.getFloat(key, fallbackValue)
 
-    override fun getInteger(key: String, fallbackValue: Int): Int {
-        return sharedPreferences.getInt(key, fallbackValue)
-    }
+    override fun getInteger(key: String, fallbackValue: Int) =
+        sharedPreferences.getInt(key, fallbackValue)
 
-    override fun getLong(key: String, fallbackValue: Long): Long {
-        return sharedPreferences.getLong(key, fallbackValue)
-    }
+    override fun getLong(key: String, fallbackValue: Long) =
+        sharedPreferences.getLong(key, fallbackValue)
 
-    override fun getString(key: String, fallbackValue: String?): String {
-        return sharedPreferences.getString(key, fallbackValue)
-    }
+    override fun getString(key: String, fallbackValue: String?): String? =
+        sharedPreferences.getString(key, fallbackValue)
 
     override fun remove(key: String) {
         sharedPreferences.edit()
                 .remove(key)
                 .apply()
     }
-
-    private val sharedPreferences: SharedPreferences
-        get() = mApplication.getSharedPreferences(mName, Context.MODE_PRIVATE)
 
     override fun setBoolean(key: String, value: Boolean) {
         sharedPreferences.edit()
@@ -89,5 +79,8 @@ class KeyValueStoreImpl(
                 .putString(key, value)
                 .apply()
     }
+
+    private val sharedPreferences: SharedPreferences
+        get() = mApplication.getSharedPreferences(mName, Context.MODE_PRIVATE)
 
 }

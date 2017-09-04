@@ -102,7 +102,7 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         }
 
         setOnClickListener(this)
-        setTitleText(R.string.ringtone)
+        titleText = resources.getText(R.string.ringtone)
 
         if (isInEditMode) {
             return
@@ -121,14 +121,13 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         super.refresh()
 
         val ringtoneUri = mRankingsPollingPreferenceStore.ringtone.get()
-
         val ringtone = if (ringtoneUri == null) null
             else RingtoneManager.getRingtone(context, ringtoneUri)
 
         if (ringtone == null) {
-            setDescriptionText(R.string.none)
+            descriptionText = resources.getText(R.string.none)
         } else {
-            setDescriptionText(ringtone.getTitle(context))
+            descriptionText = ringtone.getTitle(context)
         }
     }
 

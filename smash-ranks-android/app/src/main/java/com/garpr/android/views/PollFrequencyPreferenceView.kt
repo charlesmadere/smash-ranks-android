@@ -87,7 +87,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
         }
 
         setOnClickListener(this)
-        setTitleText(R.string.poll_frequency)
+        titleText = resources.getText(R.string.poll_frequency)
 
         if (isInEditMode) {
             return
@@ -106,7 +106,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
         super.refresh()
 
         val pollFrequency = mRankingsPollingPreferenceStore.pollFrequency.get()
-        setDescriptionText(pollFrequency?.textResId ?: R.string.not_yet_set)
+        descriptionText = resources.getText(pollFrequency?.textResId ?: R.string.not_yet_set)
     }
 
 }

@@ -54,7 +54,7 @@ class LastPollPreferenceView : SimplePreferenceView,
         }
 
         isEnabled = false
-        setTitleText(R.string.last_poll)
+        titleText = resources.getText(R.string.last_poll)
 
         if (isInEditMode) {
             return
@@ -75,9 +75,9 @@ class LastPollPreferenceView : SimplePreferenceView,
         val date = mRankingsPollingPreferenceStore.lastPoll.get()
 
         if (date == null) {
-            setDescriptionText(R.string.poll_has_yet_to_occur)
+            descriptionText = resources.getText(R.string.poll_has_yet_to_occur)
         } else {
-            setDescriptionText(date.getRelativeDateTimeText(context))
+            descriptionText = date.getRelativeDateTimeText(context)
         }
     }
 
