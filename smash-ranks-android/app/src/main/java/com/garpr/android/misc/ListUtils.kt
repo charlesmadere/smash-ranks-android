@@ -57,6 +57,36 @@ object ListUtils {
         return newList
     }
 
+    fun createRegionsList(bundle: RegionsBundle?): List<Any>? {
+        val regions = bundle?.regions
+
+        if (regions == null || regions.isEmpty()) {
+            return null
+        }
+
+        val regionsCopy = mutableListOf<AbsRegion>()
+        regionsCopy.addAll(regions)
+        Collections.sort(regionsCopy, AbsRegion.ENDPOINT_ORDER)
+
+        val list = mutableListOf<Any>()
+        var endpoint: Endpoint? = null
+
+        for (region in regionsCopy) {
+            if (region is Region) {
+                if (region.endpoint != endpoint) {
+                    endpoint = region.endpoint
+                    list.add(region.endpoint)
+                }
+
+                list.add(region)
+            } else {
+                throw RuntimeException("$region is a LiteRegion when it must be a Region")
+            }
+        }
+
+        return list
+    }
+
     private fun createSortedTournamentAndMatchList(matches: List<Match>): MutableList<Any> {
         val matchesCopy = mutableListOf<Match>()
         matchesCopy.addAll(matches)
@@ -66,7 +96,7 @@ object ListUtils {
         var tournamentId: String? = null
 
         for (match in matchesCopy) {
-            if (tournamentId == null || match.tournament.id != tournamentId) {
+            if (match.tournament.id != tournamentId) {
                 tournamentId = match.tournament.id
                 list.add(LiteTournament(null, match.tournament.date, tournamentId,
                         match.tournament.name))
@@ -81,13 +111,13 @@ object ListUtils {
     fun createTournamentList(bundle: TournamentsBundle?): List<AbsTournament>? {
         val tournaments = bundle?.tournaments
 
-        if (tournaments?.isNotEmpty() == true) {
+        return if (tournaments?.isNotEmpty() == true) {
             val tournamentsCopy = mutableListOf<AbsTournament>()
             tournamentsCopy.addAll(tournaments)
             Collections.sort(tournamentsCopy, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER)
-            return tournamentsCopy
+            tournamentsCopy
         } else {
-            return null
+            null
         }
     }
 
@@ -133,15 +163,13 @@ object ListUtils {
                     val objectJ = list[j]
 
                     if (objectJ is Match) {
-                        val match = objectJ
-
-                        if (match.result == result) {
+                        if (objectJ.result == result) {
                             if (!addedTournament) {
                                 addedTournament = true
                                 newList.add(objectI)
                             }
 
-                            newList.add(match)
+                            newList.add(objectJ)
                         }
 
                         ++j
@@ -205,15 +233,13 @@ object ListUtils {
                     val objectJ = list[j]
 
                     if (objectJ is Match) {
-                        val match = objectJ
-
-                        if (match.opponent.name.toLowerCase().contains(trimmedQuery)) {
+                        if (objectJ.opponent.name.toLowerCase().contains(trimmedQuery)) {
                             if (!addedTournament) {
                                 addedTournament = true
                                 newList.add(objectI)
                             }
 
-                            newList.add(match)
+                            newList.add(objectJ)
                         }
 
                         ++j

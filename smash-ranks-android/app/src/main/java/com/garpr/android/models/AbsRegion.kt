@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.writeInteger
+import com.garpr.android.misc.MiscUtils
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonSerializer
 import com.google.gson.annotations.SerializedName
@@ -20,6 +21,18 @@ abstract class AbsRegion(
     companion object {
         val ALPHABETICAL_ORDER: Comparator<AbsRegion> = Comparator { o1, o2 ->
             o1.displayName.compareTo(o2.displayName, ignoreCase = true)
+        }
+
+        val ENDPOINT_ORDER: Comparator<AbsRegion> = Comparator { o1, o2 ->
+            if (o1 is Region && o2 is Region) {
+                if (o1.endpoint == o2.endpoint) {
+                    ALPHABETICAL_ORDER.compare(o1, o2)
+                } else {
+                    MiscUtils.integerCompare(o1.endpoint.ordinal, o2.endpoint.ordinal)
+                }
+            } else {
+                Integer.MAX_VALUE
+            }
         }
 
         val JSON_DESERIALIZER: JsonDeserializer<AbsRegion> = JsonDeserializer<AbsRegion> { json, typeOfT, context ->

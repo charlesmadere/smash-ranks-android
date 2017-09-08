@@ -7,7 +7,7 @@ import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import com.garpr.android.R
@@ -16,7 +16,7 @@ import com.garpr.android.extensions.optActivity
 import com.garpr.android.models.Region
 import kotterknife.bindView
 
-class RegionSelectionItemView : LinearLayout, BaseAdapterView<Region>, View.OnClickListener {
+class RegionSelectionItemView : FrameLayout, BaseAdapterView<Region>, View.OnClickListener {
 
     var mContent: Region? = null
         private set

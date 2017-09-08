@@ -1,26 +1,16 @@
 package com.garpr.android.adapters
 
 import android.content.Context
-import android.support.annotation.LayoutRes
 import com.garpr.android.R
-import com.garpr.android.models.AbsRegion
-import com.garpr.android.models.RegionsBundle
+import com.garpr.android.models.Endpoint
+import com.garpr.android.models.Region
 
-class RegionsSelectionAdapter(context: Context) : BaseAdapter<AbsRegion>(context) {
+class RegionsSelectionAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
 
-    init {
-        setHasStableIds(true)
-    }
-
-    override fun getItemId(position: Int): Long {
-        return getItem(position).hashCode().toLong()
-    }
-
-    @LayoutRes
-    override fun getItemViewType(position: Int) = R.layout.item_region_selection
-
-    fun set(content: RegionsBundle?) {
-        set(content?.regions)
+    companion object {
+        private val LAYOUT_KEY_MAP: Map<Class<*>, Int> = mapOf(
+                Endpoint::class.java to R.layout.divider_endpoint,
+                Region::class.java to R.layout.item_region_selection)
     }
 
 }
