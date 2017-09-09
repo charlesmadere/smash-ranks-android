@@ -29,6 +29,10 @@ class ListUtilsTest : BaseTest() {
 
         private const val JSON_REGIONS_BUNDLE = "{\"regions\":[{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":0,\"ranking_num_tourneys_attended\":0,\"tournament_qualified_day_limit\":999,\"display_name\":\"Alabama\",\"id\":\"alabama\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":9999,\"ranking_num_tourneys_attended\":3,\"tournament_qualified_day_limit\":9999,\"display_name\":\"austin\",\"id\":\"austin\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":90,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":999,\"display_name\":\"Central Florida\",\"id\":\"cfl\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":60,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":999,\"display_name\":\"Chicago\",\"id\":\"chicago\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":90,\"ranking_num_tourneys_attended\":3,\"tournament_qualified_day_limit\":90,\"display_name\":\"Georgia\",\"id\":\"georgia\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":999,\"ranking_num_tourneys_attended\":3,\"tournament_qualified_day_limit\":999,\"display_name\":\"Georgia Smash 4\",\"id\":\"georgia smash 4\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":60,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":999,\"display_name\":\"Georgia Teams\",\"id\":\"georgia teams\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":60,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":999,\"display_name\":\"GeorgiaTeams\",\"id\":\"georgiateams\"},{\"endpoint\":\"gar_pr\",\"ranking_activity_day_limit\":60,\"ranking_num_tourneys_attended\":1,\"tournament_qualified_day_limit\":999,\"display_name\":\"Google MTV\",\"id\":\"googlemtv\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":123,\"ranking_num_tourneys_attended\":8,\"tournament_qualified_day_limit\":365,\"display_name\":\"Long Island\",\"id\":\"li\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":99999,\"ranking_num_tourneys_attended\":4,\"tournament_qualified_day_limit\":999,\"display_name\":\"New England\",\"id\":\"newengland\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":90,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":9999999,\"display_name\":\"New Jersey\",\"id\":\"newjersey\"},{\"endpoint\":\"gar_pr\",\"ranking_activity_day_limit\":45,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":1000,\"display_name\":\"Norcal\",\"id\":\"norcal\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":120,\"ranking_num_tourneys_attended\":4,\"tournament_qualified_day_limit\":365,\"display_name\":\"North Carolina\",\"id\":\"northcarolina\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":0,\"ranking_num_tourneys_attended\":1,\"tournament_qualified_day_limit\":999,\"display_name\":\"North Carolina Smash4\",\"id\":\"north carolina smash4\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":110,\"ranking_num_tourneys_attended\":6,\"tournament_qualified_day_limit\":90,\"display_name\":\"NYC Metro Area\",\"id\":\"nyc\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":60,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":999,\"display_name\":\"NYC Smash 64\",\"id\":\"nyc64\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":200,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":999,\"display_name\":\"Oregon\",\"id\":\"oregon\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":90,\"ranking_num_tourneys_attended\":3,\"tournament_qualified_day_limit\":90,\"display_name\":\"Philadelphia\",\"id\":\"philadelphia\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":60,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":999,\"display_name\":\"Pittsburgh\",\"id\":\"pittsburgh\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":180,\"ranking_num_tourneys_attended\":3,\"tournament_qualified_day_limit\":999,\"display_name\":\"South Carolina\",\"id\":\"southcarolina\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":200,\"ranking_num_tourneys_attended\":1,\"tournament_qualified_day_limit\":200,\"display_name\":\"Tennessee\",\"id\":\"tennessee\"},{\"endpoint\":\"not_gar_pr\",\"ranking_activity_day_limit\":60,\"ranking_num_tourneys_attended\":2,\"tournament_qualified_day_limit\":999,\"display_name\":\"Westchester\",\"id\":\"westchester\"}]}"
 
+        private const val JSON_REGIONS_BUNDLE_GAR_PR_ONLY = "{\"regions\":[{\"endpoint\":\"gar_pr\",\"ranking_num_tourneys_attended\":1,\"ranking_activity_day_limit\":60,\"display_name\":\"Google MTV\",\"id\":\"googlemtv\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":45,\"display_name\":\"Norcal\",\"id\":\"norcal\",\"tournament_qualified_day_limit\":1000}]}"
+
+        private const val JSON_REGIONS_BUNDLE_NOT_GAR_PR_ONLY = "{\"regions\":[{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":0,\"ranking_activity_day_limit\":0,\"display_name\":\"Alabama\",\"id\":\"alabama\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":90,\"display_name\":\"Central Florida\",\"id\":\"cfl\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"Chicago\",\"id\":\"chicago\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":3,\"ranking_activity_day_limit\":90,\"display_name\":\"Georgia\",\"id\":\"georgia\",\"tournament_qualified_day_limit\":90},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":3,\"ranking_activity_day_limit\":999,\"display_name\":\"Georgia Smash 4\",\"id\":\"georgia smash 4\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"Georgia Teams\",\"id\":\"georgia teams\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"GeorgiaTeams\",\"id\":\"georgiateams\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":8,\"ranking_activity_day_limit\":122,\"display_name\":\"Long Island\",\"id\":\"li\",\"tournament_qualified_day_limit\":365},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":6,\"ranking_activity_day_limit\":110,\"display_name\":\"NYC Metro Area\",\"id\":\"nyc\",\"tournament_qualified_day_limit\":90},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"NYC Smash 64\",\"id\":\"nyc64\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":4,\"ranking_activity_day_limit\":99999,\"display_name\":\"New England\",\"id\":\"newengland\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":90,\"display_name\":\"New Jersey\",\"id\":\"newjersey\",\"tournament_qualified_day_limit\":9999999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":4,\"ranking_activity_day_limit\":120,\"display_name\":\"North Carolina\",\"id\":\"northcarolina\",\"tournament_qualified_day_limit\":365},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":1,\"ranking_activity_day_limit\":0,\"display_name\":\"North Carolina Smash4\",\"id\":\"north carolina smash4\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":200,\"display_name\":\"Oregon\",\"id\":\"oregon\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":3,\"ranking_activity_day_limit\":90,\"display_name\":\"Philadelphia\",\"id\":\"philadelphia\",\"tournament_qualified_day_limit\":90},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"Pittsburgh\",\"id\":\"pittsburgh\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":3,\"ranking_activity_day_limit\":180,\"display_name\":\"South Carolina\",\"id\":\"southcarolina\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":1,\"ranking_activity_day_limit\":200,\"display_name\":\"Tennessee\",\"id\":\"tennessee\",\"tournament_qualified_day_limit\":200},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"Westchester\",\"id\":\"westchester\",\"tournament_qualified_day_limit\":999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":3,\"ranking_activity_day_limit\":92,\"display_name\":\"austin\",\"id\":\"austin\",\"tournament_qualified_day_limit\":9999},{\"endpoint\":\"not_gar_pr\",\"ranking_num_tourneys_attended\":3,\"ranking_activity_day_limit\":90,\"display_name\":\"socal\",\"id\":\"socal\",\"tournament_qualified_day_limit\":999999}]}"
+
         private const val JSON_TOURNAMENTS_BUNDLE = "{\"tournaments\":[{\"date\":\"01/05/17\",\"regions\":[\"norcal\"],\"id\":\"588827bad2994e0d53b14556\",\"name\":\"The Beat Down Ep.14\"},{\"date\":\"01/06/17\",\"regions\":[\"norcal\"],\"id\":\"58885dced2994e3d5659410e\",\"name\":\"Last Chance Fridays #17\"},{\"date\":\"01/09/17\",\"regions\":[\"norcal\"],\"id\":\"588828ced2994e0d53b1455b\",\"name\":\"Phoenix Underground #36\"},{\"date\":\"01/12/17\",\"regions\":[\"norcal\"],\"id\":\"58882955d2994e0d53b1455d\",\"name\":\"The Beat Down Ep.15\"},{\"date\":\"01/13/17\",\"regions\":[\"norcal\"],\"id\":\"5888282dd2994e0d53b14559\",\"name\":\"Melee @ the Made 23\"},{\"date\":\"01/13/17\",\"regions\":[\"norcal\"],\"id\":\"58882a16d2994e0d53b1455f\",\"name\":\"Four Stock Friday #39\"},{\"date\":\"01/13/17\",\"regions\":[\"norcal\"],\"id\":\"58885e04d2994e3d56594118\",\"name\":\"Last Chance Fridays #18\"},{\"date\":\"01/14/17\",\"regions\":[\"norcal\"],\"id\":\"5888502cd2994e3bbfa52d56\",\"name\":\"BAM to Genesis! (31)\"},{\"date\":\"01/14/17\",\"regions\":[\"norcal\"],\"id\":\"588850d5d2994e3bbfa52d67\",\"name\":\"Norcal Validated 1\"},{\"date\":\"01/15/17\",\"regions\":[\"norcal\"],\"id\":\"58882a7dd2994e0d53b14574\",\"name\":\"Melee in the Mont #7\"},{\"date\":\"01/16/17\",\"regions\":[\"norcal\"],\"id\":\"58882affd2994e0d53b14589\",\"name\":\"Phoenix Underground #37\"},{\"date\":\"01/17/17\",\"regions\":[\"norcal\"],\"id\":\"58885305d2994e3bbfa52ddb\",\"name\":\"Get Smashed 105 - Special Pre-Genesis 4 Foundry Event\"},{\"date\":\"01/19/17\",\"regions\":[\"norcal\"],\"id\":\"58882c34d2994e0d53b14593\",\"name\":\"PRE G4 The Beat Down\"},{\"date\":\"01/20/17\",\"regions\":[\"norcal\"],\"id\":\"58898d7bd2994e6f7981b1c6\",\"name\":\"Genesis 4\"},{\"date\":\"01/26/17\",\"regions\":[\"norcal\"],\"id\":\"588a45b2d2994e713ad63cfd\",\"name\":\"Wombo Wednesday 33\"},{\"date\":\"01/27/17\",\"regions\":[\"norcal\"],\"id\":\"588c5f2fd2994e713ad63d2a\",\"name\":\"Melee @ the Made 24\"},{\"date\":\"01/27/17\",\"regions\":[\"norcal\"],\"id\":\"588d0857d2994e713ad63d2e\",\"name\":\"Four Stock Friday #40\"},{\"date\":\"01/29/17\",\"regions\":[\"norcal\"],\"id\":\"588ec08fd2994e6485b3d54a\",\"name\":\"Super South Bay Sunday #22\"},{\"date\":\"01/30/17\",\"regions\":[\"norcal\"],\"id\":\"58902ffed2994e04409f19fd\",\"name\":\"Phoenix Underground #38\"},{\"date\":\"01/31/17\",\"regions\":[\"norcal\"],\"id\":\"5896d3c2d2994e73ee0b171e\",\"name\":\"Get Smashed #106\"},{\"date\":\"02/02/17\",\"regions\":[\"norcal\"],\"id\":\"5896deb3d2994e73ee0b172e\",\"name\":\"The Beat Down Ep.15\"},{\"date\":\"02/03/17\",\"regions\":[\"norcal\"],\"id\":\"5896d44dd2994e73ee0b1720\",\"name\":\"Four Stock Friday #41\"}]}"
     }
 
@@ -49,6 +53,8 @@ class ListUtilsTest : BaseTest() {
     lateinit private var mPlayersBundle: PlayersBundle
     lateinit private var mRankingsBundle: RankingsBundle
     lateinit private var mRegionsBundle: RegionsBundle
+    lateinit private var mRegionsBundleGarPrOnly: RegionsBundle
+    lateinit private var mRegionsBundleNotGarPrOnly: RegionsBundle
     lateinit private var mTournamentsBundle: TournamentsBundle
 
 
@@ -65,6 +71,8 @@ class ListUtilsTest : BaseTest() {
         mPlayersBundle = mGson.fromJson(JSON_PLAYERS_BUNDLE, PlayersBundle::class.java)
         mRankingsBundle = mGson.fromJson(JSON_RANKINGS_BUNDLE, RankingsBundle::class.java)
         mRegionsBundle = mGson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
+        mRegionsBundleGarPrOnly = mGson.fromJson(JSON_REGIONS_BUNDLE_GAR_PR_ONLY, RegionsBundle::class.java)
+        mRegionsBundleNotGarPrOnly = mGson.fromJson(JSON_REGIONS_BUNDLE_NOT_GAR_PR_ONLY, RegionsBundle::class.java)
         mTournamentsBundle = mGson.fromJson(JSON_TOURNAMENTS_BUNDLE, TournamentsBundle::class.java)
     }
 
@@ -158,29 +166,86 @@ class ListUtilsTest : BaseTest() {
         assertTrue(list?.get(0) is Endpoint)
         assertEquals(Endpoint.GAR_PR, list?.get(0))
 
-        assertTrue(list?.get(1) is AbsRegion)
+        assertTrue(list?.get(1) is Region)
         assertEquals("googlemtv", (list?.get(1) as AbsRegion).id)
+        assertEquals(Endpoint.GAR_PR, (list[1] as Region).endpoint)
 
-        assertTrue(list[2] is AbsRegion)
+        assertTrue(list[2] is Region)
         assertEquals("norcal", (list[2] as AbsRegion).id)
+        assertEquals(Endpoint.GAR_PR, (list[2] as Region).endpoint)
 
         assertTrue(list[3] is Endpoint)
         assertEquals(Endpoint.NOT_GAR_PR, list[3])
 
-        assertTrue(list[4] is AbsRegion)
+        assertTrue(list[4] is Region)
         assertEquals("alabama", (list[4] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[4] as Region).endpoint)
 
-        assertTrue(list[5] is AbsRegion)
+        assertTrue(list[5] is Region)
         assertEquals("austin", (list[5] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[5] as Region).endpoint)
 
-        assertTrue(list[13] is AbsRegion)
+        assertTrue(list[13] is Region)
         assertEquals("newengland", (list[13] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[13] as Region).endpoint)
 
-        assertTrue(list[17] is AbsRegion)
+        assertTrue(list[17] is Region)
         assertEquals("nyc", (list[17] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[17] as Region).endpoint)
 
-        assertTrue(list[24] is AbsRegion)
+        assertTrue(list[24] is Region)
         assertEquals("westchester", (list[24] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[24] as Region).endpoint)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCreateRegionsListWithGarPrOnly() {
+        val list = ListUtils.createRegionsList(mRegionsBundleGarPrOnly)
+        assertNotNull(list)
+        assertEquals(3, list?.size)
+
+        assertTrue(list?.get(0) is Endpoint)
+        assertEquals(Endpoint.GAR_PR, list?.get(0))
+
+        assertTrue(list?.get(1) is Region)
+        assertEquals("googlemtv", (list?.get(1) as AbsRegion).id)
+        assertEquals(Endpoint.GAR_PR, (list[1] as Region).endpoint)
+
+        assertTrue(list[2] is Region)
+        assertEquals("norcal", (list[2] as AbsRegion).id)
+        assertEquals(Endpoint.GAR_PR, (list[2] as Region).endpoint)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCreateRegionsListWithNotGarPrOnly() {
+        val list = ListUtils.createRegionsList(mRegionsBundleNotGarPrOnly)
+        assertNotNull(list)
+        assertEquals(23, list?.size)
+
+        assertTrue(list?.get(0) is Endpoint)
+        assertEquals(Endpoint.NOT_GAR_PR, list?.get(0))
+
+        assertTrue(list?.get(1) is Region)
+        assertEquals("alabama", (list?.get(1) as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[1] as Region).endpoint)
+
+        assertTrue(list[2] is Region)
+        assertEquals("austin", (list[2] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[2] as Region).endpoint)
+
+        assertTrue(list[8] is Region)
+        assertEquals("georgiateams", (list[8] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[8] as Region).endpoint)
+
+        assertTrue(list[14] is Region)
+        assertEquals("nyc", (list[14] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[14] as Region).endpoint)
+
+        assertTrue(list[20] is Region)
+        assertEquals("southcarolina", (list[20] as AbsRegion).id)
+        assertEquals(Endpoint.NOT_GAR_PR, (list[20] as Region).endpoint)
     }
 
     @Test
