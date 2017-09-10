@@ -32,9 +32,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     lateinit protected var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit protected var mNotificationsManager: NotificationsManager
-
-    @Inject
     lateinit protected var mRankingsPollingSyncManager: RankingsPollingSyncManager
 
     @Inject
@@ -90,12 +87,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_home)
-
-        mRankingsPollingSyncManager.enableOrDisable()
-        mNotificationsManager.cancelAll()
-
         setInitialPosition(savedInstanceState)
-
+        mRankingsPollingSyncManager.enableOrDisable()
         mRegionManager.addListener(this)
     }
 
@@ -159,7 +152,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             }
 
             R.id.miViewYourself -> {
-                val identity = mIdentityManager.identity ?: throw RuntimeException()
+                val identity = mIdentityManager.identity ?: throw NullPointerException("identity is null")
                 startActivity(PlayerActivity.getLaunchIntent(this, identity,
                         mRegionManager.getRegion(this)))
                 return true
@@ -217,8 +210,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             initialPosition = savedInstanceState.getInt(KEY_CURRENT_POSITION, -1)
         }
 
-        if (initialPosition == -1 && intent != null && intent.hasExtra(EXTRA_INITIAL_POSITION)) {
-            initialPosition = intent.getIntExtra(EXTRA_INITIAL_POSITION, -1)
+        if (initialPosition == -1) {
+            intent?.let { initialPosition = it.getIntExtra(EXTRA_INITIAL_POSITION, -1) }
         }
 
         if (initialPosition != -1) {
@@ -227,7 +220,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     private fun share() {
-        val items = arrayOf(getText(R.string.rankings), getText(R.string.tournaments))
+        val region = mRegionManager.getRegion(this).displayName
+        val items = arrayOf(getString(R.string.x_rankings, region),
+                getString(R.string.x_tournaments, region))
 
         AlertDialog.Builder(this)
                 .setItems(items) { dialog, which ->

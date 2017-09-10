@@ -225,15 +225,13 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     }
 
     private fun prepareMenuAndSubtitle() {
-        val headToHead = mHeadToHead
-
-        if (headToHead != null) {
+        mHeadToHead?.let {
             if (mOpponentName.isNullOrBlank()) {
-                mOpponentName = headToHead.opponent.name
+                mOpponentName = it.opponent.name
             }
 
             if (mPlayerName.isNullOrBlank()) {
-                mPlayerName = headToHead.player.name
+                mPlayerName = it.player.name
             }
         }
 

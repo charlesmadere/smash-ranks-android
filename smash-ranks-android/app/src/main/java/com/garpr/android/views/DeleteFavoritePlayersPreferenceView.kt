@@ -75,7 +75,7 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
         }
 
         setOnClickListener(this)
-        setTitleText(R.string.delete_favorite_players)
+        titleText = resources.getText(R.string.delete_favorite_players)
 
         if (isInEditMode) {
             return
@@ -89,8 +89,8 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
 
         val size = mFavoritePlayersManager.size
         isEnabled = size != 0
-        setDescriptionText(resources.getQuantityString(R.plurals.x_favorites, size,
-                NumberFormat.getInstance().format(size)))
+        descriptionText = resources.getQuantityString(R.plurals.x_favorites, size,
+                NumberFormat.getInstance().format(size))
     }
 
 }

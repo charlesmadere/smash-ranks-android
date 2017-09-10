@@ -105,7 +105,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         }
 
         setOnClickListener(this)
-        setTitleText(R.string.theme)
+        titleText = resources.getText(R.string.theme)
 
         if (isInEditMode) {
             return
@@ -124,7 +124,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         super.refresh()
 
         val nightMode = mGeneralPreferenceStore.nightMode.get()
-        setDescriptionText(nightMode?.textResId ?: R.string.not_yet_set)
+        descriptionText = resources.getText(nightMode?.textResId ?: R.string.not_yet_set)
     }
 
     private fun showRestartDialog() {

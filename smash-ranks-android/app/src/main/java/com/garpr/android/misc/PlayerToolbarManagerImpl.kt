@@ -1,7 +1,5 @@
 package com.garpr.android.misc
 
-import android.content.res.Resources
-import com.garpr.android.R
 import com.garpr.android.misc.PlayerToolbarManager.Presentation
 import com.garpr.android.models.FullPlayer
 import com.garpr.android.models.Match
@@ -12,8 +10,8 @@ class PlayerToolbarManagerImpl(
         val mIdentityManager: IdentityManager
 ) : PlayerToolbarManager {
 
-    override fun getPresentation(resources: Resources, fullPlayer: FullPlayer?,
-            matchesBundle: MatchesBundle?, matchResult: Match.Result?): Presentation {
+    override fun getPresentation(fullPlayer: FullPlayer?, matchesBundle: MatchesBundle?,
+            matchResult: Match.Result?): Presentation {
         val presentation = Presentation()
 
         if (fullPlayer == null) {
@@ -39,13 +37,9 @@ class PlayerToolbarManagerImpl(
 
         if (mIdentityManager.hasIdentity) {
             if (!mIdentityManager.isPlayer(fullPlayer)) {
-                presentation.mViewYourselfVsThisOpponentTitle = resources.getString(
-                        R.string.view_yourself_vs_x, fullPlayer.name)
                 presentation.mIsViewYourselfVsThisOpponentVisible = true
             }
         } else {
-            presentation.mSetAsYourIdentityTitle = resources.getString(
-                    R.string.set_x_as_your_identity, fullPlayer.name)
             presentation.mIsSetAsYourIdentityVisible = true
         }
 

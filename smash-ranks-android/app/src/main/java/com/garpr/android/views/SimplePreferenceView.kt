@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.os.Parcelable
 import android.support.annotation.AttrRes
-import android.support.annotation.StringRes
 import android.support.annotation.StyleRes
 import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
@@ -42,6 +41,13 @@ open class SimplePreferenceView : FrameLayout, Heartbeat, Refreshable {
         parseAttributes(attrs)
     }
 
+    var descriptionText: CharSequence?
+        get() = mDescription.text.toString()
+        set(text) {
+            mDescriptionText = text
+            mDescription.text = text
+        }
+
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>) {
         dispatchThawSelfOnly(container)
     }
@@ -73,28 +79,17 @@ open class SimplePreferenceView : FrameLayout, Heartbeat, Refreshable {
         // intentionally empty, children can override
     }
 
-    fun setDescriptionText(descriptionText: CharSequence?) {
-        mDescriptionText = descriptionText
-        mDescription.text = mDescriptionText
-    }
-
-    fun setDescriptionText(@StringRes descriptionTextResId: Int) {
-        setDescriptionText(resources.getText(descriptionTextResId))
-    }
-
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         mTitle.isEnabled = enabled
         mDescription.isEnabled = enabled
     }
 
-    fun setTitleText(titleText: CharSequence?) {
-        mTitleText = titleText
-        mTitle.text = mTitleText
-    }
-
-    fun setTitleText(@StringRes titleTextResId: Int) {
-        setTitleText(resources.getText(titleTextResId))
-    }
+    var titleText: CharSequence?
+        get() = mTitle.text.toString()
+        set(text) {
+            mTitleText = text
+            mTitle.text = text
+        }
 
 }

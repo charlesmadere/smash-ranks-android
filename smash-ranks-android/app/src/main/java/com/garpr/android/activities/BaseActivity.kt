@@ -2,7 +2,6 @@ package com.garpr.android.activities
 
 import android.os.Bundle
 import android.support.annotation.LayoutRes
-import android.support.v4.app.NavUtils
 import android.support.v4.app.TaskStackBuilder
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -11,6 +10,7 @@ import android.view.MenuItem
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.NotificationsManager
 import com.garpr.android.misc.RegionManager.RegionHandle
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.Region
@@ -23,6 +23,9 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     @Inject
     lateinit protected var mGeneralPreferenceStore: GeneralPreferenceStore
+
+    @Inject
+    lateinit protected var mNotificationsManager: NotificationsManager
 
     @Inject
     lateinit protected var mTimber: Timber
@@ -41,8 +44,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     override val currentRegion: Region?
         get() {
             return intent?.let {
-                if (intent.hasExtra(EXTRA_REGION)) intent.getParcelableExtra(EXTRA_REGION)
-                else null
+                if (it.hasExtra(EXTRA_REGION)) it.getParcelableExtra(EXTRA_REGION) else null
             }
         }
 
@@ -50,16 +52,16 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         get() = !isFinishing && !isDestroyed
 
     protected open fun navigateUp() {
-        val upIntent = NavUtils.getParentActivityIntent(this)
+        val intent = supportParentActivityIntent
 
-        if (upIntent == null) {
+        if (intent == null) {
             supportFinishAfterTransition()
-        } else if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+        } else if (supportShouldUpRecreateTask(intent)) {
             TaskStackBuilder.create(this)
-                    .addNextIntentWithParentStack(upIntent)
+                    .addNextIntentWithParentStack(intent)
                     .startActivities()
         } else {
-            supportNavigateUpTo(upIntent)
+            supportNavigateUpTo(intent)
         }
     }
 
@@ -103,6 +105,11 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         }
 
         return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mNotificationsManager.cancelAll()
     }
 
     protected open fun onViewsBound() {

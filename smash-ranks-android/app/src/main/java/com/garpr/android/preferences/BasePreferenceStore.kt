@@ -1,9 +1,11 @@
 package com.garpr.android.preferences
 
-interface BasePreferenceStore {
+abstract class BasePreferenceStore(
+        override val keyValueStore: KeyValueStore
+) : PreferenceStore {
 
-    fun clear()
-
-    val keyValueStore: KeyValueStore
+    override fun clear() {
+        keyValueStore.clear()
+    }
 
 }

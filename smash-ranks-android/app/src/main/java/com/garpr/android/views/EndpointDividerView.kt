@@ -6,18 +6,16 @@ import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import android.widget.TextView
 import com.garpr.android.R
-import com.garpr.android.misc.Constants
+import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.models.Endpoint
 import kotterknife.bindView
 
-class ErrorLinearLayout : LinearLayout {
+class EndpointDividerView : FrameLayout, BaseAdapterView<Endpoint> {
 
-    private var mOriginalLine2: CharSequence? = null
-
-    private val mLine1: TextView by bindView(R.id.recyclerViewLine1)
-    private val mLine2: TextView by bindView(R.id.recyclerViewLine2)
+    private val mName: TextView by bindView(R.id.tvName)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -29,19 +27,8 @@ class ErrorLinearLayout : LinearLayout {
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        mOriginalLine2 = mLine2.text
-    }
-
-    fun setVisibility(visibility: Int, errorCode: Int) {
-        super.setVisibility(visibility)
-
-        if (errorCode == Constants.ERROR_CODE_BAD_REQUEST) {
-            mLine2.setText(R.string.region_mismatch_error)
-        } else {
-            mLine2.text = mOriginalLine2
-        }
+    override fun setContent(content: Endpoint) {
+        mName.text = resources.getText(content.title)
     }
 
 }

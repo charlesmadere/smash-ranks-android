@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.ContextWrapper
 import com.garpr.android.misc.RegionManager.OnRegionChangeListener
 import com.garpr.android.models.Region
+import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.Preference
 import java.lang.ref.WeakReference
 
 class RegionManagerImpl(
+        private val mRankingsDate: Preference<SimpleDate>,
         private val mRegion: Preference<Region>,
         private val mTimber: Timber
 ) : RegionManager {
@@ -93,6 +95,7 @@ class RegionManagerImpl(
 
     override fun setRegion(region: Region) {
         mTimber.d(TAG, "old region is \"${mRegion.get()}\", new region is \"$region\"")
+        mRankingsDate.delete()
         mRegion.set(region)
         notifyListeners()
     }

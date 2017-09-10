@@ -1,6 +1,5 @@
 package com.garpr.android.misc
 
-import android.content.res.Resources
 import com.garpr.android.models.FullPlayer
 import com.garpr.android.models.Match
 import com.garpr.android.models.MatchesBundle
@@ -37,15 +36,9 @@ interface PlayerToolbarManager {
 
         var mIsViewYourselfVsThisOpponentVisible: Boolean = false
             internal set
-
-        var mSetAsYourIdentityTitle: CharSequence? = null
-            internal set
-
-        var mViewYourselfVsThisOpponentTitle: CharSequence? = null
-            internal set
     }
 
-    fun getPresentation(resources: Resources, fullPlayer: FullPlayer?,
-            matchesBundle: MatchesBundle?, matchResult: Match.Result?): Presentation
+    fun getPresentation(fullPlayer: FullPlayer?, matchesBundle: MatchesBundle?,
+            matchResult: Match.Result?): Presentation
 
 }

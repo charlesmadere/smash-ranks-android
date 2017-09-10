@@ -4,7 +4,7 @@ import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.NightMode
 import com.garpr.android.models.Region
 
-interface GeneralPreferenceStore : BasePreferenceStore {
+interface GeneralPreferenceStore : PreferenceStore {
 
     val currentRegion: Preference<Region>
 

@@ -9,6 +9,7 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.support.annotation.AttrRes
 import android.support.annotation.ColorInt
+import android.support.v4.app.NotificationManagerCompat
 import android.view.inputmethod.InputMethodManager
 
 val Context.activityManager: ActivityManager
@@ -45,6 +46,9 @@ val Context.inputMethodManager: InputMethodManager
 
 val Context.notificationManager: NotificationManager
     get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+val Context.notificationManagerCompat: NotificationManagerCompat
+    get() = NotificationManagerCompat.from(this)
 
 fun Context.optActivity(): Activity? {
     if (this is Activity) {

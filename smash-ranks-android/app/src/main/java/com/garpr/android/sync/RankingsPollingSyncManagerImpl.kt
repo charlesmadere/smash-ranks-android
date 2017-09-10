@@ -52,12 +52,7 @@ class RankingsPollingSyncManagerImpl(
             jobBuilder.addConstraint(Constraint.ON_ANY_NETWORK)
         }
 
-        var pollFrequency = mRankingsPollingPreferenceStore.pollFrequency.get()
-
-        if (pollFrequency == null) {
-            pollFrequency = PollFrequency.DAILY
-        }
-
+        val pollFrequency = mRankingsPollingPreferenceStore.pollFrequency.get() ?: PollFrequency.DAILY
         jobBuilder.trigger = Trigger.executionWindow(0, pollFrequency.timeInSeconds.toInt())
         jobDispatcher.mustSchedule(jobBuilder.build())
 

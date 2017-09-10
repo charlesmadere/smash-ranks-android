@@ -4,10 +4,9 @@ import android.content.Context
 import android.support.annotation.LayoutRes
 import com.garpr.android.R
 import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullTournament
 import com.garpr.android.models.PlayersBundle
 
-class PlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
+class FavoritePlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
 
     init {
         setHasStableIds(true)
@@ -18,11 +17,7 @@ class PlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
     }
 
     @LayoutRes
-    override fun getItemViewType(position: Int) = R.layout.item_player
-
-    fun set(content: FullTournament?) {
-        set(content?.players)
-    }
+    override fun getItemViewType(position: Int) = R.layout.item_favorite_player
 
     fun set(content: PlayersBundle?) {
         set(content?.players)

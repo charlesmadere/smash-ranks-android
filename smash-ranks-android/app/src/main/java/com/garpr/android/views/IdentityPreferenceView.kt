@@ -71,8 +71,8 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
         }
 
         setOnClickListener(this)
-        setTitleText(R.string.set_your_identity)
-        setDescriptionText(R.string.easily_find_yourself_throughout_the_app)
+        titleText = resources.getText(R.string.set_your_identity)
+        descriptionText = resources.getText(R.string.easily_find_yourself_throughout_the_app)
 
         if (isInEditMode) {
             return
@@ -94,11 +94,11 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
         val player = mIdentityManager.identity
 
         if (player == null) {
-            setTitleText(R.string.set_your_identity)
-            setDescriptionText(R.string.easily_find_yourself_throughout_the_app)
+            titleText = resources.getText(R.string.set_your_identity)
+            descriptionText = resources.getText(R.string.easily_find_yourself_throughout_the_app)
         } else {
-            setTitleText(R.string.delete_identity)
-            setDescriptionText(player.name)
+            titleText = resources.getText(R.string.delete_identity)
+            descriptionText = player.name
         }
     }
 

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
@@ -15,6 +14,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.RegionsSelectionAdapter
 import com.garpr.android.extensions.subtitle
+import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ResultCodes
 import com.garpr.android.models.Region
@@ -49,9 +49,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     companion object {
         private const val TAG = "SetRegionActivity"
 
-        fun getLaunchIntent(context: Context): Intent {
-            return Intent(context, SetRegionActivity::class.java)
-        }
+        fun getLaunchIntent(context: Context) = Intent(context, SetRegionActivity::class.java)
     }
 
     override val activityName = TAG
@@ -100,11 +98,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     override fun onClick(v: RegionSelectionItemView) {
         val region = v.mContent
 
-        if (region == mRegionManager.getRegion()) {
-            mSelectedRegion = null
-        } else {
-            mSelectedRegion = region
-        }
+        mSelectedRegion = if (region == mRegionManager.getRegion()) null else region
 
         refreshMenu()
         mAdapter.notifyDataSetChanged()
@@ -146,7 +140,6 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         super.onViewsBound()
 
         mRefreshLayout.setOnRefreshListener(this)
-        mRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         mRecyclerView.setHasFixedSize(true)
         mAdapter = RegionsSelectionAdapter(this)
         mRecyclerView.adapter = mAdapter
@@ -194,7 +187,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     }
 
     private fun showRegionsBundle() {
-        mAdapter.set(mRegionsBundle)
+        mAdapter.set(ListUtils.createRegionsList(mRegionsBundle))
         mEmpty.visibility = View.GONE
         mError.visibility = View.GONE
         mRecyclerView.visibility = View.VISIBLE

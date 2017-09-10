@@ -7,7 +7,6 @@ import com.garpr.android.activities.*
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
-import java.util.*
 
 class DeepLinkUtilsImpl(
         private val mRegionManager: RegionManager,
@@ -71,7 +70,7 @@ class DeepLinkUtilsImpl(
 
         val path = uri.substring(endpoint.getWebPath().length, uri.length)
 
-        if (path.isNullOrBlank()) {
+        if (path.isBlank()) {
             mTimber.d(TAG, "Deep link path is null / blank")
             return null
         }
@@ -85,7 +84,7 @@ class DeepLinkUtilsImpl(
 
         val regionId = splits[0]
 
-        if (regionId.isNullOrBlank()) {
+        if (regionId.isBlank()) {
             mTimber.w(TAG, "Region ID is null / blank")
             return null
         }
@@ -96,17 +95,20 @@ class DeepLinkUtilsImpl(
             return null
         }
 
-        val intentStack = ArrayList<Intent>()
+        val intentStack = mutableListOf<Intent>()
         val page = splits[1]
 
-        if (PLAYERS.equals(page, ignoreCase = true)) {
-            buildPlayersIntentStack(context, intentStack, region, sameRegion, splits)
-        } else if (RANKINGS.equals(page, ignoreCase = true)) {
-            buildRankingsIntentStack(context, intentStack, region, sameRegion)
-        } else if (TOURNAMENTS.equals(page, ignoreCase = true)) {
-            buildTournamentsIntentStack(context, intentStack, region, sameRegion, splits)
-        } else {
-            mTimber.w(TAG, "Unknown page \"" + page + "\"")
+        when {
+            PLAYERS.equals(page, ignoreCase = true) -> {
+                buildPlayersIntentStack(context, intentStack, region, sameRegion, splits)
+            }
+            RANKINGS.equals(page, ignoreCase = true) -> {
+                buildRankingsIntentStack(context, intentStack, region, sameRegion)
+            }
+            TOURNAMENTS.equals(page, ignoreCase = true) -> {
+                buildTournamentsIntentStack(context, intentStack, region, sameRegion, splits)
+            }
+            else -> mTimber.w(TAG, "Unknown page \"" + page + "\"")
         }
 
         return intentStack
@@ -137,7 +139,7 @@ class DeepLinkUtilsImpl(
 
         val playerId = splits[2]
 
-        if (playerId.isNullOrBlank()) {
+        if (playerId.isBlank()) {
             return
         }
 
@@ -170,7 +172,7 @@ class DeepLinkUtilsImpl(
 
         val tournamentId = splits[2]
 
-        if (tournamentId.isNullOrBlank()) {
+        if (tournamentId.isBlank()) {
             return
         }
 

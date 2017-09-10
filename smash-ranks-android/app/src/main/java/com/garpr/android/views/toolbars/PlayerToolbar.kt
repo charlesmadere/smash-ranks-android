@@ -106,8 +106,8 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
             matchResult = null
         }
 
-        val presentation = mPlayerToolbarManager.getPresentation(resources, fullPlayer,
-                matchesBundle, matchResult)
+        val presentation = mPlayerToolbarManager.getPresentation(fullPlayer, matchesBundle,
+                matchResult)
 
         menu.findItem(R.id.miAddToFavorites).isVisible = presentation.mIsAddToFavoritesVisible
         menu.findItem(R.id.miAliases).isVisible = presentation.mIsAliasesVisible
@@ -120,15 +120,9 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
 
         val setAsYourIdentity = menu.findItem(R.id.miSetAsYourIdentity)
         setAsYourIdentity.isVisible = presentation.mIsSetAsYourIdentityVisible
-        if (presentation.mSetAsYourIdentityTitle?.isNotBlank() == true) {
-            setAsYourIdentity.title = presentation.mSetAsYourIdentityTitle
-        }
 
         val viewYourselfVsThisOpponent = menu.findItem(R.id.miViewYourselfVsThisOpponent)
         viewYourselfVsThisOpponent.isVisible = presentation.mIsViewYourselfVsThisOpponentVisible
-        if (presentation.mViewYourselfVsThisOpponentTitle?.isNotBlank() == true) {
-            viewYourselfVsThisOpponent.title = presentation.mViewYourselfVsThisOpponentTitle
-        }
     }
 
 }
