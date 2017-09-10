@@ -79,6 +79,7 @@
     <string name="poll_frequency">Poll frequency</string>
     <string name="poll_has_yet_to_occur">Poll has yet to occur</string>
     <string name="rankings">Rankings</string>
+    <string name="x_rankings">%1$s Rankings</string>
     <string name="x_rankings_have_been_updated">%1$s rankings have been updated!</string>
     <string name="rankings_polling">Rankings Polling</string>
     <string name="rankings_polling_description">This feature will periodically poll your region\'s GAR PR (or Not GAR PR) and let you know if its rankings have been updated. Note that the poll frequency is just an estimate, it\'s not guaranteed to run at these exact intervals.</string>
@@ -120,6 +121,7 @@
     <string name="theme">Theme</string>
     <string name="the_app_will_now_restart">The app will now restart.</string>
     <string name="tournaments">Tournaments</string>
+    <string name="x_tournaments">%1$s Tournaments</string>
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
     <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
