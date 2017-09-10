@@ -227,9 +227,10 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore,
-            final Timber timber) {
-        return new RegionManagerImpl(generalPreferenceStore.getCurrentRegion(), timber);
+    RegionManager providesRegionManager(final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
+            final GeneralPreferenceStore generalPreferenceStore, final Timber timber) {
+        return new RegionManagerImpl(rankingsPollingPreferenceStore.getRankingsDate(),
+                generalPreferenceStore.getCurrentRegion(), timber);
     }
 
     @Provides
