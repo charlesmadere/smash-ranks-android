@@ -220,7 +220,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     private fun share() {
-        val items = arrayOf(getText(R.string.rankings), getText(R.string.tournaments))
+        val region = mRegionManager.getRegion(this).displayName
+        val items = arrayOf(getString(R.string.x_rankings, region),
+                getString(R.string.x_tournaments, region))
 
         AlertDialog.Builder(this)
                 .setItems(items) { dialog, which ->
