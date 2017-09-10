@@ -88,6 +88,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_home)
         setInitialPosition(savedInstanceState)
+        mRankingsPollingSyncManager.enableOrDisable()
         mRegionManager.addListener(this)
     }
 
@@ -177,11 +178,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         setTitle(region.endpoint.title)
 
         mAdapter.refresh()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mRankingsPollingSyncManager.enableOrDisable()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
