@@ -4,7 +4,6 @@ import android.content.Context
 import android.support.annotation.LayoutRes
 import com.garpr.android.R
 import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullTournament
 import com.garpr.android.models.PlayersBundle
 
 class FavoritePlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
