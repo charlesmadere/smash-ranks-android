@@ -107,11 +107,6 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onResume() {
-        super.onResume()
-        mNotificationsManager.cancelAll()
-    }
-
     protected open fun onViewsBound() {
         // ButterKnife was once right here
 

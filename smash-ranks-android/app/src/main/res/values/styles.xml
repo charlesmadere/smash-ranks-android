@@ -108,7 +108,11 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:overScrollMode">never</item>
-        <item name="android:scrollbars">vertical</item>
+        <item name="fastScrollEnabled">true</item>
+        <item name="fastScrollHorizontalThumbDrawable">@drawable/rv_thumb</item>
+        <item name="fastScrollHorizontalTrackDrawable">@drawable/rv_track</item>
+        <item name="fastScrollVerticalThumbDrawable">@drawable/rv_thumb</item>
+        <item name="fastScrollVerticalTrackDrawable">@drawable/rv_track</item>
         <item name="layoutManager">LinearLayoutManager</item>
     </style>
 

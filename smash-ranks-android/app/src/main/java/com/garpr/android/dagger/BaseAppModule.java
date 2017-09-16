@@ -13,6 +13,8 @@ import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.FavoritePlayersManagerImpl;
 import com.garpr.android.misc.FirebaseApiWrapper;
 import com.garpr.android.misc.FirebaseApiWrapperImpl;
+import com.garpr.android.misc.FullTournamentUtils;
+import com.garpr.android.misc.FullTournamentUtilsImpl;
 import com.garpr.android.misc.GoogleApiWrapper;
 import com.garpr.android.misc.GoogleApiWrapperImpl;
 import com.garpr.android.misc.HomeToolbarManager;
@@ -122,6 +124,12 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    FullTournamentUtils providesFullTournamentUtils(final ThreadUtils threadUtils) {
+        return new FullTournamentUtilsImpl(threadUtils);
+    }
+
+    @Provides
+    @Singleton
     GarPrApi providesGarPrApi(final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
@@ -227,10 +235,9 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    RegionManager providesRegionManager(final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final GeneralPreferenceStore generalPreferenceStore, final Timber timber) {
-        return new RegionManagerImpl(rankingsPollingPreferenceStore.getRankingsDate(),
-                generalPreferenceStore.getCurrentRegion(), timber);
+    RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore,
+            final RankingsPollingPreferenceStore rankingsPollingPreferenceStore, final Timber timber) {
+        return new RegionManagerImpl(generalPreferenceStore, rankingsPollingPreferenceStore, timber);
     }
 
     @Provides
@@ -244,22 +251,17 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    ServerApi providesServerApi(final GarPrApi garPrApi,
+    ServerApi providesServerApi(final FullTournamentUtils fullTournamentUtils, final GarPrApi garPrApi,
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
             final RegionManager regionManager, final Timber timber) {
-        return new ServerApiImpl(garPrApi, rankingsPollingPreferenceStore, regionManager, timber);
+        return new ServerApiImpl(fullTournamentUtils, garPrApi, rankingsPollingPreferenceStore,
+                regionManager, timber);
     }
 
     @Provides
     @Singleton
     ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
         return new ShareUtilsImpl(regionManager, timber);
-    }
-
-    @Provides
-    @Singleton
-    ThreadUtils providesThreadUtils(final DeviceUtils deviceUtils) {
-        return new ThreadUtilsImpl(deviceUtils.hasLowRam());
     }
 
     @Provides

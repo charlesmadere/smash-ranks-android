@@ -54,8 +54,8 @@ class FullTournament(
     ) : Parcelable {
         companion object {
             @JvmField
-            val CREATOR = createParcel { Match(it.readInt() != 0, it.readString(), it.readString(),
-                    it.readString(), it.readString(), it.readString()) }
+            val CREATOR = createParcel { Match(it.readInt() != 0, it.readString(),
+                    it.readString(), it.readString(), it.readString(), it.readString()) }
         }
 
         override fun equals(other: Any?): Boolean {

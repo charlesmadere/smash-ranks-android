@@ -17,10 +17,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.RankingsAdapter
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.Refreshable
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.*
 import com.garpr.android.models.RankedPlayer
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiCall
@@ -35,6 +32,9 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     lateinit private var mAdapter: RankingsAdapter
     var mRankingsBundle: RankingsBundle? = null
         private set
+
+    @Inject
+    lateinit protected var mNotificationsManager: NotificationsManager
 
     @Inject
     lateinit protected var mRegionManager: RegionManager
@@ -70,6 +70,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
 
     override fun failure(errorCode: Int) {
         mRankingsBundle = null
+        mNotificationsManager.cancelAll()
         onRankingsBundleFetched()
         showError()
     }
@@ -118,6 +119,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         get() = mRecyclerView
 
     override fun refresh() {
+        mNotificationsManager.cancelAll()
         fetchRankingsBundle()
     }
 
@@ -175,6 +177,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
 
     override fun success(`object`: RankingsBundle?) {
         mRankingsBundle = `object`
+        mNotificationsManager.cancelAll()
         onRankingsBundleFetched()
 
         if (`object`?.rankings?.isNotEmpty() == true) {

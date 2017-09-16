@@ -4,9 +4,14 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.garpr.android.misc.CrashlyticsWrapper;
+import com.garpr.android.misc.DeviceUtils;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Singleton;
 
@@ -61,6 +66,28 @@ public class TestAppModule extends BaseAppModule {
     @Singleton
     KeyValueStore providesKeyValueStore(final Application application) {
         return new KeyValueStoreImpl(application, "TEST");
+    }
+
+    @Provides
+    @Singleton
+    ThreadUtils providesThreadUtils() {
+        return new ThreadUtils() {
+            @Override
+            public void run(@NotNull final Task task) {
+                task.onBackground();
+                task.onUi();
+            }
+
+            @Override
+            public void runOnBackground(@NotNull final Runnable task) {
+                task.run();
+            }
+
+            @Override
+            public void runOnUi(@NotNull final Runnable task) {
+                task.run();
+            }
+        };
     }
 
 }

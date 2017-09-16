@@ -30,8 +30,8 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 10000
-        versionName '1.0.0'
+        versionCode 10100
+        versionName '1.1.0'
     }
 
     buildTypes {
@@ -92,7 +92,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // Fabric
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+    compile("com.crashlytics.sdk.android:crashlytics:2.6.8@aar") {
         transitive = true
     }
 }

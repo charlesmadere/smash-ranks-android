@@ -99,7 +99,7 @@ public class App extends Application {
         lastVersionPref.set(BuildConfig.VERSION_CODE, true);
 
         if (lastVersion == null || lastVersion < 1011) {
-            // this preference used to be a String but was changed to an AbsRegion
+            // this preference used to be a String but was changed to an Region
             mGeneralPreferenceStore.getCurrentRegion().delete(true);
 
             // it used to be an AbsPlayer, is now a FavoritePlayer

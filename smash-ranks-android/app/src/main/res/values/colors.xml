@@ -13,6 +13,9 @@
     <color name="purple_dark">#453B81</color>
     <color name="purple_light">#655AA9</color>
     <color name="salmon">#C4636C</color>
+    <color name="fast_scroll_thumb_normal">#44000000</color>
+    <color name="fast_scroll_thumb_pressed">#88000000</color>
+    <color name="fast_scroll_track">#22000000</color>
     <color name="transparent">#00000000</color>
     <color name="warn">#FF7070</color>
     <color name="win">#5DA33A</color>
