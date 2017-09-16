@@ -72,7 +72,11 @@ class FullTournamentUtilsTest : BaseTest() {
         fullTournamentUtils.prepareFullTournament(fullTournament1, callback)
         assertNotNull(ft)
         assertEquals(fullTournament1, ft)
-//        assertEquals(, ft?.players?.get(0)?.name)
+
+        assertEquals("666", ft?.players?.get(0)?.name)
+        assertEquals("ALLNITTE", ft?.players?.get(1)?.name)
+        assertEquals("asianson", ft?.players?.get(2)?.name)
+        assertEquals("Zorc", ft?.players?.get(42)?.name)
     }
 
     @Test
@@ -89,6 +93,12 @@ class FullTournamentUtilsTest : BaseTest() {
         fullTournamentUtils.prepareFullTournament(fullTournament2, callback)
         assertNotNull(ft)
         assertEquals(fullTournament2, ft)
+
+        assertEquals("1stChristian", ft?.players?.get(0)?.name)
+        assertEquals("4AM", ft?.players?.get(1)?.name)
+        assertEquals("Ace", ft?.players?.get(2)?.name)
+        assertEquals("Zbert", ft?.players?.get(98)?.name)
+        assertEquals("Zoap", ft?.players?.get(99)?.name)
     }
 
     @Test
