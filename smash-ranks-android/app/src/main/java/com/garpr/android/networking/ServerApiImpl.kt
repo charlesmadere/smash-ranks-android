@@ -1,6 +1,5 @@
 package com.garpr.android.networking
 
-import com.garpr.android.misc.Constants
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.*
@@ -37,7 +36,7 @@ class ServerApiImpl(
 
             override fun onFailure(call: Call<HeadToHead>, t: Throwable) {
                 mTimber.e(TAG, "getHeadToHead ($region) ($playerId) ($opponentId) failed", t)
-                listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                listener.failure()
             }
         })
     }
@@ -58,7 +57,7 @@ class ServerApiImpl(
 
             override fun onFailure(call: Call<MatchesBundle>, t: Throwable) {
                 mTimber.e(TAG, "getMatches ($region) ($playerId) failed", t)
-                listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                listener.failure()
             }
         })
     }
@@ -79,7 +78,7 @@ class ServerApiImpl(
 
             override fun onFailure(call: Call<FullPlayer>, t: Throwable) {
                 mTimber.e(TAG, "getPlayer ($region) ($playerId) failed", t)
-                listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                listener.failure()
             }
         })
     }
@@ -104,7 +103,7 @@ class ServerApiImpl(
 
             override fun onFailure(call: Call<PlayersBundle>, t: Throwable) {
                 mTimber.e(TAG, "getPlayers ($region) failed", t)
-                listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                listener.failure()
             }
         })
     }
@@ -130,7 +129,7 @@ class ServerApiImpl(
 
             override fun onFailure(call: Call<RankingsBundle>, t: Throwable) {
                 mTimber.e(TAG, "getRankings ($region) failed", t)
-                listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                listener.failure()
             }
         })
     }
@@ -144,7 +143,7 @@ class ServerApiImpl(
                     val body = if (response.isSuccessful) response.body() else null
 
                     if (body == null) {
-                        mTimber.e(TAG, "getRegions($endpoint) failed (code ${response.code()})")
+                        mTimber.e(TAG, "getRegions ($endpoint) failed (code ${response.code()})")
                         listener.failure(response.code())
                     } else {
                         listener.success(body)
@@ -152,8 +151,8 @@ class ServerApiImpl(
                 }
 
                 override fun onFailure(call: Call<RegionsBundle>?, t: Throwable?) {
-                    mTimber.e(TAG, "getRegions($endpoint) failed", t)
-                    listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                    mTimber.e(TAG, "getRegions ($endpoint) failed", t)
+                    listener.failure()
                 }
             })
         }
@@ -176,7 +175,7 @@ class ServerApiImpl(
 
             override fun onFailure(call: Call<FullTournament>, t: Throwable) {
                 mTimber.e(TAG, "getTournament ($region) ($tournamentId) failed", t)
-                listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                listener.failure()
             }
         })
     }
@@ -197,7 +196,7 @@ class ServerApiImpl(
 
             override fun onFailure(call: Call<TournamentsBundle>, t: Throwable) {
                 mTimber.e(TAG, "getTournaments ($region) failed", t)
-                listener.failure(Constants.ERROR_CODE_UNKNOWN)
+                listener.failure()
             }
         })
     }
