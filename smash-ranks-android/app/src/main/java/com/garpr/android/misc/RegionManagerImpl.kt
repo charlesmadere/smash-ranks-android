@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.ContextWrapper
 import com.garpr.android.misc.RegionManager.OnRegionChangeListener
 import com.garpr.android.models.Region
-import com.garpr.android.models.SimpleDate
-import com.garpr.android.preferences.Preference
+import com.garpr.android.preferences.GeneralPreferenceStore
+import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import java.lang.ref.WeakReference
 
 class RegionManagerImpl(
-        private val mRankingsDate: Preference<SimpleDate>,
-        private val mRegion: Preference<Region>,
+        private val mGeneralPreferenceStore: GeneralPreferenceStore,
+        private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
         private val mTimber: Timber
 ) : RegionManager {
 
@@ -38,7 +38,7 @@ class RegionManagerImpl(
             }
 
             if (addListener) {
-                mListeners.add(WeakReference<OnRegionChangeListener>(listener))
+                mListeners.add(WeakReference(listener))
             }
         }
     }
@@ -58,7 +58,8 @@ class RegionManagerImpl(
             }
         }
 
-        return mRegion.get() ?: throw IllegalStateException("region is null")
+        return mGeneralPreferenceStore.currentRegion.get() ?: throw IllegalStateException(
+                "currentRegion preference is null!")
     }
 
     private fun notifyListeners() {
@@ -94,9 +95,11 @@ class RegionManagerImpl(
     }
 
     override fun setRegion(region: Region) {
-        mTimber.d(TAG, "old region is \"${mRegion.get()}\", new region is \"$region\"")
-        mRankingsDate.delete()
-        mRegion.set(region)
+        mTimber.d(TAG, "old region is \"${mGeneralPreferenceStore.currentRegion.get()}\", "
+                + "new region is \"$region\"")
+        mRankingsPollingPreferenceStore.lastPoll.delete()
+        mRankingsPollingPreferenceStore.rankingsDate.delete()
+        mGeneralPreferenceStore.currentRegion.set(region)
         notifyListeners()
     }
 
