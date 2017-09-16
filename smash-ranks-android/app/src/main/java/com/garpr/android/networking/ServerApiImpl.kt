@@ -1,5 +1,6 @@
 package com.garpr.android.networking
 
+import com.garpr.android.misc.FullTournamentUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.*
@@ -9,6 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ServerApiImpl(
+        private val mFullTournamentUtils: FullTournamentUtils,
         private val mGarPrApi: GarPrApi,
         private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
         private val mRegionManager: RegionManager,
@@ -165,7 +167,11 @@ class ServerApiImpl(
         mGarPrApi.getTournament(url).enqueue(object : Callback<FullTournament> {
             override fun onResponse(call: Call<FullTournament>, response: Response<FullTournament>) {
                 if (response.isSuccessful) {
-                    listener.success(response.body())
+                    mFullTournamentUtils.prepareFullTournament(response.body(), object : FullTournamentUtils.Callback {
+                        override fun onComplete(fullTournament: FullTournament?) {
+                            listener.success(fullTournament)
+                        }
+                    })
                 } else {
                     mTimber.e(TAG, "getTournament ($region) ($tournamentId) failed " +
                             "(code ${response.code()})")
