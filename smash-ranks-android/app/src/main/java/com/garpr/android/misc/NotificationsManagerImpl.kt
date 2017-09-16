@@ -57,13 +57,13 @@ class NotificationsManagerImpl(
         mApplication.notificationManagerCompat.cancelAll()
     }
 
-    override fun rankingsUpdated(context: Context) {
-        val builder = mImpl.createBuilder(context)
+    override fun rankingsUpdated() {
+        val builder = mImpl.createBuilder(mApplication)
 
-        builder.setContentIntent(PendingIntent.getActivity(context, 0,
-                HomeActivity.getLaunchIntent(context), PendingIntent.FLAG_UPDATE_CURRENT))
+        builder.setContentIntent(PendingIntent.getActivity(mApplication, 0,
+                HomeActivity.getLaunchIntent(mApplication), PendingIntent.FLAG_UPDATE_CURRENT))
 
-        builder.setContentText(context.getString(R.string.x_rankings_have_been_updated,
+        builder.setContentText(mApplication.getString(R.string.x_rankings_have_been_updated,
                 mRegionManager.getRegion().displayName))
 
         if (mRankingsPollingPreferenceStore.vibrationEnabled.get() == true) {

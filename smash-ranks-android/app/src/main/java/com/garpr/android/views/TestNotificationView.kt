@@ -38,7 +38,7 @@ class TestNotificationView : SimplePreferenceView, DialogInterface.OnClickListen
 
         when (which) {
             0 -> mNotificationsManager.cancelAll()
-            1 -> mNotificationsManager.rankingsUpdated(context)
+            1 -> mNotificationsManager.rankingsUpdated()
             else -> throw RuntimeException("illegal which: " + which)
         }
     }

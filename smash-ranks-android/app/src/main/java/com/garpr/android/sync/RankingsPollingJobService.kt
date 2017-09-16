@@ -108,7 +108,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
             mTimber.e(TAG, "old rankings date is null! canceling any notifications")
             mNotificationsManager.cancelAll()
         } else if (newRankingsDate.happenedAfter(oldRankingsDate)) {
-            mNotificationsManager.rankingsUpdated(this)
+            mNotificationsManager.rankingsUpdated()
         }
     }
 
