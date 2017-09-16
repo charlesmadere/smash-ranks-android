@@ -266,12 +266,6 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    ThreadUtils providesThreadUtils(final DeviceUtils deviceUtils) {
-        return new ThreadUtilsImpl(deviceUtils.hasLowRam());
-    }
-
-    @Provides
-    @Singleton
     Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
         return new TimberImpl(deviceUtils.hasLowRam(), crashlyticsWrapper);
     }
