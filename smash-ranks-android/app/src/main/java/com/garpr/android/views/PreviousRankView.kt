@@ -1,6 +1,7 @@
 package com.garpr.android.views
 
 import android.content.Context
+import android.support.annotation.AttrRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.AppCompatImageView
@@ -18,10 +19,10 @@ class PreviousRankView : AppCompatImageView, BaseAdapterView<RankedPlayer> {
     lateinit protected var mPreviousRankUtils: PreviousRankUtils
 
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context,
-            attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -34,7 +35,7 @@ class PreviousRankView : AppCompatImageView, BaseAdapterView<RankedPlayer> {
     }
 
     override fun setContent(content: RankedPlayer) {
-        val info = mPreviousRankUtils.checkRanking(content)
+        val info = mPreviousRankUtils.getRankInfo(content)
 
         if (info == null) {
             setImageDrawable(null)

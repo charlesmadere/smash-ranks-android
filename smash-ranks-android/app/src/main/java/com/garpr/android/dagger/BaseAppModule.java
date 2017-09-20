@@ -27,12 +27,13 @@ import com.garpr.android.misc.PlayerToolbarManager;
 import com.garpr.android.misc.PlayerToolbarManagerImpl;
 import com.garpr.android.misc.PreviousRankUtils;
 import com.garpr.android.misc.PreviousRankUtilsImpl;
+import com.garpr.android.misc.RankingsNotificationsUtils;
+import com.garpr.android.misc.RankingsNotificationsUtilsImpl;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ShareUtilsImpl;
 import com.garpr.android.misc.ThreadUtils;
-import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.misc.TournamentToolbarManager;
@@ -206,6 +207,12 @@ public abstract class BaseAppModule {
     @Singleton
     PreviousRankUtils providesPreviousRankUtils() {
         return new PreviousRankUtilsImpl();
+    }
+
+    @Provides
+    @Singleton
+    RankingsNotificationsUtils providesRankingNotificationsUtils() {
+        return new RankingsNotificationsUtilsImpl();
     }
 
     @Provides

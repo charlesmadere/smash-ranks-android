@@ -3,10 +3,7 @@ package com.garpr.android.sync
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
 import com.garpr.android.App
-import com.garpr.android.misc.DeviceUtils
-import com.garpr.android.misc.NotificationsManager
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.Timber
+import com.garpr.android.misc.*
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.models.SimpleDate
 import com.garpr.android.networking.ApiListener
@@ -25,6 +22,9 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
     @Inject
     lateinit protected var mNotificationsManager: NotificationsManager
+
+    @Inject
+    lateinit protected var mRankingsNotificationsUtils: RankingsNotificationsUtils
 
     @Inject
     lateinit protected var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
@@ -90,25 +90,23 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     }
 
     override fun success(`object`: RankingsBundle?) {
-        if (`object` == null) {
-            mTimber.d(TAG, "canceling any notifications, received a null rankings bundle")
-            mNotificationsManager.cancelAll()
-            return
-        }
+        val info = mRankingsNotificationsUtils.getNotificationInfo(`object`,
+                mRankingsPollingPreferenceStore.rankingsDate.get(), mOldRankingsDate)
 
-        val newRankingsDate = mRankingsPollingPreferenceStore.rankingsDate.get()
-        val oldRankingsDate = mOldRankingsDate
+        when (info) {
+            RankingsNotificationsUtils.Info.CANCEL -> {
+                mTimber.d(TAG, "canceling any notifications...")
+                mNotificationsManager.cancelAll()
+            }
 
-        if (newRankingsDate == null) {
-            // should be impossible
-            mTimber.e(TAG, "new rankings date is null! canceling any notifications")
-            mNotificationsManager.cancelAll()
-        } else if (oldRankingsDate == null) {
-            // should be impossible
-            mTimber.e(TAG, "old rankings date is null! canceling any notifications")
-            mNotificationsManager.cancelAll()
-        } else if (newRankingsDate.happenedAfter(oldRankingsDate)) {
-            mNotificationsManager.rankingsUpdated()
+            RankingsNotificationsUtils.Info.NO_CHANGE -> {
+                mTimber.d(TAG, "not changing any notifications")
+            }
+
+            RankingsNotificationsUtils.Info.SHOW -> {
+                mTimber.d(TAG, "showing notification...")
+                mNotificationsManager.rankingsUpdated()
+            }
         }
     }
 

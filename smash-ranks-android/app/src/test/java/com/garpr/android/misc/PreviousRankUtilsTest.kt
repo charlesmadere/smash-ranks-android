@@ -47,32 +47,32 @@ class PreviousRankUtilsTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testCheckRankingWithDecreasedRanking() {
-        assertEquals(mPreviousRankUtils.checkRanking(mDecreased), PreviousRankUtils.Info.DECREASE)
+    fun testGetRankInfoWithDecreasedRanking() {
+        assertEquals(PreviousRankUtils.Info.DECREASE, mPreviousRankUtils.getRankInfo(mDecreased))
     }
 
     @Test
     @Throws(Exception::class)
-    fun testCheckRankingWithIncreasedRanking() {
-        assertEquals(mPreviousRankUtils.checkRanking(mIncreased), PreviousRankUtils.Info.INCREASE)
+    fun testGetRankInfoWithIncreasedRanking() {
+        assertEquals(PreviousRankUtils.Info.INCREASE, mPreviousRankUtils.getRankInfo(mIncreased))
     }
 
     @Test
     @Throws(Exception::class)
-    fun testCheckRankingWithNull() {
-        assertNull(mPreviousRankUtils.checkRanking(null))
+    fun testGetRankInfoWithNull() {
+        assertNull(mPreviousRankUtils.getRankInfo(null))
     }
 
     @Test
     @Throws(Exception::class)
-    fun testCheckRankingWithNullRanking() {
-        assertNull(mPreviousRankUtils.checkRanking(mNull))
+    fun testGetRankInfoWithNullRanking() {
+        assertNull(mPreviousRankUtils.getRankInfo(mNull))
     }
 
     @Test
     @Throws(Exception::class)
-    fun testCheckRankingWithUnchangedRanking() {
-        assertNull(mPreviousRankUtils.checkRanking(mUnchanged))
+    fun testGetRankInfoWithUnchangedRanking() {
+        assertNull(mPreviousRankUtils.getRankInfo(mUnchanged))
     }
 
 }
