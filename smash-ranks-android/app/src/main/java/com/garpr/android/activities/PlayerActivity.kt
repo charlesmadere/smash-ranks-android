@@ -175,57 +175,58 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         fetchPlayerMatchesBundle()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miAddToFavorites -> {
                 addToFavorites()
-                return true
+                true
             }
 
             R.id.miAliases -> {
                 showAliases()
-                return true
+                true
             }
 
             R.id.miFilterAll -> {
                 filter(null)
-                return true
+                true
             }
 
             R.id.miFilterLosses -> {
                 filter(Match.Result.LOSE)
-                return true
+                true
             }
 
             R.id.miFilterWins -> {
                 filter(Match.Result.WIN)
-                return true
+                true
             }
 
             R.id.miRemoveFromFavorites -> {
                 mFavoritePlayersManager.removePlayer(mPlayerId)
-                return true
+                true
             }
 
             R.id.miSetAsYourIdentity -> {
                 val player = fullPlayer ?: throw RuntimeException("fullPlayer is null")
                 mIdentityManager.setIdentity(player, mRegionManager.getRegion(this))
-                return true
+                true
             }
 
             R.id.miShare -> {
                 share()
-                return true
+                true
             }
 
             R.id.miViewYourselfVsThisOpponent -> {
                 viewYourselfVsThisOpponent()
-                return true
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onRefresh() {
         fetchPlayerMatchesBundle()

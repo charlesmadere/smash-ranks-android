@@ -12,7 +12,6 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
@@ -146,7 +145,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         if (intent.hasExtra(EXTRA_OPPONENT_NAME) && intent.hasExtra(EXTRA_PLAYER_NAME)) {
             mOpponentName = intent.getStringExtra(EXTRA_OPPONENT_NAME)
             mPlayerName = intent.getStringExtra(EXTRA_PLAYER_NAME)
-            setSubtitle()
         }
 
         fetchHeadToHead()
@@ -178,38 +176,39 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miFilterAll -> {
                 filter(null)
-                return true
+                true
             }
 
             R.id.miFilterLosses -> {
                 filter(Match.Result.LOSE)
-                return true
+                true
             }
 
             R.id.miFilterWins -> {
                 filter(Match.Result.WIN)
-                return true
+                true
             }
 
             R.id.miViewOpponent -> {
                 startActivity(PlayerActivity.getLaunchIntent(this, mOpponentId,
                         mOpponentName, mRegionManager.getRegion(this)))
-                return true
+                true
             }
 
             R.id.miViewPlayer -> {
                 startActivity(PlayerActivity.getLaunchIntent(this, mPlayerId,
                         mPlayerName, mRegionManager.getRegion(this)))
-                return true
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onRefresh() {
         fetchHeadToHead()
@@ -235,7 +234,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
             }
         }
 
-        setSubtitle()
         invalidateOptionsMenu()
     }
 
@@ -257,17 +255,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     }
 
     override val showUpNavigation = true
-
-    private fun setSubtitle() {
-        if (subtitle.isNullOrBlank()) {
-            val playerName = mPlayerName
-            val opponentName = mOpponentName
-
-            if (playerName?.isNotBlank() == true && opponentName?.isNotBlank() == true) {
-                subtitle = getString(R.string.x_vs_y, playerName, opponentName)
-            }
-        }
-    }
 
     override fun success(`object`: HeadToHead?) {
         mHeadToHead = `object`

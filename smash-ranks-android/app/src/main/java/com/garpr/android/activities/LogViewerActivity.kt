@@ -60,17 +60,18 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miClearLog -> {
                 mTimber.clearEntries()
                 fetchTimberEntries()
-                return true
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onRefresh() {
         fetchTimberEntries()

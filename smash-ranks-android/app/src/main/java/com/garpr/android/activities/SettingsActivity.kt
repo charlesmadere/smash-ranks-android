@@ -173,11 +173,10 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun refresh() {
+        mRegionPreferenceView.refresh()
         mThemePreferenceView.refresh()
         mIdentityPreferenceView.refresh()
         mDeleteFavoritePlayersPreferenceView.refresh()
-
-        mRegionPreferenceView.refresh()
 
         mUseRankingsPolling.refresh()
         mPollFrequency.refresh()

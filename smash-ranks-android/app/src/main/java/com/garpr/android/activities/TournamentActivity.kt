@@ -116,23 +116,24 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         fetchFullTournament()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miShare -> {
                 val fullTournament = mFullTournament ?: throw RuntimeException()
                 mShareUtils.shareTournament(this, fullTournament)
-                return true
+                true
             }
 
             R.id.miViewTournamentPage -> {
                 val fullTournament = mFullTournament ?: throw RuntimeException()
                 mShareUtils.openUrl(this, fullTournament.url)
-                return true
+                true
             }
-        }
 
-        return super.onOptionsItemSelected(item)
-    }
+             else -> {
+                 super.onOptionsItemSelected(item)
+             }
+        }
 
     override fun onRefresh() {
         fetchFullTournament()

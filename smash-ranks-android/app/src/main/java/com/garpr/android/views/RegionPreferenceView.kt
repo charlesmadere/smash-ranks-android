@@ -47,6 +47,7 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         mRegionManager.removeListener(this)
     }
 
@@ -58,7 +59,7 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
         }
 
         setOnClickListener(this)
-        titleText = resources.getText(R.string.set_your_region)
+        titleText = resources.getText(R.string.region)
 
         if (isInEditMode) {
             return

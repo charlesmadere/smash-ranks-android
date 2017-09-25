@@ -160,16 +160,17 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override fun onMenuItemActionExpand(item: MenuItem) = true
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miSave -> {
                 save()
-                return true
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onQueryTextChange(newText: String): Boolean {
         search(newText)

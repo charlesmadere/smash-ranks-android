@@ -121,16 +121,17 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miSave -> {
                 save()
-                return true
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onRefresh() {
         fetchRegionsBundle()

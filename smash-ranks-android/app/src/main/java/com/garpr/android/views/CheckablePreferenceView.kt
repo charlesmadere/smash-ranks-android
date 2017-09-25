@@ -7,7 +7,6 @@ import android.os.Parcelable
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.support.v4.view.ViewCompat
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
@@ -97,13 +96,13 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
         val layoutInflater = LayoutInflater.from(context)
 
         when (mCheckableType) {
-            CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(R.layout.view_checkbox_preference,
-                    this)
+            CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(
+                    R.layout.view_checkbox_preference, this)
 
             CHECKABLE_TYPE_SWITCH_COMPAT -> layoutInflater.inflate(
                     R.layout.view_switch_compat_preference, this)
 
-            else -> throw RuntimeException("mCheckableType is an illegal value: " + mCheckableType)
+            else -> throw RuntimeException("mCheckableType is an illegal value: $mCheckableType")
         }
 
         setOnClickListener(this)
@@ -113,8 +112,7 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
             mDescription.text = mEnabledDescriptionText
         }
 
-        if (TextUtils.isEmpty(mDisabledDescriptionText) || TextUtils.isEmpty(
-                mEnabledDescriptionText)) {
+        if (mDisabledDescriptionText.isNullOrBlank() || mEnabledDescriptionText.isNullOrBlank()) {
             val layoutParams = mTitle.layoutParams as RelativeLayout.LayoutParams
             layoutParams.addRule(RelativeLayout.CENTER_VERTICAL)
             mTitle.layoutParams = layoutParams

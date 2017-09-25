@@ -60,6 +60,7 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         mIdentityManager.removeListener(this)
     }
 
@@ -71,7 +72,7 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
         }
 
         setOnClickListener(this)
-        titleText = resources.getText(R.string.set_your_identity)
+        titleText = resources.getText(R.string.identity)
         descriptionText = resources.getText(R.string.easily_find_yourself_throughout_the_app)
 
         if (isInEditMode) {
@@ -94,7 +95,7 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
         val player = mIdentityManager.identity
 
         if (player == null) {
-            titleText = resources.getText(R.string.set_your_identity)
+            titleText = resources.getText(R.string.identity)
             descriptionText = resources.getText(R.string.easily_find_yourself_throughout_the_app)
         } else {
             titleText = resources.getText(R.string.delete_identity)

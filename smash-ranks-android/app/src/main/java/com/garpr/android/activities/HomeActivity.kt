@@ -129,38 +129,39 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miActivityRequirements -> {
                 showActivityRequirements()
-                return true
+                true
             }
 
             R.id.miSettings -> {
                 startActivity(SettingsActivity.getLaunchIntent(this))
-                return true
+                true
             }
 
             R.id.miShare -> {
                 share()
-                return true
+                true
             }
 
             R.id.miViewAllPlayers -> {
                 startActivity(PlayersActivity.getLaunchIntent(this))
-                return true
+                true
             }
 
             R.id.miViewYourself -> {
                 val identity = mIdentityManager.identity ?: throw NullPointerException("identity is null")
                 startActivity(PlayerActivity.getLaunchIntent(this, identity,
                         mRegionManager.getRegion(this)))
-                return true
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onRankingsBundleFetched(layout: RankingsLayout) {
         val region = mRegionManager.getRegion(this)
