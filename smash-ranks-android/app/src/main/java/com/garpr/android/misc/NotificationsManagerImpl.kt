@@ -14,7 +14,8 @@ import com.garpr.android.preferences.RankingsPollingPreferenceStore
 class NotificationsManagerImpl(
         private val mApplication: Application,
         private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-        private val mRegionManager: RegionManager
+        private val mRegionManager: RegionManager,
+        private val mTimber: Timber
 ) : NotificationsManager {
 
     private val mImpl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Api26Impl() else BaseImpl()
@@ -51,9 +52,11 @@ class NotificationsManagerImpl(
     companion object {
         private const val RANKINGS_CHANNEL = "rankings"
         private const val RANKINGS_ID = 1001
+        private const val TAG = "NotificationsManagerImpl"
     }
 
     override fun cancelAll() {
+        mTimber.d(TAG, "canceling all notifications")
         mApplication.notificationManagerCompat.cancelAll()
     }
 
@@ -81,6 +84,7 @@ class NotificationsManagerImpl(
                     .setWhen(it.date.time)
         }
 
+        mTimber.d(TAG, "showing rankings updated notification")
         show(RANKINGS_ID, builder)
     }
 

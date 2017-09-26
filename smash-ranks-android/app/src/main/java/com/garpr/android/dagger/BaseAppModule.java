@@ -190,9 +190,9 @@ public abstract class BaseAppModule {
     @Singleton
     NotificationsManager providesNotificationManager(
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final RegionManager regionManager) {
+            final RegionManager regionManager, final Timber timber) {
         return new NotificationsManagerImpl(mApplication, rankingsPollingPreferenceStore,
-                regionManager);
+                regionManager, timber);
     }
 
     @Provides
@@ -211,8 +211,11 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    RankingsNotificationsUtils providesRankingNotificationsUtils() {
-        return new RankingsNotificationsUtilsImpl();
+    RankingsNotificationsUtils providesRankingNotificationsUtils(final DeviceUtils deviceUtils,
+            final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
+            final Timber timber) {
+        return new RankingsNotificationsUtilsImpl(deviceUtils, rankingsPollingPreferenceStore,
+                timber);
     }
 
     @Provides

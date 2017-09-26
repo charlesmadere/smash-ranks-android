@@ -36,9 +36,9 @@ class TournamentPagerAdapter(
     override fun getCount() = 2
 
     override fun getPageTitle(position: Int): CharSequence {
-        when (position) {
-            POSITION_MATCHES -> return mContext.getString(R.string.matches)
-            POSITION_PLAYERS -> return mContext.getString(R.string.players)
+        return when (position) {
+            POSITION_MATCHES -> mContext.getString(R.string.matches)
+            POSITION_PLAYERS -> mContext.getString(R.string.players)
             else -> throw RuntimeException("illegal position: " + position)
         }
     }
@@ -70,7 +70,7 @@ class TournamentPagerAdapter(
     }
 
     override fun search(query: String?) {
-        for (i in 0..mPages.size() - 1) {
+        for (i in 0 until mPages.size()) {
             val reference = mPages.get(i)
 
             if (reference != null) {
