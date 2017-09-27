@@ -24,9 +24,8 @@ class BuildInfoPreferenceView : SimplePreferenceView {
         super.onFinishInflate()
 
         isEnabled = false
-        titleText = resources.getString(R.string.build_info)
-        descriptionText = resources.getString(R.string.build_info_format,
-                BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+        titleText = resources.getString(R.string.version_x, BuildConfig.VERSION_NAME)
+        descriptionText = resources.getString(R.string.build_x, BuildConfig.VERSION_CODE)
     }
 
 }

@@ -53,8 +53,8 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
         val pollStatus = mPollStatus
 
         if (pollStatus != null) {
-            mPollStatus = pollStatus.copy(oldDate = pollStatus.oldDate,
-                    newDate = pollStatus.newDate, proceed = pollStatus.proceed, retry = true)
+            mPollStatus = pollStatus.copy(oldRankingsDate = pollStatus.oldRankingsDate,
+                    proceed = pollStatus.proceed, retry = true)
         }
     }
 
@@ -82,15 +82,15 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
         val info = mRankingsNotificationsUtils.getNotificationInfo(mPollStatus, `object`)
 
         when (info) {
-            RankingsNotificationsUtils.Info.CANCEL -> {
+            RankingsNotificationsUtils.NotificationInfo.CANCEL -> {
                 mNotificationsManager.cancelAll()
             }
 
-            RankingsNotificationsUtils.Info.NO_CHANGE -> {
+            RankingsNotificationsUtils.NotificationInfo.NO_CHANGE -> {
                 mTimber.d(TAG, "not changing any notifications")
             }
 
-            RankingsNotificationsUtils.Info.SHOW -> {
+            RankingsNotificationsUtils.NotificationInfo.SHOW -> {
                 mNotificationsManager.rankingsUpdated()
             }
         }

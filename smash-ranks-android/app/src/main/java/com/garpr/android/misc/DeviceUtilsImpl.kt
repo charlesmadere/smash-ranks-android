@@ -7,20 +7,17 @@ import com.garpr.android.extensions.activityManager
 import com.garpr.android.extensions.connectivityManager
 
 class DeviceUtilsImpl(
-        private val mApplication: Application
+        private val application: Application
 ) : DeviceUtils {
 
-    override fun hasLowRam(): Boolean {
+    override fun hasLowRam() =
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return true
+            true
         } else {
-            return ActivityManagerCompat.isLowRamDevice(mApplication.activityManager)
+            ActivityManagerCompat.isLowRamDevice(application.activityManager)
         }
-    }
 
-    override fun hasNetworkConnection(): Boolean {
-        val networkInfo = mApplication.connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
-    }
+    override fun hasNetworkConnection() =
+        application.connectivityManager.activeNetworkInfo?.isConnected == true
 
 }

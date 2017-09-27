@@ -5,17 +5,16 @@ import com.garpr.android.models.SimpleDate
 
 interface RankingsNotificationsUtils {
 
-    fun getNotificationInfo(pollStatus: PollStatus?, rankingsBundle: RankingsBundle?): Info
+    fun getNotificationInfo(pollStatus: PollStatus?, rankingsBundle: RankingsBundle?): NotificationInfo
 
     fun getPollStatus(): PollStatus
 
-    enum class Info {
+    enum class NotificationInfo {
         CANCEL, NO_CHANGE, SHOW
     }
 
     data class PollStatus constructor(
-            val oldDate: SimpleDate?,
-            val newDate: SimpleDate?,
+            val oldRankingsDate: SimpleDate?,
             val proceed: Boolean,
             val retry: Boolean
     )

@@ -12,7 +12,7 @@
             android:layout_width="match_parent">
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
-                style="@style/RecyclerView" />
+                style="@style/RecyclerView.WithSections" />
             <LinearLayout
                 style="@style/RecyclerViewMessage.Empty">
                 <TextView

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.garpr.android.misc.CrashlyticsWrapper;
+import com.garpr.android.misc.DeviceUtils;
+import com.garpr.android.misc.TestDeviceUtilsImpl;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
@@ -58,6 +60,12 @@ public class TestAppModule extends BaseAppModule {
                 // intentionally empty
             }
         };
+    }
+
+    @Provides
+    @Singleton
+    DeviceUtils providesDeviceUtils() {
+        return new TestDeviceUtilsImpl();
     }
 
     @Provides

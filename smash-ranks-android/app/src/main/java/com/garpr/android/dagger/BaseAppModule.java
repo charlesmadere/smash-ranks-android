@@ -8,7 +8,6 @@ import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeepLinkUtils;
 import com.garpr.android.misc.DeepLinkUtilsImpl;
 import com.garpr.android.misc.DeviceUtils;
-import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.FavoritePlayersManagerImpl;
 import com.garpr.android.misc.FirebaseApiWrapper;
@@ -93,12 +92,6 @@ public abstract class BaseAppModule {
     @Singleton
     DeepLinkUtils providesDeepLinkUtils(final RegionManager regionManager, final Timber timber) {
         return new DeepLinkUtilsImpl(regionManager, timber);
-    }
-
-    @Provides
-    @Singleton
-    DeviceUtils providesDeviceUtils() {
-        return new DeviceUtilsImpl(mApplication);
     }
 
     @Provides

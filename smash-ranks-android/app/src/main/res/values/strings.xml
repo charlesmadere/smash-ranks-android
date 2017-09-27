@@ -10,13 +10,11 @@
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
-    <string name="build_info">Build information</string>
-    <string name="build_info_format">Version %1$s (Build %2$d)</string>
+    <string name="build_x">Build %1$d</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_all">Cancel all</string>
     <string name="charles_twitter_url">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
-    <string name="close">Close</string>
     <string name="contribute_your_changes">Contribute your changes!</string>
     <string name="daily">Daily</string>
     <string name="day">Day</string>
@@ -27,7 +25,6 @@
     <string name="x_em_dash_y">%1$s &#8211; %2$s</string>
     <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
-    <string name="error_loading_launch_data">Error loading launch data!</string>
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
@@ -128,6 +125,7 @@
     <string name="under_construction">Under construction!</string>
     <string name="x_updated_y">%1$s updated %2$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
+    <string name="version_x">Version %1$s</string>
     <string name="vibrate">Vibrate</string>
     <string name="view">View</string>
     <string name="view_all_players">View all players</string>
