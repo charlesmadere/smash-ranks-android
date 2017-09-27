@@ -8,6 +8,7 @@ import android.support.annotation.AttrRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
+import android.widget.LinearLayout
 
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
@@ -15,7 +16,7 @@ import com.garpr.android.models.WinsLosses
 
 import java.text.NumberFormat
 
-class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
+class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
     private var mContent: WinsLosses? = null
     private val mNumberFormat: NumberFormat = NumberFormat.getIntegerInstance()
@@ -125,8 +126,8 @@ class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
     override fun setContent(content: WinsLosses) {
         mContent = content
 
-        text = resources.getString(R.string.x_em_dash_y, mNumberFormat.format(content.wins),
-                mNumberFormat.format(content.losses))
+//        text = resources.getString(R.string.x_em_dash_y, mNumberFormat.format(content.wins),
+//                mNumberFormat.format(content.losses))
 
         calculateRects()
         invalidate()

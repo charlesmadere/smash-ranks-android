@@ -222,4 +222,34 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="WinsLossesViewColumn">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="WinsLossesViewPlayerName">
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/root_padding</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="WinsLossesViewWinLossCount">
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_xxxlarge</item>
+    </style>
+
 </resources>

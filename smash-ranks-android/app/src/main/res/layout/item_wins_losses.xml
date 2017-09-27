@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.WinsLossesView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:gravity="center"
-    android:textColor="?android:attr/textColorPrimary"
-    android:textSize="@dimen/text_size_xxxlarge"
-    style="@style/ListItem" />
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="@dimen/wins_losses_height"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+    <android.support.v4.widget.Space
+        android:layout_height="match_parent"
+        android:layout_width="@dimen/root_padding" />
+    <LinearLayout
+        style="@style/WinsLossesViewColumn">
+        <TextView
+            tools:text="8"
+            style="@style/WinsLossesViewWinLossCount" />
+        <TextView
+            tools:text="PewPewU"
+            style="@style/WinsLossesViewPlayerName" />
+    </LinearLayout>
+    <android.support.v4.widget.Space
+        android:layout_height="match_parent"
+        android:layout_width="@dimen/root_padding" />
+    <LinearLayout
+        style="@style/WinsLossesViewColumn">
+        <TextView
+            tools:text="5"
+            style="@style/WinsLossesViewWinLossCount" />
+        <TextView
+            tools:text="Shroomed"
+            style="@style/WinsLossesViewPlayerName" />
+    </LinearLayout>
+    <android.support.v4.widget.Space
+        android:layout_height="match_parent"
+        android:layout_width="@dimen/root_padding" />
+</com.garpr.android.views.WinsLossesView>
