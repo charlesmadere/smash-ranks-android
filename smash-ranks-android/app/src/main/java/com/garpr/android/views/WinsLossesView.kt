@@ -17,12 +17,12 @@ import java.text.NumberFormat
 
 class WinsLossesView : AppCompatTextView, BaseAdapterView<WinsLosses> {
 
-    private val mNumberFormat: NumberFormat = NumberFormat.getIntegerInstance()
-    lateinit private var mLossesPaint: Paint
-    lateinit private var mWinsPaint: Paint
-    lateinit private var mLossesRect: Rect
-    lateinit private var mWinsRect: Rect
     private var mContent: WinsLosses? = null
+    private val mNumberFormat: NumberFormat = NumberFormat.getIntegerInstance()
+    private lateinit var mLossesPaint: Paint
+    private lateinit var mLossesRect: Rect
+    private lateinit var mWinsPaint: Paint
+    private lateinit var mWinsRect: Rect
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
