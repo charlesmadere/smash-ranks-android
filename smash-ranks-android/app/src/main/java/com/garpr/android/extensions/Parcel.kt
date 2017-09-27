@@ -202,3 +202,31 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
 
     writeBundle(bundle)
 }
+
+fun Parcel.readStringMap(): Map<String, String>? {
+    val bundle = readBundle(String::class.java.classLoader) ?: return null
+    val map = mutableMapOf<String, String>()
+
+    for (key in bundle.keySet()) {
+        map.put(key, bundle.getString(key))
+    }
+
+    return map
+}
+
+fun Parcel.writeStringMap(map: Map<String, String>?) {
+    val size = map?.size ?: 0
+
+    if (size == 0) {
+        writeBundle(null)
+        return
+    }
+
+    val bundle = Bundle(size)
+
+    for ((key, value) in map!!) {
+        bundle.putString(key, value)
+    }
+
+    writeBundle(bundle)
+}
