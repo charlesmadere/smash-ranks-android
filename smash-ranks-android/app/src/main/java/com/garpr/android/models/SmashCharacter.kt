@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.google.gson.annotations.SerializedName
 
-enum class MeleeCharacter : Parcelable {
+enum class SmashCharacter : Parcelable {
 
     @SerializedName("bow")
     BOWSER,

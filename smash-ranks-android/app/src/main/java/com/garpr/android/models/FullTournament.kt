@@ -2,9 +2,7 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsPlayerList
-import com.garpr.android.extensions.writeAbsPlayerList
+import com.garpr.android.extensions.*
 import com.google.gson.annotations.SerializedName
 
 class FullTournament(
@@ -14,8 +12,8 @@ class FullTournament(
         name: String,
         @SerializedName("players") val players: List<AbsPlayer>? = null,
         @SerializedName("matches") val matches: List<Match>? = null,
-        @SerializedName("rawId") val rawId: String?,
-        @SerializedName("url") val url: String?
+        @SerializedName("rawId") val rawId: String? = null,
+        @SerializedName("url") val url: String? = null
 ) : AbsTournament(
         regions,
         date,
@@ -54,8 +52,8 @@ class FullTournament(
     ) : Parcelable {
         companion object {
             @JvmField
-            val CREATOR = createParcel { Match(it.readInt() != 0, it.readString(),
-                    it.readString(), it.readString(), it.readString(), it.readString()) }
+            val CREATOR = createParcel { Match(it.readBoolean(), it.readString(), it.readString(),
+                    it.readString(), it.readString(), it.readString()) }
         }
 
         override fun equals(other: Any?): Boolean {
@@ -67,7 +65,7 @@ class FullTournament(
         override fun describeContents() = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
-            dest.writeInt(if (isExcluded) 1 else 0)
+            dest.writeBoolean(isExcluded)
             dest.writeString(loserId)
             dest.writeString(loserName)
             dest.writeString(matchId)

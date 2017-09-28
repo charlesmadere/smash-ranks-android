@@ -52,8 +52,12 @@ import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.preferences.RankingsPollingPreferenceStoreImpl;
+import com.garpr.android.preferences.SmashRosterPreferenceStore;
+import com.garpr.android.preferences.SmashRosterPreferenceStoreImpl;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.sync.RankingsPollingSyncManagerImpl;
+import com.garpr.android.sync.SmashRosterSyncManager;
+import com.garpr.android.sync.SmashRosterSyncManagerImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -71,6 +75,7 @@ public abstract class BaseAppModule {
     private static final String FAVORITE_PLAYERS_KEY_VALUE_STORE = "FAVORITE_PLAYERS_KEY_VALUE_STORE";
     private static final String GENERAL_KEY_VALUE_STORE = "GENERAL_KEY_VALUE_STORE";
     private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
+    private static final String SMASH_ROSTER_KEY_VALUE_STORE = "SMASH_ROSTER_KEY_VALUE_STORE";
 
     private final Application mApplication;
     private final Region mDefaultRegion;
@@ -265,6 +270,28 @@ public abstract class BaseAppModule {
     @Singleton
     ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
         return new ShareUtilsImpl(regionManager, timber);
+    }
+
+    @Provides
+    @Singleton
+    @Named(SMASH_ROSTER_KEY_VALUE_STORE)
+    KeyValueStore providesSmashRosterKeyValueStore() {
+        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+                ".Preferences.v2.SmashRoster");
+    }
+
+    @Provides
+    @Singleton
+    SmashRosterPreferenceStore providesSmashRosterPreferenceStore(final Gson gson,
+            @Named(SMASH_ROSTER_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
+        return new SmashRosterPreferenceStoreImpl(gson, keyValueStore);
+    }
+
+    @Provides
+    @Singleton
+    SmashRosterSyncManager providesSmashRosterSyncManager(
+            final SmashRosterPreferenceStore smashRosterPreferenceStore) {
+        return new SmashRosterSyncManagerImpl(smashRosterPreferenceStore);
     }
 
     @Provides

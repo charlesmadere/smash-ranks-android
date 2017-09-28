@@ -1,35 +1,41 @@
 package com.garpr.android.views
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.os.Build
 import android.support.annotation.AttrRes
+import android.support.annotation.StyleableRes
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.widget.LinearLayout
-
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.models.WinsLosses
-
-import java.text.NumberFormat
+import kotterknife.bindView
 
 class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
     private var mContent: WinsLosses? = null
-    private val mNumberFormat: NumberFormat = NumberFormat.getIntegerInstance()
     private lateinit var mLossesPaint: Paint
     private lateinit var mLossesRect: Rect
     private lateinit var mWinsPaint: Paint
     private lateinit var mWinsRect: Rect
+
+    private val mPlayerColumnView: WinsLossesColumnView by bindView(R.id.playerColumnView)
+    private val mOpponentColumnView: WinsLossesColumnView by bindView(R.id.opponentColumnView)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
+            @StyleableRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     init {
         initialize()
@@ -125,6 +131,9 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
     override fun setContent(content: WinsLosses) {
         mContent = content
+
+        mPlayerColumnView.setContent(content)
+        mOpponentColumnView.setContent(content)
 
 //        text = resources.getString(R.string.x_em_dash_y, mNumberFormat.format(content.wins),
 //                mNumberFormat.format(content.losses))

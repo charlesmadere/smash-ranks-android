@@ -167,6 +167,14 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
     }
 }
 
+fun Parcel.readBoolean(): Boolean {
+    return readValue(Boolean::class.java.classLoader) as Boolean
+}
+
+fun Parcel.writeBoolean(boolean: Boolean) {
+    writeValue(boolean)
+}
+
 fun Parcel.readInteger(): Int? {
     return readValue(Integer::class.java.classLoader) as Int?
 }
@@ -203,18 +211,18 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
     writeBundle(bundle)
 }
 
-fun Parcel.readStringMap(): Map<String, String>? {
+fun Parcel.readSmashCharacterMap(): Map<String, SmashCharacter>? {
     val bundle = readBundle(String::class.java.classLoader) ?: return null
-    val map = mutableMapOf<String, String>()
+    val map = mutableMapOf<String, SmashCharacter>()
 
     for (key in bundle.keySet()) {
-        map.put(key, bundle.getString(key))
+        map.put(key, bundle.getParcelable(key))
     }
 
     return map
 }
 
-fun Parcel.writeStringMap(map: Map<String, String>?) {
+fun Parcel.writeSmashCharacterMap(map: Map<String, SmashCharacter>?) {
     val size = map?.size ?: 0
 
     if (size == 0) {
@@ -225,7 +233,7 @@ fun Parcel.writeStringMap(map: Map<String, String>?) {
     val bundle = Bundle(size)
 
     for ((key, value) in map!!) {
-        bundle.putString(key, value)
+        bundle.putParcelable(key, value)
     }
 
     writeBundle(bundle)

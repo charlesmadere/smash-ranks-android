@@ -7,27 +7,29 @@
     <android.support.v4.widget.Space
         android:layout_height="match_parent"
         android:layout_width="@dimen/root_padding" />
-    <LinearLayout
-        style="@style/WinsLossesViewColumn">
+    <com.garpr.android.views.WinsLossesColumnView
+        android:id="@+id/playerColumnView"
+        style="@style/WinsLossesColumnView">
         <TextView
             tools:text="8"
-            style="@style/WinsLossesViewWinLossCount" />
+            style="@style/WinsLossesCount" />
         <TextView
             tools:text="PewPewU"
-            style="@style/WinsLossesViewPlayerName" />
-    </LinearLayout>
+            style="@style/WinsLossesPlayerName" />
+    </com.garpr.android.views.WinsLossesColumnView>
     <android.support.v4.widget.Space
         android:layout_height="match_parent"
         android:layout_width="@dimen/root_padding" />
-    <LinearLayout
-        style="@style/WinsLossesViewColumn">
+    <com.garpr.android.views.WinsLossesColumnView
+        android:id="@+id/opponentColumnView"
+        style="@style/WinsLossesColumnView">
         <TextView
             tools:text="5"
-            style="@style/WinsLossesViewWinLossCount" />
+            style="@style/WinsLossesCount" />
         <TextView
             tools:text="Shroomed"
-            style="@style/WinsLossesViewPlayerName" />
-    </LinearLayout>
+            style="@style/WinsLossesPlayerName" />
+    </com.garpr.android.views.WinsLossesColumnView>
     <android.support.v4.widget.Space
         android:layout_height="match_parent"
         android:layout_width="@dimen/root_padding" />
