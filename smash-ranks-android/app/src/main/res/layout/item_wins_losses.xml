@@ -7,7 +7,7 @@
     android:orientation="horizontal">
     <android.support.v4.widget.Space
         android:layout_height="match_parent"
-        android:layout_width="@dimen/root_padding" />
+        android:layout_width="@dimen/root_padding_double" />
     <com.garpr.android.views.WinsLossesColumnView
         android:id="@+id/playerColumnView"
         app:playerOrOpponent="player"
@@ -23,13 +23,12 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/root_padding_half"
-        android:layout_marginStart="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
-        android:text="@string/vs" />
-    <android.support.v4.widget.Space
-        android:layout_height="match_parent"
-        android:layout_width="@dimen/root_padding" />
+        android:text="@string/vs"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large" />
     <com.garpr.android.views.WinsLossesColumnView
         android:id="@+id/opponentColumnView"
         app:playerOrOpponent="opponent"
@@ -43,5 +42,5 @@
     </com.garpr.android.views.WinsLossesColumnView>
     <android.support.v4.widget.Space
         android:layout_height="match_parent"
-        android:layout_width="@dimen/root_padding" />
+        android:layout_width="@dimen/root_padding_double" />
 </com.garpr.android.views.WinsLossesView>

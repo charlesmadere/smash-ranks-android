@@ -251,6 +251,7 @@
         <item name="android:layout_marginBottom">@dimen/root_padding</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:maxLines">3</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
