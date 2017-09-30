@@ -32,7 +32,7 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
             @StyleableRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private fun calculateRects() {
-
+        // TODO
     }
 
     override fun invalidate() {
@@ -43,7 +43,7 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-
+        // TODO
     }
 
     override fun onFinishInflate() {
