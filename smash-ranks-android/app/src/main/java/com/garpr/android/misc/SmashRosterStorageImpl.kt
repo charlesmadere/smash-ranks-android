@@ -24,20 +24,30 @@ class SmashRosterStorageImpl(
     private fun getKeyValueStore(region: Region) = keyValueStoreProvider.getKeyValueStore(
             "$packageName.SmashRosterStorage.${region.endpoint.title}.${region.id}")
 
+    override fun getSmashCharacter(region: Region, playerId: String?): SmashCharacter? {
+        if (playerId == null || playerId.isBlank()) {
+            return null
+        }
+
+        val smashCharacter = getKeyValueStore(region).getString(playerId, null)
+        return gson.fromJson(smashCharacter, SmashCharacter::class.java)
+    }
+
     override fun writeToStorage(region: Region, smashRoster: SmashRoster) {
         if (smashRoster.players == null || smashRoster.players.isEmpty()) {
             deleteFromStorage(region)
             return
         }
 
-        val keyValueStore = getKeyValueStore(region)
-        keyValueStore.clear()
+        val keyValueStoreEditor = getKeyValueStore(region).batchEdit()
+        keyValueStoreEditor.clear()
 
         for (player in smashRoster.players) {
-            keyValueStore.setString(player.key, gson.toJson(player.value,
+            keyValueStoreEditor.putString(player.key, gson.toJson(player.value,
                     SmashCharacter::class.java))
         }
 
+        keyValueStoreEditor.apply()
         timber.d(TAG, "wrote ${region.endpoint.title}.${region.id} to storage")
     }
 
