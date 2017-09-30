@@ -2,6 +2,7 @@ package com.garpr.android.views
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.graphics.Canvas
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleableRes
@@ -14,6 +15,8 @@ import com.garpr.android.models.WinsLosses
 import kotterknife.bindView
 
 class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
+
+    private var mContent: WinsLosses? = null
 
     private val mPlayerColumnView: WinsLossesColumnView by bindView(R.id.playerColumnView)
     private val mOpponentColumnView: WinsLossesColumnView by bindView(R.id.opponentColumnView)
@@ -28,6 +31,21 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleableRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    private fun calculateRects() {
+
+    }
+
+    override fun invalidate() {
+        calculateRects()
+        super.invalidate()
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+
+
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -38,8 +56,10 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
     }
 
     override fun setContent(content: WinsLosses) {
+        mContent = content
         mPlayerColumnView.setContent(content)
         mOpponentColumnView.setContent(content)
+        invalidate()
     }
 
 }
