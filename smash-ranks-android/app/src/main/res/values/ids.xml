@@ -6,7 +6,7 @@
     <item name="empty" type="id" />
     <item name="error" type="id" />
     <item name="icon" type="id" />
-    <item name="mPlayerName" type="id" />
+    <item name="playerName" type="id" />
     <item name="recyclerView" type="id" />
     <item name="recyclerViewLine1" type="id" />
     <item name="recyclerViewLine2" type="id" />
@@ -16,6 +16,6 @@
     <item name="title" type="id" />
     <item name="toolbar" type="id" />
     <item name="viewPager" type="id" />
-    <item name="mWinCount" type="id"/>
+    <item name="winCount" type="id"/>
 
 </resources>

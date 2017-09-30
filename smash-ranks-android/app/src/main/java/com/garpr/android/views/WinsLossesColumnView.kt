@@ -2,33 +2,34 @@ package com.garpr.android.views
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
 import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.ColorRes
 import android.support.annotation.StyleableRes
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.WinsLosses
 import kotterknife.bindView
 import java.text.NumberFormat
+import javax.inject.Inject
 
-class WinsLossesColumnView : LinearLayout, BaseAdapterView<WinsLosses> {
+class WinsLossesColumnView : LinearLayout, BaseAdapterView<WinsLosses>, View.OnClickListener {
 
     private var mContent: WinsLosses? = null
     private val mNumberFormat = NumberFormat.getIntegerInstance()
-    private lateinit var mPaint: Paint
     private lateinit var mPlayerOrOpponent: PlayerOrOpponent
-    private lateinit var mRect: Rect
 
     private val mPlayerName: TextView by bindView(R.id.playerName)
     private val mWinCount: TextView by bindView(R.id.winCount)
+
+    @Inject
+    protected lateinit var mRegionManager: RegionManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -46,63 +47,26 @@ class WinsLossesColumnView : LinearLayout, BaseAdapterView<WinsLosses> {
         parseAttributes(attrs)
     }
 
-    private fun calculateRects() {
-        val height = height
-        val width = width
-        val content = mContent
+    override fun onClick(v: View) {
+        val content = mContent ?: return
 
-        if (height == 0 || width == 0 || content == null) {
-            mRect.setEmpty()
-            return
+        val player = when (mPlayerOrOpponent) {
+            PlayerOrOpponent.PLAYER -> { content.player }
+            PlayerOrOpponent.OPPONENT -> { content.opponent }
         }
 
-        val barThickness = width / 4
-        val start = (width - barThickness) / 4
-        val end = start + barThickness
-
-        if (content.losses == 0 && content.wins == 0) {
-            mRect.setEmpty()
-        } else if (mPlayerOrOpponent == PlayerOrOpponent.PLAYER) {
-
-        } else if (mPlayerOrOpponent == PlayerOrOpponent.OPPONENT) {
-
-        }
-    }
-
-    override fun invalidate() {
-        calculateRects()
-        super.invalidate()
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        invalidate()
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        if (!mRect.isEmpty) {
-            canvas.drawRect(mRect, mPaint)
-        }
-
-        super.onDraw(canvas)
+        context.startActivity(PlayerActivity.getLaunchIntent(context, player,
+                mRegionManager.getRegion(context)))
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            // TODO
+            App.get().appComponent.inject(this)
         }
-    }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-        invalidate()
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        invalidate()
+        setOnClickListener(this)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
@@ -116,25 +80,26 @@ class WinsLossesColumnView : LinearLayout, BaseAdapterView<WinsLosses> {
         }
 
         mPlayerOrOpponent = PlayerOrOpponent.values()[playerOrOpponent]
-
-        mPaint = Paint()
-        mPaint.isAntiAlias = true
-        mPaint.color = ContextCompat.getColor(context, mPlayerOrOpponent.mColor)
-        mPaint.isDither = true
-        mPaint.style = Paint.Style.FILL
-
-        mRect = Rect()
     }
 
     override fun setContent(content: WinsLosses) {
+        mContent = content
 
+        when (mPlayerOrOpponent) {
+            PlayerOrOpponent.PLAYER -> {
+                mWinCount.text = mNumberFormat.format(content.playerWins)
+                mPlayerName.text = content.player.name
+            }
+
+            PlayerOrOpponent.OPPONENT -> {
+                mWinCount.text = mNumberFormat.format(content.opponentWins)
+                mPlayerName.text = content.opponent.name
+            }
+        }
     }
 
-    private enum class PlayerOrOpponent(
-            @ColorRes internal val mColor: Int
-    ) {
-        PLAYER(R.color.win),
-        OPPONENT(R.color.lose)
+    private enum class PlayerOrOpponent {
+        PLAYER, OPPONENT
     }
 
 }

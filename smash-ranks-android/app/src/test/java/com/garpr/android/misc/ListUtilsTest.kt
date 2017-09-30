@@ -88,8 +88,8 @@ class ListUtilsTest : BaseTest() {
         assertTrue(`object` is WinsLosses)
 
         val winsLosses = `object` as WinsLosses
-        assertEquals(3, winsLosses.wins)
-        assertEquals(2, winsLosses.losses)
+        assertEquals(3, winsLosses.playerWins)
+        assertEquals(2, winsLosses.opponentWins)
 
         assertTrue(list[1] is AbsTournament)
         assertTrue(list[2] is Match)
@@ -106,10 +106,9 @@ class ListUtilsTest : BaseTest() {
         val list = ListUtils.createHeadToHeadList(mApplication, null)
 
         assertNotNull(list)
-        assertEquals(2, list.size)
+        assertEquals(1, list.size)
 
-        assertTrue(list[0] is WinsLosses)
-        assertTrue(list[1] is CharSequence)
+        assertTrue(list[0] is CharSequence)
     }
 
     @Test
@@ -310,8 +309,7 @@ class ListUtilsTest : BaseTest() {
         assertNotNull(list)
         assertEquals(size, list?.size)
 
-        assertTrue(list?.get(0) is WinsLosses)
-        assertTrue(list?.get(1) is CharSequence)
+        assertTrue(list?.get(0) is CharSequence)
     }
 
     @Test
@@ -337,8 +335,7 @@ class ListUtilsTest : BaseTest() {
         assertNotNull(list)
         assertEquals(size, list?.size)
 
-        assertTrue(list?.get(0) is WinsLosses)
-        assertTrue(list?.get(1) is CharSequence)
+        assertTrue(list?.get(0) is CharSequence)
     }
 
     @Test

@@ -11,14 +11,14 @@ object ListUtils {
         val list = mutableListOf<Any>()
 
         if (headToHead == null) {
-            list.add(WinsLosses(0, 0))
             list.add(context.getString(R.string.no_matches))
             return list
         }
 
-        list.add(WinsLosses(headToHead.wins, headToHead.losses))
-        val matches = headToHead.matches
+        list.add(WinsLosses(headToHead.player, headToHead.wins, headToHead.opponent,
+                headToHead.losses))
 
+        val matches = headToHead.matches
         if (matches == null || matches.isEmpty()) {
             list.add(context.getString(R.string.no_matches))
             return list

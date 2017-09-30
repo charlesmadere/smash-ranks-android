@@ -20,6 +20,8 @@ import com.garpr.android.misc.HomeToolbarManager;
 import com.garpr.android.misc.HomeToolbarManagerImpl;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.IdentityManagerImpl;
+import com.garpr.android.misc.KeyValueStoreProvider;
+import com.garpr.android.misc.KeyValueStoreProviderImpl;
 import com.garpr.android.misc.NotificationsManager;
 import com.garpr.android.misc.NotificationsManagerImpl;
 import com.garpr.android.misc.PlayerToolbarManager;
@@ -32,6 +34,8 @@ import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ShareUtilsImpl;
+import com.garpr.android.misc.SmashRosterStorage;
+import com.garpr.android.misc.SmashRosterStorageImpl;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
@@ -49,7 +53,6 @@ import com.garpr.android.networking.ServerApiImpl;
 import com.garpr.android.preferences.GeneralPreferenceStore;
 import com.garpr.android.preferences.GeneralPreferenceStoreImpl;
 import com.garpr.android.preferences.KeyValueStore;
-import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.preferences.RankingsPollingPreferenceStoreImpl;
 import com.garpr.android.preferences.SmashRosterPreferenceStore;
@@ -102,8 +105,9 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE)
-    KeyValueStore providesFavoritePlayersKeyvalueStore() {
-        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+    KeyValueStore providesFavoritePlayersKeyValueStore(
+            final KeyValueStoreProvider keyValueStoreProvider) {
+        return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.FavoritePlayers");
     }
 
@@ -136,8 +140,8 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     @Named(GENERAL_KEY_VALUE_STORE)
-    KeyValueStore providesGeneralKeyValueStore() {
-        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+    KeyValueStore providesGeneralKeyValueStore(final KeyValueStoreProvider keyValueStoreProvider) {
+        return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.General");
     }
 
@@ -186,6 +190,12 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    KeyValueStoreProvider providesKeyValueStoreProvider() {
+        return new KeyValueStoreProviderImpl(mApplication);
+    }
+
+    @Provides
+    @Singleton
     NotificationsManager providesNotificationManager(
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
             final RegionManager regionManager, final Timber timber) {
@@ -219,8 +229,9 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     @Named(RANKINGS_POLLING_KEY_VALUE_STORE)
-    KeyValueStore providesRankingsPollingKeyValueStore() {
-        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+    KeyValueStore providesRankingsPollingKeyValueStore(
+            final KeyValueStoreProvider keyValueStoreProvider) {
+        return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.RankingsPolling");
     }
 
@@ -275,8 +286,9 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     @Named(SMASH_ROSTER_KEY_VALUE_STORE)
-    KeyValueStore providesSmashRosterKeyValueStore() {
-        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+    KeyValueStore providesSmashRosterKeyValueStore(
+            final KeyValueStoreProvider keyValueStoreProvider) {
+        return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.SmashRoster");
     }
 
@@ -289,9 +301,19 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    SmashRosterStorage providesSmashRosterStorage(final Gson gson,
+            final KeyValueStoreProvider keyValueStoreProvider, final Timber timber) {
+        return new SmashRosterStorageImpl(gson, keyValueStoreProvider,
+                mApplication.getPackageName(), timber);
+    }
+
+    @Provides
+    @Singleton
     SmashRosterSyncManager providesSmashRosterSyncManager(
-            final SmashRosterPreferenceStore smashRosterPreferenceStore) {
-        return new SmashRosterSyncManagerImpl(smashRosterPreferenceStore);
+            final SmashRosterPreferenceStore smashRosterPreferenceStore,
+            final SmashRosterStorage smashRosterStorage, final ThreadUtils threadUtils) {
+        return new SmashRosterSyncManagerImpl(smashRosterPreferenceStore, smashRosterStorage,
+                threadUtils);
     }
 
     @Provides

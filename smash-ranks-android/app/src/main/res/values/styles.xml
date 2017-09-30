@@ -223,6 +223,7 @@
     </style>
 
     <style name="WinsLossesColumnView">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
@@ -234,7 +235,7 @@
     <style name="WinsLossesCount">
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:gravity">center</item>
-        <item name="android:id">@id/mWinCount</item>
+        <item name="android:id">@id/winCount</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:maxLines">1</item>
@@ -244,9 +245,8 @@
 
     <style name="WinsLossesPlayerName">
         <item name="android:ellipsize">end</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:gravity">center</item>
-        <item name="android:id">@id/mPlayerName</item>
+        <item name="android:id">@id/playerName</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/root_padding</item>
         <item name="android:layout_width">match_parent</item>

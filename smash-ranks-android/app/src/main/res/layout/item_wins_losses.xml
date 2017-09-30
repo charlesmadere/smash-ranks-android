@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.WinsLossesView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="@dimen/wins_losses_height"
     android:layout_width="match_parent"
@@ -9,6 +10,7 @@
         android:layout_width="@dimen/root_padding" />
     <com.garpr.android.views.WinsLossesColumnView
         android:id="@+id/playerColumnView"
+        app:playerOrOpponent="player"
         style="@style/WinsLossesColumnView">
         <TextView
             tools:text="8"
@@ -17,11 +19,20 @@
             tools:text="PewPewU"
             style="@style/WinsLossesPlayerName" />
     </com.garpr.android.views.WinsLossesColumnView>
+    <TextView
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding_half"
+        android:layout_marginStart="@dimen/root_padding_half"
+        android:layout_width="wrap_content"
+        android:text="@string/vs" />
     <android.support.v4.widget.Space
         android:layout_height="match_parent"
         android:layout_width="@dimen/root_padding" />
     <com.garpr.android.views.WinsLossesColumnView
         android:id="@+id/opponentColumnView"
+        app:playerOrOpponent="opponent"
         style="@style/WinsLossesColumnView">
         <TextView
             tools:text="5"

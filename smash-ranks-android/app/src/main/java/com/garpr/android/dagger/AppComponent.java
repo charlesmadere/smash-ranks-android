@@ -36,6 +36,7 @@ import com.garpr.android.views.TournamentDividerView;
 import com.garpr.android.views.TournamentItemView;
 import com.garpr.android.views.TournamentMatchItemView;
 import com.garpr.android.views.TournamentsLayout;
+import com.garpr.android.views.WinsLossesColumnView;
 import com.garpr.android.views.toolbars.HomeToolbar;
 import com.garpr.android.views.toolbars.PlayerToolbar;
 import com.garpr.android.views.toolbars.TournamentToolbar;
@@ -95,5 +96,6 @@ public interface AppComponent {
     void inject(TournamentItemView view);
     void inject(TournamentMatchItemView view);
     void inject(TournamentsLayout view);
+    void inject(WinsLossesColumnView view);
 
 }

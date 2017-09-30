@@ -112,9 +112,9 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         menu.findItem(R.id.miAddToFavorites).isVisible = presentation.mIsAddToFavoritesVisible
         menu.findItem(R.id.miAliases).isVisible = presentation.mIsAliasesVisible
         menu.findItem(R.id.miFilter).isVisible = presentation.mIsFilterVisible
-        menu.findItem(R.id.miFilterAll).isVisible = presentation.mIsFilterAllVisible
-        menu.findItem(R.id.miFilterLosses).isVisible = presentation.mIsFilterLossesVisible
-        menu.findItem(R.id.miFilterWins).isVisible = presentation.mIsFilterWinsVisible
+        menu.findItem(R.id.miShowAll).isVisible = presentation.mIsFilterAllVisible
+        menu.findItem(R.id.miFilterToLosses).isVisible = presentation.mIsFilterLossesVisible
+        menu.findItem(R.id.miFilterToWins).isVisible = presentation.mIsFilterWinsVisible
         menu.findItem(R.id.miRemoveFromFavorites).isVisible = presentation.mIsRemoveFromFavoritesVisible
         menu.findItem(R.id.miShare).isVisible = presentation.mIsShareVisible
 

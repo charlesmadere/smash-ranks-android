@@ -38,6 +38,8 @@
     <string name="favorites">Favorites</string>
     <string name="favorite_players">Favorite Players</string>
     <string name="filter">Filter</string>
+    <string name="filter_to_losses">Filter to losses</string>
+    <string name="filter_to_wins">Filter to wins</string>
     <string name="gar_pr">GAR PR</string>
     <string name="gar_twitter_url">twitter.com/garsh0p</string>
     <string name="general">General</string>
@@ -51,7 +53,6 @@
     <string name="identity_saved_">Identity saved!</string>
     <string name="last_poll">Last poll</string>
     <string name="loading_deep_link_">Loading deep link…</string>
-    <string name="loading_first_time_launch_data_">Loading first time launch data…</string>
     <string name="log_viewer">Log Viewer</string>
     <string name="matches">Matches</string>
     <string name="miscellaneous">Miscellaneous</string>
@@ -138,7 +139,7 @@
     <string name="view_yourself">View yourself</string>
     <string name="view_yourself_vs_this_opponent">View yourself vs this opponent</string>
     <string name="view_yourself_vs_x">View yourself vs %1$s</string>
-    <string name="x_vs_y">%1$s vs %2$s</string>
+    <string name="vs">vs</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>

@@ -155,22 +155,9 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
         if (mHeadToHead != null) {
             menu.findItem(R.id.miFilter).isVisible = true
-            menu.findItem(R.id.miFilterAll).isVisible = mResult != null
-            menu.findItem(R.id.miFilterLosses).isVisible = mResult != Match.Result.LOSE
-            menu.findItem(R.id.miFilterWins).isVisible = mResult != Match.Result.WIN
-        }
-
-        val opponentName = mOpponentName
-        val playerName = mPlayerName
-
-        if (opponentName?.isNotBlank() == true && playerName?.isNotBlank() == true) {
-            val viewOpponent = menu.findItem(R.id.miViewOpponent)
-            viewOpponent.title = getString(R.string.view_x, opponentName)
-            viewOpponent.isVisible = true
-
-            val viewPlayer = menu.findItem(R.id.miViewPlayer)
-            viewPlayer.title = getString(R.string.view_x, playerName)
-            viewPlayer.isVisible = true
+            menu.findItem(R.id.miShowAll).isVisible = mResult != null
+            menu.findItem(R.id.miFilterToLosses).isVisible = mResult != Match.Result.LOSE
+            menu.findItem(R.id.miFilterToWins).isVisible = mResult != Match.Result.WIN
         }
 
         return super.onCreateOptionsMenu(menu)
@@ -178,30 +165,18 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
-            R.id.miFilterAll -> {
-                filter(null)
-                true
-            }
-
-            R.id.miFilterLosses -> {
+            R.id.miFilterToLosses -> {
                 filter(Match.Result.LOSE)
                 true
             }
 
-            R.id.miFilterWins -> {
+            R.id.miFilterToWins -> {
                 filter(Match.Result.WIN)
                 true
             }
 
-            R.id.miViewOpponent -> {
-                startActivity(PlayerActivity.getLaunchIntent(this, mOpponentId,
-                        mOpponentName, mRegionManager.getRegion(this)))
-                true
-            }
-
-            R.id.miViewPlayer -> {
-                startActivity(PlayerActivity.getLaunchIntent(this, mPlayerId,
-                        mPlayerName, mRegionManager.getRegion(this)))
+            R.id.miShowAll -> {
+                filter(null)
                 true
             }
 

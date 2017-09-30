@@ -187,17 +187,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 true
             }
 
-            R.id.miFilterAll -> {
-                filter(null)
-                true
-            }
-
-            R.id.miFilterLosses -> {
+            R.id.miFilterToLosses -> {
                 filter(Match.Result.LOSE)
                 true
             }
 
-            R.id.miFilterWins -> {
+            R.id.miFilterToWins -> {
                 filter(Match.Result.WIN)
                 true
             }
@@ -215,6 +210,11 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
             R.id.miShare -> {
                 share()
+                true
+            }
+
+            R.id.miShowAll -> {
+                filter(null)
                 true
             }
 
