@@ -3,6 +3,7 @@ package com.garpr.android.views
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.RectF
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleableRes
@@ -17,6 +18,8 @@ import kotterknife.bindView
 class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
     private var mContent: WinsLosses? = null
+    private val mPlayerWinsRect = RectF()
+    private val mOpponentWinsRect = RectF()
 
     private val mPlayerColumnView: WinsLossesColumnView by bindView(R.id.playerColumnView)
     private val mOpponentColumnView: WinsLossesColumnView by bindView(R.id.opponentColumnView)
@@ -32,6 +35,15 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
             @StyleableRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private fun calculateRects() {
+        val h = height
+        val w = width
+        val c = mContent
+
+        if (h == 0 || w == 0 || c == null) {
+            mPlayerWinsRect.setEmpty()
+            mOpponentWinsRect.setEmpty()
+        }
+
         // TODO
     }
 
@@ -42,6 +54,10 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
+        if (mPlayerWinsRect.isEmpty && mOpponentWinsRect.isEmpty) {
+            return
+        }
 
         // TODO
     }
