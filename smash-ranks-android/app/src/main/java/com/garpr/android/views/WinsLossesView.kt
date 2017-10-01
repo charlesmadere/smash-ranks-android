@@ -95,13 +95,13 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
         }
 
         if (mPlayerArcEnd != 0f) {
-            canvas.drawArc(mRect, 0f, mPlayerArcEnd, true, mPlayerFillPaint)
-            canvas.drawArc(mRect, 0f, mPlayerArcEnd, true, mPlayerStrokePaint)
+            canvas.drawArc(mRect, 90f, mPlayerArcEnd, true, mPlayerFillPaint)
+            canvas.drawArc(mRect, 90f, mPlayerArcEnd, true, mPlayerStrokePaint)
         }
 
         if (mOpponentArcEnd != 0f) {
-            canvas.drawArc(mRect, 0f, mOpponentArcEnd, true, mOpponentFillPaint)
-            canvas.drawArc(mRect, 0f, mOpponentArcEnd, true, mOpponentStrokePaint)
+            canvas.drawArc(mRect, 90f + mPlayerArcEnd, mOpponentArcEnd, true, mOpponentFillPaint)
+            canvas.drawArc(mRect, 90f + mPlayerArcEnd, mOpponentArcEnd, true, mOpponentStrokePaint)
         }
     }
 
@@ -116,29 +116,27 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
         mPlayerFillPaint.color = ContextCompat.getColor(context, R.color.win_background)
         mPlayerFillPaint.isAntiAlias = true
-        mPlayerFillPaint.isDither = true
         mPlayerFillPaint.style = Paint.Style.FILL
 
         mPlayerStrokePaint.color = ContextCompat.getColor(context, R.color.win)
         mPlayerStrokePaint.isAntiAlias = true
-        mPlayerStrokePaint.isDither = true
+        mPlayerStrokePaint.strokeCap = Paint.Cap.BUTT
         mPlayerStrokePaint.strokeWidth = resources.getDimension(R.dimen.root_padding_eighth)
         mPlayerStrokePaint.style = Paint.Style.STROKE
 
         mOpponentFillPaint.color = ContextCompat.getColor(context, R.color.lose_background)
         mOpponentFillPaint.isAntiAlias = true
-        mOpponentFillPaint.isDither = true
         mOpponentFillPaint.style = Paint.Style.FILL
 
         mOpponentStrokePaint.color = ContextCompat.getColor(context, R.color.lose)
         mOpponentStrokePaint.isAntiAlias = true
-        mOpponentStrokePaint.isDither = true
+        mOpponentStrokePaint.strokeCap = Paint.Cap.BUTT
         mOpponentStrokePaint.strokeWidth = resources.getDimension(R.dimen.root_padding_eighth)
         mOpponentStrokePaint.style = Paint.Style.STROKE
     }
 
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        super.onLayout(changed, l, t, r, b)
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
         invalidate()
     }
 
