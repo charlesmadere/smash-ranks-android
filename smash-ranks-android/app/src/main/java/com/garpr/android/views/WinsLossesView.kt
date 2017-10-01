@@ -42,6 +42,7 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
         if (h == 0 || w == 0 || c == null) {
             mPlayerWinsRect.setEmpty()
             mOpponentWinsRect.setEmpty()
+            return
         }
 
         // TODO
