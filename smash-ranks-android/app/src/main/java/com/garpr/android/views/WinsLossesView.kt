@@ -46,33 +46,27 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
             return
         }
 
-        val h: Float = height.toFloat() / 4f
-        val w: Float = width.toFloat() / 4f
+        val size: Float = height.toFloat() / 4f
 
-        mRect.set(w, h, w * 3f, h * 3f)
+        mRect.set(size, size, size * 3f, size * 3f)
 
-        val percentPlayerWins: Float
-        val percentOpponentWins: Float
-
-        if (c.playerWins == 0) {
-            percentPlayerWins = 0f
-            percentOpponentWins = 1f
-            mOpponentArcEnd = 360f
-        } else if (c.opponentWins == 0) {
-            percentPlayerWins = 1f
-            percentOpponentWins = 0f
-            mOpponentArcEnd = 0f
-        } else {
-            percentPlayerWins = c.playerWins.toFloat() / (c.playerWins + c.opponentWins).toFloat()
-            percentOpponentWins = 1f - percentPlayerWins
+        val percentOpponentWins: Float = when {
+            c.playerWins == 0 -> 1f
+            c.opponentWins == 0 -> 0f
+            else -> 1f - (c.playerWins.toFloat() / (c.playerWins + c.opponentWins).toFloat())
         }
 
-        // TODO
+        mOpponentArcEnd = percentOpponentWins * 360f
     }
 
     override fun invalidate() {
         calculateRects()
         super.invalidate()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -82,26 +76,38 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
             return
         }
 
-        // TODO
+        canvas.drawArc(mRect, 0f, 360f, true, mPlayerPaint)
+        canvas.drawArc(mRect, 0f, mOpponentArcEnd, true, mOpponentPaint)
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+        setWillNotDraw(false)
 
         if (isInEditMode) {
             setContent(WinsLosses(LitePlayer("0", "PewPewU"), 8,
                     LitePlayer("1", "Shroomed"), 5))
         }
 
-        mPlayerPaint.color = ContextCompat.getColor(context, R.color.win_background)
+        mPlayerPaint.color = ContextCompat.getColor(context, R.color.win)
         mPlayerPaint.isAntiAlias = true
         mPlayerPaint.isDither = true
         mPlayerPaint.style = Paint.Style.FILL
 
-        mOpponentPaint.color = ContextCompat.getColor(context, R.color.lose_background)
+        mOpponentPaint.color = ContextCompat.getColor(context, R.color.lose)
         mOpponentPaint.isAntiAlias = true
         mOpponentPaint.isDither = true
         mOpponentPaint.style = Paint.Style.FILL
+    }
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
+        invalidate()
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        invalidate()
     }
 
     override fun setContent(content: WinsLosses) {
