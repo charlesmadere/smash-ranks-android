@@ -19,16 +19,9 @@
             tools:text="PewPewU"
             style="@style/WinsLossesPlayerName" />
     </com.garpr.android.views.WinsLossesColumnView>
-    <TextView
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/root_padding"
-        android:layout_marginStart="@dimen/root_padding"
-        android:layout_width="wrap_content"
-        android:text="@string/vs"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_large" />
+    <android.support.v4.widget.Space
+        android:layout_height="match_parent"
+        android:layout_width="@dimen/root_padding_double" />
     <com.garpr.android.views.WinsLossesColumnView
         android:id="@+id/opponentColumnView"
         app:playerOrOpponent="opponent"

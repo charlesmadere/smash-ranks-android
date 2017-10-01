@@ -20,9 +20,12 @@ import kotterknife.bindView
 class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
     private var mContent: WinsLosses? = null
-    private val mPlayerPaint = Paint()
+    private var mPlayerArcEnd: Float = 0f
+    private val mPlayerFillPaint = Paint()
+    private val mPlayerStrokePaint = Paint()
     private var mOpponentArcEnd: Float = 0f
-    private val mOpponentPaint = Paint()
+    private val mOpponentFillPaint = Paint()
+    private val mOpponentStrokePaint = Paint()
     private val mRect = RectF()
 
     private val mPlayerColumnView: WinsLossesColumnView by bindView(R.id.playerColumnView)
@@ -46,16 +49,31 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
             return
         }
 
-        val size: Float = height.toFloat() / 4f
+        val size: Float = height.toFloat() / 5f
+        val start: Float = width.toFloat() / 2f
+        mRect.set(start - size, size, start + size, size + (size * 2f))
 
-        mRect.set(size, size, size * 3f, size * 3f)
+        val percentPlayerWins: Float
+        val percentOpponentWins: Float
 
-        val percentOpponentWins: Float = when {
-            c.playerWins == 0 -> 1f
-            c.opponentWins == 0 -> 0f
-            else -> 1f - (c.playerWins.toFloat() / (c.playerWins + c.opponentWins).toFloat())
+        when {
+            c.playerWins == 0 -> {
+                percentPlayerWins = 0f
+                percentOpponentWins = 1f
+            }
+
+            c.opponentWins == 0 -> {
+                percentPlayerWins = 1f
+                percentOpponentWins = 0f
+            }
+
+            else -> {
+                percentPlayerWins = c.playerWins.toFloat() / (c.playerWins + c.opponentWins).toFloat()
+                percentOpponentWins = 1f - percentPlayerWins
+            }
         }
 
+        mPlayerArcEnd = percentPlayerWins * 360f
         mOpponentArcEnd = percentOpponentWins * 360f
     }
 
@@ -76,8 +94,15 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
             return
         }
 
-        canvas.drawArc(mRect, 0f, 360f, true, mPlayerPaint)
-        canvas.drawArc(mRect, 0f, mOpponentArcEnd, true, mOpponentPaint)
+        if (mPlayerArcEnd != 0f) {
+            canvas.drawArc(mRect, 0f, mPlayerArcEnd, true, mPlayerFillPaint)
+            canvas.drawArc(mRect, 0f, mPlayerArcEnd, true, mPlayerStrokePaint)
+        }
+
+        if (mOpponentArcEnd != 0f) {
+            canvas.drawArc(mRect, 0f, mOpponentArcEnd, true, mOpponentFillPaint)
+            canvas.drawArc(mRect, 0f, mOpponentArcEnd, true, mOpponentStrokePaint)
+        }
     }
 
     override fun onFinishInflate() {
@@ -89,15 +114,27 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
                     LitePlayer("1", "Shroomed"), 5))
         }
 
-        mPlayerPaint.color = ContextCompat.getColor(context, R.color.win)
-        mPlayerPaint.isAntiAlias = true
-        mPlayerPaint.isDither = true
-        mPlayerPaint.style = Paint.Style.FILL
+        mPlayerFillPaint.color = ContextCompat.getColor(context, R.color.win_background)
+        mPlayerFillPaint.isAntiAlias = true
+        mPlayerFillPaint.isDither = true
+        mPlayerFillPaint.style = Paint.Style.FILL
 
-        mOpponentPaint.color = ContextCompat.getColor(context, R.color.lose)
-        mOpponentPaint.isAntiAlias = true
-        mOpponentPaint.isDither = true
-        mOpponentPaint.style = Paint.Style.FILL
+        mPlayerStrokePaint.color = ContextCompat.getColor(context, R.color.win)
+        mPlayerStrokePaint.isAntiAlias = true
+        mPlayerStrokePaint.isDither = true
+        mPlayerStrokePaint.strokeWidth = resources.getDimension(R.dimen.root_padding_eighth)
+        mPlayerStrokePaint.style = Paint.Style.STROKE
+
+        mOpponentFillPaint.color = ContextCompat.getColor(context, R.color.lose_background)
+        mOpponentFillPaint.isAntiAlias = true
+        mOpponentFillPaint.isDither = true
+        mOpponentFillPaint.style = Paint.Style.FILL
+
+        mOpponentStrokePaint.color = ContextCompat.getColor(context, R.color.lose)
+        mOpponentStrokePaint.isAntiAlias = true
+        mOpponentStrokePaint.isDither = true
+        mOpponentStrokePaint.strokeWidth = resources.getDimension(R.dimen.root_padding_eighth)
+        mOpponentStrokePaint.style = Paint.Style.STROKE
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
