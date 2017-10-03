@@ -12,7 +12,7 @@ class IdentityManagerImpl(
         private val mTimber: Timber
 ) : IdentityManager {
 
-    private val mListeners: MutableList<WeakReference<OnIdentityChangeListener>> = mutableListOf()
+    private val mListeners = mutableListOf<WeakReference<OnIdentityChangeListener>>()
 
 
     companion object {

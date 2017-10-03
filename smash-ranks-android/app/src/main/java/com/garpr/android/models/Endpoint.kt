@@ -6,20 +6,17 @@ import android.os.Parcelable
 import android.support.annotation.StringRes
 import com.garpr.android.R
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.misc.Constants
 import com.google.gson.annotations.SerializedName
 
 enum class Endpoint(
-        port: Int,
-        @param:StringRes val title: Int,
-        val basePath: String
+        @param:StringRes val title: Int
 ) : Parcelable {
 
     @SerializedName("gar_pr")
-    GAR_PR(Constants.GAR_PR_API_PORT, R.string.gar_pr, Constants.GAR_PR_BASE_PATH),
+    GAR_PR(R.string.gar_pr),
 
     @SerializedName("not_gar_pr")
-    NOT_GAR_PR(Constants.NOT_GAR_PR_API_PORT, R.string.not_gar_pr, Constants.NOT_GAR_PR_BASE_PATH);
+    NOT_GAR_PR(R.string.not_gar_pr);
 
 
     companion object {

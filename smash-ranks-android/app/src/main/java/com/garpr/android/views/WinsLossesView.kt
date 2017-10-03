@@ -107,12 +107,8 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        setWillNotDraw(false)
 
-        if (isInEditMode) {
-            setContent(WinsLosses(LitePlayer("0", "PewPewU"), 8,
-                    LitePlayer("1", "Shroomed"), 5))
-        }
+        setWillNotDraw(false)
 
         mPlayerFillPaint.color = ContextCompat.getColor(context, R.color.win_background)
         mPlayerFillPaint.isAntiAlias = true
@@ -120,7 +116,6 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
         mPlayerStrokePaint.color = ContextCompat.getColor(context, R.color.win)
         mPlayerStrokePaint.isAntiAlias = true
-        mPlayerStrokePaint.strokeCap = Paint.Cap.BUTT
         mPlayerStrokePaint.strokeWidth = resources.getDimension(R.dimen.root_padding_eighth)
         mPlayerStrokePaint.style = Paint.Style.STROKE
 
@@ -130,9 +125,13 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
 
         mOpponentStrokePaint.color = ContextCompat.getColor(context, R.color.lose)
         mOpponentStrokePaint.isAntiAlias = true
-        mOpponentStrokePaint.strokeCap = Paint.Cap.BUTT
         mOpponentStrokePaint.strokeWidth = resources.getDimension(R.dimen.root_padding_eighth)
         mOpponentStrokePaint.style = Paint.Style.STROKE
+
+        if (isInEditMode) {
+            setContent(WinsLosses(LitePlayer("0", "PewPewU"), 8,
+                    LitePlayer("1", "Shroomed"), 5))
+        }
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {

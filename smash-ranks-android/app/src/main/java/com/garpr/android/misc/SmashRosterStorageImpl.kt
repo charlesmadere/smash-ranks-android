@@ -18,11 +18,11 @@ class SmashRosterStorageImpl(
 
     override fun deleteFromStorage(region: Region) {
         getKeyValueStore(region).clear()
-        timber.d(TAG, "deleted ${region.endpoint.title}.${region.id} from storage")
+        timber.d(TAG, "deleted ${region.endpoint.title} from storage")
     }
 
     private fun getKeyValueStore(region: Region) = keyValueStoreProvider.getKeyValueStore(
-            "$packageName.SmashRosterStorage.${region.endpoint.title}.${region.id}")
+            "$packageName.SmashRosterStorage.${region.endpoint.title}")
 
     override fun getSmashCharacter(region: Region, playerId: String?): SmashCharacter? {
         if (playerId == null || playerId.isBlank()) {

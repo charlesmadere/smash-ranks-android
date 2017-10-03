@@ -2,6 +2,7 @@ package com.garpr.android.sync
 
 import android.support.annotation.UiThread
 import android.support.annotation.WorkerThread
+import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.SmashRosterSyncResult
@@ -10,6 +11,7 @@ import com.garpr.android.sync.SmashRosterSyncManager.Listeners
 import java.lang.ref.WeakReference
 
 class SmashRosterSyncManagerImpl(
+        private val regionManager: RegionManager,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
         private val threadUtils: ThreadUtils

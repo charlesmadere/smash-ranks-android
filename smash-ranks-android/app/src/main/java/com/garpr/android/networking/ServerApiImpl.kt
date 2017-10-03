@@ -14,6 +14,7 @@ class ServerApiImpl(
         private val mGarPrApi: GarPrApi,
         private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
         private val mRegionManager: RegionManager,
+        private val mSmashRosterApi: SmashRosterApi,
         private val mTimber: Timber
 ) : ServerApi {
 
