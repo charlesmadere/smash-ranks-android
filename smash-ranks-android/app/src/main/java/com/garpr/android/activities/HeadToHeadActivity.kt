@@ -32,7 +32,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private var mList: List<Any>? = null
     private var mHeadToHead: HeadToHead? = null
     lateinit private var mAdapter: HeadToHeadAdapter
-    private var mResult: Match.Result? = null
+    private var mMatchResult: MatchResult? = null
     lateinit private var mOpponentId: String
     private var mOpponentName: String? = null
     lateinit private var mPlayerId: String

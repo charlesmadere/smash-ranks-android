@@ -32,7 +32,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         TournamentDividerView.OnClickListener {
 
     private var mList: List<Any>? = null
-    private var mResult: Match.Result? = null
+    private var mMatchResult: MatchResult? = null
     lateinit private var mAdapter: PlayerAdapter
     private var mPlayerMatchesBundle: PlayerMatchesBundle? = null
     lateinit private var mPlayerId: String
@@ -106,7 +106,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     override fun failure(errorCode: Int) {
         mPlayerMatchesBundle = null
         mList = null
-        mResult = null
+        mMatchResult = null
         showError(errorCode)
     }
 
@@ -115,8 +115,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         mServerApi.getPlayerMatches(mRegionManager.getRegion(this), mPlayerId, ApiCall(this))
     }
 
-    private fun filter(result: Match.Result?) {
-        mResult = result
+    private fun filter(result: MatchResult?) {
+        mMatchResult = result
         val list = mList
 
         if (list == null || list.isEmpty()) {
@@ -127,7 +127,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             private var mList: List<Any>? = null
 
             override fun onBackground() {
-                if (!isAlive || mResult != result) {
+                if (!isAlive || mMatchResult != result) {
                     return
                 }
 
@@ -135,7 +135,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             }
 
             override fun onUi() {
-                if (!isAlive || mResult != result) {
+                if (!isAlive || mMatchResult != result) {
                     return
                 }
 
@@ -188,12 +188,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             }
 
             R.id.miFilterToLosses -> {
-                filter(Match.Result.LOSE)
+                filter(MatchResult.LOSE)
                 true
             }
 
             R.id.miFilterToWins -> {
-                filter(Match.Result.WIN)
+                filter(MatchResult.WIN)
                 true
             }
 
@@ -241,8 +241,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         mRecyclerView.adapter = mAdapter
     }
 
-    override val result: Match.Result?
-        get() = mResult
+    override val matchResult: MatchResult?
+        get() = mMatchResult
 
     override fun search(query: String?) {
         val list = mList
@@ -353,7 +353,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     override fun success(`object`: PlayerMatchesBundle?) {
         mPlayerMatchesBundle = `object`
         mList = null
-        mResult = null
+        mMatchResult = null
         showData()
     }
 

@@ -12,6 +12,7 @@ import retrofit2.Response
 class ServerApiImpl(
         private val mFullTournamentUtils: FullTournamentUtils,
         private val mGarPrApi: GarPrApi,
+        private val mNotGarPrApi: GarPrApi,
         private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
         private val mRegionManager: RegionManager,
         private val mSmashRosterApi: SmashRosterApi,
@@ -20,6 +21,10 @@ class ServerApiImpl(
 
     companion object {
         private const val TAG = "ServerApiImpl"
+    }
+
+    private fun getGarPrApi(region: Region): GarPrApi {
+        return if (region.endpoint == Endpoint.GAR_PR) mGarPrApi else mNotGarPrApi
     }
 
     override fun getHeadToHead(region: Region, playerId: String, opponentId: String,

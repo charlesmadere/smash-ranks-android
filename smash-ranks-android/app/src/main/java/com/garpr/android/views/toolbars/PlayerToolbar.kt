@@ -32,7 +32,7 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
     interface DataProvider {
         val fullPlayer: FullPlayer?
         val matchesBundle: MatchesBundle?
-        val result: Match.Result?
+        val matchResult: MatchResult?
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

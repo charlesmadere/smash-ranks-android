@@ -17,6 +17,7 @@ import com.garpr.android.sync.RankingsPollingJobService;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.FavoritePlayerItemView;
 import com.garpr.android.views.FavoritePlayersLayout;
+import com.garpr.android.views.HeadToHeadItemView;
 import com.garpr.android.views.IdentityFrameLayout;
 import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
@@ -77,6 +78,7 @@ public interface AppComponent {
     void inject(DeleteFavoritePlayersPreferenceView view);
     void inject(FavoritePlayerItemView view);
     void inject(FavoritePlayersLayout view);
+    void inject(HeadToHeadItemView view);
     void inject(IdentityFrameLayout view);
     void inject(IdentityPreferenceView view);
     void inject(LastPollPreferenceView view);
