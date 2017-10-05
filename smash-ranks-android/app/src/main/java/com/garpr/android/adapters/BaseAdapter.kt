@@ -15,25 +15,6 @@ abstract class BaseAdapter<T>(
 
     constructor(context: Context) : this(LayoutInflater.from(context))
 
-    fun add(item: T?) {
-        if (item != null) {
-            mItems.add(item)
-            notifyDataSetChanged()
-        }
-    }
-
-    fun add(items: List<T>?) {
-        if (items != null && !items.isEmpty()) {
-            for (item in items) {
-                if (item != null) {
-                    mItems.add(item)
-                }
-            }
-
-            notifyDataSetChanged()
-        }
-    }
-
     fun clear() {
         if (!mItems.isEmpty()) {
             mItems.clear()

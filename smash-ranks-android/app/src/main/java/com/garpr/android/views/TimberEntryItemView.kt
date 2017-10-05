@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.SparseIntArray
 import android.widget.LinearLayout
@@ -41,7 +40,7 @@ class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
         mTagAndMessage.text = resources.getString(R.string.tag_and_message, content.mTag,
                 content.mMsg)
 
-        if (TextUtils.isEmpty(content.mStackTrace)) {
+        if (content.mStackTrace.isNullOrEmpty()) {
             mStackTrace.text = ""
             mStackTrace.visibility = GONE
         } else {

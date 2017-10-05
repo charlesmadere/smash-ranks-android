@@ -3,32 +3,37 @@ package com.garpr.android.networking
 import com.garpr.android.models.*
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Url
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface GarPrApi {
 
-    @GET
-    fun getHeadToHead(@Url url: String): Call<HeadToHead>
+    @GET("{regionId}/matches/{playerId}")
+    fun getHeadToHead(@Path("regionId") regionId: String, @Path("playerId") playerId: String,
+            @Query("opponent") opponentId: String): Call<HeadToHead>
 
-    @GET
-    fun getMatches(@Url url: String): Call<MatchesBundle>
+    @GET("{regionId}/matches/{playerId}")
+    fun getMatches(@Path("regionId") regionId: String, @Path("playerId") playerId: String):
+            Call<MatchesBundle>
 
-    @GET
-    fun getPlayer(@Url url: String): Call<FullPlayer>
+    @GET("{regionId}/players/{playerId}")
+    fun getPlayer(@Path("regionId") regionId: String, @Path("playerId") playerId: String):
+            Call<FullPlayer>
 
-    @GET
-    fun getPlayers(@Url url: String): Call<PlayersBundle>
+    @GET("{regionId}/players")
+    fun getPlayers(@Path("regionId") regionId: String): Call<PlayersBundle>
 
-    @GET
-    fun getRankings(@Url url: String): Call<RankingsBundle>
+    @GET("{regionId}/rankings")
+    fun getRankings(@Path("regionId") regionId: String): Call<RankingsBundle>
 
-    @GET
-    fun getRegions(@Url url: String): Call<RegionsBundle>
+    @GET("regions")
+    fun getRegions(): Call<RegionsBundle>
 
-    @GET
-    fun getTournament(@Url url: String): Call<FullTournament>
+    @GET("{regionId}/tournaments/{tournamentId}")
+    fun getTournament(@Path("regionId") regionId: String, @Path("tournamentId") tournamentId: String):
+            Call<FullTournament>
 
-    @GET
-    fun getTournaments(@Url url: String): Call<TournamentsBundle>
+    @GET("{regionId}/tournaments")
+    fun getTournaments(@Path("regionId") regionId: String): Call<TournamentsBundle>
 
 }

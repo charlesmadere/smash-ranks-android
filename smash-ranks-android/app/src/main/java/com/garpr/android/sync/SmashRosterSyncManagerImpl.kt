@@ -6,12 +6,14 @@ import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.SmashRosterSyncResult
+import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.sync.SmashRosterSyncManager.Listeners
 import java.lang.ref.WeakReference
 
 class SmashRosterSyncManagerImpl(
         private val regionManager: RegionManager,
+        private val serverApi: ServerApi,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
         private val threadUtils: ThreadUtils
@@ -42,10 +44,10 @@ class SmashRosterSyncManagerImpl(
         }
     }
 
-    override var enabled: Boolean
-        get() = smashRosterPreferenceStore.enabled.get() == true
+    override var isEnabled: Boolean
+        get() = smashRosterPreferenceStore.isEnabled.get() == true
         set(value) {
-            smashRosterPreferenceStore.enabled.set(value)
+            smashRosterPreferenceStore.isEnabled.set(value)
         }
 
     @UiThread

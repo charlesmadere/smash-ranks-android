@@ -45,11 +45,11 @@ class DeepLinkUtilsImpl(
     }
 
     override fun buildIntentStack(context: Context, intent: Intent?, region: Region): List<Intent>? {
-        if (intent == null) {
+        return if (intent == null) {
             mTimber.d(TAG, "Can't deep link, Intent is null")
-            return null
+            null
         } else {
-            return buildIntentStack(context, intent.data, region)
+            buildIntentStack(context, intent.data, region)
         }
     }
 
@@ -115,11 +115,11 @@ class DeepLinkUtilsImpl(
     }
 
     override fun buildIntentStack(context: Context, uri: Uri?, region: Region): List<Intent>? {
-        if (uri == null) {
+        return if (uri == null) {
             mTimber.d(TAG, "Can't deep link, Uri is null")
-            return null
+            null
         } else {
-            return buildIntentStack(context, uri.toString(), region)
+            buildIntentStack(context, uri.toString(), region)
         }
     }
 
@@ -181,10 +181,10 @@ class DeepLinkUtilsImpl(
     }
 
     override fun getEndpoint(intent: Intent?): Endpoint? {
-        if (intent == null) {
-            return null
+        return if (intent == null) {
+            null
         } else {
-            return getEndpoint(intent.data)
+            getEndpoint(intent.data)
         }
     }
 
@@ -196,18 +196,18 @@ class DeepLinkUtilsImpl(
     }
 
     override fun getEndpoint(uri: Uri?): Endpoint? {
-        if (uri == null) {
-            return null
+        return if (uri == null) {
+            null
         } else {
-            return getEndpoint(uri.toString())
+            getEndpoint(uri.toString())
         }
     }
 
     override fun getRegion(intent: Intent?, regionsBundle: RegionsBundle?): Region? {
-        if (intent == null) {
-            return null
+        return if (intent == null) {
+            null
         } else {
-            return getRegion(intent.data, regionsBundle)
+            getRegion(intent.data, regionsBundle)
         }
     }
 
@@ -230,10 +230,10 @@ class DeepLinkUtilsImpl(
     }
 
     override fun getRegion(uri: Uri?, regionsBundle: RegionsBundle?): Region? {
-        if (uri == null) {
-            return null
+        return if (uri == null) {
+            null
         } else {
-            return getRegion(uri.toString(), regionsBundle)
+            getRegion(uri.toString(), regionsBundle)
         }
     }
 

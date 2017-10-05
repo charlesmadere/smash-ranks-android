@@ -1,22 +1,23 @@
 package com.garpr.android.models
 
-import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import android.support.annotation.StringRes
 import com.garpr.android.R
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.misc.Constants
 import com.google.gson.annotations.SerializedName
 
 enum class Endpoint(
+        val basePath: String,
         @param:StringRes val title: Int
 ) : Parcelable {
 
     @SerializedName("gar_pr")
-    GAR_PR(R.string.gar_pr),
+    GAR_PR(Constants.GAR_PR_BASE_PATH, R.string.gar_pr),
 
     @SerializedName("not_gar_pr")
-    NOT_GAR_PR(R.string.not_gar_pr);
+    NOT_GAR_PR(Constants.NOT_GAR_PR_BASE_PATH, R.string.not_gar_pr);
 
 
     companion object {
@@ -24,88 +25,15 @@ enum class Endpoint(
         val CREATOR = createParcel { values()[it.readInt()] }
     }
 
-    val apiPath = "$basePath:$port/"
+    fun getPlayerWebPath(regionId: String, playerId: String) =
+            getWebPath(regionId) + "/players/" + playerId
 
-    fun getHeadToHeadApiPath(regionId: String, playerId: String, opponentId: String): String {
-        return Uri.parse(getMatchesApiPath(regionId, playerId))
-                .buildUpon()
-                .appendQueryParameter("opponent", opponentId)
-                .build()
-                .toString()
-    }
+    fun getRankingsWebPath(regionId: String) = getWebPath(regionId) + "/rankings"
 
-    fun getMatchesApiPath(regionId: String, playerId: String): String {
-        return Uri.parse(apiPath)
-                .buildUpon()
-                .appendPath(regionId)
-                .appendPath("matches")
-                .appendPath(playerId)
-                .build()
-                .toString()
-    }
+    fun getTournamentWebPath(regionId: String, tournamentId: String) =
+            getTournamentsWebPath(regionId) + "/" + tournamentId
 
-    fun getPlayerApiPath(regionId: String, playerId: String): String {
-        return Uri.parse(apiPath)
-                .buildUpon()
-                .appendPath(regionId)
-                .appendPath("players")
-                .appendPath(playerId)
-                .build()
-                .toString()
-    }
-
-    fun getPlayersApiPath(regionId: String): String {
-        return Uri.parse(apiPath)
-                .buildUpon()
-                .appendPath(regionId)
-                .appendPath("players")
-                .build()
-                .toString()
-    }
-
-    fun getPlayerWebPath(regionId: String, playerId: String): String {
-        return getWebPath(regionId) + "/players/" + playerId
-    }
-
-    fun getRankingsApiPath(regionId: String): String {
-        return Uri.parse(apiPath)
-                .buildUpon()
-                .appendPath(regionId)
-                .appendPath("rankings")
-                .build()
-                .toString()
-    }
-
-    fun getRankingsWebPath(regionId: String): String {
-        return getWebPath(regionId) + "/rankings"
-    }
-
-    fun getTournamentApiPath(regionId: String, tournamentId: String): String {
-        return Uri.parse(apiPath)
-                .buildUpon()
-                .appendPath(regionId)
-                .appendPath("tournaments")
-                .appendPath(tournamentId)
-                .build()
-                .toString()
-    }
-
-    fun getTournamentsApiPath(regionId: String): String {
-        return Uri.parse(apiPath)
-                .buildUpon()
-                .appendPath(regionId)
-                .appendPath("tournaments")
-                .build()
-                .toString()
-    }
-
-    fun getTournamentWebPath(regionId: String, tournamentId: String): String {
-        return getTournamentsWebPath(regionId) + "/" + tournamentId
-    }
-
-    fun getTournamentsWebPath(regionId: String): String {
-        return getWebPath(regionId) + "/tournaments"
-    }
+    fun getTournamentsWebPath(regionId: String) = getWebPath(regionId) + "/tournaments"
 
     fun getWebPath(regionId: String? = null): String {
         val stringBuilder = StringBuilder(basePath)
@@ -117,12 +45,6 @@ enum class Endpoint(
 
         return stringBuilder.toString()
     }
-
-    val regionsApiPath = Uri.parse(apiPath)
-            .buildUpon()
-            .appendPath("regions")
-            .build()
-            .toString()
 
     override fun describeContents() = 0
 

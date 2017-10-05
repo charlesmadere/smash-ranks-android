@@ -77,8 +77,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public abstract class BaseAppModule {
 
     private static final String FAVORITE_PLAYERS_KEY_VALUE_STORE = "FAVORITE_PLAYERS_KEY_VALUE_STORE";
+    private static final String GAR_PR_API = "GAR_PR_API";
     private static final String GAR_PR_RETROFIT = "GAR_PR_RETROFIT";
     private static final String GENERAL_KEY_VALUE_STORE = "GENERAL_KEY_VALUE_STORE";
+    private static final String NOT_GAR_PR_API = "NOT_GAR_PR_API";
     private static final String NOT_GAR_PR_RETROFIT = "NOT_GAR_PR_RETROFIT";
     private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
     private static final String SMASH_ROSTER_KEY_VALUE_STORE = "SMASH_ROSTER_KEY_VALUE_STORE";
@@ -137,6 +139,7 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    @Named(GAR_PR_API)
     GarPrApi providesGarPrApi(@Named(GAR_PR_RETROFIT) final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
@@ -147,7 +150,7 @@ public abstract class BaseAppModule {
     Retrofit providesGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
         return new Retrofit.Builder()
                 .addConverterFactory(gsonConverterFactory)
-                .baseUrl(Constants.GAR_PR_BASE_PATH)
+                .baseUrl(Constants.GAR_PR_BASE_PATH + ':' + Constants.GAR_PR_API_PORT)
                 .build();
     }
 
@@ -216,6 +219,7 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    @Named(NOT_GAR_PR_API)
     GarPrApi providesNotGarPrApi(@Named(NOT_GAR_PR_RETROFIT) final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
@@ -226,7 +230,7 @@ public abstract class BaseAppModule {
     Retrofit providesNotGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
         return new Retrofit.Builder()
                 .addConverterFactory(gsonConverterFactory)
-                .baseUrl(Constants.NOT_GAR_PR_BASE_PATH)
+                .baseUrl(Constants.NOT_GAR_PR_BASE_PATH + ':' + Constants.NOT_GAR_PR_API_PORT)
                 .build();
     }
 
@@ -297,12 +301,15 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    ServerApi providesServerApi(final FullTournamentUtils fullTournamentUtils, final GarPrApi garPrApi,
+    ServerApi providesServerApi(final FullTournamentUtils fullTournamentUtils,
+            @Named(GAR_PR_API) final GarPrApi garPrApi,
+            @Named(NOT_GAR_PR_API) final GarPrApi notGarPrApi,
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final RegionManager regionManager, final SmashRosterApi smashRosterApi,
+            final RegionManager regionManager,
+            final SmashRosterApi smashRosterApi,
             final Timber timber) {
-        return new ServerApiImpl(fullTournamentUtils, garPrApi, rankingsPollingPreferenceStore,
-                regionManager, smashRosterApi, timber);
+        return new ServerApiImpl(fullTournamentUtils, garPrApi, notGarPrApi,
+                rankingsPollingPreferenceStore, regionManager, smashRosterApi, timber);
     }
 
     @Provides
@@ -354,9 +361,9 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     SmashRosterSyncManager providesSmashRosterSyncManager(final RegionManager regionManager,
-            final SmashRosterPreferenceStore smashRosterPreferenceStore,
+            final ServerApi serverApi, final SmashRosterPreferenceStore smashRosterPreferenceStore,
             final SmashRosterStorage smashRosterStorage, final ThreadUtils threadUtils) {
-        return new SmashRosterSyncManagerImpl(regionManager, smashRosterPreferenceStore,
+        return new SmashRosterSyncManagerImpl(regionManager, serverApi, smashRosterPreferenceStore,
                 smashRosterStorage, threadUtils);
     }
 

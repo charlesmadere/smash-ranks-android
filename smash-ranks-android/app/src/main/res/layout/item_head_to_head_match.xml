@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.HeadToHeadMatchItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/card_background"
+    android:foreground="?attr/selectableItemBackground"
+    style="@style/ListItem">
+    <LinearLayout
+        style="@style/InnerListItem">
+        <TextView
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:id="@+id/tvPlayerName"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:maxLines="2" />
+        <android.support.v4.widget.Space
+            android:layout_height="1dp"
+            android:layout_width="@dimen/root_padding" />
+        <TextView
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:id="@+id/tvOpponentName"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:maxLines="2" />
+    </LinearLayout>
+</com.garpr.android.views.HeadToHeadMatchItemView>

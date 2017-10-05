@@ -15,10 +15,7 @@ import com.garpr.android.adapters.HeadToHeadAdapter
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.HeadToHead
-import com.garpr.android.models.Match
+import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
@@ -94,7 +91,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override fun failure(errorCode: Int) {
         mHeadToHead = null
         mList = null
-        mResult = null
+        mMatchResult = null
         showError(errorCode)
     }
 
@@ -104,8 +101,8 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
                 ApiCall(this))
     }
 
-    private fun filter(result: Match.Result?) {
-        mResult = result
+    private fun filter(matchResult: MatchResult?) {
+        mMatchResult = matchResult
         val list = mList
 
         if (list == null || list.isEmpty()) {
@@ -116,15 +113,15 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
             private var mList: List<Any>? = null
 
             override fun onBackground() {
-                if (!isAlive || mResult != result) {
+                if (!isAlive || mMatchResult != matchResult) {
                     return
                 }
 
-                mList = ListUtils.filterPlayerMatchesList(result, list)
+                mList = ListUtils.filterPlayerMatchesList(matchResult, list)
             }
 
             override fun onUi() {
-                if (!isAlive || mResult != result) {
+                if (!isAlive || mMatchResult != matchResult) {
                     return
                 }
 
@@ -155,9 +152,9 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
         if (mHeadToHead != null) {
             menu.findItem(R.id.miFilter).isVisible = true
-            menu.findItem(R.id.miShowAll).isVisible = mResult != null
-            menu.findItem(R.id.miFilterToLosses).isVisible = mResult != Match.Result.LOSE
-            menu.findItem(R.id.miFilterToWins).isVisible = mResult != Match.Result.WIN
+            menu.findItem(R.id.miShowAll).isVisible = mMatchResult != null
+            menu.findItem(R.id.miFilterToLosses).isVisible = mMatchResult != MatchResult.LOSE
+            menu.findItem(R.id.miFilterToWins).isVisible = mMatchResult != MatchResult.WIN
         }
 
         return super.onCreateOptionsMenu(menu)
@@ -166,12 +163,12 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miFilterToLosses -> {
-                filter(Match.Result.LOSE)
+                filter(MatchResult.LOSE)
                 true
             }
 
             R.id.miFilterToWins -> {
-                filter(Match.Result.WIN)
+                filter(MatchResult.WIN)
                 true
             }
 

@@ -12,7 +12,7 @@ class SmashRosterPreferenceStoreImpl(
         keyValueStore
 ), SmashRosterPreferenceStore {
 
-    override val enabled = PersistentBooleanPreference("ENABLED", true,
+    override val isEnabled = PersistentBooleanPreference("IS_ENABLED", true,
             keyValueStore)
 
     override val syncResult = PersistentGsonPreference<SmashRosterSyncResult>("SYNC_RESULT",

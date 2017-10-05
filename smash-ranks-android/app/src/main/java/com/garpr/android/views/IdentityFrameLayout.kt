@@ -28,7 +28,7 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout, IdentityManager.OnIde
         protected set
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var mIdentityManager: IdentityManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -60,6 +60,7 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout, IdentityManager.OnIde
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         mIdentityManager.removeListener(this)
     }
 

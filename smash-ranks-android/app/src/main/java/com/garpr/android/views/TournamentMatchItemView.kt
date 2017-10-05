@@ -78,11 +78,13 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     }
 
     override fun refreshIdentity() {
-        if (mIdentityManager.isPlayer(mContent?.winnerId)) {
+        val content = mContent
+
+        if (content != null && mIdentityManager.isPlayer(content.winnerId)) {
             styleTextViewForUser(mWinnerName)
             styleTextViewForSomeoneElse(mLoserName)
             identityIsUser()
-        } else if (mIdentityManager.isPlayer(mContent?.loserId)) {
+        } else if (content != null && mIdentityManager.isPlayer(content.loserId)) {
             styleTextViewForSomeoneElse(mWinnerName)
             styleTextViewForUser(mLoserName)
             identityIsUser()

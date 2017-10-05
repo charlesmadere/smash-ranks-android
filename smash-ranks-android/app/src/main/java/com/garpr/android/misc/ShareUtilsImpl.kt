@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.app.ShareCompat
-import android.text.TextUtils
 import android.widget.Toast
 import com.garpr.android.R
 import com.garpr.android.misc.Constants.PLAIN_TEXT
@@ -23,7 +22,7 @@ class ShareUtilsImpl(
     }
 
     override fun openUrl(context: Context, url: String?) {
-        if (url == null || TextUtils.isEmpty(url) || TextUtils.getTrimmedLength(url) == 0) {
+        if (url == null || url.isBlank()) {
             return
         }
 
@@ -33,7 +32,7 @@ class ShareUtilsImpl(
             val intent = Intent(Intent.ACTION_VIEW, uri)
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            mTimber.e(TAG, "Unable to open browser to URI: \"" + uri + "\"", e)
+            mTimber.e(TAG, "Unable to open browser to URI: $uri", e)
             Toast.makeText(context, R.string.unable_to_open_link, Toast.LENGTH_LONG).show()
         }
 

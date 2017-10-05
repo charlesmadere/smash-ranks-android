@@ -20,6 +20,8 @@ interface ServerApi {
 
     fun getRegions(endpoint: Endpoint? = null, listener: ApiListener<RegionsBundle>)
 
+    fun getSmashRoster(region: Region, listener: ApiListener<SmashRoster>)
+
     fun getTournament(region: Region, tournamentId: String, listener: ApiListener<FullTournament>)
 
     fun getTournaments(region: Region, listener: ApiListener<TournamentsBundle>)

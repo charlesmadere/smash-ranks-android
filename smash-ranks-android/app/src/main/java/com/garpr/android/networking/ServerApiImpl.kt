@@ -23,15 +23,17 @@ class ServerApiImpl(
         private const val TAG = "ServerApiImpl"
     }
 
+    private fun getGarPrApi(endpoint: Endpoint): GarPrApi {
+        return if (endpoint == Endpoint.GAR_PR) mGarPrApi else mNotGarPrApi
+    }
+
     private fun getGarPrApi(region: Region): GarPrApi {
-        return if (region.endpoint == Endpoint.GAR_PR) mGarPrApi else mNotGarPrApi
+        return getGarPrApi(region.endpoint)
     }
 
     override fun getHeadToHead(region: Region, playerId: String, opponentId: String,
             listener: ApiListener<HeadToHead>) {
-        val url = region.endpoint.getHeadToHeadApiPath(region.id, playerId, opponentId)
-
-        mGarPrApi.getHeadToHead(url).enqueue(object : Callback<HeadToHead> {
+        getGarPrApi(region).getHeadToHead(region.id, playerId, opponentId).enqueue(object : Callback<HeadToHead> {
             override fun onResponse(call: Call<HeadToHead>, response: Response<HeadToHead>) {
                 if (response.isSuccessful) {
                     listener.success(response.body())
@@ -50,9 +52,7 @@ class ServerApiImpl(
     }
 
     override fun getMatches(region: Region, playerId: String, listener: ApiListener<MatchesBundle>) {
-        val url = region.endpoint.getMatchesApiPath(region.id, playerId)
-
-        mGarPrApi.getMatches(url).enqueue(object : Callback<MatchesBundle> {
+        getGarPrApi(region).getMatches(region.id, playerId).enqueue(object : Callback<MatchesBundle> {
             override fun onResponse(call: Call<MatchesBundle>, response: Response<MatchesBundle>) {
                 if (response.isSuccessful) {
                     listener.success(response.body())
@@ -71,9 +71,7 @@ class ServerApiImpl(
     }
 
     override fun getPlayer(region: Region, playerId: String, listener: ApiListener<FullPlayer>) {
-        val url = region.endpoint.getPlayerApiPath(region.id, playerId)
-
-        mGarPrApi.getPlayer(url).enqueue(object : Callback<FullPlayer> {
+        getGarPrApi(region).getPlayer(region.id, playerId).enqueue(object : Callback<FullPlayer> {
             override fun onResponse(call: Call<FullPlayer>, response: Response<FullPlayer>) {
                 if (response.isSuccessful) {
                     listener.success(response.body())
@@ -97,9 +95,7 @@ class ServerApiImpl(
     }
 
     override fun getPlayers(region: Region, listener: ApiListener<PlayersBundle>) {
-        val url = region.endpoint.getPlayersApiPath(region.id)
-
-        mGarPrApi.getPlayers(url).enqueue(object : Callback<PlayersBundle> {
+        getGarPrApi(region).getPlayers(region.id).enqueue(object : Callback<PlayersBundle> {
             override fun onResponse(call: Call<PlayersBundle>, response: Response<PlayersBundle>) {
                 if (response.isSuccessful) {
                     listener.success(response.body())
@@ -117,9 +113,7 @@ class ServerApiImpl(
     }
 
     override fun getRankings(region: Region, listener: ApiListener<RankingsBundle>) {
-        val url = region.endpoint.getRankingsApiPath(region.id)
-
-        mGarPrApi.getRankings(url).enqueue(object : Callback<RankingsBundle> {
+        getGarPrApi(region).getRankings(region.id).enqueue(object : Callback<RankingsBundle> {
             override fun onResponse(call: Call<RankingsBundle>, response: Response<RankingsBundle>) {
                 val body = if (response.isSuccessful) response.body() else null
 
@@ -146,7 +140,7 @@ class ServerApiImpl(
         if (endpoint == null) {
             RegionsBundleApiCall(listener, this).fetch()
         } else {
-            mGarPrApi.getRegions(endpoint.regionsApiPath).enqueue(object : Callback<RegionsBundle> {
+            getGarPrApi(endpoint).getRegions().enqueue(object : Callback<RegionsBundle> {
                 override fun onResponse(call: Call<RegionsBundle>, response: Response<RegionsBundle>) {
                     val body = if (response.isSuccessful) response.body() else null
 
@@ -166,11 +160,13 @@ class ServerApiImpl(
         }
     }
 
+    override fun getSmashRoster(region: Region, listener: ApiListener<SmashRoster>) {
+        // TODO
+    }
+
     override fun getTournament(region: Region, tournamentId: String,
             listener: ApiListener<FullTournament>) {
-        val url = region.endpoint.getTournamentApiPath(region.id, tournamentId)
-
-        mGarPrApi.getTournament(url).enqueue(object : Callback<FullTournament> {
+        getGarPrApi(region).getTournament(region.id, tournamentId).enqueue(object : Callback<FullTournament> {
             override fun onResponse(call: Call<FullTournament>, response: Response<FullTournament>) {
                 if (response.isSuccessful) {
                     mFullTournamentUtils.prepareFullTournament(response.body(), object : FullTournamentUtils.Callback {
@@ -193,9 +189,7 @@ class ServerApiImpl(
     }
 
     override fun getTournaments(region: Region, listener: ApiListener<TournamentsBundle>) {
-        val url = region.endpoint.getTournamentsApiPath(region.id)
-
-        mGarPrApi.getTournaments(url).enqueue(object : Callback<TournamentsBundle> {
+        getGarPrApi(region).getTournaments(region.id).enqueue(object : Callback<TournamentsBundle> {
             override fun onResponse(call: Call<TournamentsBundle>,
                     response: Response<TournamentsBundle>) {
                 if (response.isSuccessful) {

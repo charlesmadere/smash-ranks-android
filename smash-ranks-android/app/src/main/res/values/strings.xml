@@ -11,6 +11,7 @@
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
     <string name="build_x">Build %1$d</string>
+    <string name="build_x_debug">Build %1$d (Debug)</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_all">Cancel all</string>
     <string name="charles_twitter_url">twitter.com/charlesmadere</string>

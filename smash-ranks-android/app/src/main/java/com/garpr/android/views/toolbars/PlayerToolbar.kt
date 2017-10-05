@@ -12,7 +12,7 @@ import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.PlayerToolbarManager
 import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.Match
+import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 import javax.inject.Inject
 
@@ -94,12 +94,12 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         val activity = context.optActivity()
         val fullPlayer: FullPlayer?
         val matchesBundle: MatchesBundle?
-        val matchResult: Match.Result?
+        val matchResult: MatchResult?
 
         if (activity is DataProvider) {
             fullPlayer = activity.fullPlayer
             matchesBundle = activity.matchesBundle
-            matchResult = activity.result
+            matchResult = activity.matchResult
         } else {
             fullPlayer = null
             matchesBundle = null

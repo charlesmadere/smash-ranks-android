@@ -12,7 +12,7 @@ interface SmashRosterSyncManager {
 
     fun addListener(listener: Listeners)
 
-    var enabled: Boolean
+    var isEnabled: Boolean
 
     fun removeListener(listener: Listeners)
 

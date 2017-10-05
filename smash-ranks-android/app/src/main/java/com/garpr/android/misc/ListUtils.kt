@@ -121,7 +121,7 @@ object ListUtils {
         }
     }
 
-    fun filterPlayerMatchesList(result: Match.Result?, list: List<Any>?): MutableList<Any>? {
+    fun filterPlayerMatchesList(result: MatchResult?, list: List<Any>?): MutableList<Any>? {
         if (list == null || list.isEmpty()) {
             return null
         }

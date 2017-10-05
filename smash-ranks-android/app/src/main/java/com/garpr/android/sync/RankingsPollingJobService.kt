@@ -11,7 +11,6 @@ import com.garpr.android.misc.Timber
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import javax.inject.Inject
 
 class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
@@ -24,9 +23,6 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
     @Inject
     lateinit protected var mRankingsNotificationsUtils: RankingsNotificationsUtils
-
-    @Inject
-    lateinit protected var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
     lateinit protected var mRegionManager: RegionManager

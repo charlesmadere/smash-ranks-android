@@ -18,6 +18,7 @@ import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.Match
+import com.garpr.android.models.MatchResult
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -96,9 +97,9 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
         mName.text = content.opponent.name
 
         when (content.result) {
-            Match.Result.EXCLUDED -> mName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
-            Match.Result.LOSE -> mName.setTextColor(ContextCompat.getColor(context, R.color.lose))
-            Match.Result.WIN -> mName.setTextColor(ContextCompat.getColor(context, R.color.win))
+            MatchResult.EXCLUDED -> mName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+            MatchResult.LOSE -> mName.setTextColor(ContextCompat.getColor(context, R.color.lose))
+            MatchResult.WIN -> mName.setTextColor(ContextCompat.getColor(context, R.color.win))
         }
 
         refreshIdentity()
