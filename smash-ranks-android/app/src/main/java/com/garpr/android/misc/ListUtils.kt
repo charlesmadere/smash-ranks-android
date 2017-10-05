@@ -24,7 +24,22 @@ object ListUtils {
             return list
         }
 
-        list.addAll(createSortedTournamentAndMatchList(matches))
+        val matchesCopy = mutableListOf<Match>()
+        matchesCopy.addAll(matches)
+        Collections.sort(matchesCopy, Match.REVERSE_CHRONOLOGICAL_ORDER)
+
+        var tournamentId: String? = null
+
+        for (match in matchesCopy) {
+            if (match.tournament.id != tournamentId) {
+                tournamentId = match.tournament.id
+                list.add(LiteTournament(null, match.tournament.date, tournamentId,
+                        match.tournament.name))
+            }
+
+            list.add(HeadToHeadMatch(headToHead.player, match.opponent, match.result))
+        }
+
         return list
     }
 

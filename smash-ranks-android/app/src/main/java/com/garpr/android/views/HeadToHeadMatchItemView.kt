@@ -70,6 +70,8 @@ class HeadToHeadMatchItemView : IdentityFrameLayout, BaseAdapterView<HeadToHeadM
             App.get().appComponent.inject(this)
         }
 
+        setOnClickListener(this)
+
         if (isInEditMode) {
             setContent(HeadToHeadMatch(LitePlayer("0", "Shroomed"),
                     LitePlayer("1", "PewPewU"), MatchResult.WIN))
