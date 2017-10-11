@@ -10,7 +10,7 @@ abstract class BaseAdapter<T>(
         private val mLayoutInflater: LayoutInflater
 ) : RecyclerView.Adapter<BaseAdapterViewHolder>() {
 
-    private val mItems: MutableList<T> = mutableListOf()
+    private val mItems = mutableListOf<T>()
 
 
     constructor(context: Context) : this(LayoutInflater.from(context))
@@ -22,13 +22,9 @@ abstract class BaseAdapter<T>(
         }
     }
 
-    fun getItem(position: Int): T {
-        return mItems[position]
-    }
+    fun getItem(position: Int) = mItems[position]
 
-    override fun getItemCount(): Int {
-        return mItems.size
-    }
+    override fun getItemCount() = mItems.size
 
     @LayoutRes
     abstract override fun getItemViewType(position: Int): Int

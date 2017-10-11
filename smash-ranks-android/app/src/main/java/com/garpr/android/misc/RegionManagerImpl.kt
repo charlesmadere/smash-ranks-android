@@ -14,7 +14,7 @@ class RegionManagerImpl(
         private val mTimber: Timber
 ) : RegionManager {
 
-    private val mListeners: MutableList<WeakReference<OnRegionChangeListener>> = mutableListOf()
+    private val mListeners = mutableListOf<WeakReference<OnRegionChangeListener>>()
 
 
     companion object {
