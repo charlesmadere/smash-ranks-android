@@ -7,11 +7,13 @@ import com.garpr.android.extensions.readAbsPlayer
 import com.garpr.android.extensions.writeAbsPlayer
 import com.google.gson.annotations.SerializedName
 
-data class HeadToHeadMatch(
+class HeadToHeadMatch(
         @SerializedName("player") val player: AbsPlayer,
         @SerializedName("opponent") val opponent: AbsPlayer,
-        @SerializedName("result") val result: MatchResult
-) : Parcelable {
+        result: MatchResult
+) : AbsMatch(
+        result
+), Parcelable {
 
     companion object {
         @JvmField

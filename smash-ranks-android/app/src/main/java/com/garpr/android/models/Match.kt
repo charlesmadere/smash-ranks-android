@@ -7,11 +7,13 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-data class Match(
+class Match(
         @SerializedName("opponent") val opponent: AbsPlayer,
         @SerializedName("tournament") val tournament: AbsTournament,
-        @SerializedName("result") val result: MatchResult
-) : Parcelable {
+        result: MatchResult
+) : AbsMatch(
+        result
+), Parcelable {
 
     companion object {
         @JvmField
