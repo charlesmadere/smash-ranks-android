@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SettingsCardDescription.Warn">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/warn</item>
+    </style>
+
+</resources>
