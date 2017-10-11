@@ -40,11 +40,9 @@
                 android:background="?attr/selectableItemBackground"
                 android:id="@+id/tvGooglePlayServicesError"
                 android:text="@string/rankings_polling_requires_google_play_services"
-                android:textColor="@color/warn"
-                android:textStyle="bold"
                 android:visibility="gone"
                 tools:visibility="visible"
-                style="@style/SettingsCardDescription" />
+                style="@style/SettingsCardDescription.Warn" />
             <com.garpr.android.views.CheckablePreferenceView
                 android:id="@+id/cpvUseRankingsPolling"
                 app:checkableType="switch_compat"
