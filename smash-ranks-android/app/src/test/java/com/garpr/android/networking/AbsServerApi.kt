@@ -35,6 +35,10 @@ abstract class AbsServerApi : ServerApi {
         throw RuntimeException()
     }
 
+    override fun getSmashRoster(region: Region, listener: ApiListener<SmashRoster>) {
+        throw RuntimeException()
+    }
+
     override fun getTournament(region: Region, tournamentId: String,
             listener: ApiListener<FullTournament>) {
         throw RuntimeException()
