@@ -7,20 +7,18 @@ import java.util.*
 
 object ListUtils {
 
-    fun createHeadToHeadList(context: Context, headToHead: HeadToHead?): MutableList<Any> {
-        val list = mutableListOf<Any>()
-
-        if (headToHead == null) {
-            list.add(context.getString(R.string.no_matches))
-            return list
+    fun createHeadToHeadList(context: Context, headToHead: HeadToHead?): MutableList<Any>? {
+        if (headToHead == null || headToHead.losses == 0 && headToHead.wins == 0) {
+            return null
         }
 
+        val list = mutableListOf<Any>()
         list.add(WinsLosses(headToHead.player, headToHead.wins, headToHead.opponent,
                 headToHead.losses))
 
         val matches = headToHead.matches
         if (matches == null || matches.isEmpty()) {
-            list.add(context.getString(R.string.no_matches))
+            list.add(context.getString(R.string.no_match_history))
             return list
         }
 
@@ -177,7 +175,7 @@ object ListUtils {
                 while (j < list.size) {
                     val objectJ = list[j]
 
-                    if (objectJ is Match) {
+                    if (objectJ is AbsMatch) {
                         if (objectJ.result == result) {
                             if (!addedTournament) {
                                 addedTournament = true
