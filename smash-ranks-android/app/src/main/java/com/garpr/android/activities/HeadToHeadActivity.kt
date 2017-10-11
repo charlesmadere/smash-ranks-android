@@ -47,6 +47,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private val mError: ErrorLinearLayout by bindView(R.id.error)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val mEmpty : View by bindView(R.id.empty)
 
 
     companion object {
@@ -212,14 +213,24 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private fun showData() {
         mList = ListUtils.createHeadToHeadList(this, mHeadToHead)
         mAdapter.set(mList)
-        mError.visibility = View.GONE
-        mRecyclerView.visibility = View.VISIBLE
+
+        if (mAdapter.isEmpty) {
+            mError.visibility = View.GONE
+            mRecyclerView.visibility = View.GONE
+            mEmpty.visibility = View.VISIBLE
+        } else {
+            mEmpty.visibility = View.GONE
+            mError.visibility = View.GONE
+            mRecyclerView.visibility = View.VISIBLE
+        }
+
         prepareMenuAndSubtitle()
         mRefreshLayout.isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
         mAdapter.clear()
+        mEmpty.visibility = View.GONE
         mRecyclerView.visibility = View.GONE
         mError.setVisibility(View.VISIBLE, errorCode)
         prepareMenuAndSubtitle()
