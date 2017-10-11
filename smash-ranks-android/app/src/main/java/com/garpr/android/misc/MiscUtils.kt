@@ -2,8 +2,6 @@ package com.garpr.android.misc
 
 import java.text.DecimalFormat
 
-
-
 object MiscUtils {
 
     private val DECIMAL_FORMAT: DecimalFormat = DecimalFormat("#.###")

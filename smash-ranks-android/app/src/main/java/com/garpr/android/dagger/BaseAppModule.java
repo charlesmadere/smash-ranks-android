@@ -8,7 +8,6 @@ import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeepLinkUtils;
 import com.garpr.android.misc.DeepLinkUtilsImpl;
 import com.garpr.android.misc.DeviceUtils;
-import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.FavoritePlayersManager;
 import com.garpr.android.misc.FavoritePlayersManagerImpl;
 import com.garpr.android.misc.FirebaseApiWrapper;
@@ -21,18 +20,23 @@ import com.garpr.android.misc.HomeToolbarManager;
 import com.garpr.android.misc.HomeToolbarManagerImpl;
 import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.IdentityManagerImpl;
+import com.garpr.android.misc.KeyValueStoreProvider;
+import com.garpr.android.misc.KeyValueStoreProviderImpl;
 import com.garpr.android.misc.NotificationsManager;
 import com.garpr.android.misc.NotificationsManagerImpl;
 import com.garpr.android.misc.PlayerToolbarManager;
 import com.garpr.android.misc.PlayerToolbarManagerImpl;
 import com.garpr.android.misc.PreviousRankUtils;
 import com.garpr.android.misc.PreviousRankUtilsImpl;
+import com.garpr.android.misc.RankingsNotificationsUtils;
+import com.garpr.android.misc.RankingsNotificationsUtilsImpl;
 import com.garpr.android.misc.RegionManager;
 import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ShareUtilsImpl;
+import com.garpr.android.misc.SmashRosterStorage;
+import com.garpr.android.misc.SmashRosterStorageImpl;
 import com.garpr.android.misc.ThreadUtils;
-import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.misc.TournamentToolbarManager;
@@ -46,14 +50,18 @@ import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.networking.ServerApiImpl;
+import com.garpr.android.networking.SmashRosterApi;
 import com.garpr.android.preferences.GeneralPreferenceStore;
 import com.garpr.android.preferences.GeneralPreferenceStoreImpl;
 import com.garpr.android.preferences.KeyValueStore;
-import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.preferences.RankingsPollingPreferenceStoreImpl;
+import com.garpr.android.preferences.SmashRosterPreferenceStore;
+import com.garpr.android.preferences.SmashRosterPreferenceStoreImpl;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.sync.RankingsPollingSyncManagerImpl;
+import com.garpr.android.sync.SmashRosterSyncManager;
+import com.garpr.android.sync.SmashRosterSyncManagerImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -69,8 +77,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public abstract class BaseAppModule {
 
     private static final String FAVORITE_PLAYERS_KEY_VALUE_STORE = "FAVORITE_PLAYERS_KEY_VALUE_STORE";
+    private static final String GAR_PR_API = "GAR_PR_API";
+    private static final String GAR_PR_RETROFIT = "GAR_PR_RETROFIT";
     private static final String GENERAL_KEY_VALUE_STORE = "GENERAL_KEY_VALUE_STORE";
+    private static final String NOT_GAR_PR_API = "NOT_GAR_PR_API";
+    private static final String NOT_GAR_PR_RETROFIT = "NOT_GAR_PR_RETROFIT";
     private static final String RANKINGS_POLLING_KEY_VALUE_STORE = "RANKINGS_POLLING_KEY_VALUE_STORE";
+    private static final String SMASH_ROSTER_KEY_VALUE_STORE = "SMASH_ROSTER_KEY_VALUE_STORE";
+    private static final String SMASH_ROSTER_RETROFIT = "SMASH_ROSTER_RETROFIT";
 
     private final Application mApplication;
     private final Region mDefaultRegion;
@@ -96,15 +110,10 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    DeviceUtils providesDeviceUtils() {
-        return new DeviceUtilsImpl(mApplication);
-    }
-
-    @Provides
-    @Singleton
     @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE)
-    KeyValueStore providesFavoritePlayersKeyvalueStore() {
-        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+    KeyValueStore providesFavoritePlayersKeyValueStore(
+            final KeyValueStoreProvider keyValueStoreProvider) {
+        return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.FavoritePlayers");
     }
 
@@ -130,15 +139,26 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    GarPrApi providesGarPrApi(final Retrofit retrofit) {
+    @Named(GAR_PR_API)
+    GarPrApi providesGarPrApi(@Named(GAR_PR_RETROFIT) final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
 
     @Provides
     @Singleton
+    @Named(GAR_PR_RETROFIT)
+    Retrofit providesGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
+        return new Retrofit.Builder()
+                .addConverterFactory(gsonConverterFactory)
+                .baseUrl(Constants.GAR_PR_BASE_PATH + ':' + Constants.GAR_PR_API_PORT)
+                .build();
+    }
+
+    @Provides
+    @Singleton
     @Named(GENERAL_KEY_VALUE_STORE)
-    KeyValueStore providesGeneralKeyValueStore() {
-        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+    KeyValueStore providesGeneralKeyValueStore(final KeyValueStoreProvider keyValueStoreProvider) {
+        return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.General");
     }
 
@@ -173,6 +193,12 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    GsonConverterFactory providesGsonConverterFactory(final Gson gson) {
+        return GsonConverterFactory.create(gson);
+    }
+
+    @Provides
+    @Singleton
     HomeToolbarManager providesHomeToolbarManager(final IdentityManager identityManager,
             final RegionManager regionManager) {
         return new HomeToolbarManagerImpl(identityManager, regionManager);
@@ -187,11 +213,34 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    KeyValueStoreProvider providesKeyValueStoreProvider() {
+        return new KeyValueStoreProviderImpl(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    @Named(NOT_GAR_PR_API)
+    GarPrApi providesNotGarPrApi(@Named(NOT_GAR_PR_RETROFIT) final Retrofit retrofit) {
+        return retrofit.create(GarPrApi.class);
+    }
+
+    @Provides
+    @Singleton
+    @Named(NOT_GAR_PR_RETROFIT)
+    Retrofit providesNotGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
+        return new Retrofit.Builder()
+                .addConverterFactory(gsonConverterFactory)
+                .baseUrl(Constants.NOT_GAR_PR_BASE_PATH + ':' + Constants.NOT_GAR_PR_API_PORT)
+                .build();
+    }
+
+    @Provides
+    @Singleton
     NotificationsManager providesNotificationManager(
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final RegionManager regionManager) {
+            final RegionManager regionManager, final Timber timber) {
         return new NotificationsManagerImpl(mApplication, rankingsPollingPreferenceStore,
-                regionManager);
+                regionManager, timber);
     }
 
     @Provides
@@ -210,9 +259,19 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
+    RankingsNotificationsUtils providesRankingNotificationsUtils(final DeviceUtils deviceUtils,
+            final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
+            final Timber timber) {
+        return new RankingsNotificationsUtilsImpl(deviceUtils, rankingsPollingPreferenceStore,
+                timber);
+    }
+
+    @Provides
+    @Singleton
     @Named(RANKINGS_POLLING_KEY_VALUE_STORE)
-    KeyValueStore providesRankingsPollingKeyValueStore() {
-        return new KeyValueStoreImpl(mApplication, mApplication.getPackageName() +
+    KeyValueStore providesRankingsPollingKeyValueStore(
+            final KeyValueStoreProvider keyValueStoreProvider) {
+        return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.RankingsPolling");
     }
 
@@ -242,26 +301,70 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    Retrofit providesRetrofit(final Gson gson) {
-        return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(Constants.GAR_PR_BASE_PATH)
-                .build();
-    }
-
-    @Provides
-    @Singleton
-    ServerApi providesServerApi(final FullTournamentUtils fullTournamentUtils, final GarPrApi garPrApi,
+    ServerApi providesServerApi(final FullTournamentUtils fullTournamentUtils,
+            @Named(GAR_PR_API) final GarPrApi garPrApi,
+            @Named(NOT_GAR_PR_API) final GarPrApi notGarPrApi,
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final RegionManager regionManager, final Timber timber) {
-        return new ServerApiImpl(fullTournamentUtils, garPrApi, rankingsPollingPreferenceStore,
-                regionManager, timber);
+            final RegionManager regionManager,
+            final SmashRosterApi smashRosterApi,
+            final Timber timber) {
+        return new ServerApiImpl(fullTournamentUtils, garPrApi, notGarPrApi,
+                rankingsPollingPreferenceStore, regionManager, smashRosterApi, timber);
     }
 
     @Provides
     @Singleton
     ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
         return new ShareUtilsImpl(regionManager, timber);
+    }
+
+    @Provides
+    @Singleton
+    SmashRosterApi providesSmashRosterApi(@Named(SMASH_ROSTER_RETROFIT) final Retrofit retrofit) {
+        return retrofit.create(SmashRosterApi.class);
+    }
+
+    @Provides
+    @Singleton
+    @Named(SMASH_ROSTER_KEY_VALUE_STORE)
+    KeyValueStore providesSmashRosterKeyValueStore(
+            final KeyValueStoreProvider keyValueStoreProvider) {
+        return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
+                ".Preferences.v2.SmashRoster");
+    }
+
+    @Provides
+    @Singleton
+    @Named(SMASH_ROSTER_RETROFIT)
+    Retrofit providesSmashRosterRetrofit(final GsonConverterFactory gsonConverterFactory) {
+        return new Retrofit.Builder()
+                .addConverterFactory(gsonConverterFactory)
+                .baseUrl(Constants.SMASH_ROSTER_BASE_PATH)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    SmashRosterPreferenceStore providesSmashRosterPreferenceStore(final Gson gson,
+            @Named(SMASH_ROSTER_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
+        return new SmashRosterPreferenceStoreImpl(gson, keyValueStore);
+    }
+
+    @Provides
+    @Singleton
+    SmashRosterStorage providesSmashRosterStorage(final Gson gson,
+            final KeyValueStoreProvider keyValueStoreProvider, final Timber timber) {
+        return new SmashRosterStorageImpl(gson, keyValueStoreProvider,
+                mApplication.getPackageName(), timber);
+    }
+
+    @Provides
+    @Singleton
+    SmashRosterSyncManager providesSmashRosterSyncManager(final RegionManager regionManager,
+            final ServerApi serverApi, final SmashRosterPreferenceStore smashRosterPreferenceStore,
+            final SmashRosterStorage smashRosterStorage, final ThreadUtils threadUtils) {
+        return new SmashRosterSyncManagerImpl(regionManager, serverApi, smashRosterPreferenceStore,
+                smashRosterStorage, threadUtils);
     }
 
     @Provides

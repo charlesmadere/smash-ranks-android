@@ -1,7 +1,7 @@
 package com.garpr.android.misc
 
 import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.Match
+import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 
 interface PlayerToolbarManager {
@@ -39,6 +39,6 @@ interface PlayerToolbarManager {
     }
 
     fun getPresentation(fullPlayer: FullPlayer?, matchesBundle: MatchesBundle?,
-            matchResult: Match.Result?): Presentation
+            matchResult: MatchResult?): Presentation
 
 }

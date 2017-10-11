@@ -7,24 +7,37 @@ import java.util.*
 
 object ListUtils {
 
-    fun createHeadToHeadList(context: Context, headToHead: HeadToHead?): MutableList<Any> {
+    fun createHeadToHeadList(context: Context, headToHead: HeadToHead?): MutableList<Any>? {
+        if (headToHead == null || headToHead.losses == 0 && headToHead.wins == 0) {
+            return null
+        }
+
         val list = mutableListOf<Any>()
+        list.add(WinsLosses(headToHead.player, headToHead.wins, headToHead.opponent,
+                headToHead.losses))
 
-        if (headToHead == null) {
-            list.add(WinsLosses(0, 0))
-            list.add(context.getString(R.string.no_matches))
-            return list
-        }
-
-        list.add(WinsLosses(headToHead.wins, headToHead.losses))
         val matches = headToHead.matches
-
         if (matches == null || matches.isEmpty()) {
-            list.add(context.getString(R.string.no_matches))
+            list.add(context.getString(R.string.no_match_history))
             return list
         }
 
-        list.addAll(createSortedTournamentAndMatchList(matches))
+        val matchesCopy = mutableListOf<Match>()
+        matchesCopy.addAll(matches)
+        Collections.sort(matchesCopy, Match.REVERSE_CHRONOLOGICAL_ORDER)
+
+        var tournamentId: String? = null
+
+        for (match in matchesCopy) {
+            if (match.tournament.id != tournamentId) {
+                tournamentId = match.tournament.id
+                list.add(LiteTournament(null, match.tournament.date, tournamentId,
+                        match.tournament.name))
+            }
+
+            list.add(HeadToHeadMatch(headToHead.player, match.opponent, match.result))
+        }
+
         return list
     }
 
@@ -121,7 +134,7 @@ object ListUtils {
         }
     }
 
-    fun filterPlayerMatchesList(result: Match.Result?, list: List<Any>?): MutableList<Any>? {
+    fun filterPlayerMatchesList(result: MatchResult?, list: List<Any>?): MutableList<Any>? {
         if (list == null || list.isEmpty()) {
             return null
         }
@@ -162,7 +175,7 @@ object ListUtils {
                 while (j < list.size) {
                     val objectJ = list[j]
 
-                    if (objectJ is Match) {
+                    if (objectJ is AbsMatch) {
                         if (objectJ.result == result) {
                             if (!addedTournament) {
                                 addedTournament = true

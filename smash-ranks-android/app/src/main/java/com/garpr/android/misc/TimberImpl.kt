@@ -8,7 +8,7 @@ class TimberImpl(
 ) : Timber {
 
     private val mMaxSize: Int = if (isLowRamDevice) 64 else 256
-    private val mEntries: MutableList<Timber.Entry> = mutableListOf()
+    private val mEntries = mutableListOf<Timber.Entry>()
 
 
     private fun addEntry(entry: Timber.Entry) {

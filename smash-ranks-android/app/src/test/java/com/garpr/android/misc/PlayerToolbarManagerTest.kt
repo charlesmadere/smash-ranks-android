@@ -1,9 +1,8 @@
 package com.garpr.android.misc
 
-import android.app.Application
 import com.garpr.android.BaseTest
 import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.Match
+import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 import com.google.gson.Gson
 import org.junit.Assert.assertFalse
@@ -20,9 +19,6 @@ class PlayerToolbarManagerTest : BaseTest() {
     lateinit private var mFullPlayer1: FullPlayer
     lateinit private var mFullPlayer2: FullPlayer
     lateinit private var mMatchesBundle: MatchesBundle
-
-    @Inject
-    lateinit protected var mApplication: Application
 
     @Inject
     lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
@@ -222,7 +218,7 @@ class PlayerToolbarManagerTest : BaseTest() {
     @Throws(Exception::class)
     fun testGetPresentationWithFullPlayerAndMatchesBundleAndLoseResult() {
         var presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, mMatchesBundle,
-                Match.Result.LOSE)
+                MatchResult.LOSE)
         assertTrue(presentation.mIsAliasesVisible)
         assertTrue(presentation.mIsAddToFavoritesVisible)
         assertTrue(presentation.mIsAliasesVisible)
@@ -235,7 +231,7 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertFalse(presentation.mIsViewYourselfVsThisOpponentVisible)
 
         presentation = mPlayerToolbarManager.getPresentation(mFullPlayer2, mMatchesBundle,
-                Match.Result.LOSE)
+                MatchResult.LOSE)
         assertFalse(presentation.mIsAliasesVisible)
         assertTrue(presentation.mIsAddToFavoritesVisible)
         assertFalse(presentation.mIsAliasesVisible)
@@ -252,7 +248,7 @@ class PlayerToolbarManagerTest : BaseTest() {
     @Throws(Exception::class)
     fun testGetPresentationWithFullPlayerAndMatchesBundleAndWinResult() {
         var presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, mMatchesBundle,
-                Match.Result.WIN)
+                MatchResult.WIN)
         assertTrue(presentation.mIsAliasesVisible)
         assertTrue(presentation.mIsAddToFavoritesVisible)
         assertTrue(presentation.mIsAliasesVisible)
@@ -265,7 +261,7 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertFalse(presentation.mIsViewYourselfVsThisOpponentVisible)
 
         presentation = mPlayerToolbarManager.getPresentation(mFullPlayer2, mMatchesBundle,
-                Match.Result.WIN)
+                MatchResult.WIN)
         assertFalse(presentation.mIsAliasesVisible)
         assertTrue(presentation.mIsAddToFavoritesVisible)
         assertFalse(presentation.mIsAliasesVisible)

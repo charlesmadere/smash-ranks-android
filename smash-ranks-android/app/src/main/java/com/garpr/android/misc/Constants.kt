@@ -26,4 +26,7 @@ object Constants {
     const val NOT_GAR_PR_API_PORT = 3001
     const val NOT_GAR_PR_BASE_PATH = "https://www.notgarpr.com"
 
+    // Smash Roster Paths
+    const val SMASH_ROSTER_BASE_PATH = "https://raw.githubusercontent.com/charlesmadere/smash-ranks-android-players/"
+
 }

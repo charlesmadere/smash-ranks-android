@@ -18,7 +18,7 @@ class FavoritePlayersManagerImpl(
         private val mTimber: Timber
 ) : FavoritePlayersManager {
 
-    private val mListeners: MutableList<WeakReference<OnFavoritePlayersChangeListener>> = mutableListOf()
+    private val mListeners = mutableListOf<WeakReference<OnFavoritePlayersChangeListener>>()
 
 
     companion object {

@@ -2,7 +2,7 @@ package com.garpr.android.misc
 
 import com.garpr.android.misc.PlayerToolbarManager.Presentation
 import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.Match
+import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 
 class PlayerToolbarManagerImpl(
@@ -11,7 +11,7 @@ class PlayerToolbarManagerImpl(
 ) : PlayerToolbarManager {
 
     override fun getPresentation(fullPlayer: FullPlayer?, matchesBundle: MatchesBundle?,
-            matchResult: Match.Result?): Presentation {
+            matchResult: MatchResult?): Presentation {
         val presentation = Presentation()
 
         if (fullPlayer == null) {
@@ -29,8 +29,8 @@ class PlayerToolbarManagerImpl(
         if (matchesBundle?.matches?.isNotEmpty() == true) {
             presentation.mIsFilterVisible = true
             presentation.mIsFilterAllVisible = matchResult != null
-            presentation.mIsFilterLossesVisible = matchResult != Match.Result.LOSE
-            presentation.mIsFilterWinsVisible = matchResult != Match.Result.WIN
+            presentation.mIsFilterLossesVisible = matchResult != MatchResult.LOSE
+            presentation.mIsFilterWinsVisible = matchResult != MatchResult.WIN
         }
 
         presentation.mIsShareVisible = true

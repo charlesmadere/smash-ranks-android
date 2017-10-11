@@ -10,9 +10,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.garpr.android.App
-import com.garpr.android.BuildConfig
 import com.garpr.android.R
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.*
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
@@ -110,8 +108,6 @@ class SettingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_settings)
-        subtitle = getString(R.string.build_info_format, BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE)
     }
 
     override fun onDestroy() {
@@ -173,11 +169,10 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun refresh() {
+        mRegionPreferenceView.refresh()
         mThemePreferenceView.refresh()
         mIdentityPreferenceView.refresh()
         mDeleteFavoritePlayersPreferenceView.refresh()
-
-        mRegionPreferenceView.refresh()
 
         mUseRankingsPolling.refresh()
         mPollFrequency.refresh()

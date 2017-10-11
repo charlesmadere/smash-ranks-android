@@ -10,12 +10,12 @@
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
-    <string name="build_info_format">Version %1$s (Build %2$d)</string>
+    <string name="build_x">Build %1$d</string>
+    <string name="build_x_debug">Build %1$d (Debug)</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_all">Cancel all</string>
     <string name="charles_twitter_url">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
-    <string name="close">Close</string>
     <string name="contribute_your_changes">Contribute your changes!</string>
     <string name="daily">Daily</string>
     <string name="day">Day</string>
@@ -26,7 +26,6 @@
     <string name="x_em_dash_y">%1$s &#8211; %2$s</string>
     <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
-    <string name="error_loading_launch_data">Error loading launch data!</string>
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
@@ -40,6 +39,8 @@
     <string name="favorites">Favorites</string>
     <string name="favorite_players">Favorite Players</string>
     <string name="filter">Filter</string>
+    <string name="filter_to_losses">Filter to losses</string>
+    <string name="filter_to_wins">Filter to wins</string>
     <string name="gar_pr">GAR PR</string>
     <string name="gar_twitter_url">twitter.com/garsh0p</string>
     <string name="general">General</string>
@@ -47,12 +48,12 @@
     <string name="google_play_services_error_has_been_resolved">Google Play Services error has been resolved!</string>
     <string name="head_to_head">Head to Head</string>
     <string name="hello_x">Hello %1$s!</string>
+    <string name="identity">Identity</string>
     <string name="identity_has_not_been_set">Identity has not been set</string>
     <string name="identity_is_x">Identity is %1$s</string>
     <string name="identity_saved_">Identity saved!</string>
     <string name="last_poll">Last poll</string>
     <string name="loading_deep_link_">Loading deep link…</string>
-    <string name="loading_first_time_launch_data_">Loading first time launch data…</string>
     <string name="log_viewer">Log Viewer</string>
     <string name="matches">Matches</string>
     <string name="miscellaneous">Miscellaneous</string>
@@ -60,6 +61,7 @@
     <string name="must_be_on_wifi">Must be on wifi</string>
     <string name="night">Night</string>
     <string name="none">None</string>
+    <string name="norcal">Norcal</string>
     <string name="not_gar_pr">Not GAR PR</string>
     <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
@@ -67,6 +69,7 @@
     <string name="no_identity_has_been_set">No identity has been set</string>
     <string name="no_log_entries">No log entries</string>
     <string name="no_matches">No matches</string>
+    <string name="no_match_history">No match history</string>
     <string name="no_player_data">No player data</string>
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
@@ -103,8 +106,6 @@
     <string name="set_identity">Set Identity</string>
     <string name="set_region">Set Region</string>
     <string name="set_this_player_as_your_identity">Set this player as your identity</string>
-    <string name="set_your_identity">Set your identity</string>
-    <string name="set_your_region">Set your region</string>
     <string name="share">Share</string>
     <string name="share_rankings">Share rankings</string>
     <string name="share_tournaments">Share tournaments</string>
@@ -128,6 +129,7 @@
     <string name="under_construction">Under construction!</string>
     <string name="x_updated_y">%1$s updated %2$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
+    <string name="version_x">Version %1$s</string>
     <string name="vibrate">Vibrate</string>
     <string name="view">View</string>
     <string name="view_all_players">View all players</string>
@@ -140,15 +142,9 @@
     <string name="view_yourself">View yourself</string>
     <string name="view_yourself_vs_this_opponent">View yourself vs this opponent</string>
     <string name="view_yourself_vs_x">View yourself vs %1$s</string>
-    <string name="x_vs_y">%1$s vs %2$s</string>
+    <string name="vs">vs</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
-    <string name="will_not_rumble">Will not rumble</string>
-    <string name="will_only_poll_if_connected_to_wifi">Will only poll if connected to wifi</string>
-    <string name="will_only_poll_if_plugged_in">Will only poll if plugged in</string>
-    <string name="will_poll_on_any_data_connection">Will poll on any data connection</string>
-    <string name="will_poll_regardless_of_being_plugged_in_or_not">Will poll regardless of being plugged in or not</string>
-    <string name="will_rumble_when_rankings_are_updated">Will rumble when rankings are updated</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>
     <string name="yes">Yes</string>
     <string name="you_can_add_a_player_to_your_favorites">You can add a player to your favorites when viewing their profile screen, or by long-pressing on their name in player lists.</string>

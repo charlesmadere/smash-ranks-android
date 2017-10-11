@@ -25,8 +25,6 @@ import javax.inject.Inject
 class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View.OnClickListener,
         View.OnLongClickListener {
 
-    private val mNumberFormat: NumberFormat = NumberFormat.getNumberInstance()
-
     @Inject
     lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
 
@@ -40,6 +38,8 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View
     private val mName: TextView by bindView(R.id.tvName)
     private val mRank: TextView by bindView(R.id.tvRank)
     private val mRating: TextView by bindView(R.id.tvRating)
+
+    private val mNumberFormat: NumberFormat = NumberFormat.getIntegerInstance()
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

@@ -12,14 +12,10 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.HeadToHead
-import com.garpr.android.models.Match
+import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
@@ -33,7 +29,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private var mList: List<Any>? = null
     private var mHeadToHead: HeadToHead? = null
     lateinit private var mAdapter: HeadToHeadAdapter
-    private var mResult: Match.Result? = null
+    private var mMatchResult: MatchResult? = null
     lateinit private var mOpponentId: String
     private var mOpponentName: String? = null
     lateinit private var mPlayerId: String
@@ -51,6 +47,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private val mError: ErrorLinearLayout by bindView(R.id.error)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val mEmpty : View by bindView(R.id.empty)
 
 
     companion object {
@@ -95,7 +92,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override fun failure(errorCode: Int) {
         mHeadToHead = null
         mList = null
-        mResult = null
+        mMatchResult = null
         showError(errorCode)
     }
 
@@ -105,8 +102,8 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
                 ApiCall(this))
     }
 
-    private fun filter(result: Match.Result?) {
-        mResult = result
+    private fun filter(matchResult: MatchResult?) {
+        mMatchResult = matchResult
         val list = mList
 
         if (list == null || list.isEmpty()) {
@@ -117,15 +114,15 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
             private var mList: List<Any>? = null
 
             override fun onBackground() {
-                if (!isAlive || mResult != result) {
+                if (!isAlive || mMatchResult != matchResult) {
                     return
                 }
 
-                mList = ListUtils.filterPlayerMatchesList(result, list)
+                mList = ListUtils.filterPlayerMatchesList(matchResult, list)
             }
 
             override fun onUi() {
-                if (!isAlive || mResult != result) {
+                if (!isAlive || mMatchResult != matchResult) {
                     return
                 }
 
@@ -146,7 +143,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         if (intent.hasExtra(EXTRA_OPPONENT_NAME) && intent.hasExtra(EXTRA_PLAYER_NAME)) {
             mOpponentName = intent.getStringExtra(EXTRA_OPPONENT_NAME)
             mPlayerName = intent.getStringExtra(EXTRA_PLAYER_NAME)
-            setSubtitle()
         }
 
         fetchHeadToHead()
@@ -157,59 +153,35 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
         if (mHeadToHead != null) {
             menu.findItem(R.id.miFilter).isVisible = true
-            menu.findItem(R.id.miFilterAll).isVisible = mResult != null
-            menu.findItem(R.id.miFilterLosses).isVisible = mResult != Match.Result.LOSE
-            menu.findItem(R.id.miFilterWins).isVisible = mResult != Match.Result.WIN
-        }
-
-        val opponentName = mOpponentName
-        val playerName = mPlayerName
-
-        if (opponentName?.isNotBlank() == true && playerName?.isNotBlank() == true) {
-            val viewOpponent = menu.findItem(R.id.miViewOpponent)
-            viewOpponent.title = getString(R.string.view_x, opponentName)
-            viewOpponent.isVisible = true
-
-            val viewPlayer = menu.findItem(R.id.miViewPlayer)
-            viewPlayer.title = getString(R.string.view_x, playerName)
-            viewPlayer.isVisible = true
+            menu.findItem(R.id.miShowAll).isVisible = mMatchResult != null
+            menu.findItem(R.id.miFilterToLosses).isVisible = mMatchResult != MatchResult.LOSE
+            menu.findItem(R.id.miFilterToWins).isVisible = mMatchResult != MatchResult.WIN
         }
 
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
-            R.id.miFilterAll -> {
+            R.id.miFilterToLosses -> {
+                filter(MatchResult.LOSE)
+                true
+            }
+
+            R.id.miFilterToWins -> {
+                filter(MatchResult.WIN)
+                true
+            }
+
+            R.id.miShowAll -> {
                 filter(null)
-                return true
+                true
             }
 
-            R.id.miFilterLosses -> {
-                filter(Match.Result.LOSE)
-                return true
-            }
-
-            R.id.miFilterWins -> {
-                filter(Match.Result.WIN)
-                return true
-            }
-
-            R.id.miViewOpponent -> {
-                startActivity(PlayerActivity.getLaunchIntent(this, mOpponentId,
-                        mOpponentName, mRegionManager.getRegion(this)))
-                return true
-            }
-
-            R.id.miViewPlayer -> {
-                startActivity(PlayerActivity.getLaunchIntent(this, mPlayerId,
-                        mPlayerName, mRegionManager.getRegion(this)))
-                return true
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onRefresh() {
         fetchHeadToHead()
@@ -235,21 +207,30 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
             }
         }
 
-        setSubtitle()
         invalidateOptionsMenu()
     }
 
     private fun showData() {
         mList = ListUtils.createHeadToHeadList(this, mHeadToHead)
         mAdapter.set(mList)
-        mError.visibility = View.GONE
-        mRecyclerView.visibility = View.VISIBLE
+
+        if (mAdapter.isEmpty) {
+            mError.visibility = View.GONE
+            mRecyclerView.visibility = View.GONE
+            mEmpty.visibility = View.VISIBLE
+        } else {
+            mEmpty.visibility = View.GONE
+            mError.visibility = View.GONE
+            mRecyclerView.visibility = View.VISIBLE
+        }
+
         prepareMenuAndSubtitle()
         mRefreshLayout.isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
         mAdapter.clear()
+        mEmpty.visibility = View.GONE
         mRecyclerView.visibility = View.GONE
         mError.setVisibility(View.VISIBLE, errorCode)
         prepareMenuAndSubtitle()
@@ -257,17 +238,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     }
 
     override val showUpNavigation = true
-
-    private fun setSubtitle() {
-        if (subtitle.isNullOrBlank()) {
-            val playerName = mPlayerName
-            val opponentName = mOpponentName
-
-            if (playerName?.isNotBlank() == true && opponentName?.isNotBlank() == true) {
-                subtitle = getString(R.string.x_vs_y, playerName, opponentName)
-            }
-        }
-    }
 
     override fun success(`object`: HeadToHead?) {
         mHeadToHead = `object`

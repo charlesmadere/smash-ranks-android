@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.CrashlyticsWrapperImpl;
 import com.garpr.android.misc.DeviceUtils;
+import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.models.Region;
@@ -26,6 +27,12 @@ public class AppModule extends BaseAppModule {
     @Singleton
     CrashlyticsWrapper providesCrashlyticsWrapper(final Application application) {
         return new CrashlyticsWrapperImpl(application);
+    }
+
+    @Provides
+    @Singleton
+    DeviceUtils providesDeviceUtils(final Application application) {
+        return new DeviceUtilsImpl(application);
     }
 
     @Provides

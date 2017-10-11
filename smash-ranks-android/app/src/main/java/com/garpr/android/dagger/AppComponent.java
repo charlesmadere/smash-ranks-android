@@ -17,6 +17,7 @@ import com.garpr.android.sync.RankingsPollingJobService;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.FavoritePlayerItemView;
 import com.garpr.android.views.FavoritePlayersLayout;
+import com.garpr.android.views.HeadToHeadMatchItemView;
 import com.garpr.android.views.IdentityFrameLayout;
 import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
@@ -36,6 +37,7 @@ import com.garpr.android.views.TournamentDividerView;
 import com.garpr.android.views.TournamentItemView;
 import com.garpr.android.views.TournamentMatchItemView;
 import com.garpr.android.views.TournamentsLayout;
+import com.garpr.android.views.WinsLossesColumnView;
 import com.garpr.android.views.toolbars.HomeToolbar;
 import com.garpr.android.views.toolbars.PlayerToolbar;
 import com.garpr.android.views.toolbars.TournamentToolbar;
@@ -76,6 +78,7 @@ public interface AppComponent {
     void inject(DeleteFavoritePlayersPreferenceView view);
     void inject(FavoritePlayerItemView view);
     void inject(FavoritePlayersLayout view);
+    void inject(HeadToHeadMatchItemView view);
     void inject(IdentityFrameLayout view);
     void inject(IdentityPreferenceView view);
     void inject(LastPollPreferenceView view);
@@ -95,5 +98,6 @@ public interface AppComponent {
     void inject(TournamentItemView view);
     void inject(TournamentMatchItemView view);
     void inject(TournamentsLayout view);
+    void inject(WinsLossesColumnView view);
 
 }

@@ -116,6 +116,11 @@
         <item name="layoutManager">LinearLayoutManager</item>
     </style>
 
+    <style name="RecyclerView.WithSections">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:paddingBottom">@dimen/root_padding</item>
+    </style>
+
     <style name="RecyclerViewLine">
         <item name="android:gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
@@ -184,6 +189,11 @@
         <item name="android:paddingTop">@dimen/root_padding_half</item>
     </style>
 
+    <style name="SettingsCardDescription.Warn">
+        <item name="android:textColor">@color/warn</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="SettingsCardTitle" parent="CardHeaderText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
@@ -215,6 +225,41 @@
         <item name="android:id">@id/viewPager</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="WinsLossesColumnView">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/root_padding</item>
+        <item name="android:layout_marginStart">@dimen/root_padding</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="WinsLossesCount">
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:id">@id/winCount</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_xxxlarge</item>
+    </style>
+
+    <style name="WinsLossesPlayerName">
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+        <item name="android:id">@id/playerName</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/root_padding</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
 </resources>

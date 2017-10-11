@@ -2,8 +2,8 @@
 <resources>
 
     <array name="spinner_colors">
-        <item>@color/salmon</item>
-        <item>@color/gray_dark</item>
+        <item>@color/purple_light</item>
+        <item>@color/purple_dark</item>
     </array>
 
 </resources>

@@ -19,7 +19,11 @@ class ListUtilsTest : BaseTest() {
 
         private const val JSON_FULL_TOURNAMENT = "{\"name\":\"Melee @ the Made 23\",\"players\":[{\"id\":\"583a4a15d2994e0577b05c74\",\"name\":\"homemadewaffles\"},{\"id\":\"5877eb55d2994e15c7dea97e\",\"name\":\"Spark\"},{\"id\":\"587a951dd2994e15c7deaa00\",\"name\":\"Darrell\"},{\"id\":\"5877eb55d2994e15c7dea970\",\"name\":\"Boulevard\"},{\"id\":\"587a951dd2994e15c7dea9e4\",\"name\":\"Zorc\"},{\"id\":\"587a951dd2994e15c7dea9ec\",\"name\":\"BrTarolg\"},{\"id\":\"587a951dd2994e15c7dea9ff\",\"name\":\"Tucan\"},{\"id\":\"5877eb55d2994e15c7dea98b\",\"name\":\"Imyt\"},{\"id\":\"587a951dd2994e15c7dea9fa\",\"name\":\"Grandmas Cleavage\"},{\"id\":\"587a951dd2994e15c7dea9e9\",\"name\":\"TrueDong\"},{\"id\":\"587a951dd2994e15c7dea9fb\",\"name\":\"Branchamp\"},{\"id\":\"587a951dd2994e15c7dea9de\",\"name\":\"Rymo\"},{\"id\":\"587a951dd2994e15c7dea9e0\",\"name\":\"ShaqFu\"},{\"id\":\"587a951dd2994e15c7dea9e5\",\"name\":\"Yasu\"},{\"id\":\"587a951dd2994e15c7dea9fe\",\"name\":\"Charlezard\"},{\"id\":\"587a951dd2994e15c7dea9f7\",\"name\":\"Dragmire Jr\"},{\"id\":\"5877eb55d2994e15c7dea97a\",\"name\":\"Deadstorm\"},{\"id\":\"587a951dd2994e15c7dea9f8\",\"name\":\"asianson\"},{\"id\":\"587a951dd2994e15c7dea9e1\",\"name\":\"TheRedSock\"},{\"id\":\"587a951dd2994e15c7dea9f1\",\"name\":\"DestinyFan21\"},{\"id\":\"587a951dd2994e15c7dea9fc\",\"name\":\"KvillSniper\"},{\"id\":\"587a951dd2994e15c7dea9e2\",\"name\":\"Betus\"},{\"id\":\"583a4a15d2994e0577b05c77\",\"name\":\"Megaman\"},{\"id\":\"5877eb55d2994e15c7dea96e\",\"name\":\"Young $\"},{\"id\":\"587a951dd2994e15c7dea9fd\",\"name\":\"CarrierPig\"},{\"id\":\"587a951dd2994e15c7dea9e3\",\"name\":\"Beer\"},{\"id\":\"587a951dd2994e15c7dea9ef\",\"name\":\"QT3.14\"},{\"id\":\"587a951dd2994e15c7dea9f3\",\"name\":\"buddyboy\"},{\"id\":\"587a951dd2994e15c7dea9f9\",\"name\":\"Untitled\"},{\"id\":\"587a951dd2994e15c7dea9df\",\"name\":\"666\"},{\"id\":\"587a951dd2994e15c7dea9ea\",\"name\":\"mcmintymentos\"},{\"id\":\"587a951dd2994e15c7dea9e8\",\"name\":\"Holden\"},{\"id\":\"587a951dd2994e15c7dea9e7\",\"name\":\"Ross\"},{\"id\":\"587a951dd2994e15c7dea9f6\",\"name\":\"SlugNasty\"},{\"id\":\"587a951dd2994e15c7dea9e6\",\"name\":\"SlyCo\"},{\"id\":\"587a951dd2994e15c7deaa01\",\"name\":\"Thomdore\"},{\"id\":\"587a951dd2994e15c7dea9f5\",\"name\":\"Kwang\"},{\"id\":\"587894e9d2994e15c7dea9c7\",\"name\":\"SpacePigeon\"},{\"id\":\"587a951dd2994e15c7dea9f2\",\"name\":\"mar\"},{\"id\":\"587a951dd2994e15c7dea9eb\",\"name\":\"DarkSilence\"},{\"id\":\"587a951dd2994e15c7dea9f4\",\"name\":\"ALLNITTE\"},{\"id\":\"587a951dd2994e15c7dea9f0\",\"name\":\"The D\"},{\"id\":\"587a951dd2994e15c7dea9ee\",\"name\":\"oldbaby\"}],\"url\":\"http://challonge.com/MADE23Singless\",\"regions\":[\"norcal\"],\"matches\":[{\"loser_name\":\"Ross\",\"match_id\":0,\"winner_id\":\"587a951dd2994e15c7dea9e8\",\"winner_name\":\"Holden\",\"loser_id\":\"587a951dd2994e15c7dea9e7\",\"excluded\":false},{\"loser_name\":\"DarkSilence\",\"match_id\":1,\"winner_id\":\"587a951dd2994e15c7dea9fd\",\"winner_name\":\"CarrierPig\",\"loser_id\":\"587a951dd2994e15c7dea9eb\",\"excluded\":false},{\"loser_name\":\"ALLNITTE\",\"match_id\":2,\"winner_id\":\"5877eb55d2994e15c7dea96e\",\"winner_name\":\"Young $\",\"loser_id\":\"587a951dd2994e15c7dea9f4\",\"excluded\":false},{\"loser_name\":\"Thomdore\",\"match_id\":3,\"winner_id\":\"587a951dd2994e15c7dea9f9\",\"winner_name\":\"Untitled\",\"loser_id\":\"587a951dd2994e15c7deaa01\",\"excluded\":false},{\"loser_name\":\"Kwang\",\"match_id\":4,\"winner_id\":\"587a951dd2994e15c7dea9f3\",\"winner_name\":\"buddyboy\",\"loser_id\":\"587a951dd2994e15c7dea9f5\",\"excluded\":false},{\"loser_name\":\"mcmintymentos\",\"match_id\":5,\"winner_id\":\"587a951dd2994e15c7dea9f6\",\"winner_name\":\"SlugNasty\",\"loser_id\":\"587a951dd2994e15c7dea9ea\",\"excluded\":false},{\"loser_name\":\"Beer\",\"match_id\":6,\"winner_id\":\"587a951dd2994e15c7dea9f2\",\"winner_name\":\"mar\",\"loser_id\":\"587a951dd2994e15c7dea9e3\",\"excluded\":false},{\"loser_name\":\"Megaman\",\"match_id\":7,\"winner_id\":\"587a951dd2994e15c7dea9f0\",\"winner_name\":\"The D\",\"loser_id\":\"583a4a15d2994e0577b05c77\",\"excluded\":false},{\"loser_name\":\"SlyCo\",\"match_id\":8,\"winner_id\":\"587a951dd2994e15c7dea9df\",\"winner_name\":\"666\",\"loser_id\":\"587a951dd2994e15c7dea9e6\",\"excluded\":false},{\"loser_name\":\"QT3.14\",\"match_id\":9,\"winner_id\":\"587894e9d2994e15c7dea9c7\",\"winner_name\":\"SpacePigeon\",\"loser_id\":\"587a951dd2994e15c7dea9ef\",\"excluded\":false},{\"loser_name\":\"oldbaby\",\"match_id\":10,\"winner_id\":\"587a951dd2994e15c7dea9e2\",\"winner_name\":\"Betus\",\"loser_id\":\"587a951dd2994e15c7dea9ee\",\"excluded\":false},{\"loser_name\":\"Holden\",\"match_id\":11,\"winner_id\":\"583a4a15d2994e0577b05c74\",\"winner_name\":\"homemadewaffles\",\"loser_id\":\"587a951dd2994e15c7dea9e8\",\"excluded\":false},{\"loser_name\":\"Dragmire Jr\",\"match_id\":12,\"winner_id\":\"5877eb55d2994e15c7dea97a\",\"winner_name\":\"Deadstorm\",\"loser_id\":\"587a951dd2994e15c7dea9f7\",\"excluded\":false},{\"loser_name\":\"CarrierPig\",\"match_id\":13,\"winner_id\":\"5877eb55d2994e15c7dea98b\",\"winner_name\":\"Imyt\",\"loser_id\":\"587a951dd2994e15c7dea9fd\",\"excluded\":false},{\"loser_name\":\"Young $\",\"match_id\":14,\"winner_id\":\"587a951dd2994e15c7dea9fa\",\"winner_name\":\"Grandmas Cleavage\",\"loser_id\":\"5877eb55d2994e15c7dea96e\",\"excluded\":false},{\"loser_name\":\"Untitled\",\"match_id\":15,\"winner_id\":\"5877eb55d2994e15c7dea970\",\"winner_name\":\"Boulevard\",\"loser_id\":\"587a951dd2994e15c7dea9f9\",\"excluded\":false},{\"loser_name\":\"DestinyFan21\",\"match_id\":16,\"winner_id\":\"587a951dd2994e15c7dea9e0\",\"winner_name\":\"ShaqFu\",\"loser_id\":\"587a951dd2994e15c7dea9f1\",\"excluded\":false},{\"loser_name\":\"buddyboy\",\"match_id\":17,\"winner_id\":\"587a951dd2994e15c7dea9e4\",\"winner_name\":\"Zorc\",\"loser_id\":\"587a951dd2994e15c7dea9f3\",\"excluded\":false},{\"loser_name\":\"KvillSniper\",\"match_id\":18,\"winner_id\":\"587a951dd2994e15c7dea9de\",\"winner_name\":\"Rymo\",\"loser_id\":\"587a951dd2994e15c7dea9fc\",\"excluded\":false},{\"loser_name\":\"SlugNasty\",\"match_id\":19,\"winner_id\":\"5877eb55d2994e15c7dea97e\",\"winner_name\":\"Spark\",\"loser_id\":\"587a951dd2994e15c7dea9f6\",\"excluded\":false},{\"loser_name\":\"asianson\",\"match_id\":20,\"winner_id\":\"587a951dd2994e15c7dea9fe\",\"winner_name\":\"Charlezard\",\"loser_id\":\"587a951dd2994e15c7dea9f8\",\"excluded\":false},{\"loser_name\":\"mar\",\"match_id\":21,\"winner_id\":\"587a951dd2994e15c7dea9ff\",\"winner_name\":\"Tucan\",\"loser_id\":\"587a951dd2994e15c7dea9f2\",\"excluded\":false},{\"loser_name\":\"The D\",\"match_id\":22,\"winner_id\":\"587a951dd2994e15c7dea9e9\",\"winner_name\":\"TrueDong\",\"loser_id\":\"587a951dd2994e15c7dea9f0\",\"excluded\":false},{\"loser_name\":\"666\",\"match_id\":23,\"winner_id\":\"587a951dd2994e15c7deaa00\",\"winner_name\":\"Darrell\",\"loser_id\":\"587a951dd2994e15c7dea9df\",\"excluded\":false},{\"loser_name\":\"TheRedSock\",\"match_id\":24,\"winner_id\":\"587a951dd2994e15c7dea9e5\",\"winner_name\":\"Yasu\",\"loser_id\":\"587a951dd2994e15c7dea9e1\",\"excluded\":false},{\"loser_name\":\"SpacePigeon\",\"match_id\":25,\"winner_id\":\"587a951dd2994e15c7dea9ec\",\"winner_name\":\"BrTarolg\",\"loser_id\":\"587894e9d2994e15c7dea9c7\",\"excluded\":false},{\"loser_name\":\"Betus\",\"match_id\":26,\"winner_id\":\"587a951dd2994e15c7dea9fb\",\"winner_name\":\"Branchamp\",\"loser_id\":\"587a951dd2994e15c7dea9e2\",\"excluded\":false},{\"loser_name\":\"Deadstorm\",\"match_id\":27,\"winner_id\":\"583a4a15d2994e0577b05c74\",\"winner_name\":\"homemadewaffles\",\"loser_id\":\"5877eb55d2994e15c7dea97a\",\"excluded\":false},{\"loser_name\":\"Grandmas Cleavage\",\"match_id\":28,\"winner_id\":\"5877eb55d2994e15c7dea98b\",\"winner_name\":\"Imyt\",\"loser_id\":\"587a951dd2994e15c7dea9fa\",\"excluded\":false},{\"loser_name\":\"ShaqFu\",\"match_id\":29,\"winner_id\":\"5877eb55d2994e15c7dea970\",\"winner_name\":\"Boulevard\",\"loser_id\":\"587a951dd2994e15c7dea9e0\",\"excluded\":false},{\"loser_name\":\"Rymo\",\"match_id\":30,\"winner_id\":\"587a951dd2994e15c7dea9e4\",\"winner_name\":\"Zorc\",\"loser_id\":\"587a951dd2994e15c7dea9de\",\"excluded\":false},{\"loser_name\":\"Charlezard\",\"match_id\":31,\"winner_id\":\"5877eb55d2994e15c7dea97e\",\"winner_name\":\"Spark\",\"loser_id\":\"587a951dd2994e15c7dea9fe\",\"excluded\":false},{\"loser_name\":\"TrueDong\",\"match_id\":32,\"winner_id\":\"587a951dd2994e15c7dea9ff\",\"winner_name\":\"Tucan\",\"loser_id\":\"587a951dd2994e15c7dea9e9\",\"excluded\":false},{\"loser_name\":\"Yasu\",\"match_id\":33,\"winner_id\":\"587a951dd2994e15c7deaa00\",\"winner_name\":\"Darrell\",\"loser_id\":\"587a951dd2994e15c7dea9e5\",\"excluded\":false},{\"loser_name\":\"Branchamp\",\"match_id\":34,\"winner_id\":\"587a951dd2994e15c7dea9ec\",\"winner_name\":\"BrTarolg\",\"loser_id\":\"587a951dd2994e15c7dea9fb\",\"excluded\":false},{\"loser_name\":\"Imyt\",\"match_id\":35,\"winner_id\":\"583a4a15d2994e0577b05c74\",\"winner_name\":\"homemadewaffles\",\"loser_id\":\"5877eb55d2994e15c7dea98b\",\"excluded\":false},{\"loser_name\":\"Zorc\",\"match_id\":36,\"winner_id\":\"5877eb55d2994e15c7dea970\",\"winner_name\":\"Boulevard\",\"loser_id\":\"587a951dd2994e15c7dea9e4\",\"excluded\":false},{\"loser_name\":\"Tucan\",\"match_id\":37,\"winner_id\":\"5877eb55d2994e15c7dea97e\",\"winner_name\":\"Spark\",\"loser_id\":\"587a951dd2994e15c7dea9ff\",\"excluded\":false},{\"loser_name\":\"BrTarolg\",\"match_id\":38,\"winner_id\":\"587a951dd2994e15c7deaa00\",\"winner_name\":\"Darrell\",\"loser_id\":\"587a951dd2994e15c7dea9ec\",\"excluded\":false},{\"loser_name\":\"homemadewaffles\",\"match_id\":39,\"winner_id\":\"5877eb55d2994e15c7dea970\",\"winner_name\":\"Boulevard\",\"loser_id\":\"583a4a15d2994e0577b05c74\",\"excluded\":false},{\"loser_name\":\"Darrell\",\"match_id\":40,\"winner_id\":\"5877eb55d2994e15c7dea97e\",\"winner_name\":\"Spark\",\"loser_id\":\"587a951dd2994e15c7deaa00\",\"excluded\":false},{\"loser_name\":\"Boulevard\",\"match_id\":41,\"winner_id\":\"5877eb55d2994e15c7dea97e\",\"winner_name\":\"Spark\",\"loser_id\":\"5877eb55d2994e15c7dea970\",\"excluded\":false},{\"loser_name\":\"Ross\",\"match_id\":42,\"winner_id\":\"587a951dd2994e15c7dea9e2\",\"winner_name\":\"Betus\",\"loser_id\":\"587a951dd2994e15c7dea9e7\",\"excluded\":false},{\"loser_name\":\"DarkSilence\",\"match_id\":43,\"winner_id\":\"587a951dd2994e15c7dea9e1\",\"winner_name\":\"TheRedSock\",\"loser_id\":\"587a951dd2994e15c7dea9eb\",\"excluded\":false},{\"loser_name\":\"ALLNITTE\",\"match_id\":44,\"winner_id\":\"587a951dd2994e15c7dea9df\",\"winner_name\":\"666\",\"loser_id\":\"587a951dd2994e15c7dea9f4\",\"excluded\":false},{\"loser_name\":\"The D\",\"match_id\":45,\"winner_id\":\"587a951dd2994e15c7deaa01\",\"winner_name\":\"Thomdore\",\"loser_id\":\"587a951dd2994e15c7dea9f0\",\"excluded\":false},{\"loser_name\":\"Kwang\",\"match_id\":46,\"winner_id\":\"587a951dd2994e15c7dea9f8\",\"winner_name\":\"asianson\",\"loser_id\":\"587a951dd2994e15c7dea9f5\",\"excluded\":false},{\"loser_name\":\"mcmintymentos\",\"match_id\":47,\"winner_id\":\"587a951dd2994e15c7dea9fc\",\"winner_name\":\"KvillSniper\",\"loser_id\":\"587a951dd2994e15c7dea9ea\",\"excluded\":false},{\"loser_name\":\"Beer\",\"match_id\":48,\"winner_id\":\"587a951dd2994e15c7dea9f1\",\"winner_name\":\"DestinyFan21\",\"loser_id\":\"587a951dd2994e15c7dea9e3\",\"excluded\":false},{\"loser_name\":\"Megaman\",\"match_id\":49,\"winner_id\":\"587a951dd2994e15c7dea9f9\",\"winner_name\":\"Untitled\",\"loser_id\":\"583a4a15d2994e0577b05c77\",\"excluded\":false},{\"loser_name\":\"SlyCo\",\"match_id\":50,\"winner_id\":\"5877eb55d2994e15c7dea96e\",\"winner_name\":\"Young $\",\"loser_id\":\"587a951dd2994e15c7dea9e6\",\"excluded\":false},{\"loser_name\":\"QT3.14\",\"match_id\":51,\"winner_id\":\"587a951dd2994e15c7dea9f7\",\"winner_name\":\"Dragmire Jr\",\"loser_id\":\"587a951dd2994e15c7dea9ef\",\"excluded\":false},{\"loser_name\":\"oldbaby\",\"match_id\":52,\"winner_id\":\"587a951dd2994e15c7dea9e8\",\"winner_name\":\"Holden\",\"loser_id\":\"587a951dd2994e15c7dea9ee\",\"excluded\":false},{\"loser_name\":\"Betus\",\"match_id\":53,\"winner_id\":\"587894e9d2994e15c7dea9c7\",\"winner_name\":\"SpacePigeon\",\"loser_id\":\"587a951dd2994e15c7dea9e2\",\"excluded\":false},{\"loser_name\":\"666\",\"match_id\":54,\"winner_id\":\"587a951dd2994e15c7dea9e1\",\"winner_name\":\"TheRedSock\",\"loser_id\":\"587a951dd2994e15c7dea9df\",\"excluded\":false},{\"loser_name\":\"Thomdore\",\"match_id\":55,\"winner_id\":\"587a951dd2994e15c7dea9f2\",\"winner_name\":\"mar\",\"loser_id\":\"587a951dd2994e15c7deaa01\",\"excluded\":false},{\"loser_name\":\"SlugNasty\",\"match_id\":56,\"winner_id\":\"587a951dd2994e15c7dea9f8\",\"winner_name\":\"asianson\",\"loser_id\":\"587a951dd2994e15c7dea9f6\",\"excluded\":false},{\"loser_name\":\"buddyboy\",\"match_id\":57,\"winner_id\":\"587a951dd2994e15c7dea9fc\",\"winner_name\":\"KvillSniper\",\"loser_id\":\"587a951dd2994e15c7dea9f3\",\"excluded\":false},{\"loser_name\":\"DestinyFan21\",\"match_id\":58,\"winner_id\":\"587a951dd2994e15c7dea9f9\",\"winner_name\":\"Untitled\",\"loser_id\":\"587a951dd2994e15c7dea9f1\",\"excluded\":false},{\"loser_name\":\"Young $\",\"match_id\":59,\"winner_id\":\"587a951dd2994e15c7dea9fd\",\"winner_name\":\"CarrierPig\",\"loser_id\":\"5877eb55d2994e15c7dea96e\",\"excluded\":false},{\"loser_name\":\"Holden\",\"match_id\":60,\"winner_id\":\"587a951dd2994e15c7dea9f7\",\"winner_name\":\"Dragmire Jr\",\"loser_id\":\"587a951dd2994e15c7dea9e8\",\"excluded\":false},{\"loser_name\":\"SpacePigeon\",\"match_id\":61,\"winner_id\":\"587a951dd2994e15c7dea9de\",\"winner_name\":\"Rymo\",\"loser_id\":\"587894e9d2994e15c7dea9c7\",\"excluded\":false},{\"loser_name\":\"TheRedSock\",\"match_id\":62,\"winner_id\":\"587a951dd2994e15c7dea9e0\",\"winner_name\":\"ShaqFu\",\"loser_id\":\"587a951dd2994e15c7dea9e1\",\"excluded\":false},{\"loser_name\":\"mar\",\"match_id\":63,\"winner_id\":\"587a951dd2994e15c7dea9fa\",\"winner_name\":\"Grandmas Cleavage\",\"loser_id\":\"587a951dd2994e15c7dea9f2\",\"excluded\":false},{\"loser_name\":\"Deadstorm\",\"match_id\":64,\"winner_id\":\"587a951dd2994e15c7dea9f8\",\"winner_name\":\"asianson\",\"loser_id\":\"5877eb55d2994e15c7dea97a\",\"excluded\":false},{\"loser_name\":\"KvillSniper\",\"match_id\":65,\"winner_id\":\"587a951dd2994e15c7dea9fb\",\"winner_name\":\"Branchamp\",\"loser_id\":\"587a951dd2994e15c7dea9fc\",\"excluded\":false},{\"loser_name\":\"Yasu\",\"match_id\":66,\"winner_id\":\"587a951dd2994e15c7dea9f9\",\"winner_name\":\"Untitled\",\"loser_id\":\"587a951dd2994e15c7dea9e5\",\"excluded\":false},{\"loser_name\":\"CarrierPig\",\"match_id\":67,\"winner_id\":\"587a951dd2994e15c7dea9e9\",\"winner_name\":\"TrueDong\",\"loser_id\":\"587a951dd2994e15c7dea9fd\",\"excluded\":false},{\"loser_name\":\"Dragmire Jr\",\"match_id\":68,\"winner_id\":\"587a951dd2994e15c7dea9fe\",\"winner_name\":\"Charlezard\",\"loser_id\":\"587a951dd2994e15c7dea9f7\",\"excluded\":false},{\"loser_name\":\"Rymo\",\"match_id\":69,\"winner_id\":\"587a951dd2994e15c7dea9e0\",\"winner_name\":\"ShaqFu\",\"loser_id\":\"587a951dd2994e15c7dea9de\",\"excluded\":false},{\"loser_name\":\"asianson\",\"match_id\":70,\"winner_id\":\"587a951dd2994e15c7dea9fa\",\"winner_name\":\"Grandmas Cleavage\",\"loser_id\":\"587a951dd2994e15c7dea9f8\",\"excluded\":false},{\"loser_name\":\"Branchamp\",\"match_id\":71,\"winner_id\":\"587a951dd2994e15c7dea9f9\",\"winner_name\":\"Untitled\",\"loser_id\":\"587a951dd2994e15c7dea9fb\",\"excluded\":false},{\"loser_name\":\"Charlezard\",\"match_id\":72,\"winner_id\":\"587a951dd2994e15c7dea9e9\",\"winner_name\":\"TrueDong\",\"loser_id\":\"587a951dd2994e15c7dea9fe\",\"excluded\":false},{\"loser_name\":\"Tucan\",\"match_id\":73,\"winner_id\":\"587a951dd2994e15c7dea9e0\",\"winner_name\":\"ShaqFu\",\"loser_id\":\"587a951dd2994e15c7dea9ff\",\"excluded\":false},{\"loser_name\":\"Grandmas Cleavage\",\"match_id\":74,\"winner_id\":\"587a951dd2994e15c7dea9ec\",\"winner_name\":\"BrTarolg\",\"loser_id\":\"587a951dd2994e15c7dea9fa\",\"excluded\":false},{\"loser_name\":\"Imyt\",\"match_id\":75,\"winner_id\":\"587a951dd2994e15c7dea9f9\",\"winner_name\":\"Untitled\",\"loser_id\":\"5877eb55d2994e15c7dea98b\",\"excluded\":false},{\"loser_name\":\"TrueDong\",\"match_id\":76,\"winner_id\":\"587a951dd2994e15c7dea9e4\",\"winner_name\":\"Zorc\",\"loser_id\":\"587a951dd2994e15c7dea9e9\",\"excluded\":false},{\"loser_name\":\"ShaqFu\",\"match_id\":77,\"winner_id\":\"587a951dd2994e15c7dea9ec\",\"winner_name\":\"BrTarolg\",\"loser_id\":\"587a951dd2994e15c7dea9e0\",\"excluded\":false},{\"loser_name\":\"Untitled\",\"match_id\":78,\"winner_id\":\"587a951dd2994e15c7dea9e4\",\"winner_name\":\"Zorc\",\"loser_id\":\"587a951dd2994e15c7dea9f9\",\"excluded\":false},{\"loser_name\":\"BrTarolg\",\"match_id\":79,\"winner_id\":\"583a4a15d2994e0577b05c74\",\"winner_name\":\"homemadewaffles\",\"loser_id\":\"587a951dd2994e15c7dea9ec\",\"excluded\":false},{\"loser_name\":\"Darrell\",\"match_id\":80,\"winner_id\":\"587a951dd2994e15c7dea9e4\",\"winner_name\":\"Zorc\",\"loser_id\":\"587a951dd2994e15c7deaa00\",\"excluded\":false},{\"loser_name\":\"homemadewaffles\",\"match_id\":81,\"winner_id\":\"587a951dd2994e15c7dea9e4\",\"winner_name\":\"Zorc\",\"loser_id\":\"583a4a15d2994e0577b05c74\",\"excluded\":false},{\"loser_name\":\"Zorc\",\"match_id\":82,\"winner_id\":\"5877eb55d2994e15c7dea970\",\"winner_name\":\"Boulevard\",\"loser_id\":\"587a951dd2994e15c7dea9e4\",\"excluded\":false},{\"loser_name\":\"Spark\",\"match_id\":83,\"winner_id\":\"5877eb55d2994e15c7dea970\",\"winner_name\":\"Boulevard\",\"loser_id\":\"5877eb55d2994e15c7dea97e\",\"excluded\":false},{\"loser_name\":\"Boulevard\",\"match_id\":84,\"winner_id\":\"5877eb55d2994e15c7dea97e\",\"winner_name\":\"Spark\",\"loser_id\":\"5877eb55d2994e15c7dea970\",\"excluded\":false}],\"raw_id\":\"5888282dd2994e0d53b14558\",\"date\":\"01/13/17\",\"type\":\"challonge\",\"id\":\"5888282dd2994e0d53b14559\"}"
 
-        private const val JSON_HEAD_TO_HEAD = "{\"matches\":[{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Melee @ the Made #25\",\"result\":\"win\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"589ebbd3d2994e4d0f2e2583\",\"tournament_date\":\"02/10/17\"},{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Melee @ the Made #25\",\"result\":\"lose\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"589ebbd3d2994e4d0f2e2583\",\"tournament_date\":\"02/10/17\"},{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Melee @ the Made #25\",\"result\":\"lose\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"589ebbd3d2994e4d0f2e2583\",\"tournament_date\":\"02/10/17\"},{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"win\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"},{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"win\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"}],\"player\":{\"id\":\"588852e8d2994e3bbfa52d88\",\"name\":\"CLG. | SFAT\"},\"wins\":3,\"losses\":2,\"opponent\":{\"id\":\"5877eb55d2994e15c7dea96d\",\"name\":\"dizzkidboogie\"}}"
+        private const val JSON_HEAD_TO_HEAD_1 = "{\"matches\":[{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Melee @ the Made #25\",\"result\":\"win\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"589ebbd3d2994e4d0f2e2583\",\"tournament_date\":\"02/10/17\"},{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Melee @ the Made #25\",\"result\":\"lose\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"589ebbd3d2994e4d0f2e2583\",\"tournament_date\":\"02/10/17\"},{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Melee @ the Made #25\",\"result\":\"lose\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"589ebbd3d2994e4d0f2e2583\",\"tournament_date\":\"02/10/17\"},{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"win\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"},{\"opponent_name\":\"dizzkidboogie\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"win\",\"opponent_id\":\"5877eb55d2994e15c7dea96d\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"}],\"player\":{\"id\":\"588852e8d2994e3bbfa52d88\",\"name\":\"CLG. | SFAT\"},\"wins\":3,\"losses\":2,\"opponent\":{\"id\":\"5877eb55d2994e15c7dea96d\",\"name\":\"dizzkidboogie\"}}"
+
+        private const val JSON_HEAD_TO_HEAD_2 = "{\"matches\":[],\"player\":{\"id\":\"588852e7d2994e3bbfa52d6e\",\"name\":\"Laudandus\"},\"wins\":0,\"losses\":0,\"opponent\":{\"id\":\"5877eb55d2994e15c7dea98b\",\"name\":\"Imyt\"}}"
+
+        private const val JSON_HEAD_TO_HEAD_3 = "{\"player\":{\"id\":\"588852e7d2994e3bbfa52d6e\",\"name\":\"Laudandus\"},\"wins\":0,\"losses\":2,\"opponent\":{\"id\":\"588852e8d2994e3bbfa52da7\",\"name\":\"CLG. | PewPewU\"}}"
 
         private const val JSON_MATCHES = "{\"matches\":[{\"opponent_name\":\"Mao\",\"tournament_name\":\"Norcal Validated 1\",\"result\":\"win\",\"opponent_id\":\"588852e8d2994e3bbfa52dca\",\"tournament_id\":\"588850d5d2994e3bbfa52d67\",\"tournament_date\":\"01/14/17\"},{\"opponent_name\":\"Zbert\",\"tournament_name\":\"Norcal Validated 1\",\"result\":\"lose\",\"opponent_id\":\"587894e9d2994e15c7dea9cc\",\"tournament_id\":\"588850d5d2994e3bbfa52d67\",\"tournament_date\":\"01/14/17\"},{\"opponent_name\":\"Danimals\",\"tournament_name\":\"Norcal Validated 1\",\"result\":\"win\",\"opponent_id\":\"588852e8d2994e3bbfa52db2\",\"tournament_id\":\"588850d5d2994e3bbfa52d67\",\"tournament_date\":\"01/14/17\"},{\"opponent_name\":\"ccdm\",\"tournament_name\":\"Norcal Validated 1\",\"result\":\"win\",\"opponent_id\":\"588852e7d2994e3bbfa52d6f\",\"tournament_id\":\"588850d5d2994e3bbfa52d67\",\"tournament_date\":\"01/14/17\"},{\"opponent_name\":\"Umarth\",\"tournament_name\":\"Norcal Validated 1\",\"result\":\"lose\",\"opponent_id\":\"5877eb55d2994e15c7dea977\",\"tournament_id\":\"588850d5d2994e3bbfa52d67\",\"tournament_date\":\"01/14/17\"},{\"opponent_name\":\"Connorasada\",\"tournament_name\":\"Genesis 4\",\"result\":\"excluded\",\"opponent_id\":\"588999c4d2994e713ad638ff\",\"tournament_id\":\"58898d7bd2994e6f7981b1c6\",\"tournament_date\":\"01/20/17\"},{\"opponent_name\":\":L | PSIguy\",\"tournament_name\":\"Genesis 4\",\"result\":\"excluded\",\"opponent_id\":\"588999c4d2994e713ad63918\",\"tournament_id\":\"58898d7bd2994e6f7981b1c6\",\"tournament_date\":\"01/20/17\"},{\"opponent_name\":\"Light\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"win\",\"opponent_id\":\"588999c5d2994e713ad63ba7\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"},{\"opponent_name\":\"Mova\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"win\",\"opponent_id\":\"588999c5d2994e713ad63c3d\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"},{\"opponent_name\":\"Bryan\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"win\",\"opponent_id\":\"58523b44d2994e15c7dea93e\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"},{\"opponent_name\":\"DiplomaticTucan\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"win\",\"opponent_id\":\"588852e8d2994e3bbfa52daf\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"},{\"opponent_name\":\"SPY | Nintendude\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"lose\",\"opponent_id\":\"588852e8d2994e3bbfa52da6\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"},{\"opponent_name\":\"Cactuar\",\"tournament_name\":\"Norcal Validated 2\",\"result\":\"lose\",\"opponent_id\":\"588852e8d2994e3bbfa52dd8\",\"tournament_id\":\"58a00514d2994e4d0f2e25a6\",\"tournament_date\":\"02/11/17\"},{\"opponent_name\":\"The Other | NaCl\",\"tournament_name\":\"The Gator Games #3\",\"result\":\"excluded\",\"opponent_id\":\"5877eb55d2994e15c7dea98d\",\"tournament_id\":\"58a9139cd2994e756952ad94\",\"tournament_date\":\"02/18/17\"},{\"opponent_name\":\"Suzarya\",\"tournament_name\":\"The Gator Games #3\",\"result\":\"excluded\",\"opponent_id\":\"588852e8d2994e3bbfa52d80\",\"tournament_id\":\"58a9139cd2994e756952ad94\",\"tournament_date\":\"02/18/17\"}],\"player\":{\"id\":\"588852e8d2994e3bbfa52da3\",\"name\":\"Chris Best\"},\"losses\":4,\"wins\":7}"
 
@@ -46,9 +50,11 @@ class ListUtilsTest : BaseTest() {
     @Inject
     lateinit protected var mRegionManager: RegionManager
 
-    lateinit private var mHeadToHead: HeadToHead
     lateinit private var mFullPlayer: FullPlayer
     lateinit private var mFullTournament: FullTournament
+    lateinit private var mHeadToHead1: HeadToHead
+    lateinit private var mHeadToHead2: HeadToHead
+    lateinit private var mHeadToHead3: HeadToHead
     lateinit private var mMatchesBundle: MatchesBundle
     lateinit private var mPlayersBundle: PlayersBundle
     lateinit private var mRankingsBundle: RankingsBundle
@@ -64,9 +70,11 @@ class ListUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mHeadToHead = mGson.fromJson(JSON_HEAD_TO_HEAD, HeadToHead::class.java)
         mFullPlayer = mGson.fromJson(JSON_FULL_PLAYER, FullPlayer::class.java)
         mFullTournament = mGson.fromJson(JSON_FULL_TOURNAMENT, FullTournament::class.java)
+        mHeadToHead1 = mGson.fromJson(JSON_HEAD_TO_HEAD_1, HeadToHead::class.java)
+        mHeadToHead2 = mGson.fromJson(JSON_HEAD_TO_HEAD_2, HeadToHead::class.java)
+        mHeadToHead3 = mGson.fromJson(JSON_HEAD_TO_HEAD_3, HeadToHead::class.java)
         mMatchesBundle = mGson.fromJson(JSON_MATCHES, MatchesBundle::class.java)
         mPlayersBundle = mGson.fromJson(JSON_PLAYERS_BUNDLE, PlayersBundle::class.java)
         mRankingsBundle = mGson.fromJson(JSON_RANKINGS_BUNDLE, RankingsBundle::class.java)
@@ -78,38 +86,67 @@ class ListUtilsTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testCreateHeadToHeadListWithJson() {
-        val list = ListUtils.createHeadToHeadList(mApplication, mHeadToHead)
+    fun testCreateHeadToHeadListWithHeadToHead1() {
+        val list = ListUtils.createHeadToHeadList(mApplication, mHeadToHead1)
 
         assertNotNull(list)
-        assertEquals(8, list.size)
+        assertEquals(8, list?.size)
 
-        val `object` = list[0]
+        val `object` = list?.get(0)
         assertTrue(`object` is WinsLosses)
 
         val winsLosses = `object` as WinsLosses
-        assertEquals(3, winsLosses.wins)
-        assertEquals(2, winsLosses.losses)
+        assertEquals(3, winsLosses.playerWins)
+        assertEquals("588852e8d2994e3bbfa52d88", winsLosses.player.id)
+        assertEquals(2, winsLosses.opponentWins)
+        assertEquals("5877eb55d2994e15c7dea96d", winsLosses.opponent.id)
 
         assertTrue(list[1] is AbsTournament)
-        assertTrue(list[2] is Match)
-        assertTrue(list[3] is Match)
+        assertTrue(list[2] is HeadToHeadMatch)
+        assertEquals(MatchResult.WIN, (list[2] as HeadToHeadMatch).result)
+        assertTrue(list[3] is HeadToHeadMatch)
+        assertEquals(MatchResult.WIN, (list[3] as HeadToHeadMatch).result)
         assertTrue(list[4] is AbsTournament)
-        assertTrue(list[5] is Match)
-        assertTrue(list[6] is Match)
-        assertTrue(list[7] is Match)
+        assertTrue(list[5] is HeadToHeadMatch)
+        assertEquals(MatchResult.WIN, (list[5] as HeadToHeadMatch).result)
+        assertTrue(list[6] is HeadToHeadMatch)
+        assertEquals(MatchResult.LOSE, (list[6] as HeadToHeadMatch).result)
+        assertTrue(list[7] is HeadToHeadMatch)
+        assertEquals(MatchResult.LOSE, (list[7] as HeadToHeadMatch).result)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCreateHeadToHeadListWithHeadToHead2() {
+        val list = ListUtils.createHeadToHeadList(mApplication, mHeadToHead2)
+        assertNull(list)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testCreateHeadToHeadListWithHeadToHead3() {
+        val list = ListUtils.createHeadToHeadList(mApplication, mHeadToHead3)
+
+        assertNotNull(list)
+        assertEquals(2, list?.size)
+
+        val `object` = list?.get(0)
+        assertTrue(`object` is WinsLosses)
+
+        val winsLosses = `object` as WinsLosses
+        assertEquals(0, winsLosses.playerWins)
+        assertEquals("588852e7d2994e3bbfa52d6e", winsLosses.player.id)
+        assertEquals(2, winsLosses.opponentWins)
+        assertEquals("588852e8d2994e3bbfa52da7", winsLosses.opponent.id)
+
+        assertTrue(list[1] is CharSequence)
     }
 
     @Test
     @Throws(Exception::class)
     fun testCreateHeadToHeadListWithNull() {
         val list = ListUtils.createHeadToHeadList(mApplication, null)
-
-        assertNotNull(list)
-        assertEquals(2, list.size)
-
-        assertTrue(list[0] is WinsLosses)
-        assertTrue(list[1] is CharSequence)
+        assertNull(list)
     }
 
     @Test
@@ -258,23 +295,24 @@ class ListUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testFilterHeadToHeadListWithLose() {
-        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, mHeadToHead)
+        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, mHeadToHead1)
         val size = list?.size
 
-        list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list)
+        list = ListUtils.filterPlayerMatchesList(MatchResult.LOSE, list)
 
         assertNotNull(list)
         assertNotEquals(size, list?.size)
 
         assertTrue(list?.get(0) is WinsLosses)
         assertTrue(list?.get(1) is AbsTournament)
-        assertTrue(list?.get(2) is Match)
+        assertTrue(list?.get(2) is HeadToHeadMatch)
+        assertEquals(MatchResult.LOSE, (list?.get(2) as HeadToHeadMatch).result)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFilterHeadToHeadListWithNull() {
-        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, mHeadToHead)
+        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, mHeadToHead1)
         val size = list?.size
 
         list = ListUtils.filterPlayerMatchesList(null, list)
@@ -286,59 +324,18 @@ class ListUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testFilterHeadToHeadListWithWin() {
-        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, mHeadToHead)
+        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, mHeadToHead1)
         val size = list?.size
 
-        list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list)
+        list = ListUtils.filterPlayerMatchesList(MatchResult.WIN, list)
 
         assertNotNull(list)
         assertNotEquals(size, list?.size)
 
         assertTrue(list?.get(0) is WinsLosses)
         assertTrue(list?.get(1) is AbsTournament)
-        assertTrue(list?.get(2) is Match)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFilterHeadToHeadListFromNullListWithLose() {
-        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, null)
-        val size = list?.size
-
-        list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list)
-
-        assertNotNull(list)
-        assertEquals(size, list?.size)
-
-        assertTrue(list?.get(0) is WinsLosses)
-        assertTrue(list?.get(1) is CharSequence)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFilterHeadToHeadListFromNullListWithNull() {
-        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, null)
-        val size = list?.size
-
-        list = ListUtils.filterPlayerMatchesList(null, list)
-
-        assertNotNull(list)
-        assertEquals(size, list?.size)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFilterHeadToHeadListFromNullListWithWin() {
-        var list: List<Any>? = ListUtils.createHeadToHeadList(mApplication, null)
-        val size = list?.size
-
-        list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list)
-
-        assertNotNull(list)
-        assertEquals(size, list?.size)
-
-        assertTrue(list?.get(0) is WinsLosses)
-        assertTrue(list?.get(1) is CharSequence)
+        assertTrue(list?.get(2) is HeadToHeadMatch)
+        assertEquals(MatchResult.WIN, (list?.get(2) as HeadToHeadMatch).result)
     }
 
     @Test
@@ -348,7 +345,7 @@ class ListUtilsTest : BaseTest() {
                 mMatchesBundle)
         val size = list?.size
 
-        list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list)
+        list = ListUtils.filterPlayerMatchesList(MatchResult.LOSE, list)
 
         assertNotNull(list)
         assertNotEquals(size, list?.size)
@@ -379,7 +376,7 @@ class ListUtilsTest : BaseTest() {
                 mMatchesBundle)
         val size = list?.size
 
-        list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list)
+        list = ListUtils.filterPlayerMatchesList(MatchResult.WIN, list)
 
         assertNotNull(list)
         assertNotEquals(size, list?.size)
@@ -393,7 +390,7 @@ class ListUtilsTest : BaseTest() {
                 null)
         val size = list?.size
 
-        list = ListUtils.filterPlayerMatchesList(Match.Result.LOSE, list)
+        list = ListUtils.filterPlayerMatchesList(MatchResult.LOSE, list)
 
         assertNotNull(list)
         assertEquals(size, list?.size)
@@ -419,7 +416,7 @@ class ListUtilsTest : BaseTest() {
                 null)
         val size = list?.size
 
-        list = ListUtils.filterPlayerMatchesList(Match.Result.WIN, list)
+        list = ListUtils.filterPlayerMatchesList(MatchResult.WIN, list)
 
         assertNotNull(list)
         assertEquals(size, list?.size)

@@ -8,6 +8,7 @@ import com.garpr.android.misc.IdentityManagerTest;
 import com.garpr.android.misc.ListUtilsTest;
 import com.garpr.android.misc.PlayerToolbarManagerTest;
 import com.garpr.android.misc.PreviousRankUtilsTest;
+import com.garpr.android.misc.RankingsNotificationsUtilsTest;
 import com.garpr.android.misc.RegionManagerTest;
 import com.garpr.android.misc.TimberTest;
 import com.garpr.android.misc.TournamentToolbarManagerTest;
@@ -44,6 +45,7 @@ public interface TestAppComponent {
     void inject(ListUtilsTest test);
     void inject(PlayerToolbarManagerTest test);
     void inject(PreviousRankUtilsTest test);
+    void inject(RankingsNotificationsUtilsTest test);
     void inject(RegionManagerTest test);
     void inject(TimberTest test);
     void inject(TournamentToolbarManagerTest test);

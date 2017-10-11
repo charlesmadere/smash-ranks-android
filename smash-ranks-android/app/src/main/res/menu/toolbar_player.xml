@@ -16,16 +16,16 @@
         compat:showAsAction="ifRoom">
         <menu>
             <item
-                android:id="@+id/miFilterAll"
+                android:id="@+id/miShowAll"
                 android:title="@string/show_all"
                 android:visible="false" />
             <item
-                android:id="@+id/miFilterWins"
-                android:title="@string/show_wins"
+                android:id="@+id/miFilterToWins"
+                android:title="@string/filter_to_wins"
                 android:visible="false" />
             <item
-                android:id="@+id/miFilterLosses"
-                android:title="@string/show_losses"
+                android:id="@+id/miFilterToLosses"
+                android:title="@string/filter_to_losses"
                 android:visible="false" />
         </menu>
     </item>
@@ -36,6 +36,11 @@
         android:visible="false"
         compat:showAsAction="ifRoom" />
     <item
+        android:id="@+id/miAliases"
+        android:title="@string/aliases"
+        android:visible="false"
+        compat:showAsAction="never" />
+    <item
         android:id="@+id/miAddToFavorites"
         android:title="@string/add_to_favorites"
         android:visible="false"
@@ -43,11 +48,6 @@
     <item
         android:id="@+id/miRemoveFromFavorites"
         android:title="@string/remove_from_favorites"
-        android:visible="false"
-        compat:showAsAction="never" />
-    <item
-        android:id="@+id/miAliases"
-        android:title="@string/aliases"
         android:visible="false"
         compat:showAsAction="never" />
     <item

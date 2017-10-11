@@ -4,6 +4,8 @@ interface KeyValueStore {
 
     val all: Map<String, *>?
 
+    fun batchEdit(): BatchEditor
+
     fun clear()
 
     operator fun contains(key: String): Boolean
@@ -29,5 +31,15 @@ interface KeyValueStore {
     fun setLong(key: String, value: Long)
 
     fun setString(key: String, value: String)
+
+    interface BatchEditor {
+        fun apply()
+
+        fun clear(): BatchEditor
+
+        fun putInteger(key: String, value: Int): BatchEditor
+
+        fun putString(key: String, value: String): BatchEditor
+    }
 
 }

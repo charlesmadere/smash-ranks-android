@@ -8,7 +8,7 @@ abstract class BasePreference<T>(
         override val defaultValue: T?
 ) : Preference<T> {
 
-    private val listeners: MutableList<WeakReference<OnPreferenceChangeListener<T>>> = mutableListOf()
+    private val listeners = mutableListOf<WeakReference<OnPreferenceChangeListener<T>>>()
 
 
     override fun addListener(listener: OnPreferenceChangeListener<T>) {

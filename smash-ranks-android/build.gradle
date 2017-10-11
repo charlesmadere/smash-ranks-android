@@ -2,11 +2,11 @@
 
 buildscript {
     ext.appcompat_version = '26.1.0'
-    ext.dagger_version = '2.11'
-    ext.firebase_jobdispatcher_version = '0.8.1'
-    ext.google_play_services_version = '11.2.2'
-    ext.gson_version = '2.8.1'
-    ext.kotlin_version = '1.1.4-3'
+    ext.dagger_version = '2.12'
+    ext.firebase_jobdispatcher_version = '0.8.3'
+    ext.google_play_services_version = '11.4.2'
+    ext.gson_version = '2.8.2'
+    ext.kotlin_version = '1.1.51'
     ext.retrofit_version = '2.3.0'
     ext.robolectric_version = '3.4.2'
 
@@ -16,7 +16,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:3.0.0-beta6"
+        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
 
         // Kotlin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

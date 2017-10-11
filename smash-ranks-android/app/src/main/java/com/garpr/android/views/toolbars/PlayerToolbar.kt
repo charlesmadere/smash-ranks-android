@@ -12,7 +12,7 @@ import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.PlayerToolbarManager
 import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.Match
+import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 import javax.inject.Inject
 
@@ -32,7 +32,7 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
     interface DataProvider {
         val fullPlayer: FullPlayer?
         val matchesBundle: MatchesBundle?
-        val result: Match.Result?
+        val matchResult: MatchResult?
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -94,12 +94,12 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         val activity = context.optActivity()
         val fullPlayer: FullPlayer?
         val matchesBundle: MatchesBundle?
-        val matchResult: Match.Result?
+        val matchResult: MatchResult?
 
         if (activity is DataProvider) {
             fullPlayer = activity.fullPlayer
             matchesBundle = activity.matchesBundle
-            matchResult = activity.result
+            matchResult = activity.matchResult
         } else {
             fullPlayer = null
             matchesBundle = null
@@ -112,9 +112,9 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         menu.findItem(R.id.miAddToFavorites).isVisible = presentation.mIsAddToFavoritesVisible
         menu.findItem(R.id.miAliases).isVisible = presentation.mIsAliasesVisible
         menu.findItem(R.id.miFilter).isVisible = presentation.mIsFilterVisible
-        menu.findItem(R.id.miFilterAll).isVisible = presentation.mIsFilterAllVisible
-        menu.findItem(R.id.miFilterLosses).isVisible = presentation.mIsFilterLossesVisible
-        menu.findItem(R.id.miFilterWins).isVisible = presentation.mIsFilterWinsVisible
+        menu.findItem(R.id.miShowAll).isVisible = presentation.mIsFilterAllVisible
+        menu.findItem(R.id.miFilterToLosses).isVisible = presentation.mIsFilterLossesVisible
+        menu.findItem(R.id.miFilterToWins).isVisible = presentation.mIsFilterWinsVisible
         menu.findItem(R.id.miRemoveFromFavorites).isVisible = presentation.mIsRemoveFromFavoritesVisible
         menu.findItem(R.id.miShare).isVisible = presentation.mIsShareVisible
 

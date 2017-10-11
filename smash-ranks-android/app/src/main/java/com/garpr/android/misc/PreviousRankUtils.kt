@@ -4,10 +4,10 @@ import com.garpr.android.models.RankedPlayer
 
 interface PreviousRankUtils {
 
+    fun getRankInfo(rankedPlayer: RankedPlayer?): Info?
+
     enum class Info {
         DECREASE, INCREASE
     }
-
-    fun checkRanking(rankedPlayer: RankedPlayer?): Info?
 
 }

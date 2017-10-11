@@ -19,8 +19,7 @@ import com.garpr.android.preferences.Preference
 import javax.inject.Inject
 
 class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListener,
-        DialogInterface.OnDismissListener, Preference.OnPreferenceChangeListener<NightMode>,
-        View.OnClickListener {
+        Preference.OnPreferenceChangeListener<NightMode>, View.OnClickListener {
 
     @Inject
     lateinit protected var mGeneralPreferenceStore: GeneralPreferenceStore
@@ -63,17 +62,19 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
             return
         }
 
-        mTimber.d(TAG, "Theme was \"$current\", is now \"$selected\"")
+        showRestartDialog(DialogInterface.OnDismissListener {
+            mTimber.d(TAG, "theme was \"$current\", is now \"$selected\"")
+            mGeneralPreferenceStore.nightMode.set(selected)
+            refresh()
 
-        showRestartDialog()
-        mGeneralPreferenceStore.nightMode.set(selected)
-        refresh()
+            context.startActivity(HomeActivity.getLaunchIntent(context))
+        })
     }
 
     override fun onClick(v: View) {
         val items = arrayOfNulls<CharSequence>(NightMode.values().size)
 
-        for (i in 0..NightMode.values().size - 1) {
+        for (i in 0 until NightMode.values().size) {
             items[i] = resources.getText(NightMode.values()[i].textResId)
         }
 
@@ -88,12 +89,8 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mGeneralPreferenceStore.nightMode.removeListener(this)
-    }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        val context = context
-        context.startActivity(HomeActivity.getLaunchIntent(context))
+        mGeneralPreferenceStore.nightMode.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -108,10 +105,10 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         titleText = resources.getText(R.string.theme)
 
         if (isInEditMode) {
-            return
+            descriptionText = resources.getText(R.string.auto)
+        } else {
+            refresh()
         }
-
-        refresh()
     }
 
     override fun onPreferenceChange(preference: Preference<NightMode>) {
@@ -127,11 +124,11 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         descriptionText = resources.getText(nightMode?.textResId ?: R.string.not_yet_set)
     }
 
-    private fun showRestartDialog() {
+    private fun showRestartDialog(onDismissListener: DialogInterface.OnDismissListener) {
         AlertDialog.Builder(context)
                 .setMessage(R.string.the_app_will_now_restart)
                 .setNeutralButton(R.string.ok, null)
-                .setOnDismissListener(this)
+                .setOnDismissListener(onDismissListener)
                 .show()
     }
 

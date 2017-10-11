@@ -45,7 +45,7 @@ class MatchTest : BaseTest() {
         assertEquals("Mao", match1.opponent.name)
         assertEquals("588850d5d2994e3bbfa52d67", match1.tournament.id)
         assertEquals("Norcal Validated 1", match1.tournament.name)
-        assertEquals(Match.Result.WIN, match1.result)
+        assertEquals(MatchResult.WIN, match1.result)
 
         val date = gson.fromJson("\"01/14/17\"", SimpleDate::class.java)
         assertEquals(match1.tournament.date, date)
@@ -58,7 +58,7 @@ class MatchTest : BaseTest() {
         assertEquals("Arcadia", match2.opponent.name)
         assertEquals("58bfaed4d2994e057e91f71b", match2.tournament.id)
         assertEquals("Get Smashed #108", match2.tournament.name)
-        assertEquals(Match.Result.EXCLUDED, match2.result)
+        assertEquals(MatchResult.EXCLUDED, match2.result)
 
         val date = gson.fromJson("\"03/07/17\"", SimpleDate::class.java)
         assertEquals(match2.tournament.date, date)
@@ -71,7 +71,7 @@ class MatchTest : BaseTest() {
         assertEquals("Darrell", match3.opponent.name)
         assertEquals("58a9139cd2994e756952ad94", match3.tournament.id)
         assertEquals("The Gator Games #3", match3.tournament.name)
-        assertEquals(Match.Result.LOSE, match3.result)
+        assertEquals(MatchResult.LOSE, match3.result)
 
         val date = gson.fromJson("\"02/18/17\"", SimpleDate::class.java)
         assertEquals(match3.tournament.date, date)
