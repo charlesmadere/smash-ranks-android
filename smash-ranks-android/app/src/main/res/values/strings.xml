@@ -61,6 +61,7 @@
     <string name="must_be_on_wifi">Must be on wifi</string>
     <string name="night">Night</string>
     <string name="none">None</string>
+    <string name="norcal">Norcal</string>
     <string name="not_gar_pr">Not GAR PR</string>
     <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
@@ -68,6 +69,7 @@
     <string name="no_identity_has_been_set">No identity has been set</string>
     <string name="no_log_entries">No log entries</string>
     <string name="no_matches">No matches</string>
+    <string name="no_match_history">No match history</string>
     <string name="no_player_data">No player data</string>
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
