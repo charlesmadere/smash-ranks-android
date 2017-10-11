@@ -56,17 +56,17 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
+            mRegionManager.addListener(this)
         }
 
         setOnClickListener(this)
         titleText = resources.getText(R.string.region)
 
         if (isInEditMode) {
-            return
+            descriptionText = resources.getText(R.string.norcal)
+        } else {
+            refresh()
         }
-
-        mRegionManager.addListener(this)
-        refresh()
     }
 
     override fun onRegionChange(regionManager: RegionManager) {

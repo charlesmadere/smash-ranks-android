@@ -18,6 +18,8 @@ import javax.inject.Inject
 class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterface.OnClickListener,
         FavoritePlayersManager.OnFavoritePlayersChangeListener, View.OnClickListener {
 
+    private val mNumberFormat = NumberFormat.getIntegerInstance()
+
     @Inject
     lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
 
@@ -56,6 +58,7 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         mFavoritePlayersManager.removeListener(this)
     }
 
@@ -67,7 +70,6 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        setOnClickListener(this)
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
@@ -78,10 +80,11 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
         titleText = resources.getText(R.string.delete_favorite_players)
 
         if (isInEditMode) {
-            return
+            descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
+                    mNumberFormat.format(8))
+        } else {
+            refresh()
         }
-
-        refresh()
     }
 
     override fun refresh() {
@@ -90,7 +93,7 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
         val size = mFavoritePlayersManager.size
         isEnabled = size != 0
         descriptionText = resources.getQuantityString(R.plurals.x_favorites, size,
-                NumberFormat.getInstance().format(size))
+                mNumberFormat.format(size))
     }
 
 }

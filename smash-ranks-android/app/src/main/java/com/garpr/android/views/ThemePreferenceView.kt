@@ -105,10 +105,10 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         titleText = resources.getText(R.string.theme)
 
         if (isInEditMode) {
-            return
+            descriptionText = resources.getText(R.string.auto)
+        } else {
+            refresh()
         }
-
-        refresh()
     }
 
     override fun onPreferenceChange(preference: Preference<NightMode>) {
