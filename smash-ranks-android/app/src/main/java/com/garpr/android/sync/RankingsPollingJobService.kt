@@ -16,6 +16,7 @@ import javax.inject.Inject
 class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
     private var mIsAlive: Boolean = true
+    private var mJobParameters: JobParameters? = null
     private var mPollStatus: PollStatus? = null
 
     @Inject
@@ -52,12 +53,22 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
             mPollStatus = pollStatus.copy(oldRankingsDate = pollStatus.oldRankingsDate,
                     proceed = pollStatus.proceed, retry = true)
         }
+
+        jobFinished(true)
     }
 
     override val isAlive: Boolean
         get() = mIsAlive
 
-    override fun onStartJob(job: JobParameters?): Boolean {
+    private fun jobFinished(needsReschedule: Boolean) {
+        mJobParameters?.let {
+            jobFinished(it, needsReschedule)
+        }
+    }
+
+    override fun onStartJob(job: JobParameters): Boolean {
+        mJobParameters = job
+
         val pollStatus = mRankingsNotificationsUtils.getPollStatus()
         mPollStatus = pollStatus
 
@@ -69,7 +80,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
         }
     }
 
-    override fun onStopJob(job: JobParameters?): Boolean {
+    override fun onStopJob(job: JobParameters): Boolean {
         mIsAlive = false
         return mPollStatus?.retry == true
     }
@@ -90,6 +101,8 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
                 mNotificationsManager.rankingsUpdated()
             }
         }
+
+        jobFinished(false)
     }
 
 }
