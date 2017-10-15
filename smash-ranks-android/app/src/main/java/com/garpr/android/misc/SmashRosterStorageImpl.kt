@@ -33,8 +33,8 @@ class SmashRosterStorageImpl(
         return gson.fromJson(smashCharacter, SmashCharacter::class.java)
     }
 
-    override fun writeToStorage(region: Region, smashRoster: SmashRoster) {
-        if (smashRoster.players == null || smashRoster.players.isEmpty()) {
+    override fun writeToStorage(region: Region, smashRoster: SmashRoster?) {
+        if (smashRoster?.players == null || smashRoster.players.isEmpty()) {
             deleteFromStorage(region)
             return
         }

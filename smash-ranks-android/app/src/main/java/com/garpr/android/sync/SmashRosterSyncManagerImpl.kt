@@ -45,9 +45,9 @@ class SmashRosterSyncManagerImpl(
     }
 
     override var isEnabled: Boolean
-        get() = smashRosterPreferenceStore.isEnabled.get() == true
+        get() = smashRosterPreferenceStore.enabled.get() == true
         set(value) {
-            smashRosterPreferenceStore.isEnabled.set(value)
+            smashRosterPreferenceStore.enabled.set(value)
         }
 
     @UiThread

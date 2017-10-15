@@ -78,6 +78,11 @@ class RankingsNotificationsUtilsTest : BaseTest() {
 
         pollStatus = rankingsNotificationsUtils.getPollStatus()
         assertEquals(NO_CHANGE, rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle))
+
+        rankingsPollingPreferenceStore.rankingsDate.set(SimpleDate())
+
+        pollStatus = rankingsNotificationsUtils.getPollStatus()
+        assertEquals(NO_CHANGE, rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle))
     }
 
     @Test

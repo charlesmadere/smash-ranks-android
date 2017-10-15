@@ -7,6 +7,10 @@ import java.util.*
 
 object ListUtils {
 
+    private interface MatchListItemCreator {
+        fun createMatch(match: Match): Any
+    }
+
     fun createHeadToHeadList(context: Context, headToHead: HeadToHead?): MutableList<Any>? {
         if (headToHead == null || headToHead.losses == 0 && headToHead.wins == 0) {
             return null
@@ -22,21 +26,11 @@ object ListUtils {
             return list
         }
 
-        val matchesCopy = mutableListOf<Match>()
-        matchesCopy.addAll(matches)
-        Collections.sort(matchesCopy, Match.REVERSE_CHRONOLOGICAL_ORDER)
-
-        var tournamentId: String? = null
-
-        for (match in matchesCopy) {
-            if (match.tournament.id != tournamentId) {
-                tournamentId = match.tournament.id
-                list.add(LiteTournament(null, match.tournament.date, tournamentId,
-                        match.tournament.name))
+        list.addAll(createSortedTournamentAndMatchList(matches, object : MatchListItemCreator {
+            override fun createMatch(match: Match): Any {
+                return HeadToHeadMatch(headToHead.player, match.opponent, match.result)
             }
-
-            list.add(HeadToHeadMatch(headToHead.player, match.opponent, match.result))
-        }
+        }))
 
         return list
     }
@@ -64,7 +58,11 @@ object ListUtils {
                 newList.add(context.getString(R.string.no_matches))
             }
         } else {
-            newList.addAll(createSortedTournamentAndMatchList(matches))
+            newList.addAll(createSortedTournamentAndMatchList(matches, object : MatchListItemCreator {
+                override fun createMatch(match: Match): Any {
+                    return match
+                }
+            }))
         }
 
         return newList
@@ -100,7 +98,8 @@ object ListUtils {
         return list
     }
 
-    private fun createSortedTournamentAndMatchList(matches: List<Match>): MutableList<Any> {
+    private fun createSortedTournamentAndMatchList(matches: List<Match>,
+            matchListItemCreator: MatchListItemCreator): MutableList<Any> {
         val matchesCopy = mutableListOf<Match>()
         matchesCopy.addAll(matches)
         Collections.sort(matchesCopy, Match.REVERSE_CHRONOLOGICAL_ORDER)
@@ -115,7 +114,7 @@ object ListUtils {
                         match.tournament.name))
             }
 
-            list.add(match)
+            list.add(matchListItemCreator.createMatch(match))
         }
 
         return list

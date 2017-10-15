@@ -5,11 +5,13 @@ import com.garpr.android.misc.FavoritePlayersManagerTest;
 import com.garpr.android.misc.FullTournamentUtilsTest;
 import com.garpr.android.misc.HomeToolbarManagerTest;
 import com.garpr.android.misc.IdentityManagerTest;
+import com.garpr.android.misc.KeyValueStoreProviderTest;
 import com.garpr.android.misc.ListUtilsTest;
 import com.garpr.android.misc.PlayerToolbarManagerTest;
 import com.garpr.android.misc.PreviousRankUtilsTest;
 import com.garpr.android.misc.RankingsNotificationsUtilsTest;
 import com.garpr.android.misc.RegionManagerTest;
+import com.garpr.android.misc.SmashRosterStorageTest;
 import com.garpr.android.misc.TimberTest;
 import com.garpr.android.misc.TournamentToolbarManagerTest;
 import com.garpr.android.models.AbsPlayerTest;
@@ -42,11 +44,13 @@ public interface TestAppComponent {
     void inject(FullTournamentUtilsTest test);
     void inject(HomeToolbarManagerTest test);
     void inject(IdentityManagerTest test);
+    void inject(KeyValueStoreProviderTest test);
     void inject(ListUtilsTest test);
     void inject(PlayerToolbarManagerTest test);
     void inject(PreviousRankUtilsTest test);
     void inject(RankingsNotificationsUtilsTest test);
     void inject(RegionManagerTest test);
+    void inject(SmashRosterStorageTest test);
     void inject(TimberTest test);
     void inject(TournamentToolbarManagerTest test);
 

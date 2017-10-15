@@ -23,6 +23,10 @@ enum class Endpoint(
     companion object {
         @JvmField
         val CREATOR = createParcel { values()[it.readInt()] }
+
+        val ALPHABETICAL_ORDER: java.util.Comparator<Endpoint> = Comparator { o1, o2 ->
+            o1.name.compareTo(o2.name, ignoreCase = true)
+        }
     }
 
     fun getPlayerWebPath(regionId: String, playerId: String) =

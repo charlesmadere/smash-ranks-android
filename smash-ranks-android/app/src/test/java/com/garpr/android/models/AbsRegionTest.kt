@@ -2,11 +2,13 @@ package com.garpr.android.models
 
 import com.garpr.android.BaseTest
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.util.*
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
@@ -49,7 +51,28 @@ class AbsRegionTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testComparatorAlphabeticalOrder() {
+        val list = listOf(fullRegion1, liteRegion2, fullRegion2, fullRegion3)
+        Collections.sort(list, AbsRegion.ALPHABETICAL_ORDER)
 
+        assertEquals(fullRegion1, list[0])
+        assertEquals(liteRegion2, list[1])
+        assertEquals(fullRegion3, list[2])
+        assertEquals(fullRegion2, list[3])
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testComparatorEndpointOrder() {
+        val list = listOf(fullRegion1, liteRegion2, fullRegion2, fullRegion3, liteRegion1,
+                liteRegion3)
+        Collections.sort(list, AbsRegion.ENDPOINT_ORDER)
+
+        assertEquals(fullRegion1, list[0])
+        assertEquals(fullRegion3, list[1])
+        assertEquals(fullRegion2, list[2])
+        assertEquals(liteRegion3, list[3])
+        assertEquals(liteRegion2, list[4])
+        assertEquals(liteRegion1, list[5])
     }
 
     @Test
@@ -66,6 +89,12 @@ class AbsRegionTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testFromJsonFullRegion3() {
+        assertEquals(AbsRegion.Kind.FULL, fullRegion3.kind)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testFromJsonLiteRegion1() {
         assertEquals(AbsRegion.Kind.LITE, liteRegion1.kind)
     }
@@ -78,7 +107,20 @@ class AbsRegionTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testFromJsonNull() {
+    fun testFromJsonLiteRegion3() {
+        assertEquals(AbsRegion.Kind.LITE, liteRegion3.kind)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testFromJsonNullJsonElement() {
+        val region = gson.fromJson(null as JsonElement?, AbsRegion::class.java)
+        assertNull(region)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testFromJsonNullString() {
         val region = gson.fromJson(null as String?, AbsRegion::class.java)
         assertNull(region)
     }
