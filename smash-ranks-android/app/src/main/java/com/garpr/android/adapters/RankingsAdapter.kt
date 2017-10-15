@@ -27,10 +27,10 @@ class RankingsAdapter(context: Context) : BaseAdapter<RankedPlayer>(context) {
 
     fun set(bundle: RankingsBundle?) {
         if (bundle?.rankings?.isNotEmpty() == true) {
-            if (bundle.hasPreviousRank()) {
-                mLayoutResId = R.layout.item_ranking_with_previous_rank
+            mLayoutResId = if (bundle.hasPreviousRank()) {
+                R.layout.item_ranking_with_previous_rank
             } else {
-                mLayoutResId = R.layout.item_ranking
+                R.layout.item_ranking
             }
 
             set(bundle.rankings)
