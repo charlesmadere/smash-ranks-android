@@ -33,7 +33,7 @@ class SmashRosterSyncManagerImpl(
 
                 if (item == null) {
                     iterator.remove()
-                } else if (item === listener) {
+                } else if (item == listener) {
                     addListener = false
                 }
             }
@@ -99,7 +99,7 @@ class SmashRosterSyncManagerImpl(
                 val next = iterator.next()
                 val item = next.get()
 
-                if (item == null || item === listener) {
+                if (item == null || item == listener) {
                     iterator.remove()
                 }
             }

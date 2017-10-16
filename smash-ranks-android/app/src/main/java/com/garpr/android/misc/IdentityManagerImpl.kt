@@ -30,13 +30,13 @@ class IdentityManagerImpl(
 
                 if (item == null) {
                     iterator.remove()
-                } else if (item === listener) {
+                } else if (item == listener) {
                     addListener = false
                 }
             }
 
             if (addListener) {
-                mListeners.add(WeakReference<OnIdentityChangeListener>(listener))
+                mListeners.add(WeakReference(listener))
             }
         }
     }
@@ -45,10 +45,10 @@ class IdentityManagerImpl(
         get() = mIdentity.get()
 
     private fun getPlayerString(player: AbsPlayer?): String {
-        if (player == null) {
-            return "null"
+        return if (player == null) {
+            "null"
         } else {
-            return "(id:" + player.id + ") (name:" + player.name + ")"
+            "(id:" + player.id + ") (name:" + player.name + ")"
         }
     }
 
