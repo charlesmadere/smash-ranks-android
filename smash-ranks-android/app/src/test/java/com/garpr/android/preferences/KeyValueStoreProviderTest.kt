@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.preferences
 
 import com.garpr.android.BaseTest
 import org.junit.Assert.assertNotNull
@@ -26,7 +26,8 @@ class KeyValueStoreProviderTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testGetKeyValueStore() {
-        assertNotNull(keyValueStoreProvider.getKeyValueStore(TAG))
+        assertNotNull(keyValueStoreProvider.getKeyValueStore(
+                TAG))
     }
 
 }

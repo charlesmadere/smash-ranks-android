@@ -3,6 +3,7 @@ package com.garpr.android.misc
 import com.garpr.android.models.Region
 import com.garpr.android.models.SmashCharacter
 import com.garpr.android.models.SmashRoster
+import com.garpr.android.preferences.KeyValueStoreProvider
 import com.google.gson.Gson
 
 class SmashRosterStorageImpl(
