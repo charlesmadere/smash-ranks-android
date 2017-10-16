@@ -28,7 +28,7 @@ object ListUtils {
 
         list.addAll(createSortedTournamentAndMatchList(matches, object : MatchListItemCreator {
             override fun createMatch(match: Match): Any {
-                return HeadToHeadMatch(headToHead.player, match.opponent, match.result)
+                return HeadToHeadMatch(match.result, headToHead.player, match.opponent)
             }
         }))
 

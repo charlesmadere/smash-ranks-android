@@ -8,17 +8,17 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class Match(
+        result: MatchResult,
         @SerializedName("opponent") val opponent: AbsPlayer,
-        @SerializedName("tournament") val tournament: AbsTournament,
-        result: MatchResult
+        @SerializedName("tournament") val tournament: AbsTournament
 ) : AbsMatch(
         result
 ), Parcelable {
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { Match(it.readAbsPlayer(), it.readAbsTournament(),
-                it.readParcelable(MatchResult::class.java.classLoader)) }
+        val CREATOR = createParcel { Match(it.readParcelable(MatchResult::class.java.classLoader),
+                it.readAbsPlayer(), it.readAbsTournament()) }
 
         val CHRONOLOGICAL_ORDER: Comparator<Match> = Comparator { o1, o2 ->
             SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.tournament.date, o2.tournament.date)
@@ -43,16 +43,16 @@ class Match(
                     jsonObject.get("tournament_name").asString)
             val result = context.deserialize<MatchResult>(jsonObject.get("result"), MatchResult::class.java)
 
-            Match(player, tournament, result)
+            Match(result, player, tournament)
         }
     }
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
         dest.writeAbsPlayer(opponent, flags)
         dest.writeAbsTournament(tournament, flags)
-        dest.writeParcelable(result, flags)
     }
 
 }

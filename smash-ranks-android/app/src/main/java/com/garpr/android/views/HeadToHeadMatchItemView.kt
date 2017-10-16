@@ -73,8 +73,8 @@ class HeadToHeadMatchItemView : IdentityFrameLayout, BaseAdapterView<HeadToHeadM
         setOnClickListener(this)
 
         if (isInEditMode) {
-            setContent(HeadToHeadMatch(LitePlayer("0", "Shroomed"),
-                    LitePlayer("1", "PewPewU"), MatchResult.WIN))
+            setContent(HeadToHeadMatch(MatchResult.WIN, LitePlayer("0", "Shroomed"),
+                    LitePlayer("1", "PewPewU")))
         }
     }
 
