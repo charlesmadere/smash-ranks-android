@@ -53,7 +53,6 @@
     <string name="google_play_services_error_cant_be_resolved">Sorry, but your Google Play Services error (%1$d) can\'t be resolved.</string>
     <string name="google_play_services_error_has_been_resolved">Google Play Services error has been resolved!</string>
     <string name="head_to_head">Head to Head</string>
-    <string name="hello_x">Hello %1$s!</string>
     <string name="ice_climbers">Ice Climbers</string>
     <string name="identity">Identity</string>
     <string name="identity_has_not_been_set">Identity has not been set</string>
@@ -134,9 +133,7 @@
     <string name="sheik">Sheik</string>
     <string name="show">Show</string>
     <string name="show_all">Show all</string>
-    <string name="show_losses">Show losses</string>
     <string name="show_test_notification">Show test notification</string>
-    <string name="show_wins">Show wins</string>
     <string name="swipe_to_refresh_to_check_again">Swipe down to refresh to check again</string>
     <string name="swipe_to_refresh_to_try_again">Swipe down to refresh to try again</string>
     <string name="system">System</string>
@@ -148,7 +145,6 @@
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
     <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
-    <string name="under_construction">Under construction!</string>
     <string name="x_updated_y">%1$s updated %2$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
     <string name="version_x">Version %1$s</string>
@@ -164,7 +160,6 @@
     <string name="view_yourself">View yourself</string>
     <string name="view_yourself_vs_this_opponent">View yourself vs this opponent</string>
     <string name="view_yourself_vs_x">View yourself vs %1$s</string>
-    <string name="vs">vs</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>

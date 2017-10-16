@@ -166,20 +166,6 @@
         <item name="scrollingChild">@id/recyclerView</item>
     </style>
 
-    <style name="SettingsCard">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginEnd">@dimen/root_padding</item>
-        <item name="android:layout_marginStart">@dimen/root_padding</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="contentPaddingTop">@dimen/root_padding_quarter</item>
-    </style>
-
-    <style name="SettingsCardContainer">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
     <style name="SettingsCardDescription">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>

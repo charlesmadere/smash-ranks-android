@@ -22,7 +22,7 @@ class ShareUtilsImpl(
     }
 
     override fun openUrl(context: Context, url: String?) {
-        if (url == null || url.isBlank()) {
+        if (url.isNullOrBlank()) {
             return
         }
 
@@ -35,7 +35,6 @@ class ShareUtilsImpl(
             mTimber.e(TAG, "Unable to open browser to URI: $uri", e)
             Toast.makeText(context, R.string.unable_to_open_link, Toast.LENGTH_LONG).show()
         }
-
     }
 
     override fun sharePlayer(activity: Activity, player: AbsPlayer) {

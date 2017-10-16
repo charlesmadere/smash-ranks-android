@@ -96,7 +96,7 @@ class IdentityManagerImpl(
                 val reference = iterator.next()
                 val item = reference.get()
 
-                if (item == null || item === listener) {
+                if (item == null || item == listener) {
                     iterator.remove()
                 }
             }
