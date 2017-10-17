@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="@dimen/wins_losses_height"
+    android:layout_marginTop="@dimen/root_padding"
     android:layout_width="match_parent"
     android:orientation="horizontal">
     <android.support.v4.widget.Space
