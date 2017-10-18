@@ -34,7 +34,11 @@ abstract class BaseAdapter<T>(
 
     override fun onBindViewHolder(holder: BaseAdapterViewHolder, position: Int) {
         val item = mItems[position]
-        (holder.itemView as BaseAdapterView<T>).setContent(item)
+
+        @Suppress("UNCHECKED_CAST")
+        val view = holder.itemView as BaseAdapterView<T>
+
+        view.setContent(item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapterViewHolder {

@@ -15,6 +15,6 @@ interface SmashRosterStorage {
     fun getSmashCharacter(region: Region, playerId: String?): SmashCharacter?
 
     @WorkerThread
-    fun writeToStorage(region: Region, smashRoster: SmashRoster)
+    fun writeToStorage(region: Region, smashRoster: SmashRoster?)
 
 }

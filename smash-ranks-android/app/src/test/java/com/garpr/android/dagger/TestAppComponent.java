@@ -10,6 +10,7 @@ import com.garpr.android.misc.PlayerToolbarManagerTest;
 import com.garpr.android.misc.PreviousRankUtilsTest;
 import com.garpr.android.misc.RankingsNotificationsUtilsTest;
 import com.garpr.android.misc.RegionManagerTest;
+import com.garpr.android.misc.SmashRosterStorageTest;
 import com.garpr.android.misc.TimberTest;
 import com.garpr.android.misc.TournamentToolbarManagerTest;
 import com.garpr.android.models.AbsPlayerTest;
@@ -20,6 +21,7 @@ import com.garpr.android.models.RegionsBundleTest;
 import com.garpr.android.models.SimpleDateTest;
 import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
 import com.garpr.android.networking.RegionsBundleApiCallTest;
+import com.garpr.android.preferences.KeyValueStoreProviderTest;
 import com.garpr.android.preferences.KeyValueStoreTest;
 import com.garpr.android.preferences.persistent.PersistentBooleanPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentGsonPreferenceTest;
@@ -47,6 +49,7 @@ public interface TestAppComponent {
     void inject(PreviousRankUtilsTest test);
     void inject(RankingsNotificationsUtilsTest test);
     void inject(RegionManagerTest test);
+    void inject(SmashRosterStorageTest test);
     void inject(TimberTest test);
     void inject(TournamentToolbarManagerTest test);
 
@@ -63,6 +66,7 @@ public interface TestAppComponent {
     void inject(RegionsBundleApiCallTest test);
 
     // preferences
+    void inject(KeyValueStoreProviderTest test);
     void inject(KeyValueStoreTest test);
     void inject(PersistentBooleanPreferenceTest test);
     void inject(PersistentGsonPreferenceTest test);

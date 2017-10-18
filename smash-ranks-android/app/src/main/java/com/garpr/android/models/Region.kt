@@ -31,8 +31,9 @@ class Region(
             region.rankingNumTourneysAttended, region.tournamentQualifiedDayLimit,
             region.displayName, region.id, endpoint)
 
-    override fun equals(other: Any?): Boolean =
-        super.equals(other) && other is Region && endpoint == other.endpoint
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other) && other is Region && endpoint == other.endpoint
+    }
 
     override fun hashCode(): Int{
         var result = super.hashCode()

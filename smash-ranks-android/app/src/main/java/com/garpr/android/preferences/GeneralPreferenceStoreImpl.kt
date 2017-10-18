@@ -15,16 +15,16 @@ class GeneralPreferenceStoreImpl(
         keyValueStore
 ), GeneralPreferenceStore {
 
-    override val currentRegion = PersistentGsonPreference("CURRENT_REGION", defaultRegion,
-            keyValueStore, Region::class.java, gson)
+    override val currentRegion by lazy { PersistentGsonPreference<Region>("CURRENT_REGION",
+            defaultRegion, keyValueStore, Region::class.java, gson) }
 
-    override val identity = PersistentGsonPreference<FavoritePlayer>("IDENTITY",
-            null, keyValueStore, FavoritePlayer::class.java, gson)
+    override val identity by lazy { PersistentGsonPreference<FavoritePlayer>("IDENTITY",
+            null, keyValueStore, FavoritePlayer::class.java, gson) }
 
-    override val lastVersion = PersistentIntegerPreference("LAST_VERSION", null,
-            keyValueStore)
+    override val lastVersion by lazy { PersistentIntegerPreference("LAST_VERSION",
+            null, keyValueStore) }
 
-    override val nightMode = PersistentGsonPreference("NIGHT_MODE", NightMode.SYSTEM,
-            keyValueStore, NightMode::class.java, gson)
+    override val nightMode by lazy { PersistentGsonPreference("NIGHT_MODE", NightMode.SYSTEM,
+            keyValueStore, NightMode::class.java, gson) }
 
 }

@@ -1,7 +1,6 @@
-package com.garpr.android.misc
+package com.garpr.android.preferences
 
 import android.app.Application
-import com.garpr.android.preferences.KeyValueStoreImpl
 
 class KeyValueStoreProviderImpl(
         private val application: Application

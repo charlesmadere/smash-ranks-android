@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference
 
 class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
 
-    private val mPages: SparseArrayCompat<WeakReference<SearchableFrameLayout>> = SparseArrayCompat(count)
+    private val mPages = SparseArrayCompat<WeakReference<SearchableFrameLayout>>(count)
 
 
     companion object {
@@ -50,7 +50,7 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
     }
 
     fun onNavigationItemReselected(position: Int) {
-        val view = mPages[position]?.get()
+        val view = mPages[position].get()
 
         if (view != null && view.isAlive) {
             view.scrollToTop()
@@ -58,20 +58,20 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
     }
 
     override fun refresh() {
-        for (i in 0..mPages.size() - 1) {
-            val view = mPages[i]?.get()
+        for (i in 0 until mPages.size()) {
+            val view = mPages[i].get()
 
-            if (view != null && view.isAlive) {
+            if (view?.isAlive == true) {
                 view.refresh()
             }
         }
     }
 
     override fun search(query: String?) {
-        for (i in 0..mPages.size() - 1) {
-            val view = mPages[i]?.get()
+        for (i in 0 until mPages.size()) {
+            val view = mPages[i].get()
 
-            if (view != null && view.isAlive) {
+            if (view?.isAlive == true) {
                 view.search(query)
             }
         }

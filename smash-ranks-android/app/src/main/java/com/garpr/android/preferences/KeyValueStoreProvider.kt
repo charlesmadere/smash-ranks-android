@@ -1,6 +1,4 @@
-package com.garpr.android.misc
-
-import com.garpr.android.preferences.KeyValueStore
+package com.garpr.android.preferences
 
 interface KeyValueStoreProvider {
 

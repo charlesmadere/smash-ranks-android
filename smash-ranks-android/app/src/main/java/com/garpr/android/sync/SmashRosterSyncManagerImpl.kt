@@ -33,7 +33,7 @@ class SmashRosterSyncManagerImpl(
 
                 if (item == null) {
                     iterator.remove()
-                } else if (item === listener) {
+                } else if (item == listener) {
                     addListener = false
                 }
             }
@@ -45,9 +45,9 @@ class SmashRosterSyncManagerImpl(
     }
 
     override var isEnabled: Boolean
-        get() = smashRosterPreferenceStore.isEnabled.get() == true
+        get() = smashRosterPreferenceStore.enabled.get() == true
         set(value) {
-            smashRosterPreferenceStore.isEnabled.set(value)
+            smashRosterPreferenceStore.enabled.set(value)
         }
 
     @UiThread
@@ -99,7 +99,7 @@ class SmashRosterSyncManagerImpl(
                 val next = iterator.next()
                 val item = next.get()
 
-                if (item == null || item === listener) {
+                if (item == null || item == listener) {
                     iterator.remove()
                 }
             }

@@ -17,7 +17,7 @@ class LastPollPreferenceView : SimplePreferenceView,
         Preference.OnPreferenceChangeListener<SimpleDate> {
 
     @Inject
-    lateinit protected var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    protected lateinit var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -73,12 +73,8 @@ class LastPollPreferenceView : SimplePreferenceView,
         super.refresh()
 
         val date = mRankingsPollingPreferenceStore.lastPoll.get()
-
-        if (date == null) {
-            descriptionText = resources.getText(R.string.poll_has_yet_to_occur)
-        } else {
-            descriptionText = date.getRelativeDateTimeText(context)
-        }
+        descriptionText = date?.getRelativeDateTimeText(context) ?:
+                resources.getText(R.string.poll_has_yet_to_occur)
     }
 
 }
