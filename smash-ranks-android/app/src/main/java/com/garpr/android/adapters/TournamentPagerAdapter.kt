@@ -20,12 +20,12 @@ class TournamentPagerAdapter(
         private val mTournament: FullTournament
 ) : PagerAdapter(), Searchable {
 
-    private val mPages: SparseArrayCompat<WeakReference<TournamentPageLayout>> = SparseArrayCompat(count)
+    private val mPages = SparseArrayCompat<WeakReference<TournamentPageLayout>>(count)
 
 
     companion object {
-        const val POSITION_MATCHES = 0
-        const val POSITION_PLAYERS = 1
+        private const val POSITION_MATCHES = 0
+        private const val POSITION_PLAYERS = 1
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -62,21 +62,21 @@ class TournamentPagerAdapter(
     }
 
     fun onTabReselected(position: Int) {
-        val view = mPages[position]?.get()
+        val view = mPages[position].get()
 
-        if (view != null && view.isAlive) {
+        if (view?.isAlive == true) {
             view.scrollToTop()
         }
     }
 
     override fun search(query: String?) {
         for (i in 0 until mPages.size()) {
-            val reference = mPages.get(i)
+            val reference = mPages[i]
 
             if (reference != null) {
                 val view = reference.get()
 
-                if (view != null && view.isAlive) {
+                if (view?.isAlive == true) {
                     view.search(query)
                 }
             }

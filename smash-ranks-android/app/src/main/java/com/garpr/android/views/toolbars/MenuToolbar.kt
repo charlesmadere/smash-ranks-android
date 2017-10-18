@@ -24,7 +24,7 @@ abstract class MenuToolbar : Toolbar, Heartbeat {
             attrs, defStyleAttr)
 
     private fun createSparseMenuItemsArray() {
-        for (i in 0..menu.size() - 1) {
+        for (i in 0 until menu.size()) {
             val menuItem = menu.getItem(i)
             sparseMenuItemsArray.put(menuItem.itemId, menuItem.isVisible)
         }
@@ -54,7 +54,7 @@ abstract class MenuToolbar : Toolbar, Heartbeat {
     }
 
     open fun onRefreshMenu() {
-        for (i in 0..menu.size() - 1) {
+        for (i in 0 until menu.size()) {
             val menuItem = menu.getItem(i)
             menuItem.isVisible = sparseMenuItemsArray.get(menuItem.itemId)
         }

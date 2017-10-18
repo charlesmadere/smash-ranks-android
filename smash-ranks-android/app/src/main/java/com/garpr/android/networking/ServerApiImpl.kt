@@ -121,7 +121,7 @@ class ServerApiImpl(
                     mTimber.e(TAG, "getRankings ($region) failed (code ${response.code()})")
                     listener.failure(response.code())
                 } else {
-                    if (region === mRegionManager.getRegion()) {
+                    if (region == mRegionManager.getRegion()) {
                         mRankingsPollingPreferenceStore.rankingsDate.set(body.time)
                     }
 

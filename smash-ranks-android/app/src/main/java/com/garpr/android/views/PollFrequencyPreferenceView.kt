@@ -20,7 +20,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
         Preference.OnPreferenceChangeListener<PollFrequency>, View.OnClickListener {
 
     @Inject
-    lateinit protected var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    protected lateinit var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -60,7 +60,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
     override fun onClick(v: View) {
         val items = arrayOfNulls<CharSequence>(PollFrequency.values().size)
 
-        for (i in 0..PollFrequency.values().size - 1) {
+        for (i in 0 until PollFrequency.values().size) {
             items[i] = resources.getText(PollFrequency.values()[i].textResId)
         }
 

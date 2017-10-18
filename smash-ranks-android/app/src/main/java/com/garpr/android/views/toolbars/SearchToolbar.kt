@@ -85,7 +85,7 @@ abstract class SearchToolbar : MenuToolbar, MenuItem.OnActionExpandListener, Sea
         val searchMenuItem = mSearchMenuItem ?: throw RuntimeException("mSearchMenuItem is null")
 
         if (isSearchLayoutExpanded) {
-            for (i in 0..menu.size() - 1) {
+            for (i in 0 until menu.size()) {
                 val menuItem = menu.getItem(i)
 
                 if (menuItem.itemId != searchMenuItem.itemId) {
