@@ -14,28 +14,28 @@ class RankingsPollingPreferenceStoreImpl(
         keyValueStore
 ), RankingsPollingPreferenceStore {
 
-    override val chargingRequired = PersistentBooleanPreference("CHARGING_REQUIRED",
-            false, keyValueStore)
+    override val chargingRequired by lazy { PersistentBooleanPreference("CHARGING_REQUIRED",
+            false, keyValueStore) }
 
-    override val enabled = PersistentBooleanPreference("ENABLED", true,
-            keyValueStore)
+    override val enabled by lazy { PersistentBooleanPreference("ENABLED", true,
+            keyValueStore) }
 
-    override val lastPoll = PersistentGsonPreference<SimpleDate>("LAST_POLL",
-            null, keyValueStore, SimpleDate::class.java, gson)
+    override val lastPoll by lazy { PersistentGsonPreference<SimpleDate>("LAST_POLL",
+            null, keyValueStore, SimpleDate::class.java, gson) }
 
-    override val pollFrequency = PersistentGsonPreference("POLL_FREQUENCY",
-            PollFrequency.DAILY, keyValueStore, PollFrequency::class.java, gson)
+    override val pollFrequency by lazy { PersistentGsonPreference("POLL_FREQUENCY",
+            PollFrequency.DAILY, keyValueStore, PollFrequency::class.java, gson) }
 
-    override val rankingsDate = PersistentGsonPreference<SimpleDate>("RANKINGS_DATE",
-            null, keyValueStore, SimpleDate::class.java, gson)
+    override val rankingsDate by lazy { PersistentGsonPreference<SimpleDate>("RANKINGS_DATE",
+            null, keyValueStore, SimpleDate::class.java, gson) }
 
-    override val ringtone = PersistentUriPreference("RINGTONE", null,
-            keyValueStore)
+    override val ringtone by lazy { PersistentUriPreference("RINGTONE", null,
+            keyValueStore) }
 
-    override val vibrationEnabled = PersistentBooleanPreference("VIBRATION_ENABLED",
-            false, keyValueStore)
+    override val vibrationEnabled by lazy { PersistentBooleanPreference("VIBRATION_ENABLED",
+            false, keyValueStore) }
 
-    override val wifiRequired = PersistentBooleanPreference("WIFI_REQUIRED",
-            true, keyValueStore)
+    override val wifiRequired by lazy { PersistentBooleanPreference("WIFI_REQUIRED",
+            true, keyValueStore) }
 
 }
