@@ -34,9 +34,6 @@ abstract class SearchToolbar : MenuToolbar, MenuItem.OnActionExpandListener, Sea
         }
     }
 
-    override val searchQuery: CharSequence?
-        get() = mSearchView?.query
-
     val isSearchLayoutExpanded: Boolean
         get() = mSearchMenuItem?.isActionViewExpanded == true
 
@@ -97,5 +94,8 @@ abstract class SearchToolbar : MenuToolbar, MenuItem.OnActionExpandListener, Sea
             searchMenuItem.isVisible = activity is Listener && (activity as Listener).showSearchMenuItem
         }
     }
+
+    override val searchQuery: CharSequence?
+        get() = mSearchView?.query
 
 }
