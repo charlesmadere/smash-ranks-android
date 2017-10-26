@@ -2,13 +2,9 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.support.annotation.IdRes
-import android.support.v4.widget.NestedScrollView
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
-import android.widget.AbsListView
-import android.widget.ScrollView
 import com.garpr.android.R
 
 /**
@@ -34,25 +30,16 @@ class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(
         return mScrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
     }
 
+    private fun findScrollingChild() {
+        mScrollingChild = findViewById(mScrollingChildId) ?: throw NullPointerException(
+                "unable to find scrolling child")
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
         if (mScrollingChildId != 0) {
             findScrollingChild()
-        }
-    }
-
-    private fun findScrollingChild() {
-        val scrollingChild: View? = findViewById(mScrollingChildId)
-
-        if (scrollingChild == null) {
-            throw NullPointerException("unable to find scrolling child")
-        } else if (scrollingChild is AbsListView || scrollingChild is NestedScrollView
-                || scrollingChild is RecyclerView || scrollingChild is ScrollView) {
-            mScrollingChild = scrollingChild
-        } else {
-            throw RuntimeException("scrollingChild ($scrollingChild) must be an " +
-                    "AbsListView, RecyclerView, or ScrollView")
         }
     }
 
