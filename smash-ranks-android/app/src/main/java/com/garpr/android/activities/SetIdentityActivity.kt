@@ -115,10 +115,10 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     override fun onClick(v: PlayerSelectionItemView) {
         val player = v.mContent
 
-        if (player == mIdentityManager.identity) {
-            mSelectedPlayer = null
+        mSelectedPlayer = if (player == mIdentityManager.identity) {
+            null
         } else {
-            mSelectedPlayer = player
+            player
         }
 
         refreshMenu()

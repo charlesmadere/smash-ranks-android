@@ -56,11 +56,11 @@ class IdentityManagerImpl(
         get() = mIdentity.exists
 
     override fun isPlayer(player: AbsPlayer?): Boolean {
-        return identity?.let { it == player } ?: false
+        return identity?.let { it == player } == true
     }
 
     override fun isPlayer(id: String?): Boolean {
-        return identity?.id?.equals(id, ignoreCase = true) ?: false
+        return identity?.id?.equals(id, ignoreCase = true) == true
     }
 
     private fun notifyListeners() {

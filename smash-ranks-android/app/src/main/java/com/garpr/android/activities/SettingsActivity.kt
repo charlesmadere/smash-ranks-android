@@ -81,8 +81,8 @@ class SettingsActivity : BaseActivity() {
             return
         }
 
-        if (mGoogleApiWrapper.showPlayServicesResolutionDialog(connectionStatus, this,
-                DialogInterface.OnCancelListener { refresh() })) {
+        if (mGoogleApiWrapper.showPlayServicesResolutionDialog(this, connectionStatus,
+                mGoogleApiWrapperOnCancelListener)) {
             return
         }
 
@@ -211,6 +211,8 @@ class SettingsActivity : BaseActivity() {
     }
 
     override val showUpNavigation = true
+
+    private val mGoogleApiWrapperOnCancelListener = DialogInterface.OnCancelListener { refresh() }
 
     private val mOnFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
         override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
