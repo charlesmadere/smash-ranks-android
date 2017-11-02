@@ -20,6 +20,6 @@
     <dimen name="text_size_xlarge">20sp</dimen>
     <dimen name="text_size_xxlarge">24sp</dimen>
     <dimen name="text_size_xxxlarge">48sp</dimen>
-    <dimen name="wins_losses_height">160dp</dimen>
+    <dimen name="wins_losses_height">128dp</dimen>
 
 </resources>

@@ -120,15 +120,6 @@
 }
 
 
-###################
-## Square's Okio ##
-###################
--keep class sun.misc.Unsafe { *; }
--dontwarn java.nio.file.*
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
--dontwarn okio.**
-
-
 #####################
 ## Square's OkHttp ##
 #####################
@@ -137,6 +128,15 @@
 -keep class okhttp3.** { *; }
 -keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
+
+
+###################
+## Square's Okio ##
+###################
+-keep class sun.misc.Unsafe { *; }
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn okio.**
 
 
 #######################

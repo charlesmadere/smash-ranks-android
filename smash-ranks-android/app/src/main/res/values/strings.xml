@@ -37,7 +37,10 @@
     <string name="error_loading_tournament">Error loading tournament!</string>
     <string name="error_loading_tournaments">Error loading tournaments!</string>
     <string name="every_2_days">Every 2 days</string>
+    <string name="every_2_weeks">Every 2 weeks</string>
     <string name="every_3_days">Every 3 days</string>
+    <string name="every_5_days">Every 5 days</string>
+    <string name="every_10_days">Every 10 days</string>
     <string name="every_8_hours">Every 8 hours</string>
     <string name="falco">Falco</string>
     <string name="favorite">Favorite</string>

@@ -15,7 +15,7 @@ import kotterknife.bindView
 
 class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit private var mAdapter: TimberEntriesAdapter
+    private lateinit var mAdapter: TimberEntriesAdapter
 
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)

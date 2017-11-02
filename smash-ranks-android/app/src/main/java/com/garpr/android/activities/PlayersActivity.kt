@@ -24,7 +24,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
     private var mSearchView: SearchView? = null
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     private val mPlayersLayout: PlayersLayout by bindView(R.id.playersLayout)
 
@@ -36,7 +36,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
             val intent = Intent(context, PlayersActivity::class.java)
 
             if (region != null) {
-                intent.putExtra(BaseActivity.EXTRA_REGION, region)
+                intent.putExtra(EXTRA_REGION, region)
             }
 
             return intent

@@ -44,7 +44,7 @@ class WinsLossesView : LinearLayout, BaseAdapterView<WinsLosses> {
     private fun calculateRects() {
         val c = mContent
 
-        if (height == 0 || width == 0 || c == null) {
+        if (c == null || height == 0 || width == 0) {
             mRect.setEmpty()
             return
         }

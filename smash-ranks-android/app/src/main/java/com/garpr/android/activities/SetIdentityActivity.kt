@@ -35,20 +35,20 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     private var mSaveMenuItem: MenuItem? = null
     private var mSearchMenuItem: MenuItem? = null
     private var mPlayersBundle: PlayersBundle? = null
-    lateinit private var mAdapter: PlayersSelectionAdapter
+    private lateinit var mAdapter: PlayersSelectionAdapter
     private var mSearchView: SearchView? = null
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
     @Inject
-    lateinit protected var mThreadUtils: ThreadUtils
+    protected lateinit var mThreadUtils: ThreadUtils
 
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)

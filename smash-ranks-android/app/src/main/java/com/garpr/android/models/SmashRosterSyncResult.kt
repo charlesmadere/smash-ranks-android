@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.garpr.android.extensions.*
 import com.google.gson.annotations.SerializedName
 
-class SmashRosterSyncResult(
+data class SmashRosterSyncResult(
         @SerializedName("success") val success: Boolean,
         @SerializedName("httpCode") val httpCode: Int?,
         @SerializedName("date") val date: SimpleDate,

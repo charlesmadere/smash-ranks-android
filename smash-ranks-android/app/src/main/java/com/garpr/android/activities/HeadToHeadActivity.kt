@@ -5,13 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
+import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
@@ -28,21 +28,21 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     private var mList: List<Any>? = null
     private var mHeadToHead: HeadToHead? = null
-    lateinit private var mAdapter: HeadToHeadAdapter
+    private lateinit var mAdapter: HeadToHeadAdapter
     private var mMatchResult: MatchResult? = null
-    lateinit private var mOpponentId: String
+    private lateinit var mOpponentId: String
     private var mOpponentName: String? = null
-    lateinit private var mPlayerId: String
+    private lateinit var mPlayerId: String
     private var mPlayerName: String? = null
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
     @Inject
-    lateinit protected var mThreadUtils: ThreadUtils
+    protected lateinit var mThreadUtils: ThreadUtils
 
     private val mError: ErrorLinearLayout by bindView(R.id.error)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
@@ -58,29 +58,49 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         private val EXTRA_OPPONENT_ID = CNAME + ".OpponentId"
         private val EXTRA_OPPONENT_NAME = CNAME + ".OpponentName"
 
-        fun getLaunchIntent(context: Context, player: AbsPlayer, opponent: AbsPlayer): Intent {
-            return getLaunchIntent(context, player.id, player.name, opponent.id, opponent.name)
+        fun getLaunchIntent(context: Context, player: AbsPlayer, opponent: AbsPlayer,
+                region: Region? = null): Intent {
+            var regionCopy = region
+
+            if (player is FavoritePlayer) {
+                regionCopy = player.region
+            }
+
+            return getLaunchIntent(context, player.id, player.name, opponent.id, opponent.name,
+                    regionCopy)
         }
 
-        fun getLaunchIntent(context: Context, player: AbsPlayer, match: Match): Intent {
+        fun getLaunchIntent(context: Context, player: AbsPlayer, match: Match,
+                region: Region? = null): Intent {
+            var regionCopy = region
+
+            if (player is FavoritePlayer) {
+                regionCopy = player.region
+            }
+
             return getLaunchIntent(context, player.id, player.name, match.opponent.id,
-                    match.opponent.name)
+                    match.opponent.name, regionCopy)
         }
 
-        fun getLaunchIntent(context: Context, match: FullTournament.Match): Intent {
+        fun getLaunchIntent(context: Context, match: FullTournament.Match,
+                region: Region? = null): Intent {
             return getLaunchIntent(context, match.winnerId, match.winnerName, match.loserId,
-                    match.loserName)
+                    match.loserName, region)
         }
 
         fun getLaunchIntent(context: Context, playerId: String, playerName: String?,
-                opponentId: String, opponentName: String?): Intent {
+                opponentId: String, opponentName: String?, region: Region? = null): Intent {
             val intent = Intent(context, HeadToHeadActivity::class.java)
                     .putExtra(EXTRA_PLAYER_ID, playerId)
                     .putExtra(EXTRA_OPPONENT_ID, opponentId)
 
-            if (!TextUtils.isEmpty(playerName) && !TextUtils.isEmpty(opponentName)) {
+            if (playerName?.isNotBlank() == true && opponentName?.isNotBlank() == true) {
                 intent.putExtra(EXTRA_PLAYER_NAME, playerName)
                 intent.putExtra(EXTRA_OPPONENT_NAME, opponentName)
+            }
+
+            if (region != null) {
+                intent.putExtra(EXTRA_REGION, region)
             }
 
             return intent
@@ -136,6 +156,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_head_to_head)
+        subtitle = mRegionManager.getRegion(this).displayName
 
         mOpponentId = intent.getStringExtra(EXTRA_OPPONENT_ID)
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID)

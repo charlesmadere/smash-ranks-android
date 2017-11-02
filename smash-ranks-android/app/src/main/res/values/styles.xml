@@ -236,7 +236,7 @@
         <item name="android:textSize">@dimen/text_size_xxxlarge</item>
     </style>
 
-    <style name="WinsLossesPlayerName">
+    <style name="WinsLossesPlayerNameBase">
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
         <item name="android:id">@id/playerName</item>
@@ -246,6 +246,10 @@
         <item name="android:maxLines">3</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="WinsLossesPlayerName" parent="WinsLossesPlayerNameBase">
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

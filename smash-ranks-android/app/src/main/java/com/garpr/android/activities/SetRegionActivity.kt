@@ -32,13 +32,13 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     private var mSaveMenuItem: MenuItem? = null
     private var mSelectedRegion: Region? = null
     private var mRegionsBundle: RegionsBundle? = null
-    lateinit private var mAdapter: RegionsSelectionAdapter
+    private lateinit var mAdapter: RegionsSelectionAdapter
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
