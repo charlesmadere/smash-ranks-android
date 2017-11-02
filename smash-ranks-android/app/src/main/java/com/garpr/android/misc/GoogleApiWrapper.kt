@@ -11,7 +11,7 @@ interface GoogleApiWrapper {
 
     val isGooglePlayServicesAvailable: Boolean
 
-    fun showPlayServicesResolutionDialog(connectionStatus: Int,
-            activity: Activity, onCancelListener: OnCancelListener?): Boolean
+    fun showPlayServicesResolutionDialog(activity: Activity, connectionStatus: Int,
+            onCancelListener: OnCancelListener?): Boolean
 
 }

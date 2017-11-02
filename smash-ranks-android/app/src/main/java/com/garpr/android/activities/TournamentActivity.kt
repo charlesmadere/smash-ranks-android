@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
-import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import com.garpr.android.App
@@ -33,17 +32,17 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         TournamentToolbar.DataProvider {
 
     private var mFullTournament: FullTournament? = null
-    lateinit private var mTournamentId: String
-    lateinit private var mAdapter: TournamentPagerAdapter
+    private lateinit var mTournamentId: String
+    private lateinit var mAdapter: TournamentPagerAdapter
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
     @Inject
-    lateinit protected var mShareUtils: ShareUtils
+    protected lateinit var mShareUtils: ShareUtils
 
     private val mError: ErrorLinearLayout by bindView(R.id.error)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
@@ -60,21 +59,22 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         private val EXTRA_TOURNAMENT_ID = CNAME + ".TournamentId"
         private val EXTRA_TOURNAMENT_NAME = CNAME + ".TournamentName"
 
-        fun getLaunchIntent(context: Context, tournament: AbsTournament, region: Region?): Intent {
+        fun getLaunchIntent(context: Context, tournament: AbsTournament,
+                region: Region? = null): Intent {
             return getLaunchIntent(context, tournament.id, tournament.name, tournament.date, region)
         }
 
-        fun getLaunchIntent(context: Context, match: Match, region: Region?): Intent {
+        fun getLaunchIntent(context: Context, match: Match, region: Region? = null): Intent {
             return getLaunchIntent(context, match.tournament.id, match.tournament.name,
                     match.tournament.date, region)
         }
 
         fun getLaunchIntent(context: Context, tournamentId: String, tournamentName: String?,
-                tournamentDate: SimpleDate?, region: Region?): Intent {
+                tournamentDate: SimpleDate?, region: Region? = null): Intent {
             val intent = Intent(context, TournamentActivity::class.java)
                     .putExtra(EXTRA_TOURNAMENT_ID, tournamentId)
 
-            if (!TextUtils.isEmpty(tournamentName)) {
+            if (tournamentName?.isNotBlank() == true) {
                 intent.putExtra(EXTRA_TOURNAMENT_NAME, tournamentName)
             }
 
@@ -83,7 +83,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
             }
 
             if (region != null) {
-                intent.putExtra(BaseActivity.EXTRA_REGION, region)
+                intent.putExtra(EXTRA_REGION, region)
             }
 
             return intent

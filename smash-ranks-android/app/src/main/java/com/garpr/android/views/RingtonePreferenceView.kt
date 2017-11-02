@@ -121,13 +121,17 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         super.refresh()
 
         val ringtoneUri = mRankingsPollingPreferenceStore.ringtone.get()
-        val ringtone = if (ringtoneUri == null) null
-            else RingtoneManager.getRingtone(context, ringtoneUri)
 
-        if (ringtone == null) {
-            descriptionText = resources.getText(R.string.none)
+        val ringtone = if (ringtoneUri == null) {
+            null
         } else {
-            descriptionText = ringtone.getTitle(context)
+            RingtoneManager.getRingtone(context, ringtoneUri)
+        }
+
+        descriptionText = if (ringtone == null) {
+            resources.getText(R.string.none)
+        } else {
+            ringtone.getTitle(context)
         }
     }
 

@@ -16,10 +16,10 @@ import javax.inject.Inject
 class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     @Inject
-    lateinit protected var mDeepLinkUtils: DeepLinkUtils
+    protected lateinit var mDeepLinkUtils: DeepLinkUtils
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
 
     companion object {

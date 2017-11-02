@@ -26,19 +26,19 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         RegionManager.OnRegionChangeListener, Searchable, SearchQueryHandle,
         SearchToolbar.Listener {
 
-    lateinit private var mAdapter: HomePagerAdapter
+    private lateinit var mAdapter: HomePagerAdapter
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit protected var mRankingsPollingSyncManager: RankingsPollingSyncManager
+    protected lateinit var mRankingsPollingSyncManager: RankingsPollingSyncManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mShareUtils: ShareUtils
+    protected lateinit var mShareUtils: ShareUtils
 
     private val mBottomNavigationView: BottomNavigationView by bindView(R.id.bottomNavigationView)
     private val mHomeToolbar: HomeToolbar by bindView(R.id.toolbar)

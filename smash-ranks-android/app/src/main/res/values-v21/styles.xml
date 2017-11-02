@@ -6,4 +6,8 @@
         <item name="android:textColor">@color/warn</item>
     </style>
 
+    <style name="WinsLossesPlayerName" parent="WinsLossesPlayerNameBase">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
 </resources>

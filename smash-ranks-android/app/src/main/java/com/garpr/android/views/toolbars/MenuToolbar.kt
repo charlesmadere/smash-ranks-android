@@ -15,7 +15,7 @@ abstract class MenuToolbar : Toolbar, Heartbeat {
 
     protected var isMenuCreated: Boolean = false
         private set
-    private val sparseMenuItemsArray: SparseBooleanArray = SparseBooleanArray()
+    private val sparseMenuItemsArray = SparseBooleanArray()
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

@@ -57,7 +57,7 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
                                 mRegionManager.getRegion(context)))
 
                         2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
-                                content))
+                                content, mRegionManager.getRegion(context)))
 
                         else -> throw RuntimeException("illegal which: $which")
                     }

@@ -33,27 +33,27 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     private var mList: List<Any>? = null
     private var mMatchResult: MatchResult? = null
-    lateinit private var mAdapter: PlayerAdapter
+    private lateinit var mAdapter: PlayerAdapter
     private var mPlayerMatchesBundle: PlayerMatchesBundle? = null
-    lateinit private var mPlayerId: String
+    private lateinit var mPlayerId: String
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
     @Inject
-    lateinit protected var mShareUtils: ShareUtils
+    protected lateinit var mShareUtils: ShareUtils
 
     @Inject
-    lateinit protected var mThreadUtils: ThreadUtils
+    protected lateinit var mThreadUtils: ThreadUtils
 
     private val mError: ErrorLinearLayout by bindView(R.id.error)
     private val mPlayerToolbar: PlayerToolbar by bindView(R.id.toolbar)
@@ -68,27 +68,27 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         private val EXTRA_PLAYER_ID = CNAME + ".PlayerId"
         private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
 
-        fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region?): Intent {
-            var _region = region
+        fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region? = null): Intent {
+            var regionCopy = region
 
             if (player is FavoritePlayer) {
-                _region = player.region
+                regionCopy = player.region
             }
 
-            return getLaunchIntent(context, player.id, player.name, _region)
+            return getLaunchIntent(context, player.id, player.name, regionCopy)
         }
 
         fun getLaunchIntent(context: Context, playerId: String, playerName: String?,
-                region: Region?): Intent {
+                region: Region? = null): Intent {
             val intent = Intent(context, PlayerActivity::class.java)
                     .putExtra(EXTRA_PLAYER_ID, playerId)
 
-            if (!TextUtils.isEmpty(playerName)) {
+            if (playerName?.isNotBlank() == true) {
                 intent.putExtra(EXTRA_PLAYER_NAME, playerName)
             }
 
             if (region != null) {
-                intent.putExtra(BaseActivity.EXTRA_REGION, region)
+                intent.putExtra(EXTRA_REGION, region)
             }
 
             return intent
@@ -154,7 +154,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     override fun onClick(v: MatchItemView) {
         val fullPlayer = mPlayerMatchesBundle?.fullPlayer ?: return
         val content = v.mContent ?: return
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, content))
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, content,
+                mRegionManager.getRegion(this)))
     }
 
     override fun onClick(v: TournamentDividerView) {
@@ -361,7 +362,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         val identity = mIdentityManager.identity ?: throw RuntimeException("identity is null")
         val fullPlayer = mPlayerMatchesBundle?.fullPlayer ?: throw RuntimeException(
                 "fullPlayer is null")
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, identity, fullPlayer))
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, identity, fullPlayer,
+                mRegionManager.getRegion(this)))
     }
 
 }

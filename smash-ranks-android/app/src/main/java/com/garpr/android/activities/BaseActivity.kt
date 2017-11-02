@@ -10,7 +10,6 @@ import android.view.MenuItem
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.misc.Heartbeat
-import com.garpr.android.misc.NotificationsManager
 import com.garpr.android.misc.RegionManager.RegionHandle
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.Region
@@ -22,13 +21,10 @@ import javax.inject.Inject
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     @Inject
-    lateinit protected var mGeneralPreferenceStore: GeneralPreferenceStore
+    protected lateinit var mGeneralPreferenceStore: GeneralPreferenceStore
 
     @Inject
-    lateinit protected var mNotificationsManager: NotificationsManager
-
-    @Inject
-    lateinit protected var mTimber: Timber
+    protected lateinit var mTimber: Timber
 
     protected val mToolbar: Toolbar? by bindOptionalView(R.id.toolbar)
 

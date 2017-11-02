@@ -25,8 +25,17 @@ enum class PollFrequency constructor(
     @SerializedName("every_3_days")
     EVERY_3_DAYS(R.string.every_3_days, TimeUnit.DAYS.toMillis(3)),
 
+    @SerializedName("every_5_days")
+    EVERY_5_DAYS(R.string.every_5_days, TimeUnit.DAYS.toMillis(5)),
+
+    @SerializedName("every_10_days")
+    EVERY_10_DAYS(R.string.every_10_days, TimeUnit.DAYS.toMillis(10)),
+
     @SerializedName("weekly")
-    WEEKLY(R.string.weekly, TimeUnit.DAYS.toMillis(7));
+    WEEKLY(R.string.weekly, TimeUnit.DAYS.toMillis(7)),
+
+    @SerializedName("every_2_weeks")
+    EVERY_2_WEEKS(R.string.every_2_weeks, TimeUnit.DAYS.toMillis(14));
 
 
     companion object {
@@ -34,7 +43,7 @@ enum class PollFrequency constructor(
         val CREATOR = createParcel { values()[it.readInt()] }
     }
 
-    val timeInSeconds = TimeUnit.MILLISECONDS.toSeconds(timeInMillis)
+    val timeInSeconds: Long = TimeUnit.MILLISECONDS.toSeconds(timeInMillis)
 
     override fun describeContents() = 0
 

@@ -13,7 +13,7 @@ import javax.inject.Inject
 class TournamentsActivity : BaseActivity() {
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
 
     companion object {
@@ -23,7 +23,7 @@ class TournamentsActivity : BaseActivity() {
             val intent = Intent(context, TournamentsActivity::class.java)
 
             if (region != null) {
-                intent.putExtra(BaseActivity.EXTRA_REGION, region)
+                intent.putExtra(EXTRA_REGION, region)
             }
 
             return intent

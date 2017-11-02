@@ -58,10 +58,16 @@ class PreviousRankView : AppCompatImageView, BaseAdapterView<RankedPlayer> {
             }
         }
 
-        val drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, drawableResId))
-        DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tintResId))
-        setImageDrawable(drawable)
-        visibility = VISIBLE
+        var drawable = ContextCompat.getDrawable(context, drawableResId)
+
+        if (drawable == null) {
+            visibility = INVISIBLE
+        } else {
+            drawable = DrawableCompat.wrap(drawable)
+            DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tintResId))
+            setImageDrawable(drawable)
+            visibility = VISIBLE
+        }
     }
 
 }

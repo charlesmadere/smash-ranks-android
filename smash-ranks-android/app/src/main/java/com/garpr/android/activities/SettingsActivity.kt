@@ -23,25 +23,25 @@ import javax.inject.Inject
 class SettingsActivity : BaseActivity() {
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit protected var mGoogleApiWrapper: GoogleApiWrapper
+    protected lateinit var mGoogleApiWrapper: GoogleApiWrapper
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var mIdentityManager: IdentityManager
 
     @Inject
-    lateinit protected var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    protected lateinit var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
-    lateinit protected var mRankingsPollingSyncManager: RankingsPollingSyncManager
+    protected lateinit var mRankingsPollingSyncManager: RankingsPollingSyncManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mShareUtils: ShareUtils
+    protected lateinit var mShareUtils: ShareUtils
 
     private val mMustBeCharging: CheckablePreferenceView by bindView(R.id.cpvMustBeCharging)
     private val mMustBeOnWifi: CheckablePreferenceView by bindView(R.id.cpvMustBeOnWifi)
@@ -64,9 +64,7 @@ class SettingsActivity : BaseActivity() {
     companion object {
         private const val TAG = "SettingsActivity"
 
-        fun getLaunchIntent(context: Context): Intent {
-            return Intent(context, SettingsActivity::class.java)
-        }
+        fun getLaunchIntent(context: Context) = Intent(context, SettingsActivity::class.java)
     }
 
     override val activityName = TAG
@@ -81,8 +79,8 @@ class SettingsActivity : BaseActivity() {
             return
         }
 
-        if (mGoogleApiWrapper.showPlayServicesResolutionDialog(connectionStatus, this,
-                DialogInterface.OnCancelListener { refresh() })) {
+        if (mGoogleApiWrapper.showPlayServicesResolutionDialog(this, connectionStatus,
+                mGoogleApiWrapperOnCancelListener)) {
             return
         }
 
@@ -211,6 +209,8 @@ class SettingsActivity : BaseActivity() {
     }
 
     override val showUpNavigation = true
+
+    private val mGoogleApiWrapperOnCancelListener = DialogInterface.OnCancelListener { refresh() }
 
     private val mOnFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
         override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
