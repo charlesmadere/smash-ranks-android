@@ -11,10 +11,10 @@ import com.garpr.android.R
  * A child class of the official Android [SwipeRefreshLayout] that helps us work around some of
  * its shortcomings. We should use this view instead of SwipeRefreshLayout in every case.
  */
-class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(context, attrs) {
+class RefreshLayout(context: Context, attrs: AttributeSet?) : SwipeRefreshLayout(context, attrs) {
 
     @IdRes
-    private var mScrollingChildId: Int = 0
+    private var mScrollingChildId: Int? = null
 
     private var mScrollingChild: View? = null
 
@@ -30,20 +30,16 @@ class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(
         return mScrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
     }
 
-    private fun findScrollingChild() {
-        mScrollingChild = findViewById(mScrollingChildId) ?: throw NullPointerException(
-                "unable to find scrolling child")
-    }
-
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (mScrollingChildId != 0) {
-            findScrollingChild()
+        mScrollingChildId?.let {
+            mScrollingChild = findViewById(it) ?: throw NullPointerException(
+                    "unable to find scrolling child")
         }
     }
 
-    private fun parseAttributes(attrs: AttributeSet) {
+    private fun parseAttributes(attrs: AttributeSet?) {
         if (isInEditMode) {
             return
         }
@@ -52,9 +48,6 @@ class RefreshLayout(context: Context, attrs: AttributeSet) : SwipeRefreshLayout(
         val spinnerColorsResId = ta.getResourceId(R.styleable.RefreshLayout_spinnerColors,
                 R.array.spinner_colors)
         setColorSchemeColors(*resources.getIntArray(spinnerColorsResId))
-
-        setProgressBackgroundColorSchemeResource(ta.getResourceId(
-                R.styleable.RefreshLayout_spinnerBackground, R.color.card_background))
 
         if (ta.hasValue(R.styleable.RefreshLayout_scrollingChild)) {
             mScrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)
