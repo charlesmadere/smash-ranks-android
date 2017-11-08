@@ -54,10 +54,10 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refresh
         get() {
             val activity = context.optActivity()
 
-            if (activity is SearchQueryHandle) {
-                return activity.searchQuery
+            return if (activity is SearchQueryHandle) {
+                activity.searchQuery
             } else {
-                return null
+                null
             }
         }
 

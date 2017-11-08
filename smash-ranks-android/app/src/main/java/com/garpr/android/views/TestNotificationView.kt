@@ -21,7 +21,7 @@ class TestNotificationView : SimplePreferenceView, DialogInterface.OnClickListen
         View.OnClickListener {
 
     @Inject
-    lateinit protected var mNotificationsManager: NotificationsManager
+    protected lateinit var mNotificationsManager: NotificationsManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,7 +39,7 @@ class TestNotificationView : SimplePreferenceView, DialogInterface.OnClickListen
         when (which) {
             0 -> mNotificationsManager.cancelAll()
             1 -> mNotificationsManager.rankingsUpdated()
-            else -> throw RuntimeException("illegal which: " + which)
+            else -> throw RuntimeException("illegal which: $which")
         }
     }
 
