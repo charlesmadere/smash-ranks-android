@@ -58,7 +58,7 @@ dependencies {
 
     // Android Support Library
     implementation "com.android.support:appcompat-v7:$appcompat_version"
-    implementation "com.android.support:cardview-v7:$appcompat_version"
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
     implementation "com.android.support:design:$appcompat_version"
     implementation "com.android.support:recyclerview-v7:$appcompat_version"
     implementation "com.android.support:support-v4:$appcompat_version"
