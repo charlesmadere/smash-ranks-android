@@ -19,13 +19,9 @@ import javax.inject.Inject
 
 abstract class IdentityFrameLayout : LifecycleFrameLayout, IdentityManager.OnIdentityChangeListener {
 
+    protected var mIdentity: AbsPlayer? = null
+    protected var mIdentityId: String? = null
     private var mOriginalBackground: Drawable? = null
-
-    var mIdentity: AbsPlayer? = null
-        protected set
-
-    var mIdentityId: String? = null
-        protected set
 
     @Inject
     protected lateinit var mIdentityManager: IdentityManager
