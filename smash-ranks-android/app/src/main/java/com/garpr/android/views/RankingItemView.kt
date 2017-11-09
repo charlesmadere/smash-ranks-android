@@ -1,10 +1,7 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -12,23 +9,23 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.misc.FavoritePlayersManager
-import com.garpr.android.misc.MiscUtils
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.Timber
+import com.garpr.android.misc.*
 import com.garpr.android.models.RankedPlayer
 import kotterknife.bindOptionalView
 import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View.OnClickListener,
-        View.OnLongClickListener {
+class RankingItemView : IdentityConstraintLayout, BaseAdapterView<RankedPlayer>,
+        View.OnClickListener, View.OnLongClickListener {
 
     private val mNumberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
     protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
+
+    @Inject
+    protected lateinit var mPreviousRankUtils: PreviousRankUtils
 
     @Inject
     protected lateinit var mRegionManager: RegionManager
@@ -46,10 +43,6 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
@@ -80,15 +73,14 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View
     }
 
     override fun onLongClick(v: View): Boolean {
-        val content = mIdentity ?: return false
-        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, content,
+        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, mIdentity,
                 mRegionManager.getRegion(context))
     }
 
     override fun setContent(content: RankedPlayer) {
         mIdentity = content
 
-        mPreviousRankView?.setContent(content)
+        mPreviousRankView?.setContent(mPreviousRankUtils.getRankInfo(content))
         mRank.text = mNumberFormat.format(content.rank)
         mName.text = content.name
         mRating.text = MiscUtils.truncateFloat(content.rating)

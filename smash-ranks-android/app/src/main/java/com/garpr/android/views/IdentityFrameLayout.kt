@@ -17,7 +17,8 @@ import com.garpr.android.misc.IdentityManager
 import com.garpr.android.models.AbsPlayer
 import javax.inject.Inject
 
-abstract class IdentityFrameLayout : LifecycleFrameLayout, IdentityManager.OnIdentityChangeListener {
+abstract class IdentityFrameLayout : LifecycleFrameLayout,
+        IdentityManager.OnIdentityChangeListener {
 
     protected var mIdentity: AbsPlayer? = null
     protected var mIdentityId: String? = null
@@ -80,17 +81,11 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout, IdentityManager.OnIde
     }
 
     protected open fun refreshIdentity() {
-        if (mIdentityManager.isPlayer(mIdentity)) {
+        if (mIdentityManager.isPlayer(mIdentity) || mIdentityManager.isPlayer(mIdentityId)) {
             identityIsUser()
-            return
+        } else {
+            identityIsSomeoneElse()
         }
-
-        if (mIdentityManager.isPlayer(mIdentityId)) {
-            identityIsUser()
-            return
-        }
-
-        identityIsSomeoneElse()
     }
 
     protected fun styleTextViewForSomeoneElse(view: TextView) {
