@@ -26,8 +26,7 @@ class KeyValueStoreProviderTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testGetKeyValueStore() {
-        assertNotNull(keyValueStoreProvider.getKeyValueStore(
-                TAG))
+        assertNotNull(keyValueStoreProvider.getKeyValueStore(TAG))
     }
 
 }
