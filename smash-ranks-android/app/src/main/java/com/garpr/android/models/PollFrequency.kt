@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.concurrent.TimeUnit
 
 enum class PollFrequency constructor(
-        @param:StringRes val textResId: Int,
+        @StringRes val textResId: Int,
         timeInMillis: Long
 ) : Parcelable {
 

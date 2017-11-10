@@ -10,8 +10,8 @@ import com.garpr.android.extensions.createParcel
 import com.google.gson.annotations.SerializedName
 
 enum class NightMode constructor(
-        @param:StringRes val textResId: Int,
-        @param:AppCompatDelegate.NightMode val themeValue: Int
+        @StringRes val textResId: Int,
+        @AppCompatDelegate.NightMode val themeValue: Int
 ) : Parcelable {
 
     @SerializedName("auto")
