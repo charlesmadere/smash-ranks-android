@@ -62,7 +62,7 @@ enum class SmashCharacter(
     @SerializedName("pch")
     PEACH(R.string.peach),
 
-    @SerializedName("pch")
+    @SerializedName("pic")
     PICHU(R.string.pichu),
 
     @SerializedName("pik")
