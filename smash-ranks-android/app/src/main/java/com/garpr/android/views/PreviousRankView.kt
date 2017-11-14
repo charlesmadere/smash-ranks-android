@@ -1,7 +1,10 @@
 package com.garpr.android.views
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.support.annotation.AttrRes
+import android.support.annotation.ColorRes
+import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.AppCompatImageView
@@ -17,6 +20,14 @@ class PreviousRankView : AppCompatImageView, BaseAdapterView<PreviousRankUtils.I
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
+    private fun createDrawable(@DrawableRes drawableResId: Int, @ColorRes tintResId: Int): Drawable? {
+        return ContextCompat.getDrawable(context, drawableResId)?.let {
+            val drawable = DrawableCompat.wrap(it)
+            DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tintResId))
+            drawable
+        }
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -28,12 +39,11 @@ class PreviousRankView : AppCompatImageView, BaseAdapterView<PreviousRankUtils.I
     override fun setContent(content: PreviousRankUtils.Info?) {
         if (content == null) {
             setImageDrawable(null)
-            visibility = INVISIBLE
             return
         }
 
-        val drawableResId: Int
-        val tintResId: Int
+        @DrawableRes val drawableResId: Int
+        @ColorRes val tintResId: Int
 
         when (content) {
             PreviousRankUtils.Info.DECREASE -> {
@@ -47,16 +57,7 @@ class PreviousRankView : AppCompatImageView, BaseAdapterView<PreviousRankUtils.I
             }
         }
 
-        var drawable = ContextCompat.getDrawable(context, drawableResId)
-
-        if (drawable == null) {
-            visibility = INVISIBLE
-        } else {
-            drawable = DrawableCompat.wrap(drawable)
-            DrawableCompat.setTint(drawable, ContextCompat.getColor(context, tintResId))
-            setImageDrawable(drawable)
-            visibility = VISIBLE
-        }
+        setImageDrawable(createDrawable(drawableResId, tintResId))
     }
 
 }

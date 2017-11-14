@@ -6,11 +6,16 @@
 
     <com.garpr.android.views.PreviousRankView
         android:id="@+id/previousRankView"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/root_padding_half"
-        android:layout_width="wrap_content"
+        android:layout_height="@dimen/arrow_size"
+        android:layout_width="@dimen/arrow_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v4.widget.Space
+        android:id="@+id/space"
+        android:layout_height="1dp"
+        android:layout_width="@dimen/root_padding_half"
+        app:layout_constraintStart_toEndOf="@id/previousRankView" />
 
     <TextView
         android:ellipsize="end"
@@ -20,7 +25,8 @@
         android:layout_width="wrap_content"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/previousRankView"
+        app:layout_constraintStart_toEndOf="@id/space"
+        app:layout_goneMarginStart="@dimen/root_padding"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="74" />
 
