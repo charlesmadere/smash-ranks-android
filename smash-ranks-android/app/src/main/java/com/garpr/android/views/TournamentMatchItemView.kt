@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
@@ -14,6 +15,7 @@ import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.FullTournament
 import kotterknife.bindView
@@ -99,6 +101,15 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
         mContent = content
         mLoserName.text = content.loserName
         mWinnerName.text = content.winnerName
+
+        if (content.isExcluded) {
+            mLoserName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+            mWinnerName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+        } else {
+            mLoserName.setTextColor(ContextCompat.getColor(context, R.color.lose))
+            mWinnerName.setTextColor(ContextCompat.getColor(context, R.color.win))
+        }
+
         refreshIdentity()
     }
 

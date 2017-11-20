@@ -23,6 +23,11 @@
     <color name="white">#FFFFFF</color>
     <color name="window_background">#E6E6E6</color>
 
+    <array name="spinner_colors">
+        <item>@color/purple_light</item>
+        <item>@color/purple_dark</item>
+    </array>
+
     <color name="r">#FF0000</color>
     <color name="g">#00FF00</color>
     <color name="b">#0000FF</color>

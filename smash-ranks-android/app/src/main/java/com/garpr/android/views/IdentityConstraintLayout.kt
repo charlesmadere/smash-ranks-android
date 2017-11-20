@@ -1,12 +1,9 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
@@ -17,7 +14,7 @@ import com.garpr.android.misc.IdentityManager
 import com.garpr.android.models.AbsPlayer
 import javax.inject.Inject
 
-abstract class IdentityFrameLayout : LifecycleFrameLayout,
+abstract class IdentityConstraintLayout : LifecycleConstraintLayout,
         IdentityManager.OnIdentityChangeListener {
 
     protected var mIdentity: AbsPlayer? = null
@@ -32,10 +29,6 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout,
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     protected open fun identityIsSomeoneElse() {
         ViewCompat.setBackground(this, mOriginalBackground)

@@ -8,7 +8,7 @@ import com.garpr.android.extensions.createParcel
 import com.google.gson.annotations.SerializedName
 
 enum class SmashCharacter(
-        @param:StringRes val textResId: Int
+        @StringRes val textResId: Int
 ) : Parcelable {
 
     @SerializedName("bow")
@@ -62,7 +62,7 @@ enum class SmashCharacter(
     @SerializedName("pch")
     PEACH(R.string.peach),
 
-    @SerializedName("pch")
+    @SerializedName("pic")
     PICHU(R.string.pichu),
 
     @SerializedName("pik")

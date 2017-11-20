@@ -175,9 +175,6 @@ class FavoritePlayersManagerImpl(
     }
 
     override val size: Int
-        get() {
-            val all = mKeyValueStore.all
-            return all?.size ?: 0
-        }
+        get() = mKeyValueStore.all?.size ?: 0
 
 }

@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
 
 enum class Endpoint(
         val basePath: String,
-        @param:StringRes val title: Int
+        @StringRes val title: Int
 ) : Parcelable {
 
     @SerializedName("gar_pr")

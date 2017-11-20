@@ -31,9 +31,8 @@ import javax.inject.Inject
 class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit private var mAdapter: TournamentsAdapter
-    var mTournamentsBundle: TournamentsBundle? = null
-        private set
+    private lateinit var mAdapter: TournamentsAdapter
+    private var mTournamentsBundle: TournamentsBundle? = null
 
     @Inject
     lateinit protected var mRegionManager: RegionManager

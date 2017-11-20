@@ -19,6 +19,7 @@ import com.garpr.android.models.AbsTournamentTest;
 import com.garpr.android.models.MatchTest;
 import com.garpr.android.models.RegionsBundleTest;
 import com.garpr.android.models.SimpleDateTest;
+import com.garpr.android.models.SmashCharacterTest;
 import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
 import com.garpr.android.networking.RegionsBundleApiCallTest;
 import com.garpr.android.preferences.KeyValueStoreProviderTest;
@@ -60,6 +61,7 @@ public interface TestAppComponent {
     void inject(MatchTest test);
     void inject(RegionsBundleTest test);
     void inject(SimpleDateTest test);
+    void inject(SmashCharacterTest test);
 
     // networking
     void inject(PlayerMatchesBundleApiCallTest test);

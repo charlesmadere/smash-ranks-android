@@ -12,34 +12,34 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.misc.FavoritePlayersManager
-import com.garpr.android.misc.MiscUtils
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.Timber
+import com.garpr.android.misc.*
 import com.garpr.android.models.RankedPlayer
 import kotterknife.bindOptionalView
 import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View.OnClickListener,
-        View.OnLongClickListener {
+class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
+        View.OnClickListener, View.OnLongClickListener {
+
+    private val mNumberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mPreviousRankUtils: PreviousRankUtils
 
     @Inject
-    lateinit var mTimber: Timber
+    protected lateinit var mRegionManager: RegionManager
+
+    @Inject
+    protected lateinit var mTimber: Timber
 
     private val mPreviousRankView: PreviousRankView? by bindOptionalView(R.id.previousRankView)
     private val mName: TextView by bindView(R.id.tvName)
     private val mRank: TextView by bindView(R.id.tvRank)
     private val mRating: TextView by bindView(R.id.tvRating)
-
-    private val mNumberFormat: NumberFormat = NumberFormat.getIntegerInstance()
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -80,15 +80,14 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>, View
     }
 
     override fun onLongClick(v: View): Boolean {
-        val content = mIdentity ?: return false
-        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, content,
+        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, mIdentity,
                 mRegionManager.getRegion(context))
     }
 
     override fun setContent(content: RankedPlayer) {
         mIdentity = content
 
-        mPreviousRankView?.setContent(content)
+        mPreviousRankView?.setContent(mPreviousRankUtils.getRankInfo(content))
         mRank.text = mNumberFormat.format(content.rank)
         mName.text = content.name
         mRating.text = MiscUtils.truncateFloat(content.rating)
