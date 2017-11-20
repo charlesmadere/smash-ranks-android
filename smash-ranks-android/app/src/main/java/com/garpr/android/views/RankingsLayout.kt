@@ -29,23 +29,22 @@ import javax.inject.Inject
 class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit private var mAdapter: RankingsAdapter
-    var mRankingsBundle: RankingsBundle? = null
-        private set
+    private lateinit var mAdapter: RankingsAdapter
+    private var mRankingsBundle: RankingsBundle? = null
 
     @Inject
-    lateinit protected var mNotificationsManager: NotificationsManager
+    protected lateinit var mNotificationsManager: NotificationsManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
-    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
     private val mEmpty: View by bindView(R.id.empty)
     private val mError: View by bindView(R.id.error)
+    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
 
 
     interface Listener {
@@ -114,6 +113,9 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     override fun onRefresh() {
         fetchRankingsBundle()
     }
+
+    val rankingsBundle: RankingsBundle?
+        get() = mRankingsBundle
 
     override val recyclerView: RecyclerView?
         get() = mRecyclerView

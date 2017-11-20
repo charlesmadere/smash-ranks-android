@@ -167,7 +167,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         val region = mRegionManager.getRegion(this)
         setTitle(region.endpoint.title)
 
-        subtitle = layout.mRankingsBundle?.let {
+        subtitle = layout.rankingsBundle?.let {
             getString(R.string.x_updated_y, region.displayName, it.time.shortForm)
         } ?: region.displayName
 

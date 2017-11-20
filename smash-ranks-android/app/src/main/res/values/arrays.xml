@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <array name="spinner_colors">
-        <item>@color/purple_light</item>
-        <item>@color/purple_dark</item>
-    </array>
-
-</resources>

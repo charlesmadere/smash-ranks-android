@@ -25,10 +25,10 @@ import javax.inject.Inject
 class FavoritePlayersLayout : SearchableFrameLayout,
         FavoritePlayersManager.OnFavoritePlayersChangeListener {
 
-    lateinit private var mAdapter: FavoritePlayersAdapter
+    private lateinit var mAdapter: FavoritePlayersAdapter
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
 
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mEmpty: View by bindView(R.id.empty)
