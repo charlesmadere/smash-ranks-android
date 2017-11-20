@@ -1,7 +1,10 @@
 package com.garpr.android.views
 
+import android.annotation.TargetApi
 import android.content.Context
+import android.os.Build
 import android.support.annotation.AttrRes
+import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -16,7 +19,7 @@ import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class RankingItemView : IdentityConstraintLayout, BaseAdapterView<RankedPlayer>,
+class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
     private val mNumberFormat = NumberFormat.getIntegerInstance()
@@ -43,6 +46,10 @@ class RankingItemView : IdentityConstraintLayout, BaseAdapterView<RankedPlayer>,
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
+            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
