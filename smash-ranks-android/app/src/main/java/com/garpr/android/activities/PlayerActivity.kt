@@ -153,15 +153,15 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override fun onClick(v: MatchItemView) {
         val fullPlayer = mPlayerMatchesBundle?.fullPlayer ?: return
-        val content = v.mContent ?: return
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, content,
+        val match = v.match ?: return
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, match,
                 mRegionManager.getRegion(this)))
     }
 
     override fun onClick(v: TournamentDividerView) {
-        val content = v.mContent ?: return
-        startActivity(TournamentActivity.getLaunchIntent(this, content.id, content.name,
-                content.date, mRegionManager.getRegion(this)))
+        val tournament = v.tournament ?: return
+        startActivity(TournamentActivity.getLaunchIntent(this, tournament.id,
+                tournament.name, tournament.date, mRegionManager.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,7 +169,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_player)
 
-        val intent = intent
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID)
 
         setTitle()

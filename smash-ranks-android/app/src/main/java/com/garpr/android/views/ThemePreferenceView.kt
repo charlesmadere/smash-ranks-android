@@ -22,10 +22,10 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         Preference.OnPreferenceChangeListener<NightMode>, View.OnClickListener {
 
     @Inject
-    lateinit protected var mGeneralPreferenceStore: GeneralPreferenceStore
+    protected lateinit var mGeneralPreferenceStore: GeneralPreferenceStore
 
     @Inject
-    lateinit protected var mTimber: Timber
+    protected lateinit var mTimber: Timber
 
 
     companion object {
@@ -98,7 +98,6 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-            mGeneralPreferenceStore.nightMode.addListener(this)
         }
 
         setOnClickListener(this)
@@ -107,6 +106,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         if (isInEditMode) {
             descriptionText = resources.getText(R.string.auto)
         } else {
+            mGeneralPreferenceStore.nightMode.addListener(this)
             refresh()
         }
     }

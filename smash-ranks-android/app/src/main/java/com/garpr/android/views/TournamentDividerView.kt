@@ -21,12 +21,10 @@ import javax.inject.Inject
 
 class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.OnClickListener {
 
-    var mContent: AbsTournament? = null
-        private set
-
+    private var mContent: AbsTournament? = null
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     private val mDate: TextView by bindView(R.id.tvDate)
     private val mName: TextView by bindView(R.id.tvName)
@@ -60,11 +58,10 @@ class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
         }
 
-        App.get().appComponent.inject(this)
         setOnClickListener(this)
     }
 
@@ -74,5 +71,8 @@ class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.
         mName.text = content.name
         mDate.text = content.date.mediumForm
     }
+
+    val tournament: AbsTournament?
+        get() = mContent
 
 }

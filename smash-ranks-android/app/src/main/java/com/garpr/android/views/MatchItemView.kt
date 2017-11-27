@@ -25,14 +25,13 @@ import javax.inject.Inject
 class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickListener,
         View.OnLongClickListener {
 
-    var mContent: Match? = null
-        private set
+    private var mContent: Match? = null
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     private val mName: TextView by bindView(R.id.tvName)
 
@@ -68,19 +67,18 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
             activity.onClick(this)
         } else {
             val opponent = content.opponent
-            context.startActivity(PlayerActivity.getLaunchIntent(context,
-                    opponent.id, opponent.name, mRegionManager.getRegion(context)))
+            context.startActivity(PlayerActivity.getLaunchIntent(context, opponent.id,
+                    opponent.name, mRegionManager.getRegion(context)))
         }
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
         }
 
-        App.get().appComponent.inject(this)
         setOnClickListener(this)
         setOnLongClickListener(this)
     }
@@ -90,6 +88,9 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
         return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, content.opponent,
                 mRegionManager.getRegion(context))
     }
+
+    val match: Match?
+        get() = mContent
 
     override fun setContent(content: Match) {
         mContent = content

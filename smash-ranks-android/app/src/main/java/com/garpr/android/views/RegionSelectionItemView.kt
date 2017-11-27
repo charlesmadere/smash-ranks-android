@@ -18,8 +18,7 @@ import kotterknife.bindView
 
 class RegionSelectionItemView : FrameLayout, BaseAdapterView<Region>, View.OnClickListener {
 
-    var mContent: Region? = null
-        private set
+    private var mContent: Region? = null
 
     private val mRadioButton: RadioButton by bindView(R.id.radioButton)
     private val mId: TextView by bindView(R.id.tvId)
@@ -52,6 +51,9 @@ class RegionSelectionItemView : FrameLayout, BaseAdapterView<Region>, View.OnCli
         super.onFinishInflate()
         setOnClickListener(this)
     }
+
+    val region: Region?
+        get() = mContent
 
     override fun setContent(content: Region) {
         mContent = content
