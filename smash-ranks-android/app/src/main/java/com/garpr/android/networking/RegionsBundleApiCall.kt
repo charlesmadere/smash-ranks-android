@@ -1,6 +1,5 @@
 package com.garpr.android.networking
 
-import com.garpr.android.misc.Constants
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.Endpoint
