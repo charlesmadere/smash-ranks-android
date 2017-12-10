@@ -44,7 +44,7 @@ class RegionsBundleApiCall(
         }
 
         if (regionsSet.isEmpty()) {
-            listener.failure(Constants.ERROR_CODE_UNKNOWN)
+            listener.failure()
             return
         }
 
