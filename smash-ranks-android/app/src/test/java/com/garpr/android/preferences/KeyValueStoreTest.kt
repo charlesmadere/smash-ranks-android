@@ -54,7 +54,19 @@ class KeyValueStoreTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testBatchEditPutAndApply() {
+    fun testBatchEditPutAndApplyWithInteger() {
+        assertFalse(mKeyValueStore.contains("String"))
+
+        mKeyValueStore.batchEdit()
+                .putInteger("Integer", 100)
+                .apply()
+
+        assertTrue(mKeyValueStore.contains("Integer"))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchEditPutAndApplyWithString() {
         assertFalse(mKeyValueStore.contains("String"))
 
         mKeyValueStore.batchEdit()
@@ -74,6 +86,13 @@ class KeyValueStoreTest : BaseTest() {
                 .apply()
 
         assertTrue(mKeyValueStore.contains("String"))
+
+        mKeyValueStore.batchEdit()
+                .putInteger("Integer", 1000)
+                .apply()
+
+        assertTrue(mKeyValueStore.contains("String"))
+        assertTrue(mKeyValueStore.contains("Integer"))
 
         mKeyValueStore.batchEdit()
                 .clear()
