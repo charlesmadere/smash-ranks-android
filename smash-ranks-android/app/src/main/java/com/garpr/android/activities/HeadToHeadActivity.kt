@@ -47,7 +47,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private val mError: ErrorLinearLayout by bindView(R.id.error)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mEmpty : View by bindView(R.id.empty)
+    private val mEmpty: View by bindView(R.id.empty)
 
 
     companion object {

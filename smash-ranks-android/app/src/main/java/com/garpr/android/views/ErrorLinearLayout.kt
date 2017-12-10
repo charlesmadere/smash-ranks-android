@@ -31,6 +31,7 @@ class ErrorLinearLayout : LinearLayout {
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+
         mOriginalLine2 = mLine2.text
     }
 
