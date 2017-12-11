@@ -72,6 +72,27 @@
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
+    <style name="NoContentLinearLayout">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="NoContentLinearLayoutBody">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingEnd">@dimen/root_padding</item>
+        <item name="android:paddingStart">@dimen/root_padding</item>
+    </style>
+
+    <style name="NoContentLinearLayoutBody.Line1">
+
+    </style>
+
+    <style name="NoContentLinearLayoutBody.Line2">
+
+    </style>
+
     <style name="PreferenceView">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center_vertical</item>
