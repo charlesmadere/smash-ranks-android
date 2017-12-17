@@ -19,7 +19,7 @@ import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorLinearLayout
+import com.garpr.android.views.ErrorContentLinearLayout
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     @Inject
     protected lateinit var mThreadUtils: ThreadUtils
 
-    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
     private val mEmpty: View by bindView(R.id.empty)

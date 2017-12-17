@@ -17,8 +17,8 @@ open class NoContentLinearLayout : LinearLayout {
     private var mLine1Text: CharSequence? = null
     private var mLine2Text: CharSequence? = null
 
-    private val mLine1: TextView by bindView(R.id.noContentLine1)
-    private val mLine2: TextView by bindView(R.id.noContentLine2)
+    protected val mLine1: TextView by bindView(R.id.noContentLine1)
+    protected val mLine2: TextView by bindView(R.id.noContentLine2)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {

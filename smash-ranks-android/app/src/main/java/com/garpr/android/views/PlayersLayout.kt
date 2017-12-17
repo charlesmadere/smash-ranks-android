@@ -34,12 +34,12 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         private set
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
-    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
     private val mEmpty: View by bindView(R.id.empty)

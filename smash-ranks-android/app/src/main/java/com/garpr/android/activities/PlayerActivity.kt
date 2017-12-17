@@ -18,7 +18,7 @@ import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorLinearLayout
+import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.MatchItemView
 import com.garpr.android.views.TournamentDividerView
 import com.garpr.android.views.toolbars.PlayerToolbar
@@ -55,7 +55,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     @Inject
     protected lateinit var mThreadUtils: ThreadUtils
 
-    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
     private val mPlayerToolbar: PlayerToolbar by bindView(R.id.toolbar)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
