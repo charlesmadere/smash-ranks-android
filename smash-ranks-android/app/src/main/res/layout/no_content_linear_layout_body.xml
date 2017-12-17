@@ -5,10 +5,10 @@
 
     <TextView
         tools:text="@string/error_loading_players"
-        style="@style/RecyclerViewLine.1" />
+        style="@style/NoContentLinearLayoutBody.Line1" />
 
     <TextView
         tools:text="@string/swipe_to_refresh_to_try_again"
-        style="@style/RecyclerViewLine.2" />
+        style="@style/NoContentLinearLayoutBody.Line2" />
 
 </merge>

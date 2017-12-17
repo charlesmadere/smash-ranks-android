@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
+
     <include
         layout="@layout/toolbar" />
+
     <com.garpr.android.views.RefreshLayout
-        android:scrollbars="none"
         style="@style/RefreshLayout">
+
         <FrameLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent">
+
             <android.support.v7.widget.RecyclerView
                 android:scrollbars="none"
                 android:visibility="gone"
                 style="@style/RecyclerView" />
-            <LinearLayout
-                style="@style/RecyclerViewMessage.Empty">
-                <TextView
-                    android:text="@string/no_log_entries"
-                    style="@style/RecyclerViewLine.1" />
-                <TextView
-                    android:text="@string/swipe_to_refresh_to_check_again"
-                    style="@style/RecyclerViewLine.2" />
-            </LinearLayout>
+
+            <com.garpr.android.views.NoContentLinearLayout
+                app:line1Text="@string/no_log_entries"
+                style="@style/NoContentLinearLayout.Empty" />
+
         </FrameLayout>
+
     </com.garpr.android.views.RefreshLayout>
+
 </LinearLayout>

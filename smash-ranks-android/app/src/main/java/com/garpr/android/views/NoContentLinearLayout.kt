@@ -12,13 +12,13 @@ import android.widget.TextView
 import com.garpr.android.R
 import kotterknife.bindView
 
-class NoContentLinearLayout : LinearLayout {
+open class NoContentLinearLayout : LinearLayout {
 
     private var mLine1Text: CharSequence? = null
     private var mLine2Text: CharSequence? = null
 
-    private val mLine1: TextView by bindView(R.id.recyclerViewLine1)
-    private val mLine2: TextView by bindView(R.id.recyclerViewLine2)
+    private val mLine1: TextView by bindView(R.id.noContentLine1)
+    private val mLine2: TextView by bindView(R.id.noContentLine2)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -39,8 +39,8 @@ class NoContentLinearLayout : LinearLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        val layoutInflater = LayoutInflater.from(context)
-
+        LayoutInflater.from(context).inflate(R.layout.no_content_linear_layout_body, this,
+                true)
 
         setLine1Text(mLine1Text)
         setLine2Text(mLine2Text)

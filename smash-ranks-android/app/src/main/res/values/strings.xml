@@ -92,6 +92,7 @@
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
     <string name="no_regions">No regions</string>
+    <string name="no_tournament_data">No tournament data</string>
     <string name="no_tournaments">No tournaments</string>
     <string name="ok">OK</string>
     <string name="open_source_on_github">Open source on GitHub</string>
@@ -143,6 +144,8 @@
     <string name="tag_and_message">%1$s: %2$s</string>
     <string name="theme">Theme</string>
     <string name="the_app_will_now_restart">The app will now restart.</string>
+    <string name="this_tournament_has_no_matches">This tournament has no matches</string>
+    <string name="this_tournament_has_no_players">This tournament has no players</string>
     <string name="tournaments">Tournaments</string>
     <string name="x_tournaments">%1$s Tournaments</string>
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
