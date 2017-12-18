@@ -13,11 +13,11 @@ class PersistentLongPreference(
 ) {
 
     override fun get(): Long? {
-        if (hasValueInStore) {
+        return if (hasValueInStore) {
             // at this point, returning the fallback value is impossible
-            return keyValueStore.getLong(key, 0L)
+            keyValueStore.getLong(key, 0L)
         } else {
-            return defaultValue
+            defaultValue
         }
     }
 

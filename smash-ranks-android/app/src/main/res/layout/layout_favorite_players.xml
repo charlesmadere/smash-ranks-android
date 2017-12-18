@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.FavoritePlayersLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/favoritePlayersLayout"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:visibility="gone"
         style="@style/RecyclerView" />
-    <LinearLayout
-        style="@style/RecyclerViewMessage.Empty">
-        <TextView
-            android:text="@string/no_favorite_players"
-            style="@style/RecyclerViewLine.1" />
-        <TextView
-            android:text="@string/you_can_add_a_player_to_your_favorites"
-            style="@style/RecyclerViewLine.2" />
-    </LinearLayout>
+
+    <com.garpr.android.views.NoContentLinearLayout
+        app:line1Text="@string/no_favorite_players"
+        app:line2Text="@string/you_can_add_a_player_to_your_favorites"
+        style="@style/NoContentLinearLayout.Empty" />
+
 </com.garpr.android.views.FavoritePlayersLayout>

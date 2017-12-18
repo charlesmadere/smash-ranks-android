@@ -23,10 +23,10 @@ class PersistentGsonPreference<T>(
         get() = backingPreference.exists || defaultValue != null
 
     override fun get(): T? {
-        if (backingPreference.exists) {
-            return gson.fromJson<T>(backingPreference.get(), type)
+        return if (backingPreference.exists) {
+            gson.fromJson<T>(backingPreference.get(), type)
         } else {
-            return defaultValue
+            defaultValue
         }
     }
 

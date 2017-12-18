@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnusedNamespaceDeclaration -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        tools:text="@string/error_loading_players"
+        style="@style/NoContentLinearLayoutBody.Line1" />
+
+    <TextView
+        tools:text="@string/swipe_to_refresh_to_try_again"
+        style="@style/NoContentLinearLayoutBody.Line2" />
+
+</merge>

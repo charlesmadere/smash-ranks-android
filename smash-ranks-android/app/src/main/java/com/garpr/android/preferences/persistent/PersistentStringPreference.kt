@@ -13,11 +13,11 @@ class PersistentStringPreference(
 ) {
 
     override fun get(): String? {
-        if (hasValueInStore) {
+        return if (hasValueInStore) {
             // at this point, returning the fallback value is impossible
-            return keyValueStore.getString(key, null)
+            keyValueStore.getString(key, null)
         } else {
-            return defaultValue
+            defaultValue
         }
     }
 

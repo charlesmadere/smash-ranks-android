@@ -15,6 +15,11 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="NoContentLinearLayout">
+        <attr name="line1Text" format="string" />
+        <attr name="line2Text" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="RefreshLayout">
         <attr name="scrollingChild" format="reference" />
         <attr name="spinnerBackground" format="color" />

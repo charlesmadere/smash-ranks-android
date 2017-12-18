@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference
 
 class ApiCall<in T>(listener: ApiListener<T>) : ApiListener<T> {
 
-    private val mReference: WeakReference<ApiListener<T>> = WeakReference(listener)
+    private val mReference = WeakReference<ApiListener<T>>(listener)
 
 
     override fun failure(errorCode: Int) {

@@ -86,8 +86,8 @@ public abstract class BaseAppModule {
     private static final String SMASH_ROSTER_KEY_VALUE_STORE = "SMASH_ROSTER_KEY_VALUE_STORE";
     private static final String SMASH_ROSTER_RETROFIT = "SMASH_ROSTER_RETROFIT";
 
-    private final Application mApplication;
-    private final Region mDefaultRegion;
+    @NonNull private final Application mApplication;
+    @NonNull private final Region mDefaultRegion;
 
 
     public BaseAppModule(@NonNull final Application application,

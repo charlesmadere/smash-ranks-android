@@ -6,18 +6,12 @@ import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.misc.Constants
-import kotterknife.bindView
 
-class ErrorLinearLayout : LinearLayout {
+class ErrorContentLinearLayout : NoContentLinearLayout {
 
-    private var mOriginalLine2: CharSequence? = null
-
-    private val mLine1: TextView by bindView(R.id.recyclerViewLine1)
-    private val mLine2: TextView by bindView(R.id.recyclerViewLine2)
+    private var mOriginalLine2Text: CharSequence? = null
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -31,7 +25,8 @@ class ErrorLinearLayout : LinearLayout {
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        mOriginalLine2 = mLine2.text
+
+        mOriginalLine2Text = mLine2.text
     }
 
     fun setVisibility(visibility: Int, errorCode: Int) {
@@ -40,7 +35,7 @@ class ErrorLinearLayout : LinearLayout {
         if (errorCode == Constants.ERROR_CODE_BAD_REQUEST) {
             mLine2.setText(R.string.region_mismatch_error)
         } else {
-            mLine2.text = mOriginalLine2
+            mLine2.text = mOriginalLine2Text
         }
     }
 

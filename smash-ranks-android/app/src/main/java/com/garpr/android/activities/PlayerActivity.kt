@@ -18,7 +18,7 @@ import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorLinearLayout
+import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.MatchItemView
 import com.garpr.android.views.TournamentDividerView
 import com.garpr.android.views.toolbars.PlayerToolbar
@@ -55,7 +55,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     @Inject
     protected lateinit var mThreadUtils: ThreadUtils
 
-    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
     private val mPlayerToolbar: PlayerToolbar by bindView(R.id.toolbar)
     private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
@@ -153,15 +153,15 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override fun onClick(v: MatchItemView) {
         val fullPlayer = mPlayerMatchesBundle?.fullPlayer ?: return
-        val content = v.mContent ?: return
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, content,
+        val match = v.match ?: return
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, match,
                 mRegionManager.getRegion(this)))
     }
 
     override fun onClick(v: TournamentDividerView) {
-        val content = v.mContent ?: return
-        startActivity(TournamentActivity.getLaunchIntent(this, content.id, content.name,
-                content.date, mRegionManager.getRegion(this)))
+        val tournament = v.tournament ?: return
+        startActivity(TournamentActivity.getLaunchIntent(this, tournament.id,
+                tournament.name, tournament.date, mRegionManager.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,7 +169,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_player)
 
-        val intent = intent
         mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID)
 
         setTitle()

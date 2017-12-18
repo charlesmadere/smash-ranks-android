@@ -44,7 +44,7 @@ class PlayerMatchesBundleApiCall(
 
         fullPlayer?.let {
             listener.success(PlayerMatchesBundle(it, matchesBundle))
-        } ?: listener.failure(Constants.ERROR_CODE_UNKNOWN)
+        } ?: listener.failure()
     }
 
     private val fullPlayerListener = object : ApiListener<FullPlayer> {

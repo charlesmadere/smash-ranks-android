@@ -72,6 +72,45 @@
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
+    <style name="NoContentLinearLayout">
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/root_padding_double</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="NoContentLinearLayout.Empty">
+        <item name="android:id">@id/empty</item>
+        <item name="line2Text">@string/swipe_to_refresh_to_check_again</item>
+    </style>
+
+    <style name="NoContentLinearLayout.Error">
+        <item name="android:id">@id/error</item>
+        <item name="line2Text">@string/swipe_to_refresh_to_try_again</item>
+    </style>
+
+    <style name="NoContentLinearLayoutBody">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="NoContentLinearLayoutBody.Line1">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:id">@id/noContentLine1</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NoContentLinearLayoutBody.Line2">
+        <item name="android:id">@id/noContentLine2</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
     <style name="PreferenceView">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center_vertical</item>
@@ -130,44 +169,6 @@
     <style name="RecyclerView.WithSections">
         <item name="android:clipToPadding">false</item>
         <item name="android:paddingBottom">@dimen/root_padding</item>
-    </style>
-
-    <style name="RecyclerViewLine">
-        <item name="android:gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
-    <style name="RecyclerViewLine.1">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:id">@id/recyclerViewLine1</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="RecyclerViewLine.2">
-        <item name="android:id">@id/recyclerViewLine2</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-    </style>
-
-    <style name="RecyclerViewMessage">
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:padding">@dimen/root_padding_double</item>
-        <item name="android:visibility">gone</item>
-    </style>
-
-    <style name="RecyclerViewMessage.Error">
-        <item name="android:id">@id/error</item>
-    </style>
-
-    <style name="RecyclerViewMessage.Empty">
-        <item name="android:id">@id/empty</item>
     </style>
 
     <style name="RefreshLayout">

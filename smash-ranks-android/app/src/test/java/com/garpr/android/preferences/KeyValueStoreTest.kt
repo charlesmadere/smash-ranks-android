@@ -12,7 +12,7 @@ import javax.inject.Inject
 class KeyValueStoreTest : BaseTest() {
 
     @Inject
-    lateinit protected var mKeyValueStore: KeyValueStore
+    protected lateinit var mKeyValueStore: KeyValueStore
 
 
     @Before
@@ -44,6 +44,73 @@ class KeyValueStoreTest : BaseTest() {
         all = mKeyValueStore.all
         assertNotNull(all)
         assertEquals(2, all?.size)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchEditNotNull() {
+        assertNotNull(mKeyValueStore.batchEdit())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchEditPutAndApplyWithInteger() {
+        assertFalse(mKeyValueStore.contains("String"))
+
+        mKeyValueStore.batchEdit()
+                .putInteger("Integer", 100)
+                .apply()
+
+        assertTrue(mKeyValueStore.contains("Integer"))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchEditPutAndApplyWithString() {
+        assertFalse(mKeyValueStore.contains("String"))
+
+        mKeyValueStore.batchEdit()
+                .putString("String", "Hello, World")
+                .apply()
+
+        assertTrue(mKeyValueStore.contains("String"))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchEditPutAndApplyAndClear() {
+        assertFalse(mKeyValueStore.contains("String"))
+
+        mKeyValueStore.batchEdit()
+                .putString("String", "Hello, World")
+                .apply()
+
+        assertTrue(mKeyValueStore.contains("String"))
+
+        mKeyValueStore.batchEdit()
+                .putInteger("Integer", 1000)
+                .apply()
+
+        assertTrue(mKeyValueStore.contains("String"))
+        assertTrue(mKeyValueStore.contains("Integer"))
+
+        mKeyValueStore.batchEdit()
+                .clear()
+                .apply()
+
+        assertFalse(mKeyValueStore.contains("String"))
+        assertEquals(0, mKeyValueStore.all?.size ?: 0)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBatchEditPutWithoutApply() {
+        assertFalse(mKeyValueStore.contains("String"))
+
+        mKeyValueStore.batchEdit()
+                .putString("String", "Hello, World")
+
+        assertFalse(mKeyValueStore.contains("String"))
     }
 
     @Test

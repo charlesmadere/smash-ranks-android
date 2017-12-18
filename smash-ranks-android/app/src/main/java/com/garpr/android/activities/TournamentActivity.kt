@@ -21,7 +21,7 @@ import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorLinearLayout
+import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.garpr.android.views.toolbars.TournamentToolbar
 import kotterknife.bindView
@@ -44,7 +44,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     @Inject
     protected lateinit var mShareUtils: ShareUtils
 
-    private val mError: ErrorLinearLayout by bindView(R.id.error)
+    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
     private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
     private val mTabLayout: TabLayout by bindView(R.id.tabLayout)
     private val mTournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)

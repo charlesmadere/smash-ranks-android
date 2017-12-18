@@ -15,16 +15,15 @@ class PersistentUriPreference(
 
     private val backingPreference = PersistentStringPreference(key, null, keyValueStore)
 
+
     override val exists: Boolean
         get() = backingPreference.exists || defaultValue != null
 
     override fun get(): Uri? {
-        val string = backingPreference.get()
-
-        if (string == null) {
-            return defaultValue
+        return if (backingPreference.exists) {
+            Uri.parse(backingPreference.get())
         } else {
-            return Uri.parse(string)
+            defaultValue
         }
     }
 
