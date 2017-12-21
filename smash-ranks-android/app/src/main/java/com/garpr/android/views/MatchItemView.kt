@@ -64,8 +64,8 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
         styleTextViewForUser(name)
     }
 
-    private var match: Match? = null
-        set(value) {
+    var match: Match? = null
+        private set(value) {
             field = value
 
             if (value == null) {
