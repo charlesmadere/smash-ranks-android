@@ -22,13 +22,13 @@ class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlay
         View.OnClickListener, View.OnLongClickListener {
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
-    private val mName: TextView by bindView(R.id.tvName)
-    private val mRegion: TextView by bindView(R.id.tvRegion)
+    private val name: TextView by bindView(R.id.tvName)
+    private val region: TextView by bindView(R.id.tvRegion)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -42,16 +42,16 @@ class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlay
 
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
-        styleTextViewForSomeoneElse(mName)
+        styleTextViewForSomeoneElse(name)
     }
 
     override fun identityIsUser() {
         super.identityIsUser()
-        styleTextViewForUser(mName)
+        styleTextViewForUser(name)
     }
 
     override fun onClick(v: View) {
-        mIdentity?.let {
+        identity?.let {
             context.startActivity(PlayerActivity.getLaunchIntent(context, it,
                     (it as FavoritePlayer).region))
         }
@@ -60,24 +60,23 @@ class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlay
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
         }
 
-        App.get().appComponent.inject(this)
         setOnClickListener(this)
         setOnLongClickListener(this)
     }
 
     override fun onLongClick(v: View): Boolean {
-        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, mIdentity,
-                mRegionManager.getRegion(context))
+        return favoritePlayersManager.showAddOrRemovePlayerDialog(context, identity,
+                regionManager.getRegion(context))
     }
 
     override fun setContent(content: FavoritePlayer) {
-        mIdentity = content
-        mName.text = content.name
-        mRegion.text = content.region.displayName
+        identity = content
+        name.text = content.name
+        region.text = content.region.displayName
         refreshIdentity()
     }
 

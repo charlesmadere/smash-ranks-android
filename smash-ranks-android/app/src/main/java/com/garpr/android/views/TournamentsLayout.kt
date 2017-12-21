@@ -32,7 +32,6 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
         SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var mAdapter: TournamentsAdapter
-    private var mTournamentsBundle: TournamentsBundle? = null
 
     @Inject
     protected lateinit var mRegionManager: RegionManager
@@ -63,7 +62,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun failure(errorCode: Int) {
-        mTournamentsBundle = null
+        tournamentsBundle = null
         showError(errorCode)
     }
 
@@ -103,7 +102,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
     }
 
     override fun search(query: String?) {
-        val tournaments = mTournamentsBundle?.tournaments
+        val tournaments = tournamentsBundle?.tournaments
 
         if (tournaments == null || tournaments.isEmpty()) {
             return
@@ -147,7 +146,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
     }
 
     private fun showTournamentsBundle() {
-        mAdapter.set(ListUtils.createTournamentList(mTournamentsBundle))
+        mAdapter.set(ListUtils.createTournamentList(tournamentsBundle))
         mEmpty.visibility = View.GONE
         mError.visibility = View.GONE
         mRecyclerView.visibility = View.VISIBLE
@@ -155,7 +154,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
     }
 
     override fun success(`object`: TournamentsBundle?) {
-        mTournamentsBundle = `object`
+        tournamentsBundle = `object`
 
         if (`object`?.tournaments?.isNotEmpty() == true) {
             showTournamentsBundle()
@@ -163,5 +162,8 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
             showEmpty()
         }
     }
+
+    var tournamentsBundle: TournamentsBundle? = null
+        private set
 
 }

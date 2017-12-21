@@ -18,8 +18,11 @@
 
             <com.garpr.android.views.NoContentLinearLayout
                 app:line1Text="@string/no_players"
-                app:line2Text="@string/swipe_to_refresh_to_check_again"
                 style="@style/NoContentLinearLayout.Empty" />
+
+            <com.garpr.android.views.ErrorContentLinearLayout
+                app:line1Text="@string/error_loading_rankings"
+                style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>
 

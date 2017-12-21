@@ -38,11 +38,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     protected abstract val activityName: String
 
     override val currentRegion: Region?
-        get() {
-            return intent?.let {
-                if (it.hasExtra(EXTRA_REGION)) it.getParcelableExtra(EXTRA_REGION) else null
-            }
-        }
+        get() = intent?.getParcelableExtra(EXTRA_REGION)
 
     override val isAlive: Boolean
         get() = !isFinishing && !isDestroyed
@@ -88,7 +84,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
             }
         }
 
-        if (mToolbar is MenuToolbar && (mToolbar as MenuToolbar).onOptionsItemSelected(item)) {
+        if ((mToolbar as? MenuToolbar)?.onOptionsItemSelected(item) == true) {
             return true
         }
 
@@ -96,10 +92,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        if (mToolbar is MenuToolbar) {
-            (mToolbar as MenuToolbar).refreshMenu()
-        }
-
+        (mToolbar as? MenuToolbar)?.refreshMenu()
         return super.onPrepareOptionsMenu(menu)
     }
 

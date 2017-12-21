@@ -13,6 +13,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.FavoritePlayersManager
@@ -25,15 +26,13 @@ import javax.inject.Inject
 class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickListener,
         View.OnLongClickListener {
 
-    private var mContent: Match? = null
+    @Inject
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var regionManager: RegionManager
 
-    @Inject
-    protected lateinit var mRegionManager: RegionManager
-
-    private val mName: TextView by bindView(R.id.tvName)
+    private val name: TextView by bindView(R.id.tvName)
 
 
     interface OnClickListener {
@@ -49,26 +48,53 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    private fun clear() {
+        clearIdentity()
+        name.clear()
+        refreshIdentity()
+    }
+
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
-        styleTextViewForSomeoneElse(mName)
+        styleTextViewForSomeoneElse(name)
     }
 
     override fun identityIsUser() {
         super.identityIsUser()
-        styleTextViewForUser(mName)
+        styleTextViewForUser(name)
     }
 
+    var match: Match? = null
+        private set(value) {
+            field = value
+
+            if (value == null) {
+                clear()
+                return
+            }
+
+            identity = value.opponent
+            name.text = value.opponent.name
+
+            when (value.result) {
+                MatchResult.EXCLUDED -> name.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+                MatchResult.LOSE -> name.setTextColor(ContextCompat.getColor(context, R.color.lose))
+                MatchResult.WIN -> name.setTextColor(ContextCompat.getColor(context, R.color.win))
+            }
+
+            refreshIdentity()
+        }
+
     override fun onClick(v: View) {
-        val content = mContent ?: return
+        val match = this.match ?: return
         val activity = context.optActivity()
 
         if (activity is OnClickListener) {
             activity.onClick(this)
         } else {
-            val opponent = content.opponent
+            val opponent = match.opponent
             context.startActivity(PlayerActivity.getLaunchIntent(context, opponent.id,
-                    opponent.name, mRegionManager.getRegion(context)))
+                    opponent.name, regionManager.getRegion(context)))
         }
     }
 
@@ -84,26 +110,12 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
     }
 
     override fun onLongClick(v: View): Boolean {
-        val content = mContent ?: return false
-        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, content.opponent,
-                mRegionManager.getRegion(context))
+        return favoritePlayersManager.showAddOrRemovePlayerDialog(context, match?.opponent,
+                regionManager.getRegion(context))
     }
 
-    val match: Match?
-        get() = mContent
-
     override fun setContent(content: Match) {
-        mContent = content
-        mIdentity = content.opponent
-        mName.text = content.opponent.name
-
-        when (content.result) {
-            MatchResult.EXCLUDED -> mName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
-            MatchResult.LOSE -> mName.setTextColor(ContextCompat.getColor(context, R.color.lose))
-            MatchResult.WIN -> mName.setTextColor(ContextCompat.getColor(context, R.color.win))
-        }
-
-        refreshIdentity()
+        match = content
     }
 
 }

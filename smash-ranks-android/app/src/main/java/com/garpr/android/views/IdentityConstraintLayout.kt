@@ -17,12 +17,10 @@ import javax.inject.Inject
 abstract class IdentityConstraintLayout : LifecycleConstraintLayout,
         IdentityManager.OnIdentityChangeListener {
 
-    protected var mIdentity: AbsPlayer? = null
-    protected var mIdentityId: String? = null
-    private var mOriginalBackground: Drawable? = null
+    private var originalBackground: Drawable? = null
 
     @Inject
-    protected lateinit var mIdentityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -30,8 +28,12 @@ abstract class IdentityConstraintLayout : LifecycleConstraintLayout,
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
+    protected var identity: AbsPlayer? = null
+
+    protected var identityId: String? = null
+
     protected open fun identityIsSomeoneElse() {
-        ViewCompat.setBackground(this, mOriginalBackground)
+        ViewCompat.setBackground(this, originalBackground)
     }
 
     protected open fun identityIsUser() {
@@ -45,13 +47,13 @@ abstract class IdentityConstraintLayout : LifecycleConstraintLayout,
             return
         }
 
-        mIdentityManager.addListener(this)
+        identityManager.addListener(this)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        mIdentityManager.removeListener(this)
+        identityManager.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -62,9 +64,9 @@ abstract class IdentityConstraintLayout : LifecycleConstraintLayout,
         }
 
         App.get().appComponent.inject(this)
-        mIdentityManager.addListener(this)
+        identityManager.addListener(this)
 
-        mOriginalBackground = background
+        originalBackground = background
     }
 
     override fun onIdentityChange(identityManager: IdentityManager) {
@@ -74,7 +76,7 @@ abstract class IdentityConstraintLayout : LifecycleConstraintLayout,
     }
 
     protected open fun refreshIdentity() {
-        if (mIdentityManager.isPlayer(mIdentity) || mIdentityManager.isPlayer(mIdentityId)) {
+        if (identityManager.isPlayer(identity) || identityManager.isPlayer(identityId)) {
             identityIsUser()
         } else {
             identityIsSomeoneElse()

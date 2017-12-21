@@ -29,9 +29,7 @@ import javax.inject.Inject
 class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit private var mAdapter: PlayersAdapter
-    var mPlayersBundle: PlayersBundle? = null
-        private set
+    private lateinit var mAdapter: PlayersAdapter
 
     @Inject
     protected lateinit var mRegionManager: RegionManager
@@ -59,7 +57,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun failure(errorCode: Int) {
-        mPlayersBundle = null
+        playersBundle = null
         showError(errorCode)
     }
 
@@ -103,6 +101,9 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         fetchPlayersBundle()
     }
 
+    var playersBundle: PlayersBundle? = null
+        private set
+
     override val recyclerView: RecyclerView?
         get() = mRecyclerView
 
@@ -111,7 +112,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     }
 
     override fun search(query: String?) {
-        val players = mPlayersBundle?.players
+        val players = playersBundle?.players
 
         if (players == null || players.isEmpty()) {
             return
@@ -155,7 +156,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     }
 
     private fun showPlayersBundle() {
-        mAdapter.set(mPlayersBundle)
+        mAdapter.set(playersBundle)
         mEmpty.visibility = View.GONE
         mError.visibility = View.GONE
         mRecyclerView.visibility = View.VISIBLE
@@ -163,7 +164,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     }
 
     override fun success(`object`: PlayersBundle?) {
-        mPlayersBundle = `object`
+        playersBundle = `object`
         onPlayersBundleFetched()
 
         if (`object`?.players?.isNotEmpty() == true) {
