@@ -15,6 +15,7 @@ import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.FullTournament
@@ -24,13 +25,11 @@ import javax.inject.Inject
 class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournament.Match>,
         View.OnClickListener {
 
-    private var mContent: FullTournament.Match? = null
-
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
-    private val mLoserName: TextView by bindView(R.id.tvLoserName)
-    private val mWinnerName: TextView by bindView(R.id.tvWinnerName)
+    private val loserName: TextView by bindView(R.id.tvLoserName)
+    private val winnerName: TextView by bindView(R.id.tvWinnerName)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -42,24 +41,52 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    private fun clear() {
+        clearIdentity()
+        loserName.clear()
+        winnerName.clear()
+        refreshIdentity()
+    }
+
+    private var match: FullTournament.Match? = null
+        set(value) {
+            field = value
+
+            if (value == null) {
+                clear()
+                return
+            }
+
+            loserName.text = value.loserName
+            winnerName.text = value.winnerName
+
+            if (value.isExcluded) {
+                loserName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+                winnerName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+            } else {
+                loserName.setTextColor(ContextCompat.getColor(context, R.color.lose))
+                winnerName.setTextColor(ContextCompat.getColor(context, R.color.win))
+            }
+
+            refreshIdentity()
+        }
+
     override fun onClick(v: View) {
-        val content = mContent ?: return
-        val items = arrayOf(content.winnerName, content.loserName,
+        val match = this.match ?: return
+        val items = arrayOf(match.winnerName, match.loserName,
                 resources.getText(R.string.head_to_head))
 
         AlertDialog.Builder(context)
                 .setItems(items, { dialog, which ->
                     when (which) {
                         0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                content.winnerId, content.winnerName,
-                                mRegionManager.getRegion(context)))
+                                match.winnerId, match.winnerName, regionManager.getRegion(context)))
 
                         1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                content.loserId, content.loserName,
-                                mRegionManager.getRegion(context)))
+                                match.loserId, match.loserName, regionManager.getRegion(context)))
 
                         2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
-                                content, mRegionManager.getRegion(context)))
+                                match, regionManager.getRegion(context)))
 
                         else -> throw RuntimeException("illegal which: $which")
                     }
@@ -71,46 +98,33 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
         }
 
-        App.get().appComponent.inject(this)
         setOnClickListener(this)
     }
 
     override fun refreshIdentity() {
-        val content = mContent
+        val match = this.match
 
-        if (content != null && mIdentityManager.isPlayer(content.winnerId)) {
-            styleTextViewForUser(mWinnerName)
-            styleTextViewForSomeoneElse(mLoserName)
+        if (match != null && identityManager.isPlayer(match.winnerId)) {
+            styleTextViewForUser(winnerName)
+            styleTextViewForSomeoneElse(loserName)
             identityIsUser()
-        } else if (content != null && mIdentityManager.isPlayer(content.loserId)) {
-            styleTextViewForSomeoneElse(mWinnerName)
-            styleTextViewForUser(mLoserName)
+        } else if (match != null && identityManager.isPlayer(match.loserId)) {
+            styleTextViewForSomeoneElse(winnerName)
+            styleTextViewForUser(loserName)
             identityIsUser()
         } else {
-            styleTextViewForSomeoneElse(mWinnerName)
-            styleTextViewForSomeoneElse(mLoserName)
+            styleTextViewForSomeoneElse(winnerName)
+            styleTextViewForSomeoneElse(loserName)
             identityIsSomeoneElse()
         }
     }
 
     override fun setContent(content: FullTournament.Match) {
-        mContent = content
-        mLoserName.text = content.loserName
-        mWinnerName.text = content.winnerName
-
-        if (content.isExcluded) {
-            mLoserName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
-            mWinnerName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
-        } else {
-            mLoserName.setTextColor(ContextCompat.getColor(context, R.color.lose))
-            mWinnerName.setTextColor(ContextCompat.getColor(context, R.color.win))
-        }
-
-        refreshIdentity()
+        match = content
     }
 
 }

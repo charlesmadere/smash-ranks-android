@@ -93,7 +93,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
         get() = mSearchView?.query
 
     override val showSearchMenuItem: Boolean
-        get() = mPlayersLayout.mPlayersBundle?.players?.isNotEmpty() == true
+        get() = mPlayersLayout.playersBundle?.players?.isNotEmpty() == true
 
     override val showUpNavigation = true
 

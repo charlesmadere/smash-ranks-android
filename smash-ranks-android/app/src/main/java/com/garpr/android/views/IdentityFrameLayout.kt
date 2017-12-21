@@ -20,12 +20,10 @@ import javax.inject.Inject
 abstract class IdentityFrameLayout : LifecycleFrameLayout,
         IdentityManager.OnIdentityChangeListener {
 
-    protected var mIdentity: AbsPlayer? = null
-    protected var mIdentityId: String? = null
-    private var mOriginalBackground: Drawable? = null
+    private var originalBackground: Drawable? = null
 
     @Inject
-    protected lateinit var mIdentityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -37,8 +35,17 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout,
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    protected fun clearIdentity() {
+        identity = null
+        identityId = null
+    }
+
+    protected var identity: AbsPlayer? = null
+
+    protected var identityId: String? = null
+
     protected open fun identityIsSomeoneElse() {
-        ViewCompat.setBackground(this, mOriginalBackground)
+        ViewCompat.setBackground(this, originalBackground)
     }
 
     protected open fun identityIsUser() {
@@ -52,26 +59,24 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout,
             return
         }
 
-        mIdentityManager.addListener(this)
+        identityManager.addListener(this)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        mIdentityManager.removeListener(this)
+        identityManager.removeListener(this)
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
+            identityManager.addListener(this)
         }
 
-        App.get().appComponent.inject(this)
-        mIdentityManager.addListener(this)
-
-        mOriginalBackground = background
+        originalBackground = background
     }
 
     override fun onIdentityChange(identityManager: IdentityManager) {
@@ -81,7 +86,7 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout,
     }
 
     protected open fun refreshIdentity() {
-        if (mIdentityManager.isPlayer(mIdentity) || mIdentityManager.isPlayer(mIdentityId)) {
+        if (identityManager.isPlayer(identity) || identityManager.isPlayer(identityId)) {
             identityIsUser()
         } else {
             identityIsSomeoneElse()

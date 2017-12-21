@@ -30,7 +30,6 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var mAdapter: RankingsAdapter
-    private var mRankingsBundle: RankingsBundle? = null
 
     @Inject
     protected lateinit var mNotificationsManager: NotificationsManager
@@ -68,7 +67,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun failure(errorCode: Int) {
-        mRankingsBundle = null
+        rankingsBundle = null
         mNotificationsManager.cancelAll()
         onRankingsBundleFetched()
         showError()
@@ -114,8 +113,8 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         fetchRankingsBundle()
     }
 
-    val rankingsBundle: RankingsBundle?
-        get() = mRankingsBundle
+    var rankingsBundle: RankingsBundle? = null
+        private set
 
     override val recyclerView: RecyclerView?
         get() = mRecyclerView
@@ -126,7 +125,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     }
 
     override fun search(query: String?) {
-        val rankings = mRankingsBundle?.rankings
+        val rankings = rankingsBundle?.rankings
 
         if (rankings == null || rankings.isEmpty()) {
             return
@@ -170,7 +169,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     }
 
     private fun showRankingsBundle() {
-        mAdapter.set(mRankingsBundle)
+        mAdapter.set(rankingsBundle)
         mEmpty.visibility = View.GONE
         mError.visibility = View.GONE
         mRecyclerView.visibility = View.VISIBLE
@@ -178,7 +177,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     }
 
     override fun success(`object`: RankingsBundle?) {
-        mRankingsBundle = `object`
+        rankingsBundle = `object`
         mNotificationsManager.cancelAll()
         onRankingsBundleFetched()
 

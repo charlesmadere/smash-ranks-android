@@ -62,7 +62,7 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
     }
 
     override fun onClick(v: View) {
-        val content = mIdentity ?: return
+        val content = identity ?: return
         context.startActivity(PlayerActivity.getLaunchIntent(context, content,
                 mRegionManager.getRegion(context)))
     }
@@ -70,22 +70,21 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
         }
 
-        App.get().appComponent.inject(this)
         setOnClickListener(this)
         setOnLongClickListener(this)
     }
 
     override fun onLongClick(v: View): Boolean {
-        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, mIdentity,
+        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, identity,
                 mRegionManager.getRegion(context))
     }
 
     override fun setContent(content: RankedPlayer) {
-        mIdentity = content
+        identity = content
 
         mPreviousRankView?.setContent(mPreviousRankUtils.getRankInfo(content))
         mRank.text = mNumberFormat.format(content.rank)
