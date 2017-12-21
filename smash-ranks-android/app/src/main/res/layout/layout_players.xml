@@ -21,7 +21,7 @@
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
-                app:line1Text="@string/error_loading_rankings"
+                app:line1Text="@string/error_loading_players"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>
