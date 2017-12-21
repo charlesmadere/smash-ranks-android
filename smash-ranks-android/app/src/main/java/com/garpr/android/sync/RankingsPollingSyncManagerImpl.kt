@@ -9,6 +9,7 @@ import com.garpr.android.misc.GoogleApiWrapper
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import java.util.concurrent.TimeUnit
 
 class RankingsPollingSyncManagerImpl(
         private val firebaseApiWrapper: FirebaseApiWrapper,
@@ -53,7 +54,8 @@ class RankingsPollingSyncManagerImpl(
         }
 
         val pollFrequency = rankingsPollingPreferenceStore.pollFrequency.get() ?: PollFrequency.DAILY
-        jobBuilder.trigger = Trigger.executionWindow(0, pollFrequency.timeInSeconds.toInt())
+        jobBuilder.trigger = Trigger.executionWindow(TimeUnit.MINUTES.toSeconds(5).toInt(),
+                pollFrequency.timeInSeconds.toInt())
         jobDispatcher.mustSchedule(jobBuilder.build())
 
         timber.d(TAG, "sync has been enabled")
