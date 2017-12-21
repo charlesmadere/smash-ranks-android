@@ -6,11 +6,12 @@ interface SmashRosterSyncManager {
 
     interface Listeners {
         fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager)
-
         fun onSmashRosterSyncComplete(smashRosterSyncManager: SmashRosterSyncManager)
     }
 
     fun addListener(listener: Listeners)
+
+    fun enableOrDisable()
 
     var isEnabled: Boolean
 
