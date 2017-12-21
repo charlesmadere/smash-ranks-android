@@ -11,10 +11,10 @@ import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 
 class RankingsPollingSyncManagerImpl(
-        private val mFirebaseApiWrapper: FirebaseApiWrapper,
-        private val mGoogleApiWrapper: GoogleApiWrapper,
-        private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-        private val mTimber: Timber
+        private val firebaseApiWrapper: FirebaseApiWrapper,
+        private val googleApiWrapper: GoogleApiWrapper,
+        private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
+        private val timber: Timber
 ) : RankingsPollingSyncManager {
 
     companion object {
@@ -22,17 +22,17 @@ class RankingsPollingSyncManagerImpl(
     }
 
     private fun disable() {
-        mFirebaseApiWrapper.getJobDispatcher().cancel(TAG)
-        mTimber.d(TAG, "sync has been disabled")
+        firebaseApiWrapper.getJobDispatcher().cancel(TAG)
+        timber.d(TAG, "sync has been disabled")
     }
 
     private fun enable() {
-        if (!mGoogleApiWrapper.isGooglePlayServicesAvailable) {
-            mTimber.w(TAG, "failed to schedule sync because Google Play Services are unavailable")
+        if (!googleApiWrapper.isGooglePlayServicesAvailable) {
+            timber.w(TAG, "failed to schedule sync because Google Play Services are unavailable")
             return
         }
 
-        val jobDispatcher = mFirebaseApiWrapper.getJobDispatcher()
+        val jobDispatcher = firebaseApiWrapper.getJobDispatcher()
 
         val jobBuilder = jobDispatcher.newJobBuilder()
                 .setLifetime(Lifetime.FOREVER)
@@ -42,29 +42,50 @@ class RankingsPollingSyncManagerImpl(
                 .setService(RankingsPollingJobService::class.java)
                 .setTag(TAG)
 
-        if (mRankingsPollingPreferenceStore.chargingRequired.get() == true) {
+        if (isChargingRequired) {
             jobBuilder.addConstraint(Constraint.DEVICE_CHARGING)
         }
 
-        if (mRankingsPollingPreferenceStore.wifiRequired.get() == true) {
+        if (isWifiRequired) {
             jobBuilder.addConstraint(Constraint.ON_UNMETERED_NETWORK)
         } else {
             jobBuilder.addConstraint(Constraint.ON_ANY_NETWORK)
         }
 
-        val pollFrequency = mRankingsPollingPreferenceStore.pollFrequency.get() ?: PollFrequency.DAILY
+        val pollFrequency = rankingsPollingPreferenceStore.pollFrequency.get() ?: PollFrequency.DAILY
         jobBuilder.trigger = Trigger.executionWindow(0, pollFrequency.timeInSeconds.toInt())
         jobDispatcher.mustSchedule(jobBuilder.build())
 
-        mTimber.d(TAG, "sync has been enabled")
+        timber.d(TAG, "sync has been enabled")
     }
 
     override fun enableOrDisable() {
-        if (mRankingsPollingPreferenceStore.enabled.get() == true) {
+        if (isEnabled) {
             enable()
         } else {
             disable()
         }
     }
+
+    override var isChargingRequired: Boolean
+        get() = rankingsPollingPreferenceStore.chargingRequired.get() == true
+        set(value) {
+            rankingsPollingPreferenceStore.chargingRequired.set(value)
+            enableOrDisable()
+        }
+
+    override var isEnabled: Boolean
+        get() = rankingsPollingPreferenceStore.enabled.get() == true
+        set(value) {
+            rankingsPollingPreferenceStore.enabled.set(value)
+            enableOrDisable()
+        }
+
+    override var isWifiRequired: Boolean
+        get() = rankingsPollingPreferenceStore.wifiRequired.get() == true
+        set(value) {
+            rankingsPollingPreferenceStore.wifiRequired.set(value)
+            enableOrDisable()
+        }
 
 }
