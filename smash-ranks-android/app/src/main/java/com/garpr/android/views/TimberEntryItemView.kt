@@ -17,7 +17,7 @@ import kotterknife.bindView
 
 class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
 
-    private val mColors: SparseIntArray = SparseIntArray()
+    private val mColors = SparseIntArray()
     private val mStackTrace: TextView by bindView(R.id.tvStackTrace)
     private val mTagAndMessage: TextView by bindView(R.id.tvTagAndMessage)
 

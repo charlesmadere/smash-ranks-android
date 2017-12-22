@@ -44,10 +44,27 @@ class SmashRosterSyncManagerImpl(
         }
     }
 
+    private fun disable() {
+        // TODO
+    }
+
+    private fun enable() {
+        // TODO
+    }
+
+    override fun enableOrDisable() {
+        if (isEnabled) {
+            enable()
+        } else {
+            disable()
+        }
+    }
+
     override var isEnabled: Boolean
         get() = smashRosterPreferenceStore.enabled.get() == true
         set(value) {
             smashRosterPreferenceStore.enabled.set(value)
+            enableOrDisable()
         }
 
     @UiThread

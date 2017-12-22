@@ -5,11 +5,11 @@ import com.firebase.jobdispatcher.FirebaseJobDispatcher
 import com.firebase.jobdispatcher.GooglePlayDriver
 
 class FirebaseApiWrapperImpl(
-        private val mApplication: Application
+        private val application: Application
 ) : FirebaseApiWrapper {
 
     override fun getJobDispatcher(): FirebaseJobDispatcher {
-        return FirebaseJobDispatcher(GooglePlayDriver(mApplication))
+        return FirebaseJobDispatcher(GooglePlayDriver(application))
     }
 
 }

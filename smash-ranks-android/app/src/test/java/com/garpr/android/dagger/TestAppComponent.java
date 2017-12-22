@@ -30,6 +30,8 @@ import com.garpr.android.preferences.persistent.PersistentIntegerPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentLongPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentUriPreferenceTest;
+import com.garpr.android.sync.RankingsPollingSyncManagerTest;
+import com.garpr.android.sync.SmashRosterSyncManagerTest;
 
 import javax.inject.Singleton;
 
@@ -76,5 +78,9 @@ public interface TestAppComponent {
     void inject(PersistentLongPreferenceTest test);
     void inject(PersistentStringPreferenceTest test);
     void inject(PersistentUriPreferenceTest test);
+
+    // sync
+    void inject(RankingsPollingSyncManagerTest test);
+    void inject(SmashRosterSyncManagerTest test);
 
 }

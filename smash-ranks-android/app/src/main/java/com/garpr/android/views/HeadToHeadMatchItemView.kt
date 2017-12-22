@@ -14,6 +14,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.HeadToHeadMatch
@@ -25,13 +26,11 @@ import javax.inject.Inject
 class HeadToHeadMatchItemView : IdentityFrameLayout, BaseAdapterView<HeadToHeadMatch>,
         View.OnClickListener {
 
-    private var mContent: HeadToHeadMatch? = null
-
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
-    private val mPlayerName: TextView by bindView(R.id.tvPlayerName)
-    private val mOpponentName: TextView by bindView(R.id.tvOpponentName)
+    private val opponentName: TextView by bindView(R.id.tvOpponentName)
+    private val playerName: TextView by bindView(R.id.tvPlayerName)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -43,18 +42,55 @@ class HeadToHeadMatchItemView : IdentityFrameLayout, BaseAdapterView<HeadToHeadM
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    private fun clear() {
+        clearIdentity()
+        playerName.clear()
+        opponentName.clear()
+        refreshIdentity()
+    }
+
+    private var match: HeadToHeadMatch? = null
+        set(value) {
+            field = value
+
+            if (value == null) {
+                clear()
+                return
+            }
+
+            playerName.text = value.player.name
+            opponentName.text = value.opponent.name
+
+            when (value.result) {
+                MatchResult.EXCLUDED -> {
+                    playerName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+                    opponentName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+                }
+
+                MatchResult.LOSE -> {
+                    playerName.setTextColor(ContextCompat.getColor(context, R.color.lose))
+                    opponentName.setTextColor(ContextCompat.getColor(context, R.color.win))
+                }
+
+                MatchResult.WIN -> {
+                    playerName.setTextColor(ContextCompat.getColor(context, R.color.win))
+                    opponentName.setTextColor(ContextCompat.getColor(context, R.color.lose))
+                }
+            }
+        }
+
     override fun onClick(v: View) {
-        val content = mContent ?: return
-        val items = arrayOf(content.player.name, content.opponent.name)
+        val match = this.match ?: return
+        val items = arrayOf(match.player.name, match.opponent.name)
 
         AlertDialog.Builder(context)
                 .setItems(items, { dialog, which ->
                     when (which) {
                         0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                content.player, mRegionManager.getRegion(context)))
+                                match.player, regionManager.getRegion(context)))
 
                         1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                content.opponent, mRegionManager.getRegion(context)))
+                                match.opponent, regionManager.getRegion(context)))
 
                         else -> throw RuntimeException("illegal which: $which")
                     }
@@ -79,27 +115,7 @@ class HeadToHeadMatchItemView : IdentityFrameLayout, BaseAdapterView<HeadToHeadM
     }
 
     override fun setContent(content: HeadToHeadMatch) {
-        mContent = content
-
-        mPlayerName.text = content.player.name
-        mOpponentName.text = content.opponent.name
-
-        when (content.result) {
-            MatchResult.EXCLUDED -> {
-                mPlayerName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
-                mOpponentName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
-            }
-
-            MatchResult.LOSE -> {
-                mPlayerName.setTextColor(ContextCompat.getColor(context, R.color.lose))
-                mOpponentName.setTextColor(ContextCompat.getColor(context, R.color.win))
-            }
-
-            MatchResult.WIN -> {
-                mPlayerName.setTextColor(ContextCompat.getColor(context, R.color.win))
-                mOpponentName.setTextColor(ContextCompat.getColor(context, R.color.lose))
-            }
-        }
+        match = content
     }
 
 }

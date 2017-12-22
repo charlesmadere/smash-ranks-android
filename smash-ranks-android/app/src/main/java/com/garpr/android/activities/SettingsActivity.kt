@@ -147,7 +147,9 @@ class SettingsActivity : BaseActivity() {
         mMustBeOnWifi.set(mRankingsPollingPreferenceStore.wifiRequired)
         mMustBeCharging.set(mRankingsPollingPreferenceStore.chargingRequired)
 
-        mGooglePlayServicesError.setOnClickListener { attemptToResolveGooglePlayServicesError() }
+        mGooglePlayServicesError.setOnClickListener {
+            attemptToResolveGooglePlayServicesError()
+        }
 
         mCharlesTwitter.setOnClickListener {
             mShareUtils.openUrl(this, Constants.CHARLES_TWITTER_URL)

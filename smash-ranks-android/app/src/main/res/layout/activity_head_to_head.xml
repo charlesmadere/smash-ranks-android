@@ -21,6 +21,7 @@
 
             <com.garpr.android.views.NoContentLinearLayout
                 app:line1Text="@string/no_head_to_head_data"
+                app:line2Text="@string/head_to_head_swipe_to_refresh_to_check_again"
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
