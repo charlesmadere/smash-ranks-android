@@ -5,7 +5,7 @@
     <color name="debug">@color/white</color>
     <color name="error">#FF6666</color>
     <color name="fast_scroll_thumb_normal">#44FFFFFF</color>
-    <color name="fast_scroll_thumb_pressed">#88FFFFFF</color>
+    <color name="fast_scroll_thumb_pressed">@color/purple_dark</color>
     <color name="fast_scroll_track">#22FFFFFF</color>
     <color name="lose">#F0BEC5</color>
     <color name="lose_background">#44F0BEC5</color>
