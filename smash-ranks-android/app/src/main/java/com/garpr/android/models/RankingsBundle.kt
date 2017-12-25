@@ -28,13 +28,8 @@ data class RankingsBundle(
     override fun hashCode() = id.hashCode()
 
     fun hasPreviousRank(): Boolean {
-        if (rankings?.isNotEmpty() == true) {
-            for (ranking in rankings) {
-                if (ranking.previousRank != null) {
-                    return true
-                }
-            }
-        }
+        rankings?.filter { it.previousRank != null }
+                ?.forEach { return true }
 
         return false
     }
