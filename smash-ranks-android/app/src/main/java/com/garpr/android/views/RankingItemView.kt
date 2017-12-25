@@ -22,24 +22,24 @@ import javax.inject.Inject
 class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
-    private val mNumberFormat = NumberFormat.getIntegerInstance()
+    private val numberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
-    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    protected lateinit var mPreviousRankUtils: PreviousRankUtils
+    protected lateinit var previousRankUtils: PreviousRankUtils
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mTimber: Timber
+    protected lateinit var timber: Timber
 
-    private val mPreviousRankView: PreviousRankView? by bindOptionalView(R.id.previousRankView)
-    private val mName: TextView by bindView(R.id.tvName)
-    private val mRank: TextView by bindView(R.id.tvRank)
-    private val mRating: TextView by bindView(R.id.tvRating)
+    private val previousRankView: PreviousRankView? by bindOptionalView(R.id.previousRankView)
+    private val name: TextView by bindView(R.id.tvName)
+    private val rank: TextView by bindView(R.id.tvRank)
+    private val rating: TextView by bindView(R.id.tvRating)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -53,18 +53,18 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
 
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
-        styleTextViewForSomeoneElse(mName)
+        styleTextViewForSomeoneElse(name)
     }
 
     override fun identityIsUser() {
         super.identityIsUser()
-        styleTextViewForUser(mName)
+        styleTextViewForUser(name)
     }
 
     override fun onClick(v: View) {
-        val content = identity ?: return
-        context.startActivity(PlayerActivity.getLaunchIntent(context, content,
-                mRegionManager.getRegion(context)))
+        val identity = this.identity ?: return
+        context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
+                regionManager.getRegion(context)))
     }
 
     override fun onFinishInflate() {
@@ -79,17 +79,17 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
     }
 
     override fun onLongClick(v: View): Boolean {
-        return mFavoritePlayersManager.showAddOrRemovePlayerDialog(context, identity,
-                mRegionManager.getRegion(context))
+        return favoritePlayersManager.showAddOrRemovePlayerDialog(context, identity,
+                regionManager.getRegion(context))
     }
 
     override fun setContent(content: RankedPlayer) {
         identity = content
 
-        mPreviousRankView?.setContent(mPreviousRankUtils.getRankInfo(content))
-        mRank.text = mNumberFormat.format(content.rank)
-        mName.text = content.name
-        mRating.text = MiscUtils.truncateFloat(content.rating)
+        previousRankView?.setContent(previousRankUtils.getRankInfo(content))
+        rank.text = numberFormat.format(content.rank)
+        name.text = content.name
+        rating.text = MiscUtils.truncateFloat(content.rating)
 
         refreshIdentity()
     }
