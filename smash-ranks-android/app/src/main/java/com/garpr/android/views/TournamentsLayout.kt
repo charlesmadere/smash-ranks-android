@@ -46,10 +46,8 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentsLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_tournaments, parent, false) as TournamentsLayout
-        }
+        fun inflate(parent: ViewGroup): TournamentsLayout = LayoutInflater.from(parent.context)
+                .inflate(R.layout.layout_tournaments, parent, false) as TournamentsLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

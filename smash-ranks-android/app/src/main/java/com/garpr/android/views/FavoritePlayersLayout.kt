@@ -35,11 +35,8 @@ class FavoritePlayersLayout : SearchableFrameLayout,
 
 
     companion object {
-        fun inflate(parent: ViewGroup): FavoritePlayersLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_favorite_players, parent, false)
-                    as FavoritePlayersLayout
-        }
+        fun inflate(parent: ViewGroup): FavoritePlayersLayout = LayoutInflater.from(parent.context)
+                .inflate(R.layout.layout_favorite_players, parent, false) as FavoritePlayersLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

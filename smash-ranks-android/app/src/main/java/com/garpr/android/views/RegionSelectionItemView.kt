@@ -12,17 +12,16 @@ import android.widget.RadioButton
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.models.Region
 import kotterknife.bindView
 
 class RegionSelectionItemView : FrameLayout, BaseAdapterView<Region>, View.OnClickListener {
 
-    private var mContent: Region? = null
-
-    private val mRadioButton: RadioButton by bindView(R.id.radioButton)
-    private val mId: TextView by bindView(R.id.tvId)
-    private val mDisplayName: TextView by bindView(R.id.tvDisplayName)
+    private val radioButton: RadioButton by bindView(R.id.radioButton)
+    private val displayName: TextView by bindView(R.id.tvDisplayName)
+    private val id: TextView by bindView(R.id.tvId)
 
 
     interface Listeners {
@@ -39,12 +38,14 @@ class RegionSelectionItemView : FrameLayout, BaseAdapterView<Region>, View.OnCli
     constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun onClick(v: View) {
-        val activity = context.optActivity()
+    private fun clear() {
+        radioButton.isChecked = false
+        displayName.clear()
+        id.clear()
+    }
 
-        if (activity is Listeners) {
-            (activity as Listeners).onClick(this)
-        }
+    override fun onClick(v: View) {
+        (context.optActivity() as? Listeners)?.onClick(this)
     }
 
     override fun onFinishInflate() {
@@ -52,22 +53,22 @@ class RegionSelectionItemView : FrameLayout, BaseAdapterView<Region>, View.OnCli
         setOnClickListener(this)
     }
 
-    val region: Region?
-        get() = mContent
+    var region: Region? = null
+        private set(value) {
+            field = value
+
+            if (value == null) {
+                clear()
+                return
+            }
+
+            radioButton.isChecked = value == (context.optActivity() as? Listeners)?.selectedRegion
+            displayName.text = value.displayName
+            id.text = value.id
+        }
 
     override fun setContent(content: Region) {
-        mContent = content
-
-        mDisplayName.text = content.displayName
-        mId.text = content.id
-
-        val activity = context.optActivity()
-
-        if (activity is Listeners) {
-            mRadioButton.isChecked = content == (activity as Listeners).selectedRegion
-        } else {
-            mRadioButton.isChecked = false
-        }
+        region = content
     }
 
 }

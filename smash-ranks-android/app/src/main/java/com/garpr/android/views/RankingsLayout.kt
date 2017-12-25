@@ -51,10 +51,8 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     }
 
     companion object {
-        fun inflate(parent: ViewGroup): RankingsLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_rankings, parent, false) as RankingsLayout
-        }
+        fun inflate(parent: ViewGroup): RankingsLayout = LayoutInflater.from(parent.context)
+                .inflate(R.layout.layout_rankings, parent, false) as RankingsLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
