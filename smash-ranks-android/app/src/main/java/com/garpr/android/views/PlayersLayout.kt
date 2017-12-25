@@ -29,18 +29,17 @@ import javax.inject.Inject
 class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var mAdapter: PlayersAdapter
+    private lateinit var adapter: PlayersAdapter
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var serverApi: ServerApi
 
-    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
-    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mEmpty: View by bindView(R.id.empty)
+    private val error: ErrorContentLinearLayout by bindView(R.id.error)
+    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val empty: View by bindView(R.id.empty)
 
 
     interface Listener {
@@ -62,8 +61,8 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     }
 
     private fun fetchPlayersBundle() {
-        mRefreshLayout.isRefreshing = true
-        mServerApi.getPlayers(mRegionManager.getRegion(context), ApiCall(this))
+        refreshLayout.isRefreshing = true
+        serverApi.getPlayers(regionManager.getRegion(context), ApiCall(this))
     }
 
     override fun onFinishInflate() {
@@ -75,12 +74,12 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
 
         App.get().appComponent.inject(this)
 
-        mRefreshLayout.setOnRefreshListener(this)
-        mRecyclerView.addItemDecoration(DividerItemDecoration(context,
+        refreshLayout.setOnRefreshListener(this)
+        recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = PlayersAdapter(context)
-        mRecyclerView.adapter = mAdapter
+        recyclerView.setHasFixedSize(true)
+        adapter = PlayersAdapter(context)
+        recyclerView.adapter = adapter
 
         fetchPlayersBundle()
     }
@@ -104,8 +103,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     var playersBundle: PlayersBundle? = null
         private set
 
-    override val recyclerView: RecyclerView?
-        get() = mRecyclerView
+    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
         fetchPlayersBundle()
@@ -118,7 +116,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
             return
         }
 
-        mThreadUtils.run(object : ThreadUtils.Task {
+        threadUtils.run(object : ThreadUtils.Task {
             private var mList: List<AbsPlayer>? = null
 
             override fun onBackground() {
@@ -134,44 +132,45 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
                     return
                 }
 
-                mAdapter.set(mList)
+                adapter.set(mList)
             }
         })
     }
 
     private fun showEmpty() {
-        mAdapter.clear()
-        mRecyclerView.visibility = View.GONE
-        mError.visibility = View.GONE
-        mEmpty.visibility = View.VISIBLE
-        mRefreshLayout.isRefreshing = false
+        adapter.clear()
+        recyclerView.visibility = View.GONE
+        error.visibility = View.GONE
+        empty.visibility = View.VISIBLE
+        refreshLayout.isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
-        mAdapter.clear()
-        mRecyclerView.visibility = View.GONE
-        mEmpty.visibility = View.GONE
-        mError.setVisibility(View.VISIBLE, errorCode)
-        mRefreshLayout.isRefreshing = false
+        adapter.clear()
+        recyclerView.visibility = View.GONE
+        empty.visibility = View.GONE
+        error.setVisibility(View.VISIBLE, errorCode)
+        refreshLayout.isRefreshing = false
     }
 
     private fun showPlayersBundle() {
-        mAdapter.set(playersBundle)
-        mEmpty.visibility = View.GONE
-        mError.visibility = View.GONE
-        mRecyclerView.visibility = View.VISIBLE
-        mRefreshLayout.isRefreshing = false
+        adapter.set(playersBundle)
+        empty.visibility = View.GONE
+        error.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+        refreshLayout.isRefreshing = false
     }
 
     override fun success(`object`: PlayersBundle?) {
         playersBundle = `object`
-        onPlayersBundleFetched()
 
         if (`object`?.players?.isNotEmpty() == true) {
             showPlayersBundle()
         } else {
             showEmpty()
         }
+
+        onPlayersBundleFetched()
     }
 
 }

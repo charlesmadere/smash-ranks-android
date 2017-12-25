@@ -25,13 +25,12 @@ import javax.inject.Inject
 class FavoritePlayersLayout : SearchableFrameLayout,
         FavoritePlayersManager.OnFavoritePlayersChangeListener {
 
-    private lateinit var mAdapter: FavoritePlayersAdapter
+    private lateinit var adapter: FavoritePlayersAdapter
 
     @Inject
-    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
-    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val mEmpty: View by bindView(R.id.empty)
+    private val empty: View by bindView(R.id.empty)
 
 
     companion object {
@@ -55,13 +54,13 @@ class FavoritePlayersLayout : SearchableFrameLayout,
             return
         }
 
-        mFavoritePlayersManager.addListener(this)
+        favoritePlayersManager.addListener(this)
         refresh()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mFavoritePlayersManager.addListener(this)
+        favoritePlayersManager.addListener(this)
     }
 
     override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
@@ -79,33 +78,32 @@ class FavoritePlayersLayout : SearchableFrameLayout,
 
         App.get().appComponent.inject(this)
 
-        mRecyclerView.addItemDecoration(DividerItemDecoration(context,
+        recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = FavoritePlayersAdapter(context)
-        mRecyclerView.adapter = mAdapter
-        mFavoritePlayersManager.addListener(this)
+        recyclerView.setHasFixedSize(true)
+        adapter = FavoritePlayersAdapter(context)
+        recyclerView.adapter = adapter
+        favoritePlayersManager.addListener(this)
 
         refresh()
     }
 
-    override val recyclerView: RecyclerView?
-        get() = mRecyclerView
+    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
-        if (mFavoritePlayersManager.isEmpty) {
-            mAdapter.clear()
-            mRecyclerView.visibility = View.GONE
-            mEmpty.visibility = View.VISIBLE
+        if (favoritePlayersManager.isEmpty) {
+            adapter.clear()
+            recyclerView.visibility = View.GONE
+            empty.visibility = View.VISIBLE
         } else {
-            mAdapter.set(mFavoritePlayersManager.absPlayers)
-            mEmpty.visibility = View.GONE
-            mRecyclerView.visibility = View.VISIBLE
+            adapter.set(favoritePlayersManager.absPlayers)
+            empty.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
     }
 
     override fun search(query: String?) {
-        mThreadUtils.run(object : ThreadUtils.Task {
+        threadUtils.run(object : ThreadUtils.Task {
             private var mList: List<AbsPlayer>? = null
 
             override fun onBackground() {
@@ -113,7 +111,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
                     return
                 }
 
-                mList = ListUtils.searchPlayerList(query, mFavoritePlayersManager.absPlayers)
+                mList = ListUtils.searchPlayerList(query, favoritePlayersManager.absPlayers)
             }
 
             override fun onUi() {
@@ -121,7 +119,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
                     return
                 }
 
-                mAdapter.set(mList)
+                adapter.set(mList)
             }
         })
     }
