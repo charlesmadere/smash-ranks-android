@@ -29,21 +29,20 @@ import javax.inject.Inject
 class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var mAdapter: RankingsAdapter
+    private lateinit var adapter: RankingsAdapter
 
     @Inject
-    protected lateinit var mNotificationsManager: NotificationsManager
+    protected lateinit var notificationsManager: NotificationsManager
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var serverApi: ServerApi
 
-    private val mEmpty: View by bindView(R.id.empty)
-    private val mError: View by bindView(R.id.error)
-    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val empty: View by bindView(R.id.empty)
+    private val error: View by bindView(R.id.error)
+    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
 
 
     interface Listener {
@@ -51,10 +50,8 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     }
 
     companion object {
-        fun inflate(parent: ViewGroup): RankingsLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_rankings, parent, false) as RankingsLayout
-        }
+        fun inflate(parent: ViewGroup): RankingsLayout = LayoutInflater.from(parent.context)
+                .inflate(R.layout.layout_rankings, parent, false) as RankingsLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -68,14 +65,14 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
 
     override fun failure(errorCode: Int) {
         rankingsBundle = null
-        mNotificationsManager.cancelAll()
+        notificationsManager.cancelAll()
         onRankingsBundleFetched()
         showError()
     }
 
     private fun fetchRankingsBundle() {
-        mRefreshLayout.isRefreshing = true
-        mServerApi.getRankings(mRegionManager.getRegion(context), ApiCall(this))
+        refreshLayout.isRefreshing = true
+        serverApi.getRankings(regionManager.getRegion(context), ApiCall(this))
     }
 
     override fun onFinishInflate() {
@@ -87,12 +84,12 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
 
         App.get().appComponent.inject(this)
 
-        mRefreshLayout.setOnRefreshListener(this)
-        mRecyclerView.addItemDecoration(DividerItemDecoration(context,
+        refreshLayout.setOnRefreshListener(this)
+        recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = RankingsAdapter(context)
-        mRecyclerView.adapter = mAdapter
+        recyclerView.setHasFixedSize(true)
+        adapter = RankingsAdapter(context)
+        recyclerView.adapter = adapter
 
         fetchRankingsBundle()
     }
@@ -116,11 +113,10 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     var rankingsBundle: RankingsBundle? = null
         private set
 
-    override val recyclerView: RecyclerView?
-        get() = mRecyclerView
+    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
-        mNotificationsManager.cancelAll()
+        notificationsManager.cancelAll()
         fetchRankingsBundle()
     }
 
@@ -131,7 +127,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
             return
         }
 
-        mThreadUtils.run(object : ThreadUtils.Task {
+        threadUtils.run(object : ThreadUtils.Task {
             private var mList: List<RankedPlayer>? = null
 
             override fun onBackground() {
@@ -147,45 +143,46 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
                     return
                 }
 
-                mAdapter.set(mList)
+                adapter.set(mList)
             }
         })
     }
 
     private fun showEmpty() {
-        mAdapter.clear()
-        mRecyclerView.visibility = View.GONE
-        mError.visibility = View.GONE
-        mEmpty.visibility = View.VISIBLE
-        mRefreshLayout.isRefreshing = false
+        adapter.clear()
+        recyclerView.visibility = View.GONE
+        error.visibility = View.GONE
+        empty.visibility = View.VISIBLE
+        refreshLayout.isRefreshing = false
     }
 
     private fun showError() {
-        mAdapter.clear()
-        mRecyclerView.visibility = View.GONE
-        mEmpty.visibility = View.GONE
-        mError.visibility = View.VISIBLE
-        mRefreshLayout.isRefreshing = false
+        adapter.clear()
+        recyclerView.visibility = View.GONE
+        empty.visibility = View.GONE
+        error.visibility = View.VISIBLE
+        refreshLayout.isRefreshing = false
     }
 
     private fun showRankingsBundle() {
-        mAdapter.set(rankingsBundle)
-        mEmpty.visibility = View.GONE
-        mError.visibility = View.GONE
-        mRecyclerView.visibility = View.VISIBLE
-        mRefreshLayout.isRefreshing = false
+        adapter.set(rankingsBundle)
+        empty.visibility = View.GONE
+        error.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+        refreshLayout.isRefreshing = false
     }
 
     override fun success(`object`: RankingsBundle?) {
         rankingsBundle = `object`
-        mNotificationsManager.cancelAll()
-        onRankingsBundleFetched()
+        notificationsManager.cancelAll()
 
         if (`object`?.rankings?.isNotEmpty() == true) {
             showRankingsBundle()
         } else {
             showEmpty()
         }
+
+        onRankingsBundleFetched()
     }
 
 }

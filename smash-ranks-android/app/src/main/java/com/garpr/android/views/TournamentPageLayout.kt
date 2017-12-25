@@ -15,8 +15,7 @@ import kotterknife.bindView
 
 abstract class TournamentPageLayout : SearchableFrameLayout, BaseAdapterView<FullTournament> {
 
-    protected val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    protected val mEmpty: View by bindView(R.id.empty)
+    protected val empty: View by bindView(R.id.empty)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -28,8 +27,7 @@ abstract class TournamentPageLayout : SearchableFrameLayout, BaseAdapterView<Ful
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override val recyclerView: RecyclerView?
-        get() = mRecyclerView
+    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
         throw UnsupportedOperationException()

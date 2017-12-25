@@ -35,7 +35,7 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout,
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    protected fun clearIdentity() {
+    protected open fun clear() {
         identity = null
         identityId = null
     }

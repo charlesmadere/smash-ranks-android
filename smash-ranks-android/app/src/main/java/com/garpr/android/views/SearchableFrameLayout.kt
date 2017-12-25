@@ -5,10 +5,10 @@ import android.content.Context
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import com.garpr.android.App
 import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.smoothScrollToTop
 import com.garpr.android.misc.*
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refresh
         SearchQueryHandle {
 
     @Inject
-    lateinit protected var mThreadUtils: ThreadUtils
+    protected lateinit var threadUtils: ThreadUtils
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -38,16 +38,8 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refresh
         App.get().appComponent.inject(this)
     }
 
-    override fun scrollToTop() {
-        recyclerView?.let {
-            val layoutManager = it.layoutManager
-
-            if (layoutManager == null) {
-                it.scrollToPosition(0)
-            } else {
-                layoutManager.smoothScrollToPosition(it, RecyclerView.State(), 0)
-            }
-        }
+    override fun smoothScrollToTop() {
+        recyclerView?.smoothScrollToTop()
     }
 
     override val searchQuery: CharSequence?

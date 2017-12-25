@@ -59,9 +59,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     companion object {
         private const val TAG = "SetIdentityActivity"
 
-        fun getLaunchIntent(context: Context): Intent {
-            return Intent(context, SetIdentityActivity::class.java)
-        }
+        fun getLaunchIntent(context: Context) = Intent(context, SetIdentityActivity::class.java)
     }
 
     override val activityName = TAG

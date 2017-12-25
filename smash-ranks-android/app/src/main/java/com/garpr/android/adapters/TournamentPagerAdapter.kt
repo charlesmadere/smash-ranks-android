@@ -65,7 +65,7 @@ class TournamentPagerAdapter(
         val view = mPages[position].get()
 
         if (view?.isAlive == true) {
-            view.scrollToTop()
+            view.smoothScrollToTop()
         }
     }
 

@@ -5,7 +5,7 @@ buildscript {
     ext.constraint_layout_version = '1.0.2'
     ext.dagger_version = '2.14.1'
     ext.firebase_jobdispatcher_version = '0.8.5'
-    ext.google_play_services_version = '11.6.2'
+    ext.google_play_services_version = '11.8.0'
     ext.gson_version = '2.8.2'
     ext.kotlin_version = '1.2.10'
     ext.retrofit_version = '2.3.0'

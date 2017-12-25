@@ -25,9 +25,7 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     companion object {
         private const val TAG = "LogViewerActivity"
 
-        fun getLaunchIntent(context: Context): Intent {
-            return Intent(context, LogViewerActivity::class.java)
-        }
+        fun getLaunchIntent(context: Context) = Intent(context, LogViewerActivity::class.java)
     }
 
     override val activityName = TAG

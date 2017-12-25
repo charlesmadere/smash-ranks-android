@@ -25,10 +25,10 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         View.OnClickListener {
 
     @Inject
-    lateinit protected var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
-    lateinit protected var mTimber: Timber
+    protected lateinit var timber: Timber
 
 
     companion object {
@@ -50,7 +50,7 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         }
 
         val pickedUri = data.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-        mRankingsPollingPreferenceStore.ringtone.set(pickedUri)
+        rankingsPollingPreferenceStore.ringtone.set(pickedUri)
         refresh()
     }
 
@@ -61,7 +61,7 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
             return
         }
 
-        mRankingsPollingPreferenceStore.ringtone.addListener(this)
+        rankingsPollingPreferenceStore.ringtone.addListener(this)
         refresh()
     }
 
@@ -71,10 +71,8 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
                 .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
 
-        val existingUri = mRankingsPollingPreferenceStore.ringtone.get()
-
-        if (existingUri != null) {
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, existingUri)
+        rankingsPollingPreferenceStore.ringtone.get()?.let {
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, it)
         }
 
         val activity = context.getActivity()
@@ -82,7 +80,7 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
         try {
             activity.startActivityForResult(intent, ResultCodes.RINGTONE_SELECTED.value)
         } catch (e: ActivityNotFoundException) {
-            mTimber.e(TAG, "Unable to start ringtone picker Activity", e)
+            timber.e(TAG, "Unable to start ringtone picker Activity", e)
             Toast.makeText(context, R.string.unable_to_launch_ringtone_picker, Toast.LENGTH_LONG)
                     .show()
         }
@@ -90,7 +88,7 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mRankingsPollingPreferenceStore.ringtone.removeListener(this)
+        rankingsPollingPreferenceStore.ringtone.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -98,7 +96,7 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-            mRankingsPollingPreferenceStore.ringtone.addListener(this)
+            rankingsPollingPreferenceStore.ringtone.addListener(this)
         }
 
         setOnClickListener(this)
@@ -120,12 +118,8 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
     override fun refresh() {
         super.refresh()
 
-        val ringtoneUri = mRankingsPollingPreferenceStore.ringtone.get()
-
-        val ringtone = if (ringtoneUri == null) {
-            null
-        } else {
-            RingtoneManager.getRingtone(context, ringtoneUri)
+        val ringtone = rankingsPollingPreferenceStore.ringtone.get()?.let {
+            RingtoneManager.getRingtone(context, it)
         }
 
         descriptionText = if (ringtone == null) {

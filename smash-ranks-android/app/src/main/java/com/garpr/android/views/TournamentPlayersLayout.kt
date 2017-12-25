@@ -19,8 +19,8 @@ import com.garpr.android.models.FullTournament
 
 class TournamentPlayersLayout : TournamentPageLayout {
 
-    private var mContent: FullTournament? = null
-    lateinit private var mAdapter: PlayersAdapter
+    private var content: FullTournament? = null
+    private lateinit var adapter: PlayersAdapter
 
 
     companion object {
@@ -43,29 +43,29 @@ class TournamentPlayersLayout : TournamentPageLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        mRecyclerView.addItemDecoration(DividerItemDecoration(context,
+        recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = PlayersAdapter(context)
-        mRecyclerView.adapter = mAdapter
+        recyclerView.setHasFixedSize(true)
+        adapter = PlayersAdapter(context)
+        recyclerView.adapter = adapter
     }
 
     override fun search(query: String?) {
-        val players = mContent?.players
+        val players = content?.players
 
         if (players == null || players.isEmpty()) {
             return
         }
 
-        mThreadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<AbsPlayer>? = null
+        threadUtils.run(object : ThreadUtils.Task {
+            private var list: List<AbsPlayer>? = null
 
             override fun onBackground() {
                 if (!isAlive || !TextUtils.equals(query, searchQuery)) {
                     return
                 }
 
-                mList = ListUtils.searchPlayerList(query, players)
+                list = ListUtils.searchPlayerList(query, players)
             }
 
             override fun onUi() {
@@ -73,21 +73,21 @@ class TournamentPlayersLayout : TournamentPageLayout {
                     return
                 }
 
-                mAdapter.set(mList)
+                adapter.set(list)
             }
         })
     }
 
     override fun setContent(content: FullTournament) {
-        mContent = content
-        mAdapter.set(content)
+        this.content = content
+        adapter.set(content)
 
-        if (mAdapter.isEmpty) {
-            mRecyclerView.visibility = GONE
-            mEmpty.visibility = VISIBLE
+        if (adapter.isEmpty) {
+            recyclerView.visibility = GONE
+            empty.visibility = VISIBLE
         } else {
-            mEmpty.visibility = GONE
-            mRecyclerView.visibility = VISIBLE
+            empty.visibility = GONE
+            recyclerView.visibility = VISIBLE
         }
     }
 

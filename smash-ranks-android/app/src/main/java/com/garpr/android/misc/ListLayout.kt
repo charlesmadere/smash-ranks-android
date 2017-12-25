@@ -6,6 +6,6 @@ interface ListLayout {
 
     val recyclerView: RecyclerView?
 
-    fun scrollToTop()
+    fun smoothScrollToTop()
 
 }

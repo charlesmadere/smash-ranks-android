@@ -20,7 +20,6 @@ import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.MatchItemView
-import com.garpr.android.views.TournamentDividerView
 import com.garpr.android.views.toolbars.PlayerToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import kotterknife.bindView
@@ -28,8 +27,7 @@ import javax.inject.Inject
 
 class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
-        SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
-        TournamentDividerView.OnClickListener {
+        SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private var mList: List<Any>? = null
     private var mMatchResult: MatchResult? = null
@@ -156,12 +154,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         val match = v.match ?: return
         startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, match,
                 mRegionManager.getRegion(this)))
-    }
-
-    override fun onClick(v: TournamentDividerView) {
-        val tournament = v.tournament ?: return
-        startActivity(TournamentActivity.getLaunchIntent(this, tournament.id,
-                tournament.name, tournament.date, mRegionManager.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

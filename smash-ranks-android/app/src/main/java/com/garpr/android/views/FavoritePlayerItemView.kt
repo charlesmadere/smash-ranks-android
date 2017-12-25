@@ -51,10 +51,9 @@ class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlay
     }
 
     override fun onClick(v: View) {
-        identity?.let {
-            context.startActivity(PlayerActivity.getLaunchIntent(context, it,
-                    (it as FavoritePlayer).region))
-        }
+        val identity = this.identity ?: return
+        context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
+                (identity as FavoritePlayer).region))
     }
 
     override fun onFinishInflate() {

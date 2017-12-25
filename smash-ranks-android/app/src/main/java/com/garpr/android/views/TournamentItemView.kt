@@ -13,6 +13,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.clear
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.AbsTournament
 import kotterknife.bindView
@@ -20,13 +21,11 @@ import javax.inject.Inject
 
 class TournamentItemView : FrameLayout, BaseAdapterView<AbsTournament>, View.OnClickListener {
 
-    private var mContent: AbsTournament? = null
-
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
-    private val mDate: TextView by bindView(R.id.tvDate)
-    private val mName: TextView by bindView(R.id.tvName)
+    private val date: TextView by bindView(R.id.tvDate)
+    private val name: TextView by bindView(R.id.tvName)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -38,28 +37,42 @@ class TournamentItemView : FrameLayout, BaseAdapterView<AbsTournament>, View.OnC
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    private fun clear() {
+        date.clear()
+        name.clear()
+    }
+
     override fun onClick(v: View) {
-        val content = mContent ?: return
-        context.startActivity(TournamentActivity.getLaunchIntent(context, content,
-                mRegionManager.getRegion(context)))
+        val tournament = this.tournament ?: return
+        context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
+                regionManager.getRegion(context)))
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
         }
 
-        App.get().appComponent.inject(this)
         setOnClickListener(this)
     }
 
     override fun setContent(content: AbsTournament) {
-        mContent = content
-
-        mName.text = content.name
-        mDate.text = content.date.shortForm
+        tournament = content
     }
+
+    private var tournament: AbsTournament? = null
+        set(value) {
+            field = value
+
+            if (value == null) {
+                clear()
+                return
+            }
+
+            name.text = value.name
+            date.text = value.date.shortForm
+        }
 
 }

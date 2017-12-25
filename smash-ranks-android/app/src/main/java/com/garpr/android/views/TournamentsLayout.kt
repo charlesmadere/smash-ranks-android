@@ -31,25 +31,22 @@ import javax.inject.Inject
 class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var mAdapter: TournamentsAdapter
+    private lateinit var adapter: TournamentsAdapter
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var serverApi: ServerApi
 
-    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
-    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mEmpty: View by bindView(R.id.empty)
+    private val error: ErrorContentLinearLayout by bindView(R.id.error)
+    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val empty: View by bindView(R.id.empty)
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentsLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_tournaments, parent, false) as TournamentsLayout
-        }
+        fun inflate(parent: ViewGroup): TournamentsLayout = LayoutInflater.from(parent.context)
+                .inflate(R.layout.layout_tournaments, parent, false) as TournamentsLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -67,8 +64,8 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
     }
 
     private fun fetchTournamentsBundle() {
-        mRefreshLayout.isRefreshing = true
-        mServerApi.getTournaments(mRegionManager.getRegion(context), ApiCall(this))
+        refreshLayout.isRefreshing = true
+        serverApi.getTournaments(regionManager.getRegion(context), ApiCall(this))
     }
 
     override fun onFinishInflate() {
@@ -80,12 +77,12 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
 
         App.get().appComponent.inject(this)
 
-        mRefreshLayout.setOnRefreshListener(this)
-        mRecyclerView.addItemDecoration(DividerItemDecoration(context,
+        refreshLayout.setOnRefreshListener(this)
+        recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = TournamentsAdapter(context)
-        mRecyclerView.adapter = mAdapter
+        recyclerView.setHasFixedSize(true)
+        adapter = TournamentsAdapter(context)
+        recyclerView.adapter = adapter
 
         fetchTournamentsBundle()
     }
@@ -94,8 +91,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
         fetchTournamentsBundle()
     }
 
-    override val recyclerView: RecyclerView?
-        get() = mRecyclerView
+    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
         fetchTournamentsBundle()
@@ -108,7 +104,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
             return
         }
 
-        mThreadUtils.run(object : ThreadUtils.Task {
+        threadUtils.run(object : ThreadUtils.Task {
             private var mList: List<AbsTournament>? = null
 
             override fun onBackground() {
@@ -124,33 +120,33 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
                     return
                 }
 
-                mAdapter.set(mList)
+                adapter.set(mList)
             }
         })
     }
 
     private fun showEmpty() {
-        mAdapter.clear()
-        mRecyclerView.visibility = View.GONE
-        mError.visibility = View.GONE
-        mEmpty.visibility = View.VISIBLE
-        mRefreshLayout.isRefreshing = false
+        adapter.clear()
+        recyclerView.visibility = View.GONE
+        error.visibility = View.GONE
+        empty.visibility = View.VISIBLE
+        refreshLayout.isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
-        mAdapter.clear()
-        mRecyclerView.visibility = View.GONE
-        mEmpty.visibility = View.GONE
-        mError.setVisibility(View.VISIBLE, errorCode)
-        mRefreshLayout.isRefreshing = false
+        adapter.clear()
+        recyclerView.visibility = View.GONE
+        empty.visibility = View.GONE
+        error.setVisibility(View.VISIBLE, errorCode)
+        refreshLayout.isRefreshing = false
     }
 
     private fun showTournamentsBundle() {
-        mAdapter.set(ListUtils.createTournamentList(tournamentsBundle))
-        mEmpty.visibility = View.GONE
-        mError.visibility = View.GONE
-        mRecyclerView.visibility = View.VISIBLE
-        mRefreshLayout.isRefreshing = false
+        adapter.set(ListUtils.createTournamentList(tournamentsBundle))
+        empty.visibility = View.GONE
+        error.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+        refreshLayout.isRefreshing = false
     }
 
     override fun success(`object`: TournamentsBundle?) {

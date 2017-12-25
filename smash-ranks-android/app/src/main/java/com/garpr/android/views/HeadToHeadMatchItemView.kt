@@ -42,8 +42,9 @@ class HeadToHeadMatchItemView : IdentityFrameLayout, BaseAdapterView<HeadToHeadM
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    private fun clear() {
-        clearIdentity()
+    override fun clear() {
+        super.clear()
+
         playerName.clear()
         opponentName.clear()
         refreshIdentity()

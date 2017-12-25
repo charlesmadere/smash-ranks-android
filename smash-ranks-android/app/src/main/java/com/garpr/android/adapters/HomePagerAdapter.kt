@@ -52,8 +52,8 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
     fun onNavigationItemReselected(position: Int) {
         val view = mPages[position].get()
 
-        if (view != null && view.isAlive) {
-            view.scrollToTop()
+        if (view?.isAlive == true) {
+            view.smoothScrollToTop()
         }
     }
 

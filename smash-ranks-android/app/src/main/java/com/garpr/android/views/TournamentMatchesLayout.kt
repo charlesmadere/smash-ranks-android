@@ -19,8 +19,8 @@ import com.garpr.android.models.FullTournament
 
 class TournamentMatchesLayout : TournamentPageLayout {
 
-    private var mContent: FullTournament? = null
-    lateinit private var mAdapter: TournamentMatchesAdapter
+    private var content: FullTournament? = null
+    private lateinit var adapter: TournamentMatchesAdapter
 
 
     companion object {
@@ -43,29 +43,29 @@ class TournamentMatchesLayout : TournamentPageLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        mRecyclerView.addItemDecoration(DividerItemDecoration(context,
+        recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = TournamentMatchesAdapter(context)
-        mRecyclerView.adapter = mAdapter
+        recyclerView.setHasFixedSize(true)
+        adapter = TournamentMatchesAdapter(context)
+        recyclerView.adapter = adapter
     }
 
     override fun search(query: String?) {
-        val matches = mContent?.matches
+        val matches = content?.matches
 
         if (matches == null || matches.isEmpty()) {
             return
         }
 
-        mThreadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<FullTournament.Match>? = null
+        threadUtils.run(object : ThreadUtils.Task {
+            private var list: List<FullTournament.Match>? = null
 
             override fun onBackground() {
                 if (!isAlive || !TextUtils.equals(query, searchQuery)) {
                     return
                 }
 
-                mList = ListUtils.searchTournamentMatchesList(query, matches)
+                list = ListUtils.searchTournamentMatchesList(query, matches)
             }
 
             override fun onUi() {
@@ -73,21 +73,21 @@ class TournamentMatchesLayout : TournamentPageLayout {
                     return
                 }
 
-                mAdapter.set(mList)
+                adapter.set(list)
             }
         })
     }
 
     override fun setContent(content: FullTournament) {
-        mContent = content
-        mAdapter.set(content)
+        this.content = content
+        adapter.set(content)
 
-        if (mAdapter.isEmpty) {
-            mRecyclerView.visibility = GONE
-            mEmpty.visibility = VISIBLE
+        if (adapter.isEmpty) {
+            recyclerView.visibility = GONE
+            empty.visibility = VISIBLE
         } else {
-            mEmpty.visibility = GONE
-            mRecyclerView.visibility = VISIBLE
+            empty.visibility = GONE
+            recyclerView.visibility = VISIBLE
         }
     }
 

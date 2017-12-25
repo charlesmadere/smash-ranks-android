@@ -13,7 +13,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.clear
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.AbsTournament
 import kotterknife.bindView
@@ -21,18 +21,12 @@ import javax.inject.Inject
 
 class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.OnClickListener {
 
-    private var mContent: AbsTournament? = null
-
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
-    private val mDate: TextView by bindView(R.id.tvDate)
-    private val mName: TextView by bindView(R.id.tvName)
+    private val date: TextView by bindView(R.id.tvDate)
+    private val name: TextView by bindView(R.id.tvName)
 
-
-    interface OnClickListener {
-        fun onClick(v: TournamentDividerView)
-    }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
@@ -43,16 +37,15 @@ class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun onClick(v: View) {
-        val content = mContent ?: return
-        val activity = context.optActivity()
+    private fun clear() {
+        date.clear()
+        name.clear()
+    }
 
-        if (activity is OnClickListener) {
-            activity.onClick(this)
-        } else {
-            context.startActivity(TournamentActivity.getLaunchIntent(context, content,
-                    mRegionManager.getRegion(context)))
-        }
+    override fun onClick(v: View) {
+        val tournament = this.tournament ?: return
+        context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
+                regionManager.getRegion(context)))
     }
 
     override fun onFinishInflate() {
@@ -66,13 +59,20 @@ class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.
     }
 
     override fun setContent(content: AbsTournament) {
-        mContent = content
-
-        mName.text = content.name
-        mDate.text = content.date.mediumForm
+        tournament = content
     }
 
-    val tournament: AbsTournament?
-        get() = mContent
+    var tournament: AbsTournament? = null
+        private set(value) {
+            field = value
+
+            if (value == null) {
+                clear()
+                return
+            }
+
+            name.text = value.name
+            date.text = value.date.mediumForm
+        }
 
 }

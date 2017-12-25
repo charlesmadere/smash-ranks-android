@@ -41,8 +41,9 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    private fun clear() {
-        clearIdentity()
+    override fun clear() {
+        super.clear()
+
         loserName.clear()
         winnerName.clear()
         refreshIdentity()

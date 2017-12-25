@@ -9,7 +9,7 @@ import com.garpr.android.models.RankingsBundle
 class RankingsAdapter(context: Context) : BaseAdapter<RankedPlayer>(context) {
 
     @LayoutRes
-    private var mLayoutResId: Int = 0
+    private var layoutResId: Int? = null
 
 
     init {
@@ -22,12 +22,12 @@ class RankingsAdapter(context: Context) : BaseAdapter<RankedPlayer>(context) {
 
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
-        return mLayoutResId
+        return layoutResId ?: throw RuntimeException("layoutResId is null")
     }
 
     fun set(bundle: RankingsBundle?) {
         if (bundle?.rankings?.isNotEmpty() == true) {
-            mLayoutResId = if (bundle.hasPreviousRank()) {
+            layoutResId = if (bundle.hasPreviousRank()) {
                 R.layout.item_ranking_with_previous_rank
             } else {
                 R.layout.item_ranking
