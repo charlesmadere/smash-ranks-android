@@ -7,33 +7,33 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 abstract class BaseAdapter<T>(
-        private val mLayoutInflater: LayoutInflater
+        private val layoutInflater: LayoutInflater
 ) : RecyclerView.Adapter<BaseAdapterViewHolder>() {
 
-    private val mItems = mutableListOf<T>()
+    private val items = mutableListOf<T>()
 
 
     constructor(context: Context) : this(LayoutInflater.from(context))
 
-    fun clear() {
-        if (!mItems.isEmpty()) {
-            mItems.clear()
+    open fun clear() {
+        if (!items.isEmpty()) {
+            items.clear()
             notifyDataSetChanged()
         }
     }
 
-    fun getItem(position: Int) = mItems[position]
+    fun getItem(position: Int) = items[position]
 
-    override fun getItemCount() = mItems.size
+    override fun getItemCount() = items.size
 
     @LayoutRes
     abstract override fun getItemViewType(position: Int): Int
 
     val isEmpty: Boolean
-        get() = mItems.isEmpty()
+        get() = items.isEmpty()
 
     override fun onBindViewHolder(holder: BaseAdapterViewHolder, position: Int) {
-        val item = mItems[position]
+        val item = items[position]
 
         @Suppress("UNCHECKED_CAST")
         val view = holder.itemView as BaseAdapterView<T>
@@ -42,15 +42,15 @@ abstract class BaseAdapter<T>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapterViewHolder {
-        val view = mLayoutInflater.inflate(viewType, parent, false)
+        val view = layoutInflater.inflate(viewType, parent, false)
         return BaseAdapterViewHolder(view)
     }
 
-    fun set(items: List<T>?) {
-        mItems.clear()
+    open fun set(items: List<T>?) {
+        this.items.clear()
 
         if (items != null && items.isNotEmpty()) {
-            mItems.addAll(items)
+            this.items.addAll(items)
         }
 
         notifyDataSetChanged()
