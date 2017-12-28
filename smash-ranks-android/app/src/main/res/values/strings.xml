@@ -52,7 +52,7 @@
     <string name="google_play_services_error_cant_be_resolved">Sorry, but your Google Play Services error (%1$d) can\'t be resolved.</string>
     <string name="google_play_services_error_has_been_resolved">Google Play Services error has been resolved!</string>
     <string name="head_to_head">Head to Head</string>
-    <string name="head_to_head_swipe_to_refresh_to_check_again">Swipe down to refresh to check again. It\'s possible that these two players have just never played in tournament before.</string>
+    <string name="head_to_head_swipe_to_refresh_to_check_again">Swipe down to refresh to check again. This probably means that these two players have never played in tournament before.</string>
     <string name="ice_climbers">Ice Climbers</string>
     <string name="identity">Identity</string>
     <string name="identity_saved_">Identity saved!</string>
