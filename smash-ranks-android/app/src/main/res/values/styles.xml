@@ -235,7 +235,7 @@
     </style>
 
     <style name="WinsLossesCount">
-        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:gravity">center</item>
         <item name="android:id">@id/winCount</item>
         <item name="android:layout_height">wrap_content</item>
