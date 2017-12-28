@@ -228,12 +228,9 @@
     <style name="WinsLossesColumnView">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginEnd">@dimen/root_padding</item>
-        <item name="android:layout_marginStart">@dimen/root_padding</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">@dimen/wins_losses_column_width</item>
         <item name="android:orientation">vertical</item>
     </style>
 
@@ -253,7 +250,6 @@
         <item name="android:gravity">center</item>
         <item name="android:id">@id/playerName</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/root_padding</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:maxLines">3</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>

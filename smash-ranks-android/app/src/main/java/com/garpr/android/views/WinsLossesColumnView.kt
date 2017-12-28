@@ -86,7 +86,7 @@ class WinsLossesColumnView : LinearLayout, View.OnClickListener {
         this.playerOrOpponent = PlayerOrOpponent.values()[playerOrOpponent]
     }
 
-    var winsLosses: WinsLosses? = null
+    internal var winsLosses: WinsLosses? = null
         set(value) {
             field = value
 
