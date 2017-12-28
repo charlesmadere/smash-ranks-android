@@ -13,8 +13,6 @@ import com.garpr.android.misc.Heartbeat
 
 abstract class MenuToolbar : Toolbar, Heartbeat {
 
-    protected var isMenuCreated: Boolean = false
-        private set
     private val sparseMenuItemsArray = SparseBooleanArray()
 
 
@@ -32,6 +30,9 @@ abstract class MenuToolbar : Toolbar, Heartbeat {
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)
+
+    protected var isMenuCreated: Boolean = false
+        private set
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

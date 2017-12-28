@@ -12,24 +12,23 @@ import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
-import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.clear
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.models.WinsLosses
 import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class WinsLossesColumnView : LinearLayout, BaseAdapterView<WinsLosses>, View.OnClickListener {
+class WinsLossesColumnView : LinearLayout, View.OnClickListener {
 
-    private var mContent: WinsLosses? = null
-    private val mNumberFormat = NumberFormat.getIntegerInstance()
-    private lateinit var mPlayerOrOpponent: PlayerOrOpponent
+    private val numberFormat = NumberFormat.getIntegerInstance()
+    private lateinit var playerOrOpponent: PlayerOrOpponent
 
-    private val mPlayerName: TextView by bindView(R.id.playerName)
-    private val mWinCount: TextView by bindView(R.id.winCount)
+    private val playerName: TextView by bindView(R.id.playerName)
+    private val winCount: TextView by bindView(R.id.winCount)
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -47,16 +46,21 @@ class WinsLossesColumnView : LinearLayout, BaseAdapterView<WinsLosses>, View.OnC
         parseAttributes(attrs)
     }
 
-    override fun onClick(v: View) {
-        val content = mContent ?: return
+    private fun clear() {
+        winCount.clear()
+        playerName.clear()
+    }
 
-        val player = when (mPlayerOrOpponent) {
-            PlayerOrOpponent.PLAYER -> { content.player }
-            PlayerOrOpponent.OPPONENT -> { content.opponent }
+    override fun onClick(v: View) {
+        val winsLosses = this.winsLosses ?: return
+
+        val player = when (playerOrOpponent) {
+            PlayerOrOpponent.PLAYER -> { winsLosses.player }
+            PlayerOrOpponent.OPPONENT -> { winsLosses.opponent }
         }
 
         context.startActivity(PlayerActivity.getLaunchIntent(context, player,
-                mRegionManager.getRegion(context)))
+                regionManager.getRegion(context)))
     }
 
     override fun onFinishInflate() {
@@ -79,24 +83,30 @@ class WinsLossesColumnView : LinearLayout, BaseAdapterView<WinsLosses>, View.OnC
             throw RuntimeException("playerOrOpponent attribute is an illegal value: $playerOrOpponent")
         }
 
-        mPlayerOrOpponent = PlayerOrOpponent.values()[playerOrOpponent]
+        this.playerOrOpponent = PlayerOrOpponent.values()[playerOrOpponent]
     }
 
-    override fun setContent(content: WinsLosses) {
-        mContent = content
+    internal var winsLosses: WinsLosses? = null
+        set(value) {
+            field = value
 
-        when (mPlayerOrOpponent) {
-            PlayerOrOpponent.PLAYER -> {
-                mWinCount.text = mNumberFormat.format(content.playerWins)
-                mPlayerName.text = content.player.name
+            if (value == null) {
+                clear()
+                return
             }
 
-            PlayerOrOpponent.OPPONENT -> {
-                mWinCount.text = mNumberFormat.format(content.opponentWins)
-                mPlayerName.text = content.opponent.name
+            when (playerOrOpponent) {
+                PlayerOrOpponent.PLAYER -> {
+                    winCount.text = numberFormat.format(value.playerWins)
+                    playerName.text = value.player.name
+                }
+
+                PlayerOrOpponent.OPPONENT -> {
+                    winCount.text = numberFormat.format(value.opponentWins)
+                    playerName.text = value.opponent.name
+                }
             }
         }
-    }
 
     private enum class PlayerOrOpponent {
         PLAYER, OPPONENT
