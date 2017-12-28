@@ -25,7 +25,7 @@ class WinsLossesGraphView : View {
 
 
     companion object {
-        const val OVERSHOOT_TENSION: Float = 3.8f
+        private const val OVERSHOOT_TENSION: Float = 3.8f
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
