@@ -16,4 +16,12 @@ class PlayerAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP
                 String::class.java to R.layout.item_string)
     }
 
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).hashCode().toLong()
+    }
+
 }

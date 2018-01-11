@@ -71,10 +71,12 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout,
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (!isInEditMode) {
-            App.get().appComponent.inject(this)
-            identityManager.addListener(this)
+        if (isInEditMode) {
+            return
         }
+
+        App.get().appComponent.inject(this)
+        identityManager.addListener(this)
 
         originalBackground = background
     }

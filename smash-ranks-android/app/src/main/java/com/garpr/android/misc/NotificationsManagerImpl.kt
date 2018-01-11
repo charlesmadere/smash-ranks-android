@@ -1,6 +1,7 @@
 package com.garpr.android.misc
 
 import android.app.*
+import android.content.Context
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
@@ -12,21 +13,22 @@ import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 
 class NotificationsManagerImpl(
-        private val mApplication: Application,
-        private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-        private val mRegionManager: RegionManager,
-        private val mTimber: Timber
+        private val application: Application,
+        private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
+        private val regionManager: RegionManager,
+        private val timber: Timber
 ) : NotificationsManager {
 
-    private val mImpl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Api26Impl() else BaseImpl()
+    private interface Impl {
+        fun createBuilder(context: Context): NotificationCompat.Builder
+    }
 
-
-    private inner open class BaseImpl {
-        open fun createBuilder(): NotificationCompat.Builder {
-            return NotificationCompat.Builder(mApplication, RANKINGS_CHANNEL)
+    private open class BaseImpl : Impl {
+        override fun createBuilder(context: Context): NotificationCompat.Builder {
+            return NotificationCompat.Builder(context, RANKINGS_CHANNEL)
                     .setAutoCancel(true)
                     .setCategory(NotificationCompat.CATEGORY_SOCIAL)
-                    .setContentTitle(mApplication.getString(R.string.gar_pr))
+                    .setContentTitle(context.getString(R.string.gar_pr))
                     .setPriority(NotificationCompat.PRIORITY_LOW)
                     .setSmallIcon(R.drawable.notification)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -34,18 +36,18 @@ class NotificationsManagerImpl(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private inner class Api26Impl : BaseImpl() {
-        override fun createBuilder(): NotificationCompat.Builder {
+    private class Api26Impl : BaseImpl() {
+        override fun createBuilder(context: Context): NotificationCompat.Builder {
             val notificationChannel = NotificationChannel(RANKINGS_CHANNEL,
-                    mApplication.getString(R.string.rankings_update_notifications),
+                    context.getString(R.string.rankings_update_notifications),
                     NotificationManager.IMPORTANCE_LOW)
-            notificationChannel.description = mApplication.getString(R.string.rankings_update_description)
+            notificationChannel.description = context.getString(R.string.rankings_update_description)
             notificationChannel.enableLights(true)
             notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             notificationChannel.setShowBadge(true)
-            mApplication.notificationManager.createNotificationChannel(notificationChannel)
+            context.notificationManager.createNotificationChannel(notificationChannel)
 
-            return super.createBuilder()
+            return super.createBuilder(context)
         }
     }
 
@@ -53,34 +55,36 @@ class NotificationsManagerImpl(
         private const val RANKINGS_CHANNEL = "rankings"
         private const val RANKINGS_ID = 1001
         private const val TAG = "NotificationsManagerImpl"
+
+        private val IMPL = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Api26Impl() else BaseImpl()
     }
 
     override fun cancelAll() {
-        mTimber.d(TAG, "canceling all notifications")
-        mApplication.notificationManagerCompat.cancelAll()
+        timber.d(TAG, "canceling all notifications")
+        application.notificationManagerCompat.cancelAll()
     }
 
     override fun rankingsUpdated() {
-        val builder = mImpl.createBuilder()
+        val builder = IMPL.createBuilder(application)
 
-        builder.setContentIntent(PendingIntent.getActivity(mApplication, 0,
-                HomeActivity.getLaunchIntent(mApplication), PendingIntent.FLAG_UPDATE_CURRENT))
+        builder.setContentIntent(PendingIntent.getActivity(application, 0,
+                HomeActivity.getLaunchIntent(application), PendingIntent.FLAG_UPDATE_CURRENT))
 
-        val regionDisplayName = mRegionManager.getRegion().displayName
-        builder.setContentText(mApplication.getString(R.string.x_rankings_have_been_updated,
+        val regionDisplayName = regionManager.getRegion().displayName
+        builder.setContentText(application.getString(R.string.x_rankings_have_been_updated,
                 regionDisplayName))
 
-        if (mRankingsPollingPreferenceStore.vibrationEnabled.get() == true) {
+        if (rankingsPollingPreferenceStore.vibrationEnabled.get() == true) {
             builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS or NotificationCompat.DEFAULT_VIBRATE)
         } else {
             builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS)
         }
 
-        mRankingsPollingPreferenceStore.ringtone.get()?.let {
+        rankingsPollingPreferenceStore.ringtone.get()?.let {
             builder.setSound(it)
         }
 
-        val rankingsDate = mRankingsPollingPreferenceStore.rankingsDate.get()?.let {
+        val rankingsDate = rankingsPollingPreferenceStore.rankingsDate.get()?.let {
             builder.setShowWhen(true)
                     .setWhen(it.date.time)
             it
@@ -88,7 +92,7 @@ class NotificationsManagerImpl(
 
         val time = SimpleDate()
 
-        mTimber.d(TAG, "Showing rankings updated notification! Debug info: " +
+        timber.d(TAG, "Showing rankings updated notification! Debug info: " +
                 "regionDisplayName = $regionDisplayName, " +
                 "rankingsDate = $rankingsDate, " +
                 "time = $time")
@@ -101,7 +105,7 @@ class NotificationsManagerImpl(
     }
 
     override fun show(id: Int, notification: Notification) {
-        mApplication.notificationManagerCompat.notify(id, notification)
+        application.notificationManagerCompat.notify(id, notification)
     }
 
 }

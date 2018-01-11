@@ -28,6 +28,11 @@ abstract class IdentityConstraintLayout : LifecycleConstraintLayout,
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
+    protected open fun clear() {
+        identity = null
+        identityId = null
+    }
+
     protected var identity: AbsPlayer? = null
 
     protected var identityId: String? = null

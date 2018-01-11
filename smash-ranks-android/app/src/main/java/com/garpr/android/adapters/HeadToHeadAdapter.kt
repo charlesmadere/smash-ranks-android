@@ -6,12 +6,7 @@ import com.garpr.android.models.HeadToHeadMatch
 import com.garpr.android.models.LiteTournament
 import com.garpr.android.models.WinsLosses
 
-class HeadToHeadAdapter(
-        context: Context
-) : BaseMultiAdapter(
-        context,
-        LAYOUT_KEY_MAP
-) {
+class HeadToHeadAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
 
     companion object {
         private val LAYOUT_KEY_MAP: Map<Class<*>, Int> = mapOf(
@@ -19,6 +14,14 @@ class HeadToHeadAdapter(
                 LiteTournament::class.java to R.layout.divider_tournament,
                 String::class.java to R.layout.item_string,
                 WinsLosses::class.java to R.layout.item_wins_losses)
+    }
+
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).hashCode().toLong()
     }
 
 }

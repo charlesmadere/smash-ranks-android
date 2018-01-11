@@ -3,6 +3,7 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.*
+import com.garpr.android.misc.MiscUtils
 import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -45,6 +46,15 @@ class Match(
 
             Match(result, player, tournament)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Match && result == other.result && opponent == other.opponent
+                && tournament == other.tournament
+    }
+
+    override fun hashCode(): Int {
+        return MiscUtils.hash(result, opponent, tournament)
     }
 
     override fun describeContents() = 0
