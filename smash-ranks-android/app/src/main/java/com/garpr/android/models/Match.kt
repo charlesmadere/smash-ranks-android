@@ -49,7 +49,7 @@ class Match(
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is Match && result == other.result && opponent == other.opponent
+        return super.equals(other) && other is Match && opponent == other.opponent
                 && tournament == other.tournament
     }
 

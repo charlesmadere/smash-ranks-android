@@ -105,6 +105,10 @@
             android:name=".activities.TournamentsActivity" />
 
         <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="bd8750ba792168bfa4d0bc52e19ad83a6fad27c3" />
 

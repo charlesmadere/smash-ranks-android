@@ -23,7 +23,7 @@ class HeadToHeadMatch(
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is HeadToHeadMatch && result == other.result && player == other.player
+        return super.equals(other) && other is HeadToHeadMatch && player == other.player
                 && opponent == other.opponent
     }
 
