@@ -164,20 +164,11 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
     override fun onRankingsBundleFetched(layout: RankingsLayout) {
-        val region = mRegionManager.getRegion(this)
-        setTitle(region.endpoint.title)
-
-        subtitle = layout.rankingsBundle?.let {
-            getString(R.string.x_updated_y, region.displayName, it.time.shortForm)
-        } ?: region.displayName
-
-        invalidateOptionsMenu()
+        prepareMenuAndTitleAndSubtitle(layout)
     }
 
     override fun onRegionChange(regionManager: RegionManager) {
-        val region = mRegionManager.getRegion(this)
-        setTitle(region.endpoint.title)
-
+        prepareMenuAndTitleAndSubtitle(null)
         mAdapter.refresh()
     }
 
@@ -197,6 +188,18 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         mAdapter = HomePagerAdapter()
         mViewPager.adapter = mAdapter
+    }
+
+    private fun prepareMenuAndTitleAndSubtitle(layout: RankingsLayout?) {
+        title = mRegionManager.getRegion(this).displayName
+
+        val region = mRegionManager.getRegion(this)
+
+        subtitle = layout?.rankingsBundle?.let {
+            getString(R.string.updated_x, it.time.shortForm)
+        } ?: getString(region.endpoint.title)
+
+        invalidateOptionsMenu()
     }
 
     override fun search(query: String?) = mAdapter.search(query)

@@ -83,13 +83,15 @@ object ListUtils {
         var endpoint: Endpoint? = null
 
         for (region in regionsCopy) {
-            if (region is Region && region.activeTf) {
-                if (region.endpoint != endpoint) {
-                    endpoint = region.endpoint
-                    list.add(region.endpoint)
-                }
+            if (region is Region) {
+                if (region.activeTf) {
+                    if (region.endpoint != endpoint) {
+                        endpoint = region.endpoint
+                        list.add(region.endpoint)
+                    }
 
-                list.add(region)
+                    list.add(region)
+                }
             } else {
                 throw RuntimeException("$region is a ${LiteRegion::class.java.simpleName} " +
                         "when it must be a ${Region::class.java.simpleName}")
