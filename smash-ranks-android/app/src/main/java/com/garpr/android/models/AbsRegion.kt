@@ -3,6 +3,7 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.writeBoolean
 import com.garpr.android.extensions.writeInteger
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonSerializer
@@ -10,6 +11,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 abstract class AbsRegion(
+        @SerializedName("activeTF") val activeTf: Boolean = true,
         @SerializedName("ranking_activity_day_limit") val rankingActivityDayLimit: Int? = null,
         @SerializedName("ranking_num_tourneys_attended") val rankingNumTourneysAttended: Int? = null,
         @SerializedName("tournament_qualified_day_limit") val tournamentQualifiedDayLimit: Int? = null,
@@ -60,8 +62,8 @@ abstract class AbsRegion(
             }
 
             when (src.kind) {
-                Kind.FULL -> return@JsonSerializer context.serialize(src, Region::class.java)
-                Kind.LITE -> return@JsonSerializer context.serialize(src, LitePlayer::class.java)
+                Kind.FULL -> context.serialize(src, Region::class.java)
+                Kind.LITE -> context.serialize(src, LitePlayer::class.java)
             }
         }
     }
@@ -86,6 +88,7 @@ abstract class AbsRegion(
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeBoolean(activeTf)
         dest.writeInteger(rankingActivityDayLimit)
         dest.writeInteger(rankingNumTourneysAttended)
         dest.writeInteger(tournamentQualifiedDayLimit)

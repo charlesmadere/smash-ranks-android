@@ -19,8 +19,8 @@ class RegionsBundleApiCall(
 
 
     fun fetch() {
-        serverApi.getRegions(Endpoint.GAR_PR, mGarPrListener)
-        serverApi.getRegions(Endpoint.NOT_GAR_PR, mNotGarPrListener)
+        serverApi.getRegions(Endpoint.GAR_PR, garPrListener)
+        serverApi.getRegions(Endpoint.NOT_GAR_PR, notGarPrListener)
     }
 
     override val isAlive: Boolean
@@ -52,7 +52,7 @@ class RegionsBundleApiCall(
         listener.success(RegionsBundle(regionsList))
     }
 
-    private val mGarPrListener = object : ApiListener<RegionsBundle> {
+    private val garPrListener = object : ApiListener<RegionsBundle> {
         override fun failure(errorCode: Int) {
             garPrRegions = null
             garPrRegionsFound = true
@@ -69,7 +69,7 @@ class RegionsBundleApiCall(
         }
     }
 
-    private val mNotGarPrListener = object : ApiListener<RegionsBundle> {
+    private val notGarPrListener = object : ApiListener<RegionsBundle> {
         override fun failure(errorCode: Int) {
             notGarPrRegions = null
             notGarPrRegionsFound = true

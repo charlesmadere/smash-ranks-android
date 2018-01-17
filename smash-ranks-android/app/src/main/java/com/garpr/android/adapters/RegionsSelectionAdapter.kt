@@ -13,4 +13,12 @@ class RegionsSelectionAdapter(context: Context) : BaseMultiAdapter(context, LAYO
                 Region::class.java to R.layout.item_region_selection)
     }
 
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
 }
