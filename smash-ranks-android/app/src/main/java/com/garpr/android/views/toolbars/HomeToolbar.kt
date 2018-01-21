@@ -16,13 +16,13 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
 
     @Inject
-    lateinit protected var mHomeToolbarManager: HomeToolbarManager
+    protected lateinit var homeToolbarManager: HomeToolbarManager
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -37,8 +37,8 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
             return
         }
 
-        mIdentityManager.addListener(this)
-        mRegionManager.addListener(this)
+        identityManager.addListener(this)
+        regionManager.addListener(this)
     }
 
     override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
@@ -48,8 +48,8 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mIdentityManager.removeListener(this)
-        mRegionManager.removeListener(this)
+        identityManager.removeListener(this)
+        regionManager.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -57,8 +57,8 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-            mIdentityManager.addListener(this)
-            mRegionManager.addListener(this)
+            identityManager.addListener(this)
+            regionManager.addListener(this)
         }
     }
 
@@ -75,7 +75,7 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
             return
         }
 
-        val presentation = mHomeToolbarManager.getPresentation(context)
+        val presentation = homeToolbarManager.getPresentation(context)
         menu.findItem(R.id.miActivityRequirements).isVisible = presentation.mIsActivityRequirementsVisible
         menu.findItem(R.id.miViewYourself).isVisible = presentation.mIsViewYourselfVisible
     }
