@@ -21,7 +21,19 @@ class HeadToHeadAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY
     }
 
     override fun getItemId(position: Int): Long {
-        return getItem(position).hashCode().toLong()
+        val item = getItem(position)
+
+        return when (item) {
+            is String -> {
+                Long.MIN_VALUE
+            }
+            is WinsLosses -> {
+                Long.MIN_VALUE + 1L
+            }
+            else -> {
+                item.hashCode().toLong()
+            }
+        }
     }
 
 }
