@@ -211,6 +211,27 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
     writeBundle(bundle)
 }
 
+fun Parcel.readOptionalRankingCriteria(): RankingCriteria? {
+    val kind = readParcelable<RankingCriteria.Kind>(RankingCriteria.Kind::class.java.classLoader) ?: return null
+
+    return when (kind) {
+        RankingCriteria.Kind.IMPL -> readParcelable(RankingCriteriaImpl::class.java.classLoader)
+    }
+}
+
+fun Parcel.readRankingCriteria(): RankingCriteria {
+    return readOptionalRankingCriteria() ?: throw NullPointerException()
+}
+
+fun Parcel.writeRankingCriteria(rankingCriteria: RankingCriteria?, flags: Int) {
+    if (rankingCriteria == null) {
+        writeParcelable(null, flags)
+    } else {
+        writeParcelable(rankingCriteria.rankingCriteriaKind, flags)
+        writeParcelable(rankingCriteria, flags)
+    }
+}
+
 fun Parcel.readSmashCharacterMap(): Map<String, SmashCharacter>? {
     val bundle = readBundle(String::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, SmashCharacter>()

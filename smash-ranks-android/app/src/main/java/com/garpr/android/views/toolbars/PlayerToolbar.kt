@@ -20,13 +20,13 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         IdentityManager.OnIdentityChangeListener {
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
     @Inject
-    lateinit protected var mPlayerToolbarManager: PlayerToolbarManager
+    protected lateinit var playerToolbarManager: PlayerToolbarManager
 
 
     interface DataProvider {
@@ -47,8 +47,8 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
             return
         }
 
-        mFavoritePlayersManager.addListener(this)
-        mIdentityManager.addListener(this)
+        favoritePlayersManager.addListener(this)
+        identityManager.addListener(this)
     }
 
     override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
@@ -58,8 +58,8 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mFavoritePlayersManager.removeListener(this)
-        mIdentityManager.removeListener(this)
+        favoritePlayersManager.removeListener(this)
+        identityManager.removeListener(this)
     }
 
     override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
@@ -73,8 +73,8 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-            mFavoritePlayersManager.addListener(this)
-            mIdentityManager.addListener(this)
+            favoritePlayersManager.addListener(this)
+            identityManager.addListener(this)
         }
     }
 
@@ -106,23 +106,23 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
             matchResult = null
         }
 
-        val presentation = mPlayerToolbarManager.getPresentation(fullPlayer, matchesBundle,
+        val presentation = playerToolbarManager.getPresentation(fullPlayer, matchesBundle,
                 matchResult)
 
-        menu.findItem(R.id.miAddToFavorites).isVisible = presentation.mIsAddToFavoritesVisible
-        menu.findItem(R.id.miAliases).isVisible = presentation.mIsAliasesVisible
-        menu.findItem(R.id.miFilter).isVisible = presentation.mIsFilterVisible
-        menu.findItem(R.id.miShowAll).isVisible = presentation.mIsFilterAllVisible
-        menu.findItem(R.id.miFilterToLosses).isVisible = presentation.mIsFilterLossesVisible
-        menu.findItem(R.id.miFilterToWins).isVisible = presentation.mIsFilterWinsVisible
-        menu.findItem(R.id.miRemoveFromFavorites).isVisible = presentation.mIsRemoveFromFavoritesVisible
-        menu.findItem(R.id.miShare).isVisible = presentation.mIsShareVisible
+        menu.findItem(R.id.miAddToFavorites).isVisible = presentation.isAddToFavoritesVisible
+        menu.findItem(R.id.miAliases).isVisible = presentation.isAliasesVisible
+        menu.findItem(R.id.miFilter).isVisible = presentation.isFilterVisible
+        menu.findItem(R.id.miShowAll).isVisible = presentation.isFilterAllVisible
+        menu.findItem(R.id.miFilterToLosses).isVisible = presentation.isFilterLossesVisible
+        menu.findItem(R.id.miFilterToWins).isVisible = presentation.isFilterWinsVisible
+        menu.findItem(R.id.miRemoveFromFavorites).isVisible = presentation.isRemoveFromFavoritesVisible
+        menu.findItem(R.id.miShare).isVisible = presentation.isShareVisible
 
         val setAsYourIdentity = menu.findItem(R.id.miSetAsYourIdentity)
-        setAsYourIdentity.isVisible = presentation.mIsSetAsYourIdentityVisible
+        setAsYourIdentity.isVisible = presentation.isSetAsYourIdentityVisible
 
         val viewYourselfVsThisOpponent = menu.findItem(R.id.miViewYourselfVsThisOpponent)
-        viewYourselfVsThisOpponent.isVisible = presentation.mIsViewYourselfVsThisOpponentVisible
+        viewYourselfVsThisOpponent.isVisible = presentation.isViewYourselfVsThisOpponentVisible
     }
 
 }

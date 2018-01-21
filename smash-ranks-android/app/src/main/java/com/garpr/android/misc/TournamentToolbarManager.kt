@@ -5,10 +5,10 @@ import com.garpr.android.models.FullTournament
 interface TournamentToolbarManager {
 
     class Presentation {
-        var mIsShareVisible: Boolean = false
+        var isShareVisible: Boolean = false
             internal set
 
-        var mIsViewTournamentPageVisible: Boolean = false
+        var isViewTournamentPageVisible: Boolean = false
             internal set
     }
 

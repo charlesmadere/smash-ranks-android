@@ -12,8 +12,8 @@ class TournamentToolbarManagerImpl : TournamentToolbarManager {
             return presentation
         }
 
-        presentation.mIsShareVisible = true
-        presentation.mIsViewTournamentPageVisible = tournament.url?.isNotBlank() == true
+        presentation.isShareVisible = true
+        presentation.isViewTournamentPageVisible = tournament.url?.isNotBlank() == true
 
         return presentation
     }

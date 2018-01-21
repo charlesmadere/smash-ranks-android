@@ -9,13 +9,8 @@ class HomeToolbarManagerImpl(
 ) : HomeToolbarManager {
 
     override fun getPresentation(context: Context): Presentation {
-        val presentation = Presentation()
-
         val region = regionManager.getRegion(context)
-        presentation.mIsActivityRequirementsVisible = region.hasActivityRequirements
-        presentation.mIsViewYourselfVisible = identityManager.hasIdentity
-
-        return presentation
+        return Presentation(region.hasActivityRequirements, identityManager.hasIdentity)
     }
 
 }
