@@ -11,13 +11,13 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 abstract class AbsRegion(
-        @SerializedName("activeTF") val activeTf: Boolean = true,
-        @SerializedName("ranking_activity_day_limit") val rankingActivityDayLimit: Int? = null,
-        @SerializedName("ranking_num_tourneys_attended") val rankingNumTourneysAttended: Int? = null,
-        @SerializedName("tournament_qualified_day_limit") val tournamentQualifiedDayLimit: Int? = null,
+        @SerializedName("activeTF") override val activeTf: Boolean = true,
+        @SerializedName("ranking_activity_day_limit") override val rankingActivityDayLimit: Int? = null,
+        @SerializedName("ranking_num_tourneys_attended") override val rankingNumTourneysAttended: Int? = null,
+        @SerializedName("tournament_qualified_day_limit") override val tournamentQualifiedDayLimit: Int? = null,
         @SerializedName("display_name") val displayName: String,
         @SerializedName("id") val id: String
-) : Parcelable {
+) : Parcelable, RankingCriteria {
 
     companion object {
         val ALPHABETICAL_ORDER: Comparator<AbsRegion> = Comparator { o1, o2 ->
