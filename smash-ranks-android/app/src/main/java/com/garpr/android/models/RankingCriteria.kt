@@ -1,8 +1,6 @@
 package com.garpr.android.models
 
-import android.os.Parcelable
-
-interface RankingCriteria : Parcelable {
+interface RankingCriteria {
 
     val activeTf: Boolean
 

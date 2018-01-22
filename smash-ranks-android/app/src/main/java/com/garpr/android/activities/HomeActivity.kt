@@ -49,7 +49,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         private const val TAG = "HomeActivity"
         private val CNAME = HomeActivity::class.java.canonicalName
         private val EXTRA_INITIAL_POSITION = CNAME + ".InitialPosition"
-        private val KEY_CURRENT_POSITION = "CurrentPosition"
+        private const val KEY_CURRENT_POSITION = "CurrentPosition"
 
         const val POSITION_RANKINGS = 0
         const val POSITION_TOURNAMENTS = 1
@@ -238,12 +238,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     private fun showActivityRequirements() {
-        val region = mRegionManager.getRegion(this)
-        val rankingNumTourneysAttended = region.rankingNumTourneysAttended
-        val rankingActivityDayLimit = region.rankingActivityDayLimit
+        val rankingCriteria = mAdapter.rankingsBundle?.rankingCriteria ?: return
+        val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
+        val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
 
         if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw RuntimeException("Region (${region.displayName}) is missing necessary data")
+            throw RuntimeException("Region (${rankingCriteria.displayName}) is missing necessary data")
         }
 
         val numberFormat = NumberFormat.getInstance()
@@ -254,7 +254,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         AlertDialog.Builder(this)
                 .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
-                .setTitle(getString(R.string.x_activity_requirements, region.displayName))
+                .setTitle(getString(R.string.x_activity_requirements, rankingCriteria.displayName))
                 .show()
     }
 
