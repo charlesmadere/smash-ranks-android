@@ -15,7 +15,7 @@ import javax.inject.Inject
 class TournamentToolbar : SearchToolbar {
 
     @Inject
-    lateinit protected var tournamentToolbarManager: TournamentToolbarManager
+    protected lateinit var tournamentToolbarManager: TournamentToolbarManager
 
 
     interface DataProvider {
@@ -52,8 +52,8 @@ class TournamentToolbar : SearchToolbar {
             activity.fullTournament else null
 
         val presentation = tournamentToolbarManager.getPresentation(fullTournament)
-        menu.findItem(R.id.miShare).isVisible = presentation.mIsShareVisible
-        menu.findItem(R.id.miViewTournamentPage).isVisible = presentation.mIsViewTournamentPageVisible
+        menu.findItem(R.id.miShare).isVisible = presentation.isShareVisible
+        menu.findItem(R.id.miViewTournamentPage).isVisible = presentation.isViewTournamentPageVisible
     }
 
 }

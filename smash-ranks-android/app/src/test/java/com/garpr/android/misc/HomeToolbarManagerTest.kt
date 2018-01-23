@@ -16,25 +16,25 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class HomeToolbarManagerTest : BaseTest() {
 
-    lateinit private var hax: AbsPlayer
-    lateinit private var imyt: AbsPlayer
-    lateinit private var norcal: Region
-    lateinit private var nyc: Region
+    private lateinit var hax: AbsPlayer
+    private lateinit var imyt: AbsPlayer
+    private lateinit var norcal: Region
+    private lateinit var nyc: Region
 
     @Inject
-    lateinit protected var application: Application
+    protected lateinit var application: Application
 
     @Inject
-    lateinit protected var homeToolbarManager: HomeToolbarManager
+    protected lateinit var homeToolbarManager: HomeToolbarManager
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
     @Inject
-    lateinit protected var identityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
     @Inject
-    lateinit protected var regionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     companion object {
@@ -63,8 +63,8 @@ class HomeToolbarManagerTest : BaseTest() {
         regionManager.setRegion(norcal)
 
         val presentation = homeToolbarManager.getPresentation(application)
-        assertTrue(presentation.mIsActivityRequirementsVisible)
-        assertTrue(presentation.mIsViewYourselfVisible)
+        assertTrue(presentation.isActivityRequirementsVisible)
+        assertTrue(presentation.isViewYourselfVisible)
     }
 
     @Test
@@ -74,8 +74,8 @@ class HomeToolbarManagerTest : BaseTest() {
         regionManager.setRegion(norcal)
 
         val presentation = homeToolbarManager.getPresentation(application)
-        assertTrue(presentation.mIsActivityRequirementsVisible)
-        assertFalse(presentation.mIsViewYourselfVisible)
+        assertTrue(presentation.isActivityRequirementsVisible)
+        assertFalse(presentation.isViewYourselfVisible)
     }
 
     @Test
@@ -85,8 +85,8 @@ class HomeToolbarManagerTest : BaseTest() {
         regionManager.setRegion(nyc)
 
         val presentation = homeToolbarManager.getPresentation(application)
-        assertFalse(presentation.mIsActivityRequirementsVisible)
-        assertTrue(presentation.mIsViewYourselfVisible)
+        assertFalse(presentation.isActivityRequirementsVisible)
+        assertTrue(presentation.isViewYourselfVisible)
     }
 
     @Test
@@ -96,8 +96,8 @@ class HomeToolbarManagerTest : BaseTest() {
         regionManager.setRegion(nyc)
 
         val presentation = homeToolbarManager.getPresentation(application)
-        assertFalse(presentation.mIsActivityRequirementsVisible)
-        assertFalse(presentation.mIsViewYourselfVisible)
+        assertFalse(presentation.isActivityRequirementsVisible)
+        assertFalse(presentation.isViewYourselfVisible)
     }
 
 }

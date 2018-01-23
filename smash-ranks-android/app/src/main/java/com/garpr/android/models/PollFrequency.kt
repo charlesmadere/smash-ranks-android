@@ -28,11 +28,11 @@ enum class PollFrequency constructor(
     @SerializedName("every_5_days")
     EVERY_5_DAYS(R.string.every_5_days, TimeUnit.DAYS.toMillis(5)),
 
-    @SerializedName("every_10_days")
-    EVERY_10_DAYS(R.string.every_10_days, TimeUnit.DAYS.toMillis(10)),
-
     @SerializedName("weekly")
     WEEKLY(R.string.weekly, TimeUnit.DAYS.toMillis(7)),
+
+    @SerializedName("every_10_days")
+    EVERY_10_DAYS(R.string.every_10_days, TimeUnit.DAYS.toMillis(10)),
 
     @SerializedName("every_2_weeks")
     EVERY_2_WEEKS(R.string.every_2_weeks, TimeUnit.DAYS.toMillis(14));

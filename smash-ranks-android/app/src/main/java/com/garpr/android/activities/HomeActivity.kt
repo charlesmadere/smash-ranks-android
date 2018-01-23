@@ -49,7 +49,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         private const val TAG = "HomeActivity"
         private val CNAME = HomeActivity::class.java.canonicalName
         private val EXTRA_INITIAL_POSITION = CNAME + ".InitialPosition"
-        private val KEY_CURRENT_POSITION = "CurrentPosition"
+        private const val KEY_CURRENT_POSITION = "CurrentPosition"
 
         const val POSITION_RANKINGS = 0
         const val POSITION_TOURNAMENTS = 1
@@ -164,20 +164,11 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
     override fun onRankingsBundleFetched(layout: RankingsLayout) {
-        val region = mRegionManager.getRegion(this)
-        setTitle(region.endpoint.title)
-
-        subtitle = layout.rankingsBundle?.let {
-            getString(R.string.x_updated_y, region.displayName, it.time.shortForm)
-        } ?: region.displayName
-
-        invalidateOptionsMenu()
+        prepareMenuAndTitleAndSubtitle(layout)
     }
 
     override fun onRegionChange(regionManager: RegionManager) {
-        val region = mRegionManager.getRegion(this)
-        setTitle(region.endpoint.title)
-
+        prepareMenuAndTitleAndSubtitle(null)
         mAdapter.refresh()
     }
 
@@ -197,6 +188,18 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         mAdapter = HomePagerAdapter()
         mViewPager.adapter = mAdapter
+    }
+
+    private fun prepareMenuAndTitleAndSubtitle(layout: RankingsLayout?) {
+        title = mRegionManager.getRegion(this).displayName
+
+        val region = mRegionManager.getRegion(this)
+
+        subtitle = layout?.rankingsBundle?.let {
+            getString(R.string.updated_x, it.time.shortForm)
+        } ?: getString(region.endpoint.title)
+
+        invalidateOptionsMenu()
     }
 
     override fun search(query: String?) = mAdapter.search(query)
@@ -238,12 +241,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     private fun showActivityRequirements() {
-        val region = mRegionManager.getRegion(this)
-        val rankingNumTourneysAttended = region.rankingNumTourneysAttended
-        val rankingActivityDayLimit = region.rankingActivityDayLimit
+        val rankingCriteria = mAdapter.rankingsBundle?.rankingCriteria ?: return
+        val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
+        val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
 
         if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw RuntimeException("Region (${region.displayName}) is missing necessary data")
+            throw RuntimeException("Region (${rankingCriteria.displayName}) is missing necessary data")
         }
 
         val numberFormat = NumberFormat.getInstance()
@@ -254,7 +257,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         AlertDialog.Builder(this)
                 .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
-                .setTitle(getString(R.string.x_activity_requirements, region.displayName))
+                .setTitle(getString(R.string.x_activity_requirements, rankingCriteria.displayName))
                 .show()
     }
 

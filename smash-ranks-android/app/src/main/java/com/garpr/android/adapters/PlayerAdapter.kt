@@ -9,11 +9,19 @@ import com.garpr.android.models.Rating
 class PlayerAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
 
     companion object {
-        private val LAYOUT_KEY_MAP: Map<Class<*>, Int> = mapOf(
+        private val LAYOUT_KEY_MAP = mapOf<Class<*>, Int>(
                 LiteTournament::class.java to R.layout.divider_tournament,
                 Match::class.java to R.layout.item_match,
                 Rating::class.java to R.layout.item_rating,
                 String::class.java to R.layout.item_string)
+    }
+
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).hashCode().toLong()
     }
 
 }

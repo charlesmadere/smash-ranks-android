@@ -245,8 +245,8 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
             mRecyclerView.visibility = View.VISIBLE
         }
 
-        prepareMenuAndSubtitle()
         mRefreshLayout.isRefreshing = false
+        prepareMenuAndSubtitle()
     }
 
     private fun showError(errorCode: Int) {
@@ -262,6 +262,8 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     override fun success(`object`: HeadToHead?) {
         mHeadToHead = `object`
+        mList = null
+        mMatchResult = null
         showData()
     }
 

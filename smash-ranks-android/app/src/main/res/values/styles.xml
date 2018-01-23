@@ -98,6 +98,16 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="NoContentLinearLayoutBody.Image">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:id">@id/noContentImage</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:layout_marginBottom">@dimen/root_padding_double</item>
+        <item name="android:layout_marginEnd">@dimen/root_padding_double</item>
+        <item name="android:layout_marginStart">@dimen/root_padding_double</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+
     <style name="NoContentLinearLayoutBody.Line1">
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:id">@id/noContentLine1</item>

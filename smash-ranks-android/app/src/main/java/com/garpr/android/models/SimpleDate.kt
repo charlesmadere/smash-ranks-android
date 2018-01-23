@@ -24,15 +24,15 @@ data class SimpleDate(
         @JvmField
         val CREATOR = createParcel { SimpleDate(Date(it.readLong())) }
 
-        val CHRONOLOGICAL_ORDER: Comparator<SimpleDate> = Comparator { o1, o2 ->
+        val CHRONOLOGICAL_ORDER = Comparator<SimpleDate> { o1, o2 ->
             o1.date.compareTo(o2.date)
         }
 
-        val REVERSE_CHRONOLOGICAL_ORDER: Comparator<SimpleDate> = Comparator { o1, o2 ->
+        val REVERSE_CHRONOLOGICAL_ORDER = Comparator<SimpleDate> { o1, o2 ->
             CHRONOLOGICAL_ORDER.compare(o2, o1)
         }
 
-        val JSON_DESERIALIZER: JsonDeserializer<SimpleDate> = JsonDeserializer<SimpleDate> { json, typeOfT, context ->
+        val JSON_DESERIALIZER = JsonDeserializer<SimpleDate> { json, typeOfT, context ->
             if (json == null || json.isJsonNull) {
                 return@JsonDeserializer null
             }
@@ -60,7 +60,7 @@ data class SimpleDate(
             throw JsonParseException("unable to parse date: " + json)
         }
 
-        val JSON_SERIALIZER: JsonSerializer<SimpleDate> = JsonSerializer { src, typeOfSrc, context ->
+        val JSON_SERIALIZER = JsonSerializer<SimpleDate> { src, typeOfSrc, context ->
             if (src == null) {
                 null
             } else {

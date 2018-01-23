@@ -14,7 +14,7 @@ data class SmashRosterSyncResult(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { SmashRosterSyncResult(it.readBoolean(), it.readInteger(),
+        val CREATOR = createParcel { SmashRosterSyncResult(it.readBoolean(), it.readOptionalInteger(),
                 it.readParcelable(SimpleDate::class.java.classLoader), it.readString()) }
     }
 

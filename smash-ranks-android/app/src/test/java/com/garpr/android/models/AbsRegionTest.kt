@@ -14,15 +14,15 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class AbsRegionTest : BaseTest() {
 
-    lateinit private var fullRegion1: AbsRegion
-    lateinit private var fullRegion2: AbsRegion
-    lateinit private var fullRegion3: AbsRegion
-    lateinit private var liteRegion1: AbsRegion
-    lateinit private var liteRegion2: AbsRegion
-    lateinit private var liteRegion3: AbsRegion
+    private lateinit var fullRegion1: AbsRegion
+    private lateinit var fullRegion2: AbsRegion
+    private lateinit var fullRegion3: AbsRegion
+    private lateinit var liteRegion1: AbsRegion
+    private lateinit var liteRegion2: AbsRegion
+    private lateinit var liteRegion3: AbsRegion
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
 
     companion object {

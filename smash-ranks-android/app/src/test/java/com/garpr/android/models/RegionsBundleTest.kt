@@ -13,10 +13,10 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class RegionsBundleTest : BaseTest() {
 
-    lateinit private var regionsBundle: RegionsBundle
+    private lateinit var regionsBundle: RegionsBundle
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
 
     companion object {

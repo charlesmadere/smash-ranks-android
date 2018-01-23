@@ -6,37 +6,18 @@ import com.garpr.android.models.MatchesBundle
 
 interface PlayerToolbarManager {
 
-    class Presentation {
-        var mIsAddToFavoritesVisible: Boolean = false
-            internal set
-
-        var mIsAliasesVisible: Boolean = false
-            internal set
-
-        var mIsFilterVisible: Boolean = false
-            internal set
-
-        var mIsFilterAllVisible: Boolean = false
-            internal set
-
-        var mIsFilterLossesVisible: Boolean = false
-            internal set
-
-        var mIsFilterWinsVisible: Boolean = false
-            internal set
-
-        var mIsRemoveFromFavoritesVisible: Boolean = false
-            internal set
-
-        var mIsSetAsYourIdentityVisible: Boolean = false
-            internal set
-
-        var mIsShareVisible: Boolean = false
-            internal set
-
-        var mIsViewYourselfVsThisOpponentVisible: Boolean = false
-            internal set
-    }
+    data class Presentation(
+            val isAddToFavoritesVisible: Boolean = false,
+            val isAliasesVisible: Boolean = false,
+            val isFilterVisible: Boolean = false,
+            val isFilterAllVisible: Boolean = false,
+            val isFilterLossesVisible: Boolean = false,
+            val isFilterWinsVisible: Boolean = false,
+            val isRemoveFromFavoritesVisible: Boolean = false,
+            val isSetAsYourIdentityVisible: Boolean = false,
+            val isShareVisible: Boolean = false,
+            val isViewYourselfVsThisOpponentVisible: Boolean = false
+    )
 
     fun getPresentation(fullPlayer: FullPlayer?, matchesBundle: MatchesBundle?,
             matchResult: MatchResult?): Presentation

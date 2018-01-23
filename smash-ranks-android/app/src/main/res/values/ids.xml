@@ -6,6 +6,7 @@
     <item name="empty" type="id" />
     <item name="error" type="id" />
     <item name="icon" type="id" />
+    <item name="noContentImage" type="id" />
     <item name="noContentLine1" type="id" />
     <item name="noContentLine2" type="id" />
     <item name="playerName" type="id" />

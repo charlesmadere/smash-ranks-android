@@ -15,15 +15,15 @@ abstract class AbsTournament(
 ) : Parcelable {
 
     companion object {
-        val CHRONOLOGICAL_ORDER: Comparator<AbsTournament> = Comparator { o1, o2 ->
+        val CHRONOLOGICAL_ORDER = Comparator<AbsTournament> { o1, o2 ->
             SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.date, o2.date)
         }
 
-        val REVERSE_CHRONOLOGICAL_ORDER: Comparator<AbsTournament> = Comparator { o1, o2 ->
+        val REVERSE_CHRONOLOGICAL_ORDER = Comparator<AbsTournament> { o1, o2 ->
             CHRONOLOGICAL_ORDER.compare(o2, o1)
         }
 
-        val JSON_DESERIALIZER: JsonDeserializer<AbsTournament> = JsonDeserializer<AbsTournament> { json, typeOfT, context ->
+        val JSON_DESERIALIZER = JsonDeserializer<AbsTournament> { json, typeOfT, context ->
             if (json == null || json.isJsonNull) {
                 return@JsonDeserializer null
             }

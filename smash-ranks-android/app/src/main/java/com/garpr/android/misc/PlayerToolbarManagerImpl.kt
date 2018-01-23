@@ -6,41 +6,43 @@ import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 
 class PlayerToolbarManagerImpl(
-        val mFavoritePlayersManager: FavoritePlayersManager,
-        val mIdentityManager: IdentityManager
+        private val favoritePlayersManager: FavoritePlayersManager,
+        private val identityManager: IdentityManager
 ) : PlayerToolbarManager {
 
     override fun getPresentation(fullPlayer: FullPlayer?, matchesBundle: MatchesBundle?,
             matchResult: MatchResult?): Presentation {
-        val presentation = Presentation()
+        var presentation = Presentation()
 
         if (fullPlayer == null) {
             return presentation
         }
 
-        if (fullPlayer in mFavoritePlayersManager) {
-            presentation.mIsRemoveFromFavoritesVisible = true
+        presentation = if (fullPlayer in favoritePlayersManager) {
+            presentation.copy(isRemoveFromFavoritesVisible = true)
         } else {
-            presentation.mIsAddToFavoritesVisible = true
+            presentation.copy(isAddToFavoritesVisible = true)
         }
 
-        presentation.mIsAliasesVisible = fullPlayer.aliases?.isNotEmpty() == true
+        presentation = presentation.copy(isAliasesVisible = fullPlayer.aliases?.isNotEmpty() == true)
 
         if (matchesBundle?.matches?.isNotEmpty() == true) {
-            presentation.mIsFilterVisible = true
-            presentation.mIsFilterAllVisible = matchResult != null
-            presentation.mIsFilterLossesVisible = matchResult != MatchResult.LOSE
-            presentation.mIsFilterWinsVisible = matchResult != MatchResult.WIN
+            presentation = presentation.copy(
+                    isFilterVisible = true,
+                    isFilterAllVisible = matchResult != null,
+                    isFilterLossesVisible = matchResult != MatchResult.LOSE,
+                    isFilterWinsVisible = matchResult != MatchResult.WIN
+            )
         }
 
-        presentation.mIsShareVisible = true
+        presentation = presentation.copy(isShareVisible = true)
 
-        if (mIdentityManager.hasIdentity) {
-            if (!mIdentityManager.isPlayer(fullPlayer)) {
-                presentation.mIsViewYourselfVsThisOpponentVisible = true
+        if (identityManager.hasIdentity) {
+            if (!identityManager.isPlayer(fullPlayer)) {
+                presentation = presentation.copy(isViewYourselfVsThisOpponentVisible = true)
             }
         } else {
-            presentation.mIsSetAsYourIdentityVisible = true
+            presentation = presentation.copy(isSetAsYourIdentityVisible = true)
         }
 
         return presentation

@@ -3,12 +3,14 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-
+import com.garpr.android.extensions.readAbsRegion
+import com.garpr.android.extensions.writeAbsRegion
 import com.google.gson.annotations.SerializedName
 
 data class RankingsBundle(
         @SerializedName("ranking") val rankings: List<RankedPlayer>? = null,
         @SerializedName("tournaments") val tournaments: List<String>? = null,
+        @SerializedName("ranking_criteria") val rankingCriteria: AbsRegion,
         @SerializedName("time") val time: SimpleDate,
         @SerializedName("id") val id: String,
         @SerializedName("region") val region: String
@@ -17,8 +19,9 @@ data class RankingsBundle(
     companion object {
         @JvmField
         val CREATOR = createParcel { RankingsBundle(it.createTypedArrayList(RankedPlayer.CREATOR),
-                it.createStringArrayList(), it.readParcelable(SimpleDate::class.java.classLoader),
-                it.readString(), it.readString()) }
+                it.createStringArrayList(), it.readAbsRegion(),
+                it.readParcelable(SimpleDate::class.java.classLoader), it.readString(),
+                it.readString()) }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -39,6 +42,7 @@ data class RankingsBundle(
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeTypedList(rankings)
         dest.writeStringList(tournaments)
+        dest.writeAbsRegion(rankingCriteria, flags)
         dest.writeParcelable(time, flags)
         dest.writeString(id)
         dest.writeString(region)

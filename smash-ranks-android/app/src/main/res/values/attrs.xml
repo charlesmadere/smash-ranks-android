@@ -16,6 +16,7 @@
     </declare-styleable>
 
     <declare-styleable name="NoContentLinearLayout">
+        <attr name="imageSrc" format="reference" />
         <attr name="line1Text" format="string" />
         <attr name="line2Text" format="string" />
     </declare-styleable>

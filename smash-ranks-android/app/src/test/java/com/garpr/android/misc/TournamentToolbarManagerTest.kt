@@ -43,24 +43,24 @@ class TournamentToolbarManagerTest : BaseTest() {
     @Throws(Exception::class)
     fun testGetPresentationWithNull() {
         val presentation = tournamentToolbarManager.getPresentation(null)
-        assertFalse(presentation.mIsShareVisible)
-        assertFalse(presentation.mIsViewTournamentPageVisible)
+        assertFalse(presentation.isShareVisible)
+        assertFalse(presentation.isViewTournamentPageVisible)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetPresentationWithTournamentWithUrl() {
         val presentation = tournamentToolbarManager.getPresentation(tournamentWithUrl)
-        assertTrue(presentation.mIsShareVisible)
-        assertTrue(presentation.mIsViewTournamentPageVisible)
+        assertTrue(presentation.isShareVisible)
+        assertTrue(presentation.isViewTournamentPageVisible)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetPresentationWithTournamentWithoutUrl() {
         val presentation = tournamentToolbarManager.getPresentation(tournamentWithoutUrl)
-        assertTrue(presentation.mIsShareVisible)
-        assertFalse(presentation.mIsViewTournamentPageVisible)
+        assertTrue(presentation.isShareVisible)
+        assertFalse(presentation.isViewTournamentPageVisible)
     }
 
 }

@@ -3,6 +3,7 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.*
+import com.garpr.android.misc.MiscUtils
 import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -20,15 +21,15 @@ class Match(
         val CREATOR = createParcel { Match(it.readParcelable(MatchResult::class.java.classLoader),
                 it.readAbsPlayer(), it.readAbsTournament()) }
 
-        val CHRONOLOGICAL_ORDER: Comparator<Match> = Comparator { o1, o2 ->
+        val CHRONOLOGICAL_ORDER = Comparator<Match> { o1, o2 ->
             SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.tournament.date, o2.tournament.date)
         }
 
-        val REVERSE_CHRONOLOGICAL_ORDER: Comparator<Match> = Comparator { o1, o2 ->
+        val REVERSE_CHRONOLOGICAL_ORDER = Comparator<Match> { o1, o2 ->
             CHRONOLOGICAL_ORDER.compare(o2, o1)
         }
 
-        val JSON_DESERIALIZER: JsonDeserializer<Match> = JsonDeserializer<Match> { json, typeOfT, context ->
+        val JSON_DESERIALIZER = JsonDeserializer<Match> { json, typeOfT, context ->
             if (json == null || json.isJsonNull) {
                 return@JsonDeserializer null
             }
@@ -45,6 +46,15 @@ class Match(
 
             Match(result, player, tournament)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other) && other is Match && opponent == other.opponent
+                && tournament == other.tournament
+    }
+
+    override fun hashCode(): Int {
+        return MiscUtils.hash(result, opponent, tournament)
     }
 
     override fun describeContents() = 0

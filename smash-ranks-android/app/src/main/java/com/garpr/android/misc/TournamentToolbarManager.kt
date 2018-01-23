@@ -4,13 +4,10 @@ import com.garpr.android.models.FullTournament
 
 interface TournamentToolbarManager {
 
-    class Presentation {
-        var mIsShareVisible: Boolean = false
-            internal set
-
-        var mIsViewTournamentPageVisible: Boolean = false
-            internal set
-    }
+    data class Presentation(
+            val isShareVisible: Boolean = false,
+            val isViewTournamentPageVisible: Boolean = false
+    )
 
     fun getPresentation(tournament: FullTournament?): Presentation
 

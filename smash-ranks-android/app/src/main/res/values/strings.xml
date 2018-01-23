@@ -52,7 +52,7 @@
     <string name="google_play_services_error_cant_be_resolved">Sorry, but your Google Play Services error (%1$d) can\'t be resolved.</string>
     <string name="google_play_services_error_has_been_resolved">Google Play Services error has been resolved!</string>
     <string name="head_to_head">Head to Head</string>
-    <string name="head_to_head_swipe_to_refresh_to_check_again">Swipe down to refresh to check again. This probably means that these two players have never played in tournament before.</string>
+    <string name="head_to_head_swipe_to_refresh_to_check_again">Swipe down to refresh to check again. This probably means that these two competitors have never played in tournament before.</string>
     <string name="ice_climbers">Ice Climbers</string>
     <string name="identity">Identity</string>
     <string name="identity_saved_">Identity saved!</string>
@@ -81,7 +81,6 @@
     <string name="no_head_to_head_data">No head to head data</string>
     <string name="no_log_entries">No log entries</string>
     <string name="no_matches">No matches</string>
-    <string name="no_match_history">No match history</string>
     <string name="no_player_data">No player data</string>
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
@@ -135,6 +134,7 @@
     <string name="tag_and_message">%1$s: %2$s</string>
     <string name="theme">Theme</string>
     <string name="the_app_will_now_restart">The app will now restart.</string>
+    <string name="these_two_competitors_have_never_played_in_tournament_before">These two competitors have never played in tournament before.</string>
     <string name="this_tournament_has_no_matches">This tournament has no matches</string>
     <string name="this_tournament_has_no_players">This tournament has no players</string>
     <string name="tournaments">Tournaments</string>
@@ -142,7 +142,7 @@
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
     <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
-    <string name="x_updated_y">%1$s updated %2$s</string>
+    <string name="updated_x">Updated %1$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
     <string name="version_x">Version %1$s</string>
     <string name="vibrate">Vibrate</string>

@@ -4,13 +4,10 @@ import android.content.Context
 
 interface HomeToolbarManager {
 
-    class Presentation {
-        var mIsActivityRequirementsVisible: Boolean = false
-            internal set
-
-        var mIsViewYourselfVisible: Boolean = false
-            internal set
-    }
+    data class Presentation(
+            val isActivityRequirementsVisible: Boolean = false,
+            val isViewYourselfVisible: Boolean = false
+    )
 
     fun getPresentation(context: Context): Presentation
 

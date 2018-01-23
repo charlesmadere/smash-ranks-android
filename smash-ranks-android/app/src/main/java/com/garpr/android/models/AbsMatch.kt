@@ -2,11 +2,20 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.garpr.android.misc.MiscUtils
 import com.google.gson.annotations.SerializedName
 
 abstract class AbsMatch(
         @SerializedName("result") val result: MatchResult
 ) : Parcelable {
+
+    override fun equals(other: Any?): Boolean {
+        return other is AbsMatch && result == other.result
+    }
+
+    override fun hashCode(): Int {
+        return MiscUtils.hash(result)
+    }
 
     override fun describeContents() = 0
 

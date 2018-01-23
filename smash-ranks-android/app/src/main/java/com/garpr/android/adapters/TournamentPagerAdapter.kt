@@ -16,11 +16,11 @@ import com.garpr.android.views.TournamentPlayersLayout
 import java.lang.ref.WeakReference
 
 class TournamentPagerAdapter(
-        private val mContext: Context,
-        private val mTournament: FullTournament
+        private val context: Context,
+        private val tournament: FullTournament
 ) : PagerAdapter(), Searchable {
 
-    private val mPages = SparseArrayCompat<WeakReference<TournamentPageLayout>>(count)
+    private val pages = SparseArrayCompat<WeakReference<TournamentPageLayout>>(count)
 
 
     companion object {
@@ -30,15 +30,15 @@ class TournamentPagerAdapter(
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
-        mPages.removeAt(position)
+        pages.removeAt(position)
     }
 
     override fun getCount() = 2
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            POSITION_MATCHES -> mContext.getString(R.string.matches)
-            POSITION_PLAYERS -> mContext.getString(R.string.players)
+            POSITION_MATCHES -> context.getString(R.string.matches)
+            POSITION_PLAYERS -> context.getString(R.string.players)
             else -> throw RuntimeException("illegal position: " + position)
         }
     }
@@ -50,9 +50,9 @@ class TournamentPagerAdapter(
             else -> throw RuntimeException("illegal position: " + position)
         }
 
-        view.setContent(mTournament)
+        view.setContent(tournament)
         container.addView(view)
-        mPages.put(position, WeakReference(view))
+        pages.put(position, WeakReference(view))
 
         return view
     }
@@ -62,7 +62,7 @@ class TournamentPagerAdapter(
     }
 
     fun onTabReselected(position: Int) {
-        val view = mPages[position].get()
+        val view = pages[position].get()
 
         if (view?.isAlive == true) {
             view.smoothScrollToTop()
@@ -70,8 +70,8 @@ class TournamentPagerAdapter(
     }
 
     override fun search(query: String?) {
-        for (i in 0 until mPages.size()) {
-            val reference = mPages[i]
+        for (i in 0 until pages.size()) {
+            val reference = pages[i]
 
             if (reference != null) {
                 val view = reference.get()

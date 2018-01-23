@@ -20,7 +20,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
         Preference.OnPreferenceChangeListener<PollFrequency>, View.OnClickListener {
 
     @Inject
-    protected lateinit var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,21 +39,21 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
             return
         }
 
-        mRankingsPollingPreferenceStore.pollFrequency.addListener(this)
+        rankingsPollingPreferenceStore.pollFrequency.addListener(this)
         refresh()
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         dialog.dismiss()
 
-        val current = mRankingsPollingPreferenceStore.pollFrequency.get()
+        val current = rankingsPollingPreferenceStore.pollFrequency.get()
         val selected = PollFrequency.values()[which]
 
         if (current == selected) {
             return
         }
 
-        mRankingsPollingPreferenceStore.pollFrequency.set(selected)
+        rankingsPollingPreferenceStore.pollFrequency.set(selected)
         refresh()
     }
 
@@ -64,7 +64,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
             items[i] = resources.getText(PollFrequency.values()[i].textResId)
         }
 
-        val current = mRankingsPollingPreferenceStore.pollFrequency.get()
+        val current = rankingsPollingPreferenceStore.pollFrequency.get()
         val checkedItem = current?.ordinal ?: -1
 
         AlertDialog.Builder(context)
@@ -75,7 +75,8 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mRankingsPollingPreferenceStore.pollFrequency.removeListener(this)
+
+        rankingsPollingPreferenceStore.pollFrequency.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -83,7 +84,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-            mRankingsPollingPreferenceStore.pollFrequency.addListener(this)
+            rankingsPollingPreferenceStore.pollFrequency.addListener(this)
         }
 
         setOnClickListener(this)
@@ -105,7 +106,7 @@ class PollFrequencyPreferenceView : SimplePreferenceView, DialogInterface.OnClic
     override fun refresh() {
         super.refresh()
 
-        val pollFrequency = mRankingsPollingPreferenceStore.pollFrequency.get()
+        val pollFrequency = rankingsPollingPreferenceStore.pollFrequency.get()
         descriptionText = resources.getText(pollFrequency?.textResId ?: R.string.not_yet_set)
     }
 

@@ -3,6 +3,7 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.writeBoolean
 import com.garpr.android.extensions.writeInteger
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonSerializer
@@ -10,19 +11,20 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 abstract class AbsRegion(
-        @SerializedName("ranking_activity_day_limit") val rankingActivityDayLimit: Int? = null,
-        @SerializedName("ranking_num_tourneys_attended") val rankingNumTourneysAttended: Int? = null,
-        @SerializedName("tournament_qualified_day_limit") val tournamentQualifiedDayLimit: Int? = null,
+        @SerializedName("activeTF") val activeTf: Boolean? = null,
+        @SerializedName("ranking_activity_day_limit") override val rankingActivityDayLimit: Int? = null,
+        @SerializedName("ranking_num_tourneys_attended") override val rankingNumTourneysAttended: Int? = null,
+        @SerializedName("tournament_qualified_day_limit") override val tournamentQualifiedDayLimit: Int? = null,
         @SerializedName("display_name") val displayName: String,
         @SerializedName("id") val id: String
-) : Parcelable {
+) : Parcelable, RankingCriteria {
 
     companion object {
-        val ALPHABETICAL_ORDER: Comparator<AbsRegion> = Comparator { o1, o2 ->
+        val ALPHABETICAL_ORDER = Comparator<AbsRegion> { o1, o2 ->
             o1.displayName.compareTo(o2.displayName, ignoreCase = true)
         }
 
-        val ENDPOINT_ORDER: Comparator<AbsRegion> = Comparator { o1, o2 ->
+        val ENDPOINT_ORDER = Comparator<AbsRegion> { o1, o2 ->
             var result = 0
 
             if (o1 is Region && o2 is Region) {
@@ -40,7 +42,7 @@ abstract class AbsRegion(
             result
         }
 
-        val JSON_DESERIALIZER: JsonDeserializer<AbsRegion> = JsonDeserializer<AbsRegion> { json, typeOfT, context ->
+        val JSON_DESERIALIZER = JsonDeserializer<AbsRegion> { json, typeOfT, context ->
             if (json == null || json.isJsonNull) {
                 return@JsonDeserializer null
             }
@@ -54,14 +56,14 @@ abstract class AbsRegion(
             }
         }
 
-        val JSON_SERIALIZER: JsonSerializer<AbsRegion> = JsonSerializer { src, typeOfSrc, context ->
+        val JSON_SERIALIZER = JsonSerializer<AbsRegion> { src, typeOfSrc, context ->
             if (src == null) {
                 return@JsonSerializer null
             }
 
             when (src.kind) {
-                Kind.FULL -> return@JsonSerializer context.serialize(src, Region::class.java)
-                Kind.LITE -> return@JsonSerializer context.serialize(src, LitePlayer::class.java)
+                Kind.FULL -> context.serialize(src, Region::class.java)
+                Kind.LITE -> context.serialize(src, LitePlayer::class.java)
             }
         }
     }
@@ -73,9 +75,10 @@ abstract class AbsRegion(
     val hasActivityRequirements
         get() = rankingActivityDayLimit != null && rankingNumTourneysAttended != null
 
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
+    override fun hashCode() = id.hashCode()
+
+    override val isActive: Boolean
+        get() = activeTf ?: true
 
     abstract val kind: Kind
 
@@ -86,6 +89,7 @@ abstract class AbsRegion(
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeBoolean(activeTf)
         dest.writeInteger(rankingActivityDayLimit)
         dest.writeInteger(rankingNumTourneysAttended)
         dest.writeInteger(tournamentQualifiedDayLimit)

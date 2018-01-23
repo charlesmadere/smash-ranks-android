@@ -4,21 +4,28 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
 import android.support.annotation.AttrRes
+import android.support.annotation.DrawableRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.garpr.android.R
+import kotterknife.bindOptionalView
 import kotterknife.bindView
 
 open class NoContentLinearLayout : LinearLayout {
 
-    private var mLine1Text: CharSequence? = null
-    private var mLine2Text: CharSequence? = null
+    @DrawableRes
+    private var imageResId: Int = 0
 
-    protected val mLine1: TextView by bindView(R.id.noContentLine1)
-    protected val mLine2: TextView by bindView(R.id.noContentLine2)
+    private var line1Text: CharSequence? = null
+    private var line2Text: CharSequence? = null
+
+    protected val image: ImageView? by bindOptionalView(R.id.noContentImage)
+    protected val line1: TextView by bindView(R.id.noContentLine1)
+    protected val line2: TextView by bindView(R.id.noContentLine2)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -39,28 +46,41 @@ open class NoContentLinearLayout : LinearLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        LayoutInflater.from(context).inflate(R.layout.no_content_linear_layout_body, this,
-                true)
+        val layoutInflater = LayoutInflater.from(context)
 
-        setLine1Text(mLine1Text)
-        setLine2Text(mLine2Text)
+        if (imageResId == 0) {
+            layoutInflater.inflate(R.layout.no_content_linear_layout_body, this,
+                    true)
+        } else {
+            layoutInflater.inflate(R.layout.no_content_linear_layout_body_with_image, this,
+                    true)
+            image?.setImageResource(imageResId)
+        }
+
+        setLine1Text(line1Text)
+        setLine2Text(line2Text)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.NoContentLinearLayout)
-        mLine1Text = ta.getText(R.styleable.NoContentLinearLayout_line1Text)
-        mLine2Text = ta.getText(R.styleable.NoContentLinearLayout_line2Text)
+        line1Text = ta.getText(R.styleable.NoContentLinearLayout_line1Text)
+        line2Text = ta.getText(R.styleable.NoContentLinearLayout_line2Text)
+
+        if (ta.hasValue(R.styleable.NoContentLinearLayout_imageSrc)) {
+            imageResId = ta.getResourceId(R.styleable.NoContentLinearLayout_imageSrc, 0)
+        }
+
         ta.recycle()
     }
 
     fun setLine1Text(text: CharSequence?) {
-        mLine1Text = text
-        mLine1.text = text
+        line1Text = text
+        line1.text = text
     }
 
     fun setLine2Text(text: CharSequence?) {
-        mLine2Text = text
-        mLine2.text = text
+        line2Text = text
+        line2.text = text
     }
 
 }
