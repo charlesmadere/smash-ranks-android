@@ -55,6 +55,11 @@ class WinsLossesGraphView : View {
         val percentOpponentWins: Float
 
         when {
+            winsLosses.playerWins == 0 && winsLosses.opponentWins == 0 -> {
+                percentPlayerWins = 0f
+                percentOpponentWins = 0f
+            }
+
             winsLosses.playerWins == 0 -> {
                 percentPlayerWins = 0f
                 percentOpponentWins = 1f

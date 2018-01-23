@@ -11,7 +11,7 @@ import com.garpr.android.misc.Constants
 
 class ErrorContentLinearLayout : NoContentLinearLayout {
 
-    private var mOriginalLine2Text: CharSequence? = null
+    private var originalLine2Text: CharSequence? = null
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -26,16 +26,16 @@ class ErrorContentLinearLayout : NoContentLinearLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        mOriginalLine2Text = mLine2.text
+        originalLine2Text = line2.text
     }
 
     fun setVisibility(visibility: Int, errorCode: Int) {
         super.setVisibility(visibility)
 
         if (errorCode == Constants.ERROR_CODE_BAD_REQUEST) {
-            mLine2.setText(R.string.region_mismatch_error)
+            line2.setText(R.string.region_mismatch_error)
         } else {
-            mLine2.text = mOriginalLine2Text
+            line2.text = originalLine2Text
         }
     }
 

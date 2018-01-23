@@ -168,14 +168,18 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
 }
 
 fun Parcel.readBoolean(): Boolean {
+    return readOptionalBoolean() ?: throw NullPointerException()
+}
+
+fun Parcel.readOptionalBoolean(): Boolean? {
     return readValue(Boolean::class.java.classLoader) as Boolean
 }
 
-fun Parcel.writeBoolean(boolean: Boolean) {
+fun Parcel.writeBoolean(boolean: Boolean?) {
     writeValue(boolean)
 }
 
-fun Parcel.readInteger(): Int? {
+fun Parcel.readOptionalInteger(): Int? {
     return readValue(Integer::class.java.classLoader) as Int?
 }
 

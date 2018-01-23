@@ -19,7 +19,7 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
         IdentityManager.OnIdentityChangeListener, View.OnClickListener {
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var mIdentityManager: IdentityManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

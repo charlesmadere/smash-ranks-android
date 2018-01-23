@@ -3,7 +3,7 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.readOptionalInteger
 import com.garpr.android.extensions.writeInteger
 import com.google.gson.annotations.SerializedName
 
@@ -20,7 +20,7 @@ class RankedPlayer(
 
     companion object {
         val CREATOR = createParcel { RankedPlayer(it.readString(), it.readString(), it.readFloat(),
-                it.readInt(), it.readInteger()) }
+                it.readInt(), it.readOptionalInteger()) }
     }
 
     override val kind: Kind

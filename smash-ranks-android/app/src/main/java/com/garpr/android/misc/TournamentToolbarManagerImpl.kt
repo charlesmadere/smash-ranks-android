@@ -6,16 +6,12 @@ import com.garpr.android.models.FullTournament
 class TournamentToolbarManagerImpl : TournamentToolbarManager {
 
     override fun getPresentation(tournament: FullTournament?): Presentation {
-        val presentation = Presentation()
-
-        if (tournament == null) {
-            return presentation
+        return if (tournament == null) {
+            Presentation()
+        } else {
+            Presentation(true,
+                    tournament.url?.isNotBlank() == true)
         }
-
-        presentation.isShareVisible = true
-        presentation.isViewTournamentPageVisible = tournament.url?.isNotBlank() == true
-
-        return presentation
     }
 
 }

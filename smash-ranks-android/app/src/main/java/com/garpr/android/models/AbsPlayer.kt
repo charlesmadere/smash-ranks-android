@@ -14,11 +14,11 @@ abstract class AbsPlayer(
 ) : Parcelable {
 
     companion object {
-        val ALPHABETICAL_ORDER: Comparator<AbsPlayer> = Comparator { o1, o2 ->
+        val ALPHABETICAL_ORDER = Comparator<AbsPlayer> { o1, o2 ->
             o1.name.compareTo(o2.name, ignoreCase = true)
         }
 
-        val JSON_DESERIALIZER: JsonDeserializer<AbsPlayer> = JsonDeserializer<AbsPlayer> { json, typeOfT, context ->
+        val JSON_DESERIALIZER = JsonDeserializer<AbsPlayer> { json, typeOfT, context ->
             if (json == null || json.isJsonNull) {
                 return@JsonDeserializer null
             }
@@ -40,7 +40,7 @@ abstract class AbsPlayer(
             }
         }
 
-        val JSON_SERIALIZER: JsonSerializer<AbsPlayer> = JsonSerializer { src, typeOfSrc, context ->
+        val JSON_SERIALIZER = JsonSerializer<AbsPlayer> { src, typeOfSrc, context ->
             if (src == null) {
                 return@JsonSerializer null
             }

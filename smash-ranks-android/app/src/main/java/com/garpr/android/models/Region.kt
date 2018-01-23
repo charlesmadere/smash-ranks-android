@@ -3,12 +3,12 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readBoolean
-import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.readOptionalBoolean
+import com.garpr.android.extensions.readOptionalInteger
 import com.google.gson.annotations.SerializedName
 
 class Region(
-        activeTf: Boolean = true,
+        activeTf: Boolean? = null,
         rankingActivityDayLimit: Int? = null,
         rankingNumTourneysAttended: Int? = null,
         tournamentQualifiedDayLimit: Int? = null,
@@ -26,9 +26,9 @@ class Region(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { Region(it.readBoolean(), it.readInteger(), it.readInteger(),
-                it.readInteger(), it.readString(), it.readString(),
-                it.readParcelable(Endpoint::class.java.classLoader)) }
+        val CREATOR = createParcel { Region(it.readOptionalBoolean(), it.readOptionalInteger(),
+                it.readOptionalInteger(), it.readOptionalInteger(), it.readString(),
+                it.readString(), it.readParcelable(Endpoint::class.java.classLoader)) }
     }
 
     constructor(region: AbsRegion, endpoint: Endpoint) : this(region.activeTf,

@@ -12,35 +12,37 @@ class PlayerToolbarManagerImpl(
 
     override fun getPresentation(fullPlayer: FullPlayer?, matchesBundle: MatchesBundle?,
             matchResult: MatchResult?): Presentation {
-        val presentation = Presentation()
+        var presentation = Presentation()
 
         if (fullPlayer == null) {
             return presentation
         }
 
-        if (fullPlayer in favoritePlayersManager) {
-            presentation.isRemoveFromFavoritesVisible = true
+        presentation = if (fullPlayer in favoritePlayersManager) {
+            presentation.copy(isRemoveFromFavoritesVisible = true)
         } else {
-            presentation.isAddToFavoritesVisible = true
+            presentation.copy(isAddToFavoritesVisible = true)
         }
 
-        presentation.isAliasesVisible = fullPlayer.aliases?.isNotEmpty() == true
+        presentation = presentation.copy(isAliasesVisible = fullPlayer.aliases?.isNotEmpty() == true)
 
         if (matchesBundle?.matches?.isNotEmpty() == true) {
-            presentation.isFilterVisible = true
-            presentation.isFilterAllVisible = matchResult != null
-            presentation.isFilterLossesVisible = matchResult != MatchResult.LOSE
-            presentation.isFilterWinsVisible = matchResult != MatchResult.WIN
+            presentation = presentation.copy(
+                    isFilterVisible = true,
+                    isFilterAllVisible = matchResult != null,
+                    isFilterLossesVisible = matchResult != MatchResult.LOSE,
+                    isFilterWinsVisible = matchResult != MatchResult.WIN
+            )
         }
 
-        presentation.isShareVisible = true
+        presentation = presentation.copy(isShareVisible = true)
 
         if (identityManager.hasIdentity) {
             if (!identityManager.isPlayer(fullPlayer)) {
-                presentation.isViewYourselfVsThisOpponentVisible = true
+                presentation = presentation.copy(isViewYourselfVsThisOpponentVisible = true)
             }
         } else {
-            presentation.isSetAsYourIdentityVisible = true
+            presentation = presentation.copy(isSetAsYourIdentityVisible = true)
         }
 
         return presentation

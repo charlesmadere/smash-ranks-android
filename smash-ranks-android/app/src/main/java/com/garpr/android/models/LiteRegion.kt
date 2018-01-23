@@ -2,11 +2,11 @@ package com.garpr.android.models
 
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readBoolean
-import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.readOptionalBoolean
+import com.garpr.android.extensions.readOptionalInteger
 
 class LiteRegion(
-        activeTf: Boolean = true,
+        activeTf: Boolean? = null,
         rankingActivityDayLimit: Int? = null,
         rankingNumTourneysAttended: Int? = null,
         tournamentQualifiedDayLimit: Int? = null,
@@ -23,8 +23,9 @@ class LiteRegion(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { LiteRegion(it.readBoolean(), it.readInteger(),
-                it.readInteger(), it.readInteger(), it.readString(), it.readString()) }
+        val CREATOR = createParcel { LiteRegion(it.readOptionalBoolean(), it.readOptionalInteger(),
+                it.readOptionalInteger(), it.readOptionalInteger(), it.readString(),
+                it.readString()) }
     }
 
     override val kind

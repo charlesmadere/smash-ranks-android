@@ -12,7 +12,7 @@ object ListUtils {
     }
 
     fun createHeadToHeadList(context: Context, headToHead: HeadToHead?): MutableList<Any>? {
-        if (headToHead == null || headToHead.losses == 0 && headToHead.wins == 0) {
+        if (headToHead == null) {
             return null
         }
 
@@ -22,7 +22,7 @@ object ListUtils {
 
         val matches = headToHead.matches
         if (matches == null || matches.isEmpty()) {
-            list.add(context.getString(R.string.no_match_history))
+            list.add(context.getString(R.string.these_two_competitors_have_never_played_in_tournament_before))
             return list
         }
 
@@ -84,7 +84,7 @@ object ListUtils {
 
         for (region in regionsCopy) {
             if (region is Region) {
-                if (region.activeTf) {
+                if (region.isActive) {
                     if (region.endpoint != endpoint) {
                         endpoint = region.endpoint
                         list.add(region.endpoint)

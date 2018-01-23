@@ -2,7 +2,7 @@ package com.garpr.android.models
 
 interface RankingCriteria {
 
-    val activeTf: Boolean
+    val isActive: Boolean
 
     val rankingActivityDayLimit: Int?
 
