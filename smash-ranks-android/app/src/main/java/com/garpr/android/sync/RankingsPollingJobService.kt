@@ -20,19 +20,19 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     private var mPollStatus: PollStatus? = null
 
     @Inject
-    lateinit protected var mNotificationsManager: NotificationsManager
+    protected lateinit var mNotificationsManager: NotificationsManager
 
     @Inject
-    lateinit protected var mRankingsNotificationsUtils: RankingsNotificationsUtils
+    protected lateinit var mRankingsNotificationsUtils: RankingsNotificationsUtils
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    lateinit protected var mServerApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
     @Inject
-    lateinit protected var mTimber: Timber
+    protected lateinit var mTimber: Timber
 
 
     companion object {
