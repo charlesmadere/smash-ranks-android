@@ -18,9 +18,9 @@ import kotterknife.bindView
 
 class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
 
-    private val mColors = SparseIntArray()
-    private val mStackTrace: TextView by bindView(R.id.tvStackTrace)
-    private val mTagAndMessage: TextView by bindView(R.id.tvTagAndMessage)
+    private val colors = SparseIntArray()
+    private val stackTrace: TextView by bindView(R.id.tvStackTrace)
+    private val tagAndMessage: TextView by bindView(R.id.tvTagAndMessage)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -34,30 +34,30 @@ class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mColors.clear()
+        colors.clear()
     }
 
     override fun setContent(content: Timber.Entry) {
-        mTagAndMessage.text = resources.getString(R.string.tag_and_message, content.mTag,
-                content.mMsg)
+        tagAndMessage.text = resources.getString(R.string.tag_and_message, content.tag,
+                content.msg)
 
-        if (content.mStackTrace.isNullOrEmpty()) {
-            mStackTrace.clear()
-            mStackTrace.visibility = GONE
+        if (content.stackTrace.isNullOrEmpty()) {
+            stackTrace.clear()
+            stackTrace.visibility = GONE
         } else {
-            mStackTrace.text = content.mStackTrace
-            mStackTrace.visibility = VISIBLE
+            stackTrace.text = content.stackTrace
+            stackTrace.visibility = VISIBLE
         }
 
-        var color = mColors.get(content.mColorAttrResId, -1)
+        var color = colors.get(content.color, -1)
 
         if (color == -1) {
-            color = context.getAttrColor(content.mColorAttrResId)
-            mColors.put(content.mColorAttrResId, color)
+            color = context.getAttrColor(content.color)
+            colors.put(content.color, color)
         }
 
-        mTagAndMessage.setTextColor(color)
-        mStackTrace.setTextColor(color)
+        tagAndMessage.setTextColor(color)
+        stackTrace.setTextColor(color)
     }
 
 }
