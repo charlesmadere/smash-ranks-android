@@ -21,7 +21,7 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
     private val mNumberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

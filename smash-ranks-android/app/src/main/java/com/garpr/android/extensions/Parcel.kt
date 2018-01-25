@@ -172,7 +172,7 @@ fun Parcel.readBoolean(): Boolean {
 }
 
 fun Parcel.readOptionalBoolean(): Boolean? {
-    return readValue(Boolean::class.java.classLoader) as Boolean
+    return readValue(Boolean::class.java.classLoader) as Boolean?
 }
 
 fun Parcel.writeBoolean(boolean: Boolean?) {

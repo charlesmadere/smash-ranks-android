@@ -18,7 +18,7 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
         View.OnClickListener {
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -37,7 +37,7 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
             return
         }
 
-        mRegionManager.addListener(this)
+        regionManager.addListener(this)
         refresh()
     }
 
@@ -48,7 +48,7 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        mRegionManager.removeListener(this)
+        regionManager.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -56,14 +56,15 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-            mRegionManager.addListener(this)
+            regionManager.addListener(this)
         }
 
         setOnClickListener(this)
         titleText = resources.getText(R.string.region)
 
         if (isInEditMode) {
-            descriptionText = resources.getText(R.string.norcal)
+            descriptionText = resources.getString(R.string.region_endpoint_format,
+                    resources.getString(R.string.norcal), resources.getString(R.string.gar_pr))
         } else {
             refresh()
         }
@@ -78,7 +79,9 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
     override fun refresh() {
         super.refresh()
 
-        descriptionText = mRegionManager.getRegion().displayName
+        val region = regionManager.getRegion(context)
+        descriptionText = resources.getString(R.string.region_endpoint_format,
+                region.displayName, resources.getString(region.endpoint.title))
     }
 
 }

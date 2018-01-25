@@ -3,6 +3,11 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <ImageView
+        tools:ignore="ContentDescription"
+        tools:src="@mipmap/launcher"
+        style="@style/NoContentLinearLayoutBody.Image" />
+
     <TextView
         tools:text="@string/error_loading_players"
         style="@style/NoContentLinearLayoutBody.Line1" />
