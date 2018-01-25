@@ -16,6 +16,7 @@ import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.garpr.android.R
+import com.garpr.android.extensions.clear
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
@@ -139,8 +140,8 @@ class CheckablePreferenceView : FrameLayout, Heartbeat,
         val preference = mPreference
 
         if (preference == null) {
-            mTitle.text = ""
-            mDescription.text = ""
+            mTitle.clear()
+            mDescription.clear()
         } else {
             preference.addListener(this)
             mTitle.text = mTitleText
