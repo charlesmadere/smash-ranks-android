@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.misc.Timber
 import kotterknife.bindView
@@ -41,7 +42,7 @@ class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
                 content.mMsg)
 
         if (content.mStackTrace.isNullOrEmpty()) {
-            mStackTrace.text = ""
+            mStackTrace.clear()
             mStackTrace.visibility = GONE
         } else {
             mStackTrace.text = content.mStackTrace
