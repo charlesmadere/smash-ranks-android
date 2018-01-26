@@ -82,9 +82,7 @@ abstract class AbsRegion(
 
     abstract val kind: Kind
 
-    override fun toString(): String {
-        return displayName
-    }
+    override fun toString() = displayName
 
     override fun describeContents() = 0
 

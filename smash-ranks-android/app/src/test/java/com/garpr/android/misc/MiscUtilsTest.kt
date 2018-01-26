@@ -11,6 +11,27 @@ class MiscUtilsTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testHashCodeDouble() {
+        val double = Math.PI
+        assertEquals(double.hashCode(), MiscUtils.hashCode(double))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testHashCodeInteger() {
+        val integer = 100
+        assertEquals(integer.hashCode(), MiscUtils.hashCode(integer))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testHashCodeString() {
+        val string = "hello"
+        assertEquals(string.hashCode(), MiscUtils.hashCode(string))
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testTruncateFloatImytRanking() {
         val value = MiscUtils.truncateFloat(31.384343063802955f)
         assertEquals("31.384", value)

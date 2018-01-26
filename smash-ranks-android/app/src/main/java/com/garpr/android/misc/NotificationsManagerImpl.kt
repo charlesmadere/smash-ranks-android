@@ -56,7 +56,7 @@ class NotificationsManagerImpl(
         private const val RANKINGS_ID = 1001
         private const val TAG = "NotificationsManagerImpl"
 
-        private val IMPL = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Api26Impl() else BaseImpl()
+        private val IMPL: Impl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Api26Impl() else BaseImpl()
     }
 
     override fun cancelAll() {

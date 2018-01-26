@@ -39,7 +39,7 @@ class Region(
         return super.equals(other) && other is Region && endpoint == other.endpoint
     }
 
-    override fun hashCode(): Int{
+    override fun hashCode(): Int {
         var result = super.hashCode()
         result = 31 * result + endpoint.hashCode()
         return result
