@@ -76,7 +76,9 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         AlertDialog.Builder(this)
                 .setMessage(R.string.youve_selected_a_region_but_havent_saved)
                 .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.yes) { dialog, which -> super.navigateUp() }
+                .setPositiveButton(R.string.yes) { dialog, which ->
+                    super@SetRegionActivity.navigateUp()
+                }
                 .show()
     }
 
@@ -90,7 +92,8 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
                 .setMessage(R.string.youve_selected_a_region_but_havent_saved)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes) { dialog, which ->
-                    super@SetRegionActivity.onBackPressed() }
+                    super@SetRegionActivity.onBackPressed()
+                }
                 .show()
     }
 

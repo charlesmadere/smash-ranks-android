@@ -85,7 +85,8 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
                 .setMessage(R.string.youve_selected_an_identity_but_havent_saved)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes) { dialog, which ->
-                    super@SetIdentityActivity.navigateUp() }
+                    super@SetIdentityActivity.navigateUp()
+                }
                 .show()
     }
 
@@ -106,7 +107,8 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
                 .setMessage(R.string.youve_selected_an_identity_but_havent_saved)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes) { dialog, which ->
-                    super@SetIdentityActivity.onBackPressed() }
+                    super@SetIdentityActivity.onBackPressed()
+                }
                 .show()
     }
 
