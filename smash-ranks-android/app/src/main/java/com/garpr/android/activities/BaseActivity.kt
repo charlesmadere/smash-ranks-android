@@ -69,10 +69,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (mToolbar is MenuToolbar) {
-            (mToolbar as MenuToolbar).onCreateOptionsMenu(menuInflater, menu)
-        }
-
+        (mToolbar as? MenuToolbar)?.onCreateOptionsMenu(menuInflater, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -99,8 +96,8 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     protected open fun onViewsBound() {
         // ButterKnife was once right here
 
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar)
+        mToolbar?.let {
+            setSupportActionBar(it)
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(showUpNavigation)
