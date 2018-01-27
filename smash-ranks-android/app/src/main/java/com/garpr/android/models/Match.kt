@@ -53,9 +53,7 @@ class Match(
                 && tournament == other.tournament
     }
 
-    override fun hashCode(): Int {
-        return MiscUtils.hash(result, opponent, tournament)
-    }
+    override fun hashCode() = MiscUtils.hashCode(result, opponent, tournament)
 
     override fun describeContents() = 0
 

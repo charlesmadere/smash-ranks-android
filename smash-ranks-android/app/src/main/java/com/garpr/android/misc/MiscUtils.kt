@@ -1,39 +1,32 @@
 package com.garpr.android.misc
 
-import android.os.Build
-import android.support.annotation.RequiresApi
 import java.text.DecimalFormat
-import java.util.*
 
 object MiscUtils {
 
-    private val DECIMAL_FORMAT: DecimalFormat = DecimalFormat("#.###")
-    private val IMPL = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) Api19Impl() else BaseImpl()
+    private val DECIMAL_FORMAT = DecimalFormat("#.###")
 
 
     init {
         DECIMAL_FORMAT.minimumFractionDigits = 3
     }
 
-    private interface Impl {
-        fun hash(vararg objects: Any?): Int
-    }
-
-    private open class BaseImpl : Impl {
-        override fun hash(vararg objects: Any?): Int {
-            return Arrays.hashCode(objects)
+    fun hashCode(vararg objects: Any?): Int {
+        if (objects.isEmpty()) {
+            return 0
         }
-    }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
-    private class Api19Impl : BaseImpl() {
-        override fun hash(vararg objects: Any?): Int {
-            return Objects.hash(objects)
+        if (objects.size == 1) {
+            return objects[0]?.hashCode() ?: 0
         }
-    }
 
-    fun hash(vararg objects: Any?): Int {
-        return IMPL.hash(objects)
+        var result = 1
+
+        for (element in objects) {
+            result = 31 * result + if (element == null) 0 else element.hashCode()
+        }
+
+        return result
     }
 
     fun truncateFloat(value: Float): String {

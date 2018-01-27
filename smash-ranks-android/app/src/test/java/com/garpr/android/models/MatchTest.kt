@@ -13,12 +13,12 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class MatchTest : BaseTest() {
 
-    lateinit private var match1: Match
-    lateinit private var match2: Match
-    lateinit private var match3: Match
+    private lateinit var match1: Match
+    private lateinit var match2: Match
+    private lateinit var match3: Match
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
 
     companion object {
@@ -36,6 +36,14 @@ class MatchTest : BaseTest() {
         match1 = gson.fromJson(JSON_MATCH_1, Match::class.java)
         match2 = gson.fromJson(JSON_MATCH_2, Match::class.java)
         match3 = gson.fromJson(JSON_MATCH_3, Match::class.java)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testEquals() {
+        assertEquals(match1, match1)
+        assertEquals(match2, match2)
+        assertEquals(match3, match3)
     }
 
     @Test
@@ -82,6 +90,14 @@ class MatchTest : BaseTest() {
     fun testFromJsonNull() {
         val match = gson.fromJson(null as String?, Match::class.java)
         assertNull(match)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testHashCode() {
+        assertEquals(match1.hashCode(), match1.hashCode())
+        assertEquals(match2.hashCode(), match2.hashCode())
+        assertEquals(match3.hashCode(), match3.hashCode())
     }
 
 }

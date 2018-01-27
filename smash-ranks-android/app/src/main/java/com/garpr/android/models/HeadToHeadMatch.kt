@@ -27,9 +27,7 @@ class HeadToHeadMatch(
                 && opponent == other.opponent
     }
 
-    override fun hashCode(): Int {
-        return MiscUtils.hash(result, player, opponent)
-    }
+    override fun hashCode() = MiscUtils.hashCode(result, player, opponent)
 
     override fun describeContents() = 0
 

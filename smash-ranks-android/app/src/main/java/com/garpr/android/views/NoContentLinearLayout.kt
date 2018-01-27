@@ -8,11 +8,11 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.garpr.android.R
-import kotterknife.bindOptionalView
 import kotterknife.bindView
 
 open class NoContentLinearLayout : LinearLayout {
@@ -23,7 +23,7 @@ open class NoContentLinearLayout : LinearLayout {
     private var line1Text: CharSequence? = null
     private var line2Text: CharSequence? = null
 
-    protected val image: ImageView? by bindOptionalView(R.id.noContentImage)
+    protected val image: ImageView by bindView(R.id.noContentImage)
     protected val line1: TextView by bindView(R.id.noContentLine1)
     protected val line2: TextView by bindView(R.id.noContentLine2)
 
@@ -46,15 +46,15 @@ open class NoContentLinearLayout : LinearLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        val layoutInflater = LayoutInflater.from(context)
+        LayoutInflater.from(context).inflate(R.layout.no_content_linear_layout_body, this,
+                true)
 
         if (imageResId == 0) {
-            layoutInflater.inflate(R.layout.no_content_linear_layout_body, this,
-                    true)
+            image.setImageResource(0)
+            image.visibility = View.GONE
         } else {
-            layoutInflater.inflate(R.layout.no_content_linear_layout_body_with_image, this,
-                    true)
-            image?.setImageResource(imageResId)
+            image.setImageResource(imageResId)
+            image.visibility = View.VISIBLE
         }
 
         setLine1Text(line1Text)

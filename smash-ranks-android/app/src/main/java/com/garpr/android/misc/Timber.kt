@@ -23,16 +23,29 @@ interface Timber {
     fun w(tag: String, msg: String, tr: Throwable?)
 
 
-    abstract class Entry internal constructor(@AttrRes val mColorAttrResId: Int, val mTag: String,
-            val mMsg: String, val mStackTrace: String?)
+    abstract class Entry protected constructor(
+            @AttrRes val color: Int,
+            val tag: String,
+            val msg: String,
+            val stackTrace: String?
+    )
 
-    class DebugEntry internal constructor(tag: String, msg: String, stackTrace: String?) :
-            Entry(R.attr.timberDebug, tag, msg, stackTrace)
+    class DebugEntry internal constructor(
+            tag: String,
+            msg: String,
+            stackTrace: String?
+    ) : Entry(R.attr.timberDebug, tag, msg, stackTrace)
 
-    class ErrorEntry internal constructor(tag: String, msg: String, stackTrace: String?) :
-            Entry(R.attr.timberError, tag, msg, stackTrace)
+    class ErrorEntry internal constructor(
+            tag: String,
+            msg: String,
+            stackTrace: String?
+    ) : Entry(R.attr.timberError, tag, msg, stackTrace)
 
-    class WarnEntry internal constructor(tag: String, msg: String, stackTrace: String?) :
-            Entry(R.attr.timberWarn, tag, msg, stackTrace)
+    class WarnEntry internal constructor(
+            tag: String,
+            msg: String,
+            stackTrace: String?
+    ) : Entry(R.attr.timberWarn, tag, msg, stackTrace)
 
 }
