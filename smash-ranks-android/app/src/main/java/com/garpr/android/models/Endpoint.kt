@@ -24,7 +24,7 @@ enum class Endpoint(
         @JvmField
         val CREATOR = createParcel { values()[it.readInt()] }
 
-        val ALPHABETICAL_ORDER: java.util.Comparator<Endpoint> = Comparator { o1, o2 ->
+        val ALPHABETICAL_ORDER = Comparator<Endpoint> { o1, o2 ->
             o1.name.compareTo(o2.name, ignoreCase = true)
         }
     }
