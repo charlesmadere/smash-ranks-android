@@ -2,6 +2,7 @@
 <resources>
 
     <item name="bottomNavigationView" type="id" />
+    <item name="checkable" type="id" />
     <item name="description" type="id" />
     <item name="empty" type="id" />
     <item name="error" type="id" />

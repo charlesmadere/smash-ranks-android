@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
     <CheckBox
-        style="@style/PreferenceViewIcon" />
+        style="@style/PreferenceViewCheckable" />
     <TextView
         tools:text="@string/must_be_charging"
         style="@style/PreferenceViewTitle" />

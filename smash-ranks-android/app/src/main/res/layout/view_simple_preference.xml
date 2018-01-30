@@ -5,6 +5,7 @@
     android:layout_width="match_parent">
     <ImageView
         tools:ignore="ContentDescription"
+        tools:src="@mipmap/launcher"
         style="@style/PreferenceViewIcon" />
     <TextView
         tools:text="@string/must_be_charging"

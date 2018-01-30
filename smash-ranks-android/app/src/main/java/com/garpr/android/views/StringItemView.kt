@@ -7,12 +7,11 @@ import android.util.AttributeSet
 
 import com.garpr.android.adapters.BaseAdapterView
 
-class StringItemView : AppCompatTextView, BaseAdapterView<String> {
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+class StringItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : AppCompatTextView(context, attrs, defStyleAttr), BaseAdapterView<String> {
 
     override fun setContent(content: String) {
         text = content

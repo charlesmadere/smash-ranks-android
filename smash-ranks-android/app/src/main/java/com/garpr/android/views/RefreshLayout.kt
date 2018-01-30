@@ -11,7 +11,10 @@ import com.garpr.android.R
  * A child class of the official Android [SwipeRefreshLayout] that helps us work around some of
  * its shortcomings. We should use this view instead of SwipeRefreshLayout in every case.
  */
-class RefreshLayout(context: Context, attrs: AttributeSet?) : SwipeRefreshLayout(context, attrs) {
+class RefreshLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SwipeRefreshLayout(context, attrs) {
 
     @IdRes
     private var mScrollingChildId: Int? = null
