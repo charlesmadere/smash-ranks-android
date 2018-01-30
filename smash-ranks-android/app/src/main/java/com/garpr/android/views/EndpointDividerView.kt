@@ -15,7 +15,7 @@ import kotterknife.bindView
 
 class EndpointDividerView : FrameLayout, BaseAdapterView<Endpoint> {
 
-    private val mName: TextView by bindView(R.id.tvName)
+    private val name: TextView by bindView(R.id.tvName)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -28,7 +28,7 @@ class EndpointDividerView : FrameLayout, BaseAdapterView<Endpoint> {
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun setContent(content: Endpoint) {
-        mName.text = resources.getText(content.title)
+        name.text = resources.getText(content.title)
     }
 
 }

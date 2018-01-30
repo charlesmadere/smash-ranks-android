@@ -43,14 +43,6 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refresh
     }
 
     override val searchQuery: CharSequence?
-        get() {
-            val activity = context.optActivity()
-
-            return if (activity is SearchQueryHandle) {
-                activity.searchQuery
-            } else {
-                null
-            }
-        }
+        get() = (context.optActivity() as? SearchQueryHandle)?.searchQuery
 
 }

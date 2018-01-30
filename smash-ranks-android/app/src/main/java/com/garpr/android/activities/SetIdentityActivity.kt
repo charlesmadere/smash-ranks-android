@@ -113,7 +113,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override fun onClick(v: PlayerSelectionItemView) {
-        val player = v.mContent
+        val player = v.player
 
         mSelectedPlayer = if (player == mIdentityManager.identity) {
             null

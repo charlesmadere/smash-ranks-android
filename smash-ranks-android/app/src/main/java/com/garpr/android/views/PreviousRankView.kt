@@ -13,12 +13,11 @@ import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.misc.PreviousRankUtils
 
-class PreviousRankView : AppCompatImageView, BaseAdapterView<PreviousRankUtils.Info?> {
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+class PreviousRankView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defAttrRes: Int = 0
+) : AppCompatImageView(context, attrs, defAttrRes), BaseAdapterView<PreviousRankUtils.Info?> {
 
     private fun createDrawable(@DrawableRes drawableResId: Int, @ColorRes tintResId: Int): Drawable? {
         return ContextCompat.getDrawable(context, drawableResId)?.let {
