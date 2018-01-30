@@ -4,11 +4,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 
-enum class ResultCodes : Parcelable {
+enum class RequestCodes : Parcelable {
 
-    IDENTITY_SELECTED,
-    REGION_SELECTED,
-    RINGTONE_SELECTED;
+    CHANGE_REGION;
 
 
     companion object {
@@ -17,7 +15,7 @@ enum class ResultCodes : Parcelable {
     }
 
     val value: Int
-        get() = ordinal + 1000
+        get() = ordinal + 10000
 
     override fun describeContents() = 0
 

@@ -2,7 +2,6 @@ package com.garpr.android.views
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
@@ -11,7 +10,9 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.SetRegionActivity
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.RegionManager
+import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
 
 class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeListener,
@@ -42,7 +43,14 @@ class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeL
     }
 
     override fun onClick(v: View) {
-        context.startActivity(Intent(context, SetRegionActivity::class.java))
+        val activity = context.optActivity()
+
+        if (activity == null) {
+            context.startActivity(SetRegionActivity.getLaunchIntent(context))
+        } else {
+            activity.startActivityForResult(SetRegionActivity.getLaunchIntent(activity),
+                    RequestCodes.CHANGE_REGION.value)
+        }
     }
 
     override fun onDetachedFromWindow() {
