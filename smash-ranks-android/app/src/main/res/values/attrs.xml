@@ -29,7 +29,8 @@
 
     <declare-styleable name="SimplePreferenceView">
         <attr name="simpleDescriptionText" format="string" />
-        <attr name="simpleIcon" format="reference" />
+        <attr name="simplePrimaryIcon" format="reference" />
+        <attr name="simpleSecondaryIcon" format="reference" />
         <attr name="simpleTitleText" format="string" />
     </declare-styleable>
 

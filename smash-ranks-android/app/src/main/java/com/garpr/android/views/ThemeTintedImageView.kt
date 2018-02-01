@@ -4,13 +4,15 @@ import android.content.Context
 import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import com.garpr.android.App
+import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.setTintedImageDrawable
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.NightMode
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.Preference
 import javax.inject.Inject
 
-open class ThemeTintedImageView @JvmOverloads constructor(
+class ThemeTintedImageView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         @AttrRes defStyleAttr: Int = 0
@@ -24,11 +26,11 @@ open class ThemeTintedImageView @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            generalPreferenceStore.nightMode.addListener(this)
         }
 
-        generalPreferenceStore.nightMode.addListener(this)
+        refresh()
     }
 
     override fun onDetachedFromWindow() {
@@ -40,11 +42,12 @@ open class ThemeTintedImageView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
+            generalPreferenceStore.nightMode.addListener(this)
         }
 
-        App.get().appComponent.inject(this)
+        refresh()
     }
 
     override fun onPreferenceChange(preference: Preference<NightMode>) {
@@ -54,7 +57,7 @@ open class ThemeTintedImageView @JvmOverloads constructor(
     }
 
     override fun refresh() {
-        TODO("not implemented")
+        setTintedImageDrawable(context.getAttrColor(android.R.attr.textColorSecondary))
     }
 
 }

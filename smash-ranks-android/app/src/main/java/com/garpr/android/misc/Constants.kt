@@ -6,7 +6,6 @@ import com.garpr.android.models.Region
 object Constants {
 
     // Defaults
-    // TODO maybe this should be retrieved from the server via a splash screen...
     val DefaultRegion = Region(null, null, null,
             null, "Norcal", "norcal", Endpoint.GAR_PR)
 

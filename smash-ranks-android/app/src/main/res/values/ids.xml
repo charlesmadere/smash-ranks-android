@@ -6,14 +6,15 @@
     <item name="description" type="id" />
     <item name="empty" type="id" />
     <item name="error" type="id" />
-    <item name="icon" type="id" />
     <item name="noContentImage" type="id" />
     <item name="noContentLine1" type="id" />
     <item name="noContentLine2" type="id" />
     <item name="playerName" type="id" />
+    <item name="primaryIcon" type="id" />
     <item name="recyclerView" type="id" />
     <item name="refreshLayout" type="id" />
     <item name="searchLayout" type="id" />
+    <item name="secondaryIcon" type="id" />
     <item name="tabLayout" type="id" />
     <item name="title" type="id" />
     <item name="toolbar" type="id" />
