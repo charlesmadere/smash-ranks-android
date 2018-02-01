@@ -69,7 +69,7 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
         val primaryIconDrawable = _primaryIconDrawable
         if (primaryIconDrawable == null) {
             primaryIcon.clear()
-            primaryIcon.visibility = View.GONE
+            primaryIcon.visibility = View.INVISIBLE
         } else {
             primaryIcon.setImageDrawable(primaryIconDrawable)
             primaryIcon.visibility = View.VISIBLE
