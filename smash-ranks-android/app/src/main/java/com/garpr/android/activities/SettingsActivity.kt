@@ -142,10 +142,10 @@ class SettingsActivity : BaseActivity() {
         mRankingsPollingPreferenceStore.vibrationEnabled.addListener(mOnVibrationEnabledChange)
         mRankingsPollingPreferenceStore.wifiRequired.addListener(mOnWifiRequiredChange)
 
-        mUseRankingsPolling.set(mRankingsPollingPreferenceStore.enabled)
-        mVibrate.set(mRankingsPollingPreferenceStore.vibrationEnabled)
-        mMustBeOnWifi.set(mRankingsPollingPreferenceStore.wifiRequired)
-        mMustBeCharging.set(mRankingsPollingPreferenceStore.chargingRequired)
+        mUseRankingsPolling.preference = mRankingsPollingPreferenceStore.enabled
+        mVibrate.preference = mRankingsPollingPreferenceStore.vibrationEnabled
+        mMustBeOnWifi.preference = mRankingsPollingPreferenceStore.wifiRequired
+        mMustBeCharging.preference = mRankingsPollingPreferenceStore.chargingRequired
 
         mGooglePlayServicesError.setOnClickListener {
             attemptToResolveGooglePlayServicesError()

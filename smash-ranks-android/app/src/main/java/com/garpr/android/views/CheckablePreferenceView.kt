@@ -2,6 +2,7 @@ package com.garpr.android.views
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcelable
 import android.support.annotation.AttrRes
@@ -11,6 +12,7 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.garpr.android.R
@@ -19,16 +21,17 @@ import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
 import kotterknife.bindView
 
-class CheckablePreferenceView : LifecycleFrameLayout,
+open class CheckablePreferenceView : LifecycleFrameLayout,
         Preference.OnPreferenceChangeListener<Boolean>, Refreshable, View.OnClickListener {
 
     private var disabledDescriptionText: CharSequence? = null
     private var enabledDescriptionText: CharSequence? = null
     private var titleText: CharSequence? = null
+    private var primaryIconDrawable: Drawable? = null
     private var checkableType: Int = 0
-    private var preference: Preference<Boolean>? = null
 
     private val checkable: CompoundButton by bindView(R.id.checkable)
+    private val primaryIcon: ImageView by bindView(R.id.primaryIcon)
     private val description: TextView by bindView(R.id.description)
     private val title: TextView by bindView(R.id.title)
 
@@ -105,12 +108,16 @@ class CheckablePreferenceView : LifecycleFrameLayout,
         if (isInEditMode) {
             title.text = titleText
             description.text = enabledDescriptionText
+            primaryIcon.setImageDrawable(primaryIconDrawable)
         }
+
+        primaryIcon.visibility = if (primaryIconDrawable == null) View.INVISIBLE else View.VISIBLE
 
         if (disabledDescriptionText.isNullOrBlank() || enabledDescriptionText.isNullOrBlank()) {
             val layoutParams = title.layoutParams as RelativeLayout.LayoutParams
             layoutParams.addRule(RelativeLayout.CENTER_VERTICAL)
             title.layoutParams = layoutParams
+            primaryIcon.layoutParams = layoutParams
             description.visibility = View.GONE
         }
     }
@@ -126,19 +133,29 @@ class CheckablePreferenceView : LifecycleFrameLayout,
         disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
         enabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_enabledDescriptionText)
         titleText = ta.getText(R.styleable.CheckablePreferenceView_titleText)
+        primaryIconDrawable = ta.getDrawable(R.styleable.CheckablePreferenceView_primaryIcon)
         checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType, CHECKABLE_TYPE_CHECKBOX)
         ta.recycle()
     }
+
+    var preference: Preference<Boolean>? = null
+        set(value) {
+            field?.removeListener(this)
+            field = value
+            refresh()
+        }
 
     override fun refresh() {
         val preference = this.preference
 
         if (preference == null) {
+            primaryIcon.clear()
             title.clear()
             description.clear()
             checkable.isChecked = false
         } else {
             preference.addListener(this)
+            primaryIcon.setImageDrawable(primaryIconDrawable)
             title.text = titleText
 
             if (preference.get() == true) {
@@ -149,12 +166,6 @@ class CheckablePreferenceView : LifecycleFrameLayout,
                 checkable.isChecked = false
             }
         }
-    }
-
-    fun set(preference: Preference<Boolean>?) {
-        this.preference?.removeListener(this)
-        this.preference = preference
-        refresh()
     }
 
     override fun setEnabled(enabled: Boolean) {

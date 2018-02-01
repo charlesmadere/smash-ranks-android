@@ -6,13 +6,14 @@
     <attr name="timberWarn" format="color" />
 
     <declare-styleable name="CheckablePreferenceView">
-        <attr name="disabledDescriptionText" format="string" />
-        <attr name="enabledDescriptionText" format="string" />
-        <attr name="titleText" format="string" />
         <attr name="checkableType" format="enum">
             <enum name="checkbox" value="0" />
             <enum name="switch_compat" value="1" />
         </attr>
+        <attr name="disabledDescriptionText" format="string" />
+        <attr name="enabledDescriptionText" format="string" />
+        <attr name="primaryIcon" format="reference" />
+        <attr name="titleText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="NoContentLinearLayout">

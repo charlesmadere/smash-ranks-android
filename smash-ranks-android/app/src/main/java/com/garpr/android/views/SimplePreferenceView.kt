@@ -25,9 +25,9 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
     private var _descriptionText: CharSequence? = null
     private var _titleText: CharSequence? = null
 
-    private val description: TextView by bindView(R.id.description)
-    private val primaryIcon: ImageView by bindView(R.id.primaryIcon)
     private val secondaryIcon: ImageView by bindView(R.id.secondaryIcon)
+    private val primaryIcon: ImageView by bindView(R.id.primaryIcon)
+    private val description: TextView by bindView(R.id.description)
     private val title: TextView by bindView(R.id.title)
 
 
