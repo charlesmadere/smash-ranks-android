@@ -46,8 +46,8 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = when (position) {
             POSITION_FAVORITE_PLAYERS -> FavoritePlayersLayout.inflate(container)
-            POSITION_TOURNAMENTS -> TournamentsLayout.inflate(container)
             POSITION_RANKINGS -> RankingsLayout.inflate(container)
+            POSITION_TOURNAMENTS -> TournamentsLayout.inflate(container)
             else -> throw RuntimeException("illegal position: " + position)
         }
 
