@@ -20,13 +20,11 @@ import kotterknife.bindView
 
 open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
 
-    private var _primaryIconDrawable: Drawable? = null
-    private var _secondaryIconDrawable: Drawable? = null
     private var _descriptionText: CharSequence? = null
     private var _titleText: CharSequence? = null
+    private var _iconDrawable: Drawable? = null
 
-    private val secondaryIcon: ImageView by bindView(R.id.secondaryIcon)
-    private val primaryIcon: ImageView by bindView(R.id.primaryIcon)
+    private val icon: ImageView by bindView(R.id.icon)
     private val description: TextView by bindView(R.id.description)
     private val title: TextView by bindView(R.id.title)
 
@@ -66,22 +64,13 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
 
         LayoutInflater.from(context).inflate(R.layout.view_simple_preference, this)
 
-        val primaryIconDrawable = _primaryIconDrawable
-        if (primaryIconDrawable == null) {
-            primaryIcon.clear()
-            primaryIcon.visibility = View.INVISIBLE
+        val iconDrawable = _iconDrawable
+        if (iconDrawable == null) {
+            icon.clear()
+            icon.visibility = View.GONE
         } else {
-            primaryIcon.setImageDrawable(primaryIconDrawable)
-            primaryIcon.visibility = View.VISIBLE
-        }
-
-        val secondaryIconDrawable = _secondaryIconDrawable
-        if (secondaryIconDrawable == null) {
-            secondaryIcon.clear()
-            secondaryIcon.visibility = View.GONE
-        } else {
-            secondaryIcon.setImageDrawable(secondaryIconDrawable)
-            secondaryIcon.visibility = View.VISIBLE
+            icon.setImageDrawable(iconDrawable)
+            icon.visibility = View.VISIBLE
         }
 
         title.text = _titleText
@@ -90,8 +79,7 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
 
     private fun parseAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.SimplePreferenceView)
-        _primaryIconDrawable = ta.getDrawable(R.styleable.SimplePreferenceView_simplePrimaryIcon)
-        _secondaryIconDrawable = ta.getDrawable(R.styleable.SimplePreferenceView_simpleSecondaryIcon)
+        _iconDrawable = ta.getDrawable(R.styleable.SimplePreferenceView_simpleIcon)
         _descriptionText = ta.getText(R.styleable.SimplePreferenceView_simpleDescriptionText)
         _titleText = ta.getText(R.styleable.SimplePreferenceView_simpleTitleText)
         ta.recycle()

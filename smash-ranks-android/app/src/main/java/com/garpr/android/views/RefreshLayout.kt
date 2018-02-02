@@ -17,9 +17,7 @@ class RefreshLayout @JvmOverloads constructor(
 ) : SwipeRefreshLayout(context, attrs) {
 
     @IdRes
-    private var mScrollingChildId: Int? = null
-
-    private var mScrollingChild: View? = null
+    private var scrollingChildId: Int? = null
 
 
     init {
@@ -30,16 +28,18 @@ class RefreshLayout @JvmOverloads constructor(
      * http://stackoverflow.com/q/25270171/823952
      */
     override fun canChildScrollUp(): Boolean {
-        return mScrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
+        return scrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        mScrollingChildId?.let {
-            mScrollingChild = findViewById(it) ?: throw NullPointerException(
+        scrollingChildId?.let {
+            scrollingChild = findViewById(it) ?: throw NullPointerException(
                     "unable to find scrolling child")
         }
+
+        setProgressBackgroundColorSchemeResource(R.color.card_background)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
@@ -53,10 +53,12 @@ class RefreshLayout @JvmOverloads constructor(
         setColorSchemeColors(*resources.getIntArray(spinnerColorsResId))
 
         if (ta.hasValue(R.styleable.RefreshLayout_scrollingChild)) {
-            mScrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)
+            scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)
         }
 
         ta.recycle()
     }
+
+    var scrollingChild: View? = null
 
 }

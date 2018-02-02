@@ -13,7 +13,7 @@ import javax.inject.Inject
 class RankingsActivity : BaseActivity() {
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     companion object {
@@ -36,7 +36,7 @@ class RankingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_rankings)
-        subtitle = mRegionManager.getRegion(this).displayName
+        subtitle = regionManager.getRegion(this).displayName
     }
 
     override val showUpNavigation = true
