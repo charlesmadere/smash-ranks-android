@@ -12,7 +12,6 @@
         </attr>
         <attr name="disabledDescriptionText" format="string" />
         <attr name="enabledDescriptionText" format="string" />
-        <attr name="primaryIcon" format="reference" />
         <attr name="titleText" format="string" />
     </declare-styleable>
 
@@ -30,8 +29,7 @@
 
     <declare-styleable name="SimplePreferenceView">
         <attr name="simpleDescriptionText" format="string" />
-        <attr name="simplePrimaryIcon" format="reference" />
-        <attr name="simpleSecondaryIcon" format="reference" />
+        <attr name="simpleIcon" format="reference" />
         <attr name="simpleTitleText" format="string" />
     </declare-styleable>
 

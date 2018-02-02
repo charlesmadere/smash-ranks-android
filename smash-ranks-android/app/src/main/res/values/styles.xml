@@ -145,27 +145,17 @@
 
     <style name="PreferenceViewDescription">
         <item name="android:id">@id/description</item>
+        <item name="android:layout_alignParentStart">true</item>
         <item name="android:layout_alignWithParentIfMissing">true</item>
         <item name="android:layout_below">@id/title</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_toEndOf">@id/primaryIcon</item>
-        <item name="android:layout_toStartOf">@id/secondaryIcon</item>
+        <item name="android:layout_toStartOf">@id/icon</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
-    <style name="PreferenceViewPrimaryIcon">
-        <item name="android:id">@id/primaryIcon</item>
-        <item name="android:importantForAccessibility">no</item>
-        <item name="android:layout_alignParentStart">true</item>
-        <item name="android:layout_height">24dp</item>
-        <item name="android:layout_marginEnd">@dimen/root_padding</item>
-        <item name="android:layout_width">24dp</item>
-        <item name="android:scaleType">centerInside</item>
-    </style>
-
-    <style name="PreferenceViewSecondaryIcon">
-        <item name="android:id">@id/secondaryIcon</item>
+    <style name="PreferenceViewIcon">
+        <item name="android:id">@id/icon</item>
         <item name="android:importantForAccessibility">no</item>
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_centerVertical">true</item>
@@ -176,10 +166,10 @@
 
     <style name="PreferenceViewTitle">
         <item name="android:id">@id/title</item>
+        <item name="android:layout_alignParentStart">true</item>
         <item name="android:layout_alignWithParentIfMissing">true</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_toEndOf">@id/primaryIcon</item>
-        <item name="android:layout_toStartOf">@id/secondaryIcon</item>
+        <item name="android:layout_toStartOf">@id/icon</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>

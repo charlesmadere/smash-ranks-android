@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
-    <com.garpr.android.views.ColorAccentTintedImageView
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/ic_date_range_white_24dp"
-        style="@style/PreferenceViewPrimaryIcon" />
     <android.support.v7.widget.SwitchCompat
         style="@style/PreferenceViewCheckable" />
     <TextView
