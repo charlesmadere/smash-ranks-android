@@ -6,7 +6,9 @@ import com.garpr.android.extensions.createParcel
 
 enum class RequestCodes : Parcelable {
 
-    CHANGE_REGION;
+    CHANGE_IDENTITY,
+    CHANGE_REGION,
+    CHANGE_RINGTONE;
 
 
     companion object {

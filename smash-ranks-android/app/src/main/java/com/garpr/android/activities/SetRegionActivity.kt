@@ -1,5 +1,6 @@
 package com.garpr.android.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,14 +10,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.RegionsSelectionAdapter
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.ResultCodes
 import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
 import com.garpr.android.networking.ApiCall
@@ -163,8 +162,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
     private fun save() {
         mRegionManager.setRegion(mSelectedRegion ?: throw RuntimeException("mSelectedRegion is null"))
-        Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
-        setResult(ResultCodes.REGION_SELECTED.value)
+        setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
     }
 

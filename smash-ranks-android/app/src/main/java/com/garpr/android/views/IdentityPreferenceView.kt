@@ -12,7 +12,9 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.SetIdentityActivity
+import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.IdentityManager
+import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
 
 class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickListener,
@@ -54,7 +56,14 @@ class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickList
                     .setPositiveButton(R.string.yes, this)
                     .show()
         } else {
-            context.startActivity(SetIdentityActivity.getLaunchIntent(context))
+            val activity = context.optActivity()
+
+            if (activity == null) {
+                context.startActivity(SetIdentityActivity.getLaunchIntent(context))
+            } else {
+                activity.startActivityForResult(SetIdentityActivity.getLaunchIntent(activity),
+                        RequestCodes.CHANGE_IDENTITY.value)
+            }
         }
     }
 

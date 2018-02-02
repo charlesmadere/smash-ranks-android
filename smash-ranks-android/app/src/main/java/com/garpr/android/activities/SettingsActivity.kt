@@ -1,5 +1,6 @@
 package com.garpr.android.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -23,42 +24,42 @@ import javax.inject.Inject
 class SettingsActivity : BaseActivity() {
 
     @Inject
-    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    protected lateinit var mGoogleApiWrapper: GoogleApiWrapper
+    protected lateinit var googleApiWrapper: GoogleApiWrapper
 
     @Inject
-    protected lateinit var mIdentityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
     @Inject
-    protected lateinit var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
-    protected lateinit var mRankingsPollingSyncManager: RankingsPollingSyncManager
+    protected lateinit var rankingsPollingSyncManager: RankingsPollingSyncManager
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mShareUtils: ShareUtils
+    protected lateinit var shareUtils: ShareUtils
 
-    private val mMustBeCharging: CheckablePreferenceView by bindView(R.id.cpvMustBeCharging)
-    private val mMustBeOnWifi: CheckablePreferenceView by bindView(R.id.cpvMustBeOnWifi)
-    private val mUseRankingsPolling: CheckablePreferenceView by bindView(R.id.cpvUseRankingsPolling)
-    private val mVibrate: CheckablePreferenceView by bindView(R.id.cpvVibrate)
-    private val mDeleteFavoritePlayersPreferenceView: DeleteFavoritePlayersPreferenceView by bindView(R.id.deleteFavoritePlayersPreferenceView)
-    private val mIdentityPreferenceView: IdentityPreferenceView by bindView(R.id.identityPreferenceView)
-    private val mLastPoll: LastPollPreferenceView by bindView(R.id.lastPollPreferenceView)
-    private val mPollFrequency: PollFrequencyPreferenceView by bindView(R.id.pollFrequencyPreferenceView)
-    private val mRegionPreferenceView: RegionPreferenceView by bindView(R.id.regionPreferenceView)
-    private val mRingtonePreferenceView: RingtonePreferenceView by bindView(R.id.ringtonePreferenceView)
-    private val mCharlesTwitter: SimplePreferenceView by bindView(R.id.spvCharlesTwitter)
-    private val mGarTwitter: SimplePreferenceView by bindView(R.id.spvGarTwitter)
-    private val mGitHub: SimplePreferenceView by bindView(R.id.spvGitHub)
-    private val mLogViewer: SimplePreferenceView by bindView(R.id.spvLogViewer)
-    private val mGooglePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
-    private val mThemePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
+    private val mustBeCharging: CheckablePreferenceView by bindView(R.id.cpvMustBeCharging)
+    private val mustBeOnWifi: CheckablePreferenceView by bindView(R.id.cpvMustBeOnWifi)
+    private val useRankingsPolling: CheckablePreferenceView by bindView(R.id.cpvUseRankingsPolling)
+    private val vibrate: CheckablePreferenceView by bindView(R.id.cpvVibrate)
+    private val deleteFavoritePlayersPreferenceView: DeleteFavoritePlayersPreferenceView by bindView(R.id.deleteFavoritePlayersPreferenceView)
+    private val identityPreferenceView: IdentityPreferenceView by bindView(R.id.identityPreferenceView)
+    private val lastPoll: LastPollPreferenceView by bindView(R.id.lastPollPreferenceView)
+    private val pollFrequency: PollFrequencyPreferenceView by bindView(R.id.pollFrequencyPreferenceView)
+    private val regionPreferenceView: RegionPreferenceView by bindView(R.id.regionPreferenceView)
+    private val ringtonePreferenceView: RingtonePreferenceView by bindView(R.id.ringtonePreferenceView)
+    private val charlesTwitter: SimplePreferenceView by bindView(R.id.spvCharlesTwitter)
+    private val garTwitter: SimplePreferenceView by bindView(R.id.spvGarTwitter)
+    private val gitHub: SimplePreferenceView by bindView(R.id.spvGitHub)
+    private val logViewer: SimplePreferenceView by bindView(R.id.spvLogViewer)
+    private val googlePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
+    private val themePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
 
 
     companion object {
@@ -70,17 +71,17 @@ class SettingsActivity : BaseActivity() {
     override val activityName = TAG
 
     private fun attemptToResolveGooglePlayServicesError() {
-        val connectionStatus = mGoogleApiWrapper.googlePlayServicesConnectionStatus
+        val connectionStatus = googleApiWrapper.googlePlayServicesConnectionStatus
 
-        if (mGoogleApiWrapper.isConnectionStatusSuccess(connectionStatus)) {
+        if (googleApiWrapper.isConnectionStatusSuccess(connectionStatus)) {
             Toast.makeText(this, R.string.google_play_services_error_has_been_resolved,
                     Toast.LENGTH_LONG).show()
             refresh()
             return
         }
 
-        if (mGoogleApiWrapper.showPlayServicesResolutionDialog(this, connectionStatus,
-                mGoogleApiWrapperOnCancelListener)) {
+        if (googleApiWrapper.showPlayServicesResolutionDialog(this, connectionStatus,
+                googleApiWrapperOnCancelListener)) {
             return
         }
 
@@ -95,8 +96,16 @@ class SettingsActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == ResultCodes.RINGTONE_SELECTED.value) {
-            mRingtonePreferenceView.onActivityResult(data)
+        if (requestCode == RequestCodes.CHANGE_IDENTITY.value) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show()
+            }
+        } else if (requestCode == RequestCodes.CHANGE_REGION.value) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
+            }
+        } else if (requestCode == RequestCodes.CHANGE_RINGTONE.value) {
+            ringtonePreferenceView.onActivityResult(data)
         }
 
         refresh()
@@ -111,16 +120,16 @@ class SettingsActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        mFavoritePlayersManager.removeListener(mOnFavoritePlayersChangeListener)
-        mIdentityManager.removeListener(mOnIdentityChangeListener)
-        mRegionManager.removeListener(mOnRegionChangeListener)
+        favoritePlayersManager.removeListener(onFavoritePlayersChangeListener)
+        identityManager.removeListener(onIdentityChangeListener)
+        regionManager.removeListener(onRegionChangeListener)
 
-        mRankingsPollingPreferenceStore.chargingRequired.removeListener(mOnChargingRequiredChange)
-        mRankingsPollingPreferenceStore.enabled.removeListener(mOnRankingsPollingEnabledChange)
-        mRankingsPollingPreferenceStore.pollFrequency.removeListener(mOnPollFrequencyChange)
-        mRankingsPollingPreferenceStore.ringtone.removeListener(mOnRingtoneChange)
-        mRankingsPollingPreferenceStore.vibrationEnabled.removeListener(mOnVibrationEnabledChange)
-        mRankingsPollingPreferenceStore.wifiRequired.removeListener(mOnWifiRequiredChange)
+        rankingsPollingPreferenceStore.chargingRequired.removeListener(onChargingRequiredChange)
+        rankingsPollingPreferenceStore.enabled.removeListener(onRankingsPollingEnabledChange)
+        rankingsPollingPreferenceStore.pollFrequency.removeListener(onPollFrequencyChange)
+        rankingsPollingPreferenceStore.ringtone.removeListener(onRingtoneChange)
+        rankingsPollingPreferenceStore.vibrationEnabled.removeListener(onVibrationEnabledChange)
+        rankingsPollingPreferenceStore.wifiRequired.removeListener(onWifiRequiredChange)
     }
 
     override fun onResume() {
@@ -131,142 +140,142 @@ class SettingsActivity : BaseActivity() {
     override fun onViewsBound() {
         super.onViewsBound()
 
-        mFavoritePlayersManager.addListener(mOnFavoritePlayersChangeListener)
-        mIdentityManager.addListener(mOnIdentityChangeListener)
-        mRegionManager.addListener(mOnRegionChangeListener)
+        favoritePlayersManager.addListener(onFavoritePlayersChangeListener)
+        identityManager.addListener(onIdentityChangeListener)
+        regionManager.addListener(onRegionChangeListener)
 
-        mRankingsPollingPreferenceStore.chargingRequired.addListener(mOnChargingRequiredChange)
-        mRankingsPollingPreferenceStore.enabled.addListener(mOnRankingsPollingEnabledChange)
-        mRankingsPollingPreferenceStore.pollFrequency.addListener(mOnPollFrequencyChange)
-        mRankingsPollingPreferenceStore.ringtone.addListener(mOnRingtoneChange)
-        mRankingsPollingPreferenceStore.vibrationEnabled.addListener(mOnVibrationEnabledChange)
-        mRankingsPollingPreferenceStore.wifiRequired.addListener(mOnWifiRequiredChange)
+        rankingsPollingPreferenceStore.chargingRequired.addListener(onChargingRequiredChange)
+        rankingsPollingPreferenceStore.enabled.addListener(onRankingsPollingEnabledChange)
+        rankingsPollingPreferenceStore.pollFrequency.addListener(onPollFrequencyChange)
+        rankingsPollingPreferenceStore.ringtone.addListener(onRingtoneChange)
+        rankingsPollingPreferenceStore.vibrationEnabled.addListener(onVibrationEnabledChange)
+        rankingsPollingPreferenceStore.wifiRequired.addListener(onWifiRequiredChange)
 
-        mUseRankingsPolling.preference = mRankingsPollingPreferenceStore.enabled
-        mVibrate.preference = mRankingsPollingPreferenceStore.vibrationEnabled
-        mMustBeOnWifi.preference = mRankingsPollingPreferenceStore.wifiRequired
-        mMustBeCharging.preference = mRankingsPollingPreferenceStore.chargingRequired
+        useRankingsPolling.preference = rankingsPollingPreferenceStore.enabled
+        vibrate.preference = rankingsPollingPreferenceStore.vibrationEnabled
+        mustBeOnWifi.preference = rankingsPollingPreferenceStore.wifiRequired
+        mustBeCharging.preference = rankingsPollingPreferenceStore.chargingRequired
 
-        mGooglePlayServicesError.setOnClickListener {
+        googlePlayServicesError.setOnClickListener {
             attemptToResolveGooglePlayServicesError()
         }
 
-        mCharlesTwitter.setOnClickListener {
-            mShareUtils.openUrl(this, Constants.CHARLES_TWITTER_URL)
+        charlesTwitter.setOnClickListener {
+            shareUtils.openUrl(this, Constants.CHARLES_TWITTER_URL)
         }
 
-        mGarTwitter.setOnClickListener {
-            mShareUtils.openUrl(this, Constants.GAR_TWITTER_URL)
+        garTwitter.setOnClickListener {
+            shareUtils.openUrl(this, Constants.GAR_TWITTER_URL)
         }
 
-        mGitHub.setOnClickListener {
-            mShareUtils.openUrl(this, Constants.GITHUB_URL)
+        gitHub.setOnClickListener {
+            shareUtils.openUrl(this, Constants.GITHUB_URL)
         }
 
-        mLogViewer.setOnClickListener {
+        logViewer.setOnClickListener {
             startActivity(LogViewerActivity.getLaunchIntent(this))
         }
     }
 
     private fun refresh() {
-        mRegionPreferenceView.refresh()
-        mThemePreferenceView.refresh()
-        mIdentityPreferenceView.refresh()
-        mDeleteFavoritePlayersPreferenceView.refresh()
+        regionPreferenceView.refresh()
+        themePreferenceView.refresh()
+        identityPreferenceView.refresh()
+        deleteFavoritePlayersPreferenceView.refresh()
 
-        mUseRankingsPolling.refresh()
-        mPollFrequency.refresh()
-        mRingtonePreferenceView.refresh()
-        mVibrate.refresh()
-        mMustBeOnWifi.refresh()
-        mMustBeCharging.refresh()
-        mLastPoll.refresh()
+        useRankingsPolling.refresh()
+        pollFrequency.refresh()
+        ringtonePreferenceView.refresh()
+        vibrate.refresh()
+        mustBeOnWifi.refresh()
+        mustBeCharging.refresh()
+        lastPoll.refresh()
 
-        if (mGoogleApiWrapper.isGooglePlayServicesAvailable) {
-            mGooglePlayServicesError.visibility = View.GONE
-            mUseRankingsPolling.isEnabled = true
+        if (googleApiWrapper.isGooglePlayServicesAvailable) {
+            googlePlayServicesError.visibility = View.GONE
+            useRankingsPolling.isEnabled = true
 
-            if (mRankingsPollingPreferenceStore.enabled.get() == true) {
-                mPollFrequency.isEnabled = true
-                mRingtonePreferenceView.isEnabled = true
-                mVibrate.isEnabled = true
-                mMustBeOnWifi.isEnabled = true
-                mMustBeCharging.isEnabled = true
+            if (rankingsPollingPreferenceStore.enabled.get() == true) {
+                pollFrequency.isEnabled = true
+                ringtonePreferenceView.isEnabled = true
+                vibrate.isEnabled = true
+                mustBeOnWifi.isEnabled = true
+                mustBeCharging.isEnabled = true
             } else {
-                mPollFrequency.isEnabled = false
-                mRingtonePreferenceView.isEnabled = false
-                mVibrate.isEnabled = false
-                mMustBeOnWifi.isEnabled = false
-                mMustBeCharging.isEnabled = false
+                pollFrequency.isEnabled = false
+                ringtonePreferenceView.isEnabled = false
+                vibrate.isEnabled = false
+                mustBeOnWifi.isEnabled = false
+                mustBeCharging.isEnabled = false
             }
         } else {
-            mGooglePlayServicesError.visibility = View.VISIBLE
-            mUseRankingsPolling.isEnabled = false
-            mPollFrequency.isEnabled = false
-            mRingtonePreferenceView.isEnabled = false
-            mVibrate.isEnabled = false
-            mMustBeOnWifi.isEnabled = false
-            mMustBeCharging.isEnabled = false
+            googlePlayServicesError.visibility = View.VISIBLE
+            useRankingsPolling.isEnabled = false
+            pollFrequency.isEnabled = false
+            ringtonePreferenceView.isEnabled = false
+            vibrate.isEnabled = false
+            mustBeOnWifi.isEnabled = false
+            mustBeCharging.isEnabled = false
         }
     }
 
     override val showUpNavigation = true
 
-    private val mGoogleApiWrapperOnCancelListener = DialogInterface.OnCancelListener { refresh() }
+    private val googleApiWrapperOnCancelListener = DialogInterface.OnCancelListener { refresh() }
 
-    private val mOnFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
+    private val onFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
         override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
             refresh()
         }
     }
 
-    private val mOnIdentityChangeListener = object : IdentityManager.OnIdentityChangeListener {
+    private val onIdentityChangeListener = object : IdentityManager.OnIdentityChangeListener {
         override fun onIdentityChange(identityManager: IdentityManager) {
             refresh()
         }
     }
 
-    private val mOnChargingRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
+    private val onChargingRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
         override fun onPreferenceChange(preference: Preference<Boolean>) {
-            mRankingsPollingSyncManager.enableOrDisable()
+            rankingsPollingSyncManager.enableOrDisable()
             refresh()
         }
     }
 
-    private val mOnPollFrequencyChange = object : Preference.OnPreferenceChangeListener<PollFrequency> {
+    private val onPollFrequencyChange = object : Preference.OnPreferenceChangeListener<PollFrequency> {
         override fun onPreferenceChange(preference: Preference<PollFrequency>) {
-            mRankingsPollingSyncManager.enableOrDisable()
+            rankingsPollingSyncManager.enableOrDisable()
             refresh()
         }
     }
 
-    private val mOnRankingsPollingEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
+    private val onRankingsPollingEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
         override fun onPreferenceChange(preference: Preference<Boolean>) {
-            mRankingsPollingSyncManager.enableOrDisable()
+            rankingsPollingSyncManager.enableOrDisable()
             refresh()
         }
     }
 
-    private val mOnRingtoneChange = object : Preference.OnPreferenceChangeListener<Uri> {
+    private val onRingtoneChange = object : Preference.OnPreferenceChangeListener<Uri> {
         override fun onPreferenceChange(preference: Preference<Uri>) {
             refresh()
         }
     }
 
-    private val mOnVibrationEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
+    private val onVibrationEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
         override fun onPreferenceChange(preference: Preference<Boolean>) {
             refresh()
         }
     }
 
-    private val mOnWifiRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
+    private val onWifiRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
         override fun onPreferenceChange(preference: Preference<Boolean>) {
-            mRankingsPollingSyncManager.enableOrDisable()
+            rankingsPollingSyncManager.enableOrDisable()
             refresh()
         }
     }
 
-    private val mOnRegionChangeListener = object : RegionManager.OnRegionChangeListener {
+    private val onRegionChangeListener = object : RegionManager.OnRegionChangeListener {
         override fun onRegionChange(regionManager: RegionManager) {
             refresh()
         }

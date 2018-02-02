@@ -18,10 +18,10 @@ import javax.inject.Inject
 class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterface.OnClickListener,
         FavoritePlayersManager.OnFavoritePlayersChangeListener, View.OnClickListener {
 
-    private val mNumberFormat = NumberFormat.getIntegerInstance()
+    private val numberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
-    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -40,12 +40,12 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
             return
         }
 
-        mFavoritePlayersManager.addListener(this)
+        favoritePlayersManager.addListener(this)
         refresh()
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
-        mFavoritePlayersManager.clear()
+        favoritePlayersManager.clear()
     }
 
     override fun onClick(v: View) {
@@ -59,7 +59,7 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        mFavoritePlayersManager.removeListener(this)
+        favoritePlayersManager.removeListener(this)
     }
 
     override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
@@ -73,7 +73,7 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-            mFavoritePlayersManager.addListener(this)
+            favoritePlayersManager.addListener(this)
         }
 
         setOnClickListener(this)
@@ -81,7 +81,7 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
 
         if (isInEditMode) {
             descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
-                    mNumberFormat.format(8))
+                    numberFormat.format(8))
         } else {
             refresh()
         }
@@ -90,10 +90,10 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
     override fun refresh() {
         super.refresh()
 
-        val size = mFavoritePlayersManager.size
+        val size = favoritePlayersManager.size
         isEnabled = size != 0
         descriptionText = resources.getQuantityString(R.plurals.x_favorites, size,
-                mNumberFormat.format(size))
+                numberFormat.format(size))
     }
 
 }

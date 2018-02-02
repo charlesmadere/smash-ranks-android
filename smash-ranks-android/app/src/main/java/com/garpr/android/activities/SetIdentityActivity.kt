@@ -1,5 +1,6 @@
 package com.garpr.android.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +13,6 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersSelectionAdapter
@@ -221,8 +221,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     private fun save() {
         val selectedPlayer = mSelectedPlayer ?: throw RuntimeException("selectedPlayer is null")
         mIdentityManager.setIdentity(selectedPlayer, mRegionManager.getRegion(this))
-        Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show()
-        setResult(ResultCodes.IDENTITY_SELECTED.value)
+        setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
     }
 
