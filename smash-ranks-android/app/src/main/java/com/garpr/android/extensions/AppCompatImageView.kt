@@ -13,6 +13,7 @@ fun AppCompatImageView.setTintedImageDrawable(@ColorInt color: Int) {
 
 fun AppCompatImageView.setTintedImageDrawable(drawable: Drawable?, @ColorInt color: Int) {
     if (drawable == null) {
+        setImageDrawable(null)
         return
     }
 
