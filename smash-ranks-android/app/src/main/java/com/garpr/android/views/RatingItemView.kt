@@ -16,8 +16,8 @@ import kotterknife.bindView
 
 class RatingItemView : LinearLayout, BaseAdapterView<Rating> {
 
-    private val mRating: TextView by bindView(R.id.tvRating)
-    private val mUnadjusted: TextView by bindView(R.id.tvUnadjusted)
+    private val rating: TextView by bindView(R.id.tvRating)
+    private val unadjusted: TextView by bindView(R.id.tvUnadjusted)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -30,9 +30,9 @@ class RatingItemView : LinearLayout, BaseAdapterView<Rating> {
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun setContent(content: Rating) {
-        mRating.text = resources.getString(R.string.rating_x,
+        rating.text = resources.getString(R.string.rating_x,
                 MiscUtils.truncateFloat(content.rating))
-        mUnadjusted.text = resources.getString(R.string.unadjusted_x_y,
+        unadjusted.text = resources.getString(R.string.unadjusted_x_y,
                 MiscUtils.truncateFloat(content.mu), MiscUtils.truncateFloat(content.sigma))
     }
 

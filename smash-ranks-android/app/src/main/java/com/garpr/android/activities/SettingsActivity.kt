@@ -96,16 +96,22 @@ class SettingsActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RequestCodes.CHANGE_IDENTITY.value) {
-            if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show()
+        when (requestCode) {
+            RequestCodes.CHANGE_IDENTITY.value -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show()
+                }
             }
-        } else if (requestCode == RequestCodes.CHANGE_REGION.value) {
-            if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
+
+            RequestCodes.CHANGE_REGION.value -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
+                }
             }
-        } else if (requestCode == RequestCodes.CHANGE_RINGTONE.value) {
-            ringtonePreferenceView.onActivityResult(data)
+
+            RequestCodes.CHANGE_RINGTONE.value -> {
+                ringtonePreferenceView.onActivityResult(data)
+            }
         }
 
         refresh()
