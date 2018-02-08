@@ -24,11 +24,9 @@ class TournamentPlayersLayout : TournamentPageLayout {
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentPlayersLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_tournament_players, parent, false)
-                    as TournamentPlayersLayout
-        }
+        fun inflate(parent: ViewGroup): TournamentPlayersLayout = LayoutInflater.from(
+                parent.context).inflate(R.layout.layout_tournament_players, parent,
+                false) as TournamentPlayersLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

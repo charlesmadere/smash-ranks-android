@@ -8,11 +8,11 @@ import com.garpr.android.preferences.Preference
 import java.lang.ref.WeakReference
 
 class IdentityManagerImpl(
-        private val mIdentity: Preference<FavoritePlayer>,
-        private val mTimber: Timber
+        private val identityPreference: Preference<FavoritePlayer>,
+        private val timber: Timber
 ) : IdentityManager {
 
-    private val mListeners = mutableListOf<WeakReference<OnIdentityChangeListener>>()
+    private val listeners = mutableListOf<WeakReference<OnIdentityChangeListener>>()
 
 
     companion object {
@@ -20,9 +20,9 @@ class IdentityManagerImpl(
     }
 
     override fun addListener(listener: OnIdentityChangeListener) {
-        synchronized (mListeners) {
+        synchronized (listeners) {
             var addListener = true
-            val iterator = mListeners.iterator()
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -36,24 +36,20 @@ class IdentityManagerImpl(
             }
 
             if (addListener) {
-                mListeners.add(WeakReference(listener))
+                listeners.add(WeakReference(listener))
             }
         }
     }
 
     override val identity: FavoritePlayer?
-        get() = mIdentity.get()
+        get() = identityPreference.get()
 
     private fun getPlayerString(player: AbsPlayer?): String {
-        return if (player == null) {
-            "null"
-        } else {
-            "(id:" + player.id + ") (name:" + player.name + ")"
-        }
+        return if (player == null) { "null" } else { "(id:${player.id}) (name:${player.name})" }
     }
 
     override val hasIdentity: Boolean
-        get() = mIdentity.exists
+        get() = identityPreference.exists
 
     override fun isPlayer(player: AbsPlayer?): Boolean {
         return identity?.let { it == player } == true
@@ -64,8 +60,8 @@ class IdentityManagerImpl(
     }
 
     private fun notifyListeners() {
-        synchronized (mListeners) {
-            val iterator = mListeners.iterator()
+        synchronized (listeners) {
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -81,16 +77,16 @@ class IdentityManagerImpl(
     }
 
     override fun removeIdentity() {
-        mTimber.d(TAG, "identity is being removed, old identity was \"" +
+        timber.d(TAG, "identity is being removed, old identity was \"" +
                 getPlayerString(identity) + "\"")
 
-        mIdentity.delete()
+        identityPreference.delete()
         notifyListeners()
     }
 
     override fun removeListener(listener: OnIdentityChangeListener?) {
-        synchronized (mListeners) {
-            val iterator = mListeners.iterator()
+        synchronized (listeners) {
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -104,10 +100,10 @@ class IdentityManagerImpl(
     }
 
     override fun setIdentity(player: AbsPlayer, region: Region) {
-        mTimber.d(TAG, "old identity was \"" + getPlayerString(identity) + "\"" +
+        timber.d(TAG, "old identity was \"" + getPlayerString(identity) + "\"" +
                 ", new identity is \"" + getPlayerString(player) + "\"")
 
-        mIdentity.set(FavoritePlayer(player.id, player.name, region))
+        identityPreference.set(FavoritePlayer(player.id, player.name, region))
         notifyListeners()
     }
 

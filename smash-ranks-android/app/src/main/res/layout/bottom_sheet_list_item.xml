@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.BottomSheetListItem xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BottomSheetListItem">
+
+    <com.garpr.android.views.TintedImageView
+        tools:src="@drawable/ic_person_add_white_24dp"
+        style="@style/BottomSheetListItemIcon" />
+
+    <TextView
+        tools:text="@string/add_to_favorites"
+        style="@style/BottomSheetListItemText" />
+
+</com.garpr.android.views.BottomSheetListItem>

@@ -15,6 +15,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
+import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.setTintedImageDrawable
 import com.garpr.android.misc.Refreshable
 import kotterknife.bindView
 
@@ -46,9 +48,9 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
 
     var descriptionText: CharSequence?
         get() = description.text.toString()
-        set(text) {
-            _descriptionText = text
-            description.text = text
+        set(value) {
+            _descriptionText = value
+            description.text = value
         }
 
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>) {
@@ -59,22 +61,29 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
         dispatchFreezeSelfOnly(container)
     }
 
+    var iconDrawable: Drawable?
+        get() = icon.drawable
+        set(value) {
+            _iconDrawable = value
+
+            if (value == null) {
+                icon.clear()
+                icon.visibility = View.GONE
+            } else {
+                icon.setTintedImageDrawable(value,
+                        context.getAttrColor(android.R.attr.textColorSecondary))
+                icon.visibility = View.VISIBLE
+            }
+        }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
         LayoutInflater.from(context).inflate(R.layout.view_simple_preference, this)
 
-        val iconDrawable = _iconDrawable
-        if (iconDrawable == null) {
-            icon.clear()
-            icon.visibility = View.GONE
-        } else {
-            icon.setImageDrawable(iconDrawable)
-            icon.visibility = View.VISIBLE
-        }
-
-        title.text = _titleText
-        description.text = _descriptionText
+        descriptionText = _descriptionText
+        iconDrawable = _iconDrawable
+        titleText = _titleText
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
@@ -97,9 +106,9 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
 
     var titleText: CharSequence?
         get() = title.text.toString()
-        set(text) {
-            _titleText = text
-            title.text = text
+        set(value) {
+            _titleText = value
+            title.text = value
         }
 
 }

@@ -13,8 +13,8 @@ import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.AbsTournament
 
 class ShareUtilsImpl(
-        private val mRegionManager: RegionManager,
-        private val mTimber: Timber
+        private val regionManager: RegionManager,
+        private val timber: Timber
 ) : ShareUtils {
 
     companion object {
@@ -32,13 +32,13 @@ class ShareUtilsImpl(
             val intent = Intent(Intent.ACTION_VIEW, uri)
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            mTimber.e(TAG, "Unable to open browser to URI: $uri", e)
+            timber.e(TAG, "Unable to open browser to URI: $uri", e)
             Toast.makeText(context, R.string.unable_to_open_link, Toast.LENGTH_LONG).show()
         }
     }
 
     override fun sharePlayer(activity: Activity, player: AbsPlayer) {
-        val region = mRegionManager.getRegion(activity)
+        val region = regionManager.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_x, player.name))
@@ -48,7 +48,7 @@ class ShareUtilsImpl(
     }
 
     override fun shareRankings(activity: Activity) {
-        val region = mRegionManager.getRegion(activity)
+        val region = regionManager.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_rankings))
@@ -59,7 +59,7 @@ class ShareUtilsImpl(
 
     override fun shareTournament(activity: Activity,
             tournament: AbsTournament) {
-        val region = mRegionManager.getRegion(activity)
+        val region = regionManager.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_x, tournament.name))
@@ -69,7 +69,7 @@ class ShareUtilsImpl(
     }
 
     override fun shareTournaments(activity: Activity) {
-        val region = mRegionManager.getRegion(activity)
+        val region = regionManager.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_tournaments))

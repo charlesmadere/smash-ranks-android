@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentMatchesAdapter
 import com.garpr.android.misc.ListUtils
@@ -24,11 +23,9 @@ class TournamentMatchesLayout : TournamentPageLayout {
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentMatchesLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_tournament_matches, parent, false)
-                    as TournamentMatchesLayout
-        }
+        fun inflate(parent: ViewGroup): TournamentMatchesLayout = LayoutInflater.from(
+                parent.context).inflate(R.layout.layout_tournament_matches, parent,
+                false) as TournamentMatchesLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

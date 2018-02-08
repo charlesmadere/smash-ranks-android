@@ -4,23 +4,23 @@ import android.util.Log
 
 class TimberImpl(
         isLowRamDevice: Boolean,
-        private val mCrashlyticsWrapper: CrashlyticsWrapper
+        private val crashlyticsWrapper: CrashlyticsWrapper
 ) : Timber {
 
-    private val mMaxSize: Int = if (isLowRamDevice) 64 else 256
-    private val mEntries = mutableListOf<Timber.Entry>()
+    private val maxSize: Int = if (isLowRamDevice) 64 else 256
+    private val _entries = mutableListOf<Timber.Entry>()
 
 
     private fun addEntry(entry: Timber.Entry) {
-        if (mEntries.size >= mMaxSize) {
-            mEntries.removeAt(mEntries.size - 1)
+        if (_entries.size >= maxSize) {
+            _entries.removeAt(_entries.size - 1)
         }
 
-        mEntries.add(0, entry)
+        _entries.add(0, entry)
     }
 
     @Synchronized override fun clearEntries() {
-        mEntries.clear()
+        _entries.clear()
     }
 
     @Synchronized override fun d(tag: String, msg: String) {
@@ -29,10 +29,10 @@ class TimberImpl(
 
     @Synchronized override fun d(tag: String, msg: String, tr: Throwable?) {
         addEntry(Timber.DebugEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))
-        mCrashlyticsWrapper.log(Log.DEBUG, tag, msg)
+        crashlyticsWrapper.log(Log.DEBUG, tag, msg)
 
         if (tr != null) {
-            mCrashlyticsWrapper.logException(tr)
+            crashlyticsWrapper.logException(tr)
         }
     }
 
@@ -42,10 +42,10 @@ class TimberImpl(
 
     @Synchronized override fun e(tag: String, msg: String, tr: Throwable?) {
         addEntry(Timber.ErrorEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))
-        mCrashlyticsWrapper.log(Log.ERROR, tag, msg)
+        crashlyticsWrapper.log(Log.ERROR, tag, msg)
 
         if (tr != null) {
-            mCrashlyticsWrapper.logException(tr)
+            crashlyticsWrapper.logException(tr)
         }
     }
 
@@ -54,7 +54,7 @@ class TimberImpl(
             val list = mutableListOf<Timber.Entry>()
 
             synchronized (this) {
-                list.addAll(mEntries)
+                list.addAll(_entries)
             }
 
             return list
@@ -66,10 +66,10 @@ class TimberImpl(
 
     @Synchronized override fun w(tag: String, msg: String, tr: Throwable?) {
         addEntry(Timber.WarnEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))
-        mCrashlyticsWrapper.log(Log.WARN, tag, msg)
+        crashlyticsWrapper.log(Log.WARN, tag, msg)
 
         if (tr != null) {
-            mCrashlyticsWrapper.logException(tr)
+            crashlyticsWrapper.logException(tr)
         }
     }
 
