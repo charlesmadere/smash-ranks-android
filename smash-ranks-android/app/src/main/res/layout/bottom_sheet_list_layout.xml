@@ -4,7 +4,6 @@
     style="@style/BottomSheetRoot">
 
     <TextView
-        android:id="@+id/header"
         tools:text="Remove Charlezard from favorites?"
         style="@style/BottomSheetTitle" />
 
