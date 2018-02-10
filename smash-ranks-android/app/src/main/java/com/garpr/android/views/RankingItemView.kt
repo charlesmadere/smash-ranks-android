@@ -1,10 +1,7 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -19,7 +16,11 @@ import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
+class RankingItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<RankedPlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
@@ -41,15 +42,6 @@ class RankingItemView : IdentityFrameLayout, BaseAdapterView<RankedPlayer>,
     private val rank: TextView by bindView(R.id.tvRank)
     private val rating: TextView by bindView(R.id.tvRating)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
