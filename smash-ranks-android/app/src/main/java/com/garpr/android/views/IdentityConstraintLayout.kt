@@ -14,19 +14,17 @@ import com.garpr.android.misc.IdentityManager
 import com.garpr.android.models.AbsPlayer
 import javax.inject.Inject
 
-abstract class IdentityConstraintLayout : LifecycleConstraintLayout,
-        IdentityManager.OnIdentityChangeListener {
+abstract class IdentityConstraintLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : LifecycleConstraintLayout(context, attrs, defStyleAttr), IdentityManager.OnIdentityChangeListener {
 
     private var originalBackground: Drawable? = null
 
     @Inject
     protected lateinit var identityManager: IdentityManager
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
 
     protected open fun clear() {
         identity = null
