@@ -22,6 +22,11 @@ class TintedImageView @JvmOverloads constructor(
         parseAttributes(attrs)
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setTintedImageDrawable(tintColor)
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         setTintedImageDrawable(tintColor)
