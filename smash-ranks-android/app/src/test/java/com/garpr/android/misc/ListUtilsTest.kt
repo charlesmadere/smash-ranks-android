@@ -213,11 +213,11 @@ class ListUtilsTest : BaseTest() {
         assertNotNull(list)
         assertEquals(25, list?.size)
 
-        list?.forEach({
+        list?.forEach {
             if (it is RankingCriteria) {
                 assertTrue(it.isActive)
             }
-        })
+        }
 
         assertTrue(list?.get(0) is Endpoint)
         assertEquals(Endpoint.GAR_PR, list?.get(0))
@@ -261,11 +261,11 @@ class ListUtilsTest : BaseTest() {
         assertNotNull(list)
         assertEquals(3, list?.size)
 
-        list?.forEach({
+        list?.forEach {
             if (it is RankingCriteria) {
                 assertTrue(it.isActive)
             }
-        })
+        }
 
         assertTrue(list?.get(0) is Endpoint)
         assertEquals(Endpoint.GAR_PR, list?.get(0))
@@ -286,11 +286,11 @@ class ListUtilsTest : BaseTest() {
         assertNotNull(list)
         assertEquals(23, list?.size)
 
-        list?.forEach({
+        list?.forEach {
             if (it is RankingCriteria) {
                 assertTrue(it.isActive)
             }
-        })
+        }
 
         assertTrue(list?.get(0) is Endpoint)
         assertEquals(Endpoint.NOT_GAR_PR, list?.get(0))
