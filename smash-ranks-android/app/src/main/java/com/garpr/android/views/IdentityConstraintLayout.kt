@@ -62,12 +62,10 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
+        if (!isInEditMode) {
+            App.get().appComponent.inject(this)
+            identityManager.addListener(this)
         }
-
-        App.get().appComponent.inject(this)
-        identityManager.addListener(this)
 
         originalBackground = background
     }
