@@ -1,13 +1,11 @@
 package com.garpr.android.views
 
 import android.annotation.TargetApi
-import android.app.Dialog
 import android.content.Context
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StyleRes
-import android.support.design.widget.BottomSheetDialog
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
@@ -17,20 +15,23 @@ import kotterknife.bindView
 
 class BottomSheetListLayout : LinearLayout, BottomSheetListItem.OnClickListener {
 
-    private var onItemSelectListener: OnItemSelectListener? = null
+    private lateinit var titleText: CharSequence
+    private lateinit var listItems: List<ListItem>
+    private lateinit var onItemSelectListener: OnItemSelectListener
 
     private val list: LinearLayout by bindView(R.id.list)
     private val title: TextView by bindView(R.id.title)
 
 
     companion object {
-        fun createBottomSheetDialog(context: Context): Dialog {
-            val view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_list_layout,
-                    null, false)
-
-            val dialog = BottomSheetDialog(context)
-            dialog.setContentView(view)
-            return dialog
+        fun inflateForDialog(context: Context, title: CharSequence, listItems: List<ListItem>,
+                onItemSelectListener: OnItemSelectListener): BottomSheetListLayout {
+            val layout = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_list_layout,
+                    null, false) as BottomSheetListLayout
+            layout.titleText = title
+            layout.listItems = listItems
+            layout.onItemSelectListener = onItemSelectListener
+            return layout
         }
     }
 
@@ -47,35 +48,31 @@ class BottomSheetListLayout : LinearLayout, BottomSheetListItem.OnClickListener 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun onClick(v: BottomSheetListItem) {
-        onItemSelectListener?.let {
-            for (i in 0 until list.childCount) {
-                if (list.getChildAt(i) === v) {
-                    it.onItemSelect(i)
-                    return
-                }
-            }
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
 
-            throw RuntimeException("onClick() occurred with unknown \"which\" value...")
-        }
-    }
-
-    fun set(onItemSelectListener: OnItemSelectListener? = null, title: CharSequence,
-            listItems: List<ListItem>) {
-        this.onItemSelectListener = onItemSelectListener
-        this.title.text = title
-
-        list.removeAllViews()
+        title.text = titleText
 
         if (listItems.isEmpty()) {
-            throw IllegalArgumentException("listItems must not be empty")
+            throw RuntimeException("listItems must not be empty")
         }
 
-        listItems.forEach({
+        listItems.forEach {
             val listItem = BottomSheetListItem.inflate(this)
             listItem.set(it.icon, it.text)
             list.addView(listItem)
-        })
+        }
+    }
+
+    override fun onClick(v: BottomSheetListItem) {
+        for (i in 0 until list.childCount) {
+            if (list.getChildAt(i) === v) {
+                onItemSelectListener.onItemSelect(i)
+                return
+            }
+        }
+
+        throw RuntimeException("onClick() occurred with unknown \"which\" value...")
     }
 
     class ListItem(@DrawableRes val icon: Int = 0, val text: CharSequence)
