@@ -11,7 +11,7 @@ fun ImageView.clear() {
     setImageDrawable(null)
 }
 
-fun ImageView.setTintedImageDrawable(@ColorInt color: Int) {
+fun ImageView.setTintedImageColor(@ColorInt color: Int) {
     setTintedImageDrawable(drawable, color)
 }
 

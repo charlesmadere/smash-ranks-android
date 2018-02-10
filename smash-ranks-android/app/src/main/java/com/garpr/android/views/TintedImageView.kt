@@ -6,6 +6,7 @@ import android.support.annotation.ColorInt
 import android.util.AttributeSet
 import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.setTintedImageColor
 import com.garpr.android.extensions.setTintedImageDrawable
 
 class TintedImageView @JvmOverloads constructor(
@@ -24,12 +25,12 @@ class TintedImageView @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        setTintedImageDrawable(tintColor)
+        setTintedImageColor(tintColor)
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        setTintedImageDrawable(tintColor)
+        setTintedImageColor(tintColor)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
