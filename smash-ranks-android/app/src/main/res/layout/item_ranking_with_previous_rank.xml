@@ -1,49 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.RankingItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@null"
-    android:foreground="?attr/selectableItemBackground"
-    style="@style/ListItem">
-    <LinearLayout
-        android:orientation="horizontal"
-        style="@style/InnerListItem">
-        <com.garpr.android.views.PreviousRankView
-            android:id="@+id/previousRankView"
-            android:layout_gravity="center_vertical"
-            android:layout_height="18dp"
-            android:layout_width="18dp"
-            tools:src="@drawable/ic_arrow_upward_white_18dp" />
-        <android.support.v4.widget.Space
-            android:layout_height="1dp"
-            android:layout_width="@dimen/root_padding_half" />
-        <TextView
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-condensed"
-            android:id="@+id/tvRank"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            tools:text="84" />
-        <TextView
-            android:ellipsize="end"
-            android:id="@+id/tvName"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/root_padding"
-            android:layout_marginStart="@dimen/root_padding"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:maxLines="3"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_large"
-            tools:text="Charlezard" />
-        <TextView
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-condensed"
-            android:gravity="end"
-            android:id="@+id/tvRating"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            tools:text="21.737" />
-    </LinearLayout>
+    style="@style/ConstraintListItem">
+
+    <com.garpr.android.views.PreviousRankView
+        android:id="@+id/previousRankView"
+        android:layout_height="@dimen/previous_rank_view_size"
+        android:layout_width="@dimen/previous_rank_view_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-condensed"
+        android:id="@+id/tvRank"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/previousRankView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="84" />
+
+    <TextView
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="end"
+        android:id="@+id/tvRating"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="21.737" />
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvName"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:maxLines="3"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvRating"
+        app:layout_constraintStart_toEndOf="@id/tvRank"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Charlezard" />
+
+    <View
+        android:background="?attr/selectableItemBackground"
+        android:duplicateParentState="true"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </com.garpr.android.views.RankingItemView>
