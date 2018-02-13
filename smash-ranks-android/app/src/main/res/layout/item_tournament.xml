@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.TournamentItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ListItem">
-    <LinearLayout
-        android:orientation="horizontal"
-        style="@style/InnerListItem">
-        <TextView
-            android:ellipsize="end"
-            android:id="@+id/tvName"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:maxLines="3"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_large"
-            tools:text="Genesis 3" />
-        <android.support.v4.widget.Space
-            android:layout_height="1dp"
-            android:layout_width="@dimen/root_padding" />
-        <TextView
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-condensed"
-            android:gravity="end"
-            android:id="@+id/tvDate"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            tools:text="1/20/2016" />
-    </LinearLayout>
+    style="@style/ConstraintListItem">
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvName"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="3"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Genesis 3" />
+
+    <TextView
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="end"
+        android:id="@id/tvDate"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1/20/2016" />
+
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
+
 </com.garpr.android.views.TournamentItemView>

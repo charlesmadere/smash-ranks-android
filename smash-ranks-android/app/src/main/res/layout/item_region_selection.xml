@@ -1,43 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.RegionSelectionItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ListItem.WithBackground">
-    <LinearLayout
-        android:orientation="horizontal"
-        style="@style/InnerListItem">
-        <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:orientation="vertical">
-            <TextView
-                android:ellipsize="end"
-                android:id="@+id/tvDisplayName"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:maxLines="2"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/text_size_large"
-                tools:text="Google MTV" />
-            <TextView
-                android:ellipsize="end"
-                android:id="@+id/tvId"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:maxLines="1"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="@dimen/text_size_small"
-                tools:text="googlemtv" />
-        </LinearLayout>
-        <android.support.v4.widget.Space
-            android:layout_height="1dp"
-            android:layout_width="@dimen/root_padding" />
-        <RadioButton
-            android:background="@null"
-            android:clickable="false"
-            android:id="@+id/radioButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
-    </LinearLayout>
+    style="@style/ConstraintListItem">
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvDisplayName"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="2"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintEnd_toStartOf="@+id/radioButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Google MTV" />
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvId"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tvDisplayName"
+        app:layout_constraintStart_toStartOf="@id/tvDisplayName"
+        app:layout_constraintTop_toBottomOf="@id/tvDisplayName"
+        tools:text="googlemtv" />
+
+    <RadioButton
+        android:background="@null"
+        android:clickable="false"
+        android:id="@id/radioButton"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
+
 </com.garpr.android.views.RegionSelectionItemView>

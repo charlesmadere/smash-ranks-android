@@ -76,6 +76,11 @@
         <item name="android:minHeight">@dimen/list_item_height</item>
     </style>
 
+    <style name="ConstraintListItem.WithBackground">
+        <item name="android:background">@color/card_background</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
+    </style>
+
     <style name="DividerItem">
         <item name="android:background">@color/card_background</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>

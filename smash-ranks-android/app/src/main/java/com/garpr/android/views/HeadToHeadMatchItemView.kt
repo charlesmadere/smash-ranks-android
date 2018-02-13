@@ -1,10 +1,7 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
@@ -23,7 +20,11 @@ import com.garpr.android.models.MatchResult
 import kotterknife.bindView
 import javax.inject.Inject
 
-class HeadToHeadMatchItemView : IdentityFrameLayout, BaseAdapterView<HeadToHeadMatch>,
+class HeadToHeadMatchItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<HeadToHeadMatch>,
         View.OnClickListener {
 
     @Inject
@@ -32,15 +33,6 @@ class HeadToHeadMatchItemView : IdentityFrameLayout, BaseAdapterView<HeadToHeadM
     private val opponentName: TextView by bindView(R.id.tvOpponentName)
     private val playerName: TextView by bindView(R.id.tvPlayerName)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun clear() {
         super.clear()

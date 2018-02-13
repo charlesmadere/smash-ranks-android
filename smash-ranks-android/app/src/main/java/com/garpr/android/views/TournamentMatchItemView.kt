@@ -1,10 +1,7 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
@@ -22,7 +19,11 @@ import com.garpr.android.models.FullTournament
 import kotterknife.bindView
 import javax.inject.Inject
 
-class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournament.Match>,
+class TournamentMatchItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<FullTournament.Match>,
         View.OnClickListener {
 
     @Inject
@@ -31,15 +32,6 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     private val loserName: TextView by bindView(R.id.tvLoserName)
     private val winnerName: TextView by bindView(R.id.tvWinnerName)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun clear() {
         super.clear()

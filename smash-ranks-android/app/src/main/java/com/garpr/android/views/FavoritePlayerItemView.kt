@@ -1,10 +1,7 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -18,7 +15,11 @@ import com.garpr.android.models.FavoritePlayer
 import kotterknife.bindView
 import javax.inject.Inject
 
-class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlayer>,
+class FavoritePlayerItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+): IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<FavoritePlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
     @Inject
@@ -30,15 +31,6 @@ class FavoritePlayerItemView : IdentityFrameLayout, BaseAdapterView<FavoritePlay
     private val name: TextView by bindView(R.id.tvName)
     private val region: TextView by bindView(R.id.tvRegion)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()

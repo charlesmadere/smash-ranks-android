@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.TournamentMatchItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@null"
-    android:foreground="?attr/selectableItemBackground"
-    style="@style/ListItem">
-    <LinearLayout
-        style="@style/InnerListItem">
-        <TextView
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:id="@+id/tvWinnerName"
-            android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:maxLines="2"
-            android:textColor="@color/win"
-            tools:text="Mikkuz" />
-        <android.support.v4.widget.Space
-            android:layout_height="1dp"
-            android:layout_width="@dimen/root_padding" />
-        <TextView
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:id="@+id/tvLoserName"
-            android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:maxLines="2"
-            android:textColor="@color/lose"
-            tools:text="gaR" />
-    </LinearLayout>
+    style="@style/ConstraintListItem">
+
+    <TextView
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:id="@+id/tvWinnerName"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding_half"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="2"
+        android:textColor="@color/win"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvLoserName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Mikkuz" />
+
+    <TextView
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:id="@id/tvLoserName"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding_half"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="2"
+        android:textColor="@color/lose"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="gaR" />
+
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
+
 </com.garpr.android.views.TournamentMatchItemView>
