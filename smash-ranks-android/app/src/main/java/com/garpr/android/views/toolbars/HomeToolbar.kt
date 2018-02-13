@@ -12,7 +12,11 @@ import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.RegionManager
 import javax.inject.Inject
 
-class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
+class HomeToolbar @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : SearchToolbar(context, attrs, defStyleAttr), IdentityManager.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
 
     @Inject
@@ -24,11 +28,6 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
     @Inject
     protected lateinit var regionManager: RegionManager
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

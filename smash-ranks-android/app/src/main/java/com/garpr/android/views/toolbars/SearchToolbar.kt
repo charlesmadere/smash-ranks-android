@@ -12,7 +12,11 @@ import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 
-abstract class SearchToolbar : MenuToolbar, MenuItem.OnActionExpandListener, SearchQueryHandle,
+abstract class SearchToolbar @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : MenuToolbar(context, attrs, defStyleAttr), MenuItem.OnActionExpandListener, SearchQueryHandle,
         SearchView.OnQueryTextListener {
 
     private var searchMenuItem: MenuItem? = null
@@ -22,11 +26,6 @@ abstract class SearchToolbar : MenuToolbar, MenuItem.OnActionExpandListener, Sea
     interface Listener {
         val showSearchMenuItem: Boolean
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
 
     fun closeSearchLayout() {
         if (isSearchLayoutExpanded) {

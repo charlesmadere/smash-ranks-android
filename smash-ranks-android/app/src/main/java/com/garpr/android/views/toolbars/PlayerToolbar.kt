@@ -16,7 +16,12 @@ import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 import javax.inject.Inject
 
-class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersChangeListener,
+class PlayerToolbar @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : SearchToolbar(context, attrs, defStyleAttr),
+        FavoritePlayersManager.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener {
 
     @Inject
@@ -34,11 +39,6 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         val matchesBundle: MatchesBundle?
         val matchResult: MatchResult?
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

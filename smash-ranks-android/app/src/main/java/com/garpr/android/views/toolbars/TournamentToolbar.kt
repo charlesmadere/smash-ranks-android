@@ -12,7 +12,11 @@ import com.garpr.android.misc.TournamentToolbarManager
 import com.garpr.android.models.FullTournament
 import javax.inject.Inject
 
-class TournamentToolbar : SearchToolbar {
+class TournamentToolbar @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : SearchToolbar(context, attrs, defStyleAttr) {
 
     @Inject
     protected lateinit var tournamentToolbarManager: TournamentToolbarManager
@@ -21,11 +25,6 @@ class TournamentToolbar : SearchToolbar {
     interface DataProvider {
         val fullTournament: FullTournament?
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
 
     override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
         inflater.inflate(R.menu.toolbar_tournament, menu)
@@ -47,10 +46,7 @@ class TournamentToolbar : SearchToolbar {
             return
         }
 
-        val activity = context.optActivity()
-        val fullTournament: FullTournament? = if (activity is DataProvider)
-            activity.fullTournament else null
-
+        val fullTournament = (context.optActivity() as? DataProvider)?.fullTournament
         val presentation = tournamentToolbarManager.getPresentation(fullTournament)
         menu.findItem(R.id.miShare).isVisible = presentation.isShareVisible
         menu.findItem(R.id.miViewTournamentPage).isVisible = presentation.isViewTournamentPageVisible

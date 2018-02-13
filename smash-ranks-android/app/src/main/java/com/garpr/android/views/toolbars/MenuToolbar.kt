@@ -1,6 +1,7 @@
 package com.garpr.android.views.toolbars
 
 import android.content.Context
+import android.support.annotation.AttrRes
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
@@ -11,15 +12,14 @@ import android.view.MenuItem
 
 import com.garpr.android.misc.Heartbeat
 
-abstract class MenuToolbar : Toolbar, Heartbeat {
+abstract class MenuToolbar @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : Toolbar(context, attrs, defStyleAttr), Heartbeat {
 
     private val sparseMenuItemsArray = SparseBooleanArray()
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context,
-            attrs, defStyleAttr)
 
     private fun createSparseMenuItemsArray() {
         for (i in 0 until menu.size()) {
