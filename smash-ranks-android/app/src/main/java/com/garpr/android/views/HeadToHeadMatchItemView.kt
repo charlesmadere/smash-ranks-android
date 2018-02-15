@@ -2,6 +2,7 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.support.annotation.AttrRes
+import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
@@ -26,6 +27,15 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
         @AttrRes defStyleAttr: Int = 0
 ) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<HeadToHeadMatch>,
         View.OnClickListener {
+
+    @ColorInt
+    private var exclusionColor: Int = 0
+
+    @ColorInt
+    private var loseColor: Int = 0
+
+    @ColorInt
+    private var winColor: Int = 0
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -56,18 +66,18 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
 
             when (value.result) {
                 MatchResult.EXCLUDED -> {
-                    playerName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
-                    opponentName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+                    playerName.setTextColor(exclusionColor)
+                    opponentName.setTextColor(exclusionColor)
                 }
 
                 MatchResult.LOSE -> {
-                    playerName.setTextColor(ContextCompat.getColor(context, R.color.lose))
-                    opponentName.setTextColor(ContextCompat.getColor(context, R.color.win))
+                    playerName.setTextColor(loseColor)
+                    opponentName.setTextColor(winColor)
                 }
 
                 MatchResult.WIN -> {
-                    playerName.setTextColor(ContextCompat.getColor(context, R.color.win))
-                    opponentName.setTextColor(ContextCompat.getColor(context, R.color.lose))
+                    playerName.setTextColor(winColor)
+                    opponentName.setTextColor(loseColor)
                 }
             }
         }
@@ -98,6 +108,10 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
         }
+
+        exclusionColor = context.getAttrColor(android.R.attr.textColorSecondary)
+        loseColor = ContextCompat.getColor(context, R.color.lose)
+        winColor = ContextCompat.getColor(context, R.color.win)
 
         setOnClickListener(this)
 
