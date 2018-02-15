@@ -5,7 +5,7 @@
 
     <TextView
         android:ellipsize="end"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|start"
         android:id="@+id/tvPlayerName"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_half"
@@ -16,17 +16,17 @@
         android:maxLines="2"
         android:textColor="@color/win"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintEnd_toStartOf="@+id/tvOpponentName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:id="@+id/tvOpponentName"
+        android:gravity="center_vertical|end"
+        android:id="@id/tvOpponentName"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_half"
-        android:layout_marginEnd="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_marginTop="@dimen/root_padding_half"
         android:layout_width="0dp"
@@ -34,7 +34,7 @@
         android:textColor="@color/lose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/tvPlayerName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
