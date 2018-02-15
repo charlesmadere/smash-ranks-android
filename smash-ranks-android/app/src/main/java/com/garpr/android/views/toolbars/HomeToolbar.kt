@@ -1,7 +1,6 @@
 package com.garpr.android.views.toolbars
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,9 +13,8 @@ import javax.inject.Inject
 
 class HomeToolbar @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : SearchToolbar(context, attrs, defStyleAttr), IdentityManager.OnIdentityChangeListener,
+        attrs: AttributeSet? = null
+) : SearchToolbar(context, attrs), IdentityManager.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
 
     @Inject

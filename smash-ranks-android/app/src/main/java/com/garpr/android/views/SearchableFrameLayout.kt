@@ -38,11 +38,11 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refresh
         App.get().appComponent.inject(this)
     }
 
+    override val searchQuery: CharSequence?
+        get() = (context.optActivity() as? SearchQueryHandle)?.searchQuery
+
     override fun smoothScrollToTop() {
         recyclerView?.smoothScrollToTop()
     }
-
-    override val searchQuery: CharSequence?
-        get() = (context.optActivity() as? SearchQueryHandle)?.searchQuery
 
 }

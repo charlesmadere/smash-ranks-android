@@ -1,7 +1,6 @@
 package com.garpr.android.views.toolbars
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.v7.widget.SearchView
 import android.util.AttributeSet
 import android.view.Menu
@@ -14,9 +13,8 @@ import com.garpr.android.misc.Searchable
 
 abstract class SearchToolbar @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : MenuToolbar(context, attrs, defStyleAttr), MenuItem.OnActionExpandListener, SearchQueryHandle,
+        attrs: AttributeSet? = null
+) : MenuToolbar(context, attrs), MenuItem.OnActionExpandListener, SearchQueryHandle,
         SearchView.OnQueryTextListener {
 
     private var searchMenuItem: MenuItem? = null
