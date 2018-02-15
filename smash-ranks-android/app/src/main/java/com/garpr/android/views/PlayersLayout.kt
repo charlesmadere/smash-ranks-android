@@ -89,11 +89,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
             return
         }
 
-        val activity = context.optActivity()
-
-        if (activity is Listener) {
-            activity.onPlayersBundleFetched(this)
-        }
+        (context.optActivity() as? Listener)?.onPlayersBundleFetched(this)
     }
 
     override fun onRefresh() {

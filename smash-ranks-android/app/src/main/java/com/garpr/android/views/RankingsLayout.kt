@@ -99,11 +99,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
             return
         }
 
-        val activity = context.optActivity()
-
-        if (activity is Listener) {
-            activity.onRankingsBundleFetched(this)
-        }
+        (context.optActivity() as? Listener)?.onRankingsBundleFetched(this)
     }
 
     override fun onRefresh() {
