@@ -2,7 +2,7 @@
 <com.garpr.android.views.RegionSelectionItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ConstraintListItem">
+    style="@style/ConstraintListItem.WithBackground">
 
     <TextView
         android:ellipsize="end"
