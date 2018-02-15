@@ -2,19 +2,21 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.support.annotation.IdRes
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.R
+import com.garpr.android.misc.Heartbeat
 
 /**
  * A child class of the official Android [SwipeRefreshLayout] that helps us work around some of
  * its shortcomings. We should use this view instead of SwipeRefreshLayout in every case.
  */
-class RefreshLayout @JvmOverloads constructor(
+open class RefreshLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SwipeRefreshLayout(context, attrs) {
+) : SwipeRefreshLayout(context, attrs), Heartbeat {
 
     @IdRes
     private var scrollingChildId: Int? = null
@@ -30,6 +32,9 @@ class RefreshLayout @JvmOverloads constructor(
     override fun canChildScrollUp(): Boolean {
         return scrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
     }
+
+    override val isAlive: Boolean
+        get() = ViewCompat.isAttachedToWindow(this)
 
     override fun onFinishInflate() {
         super.onFinishInflate()
