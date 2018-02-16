@@ -29,8 +29,4 @@ abstract class TournamentPageLayout : SearchableFrameLayout, BaseAdapterView<Ful
 
     override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
-    override fun refresh() {
-        throw UnsupportedOperationException()
-    }
-
 }

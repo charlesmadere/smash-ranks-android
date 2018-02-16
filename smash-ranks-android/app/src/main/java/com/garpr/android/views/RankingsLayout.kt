@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
@@ -26,7 +22,10 @@ import com.garpr.android.networking.ServerApi
 import kotterknife.bindView
 import javax.inject.Inject
 
-class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refreshable,
+class RankingsLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SearchableRefreshLayout(context, attrs), ApiListener<RankingsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: RankingsAdapter
@@ -40,9 +39,8 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
     @Inject
     protected lateinit var serverApi: ServerApi
 
+    private val error: ErrorContentLinearLayout by bindView(R.id.error)
     private val empty: View by bindView(R.id.empty)
-    private val error: View by bindView(R.id.error)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
 
 
     interface Listener {
@@ -54,24 +52,15 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
                 .inflate(R.layout.layout_rankings, parent, false) as RankingsLayout
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
-
     override fun failure(errorCode: Int) {
         rankingsBundle = null
         notificationsManager.cancelAll()
         onRankingsBundleFetched()
-        showError()
+        showError(errorCode)
     }
 
     private fun fetchRankingsBundle() {
-        refreshLayout.isRefreshing = true
+        isRefreshing = true
         serverApi.getRankings(regionManager.getRegion(context), ApiCall(this))
     }
 
@@ -84,7 +73,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
 
         App.get().appComponent.inject(this)
 
-        refreshLayout.setOnRefreshListener(this)
+        setOnRefreshListener(this)
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
@@ -124,14 +113,14 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         }
 
         threadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<RankedPlayer>? = null
+            private var list: List<RankedPlayer>? = null
 
             override fun onBackground() {
                 if (!isAlive || !TextUtils.equals(query, searchQuery)) {
                     return
                 }
 
-                mList = ListUtils.searchRankingList(query, rankings)
+                list = ListUtils.searchRankingList(query, rankings)
             }
 
             override fun onUi() {
@@ -139,7 +128,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
                     return
                 }
 
-                adapter.set(mList)
+                adapter.set(list)
             }
         })
     }
@@ -149,15 +138,15 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         recyclerView.visibility = View.GONE
         error.visibility = View.GONE
         empty.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        isRefreshing = false
     }
 
-    private fun showError() {
+    private fun showError(errorCode: Int) {
         adapter.clear()
         recyclerView.visibility = View.GONE
         empty.visibility = View.GONE
-        error.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        error.setVisibility(View.VISIBLE, errorCode)
+        isRefreshing = false
     }
 
     private fun showRankingsBundle() {
@@ -165,7 +154,7 @@ class RankingsLayout : SearchableFrameLayout, ApiListener<RankingsBundle>, Refre
         empty.visibility = View.GONE
         error.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        isRefreshing = false
     }
 
     override fun success(`object`: RankingsBundle?) {

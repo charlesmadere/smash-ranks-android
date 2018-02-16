@@ -27,7 +27,7 @@ class FavoritePlayersManagerImpl(
 
     override val absPlayers: List<AbsPlayer>?
         get() {
-            val players = players
+            val players = this.players
 
             if (players == null || players.isEmpty()) {
                 return null

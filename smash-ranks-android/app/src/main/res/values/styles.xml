@@ -264,7 +264,6 @@
 
     <style name="SettingsCardTitle">
         <item name="android:ellipsize">end</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingBottom">@dimen/root_padding_quarter</item>
@@ -282,7 +281,7 @@
         <item name="android:id">@id/tabLayout</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:theme">@style/ToolbarTheme</item>
+        <item name="android:theme">@style/TabLayoutTheme</item>
     </style>
 
     <style name="Toolbar">

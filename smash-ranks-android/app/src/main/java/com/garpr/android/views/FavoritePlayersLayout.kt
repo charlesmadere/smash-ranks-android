@@ -17,13 +17,14 @@ import com.garpr.android.R
 import com.garpr.android.adapters.FavoritePlayersAdapter
 import com.garpr.android.misc.FavoritePlayersManager
 import com.garpr.android.misc.ListUtils
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.AbsPlayer
 import kotterknife.bindView
 import javax.inject.Inject
 
 class FavoritePlayersLayout : SearchableFrameLayout,
-        FavoritePlayersManager.OnFavoritePlayersChangeListener {
+        FavoritePlayersManager.OnFavoritePlayersChangeListener, Refreshable {
 
     private lateinit var adapter: FavoritePlayersAdapter
 
@@ -60,6 +61,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         favoritePlayersManager.addListener(this)
     }
 
@@ -104,14 +106,14 @@ class FavoritePlayersLayout : SearchableFrameLayout,
 
     override fun search(query: String?) {
         threadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<AbsPlayer>? = null
+            private var list: List<AbsPlayer>? = null
 
             override fun onBackground() {
                 if (!isAlive || !TextUtils.equals(query, searchQuery)) {
                     return
                 }
 
-                mList = ListUtils.searchPlayerList(query, favoritePlayersManager.absPlayers)
+                list = ListUtils.searchPlayerList(query, favoritePlayersManager.absPlayers)
             }
 
             override fun onUi() {
@@ -119,7 +121,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
                     return
                 }
 
-                adapter.set(mList)
+                adapter.set(list)
             }
         })
     }

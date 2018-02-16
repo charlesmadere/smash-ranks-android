@@ -18,7 +18,6 @@ import com.garpr.android.models.FullTournament
 
 class TournamentMatchesLayout : TournamentPageLayout {
 
-    private var content: FullTournament? = null
     private lateinit var adapter: TournamentMatchesAdapter
 
 
@@ -37,6 +36,20 @@ class TournamentMatchesLayout : TournamentPageLayout {
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    private var fullTournament: FullTournament? = null
+        set(value) {
+            field = value
+            adapter.set(value)
+
+            if (adapter.isEmpty) {
+                recyclerView.visibility = GONE
+                empty.visibility = VISIBLE
+            } else {
+                empty.visibility = GONE
+                recyclerView.visibility = VISIBLE
+            }
+        }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -48,7 +61,7 @@ class TournamentMatchesLayout : TournamentPageLayout {
     }
 
     override fun search(query: String?) {
-        val matches = content?.matches
+        val matches = fullTournament?.matches
 
         if (matches == null || matches.isEmpty()) {
             return
@@ -76,16 +89,7 @@ class TournamentMatchesLayout : TournamentPageLayout {
     }
 
     override fun setContent(content: FullTournament) {
-        this.content = content
-        adapter.set(content)
-
-        if (adapter.isEmpty) {
-            recyclerView.visibility = GONE
-            empty.visibility = VISIBLE
-        } else {
-            empty.visibility = GONE
-            recyclerView.visibility = VISIBLE
-        }
+        fullTournament = content
     }
 
 }

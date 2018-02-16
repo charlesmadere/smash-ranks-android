@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.setTintedImageColor
-import com.garpr.android.extensions.setTintedImageDrawable
 
 class TintedImageView @JvmOverloads constructor(
         context: Context,

@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
@@ -28,7 +24,10 @@ import com.garpr.android.networking.ServerApi
 import kotterknife.bindView
 import javax.inject.Inject
 
-class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>, Refreshable,
+class TournamentsLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SearchableRefreshLayout(context, attrs), ApiListener<TournamentsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: TournamentsAdapter
@@ -40,7 +39,6 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
     protected lateinit var serverApi: ServerApi
 
     private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
     private val empty: View by bindView(R.id.empty)
 
 
@@ -49,22 +47,13 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
                 .inflate(R.layout.layout_tournaments, parent, false) as TournamentsLayout
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
-
     override fun failure(errorCode: Int) {
         tournamentsBundle = null
         showError(errorCode)
     }
 
     private fun fetchTournamentsBundle() {
-        refreshLayout.isRefreshing = true
+        isRefreshing = true
         serverApi.getTournaments(regionManager.getRegion(context), ApiCall(this))
     }
 
@@ -77,7 +66,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
 
         App.get().appComponent.inject(this)
 
-        refreshLayout.setOnRefreshListener(this)
+        setOnRefreshListener(this)
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
@@ -105,14 +94,14 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
         }
 
         threadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<AbsTournament>? = null
+            private var list: List<AbsTournament>? = null
 
             override fun onBackground() {
                 if (!isAlive || !TextUtils.equals(query, searchQuery)) {
                     return
                 }
 
-                mList = ListUtils.searchTournamentList(query, tournaments)
+                list = ListUtils.searchTournamentList(query, tournaments)
             }
 
             override fun onUi() {
@@ -120,7 +109,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
                     return
                 }
 
-                adapter.set(mList)
+                adapter.set(list)
             }
         })
     }
@@ -130,7 +119,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
         recyclerView.visibility = View.GONE
         error.visibility = View.GONE
         empty.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
@@ -138,7 +127,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
         recyclerView.visibility = View.GONE
         empty.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
-        refreshLayout.isRefreshing = false
+        isRefreshing = false
     }
 
     private fun showTournamentsBundle() {
@@ -146,7 +135,7 @@ class TournamentsLayout : SearchableFrameLayout, ApiListener<TournamentsBundle>,
         empty.visibility = View.GONE
         error.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        isRefreshing = false
     }
 
     override fun success(`object`: TournamentsBundle?) {

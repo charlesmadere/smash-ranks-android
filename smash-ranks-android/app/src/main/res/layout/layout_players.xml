@@ -2,30 +2,24 @@
 <com.garpr.android.views.PlayersLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/playersLayout"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    style="@style/RefreshLayout">
 
-    <com.garpr.android.views.RefreshLayout
-        style="@style/RefreshLayout">
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
-        <FrameLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:visibility="gone"
+            style="@style/RecyclerView" />
 
-            <android.support.v7.widget.RecyclerView
-                android:visibility="gone"
-                style="@style/RecyclerView" />
+        <com.garpr.android.views.NoContentLinearLayout
+            app:line1Text="@string/no_players"
+            style="@style/NoContentLinearLayout.Empty" />
 
-            <com.garpr.android.views.NoContentLinearLayout
-                app:line1Text="@string/no_players"
-                style="@style/NoContentLinearLayout.Empty" />
+        <com.garpr.android.views.ErrorContentLinearLayout
+            app:line1Text="@string/error_loading_players"
+            style="@style/NoContentLinearLayout.Error" />
 
-            <com.garpr.android.views.ErrorContentLinearLayout
-                app:line1Text="@string/error_loading_players"
-                style="@style/NoContentLinearLayout.Error" />
-
-        </FrameLayout>
-
-    </com.garpr.android.views.RefreshLayout>
+    </FrameLayout>
 
 </com.garpr.android.views.PlayersLayout>

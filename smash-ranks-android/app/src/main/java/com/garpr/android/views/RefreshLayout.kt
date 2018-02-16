@@ -4,10 +4,12 @@ import android.content.Context
 import android.support.annotation.IdRes
 import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.ListLayout
 
 /**
  * A child class of the official Android [SwipeRefreshLayout] that helps us work around some of
@@ -16,7 +18,7 @@ import com.garpr.android.misc.Heartbeat
 open class RefreshLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SwipeRefreshLayout(context, attrs), Heartbeat {
+) : SwipeRefreshLayout(context, attrs), Heartbeat, ListLayout {
 
     @IdRes
     private var scrollingChildId: Int? = null
@@ -63,6 +65,9 @@ open class RefreshLayout @JvmOverloads constructor(
 
         ta.recycle()
     }
+
+    override val recyclerView: RecyclerView?
+        get() = scrollingChild as? RecyclerView
 
     var scrollingChild: View? = null
 

@@ -5,18 +5,19 @@ import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.activities.HomeActivity
+import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.views.FavoritePlayersLayout
 import com.garpr.android.views.RankingsLayout
-import com.garpr.android.views.SearchableFrameLayout
 import com.garpr.android.views.TournamentsLayout
 import java.lang.ref.WeakReference
 
 class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
 
-    private val pages = SparseArrayCompat<WeakReference<SearchableFrameLayout>>(count)
+    private val pages = SparseArrayCompat<WeakReference<View>>(count)
 
 
     companion object {
@@ -36,15 +37,15 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
         get() {
             val view = pages[POSITION_RANKINGS]?.get()
 
-            return if (view?.isAlive == true) {
-                (view as RankingsLayout).rankingsBundle
+            return if ((view as? RankingsLayout)?.isAlive == true) {
+                view.rankingsBundle
             } else {
                 null
             }
         }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val view = when (position) {
+        val view: View = when (position) {
             POSITION_FAVORITE_PLAYERS -> FavoritePlayersLayout.inflate(container)
             POSITION_RANKINGS -> RankingsLayout.inflate(container)
             POSITION_TOURNAMENTS -> TournamentsLayout.inflate(container)
@@ -64,8 +65,8 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
     fun onNavigationItemReselected(position: Int) {
         val view = pages[position].get()
 
-        if (view?.isAlive == true) {
-            view.smoothScrollToTop()
+        if ((view as? Heartbeat)?.isAlive == true) {
+            (view as? ListLayout)?.smoothScrollToTop()
         }
     }
 
@@ -73,8 +74,8 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
         for (i in 0 until pages.size()) {
             val view = pages[i].get()
 
-            if (view?.isAlive == true) {
-                view.refresh()
+            if ((view as? Heartbeat)?.isAlive == true) {
+                (view as? Refreshable)?.refresh()
             }
         }
     }
@@ -83,8 +84,8 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
         for (i in 0 until pages.size()) {
             val view = pages[i].get()
 
-            if (view?.isAlive == true) {
-                view.search(query)
+            if ((view as? Heartbeat)?.isAlive == true) {
+                (view as? Searchable)?.search(query)
             }
         }
     }
