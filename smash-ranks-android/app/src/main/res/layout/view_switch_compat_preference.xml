@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
+
     <android.support.v7.widget.SwitchCompat
         style="@style/PreferenceViewCheckable" />
+
     <TextView
         tools:text="@string/must_be_charging"
         style="@style/PreferenceViewTitle" />
+
     <TextView
         tools:text="Description Text"
         style="@style/PreferenceViewDescription" />
+
 </RelativeLayout>
