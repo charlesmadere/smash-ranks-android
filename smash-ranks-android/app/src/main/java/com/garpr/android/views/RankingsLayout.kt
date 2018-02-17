@@ -84,11 +84,9 @@ class RankingsLayout @JvmOverloads constructor(
     }
 
     private fun onRankingsBundleFetched() {
-        if (!isAlive) {
-            return
+        if (isAlive) {
+            (context.optActivity() as? Listener)?.onRankingsBundleFetched(this)
         }
-
-        (context.optActivity() as? Listener)?.onRankingsBundleFetched(this)
     }
 
     override fun onRefresh() {
