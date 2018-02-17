@@ -1,13 +1,10 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
@@ -19,7 +16,12 @@ import com.garpr.android.models.AbsTournament
 import kotterknife.bindView
 import javax.inject.Inject
 
-class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.OnClickListener {
+class TournamentDividerView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<AbsTournament>,
+        View.OnClickListener {
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -27,15 +29,6 @@ class TournamentDividerView : FrameLayout, BaseAdapterView<AbsTournament>, View.
     private val date: TextView by bindView(R.id.tvDate)
     private val name: TextView by bindView(R.id.tvName)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private fun clear() {
         date.clear()
