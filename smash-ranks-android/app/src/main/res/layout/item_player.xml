@@ -4,6 +4,7 @@
     android:background="@null"
     android:foreground="?attr/selectableItemBackground"
     style="@style/ListItem">
+
     <TextView
         android:ellipsize="end"
         android:gravity="center_vertical"
@@ -15,4 +16,5 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_large"
         tools:text="Charlezard" />
+
 </com.garpr.android.views.PlayerItemView>
