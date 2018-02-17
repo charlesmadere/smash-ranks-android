@@ -73,7 +73,16 @@
         <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
     </style>
 
-    <style name="DividerDescription">
+    <style name="DividerItem">
+        <item name="android:background">@color/card_background</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/root_padding</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">@dimen/divider_item_height</item>
+    </style>
+
+    <style name="DividerItemDescription">
         <item name="android:ellipsize">end</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:gravity">bottom|end</item>
@@ -88,16 +97,7 @@
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
-    <style name="DividerItem">
-        <item name="android:background">@color/card_background</item>
-        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/root_padding</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:minHeight">@dimen/divider_item_height</item>
-    </style>
-
-    <style name="DividerTitle">
+    <style name="DividerItemTitle">
         <item name="android:ellipsize">end</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:gravity">bottom|start</item>

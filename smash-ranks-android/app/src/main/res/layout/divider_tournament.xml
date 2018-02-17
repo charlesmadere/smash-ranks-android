@@ -8,13 +8,13 @@
         android:id="@+id/tvName"
         app:layout_constraintEnd_toStartOf="@+id/tvDate"
         tools:text="Melee @ the Made #12345 dulleh Edition what up guys"
-        style="@style/DividerTitle" />
+        style="@style/DividerItemTitle" />
 
     <TextView
         android:id="@id/tvDate"
         app:layout_constraintStart_toEndOf="@id/tvName"
         tools:text="Jan 20, 2016"
-        style="@style/DividerDescription" />
+        style="@style/DividerItemDescription" />
 
     <include
         layout="@layout/view_constraint_layout_foreground" />
