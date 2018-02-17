@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.EndpointDividerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/DividerItem">
 
     <TextView
         android:id="@+id/tvName"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="Not GAR PR"
         style="@style/DividerItemTitle" />
 
