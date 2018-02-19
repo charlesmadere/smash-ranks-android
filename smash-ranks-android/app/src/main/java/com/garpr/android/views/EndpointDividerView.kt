@@ -10,7 +10,7 @@ import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.models.Endpoint
 import kotterknife.bindView
 
-class EndpointDividerView(
+class EndpointDividerView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         @AttrRes defStyleAttr: Int = 0
