@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
@@ -16,6 +12,7 @@ import com.garpr.android.R
 import com.garpr.android.adapters.PlayersAdapter
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.ListUtils
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.AbsPlayer
@@ -26,7 +23,10 @@ import com.garpr.android.networking.ServerApi
 import kotterknife.bindView
 import javax.inject.Inject
 
-class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
+class PlayersLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SearchableRefreshLayout(context, attrs), ApiListener<PlayersBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: PlayersAdapter
@@ -38,7 +38,6 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
     protected lateinit var serverApi: ServerApi
 
     private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
     private val empty: View by bindView(R.id.empty)
 
 
@@ -46,22 +45,13 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         fun onPlayersBundleFetched(layout: PlayersLayout)
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
-
     override fun failure(errorCode: Int) {
         playersBundle = null
         showError(errorCode)
     }
 
     private fun fetchPlayersBundle() {
-        refreshLayout.isRefreshing = true
+        isRefreshing = true
         serverApi.getPlayers(regionManager.getRegion(context), ApiCall(this))
     }
 
@@ -74,7 +64,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
 
         App.get().appComponent.inject(this)
 
-        refreshLayout.setOnRefreshListener(this)
+        setOnRefreshListener(this)
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
@@ -89,11 +79,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
             return
         }
 
-        val activity = context.optActivity()
-
-        if (activity is Listener) {
-            activity.onPlayersBundleFetched(this)
-        }
+        (context.optActivity() as? Listener)?.onPlayersBundleFetched(this)
     }
 
     override fun onRefresh() {
@@ -117,14 +103,14 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         }
 
         threadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<AbsPlayer>? = null
+            private var list: List<AbsPlayer>? = null
 
             override fun onBackground() {
                 if (!isAlive || !TextUtils.equals(query, searchQuery)) {
                     return
                 }
 
-                mList = ListUtils.searchPlayerList(query, players)
+                list = ListUtils.searchPlayerList(query, players)
             }
 
             override fun onUi() {
@@ -132,7 +118,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
                     return
                 }
 
-                adapter.set(mList)
+                adapter.set(list)
             }
         })
     }
@@ -142,7 +128,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         recyclerView.visibility = View.GONE
         error.visibility = View.GONE
         empty.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
@@ -150,7 +136,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         recyclerView.visibility = View.GONE
         empty.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
-        refreshLayout.isRefreshing = false
+        isRefreshing = false
     }
 
     private fun showPlayersBundle() {
@@ -158,7 +144,7 @@ class PlayersLayout : SearchableFrameLayout, ApiListener<PlayersBundle>,
         empty.visibility = View.GONE
         error.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        isRefreshing = false
     }
 
     override fun success(`object`: PlayersBundle?) {

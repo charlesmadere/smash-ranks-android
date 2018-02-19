@@ -3,12 +3,16 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
+
     <include
         layout="@layout/toolbar_home" />
+
     <com.garpr.android.views.NonSwipeableViewPager
         android:layout_height="0dp"
         android:layout_weight="1"
         style="@style/ViewPager" />
+
     <android.support.design.widget.BottomNavigationView
         style="@style/BottomNavigationView" />
+
 </LinearLayout>

@@ -1,13 +1,10 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import com.garpr.android.R
@@ -17,7 +14,11 @@ import com.garpr.android.extensions.optActivity
 import com.garpr.android.models.Region
 import kotterknife.bindView
 
-class RegionSelectionItemView : FrameLayout, BaseAdapterView<Region>, View.OnClickListener {
+class RegionSelectionItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<Region>, View.OnClickListener {
 
     private val radioButton: RadioButton by bindView(R.id.radioButton)
     private val displayName: TextView by bindView(R.id.tvDisplayName)
@@ -28,15 +29,6 @@ class RegionSelectionItemView : FrameLayout, BaseAdapterView<Region>, View.OnCli
         fun onClick(v: RegionSelectionItemView)
         val selectedRegion: Region?
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private fun clear() {
         radioButton.isChecked = false

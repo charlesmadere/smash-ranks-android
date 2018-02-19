@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.FavoritePlayerItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@null"
-    android:foreground="?attr/selectableItemBackground"
-    style="@style/ListItem">
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:layout_gravity="center_vertical"
+    style="@style/ConstraintListItem">
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvName"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:ellipsize="end"
-            android:id="@+id/tvName"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:maxLines="2"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_large"
-            tools:text="Charlezard" />
-        <TextView
-            android:ellipsize="end"
-            android:id="@+id/tvRegion"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="@dimen/text_size_small"
-            tools:text="Norcal" />
-    </LinearLayout>
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="2"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Charlezard" />
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvRegion"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tvName"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        tools:text="Norcal" />
+
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
+
 </com.garpr.android.views.FavoritePlayerItemView>

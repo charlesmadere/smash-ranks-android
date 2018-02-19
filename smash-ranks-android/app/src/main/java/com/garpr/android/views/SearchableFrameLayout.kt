@@ -8,11 +8,13 @@ import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import com.garpr.android.App
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.extensions.smoothScrollToTop
-import com.garpr.android.misc.*
+import com.garpr.android.misc.ListLayout
+import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.ThreadUtils
 import javax.inject.Inject
 
-abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refreshable, Searchable,
+abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Searchable,
         SearchQueryHandle {
 
     @Inject
@@ -38,19 +40,7 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Refresh
         App.get().appComponent.inject(this)
     }
 
-    override fun smoothScrollToTop() {
-        recyclerView?.smoothScrollToTop()
-    }
-
     override val searchQuery: CharSequence?
-        get() {
-            val activity = context.optActivity()
-
-            return if (activity is SearchQueryHandle) {
-                activity.searchQuery
-            } else {
-                null
-            }
-        }
+        get() = (context.optActivity() as? SearchQueryHandle)?.searchQuery
 
 }

@@ -1,7 +1,6 @@
 package com.garpr.android.views.toolbars
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
@@ -16,7 +15,10 @@ import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 import javax.inject.Inject
 
-class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersChangeListener,
+class PlayerToolbar @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SearchToolbar(context, attrs), FavoritePlayersManager.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener {
 
     @Inject
@@ -34,11 +36,6 @@ class PlayerToolbar : SearchToolbar, FavoritePlayersManager.OnFavoritePlayersCha
         val matchesBundle: MatchesBundle?
         val matchResult: MatchResult?
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

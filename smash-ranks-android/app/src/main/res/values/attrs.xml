@@ -6,13 +6,13 @@
     <attr name="timberWarn" format="color" />
 
     <declare-styleable name="CheckablePreferenceView">
-        <attr name="disabledDescriptionText" format="string" />
-        <attr name="enabledDescriptionText" format="string" />
-        <attr name="titleText" format="string" />
         <attr name="checkableType" format="enum">
             <enum name="checkbox" value="0" />
             <enum name="switch_compat" value="1" />
         </attr>
+        <attr name="disabledDescriptionText" format="string" />
+        <attr name="enabledDescriptionText" format="string" />
+        <attr name="titleText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="NoContentLinearLayout">
@@ -31,6 +31,10 @@
         <attr name="simpleDescriptionText" format="string" />
         <attr name="simpleIcon" format="reference" />
         <attr name="simpleTitleText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="TintedImageView">
+        <attr name="tintColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="WinsLossesColumnView">

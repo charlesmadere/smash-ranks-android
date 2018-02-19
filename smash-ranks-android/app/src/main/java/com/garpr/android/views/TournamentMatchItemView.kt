@@ -1,10 +1,8 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
+import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
@@ -22,8 +20,21 @@ import com.garpr.android.models.FullTournament
 import kotterknife.bindView
 import javax.inject.Inject
 
-class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournament.Match>,
+class TournamentMatchItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<FullTournament.Match>,
         View.OnClickListener {
+
+    @ColorInt
+    private var exclusionColor: Int = 0
+
+    @ColorInt
+    private var loseColor: Int = 0
+
+    @ColorInt
+    private var winColor: Int = 0
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -31,15 +42,6 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
     private val loserName: TextView by bindView(R.id.tvLoserName)
     private val winnerName: TextView by bindView(R.id.tvWinnerName)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun clear() {
         super.clear()
@@ -62,11 +64,11 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
             winnerName.text = value.winnerName
 
             if (value.isExcluded) {
-                loserName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
-                winnerName.setTextColor(context.getAttrColor(android.R.attr.textColorSecondary))
+                loserName.setTextColor(exclusionColor)
+                winnerName.setTextColor(exclusionColor)
             } else {
-                loserName.setTextColor(ContextCompat.getColor(context, R.color.lose))
-                winnerName.setTextColor(ContextCompat.getColor(context, R.color.win))
+                loserName.setTextColor(loseColor)
+                winnerName.setTextColor(winColor)
             }
 
             refreshIdentity()
@@ -102,6 +104,10 @@ class TournamentMatchItemView : IdentityFrameLayout, BaseAdapterView<FullTournam
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
         }
+
+        exclusionColor = context.getAttrColor(android.R.attr.textColorSecondary)
+        loseColor = ContextCompat.getColor(context, R.color.lose)
+        winColor = ContextCompat.getColor(context, R.color.win)
 
         setOnClickListener(this)
     }

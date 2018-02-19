@@ -9,12 +9,12 @@ import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import java.lang.ref.WeakReference
 
 class RegionManagerImpl(
-        private val mGeneralPreferenceStore: GeneralPreferenceStore,
-        private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-        private val mTimber: Timber
+        private val generalPreferenceStore: GeneralPreferenceStore,
+        private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
+        private val timber: Timber
 ) : RegionManager {
 
-    private val mListeners = mutableListOf<WeakReference<OnRegionChangeListener>>()
+    private val listeners = mutableListOf<WeakReference<OnRegionChangeListener>>()
 
 
     companion object {
@@ -22,9 +22,9 @@ class RegionManagerImpl(
     }
 
     override fun addListener(listener: OnRegionChangeListener) {
-        synchronized (mListeners) {
+        synchronized (listeners) {
             var addListener = true
-            val iterator = mListeners.iterator()
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -38,7 +38,7 @@ class RegionManagerImpl(
             }
 
             if (addListener) {
-                mListeners.add(WeakReference(listener))
+                listeners.add(WeakReference(listener))
             }
         }
     }
@@ -58,13 +58,13 @@ class RegionManagerImpl(
             }
         }
 
-        return mGeneralPreferenceStore.currentRegion.get() ?: throw IllegalStateException(
+        return generalPreferenceStore.currentRegion.get() ?: throw IllegalStateException(
                 "currentRegion preference is null!")
     }
 
     private fun notifyListeners() {
-        synchronized (mListeners) {
-            val iterator = mListeners.iterator()
+        synchronized (listeners) {
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -80,8 +80,8 @@ class RegionManagerImpl(
     }
 
     override fun removeListener(listener: OnRegionChangeListener?) {
-        synchronized (mListeners) {
-            val iterator = mListeners.iterator()
+        synchronized (listeners) {
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -95,11 +95,11 @@ class RegionManagerImpl(
     }
 
     override fun setRegion(region: Region) {
-        mTimber.d(TAG, "old region is \"${mGeneralPreferenceStore.currentRegion.get()}\", "
+        timber.d(TAG, "old region is \"${generalPreferenceStore.currentRegion.get()}\", "
                 + "new region is \"$region\"")
-        mRankingsPollingPreferenceStore.lastPoll.delete()
-        mRankingsPollingPreferenceStore.rankingsDate.delete()
-        mGeneralPreferenceStore.currentRegion.set(region)
+        rankingsPollingPreferenceStore.lastPoll.delete()
+        rankingsPollingPreferenceStore.rankingsDate.delete()
+        generalPreferenceStore.currentRegion.set(region)
         notifyListeners()
     }
 

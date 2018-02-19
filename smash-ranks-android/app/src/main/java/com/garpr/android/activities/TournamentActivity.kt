@@ -172,7 +172,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
             if (fullTournament != null) {
                 subtitle = fullTournament.date
             } else if (intent.hasExtra(EXTRA_TOURNAMENT_DATE)) {
-                subtitle = intent.getParcelableExtra<SimpleDate>(EXTRA_TOURNAMENT_DATE)
+                subtitle = intent.getParcelableExtra(EXTRA_TOURNAMENT_DATE)
             }
 
             if (subtitle != null) {

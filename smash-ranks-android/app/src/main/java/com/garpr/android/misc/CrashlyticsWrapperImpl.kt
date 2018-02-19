@@ -8,10 +8,10 @@ import com.crashlytics.android.core.CrashlyticsCore
 import io.fabric.sdk.android.Fabric
 
 class CrashlyticsWrapperImpl(
-        private val mApplication: Application
+        private val application: Application
 ) : CrashlyticsWrapper {
 
-    lateinit private var mCrashlytics: Crashlytics
+    private lateinit var crashlytics: Crashlytics
 
 
     override fun initialize(disabled: Boolean) {
@@ -23,28 +23,28 @@ class CrashlyticsWrapperImpl(
                 .core(crashlyticsCore)
                 .build()
 
-        Fabric.with(mApplication, crashlytics)
-        mCrashlytics = Crashlytics.getInstance()
+        Fabric.with(application, crashlytics)
+        this.crashlytics = Crashlytics.getInstance()
     }
 
     override fun log(priority: Int, tag: String, msg: String) {
-        mCrashlytics.core.log(priority, tag, msg)
+        crashlytics.core.log(priority, tag, msg)
     }
 
     override fun logException(tr: Throwable) {
-        mCrashlytics.core.logException(tr)
+        crashlytics.core.logException(tr)
     }
 
     override fun setBool(key: String, value: Boolean) {
-        mCrashlytics.core.setBool(key, value)
+        crashlytics.core.setBool(key, value)
     }
 
     override fun setInt(key: String, value: Int) {
-        mCrashlytics.core.setInt(key, value)
+        crashlytics.core.setInt(key, value)
     }
 
     override fun setString(key: String, value: String) {
-        mCrashlytics.core.setString(key, value)
+        crashlytics.core.setString(key, value)
     }
 
 }

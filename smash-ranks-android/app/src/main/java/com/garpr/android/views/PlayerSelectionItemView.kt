@@ -12,17 +12,15 @@ import android.widget.RadioButton
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.models.AbsPlayer
 import kotterknife.bindView
 
 class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.OnClickListener {
 
-    var mContent: AbsPlayer? = null
-        private set
-
-    private val mRadioButton: RadioButton by bindView(R.id.radioButton)
-    private val mName: TextView by bindView(R.id.tvName)
+    private val radioButton: RadioButton by bindView(R.id.radioButton)
+    private val name: TextView by bindView(R.id.tvName)
 
 
     interface Listeners {
@@ -39,12 +37,21 @@ class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.O
     constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun onClick(v: View) {
-        val activity = context.optActivity()
+    var player: AbsPlayer? = null
+        set(value) {
+            field = value
 
-        if (activity is Listeners) {
-            activity.onClick(this)
+            if (value == null) {
+                radioButton.isChecked = false
+                name.clear()
+            } else {
+                radioButton.isChecked = (context.optActivity() as? Listeners)?.selectedPlayer == value
+                name.text = value.name
+            }
         }
+
+    override fun onClick(v: View) {
+        (context.optActivity() as? Listeners)?.onClick(this)
     }
 
     override fun onFinishInflate() {
@@ -53,16 +60,7 @@ class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.O
     }
 
     override fun setContent(content: AbsPlayer) {
-        mContent = content
-        mName.text = content.name
-
-        val activity = context.optActivity()
-
-        if (activity is Listeners) {
-            mRadioButton.isChecked = content == activity.selectedPlayer
-        } else {
-            mRadioButton.isChecked = false
-        }
+        player = content
     }
 
 }

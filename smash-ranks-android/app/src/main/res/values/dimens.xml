@@ -2,11 +2,13 @@
 <resources>
 
     <dimen name="bottom_navigation_view_height">56dp</dimen>
+    <dimen name="bottom_sheet_list_item_icon_size">24dp</dimen>
     <dimen name="divider_item_height">32dp</dimen>
     <dimen name="elevation">4dp</dimen>
     <dimen name="elevation_half">2dp</dimen>
     <dimen name="elevation_quarter">1dp</dimen>
     <dimen name="list_item_height">48dp</dimen>
+    <dimen name="previous_rank_view_size">18dp</dimen>
     <dimen name="root_padding">16dp</dimen>
     <dimen name="root_padding_double">32dp</dimen>
     <dimen name="root_padding_eighth">2dp</dimen>

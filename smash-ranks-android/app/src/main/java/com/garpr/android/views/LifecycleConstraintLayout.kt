@@ -7,12 +7,11 @@ import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import com.garpr.android.misc.Heartbeat
 
-open class LifecycleConstraintLayout : ConstraintLayout, Heartbeat {
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+open class LifecycleConstraintLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), Heartbeat {
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)

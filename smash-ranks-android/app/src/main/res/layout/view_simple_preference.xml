@@ -3,15 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
-    <ImageView
-        tools:ignore="ContentDescription"
+
+    <com.garpr.android.views.TintedImageView
+        tools:src="@drawable/ic_date_range_white_24dp"
         style="@style/PreferenceViewIcon" />
+
     <TextView
         tools:text="@string/must_be_charging"
         style="@style/PreferenceViewTitle" />
+
     <TextView
-        android:layout_below="@id/title"
-        tools:ignore="UnknownId"
         tools:text="Description Text"
         style="@style/PreferenceViewDescription" />
+
 </RelativeLayout>

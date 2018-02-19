@@ -15,42 +15,38 @@ import javax.inject.Inject
 
 class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
-    private var mIsAlive: Boolean = true
-    private var mJobParameters: JobParameters? = null
-    private var mPollStatus: PollStatus? = null
+    private var _isAlive: Boolean = true
+    private var jobParameters: JobParameters? = null
+    private var pollStatus: PollStatus? = null
 
     @Inject
-    protected lateinit var mNotificationsManager: NotificationsManager
+    protected lateinit var notificationsManager: NotificationsManager
 
     @Inject
-    protected lateinit var mRankingsNotificationsUtils: RankingsNotificationsUtils
+    protected lateinit var rankingsNotificationsUtils: RankingsNotificationsUtils
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var serverApi: ServerApi
 
     @Inject
-    protected lateinit var mTimber: Timber
+    protected lateinit var timber: Timber
 
 
     companion object {
         private const val TAG = "RankingsPollingJobService"
     }
 
-    init {
-        App.get().appComponent.inject(this)
-    }
-
     override fun failure(errorCode: Int) {
-        mTimber.e(TAG, "failure fetching rankings ($errorCode)")
-        mNotificationsManager.cancelAll()
+        timber.e(TAG, "failure fetching rankings ($errorCode)")
+        notificationsManager.cancelAll()
 
-        val pollStatus = mPollStatus
+        val pollStatus = this.pollStatus
 
         if (pollStatus != null) {
-            mPollStatus = pollStatus.copy(oldRankingsDate = pollStatus.oldRankingsDate,
+            this.pollStatus = pollStatus.copy(oldRankingsDate = pollStatus.oldRankingsDate,
                     proceed = pollStatus.proceed, retry = true)
         }
 
@@ -58,22 +54,27 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     }
 
     override val isAlive: Boolean
-        get() = mIsAlive
+        get() = _isAlive
 
     private fun jobFinished(needsReschedule: Boolean) {
-        mJobParameters?.let {
+        jobParameters?.let {
             jobFinished(it, needsReschedule)
         }
     }
 
-    override fun onStartJob(job: JobParameters): Boolean {
-        mJobParameters = job
+    override fun onCreate() {
+        super.onCreate()
+        App.get().appComponent.inject(this)
+    }
 
-        val pollStatus = mRankingsNotificationsUtils.getPollStatus()
-        mPollStatus = pollStatus
+    override fun onStartJob(job: JobParameters): Boolean {
+        jobParameters = job
+
+        val pollStatus = rankingsNotificationsUtils.getPollStatus()
+        this.pollStatus = pollStatus
 
         return if (pollStatus.proceed) {
-            mServerApi.getRankings(mRegionManager.getRegion(this), this)
+            serverApi.getRankings(regionManager.getRegion(this), this)
             true
         } else {
             false
@@ -81,24 +82,24 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     }
 
     override fun onStopJob(job: JobParameters): Boolean {
-        mIsAlive = false
-        return mPollStatus?.retry == true
+        _isAlive = false
+        return pollStatus?.retry == true
     }
 
     override fun success(`object`: RankingsBundle?) {
-        val info = mRankingsNotificationsUtils.getNotificationInfo(mPollStatus, `object`)
+        val info = rankingsNotificationsUtils.getNotificationInfo(pollStatus, `object`)
 
         when (info) {
             RankingsNotificationsUtils.NotificationInfo.CANCEL -> {
-                mNotificationsManager.cancelAll()
+                notificationsManager.cancelAll()
             }
 
             RankingsNotificationsUtils.NotificationInfo.NO_CHANGE -> {
-                mTimber.d(TAG, "not changing any notifications")
+                timber.d(TAG, "not changing any notifications")
             }
 
             RankingsNotificationsUtils.NotificationInfo.SHOW -> {
-                mNotificationsManager.rankingsUpdated()
+                notificationsManager.rankingsUpdated()
             }
         }
 

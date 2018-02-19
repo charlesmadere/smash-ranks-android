@@ -1,7 +1,6 @@
 package com.garpr.android.views.toolbars
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,7 +11,10 @@ import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.RegionManager
 import javax.inject.Inject
 
-class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
+class HomeToolbar @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SearchToolbar(context, attrs), IdentityManager.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
 
     @Inject
@@ -24,11 +26,6 @@ class HomeToolbar : SearchToolbar, IdentityManager.OnIdentityChangeListener,
     @Inject
     protected lateinit var regionManager: RegionManager
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

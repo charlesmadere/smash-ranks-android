@@ -8,18 +8,15 @@ import android.util.SparseBooleanArray
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-
 import com.garpr.android.misc.Heartbeat
 
-abstract class MenuToolbar : Toolbar, Heartbeat {
+abstract class MenuToolbar @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : Toolbar(context, attrs), Heartbeat {
 
     private val sparseMenuItemsArray = SparseBooleanArray()
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context,
-            attrs, defStyleAttr)
 
     private fun createSparseMenuItemsArray() {
         for (i in 0 until menu.size()) {

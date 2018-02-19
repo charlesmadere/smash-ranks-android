@@ -1,32 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.TournamentDividerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/DividerItem">
-    <LinearLayout
-        android:orientation="horizontal"
-        style="@style/InnerListItem">
-        <TextView
-            android:gravity="bottom"
-            android:id="@+id/tvName"
-            android:layout_gravity="bottom"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:maxLines="2"
-            tools:text="Genesis 3"
-            style="@style/CardHeaderText" />
-        <android.support.v4.widget.Space
-            android:layout_height="1dp"
-            android:layout_width="@dimen/root_padding" />
-        <TextView
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-condensed"
-            android:gravity="bottom|end"
-            android:id="@+id/tvDate"
-            android:layout_gravity="bottom"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            tools:text="Jan 20, 2016" />
-    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvDate"
+        tools:text="Jan 20, 2016"
+        style="@style/DividerItemDescription" />
+
+    <TextView
+        android:id="@+id/tvName"
+        app:layout_constraintEnd_toStartOf="@id/tvDate"
+        tools:text="Melee @ the Made #12 hello world hello world hello world hello world"
+        style="@style/DividerItemTitle" />
+
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
+
 </com.garpr.android.views.TournamentDividerView>

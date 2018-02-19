@@ -15,11 +15,11 @@ import kotterknife.bindView
 
 class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var mAdapter: TimberEntriesAdapter
+    private lateinit var adapter: TimberEntriesAdapter
 
-    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mEmpty: View by bindView(R.id.empty)
+    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val empty: View by bindView(R.id.empty)
 
 
     companion object {
@@ -31,19 +31,19 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     override val activityName = TAG
 
     private fun fetchTimberEntries() {
-        mRefreshLayout.isRefreshing = true
-        mAdapter.set(mTimber.entries)
+        refreshLayout.isRefreshing = true
+        adapter.set(mTimber.entries)
 
-        if (mAdapter.isEmpty) {
-            mRecyclerView.visibility = View.GONE
-            mEmpty.visibility = View.VISIBLE
+        if (adapter.isEmpty) {
+            recyclerView.visibility = View.GONE
+            empty.visibility = View.VISIBLE
         } else {
-            mEmpty.visibility = View.GONE
-            mRecyclerView.visibility = View.VISIBLE
+            empty.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
 
         invalidateOptionsMenu()
-        mRefreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +54,7 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_log_viewer, menu)
-        menu.findItem(R.id.miClearLog).isEnabled = !mAdapter.isEmpty
+        menu.findItem(R.id.miClearLog).isEnabled = !adapter.isEmpty
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -78,11 +78,11 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     override fun onViewsBound() {
         super.onViewsBound()
 
-        mRefreshLayout.setOnRefreshListener(this)
-        mRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = TimberEntriesAdapter(this)
-        mRecyclerView.adapter = mAdapter
+        refreshLayout.setOnRefreshListener(this)
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        recyclerView.setHasFixedSize(true)
+        adapter = TimberEntriesAdapter(this)
+        recyclerView.adapter = adapter
     }
 
     override val showUpNavigation = true

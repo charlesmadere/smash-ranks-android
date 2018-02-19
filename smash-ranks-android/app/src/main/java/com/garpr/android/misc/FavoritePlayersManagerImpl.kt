@@ -13,12 +13,12 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 class FavoritePlayersManagerImpl(
-        private val mGson: Gson,
-        private val mKeyValueStore: KeyValueStore,
-        private val mTimber: Timber
+        private val gson: Gson,
+        private val keyValueStore: KeyValueStore,
+        private val timber: Timber
 ) : FavoritePlayersManager {
 
-    private val mListeners = mutableListOf<WeakReference<OnFavoritePlayersChangeListener>>()
+    private val listeners = mutableListOf<WeakReference<OnFavoritePlayersChangeListener>>()
 
 
     companion object {
@@ -27,7 +27,7 @@ class FavoritePlayersManagerImpl(
 
     override val absPlayers: List<AbsPlayer>?
         get() {
-            val players = players
+            val players = this.players
 
             if (players == null || players.isEmpty()) {
                 return null
@@ -40,9 +40,9 @@ class FavoritePlayersManagerImpl(
         }
 
     override fun addListener(listener: OnFavoritePlayersChangeListener) {
-        synchronized (mListeners) {
+        synchronized (listeners) {
             var addListener = true
-            val iterator = mListeners.iterator()
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -56,27 +56,27 @@ class FavoritePlayersManagerImpl(
             }
 
             if (addListener) {
-                mListeners.add(WeakReference(listener))
+                listeners.add(WeakReference(listener))
             }
         }
     }
 
     override fun addPlayer(player: AbsPlayer, region: Region) {
         if (player in this) {
-            mTimber.d(TAG, "Not adding favorite, it already exists in the store")
+            timber.d(TAG, "Not adding favorite, it already exists in the store")
             return
         }
 
-        mTimber.d(TAG, "Adding favorite (there are currently $size favorite(s))")
+        timber.d(TAG, "Adding favorite (there are currently $size favorite(s))")
 
         val favoritePlayer = FavoritePlayer(player.id, player.name, region)
-        val playerJson = mGson.toJson(favoritePlayer, FavoritePlayer::class.java)
-        mKeyValueStore.setString(player.id, playerJson)
+        val playerJson = gson.toJson(favoritePlayer, FavoritePlayer::class.java)
+        keyValueStore.setString(player.id, playerJson)
         notifyListeners()
     }
 
     override fun clear() {
-        mKeyValueStore.clear()
+        keyValueStore.clear()
         notifyListeners()
     }
 
@@ -85,18 +85,18 @@ class FavoritePlayersManagerImpl(
     }
 
     override fun contains(playerId: String): Boolean {
-        return playerId in mKeyValueStore
+        return playerId in keyValueStore
     }
 
     override val isEmpty: Boolean
         get() {
-            val all = mKeyValueStore.all
+            val all = keyValueStore.all
             return all == null || all.isEmpty()
         }
 
     private fun notifyListeners() {
-        synchronized (mListeners) {
-            val iterator = mListeners.iterator()
+        synchronized (listeners) {
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -113,7 +113,7 @@ class FavoritePlayersManagerImpl(
 
     override val players: List<FavoritePlayer>?
         get() {
-            val all = mKeyValueStore.all
+            val all = keyValueStore.all
 
             if (all == null || all.isEmpty()) {
                 return null
@@ -121,9 +121,9 @@ class FavoritePlayersManagerImpl(
 
             val players = mutableListOf<FavoritePlayer>()
 
-            for ((_, value) in all) {
+            for ((key, value) in all) {
                 val json = value as String
-                players.add(mGson.fromJson(json, FavoritePlayer::class.java))
+                players.add(gson.fromJson(json, FavoritePlayer::class.java))
             }
 
             Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
@@ -131,8 +131,8 @@ class FavoritePlayersManagerImpl(
         }
 
     override fun removeListener(listener: OnFavoritePlayersChangeListener?) {
-        synchronized (mListeners) {
-            val iterator = mListeners.iterator()
+        synchronized (listeners) {
+            val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
                 val reference = iterator.next()
@@ -150,7 +150,7 @@ class FavoritePlayersManagerImpl(
     }
 
     override fun removePlayer(playerId: String) {
-        mKeyValueStore.remove(playerId)
+        keyValueStore.remove(playerId)
         notifyListeners()
     }
 
@@ -175,6 +175,6 @@ class FavoritePlayersManagerImpl(
     }
 
     override val size: Int
-        get() = mKeyValueStore.all?.size ?: 0
+        get() = keyValueStore.all?.size ?: 0
 
 }

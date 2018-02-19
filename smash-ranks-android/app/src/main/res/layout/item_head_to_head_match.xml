@@ -1,28 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.HeadToHeadMatchItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem.WithBackground">
-    <LinearLayout
-        style="@style/InnerListItem">
-        <TextView
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:id="@+id/tvPlayerName"
-            android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:maxLines="2" />
-        <android.support.v4.widget.Space
-            android:layout_height="1dp"
-            android:layout_width="@dimen/root_padding" />
-        <TextView
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:id="@+id/tvOpponentName"
-            android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:maxLines="2" />
-    </LinearLayout>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ConstraintListItem.WithBackground">
+
+    <TextView
+        android:ellipsize="end"
+        android:gravity="center_vertical|start"
+        android:id="@+id/tvPlayerName"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding_half"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="2"
+        android:textColor="@color/win"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvOpponentName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:ellipsize="end"
+        android:gravity="center_vertical|end"
+        android:id="@id/tvOpponentName"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:maxLines="2"
+        android:textColor="@color/lose"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvPlayerName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
+
 </com.garpr.android.views.HeadToHeadMatchItemView>

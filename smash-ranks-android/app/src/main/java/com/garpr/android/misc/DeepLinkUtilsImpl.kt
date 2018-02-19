@@ -9,8 +9,8 @@ import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
 
 class DeepLinkUtilsImpl(
-        private val mRegionManager: RegionManager,
-        private val mTimber: Timber
+        private val regionManager: RegionManager,
+        private val timber: Timber
 ) : DeepLinkUtils {
 
     companion object {
@@ -46,7 +46,7 @@ class DeepLinkUtilsImpl(
 
     override fun buildIntentStack(context: Context, intent: Intent?, region: Region): List<Intent>? {
         return if (intent == null) {
-            mTimber.d(TAG, "Can't deep link, Intent is null")
+            timber.d(TAG, "Can't deep link, Intent is null")
             null
         } else {
             buildIntentStack(context, intent.data, region)
@@ -55,41 +55,41 @@ class DeepLinkUtilsImpl(
 
     override fun buildIntentStack(context: Context, uri: String?, region: Region): List<Intent>? {
         if (uri == null || uri.isBlank()) {
-            mTimber.d(TAG, "Can't deep link, uri is null / blank")
+            timber.d(TAG, "Can't deep link, uri is null / blank")
             return null
         }
 
-        mTimber.d(TAG, "Attempting to deep link to \"" + uri + "\"")
+        timber.d(TAG, "Attempting to deep link to \"$uri\"")
 
         val endpoint = getEndpoint(uri)
 
         if (endpoint == null) {
-            mTimber.e(TAG, "Deep link path isn't for GAR PR")
+            timber.e(TAG, "Deep link path isn't for GAR PR")
             return null
         }
 
         val path = uri.substring(endpoint.getWebPath().length, uri.length)
 
         if (path.isBlank()) {
-            mTimber.d(TAG, "Deep link path is null / blank")
+            timber.d(TAG, "Deep link path is null / blank")
             return null
         }
 
         val splits = path.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
         if (splits.isEmpty()) {
-            mTimber.d(TAG, "Deep link's path split is empty")
+            timber.d(TAG, "Deep link's path split is empty")
             return null
         }
 
         val regionId = splits[0]
 
         if (regionId.isBlank()) {
-            mTimber.w(TAG, "Region ID is null / blank")
+            timber.w(TAG, "Region ID is null / blank")
             return null
         }
 
-        val sameRegion = regionId.equals(mRegionManager.getRegion().id, ignoreCase = true)
+        val sameRegion = regionId.equals(regionManager.getRegion().id, ignoreCase = true)
 
         if (sameRegion && splits.size == 1) {
             return null
@@ -108,7 +108,7 @@ class DeepLinkUtilsImpl(
             TOURNAMENTS.equals(page, ignoreCase = true) -> {
                 buildTournamentsIntentStack(context, intentStack, region, sameRegion, splits)
             }
-            else -> mTimber.w(TAG, "Unknown page \"" + page + "\"")
+            else -> timber.w(TAG, "Unknown page \"$page\"")
         }
 
         return intentStack
@@ -116,7 +116,7 @@ class DeepLinkUtilsImpl(
 
     override fun buildIntentStack(context: Context, uri: Uri?, region: Region): List<Intent>? {
         return if (uri == null) {
-            mTimber.d(TAG, "Can't deep link, Uri is null")
+            timber.d(TAG, "Can't deep link, Uri is null")
             null
         } else {
             buildIntentStack(context, uri.toString(), region)

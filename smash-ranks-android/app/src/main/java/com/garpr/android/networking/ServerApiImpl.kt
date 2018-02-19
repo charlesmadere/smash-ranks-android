@@ -10,13 +10,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ServerApiImpl(
-        private val mFullTournamentUtils: FullTournamentUtils,
-        private val mGarPrApi: GarPrApi,
-        private val mNotGarPrApi: GarPrApi,
-        private val mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-        private val mRegionManager: RegionManager,
-        private val mSmashRosterApi: SmashRosterApi,
-        private val mTimber: Timber
+        private val fullTournamentUtils: FullTournamentUtils,
+        private val garPrApi: GarPrApi,
+        private val notGarPrApi: GarPrApi,
+        private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
+        private val regionManager: RegionManager,
+        private val smashRosterApi: SmashRosterApi,
+        private val timber: Timber
 ) : ServerApi {
 
     companion object {
@@ -24,7 +24,7 @@ class ServerApiImpl(
     }
 
     private fun getGarPrApi(endpoint: Endpoint): GarPrApi {
-        return if (endpoint == Endpoint.GAR_PR) mGarPrApi else mNotGarPrApi
+        return if (endpoint == Endpoint.GAR_PR) garPrApi else notGarPrApi
     }
 
     private fun getGarPrApi(region: Region): GarPrApi {
@@ -38,14 +38,14 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getHeadToHead ($region) ($playerId) ($opponentId) " +
+                    timber.e(TAG, "getHeadToHead ($region) ($playerId) ($opponentId) " +
                             "failed (code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
 
             override fun onFailure(call: Call<HeadToHead>, t: Throwable) {
-                mTimber.e(TAG, "getHeadToHead ($region) ($playerId) ($opponentId) failed", t)
+                timber.e(TAG, "getHeadToHead ($region) ($playerId) ($opponentId) failed", t)
                 listener.failure()
             }
         })
@@ -57,14 +57,14 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getMatches ($region) ($playerId) failed " +
+                    timber.e(TAG, "getMatches ($region) ($playerId) failed " +
                             "(code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
 
             override fun onFailure(call: Call<MatchesBundle>, t: Throwable) {
-                mTimber.e(TAG, "getMatches ($region) ($playerId) failed", t)
+                timber.e(TAG, "getMatches ($region) ($playerId) failed", t)
                 listener.failure()
             }
         })
@@ -76,14 +76,14 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getPlayer ($region) ($playerId) failed " +
+                    timber.e(TAG, "getPlayer ($region) ($playerId) failed " +
                             "(code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
 
             override fun onFailure(call: Call<FullPlayer>, t: Throwable) {
-                mTimber.e(TAG, "getPlayer ($region) ($playerId) failed", t)
+                timber.e(TAG, "getPlayer ($region) ($playerId) failed", t)
                 listener.failure()
             }
         })
@@ -100,13 +100,13 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getPlayers ($region) failed (code ${response.code()})")
+                    timber.e(TAG, "getPlayers ($region) failed (code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
 
             override fun onFailure(call: Call<PlayersBundle>, t: Throwable) {
-                mTimber.e(TAG, "getPlayers ($region) failed", t)
+                timber.e(TAG, "getPlayers ($region) failed", t)
                 listener.failure()
             }
         })
@@ -118,11 +118,11 @@ class ServerApiImpl(
                 val body = if (response.isSuccessful) response.body() else null
 
                 if (body == null) {
-                    mTimber.e(TAG, "getRankings ($region) failed (code ${response.code()})")
+                    timber.e(TAG, "getRankings ($region) failed (code ${response.code()})")
                     listener.failure(response.code())
                 } else {
-                    if (region == mRegionManager.getRegion()) {
-                        mRankingsPollingPreferenceStore.rankingsDate.set(body.time)
+                    if (region == regionManager.getRegion()) {
+                        rankingsPollingPreferenceStore.rankingsDate.set(body.time)
                     }
 
                     listener.success(body)
@@ -130,7 +130,7 @@ class ServerApiImpl(
             }
 
             override fun onFailure(call: Call<RankingsBundle>, t: Throwable) {
-                mTimber.e(TAG, "getRankings ($region) failed", t)
+                timber.e(TAG, "getRankings ($region) failed", t)
                 listener.failure()
             }
         })
@@ -145,7 +145,7 @@ class ServerApiImpl(
                     val body = if (response.isSuccessful) response.body() else null
 
                     if (body == null) {
-                        mTimber.e(TAG, "getRegions ($endpoint) failed (code ${response.code()})")
+                        timber.e(TAG, "getRegions ($endpoint) failed (code ${response.code()})")
                         listener.failure(response.code())
                     } else {
                         listener.success(body)
@@ -153,7 +153,7 @@ class ServerApiImpl(
                 }
 
                 override fun onFailure(call: Call<RegionsBundle>?, t: Throwable?) {
-                    mTimber.e(TAG, "getRegions ($endpoint) failed", t)
+                    timber.e(TAG, "getRegions ($endpoint) failed", t)
                     listener.failure()
                 }
             })
@@ -169,20 +169,20 @@ class ServerApiImpl(
         getGarPrApi(region).getTournament(region.id, tournamentId).enqueue(object : Callback<FullTournament> {
             override fun onResponse(call: Call<FullTournament>, response: Response<FullTournament>) {
                 if (response.isSuccessful) {
-                    mFullTournamentUtils.prepareFullTournament(response.body(), object : FullTournamentUtils.Callback {
+                    fullTournamentUtils.prepareFullTournament(response.body(), object : FullTournamentUtils.Callback {
                         override fun onComplete(fullTournament: FullTournament?) {
                             listener.success(fullTournament)
                         }
                     })
                 } else {
-                    mTimber.e(TAG, "getTournament ($region) ($tournamentId) failed " +
+                    timber.e(TAG, "getTournament ($region) ($tournamentId) failed " +
                             "(code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
 
             override fun onFailure(call: Call<FullTournament>, t: Throwable) {
-                mTimber.e(TAG, "getTournament ($region) ($tournamentId) failed", t)
+                timber.e(TAG, "getTournament ($region) ($tournamentId) failed", t)
                 listener.failure()
             }
         })
@@ -195,13 +195,13 @@ class ServerApiImpl(
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
-                    mTimber.e(TAG, "getTournaments ($region) failed (code ${response.code()})")
+                    timber.e(TAG, "getTournaments ($region) failed (code ${response.code()})")
                     listener.failure(response.code())
                 }
             }
 
             override fun onFailure(call: Call<TournamentsBundle>, t: Throwable) {
-                mTimber.e(TAG, "getTournaments ($region) failed", t)
+                timber.e(TAG, "getTournaments ($region) failed", t)
                 listener.failure()
             }
         })

@@ -21,12 +21,12 @@ import javax.inject.Inject
 class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, PlayersLayout.Listener,
         Searchable, SearchQueryHandle, SearchToolbar.Listener, SearchView.OnQueryTextListener {
 
-    private var mSearchView: SearchView? = null
+    private var searchView: SearchView? = null
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
-    private val mPlayersLayout: PlayersLayout by bindView(R.id.playersLayout)
+    private val playersLayout: PlayersLayout by bindView(R.id.playersLayout)
 
 
     companion object {
@@ -49,7 +49,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_players)
-        subtitle = mRegionManager.getRegion(this).displayName
+        subtitle = regionManager.getRegion(this).displayName
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,7 +63,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
         val searchView = searchMenuItem.actionView as SearchView
         searchView.queryHint = getText(R.string.search_)
         searchView.setOnQueryTextListener(this)
-        mSearchView = searchView
+        this.searchView = searchView
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -87,13 +87,13 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
         return false
     }
 
-    override fun search(query: String?) = mPlayersLayout.search(query)
+    override fun search(query: String?) = playersLayout.search(query)
 
     override val searchQuery: CharSequence?
-        get() = mSearchView?.query
+        get() = searchView?.query
 
     override val showSearchMenuItem: Boolean
-        get() = mPlayersLayout.playersBundle?.players?.isNotEmpty() == true
+        get() = playersLayout.playersBundle?.players?.isNotEmpty() == true
 
     override val showUpNavigation = true
 

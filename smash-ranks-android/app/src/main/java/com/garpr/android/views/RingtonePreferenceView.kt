@@ -14,8 +14,8 @@ import android.view.View
 import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.extensions.getActivity
-import com.garpr.android.misc.ResultCodes
+import com.garpr.android.extensions.optActivity
+import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
@@ -75,10 +75,14 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, it)
         }
 
-        val activity = context.getActivity()
+        val activity = context.optActivity()
 
         try {
-            activity.startActivityForResult(intent, ResultCodes.RINGTONE_SELECTED.value)
+            if (activity == null) {
+                context.startActivity(intent)
+            } else {
+                activity.startActivityForResult(intent, RequestCodes.CHANGE_RINGTONE.value)
+            }
         } catch (e: ActivityNotFoundException) {
             timber.e(TAG, "Unable to start ringtone picker Activity", e)
             Toast.makeText(context, R.string.unable_to_launch_ringtone_picker, Toast.LENGTH_LONG)

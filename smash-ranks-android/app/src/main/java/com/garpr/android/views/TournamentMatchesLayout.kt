@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentMatchesAdapter
 import com.garpr.android.misc.ListUtils
@@ -19,16 +18,13 @@ import com.garpr.android.models.FullTournament
 
 class TournamentMatchesLayout : TournamentPageLayout {
 
-    private var content: FullTournament? = null
     private lateinit var adapter: TournamentMatchesAdapter
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentMatchesLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_tournament_matches, parent, false)
-                    as TournamentMatchesLayout
-        }
+        fun inflate(parent: ViewGroup): TournamentMatchesLayout = LayoutInflater.from(
+                parent.context).inflate(R.layout.layout_tournament_matches, parent,
+                false) as TournamentMatchesLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,6 +35,20 @@ class TournamentMatchesLayout : TournamentPageLayout {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+
+    private var fullTournament: FullTournament? = null
+        set(value) {
+            field = value
+            adapter.set(value)
+
+            if (adapter.isEmpty) {
+                recyclerView.visibility = GONE
+                empty.visibility = VISIBLE
+            } else {
+                empty.visibility = GONE
+                recyclerView.visibility = VISIBLE
+            }
+        }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -51,7 +61,7 @@ class TournamentMatchesLayout : TournamentPageLayout {
     }
 
     override fun search(query: String?) {
-        val matches = content?.matches
+        val matches = fullTournament?.matches
 
         if (matches == null || matches.isEmpty()) {
             return
@@ -79,16 +89,7 @@ class TournamentMatchesLayout : TournamentPageLayout {
     }
 
     override fun setContent(content: FullTournament) {
-        this.content = content
-        adapter.set(content)
-
-        if (adapter.isEmpty) {
-            recyclerView.visibility = GONE
-            empty.visibility = VISIBLE
-        } else {
-            empty.visibility = GONE
-            recyclerView.visibility = VISIBLE
-        }
+        fullTournament = content
     }
 
 }

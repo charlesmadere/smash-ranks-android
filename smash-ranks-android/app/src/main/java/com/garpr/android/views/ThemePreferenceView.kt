@@ -22,10 +22,10 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         Preference.OnPreferenceChangeListener<NightMode>, View.OnClickListener {
 
     @Inject
-    protected lateinit var mGeneralPreferenceStore: GeneralPreferenceStore
+    protected lateinit var generalPreferenceStore: GeneralPreferenceStore
 
     @Inject
-    protected lateinit var mTimber: Timber
+    protected lateinit var timber: Timber
 
 
     companion object {
@@ -48,14 +48,14 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
             return
         }
 
-        mGeneralPreferenceStore.nightMode.addListener(this)
+        generalPreferenceStore.nightMode.addListener(this)
         refresh()
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         dialog.dismiss()
 
-        val current = mGeneralPreferenceStore.nightMode.get()
+        val current = generalPreferenceStore.nightMode.get()
         val selected = NightMode.values()[which]
 
         if (current == selected) {
@@ -63,8 +63,8 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         }
 
         showRestartDialog(DialogInterface.OnDismissListener {
-            mTimber.d(TAG, "theme was \"$current\", is now \"$selected\"")
-            mGeneralPreferenceStore.nightMode.set(selected)
+            timber.d(TAG, "theme was \"$current\", is now \"$selected\"")
+            generalPreferenceStore.nightMode.set(selected)
             refresh()
 
             context.startActivity(HomeActivity.getLaunchIntent(context))
@@ -78,7 +78,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
             items[i] = resources.getText(NightMode.values()[i].textResId)
         }
 
-        val current = mGeneralPreferenceStore.nightMode.get()
+        val current = generalPreferenceStore.nightMode.get()
         val checkedItem = current?.ordinal ?: -1
 
         AlertDialog.Builder(context)
@@ -90,7 +90,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        mGeneralPreferenceStore.nightMode.removeListener(this)
+        generalPreferenceStore.nightMode.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -106,7 +106,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
         if (isInEditMode) {
             descriptionText = resources.getText(R.string.auto)
         } else {
-            mGeneralPreferenceStore.nightMode.addListener(this)
+            generalPreferenceStore.nightMode.addListener(this)
             refresh()
         }
     }
@@ -120,7 +120,7 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
     override fun refresh() {
         super.refresh()
 
-        val nightMode = mGeneralPreferenceStore.nightMode.get()
+        val nightMode = generalPreferenceStore.nightMode.get()
         descriptionText = resources.getText(nightMode?.textResId ?: R.string.not_yet_set)
     }
 

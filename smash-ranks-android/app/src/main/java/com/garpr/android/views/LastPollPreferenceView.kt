@@ -17,7 +17,7 @@ class LastPollPreferenceView : SimplePreferenceView,
         Preference.OnPreferenceChangeListener<SimpleDate> {
 
     @Inject
-    protected lateinit var mRankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -36,13 +36,13 @@ class LastPollPreferenceView : SimplePreferenceView,
             return
         }
 
-        mRankingsPollingPreferenceStore.lastPoll.addListener(this)
+        rankingsPollingPreferenceStore.lastPoll.addListener(this)
         refresh()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mRankingsPollingPreferenceStore.lastPoll.removeListener(this)
+        rankingsPollingPreferenceStore.lastPoll.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -50,7 +50,7 @@ class LastPollPreferenceView : SimplePreferenceView,
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-            mRankingsPollingPreferenceStore.lastPoll.addListener(this)
+            rankingsPollingPreferenceStore.lastPoll.addListener(this)
         }
 
         isEnabled = false
@@ -72,7 +72,7 @@ class LastPollPreferenceView : SimplePreferenceView,
     override fun refresh() {
         super.refresh()
 
-        val date = mRankingsPollingPreferenceStore.lastPoll.get()
+        val date = rankingsPollingPreferenceStore.lastPoll.get()
         descriptionText = date?.getRelativeDateTimeText(context) ?:
                 resources.getText(R.string.poll_has_yet_to_occur)
     }

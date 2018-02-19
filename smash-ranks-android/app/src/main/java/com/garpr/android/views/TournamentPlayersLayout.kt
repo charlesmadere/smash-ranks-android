@@ -19,16 +19,13 @@ import com.garpr.android.models.FullTournament
 
 class TournamentPlayersLayout : TournamentPageLayout {
 
-    private var content: FullTournament? = null
     private lateinit var adapter: PlayersAdapter
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentPlayersLayout {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.layout_tournament_players, parent, false)
-                    as TournamentPlayersLayout
-        }
+        fun inflate(parent: ViewGroup): TournamentPlayersLayout = LayoutInflater.from(
+                parent.context).inflate(R.layout.layout_tournament_players, parent,
+                false) as TournamentPlayersLayout
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,6 +36,20 @@ class TournamentPlayersLayout : TournamentPageLayout {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+
+    private var fullTournament: FullTournament? = null
+        set(value) {
+            field = value
+            adapter.set(value)
+
+            if (adapter.isEmpty) {
+                recyclerView.visibility = GONE
+                empty.visibility = VISIBLE
+            } else {
+                empty.visibility = GONE
+                recyclerView.visibility = VISIBLE
+            }
+        }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -51,7 +62,7 @@ class TournamentPlayersLayout : TournamentPageLayout {
     }
 
     override fun search(query: String?) {
-        val players = content?.players
+        val players = fullTournament?.players
 
         if (players == null || players.isEmpty()) {
             return
@@ -79,16 +90,7 @@ class TournamentPlayersLayout : TournamentPageLayout {
     }
 
     override fun setContent(content: FullTournament) {
-        this.content = content
-        adapter.set(content)
-
-        if (adapter.isEmpty) {
-            recyclerView.visibility = GONE
-            empty.visibility = VISIBLE
-        } else {
-            empty.visibility = GONE
-            recyclerView.visibility = VISIBLE
-        }
+        fullTournament = content
     }
 
 }

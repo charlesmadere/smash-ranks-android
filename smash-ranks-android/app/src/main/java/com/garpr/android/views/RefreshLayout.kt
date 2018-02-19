@@ -2,21 +2,26 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.support.annotation.IdRes
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.R
+import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.ListLayout
 
 /**
  * A child class of the official Android [SwipeRefreshLayout] that helps us work around some of
  * its shortcomings. We should use this view instead of SwipeRefreshLayout in every case.
  */
-class RefreshLayout(context: Context, attrs: AttributeSet?) : SwipeRefreshLayout(context, attrs) {
+open class RefreshLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SwipeRefreshLayout(context, attrs), Heartbeat, ListLayout {
 
     @IdRes
-    private var mScrollingChildId: Int? = null
-
-    private var mScrollingChild: View? = null
+    private var scrollingChildId: Int? = null
 
 
     init {
@@ -27,16 +32,21 @@ class RefreshLayout(context: Context, attrs: AttributeSet?) : SwipeRefreshLayout
      * http://stackoverflow.com/q/25270171/823952
      */
     override fun canChildScrollUp(): Boolean {
-        return mScrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
+        return scrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
     }
+
+    override val isAlive: Boolean
+        get() = ViewCompat.isAttachedToWindow(this)
 
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        mScrollingChildId?.let {
-            mScrollingChild = findViewById(it) ?: throw NullPointerException(
+        scrollingChildId?.let {
+            scrollingChild = findViewById(it) ?: throw NullPointerException(
                     "unable to find scrolling child")
         }
+
+        setProgressBackgroundColorSchemeResource(R.color.card_background)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
@@ -50,10 +60,15 @@ class RefreshLayout(context: Context, attrs: AttributeSet?) : SwipeRefreshLayout
         setColorSchemeColors(*resources.getIntArray(spinnerColorsResId))
 
         if (ta.hasValue(R.styleable.RefreshLayout_scrollingChild)) {
-            mScrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)
+            scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)
         }
 
         ta.recycle()
     }
+
+    override val recyclerView: RecyclerView?
+        get() = scrollingChild as? RecyclerView
+
+    var scrollingChild: View? = null
 
 }

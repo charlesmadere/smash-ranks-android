@@ -7,8 +7,8 @@ import com.garpr.android.preferences.KeyValueStore.BatchEditor
 import java.util.*
 
 class KeyValueStoreImpl(
-        private val mApplication: Application,
-        private val mName: String
+        private val application: Application,
+        private val name: String
 ) : KeyValueStore {
 
     override val all: Map<String, *>?
@@ -86,7 +86,7 @@ class KeyValueStoreImpl(
     }
 
     private val sharedPreferences: SharedPreferences
-        get() = mApplication.getSharedPreferences(mName, Context.MODE_PRIVATE)
+        get() = application.getSharedPreferences(name, Context.MODE_PRIVATE)
 
 
     class BatchEditorImpl(

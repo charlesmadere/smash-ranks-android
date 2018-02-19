@@ -16,10 +16,10 @@ import javax.inject.Inject
 class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     @Inject
-    protected lateinit var mDeepLinkUtils: DeepLinkUtils
+    protected lateinit var deepLinkUtils: DeepLinkUtils
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var serverApi: ServerApi
 
 
     companion object {
@@ -29,7 +29,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
     override val activityName = TAG
 
     private fun deepLink(region: Region) {
-        val intentStack = mDeepLinkUtils.buildIntentStack(this, intent, region)
+        val intentStack = deepLinkUtils.buildIntentStack(this, intent, region)
 
         if (intentStack == null || intentStack.isEmpty()) {
             startActivity(HomeActivity.getLaunchIntent(this))
@@ -55,15 +55,15 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_deep_link)
 
-        if (mDeepLinkUtils.isValidUri(intent)) {
-            mServerApi.getRegions(listener = ApiCall(this))
+        if (deepLinkUtils.isValidUri(intent)) {
+            serverApi.getRegions(listener = ApiCall(this))
         } else {
             error()
         }
     }
 
     override fun success(`object`: RegionsBundle?) {
-        val region = mDeepLinkUtils.getRegion(intent, `object`)
+        val region = deepLinkUtils.getRegion(intent, `object`)
 
         if (region == null) {
             error()

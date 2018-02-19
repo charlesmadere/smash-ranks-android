@@ -39,22 +39,6 @@
 
 
 ################################
-## Jake Wharton's ButterKnife ##
-################################
--keep class butterknife.** { *; }
--dontwarn butterknife.internal.**
--keep class **$$ViewBinder { *; }
-
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
-
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
-
-
-################################
 ## Google's AppCompat Library ##
 ################################
 -keep public class android.support.v7.widget.** { *; }
