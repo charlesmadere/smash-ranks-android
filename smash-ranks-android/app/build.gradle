@@ -30,8 +30,8 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 10313
-        versionName "1.3.13"
+        versionCode 10314
+        versionName "1.3.14"
     }
 
     buildTypes {
