@@ -152,12 +152,12 @@
 
     <style name="NoContentLinearLayout.Empty">
         <item name="android:id">@id/empty</item>
-        <item name="line2Text">@string/swipe_to_refresh_to_check_again</item>
+        <item name="descriptionText">@string/swipe_to_refresh_to_check_again</item>
     </style>
 
     <style name="NoContentLinearLayout.Error">
         <item name="android:id">@id/error</item>
-        <item name="line2Text">@string/swipe_to_refresh_to_try_again</item>
+        <item name="descriptionText">@string/swipe_to_refresh_to_try_again</item>
     </style>
 
     <style name="NoContentLinearLayoutBody">

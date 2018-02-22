@@ -13,11 +13,11 @@
             style="@style/RecyclerView" />
 
         <com.garpr.android.views.NoContentLinearLayout
-            app:line1Text="@string/no_tournaments"
+            app:titleText="@string/no_tournaments"
             style="@style/NoContentLinearLayout.Empty" />
 
         <com.garpr.android.views.ErrorContentLinearLayout
-            app:line1Text="@string/error_loading_tournaments"
+            app:titleText="@string/error_loading_tournaments"
             style="@style/NoContentLinearLayout.Error" />
 
     </FrameLayout>

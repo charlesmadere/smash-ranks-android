@@ -25,11 +25,11 @@
                 style="@style/ViewPager" />
 
             <com.garpr.android.views.NoContentLinearLayout
-                app:line1Text="@string/no_tournament_data"
+                app:titleText="@string/no_tournament_data"
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
-                app:line1Text="@string/error_loading_tournament"
+                app:titleText="@string/error_loading_tournament"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>

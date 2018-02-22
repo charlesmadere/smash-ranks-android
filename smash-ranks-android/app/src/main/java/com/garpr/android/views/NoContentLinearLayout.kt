@@ -62,9 +62,9 @@ open class NoContentLinearLayout : LinearLayout {
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.NoContentLinearLayout)
-        line1Text = ta.getText(R.styleable.NoContentLinearLayout_line1Text)
-        line2Text = ta.getText(R.styleable.NoContentLinearLayout_line2Text)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        line1Text = ta.getText(R.styleable.View_titleText)
+        line2Text = ta.getText(R.styleable.View_descriptionText)
 
         if (ta.hasValue(R.styleable.NoContentLinearLayout_imageSrc)) {
             imageResId = ta.getResourceId(R.styleable.NoContentLinearLayout_imageSrc, 0)

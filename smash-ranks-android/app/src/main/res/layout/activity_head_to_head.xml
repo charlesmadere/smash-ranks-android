@@ -20,12 +20,12 @@
                 style="@style/RecyclerView.WithSections" />
 
             <com.garpr.android.views.NoContentLinearLayout
-                app:line1Text="@string/no_head_to_head_data"
-                app:line2Text="@string/head_to_head_swipe_to_refresh_to_check_again"
+                app:titleText="@string/no_head_to_head_data"
+                app:descriptionText="@string/head_to_head_swipe_to_refresh_to_check_again"
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
-                app:line1Text="@string/error_loading_head_to_head"
+                app:titleText="@string/error_loading_head_to_head"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>

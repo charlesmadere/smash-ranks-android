@@ -10,6 +10,7 @@
     <color name="gray_light">#666666</color>
     <color name="lose">#C1455A</color>
     <color name="lose_background">#22C1455A</color>
+    <color name="overlay">#11000000</color>
     <color name="purple_dark">#453B81</color>
     <color name="purple_light">#655AA9</color>
     <color name="salmon">#C4636C</color>

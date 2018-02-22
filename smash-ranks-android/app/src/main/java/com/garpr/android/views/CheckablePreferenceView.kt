@@ -121,11 +121,14 @@ open class CheckablePreferenceView : LifecycleFrameLayout,
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
-        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
-        enabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_enabledDescriptionText)
-        titleText = ta.getText(R.styleable.CheckablePreferenceView_titleText)
+        var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        enabledDescriptionText = ta.getText(R.styleable.View_descriptionText)
+        titleText = ta.getText(R.styleable.View_titleText)
+        ta.recycle()
+
+        ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
         checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType, CHECKABLE_TYPE_CHECKBOX)
+        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
         ta.recycle()
     }
 

@@ -55,6 +55,7 @@
     <string name="head_to_head_swipe_to_refresh_to_check_again">Swipe down to refresh to check again. This probably means that these two competitors have never played in tournament before.</string>
     <string name="ice_climbers">Ice Climbers</string>
     <string name="identity">Identity</string>
+    <string name="identity_region_format">%1$s (%2$s)</string>
     <string name="identity_saved_">Identity saved!</string>
     <string name="jigglypuff">Jigglypuff</string>
     <string name="kirby">Kirby</string>
@@ -68,6 +69,7 @@
     <string name="matches">Matches</string>
     <string name="mewtwo">Mewtwo</string>
     <string name="miscellaneous">Miscellaneous</string>
+    <string name="more">More</string>
     <string name="mr_game_and_watch">Mr. Game &amp; Watch</string>
     <string name="must_be_charging">Must be charging</string>
     <string name="must_be_on_wifi">Must be on wifi</string>

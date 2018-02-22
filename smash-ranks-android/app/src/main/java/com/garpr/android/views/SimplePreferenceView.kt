@@ -87,10 +87,13 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.SimplePreferenceView)
+        var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        _descriptionText = ta.getText(R.styleable.View_descriptionText)
+        _titleText = ta.getText(R.styleable.View_titleText)
+        ta.recycle()
+
+        ta = context.obtainStyledAttributes(attrs, R.styleable.SimplePreferenceView)
         _iconDrawable = ta.getDrawable(R.styleable.SimplePreferenceView_simpleIcon)
-        _descriptionText = ta.getText(R.styleable.SimplePreferenceView_simpleDescriptionText)
-        _titleText = ta.getText(R.styleable.SimplePreferenceView_simpleTitleText)
         ta.recycle()
     }
 

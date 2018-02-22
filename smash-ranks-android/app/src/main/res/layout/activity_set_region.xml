@@ -20,11 +20,11 @@
                 style="@style/RecyclerView.WithSections" />
 
             <com.garpr.android.views.NoContentLinearLayout
-                app:line1Text="@string/no_regions"
+                app:titleText="@string/no_regions"
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
-                app:line1Text="@string/error_loading_regions"
+                app:titleText="@string/error_loading_regions"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>

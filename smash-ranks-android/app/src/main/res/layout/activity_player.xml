@@ -20,11 +20,11 @@
                 style="@style/RecyclerView.WithSections" />
 
             <com.garpr.android.views.NoContentLinearLayout
-                app:line1Text="@string/no_player_data"
+                app:titleText="@string/no_player_data"
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
-                app:line1Text="@string/error_loading_player"
+                app:titleText="@string/error_loading_player"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>

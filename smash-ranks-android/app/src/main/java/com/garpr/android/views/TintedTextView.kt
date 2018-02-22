@@ -8,11 +8,11 @@ import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.setTintedImageColor
 
-class TintedImageView @JvmOverloads constructor(
+class TintedTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         @AttrRes defStyleAttr: Int = 0
-) : LifecycleImageView(context, attrs, defStyleAttr) {
+) : LifecycleTextView(context, attrs, defStyleAttr) {
 
     @ColorInt
     private var drawableTintColor: Int = 0

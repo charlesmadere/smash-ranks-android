@@ -9,8 +9,8 @@
         style="@style/RecyclerView" />
 
     <com.garpr.android.views.NoContentLinearLayout
-        app:line1Text="@string/no_players"
-        app:line2Text="@string/this_tournament_has_no_players"
+        app:titleText="@string/no_players"
+        app:descriptionText="@string/this_tournament_has_no_players"
         style="@style/NoContentLinearLayout.Empty" />
 
 </com.garpr.android.views.TournamentPlayersLayout>

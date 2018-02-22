@@ -21,7 +21,7 @@
                 style="@style/RecyclerView" />
 
             <com.garpr.android.views.NoContentLinearLayout
-                app:line1Text="@string/no_log_entries"
+                app:titleText="@string/no_log_entries"
                 style="@style/NoContentLinearLayout.Empty" />
 
         </FrameLayout>
