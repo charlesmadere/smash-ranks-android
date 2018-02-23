@@ -65,7 +65,7 @@ public class App extends Application {
 
     private void initializeCrashlytics() {
         mCrashlyticsWrapper.initialize(BuildConfig.DEBUG);
-        mCrashlyticsWrapper.setBool("low_ram_device", mDeviceUtils.hasLowRam());
+        mCrashlyticsWrapper.setBool("low_ram_device", mDeviceUtils.getHasLowRam());
     }
 
     @Override

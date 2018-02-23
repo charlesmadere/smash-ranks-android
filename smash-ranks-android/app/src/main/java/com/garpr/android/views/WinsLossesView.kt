@@ -1,36 +1,28 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleableRes
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.RelativeLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.models.LitePlayer
 import com.garpr.android.models.WinsLosses
 import kotterknife.bindView
 
-class WinsLossesView : RelativeLayout, BaseAdapterView<WinsLosses> {
+class WinsLossesView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<WinsLosses> {
 
-    private var animate = true
+    private var hasAnimated = true
 
     private val playerColumnView: WinsLossesColumnView by bindView(R.id.playerColumnView)
     private val opponentColumnView: WinsLossesColumnView by bindView(R.id.opponentColumnView)
     private val winsLossesGraphView: WinsLossesGraphView by bindView(R.id.winsLossesGraphView)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleableRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -41,7 +33,7 @@ class WinsLossesView : RelativeLayout, BaseAdapterView<WinsLosses> {
         }
     }
 
-    private fun performAlphaAnimation() {
+    private fun performAnimation() {
         alpha = 0f
 
         animate()
@@ -53,18 +45,18 @@ class WinsLossesView : RelativeLayout, BaseAdapterView<WinsLosses> {
 
     override fun setContent(content: WinsLosses) {
         if (isInEditMode) {
-            animate = false
+            hasAnimated = true
         }
 
         playerColumnView.winsLosses = content
         opponentColumnView.winsLosses = content
-        winsLossesGraphView.setWinsLosses(content, animate)
+        winsLossesGraphView.setWinsLosses(content, hasAnimated)
 
-        if (animate) {
-            animate = false
-            performAlphaAnimation()
-        } else {
+        if (hasAnimated) {
             alpha = 1f
+        } else {
+            hasAnimated = false
+            performAnimation()
         }
     }
 

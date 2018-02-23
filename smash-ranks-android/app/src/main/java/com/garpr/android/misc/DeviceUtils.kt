@@ -2,8 +2,8 @@ package com.garpr.android.misc
 
 interface DeviceUtils {
 
-    fun hasLowRam(): Boolean
+    val hasLowRam: Boolean
 
-    fun hasNetworkConnection(): Boolean
+    val hasNetworkConnection: Boolean
 
 }

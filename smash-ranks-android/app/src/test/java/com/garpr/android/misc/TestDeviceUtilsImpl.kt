@@ -1,13 +1,27 @@
 package com.garpr.android.misc
 
-class TestDeviceUtilsImpl : DeviceUtils {
+import android.app.Application
 
-    var mHasLowRam: Boolean = false
-    var mHasNetworkConnection: Boolean = true
+class TestDeviceUtilsImpl(
+        application: Application
+) : DeviceUtilsImpl(application) {
+
+    private var _hasLowRam: Boolean = false
+    private var _hasNetworkConnection: Boolean = true
 
 
-    override fun hasLowRam() = mHasLowRam
+    override val hasLowRam: Boolean
+        get() = _hasLowRam
 
-    override fun hasNetworkConnection() = mHasNetworkConnection
+    override val hasNetworkConnection: Boolean
+        get() = _hasNetworkConnection
+
+    fun setHasLowRam(hasLowRam: Boolean) {
+        _hasLowRam = hasLowRam
+    }
+
+    fun setHasNetworkConnection(hasNetworkConnection: Boolean) {
+        _hasNetworkConnection = hasNetworkConnection
+    }
 
 }

@@ -13,17 +13,17 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class IdentityManagerTest : BaseTest() {
 
-    lateinit private var litePlayer: AbsPlayer
-    lateinit private var rankedPlayer: AbsPlayer
+    private lateinit var litePlayer: AbsPlayer
+    private lateinit var rankedPlayer: AbsPlayer
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
     @Inject
-    lateinit protected var identityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
     @Inject
-    lateinit protected var regionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     companion object {
@@ -44,28 +44,28 @@ class IdentityManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testAddListener() {
-        val array = arrayOfNulls<AbsPlayer>(1)
+        var identity: AbsPlayer? = null
 
         val listener = object : IdentityManager.OnIdentityChangeListener {
             override fun onIdentityChange(identityManager: IdentityManager) {
-                array[0] = identityManager.identity
+                identity = identityManager.identity
             }
         }
 
         identityManager.addListener(listener)
-        assertNull(array[0])
+        assertNull(identity)
 
         identityManager.setIdentity(litePlayer, regionManager.getRegion())
-        assertEquals(litePlayer, array[0])
+        assertEquals(litePlayer, identity)
 
         identityManager.setIdentity(litePlayer, regionManager.getRegion())
-        assertEquals(litePlayer, array[0])
+        assertEquals(litePlayer, identity)
 
         identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
-        assertEquals(rankedPlayer, array[0])
+        assertEquals(rankedPlayer, identity)
 
         identityManager.removeIdentity()
-        assertNull(array[0])
+        assertNull(identity)
     }
 
     @Test
@@ -184,21 +184,21 @@ class IdentityManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testRemoveListener() {
-        val array = arrayOfNulls<AbsPlayer>(1)
+        var identity: AbsPlayer? = null
 
         val listener = object : IdentityManager.OnIdentityChangeListener {
             override fun onIdentityChange(identityManager: IdentityManager) {
-                array[0] = identityManager.identity
+                identity = identityManager.identity
             }
         }
 
         identityManager.addListener(listener)
         identityManager.setIdentity(rankedPlayer, regionManager.getRegion())
-        assertEquals(rankedPlayer, array[0])
+        assertEquals(rankedPlayer, identity)
 
         identityManager.removeListener(listener)
         identityManager.removeIdentity()
-        assertEquals(rankedPlayer, array[0])
+        assertEquals(rankedPlayer, identity)
     }
 
 }

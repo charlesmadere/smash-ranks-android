@@ -322,10 +322,12 @@
     <style name="WinsLossesColumnView">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">@dimen/wins_losses_column_width</item>
+        <item name="android:layout_margin">@dimen/root_padding</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:orientation">vertical</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
     <style name="WinsLossesCount">

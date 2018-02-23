@@ -38,7 +38,7 @@ public class AppModule extends BaseAppModule {
     @Provides
     @Singleton
     ThreadUtils providesThreadUtils(final DeviceUtils deviceUtils) {
-        return new ThreadUtilsImpl(deviceUtils.hasLowRam());
+        return new ThreadUtilsImpl(deviceUtils.getHasLowRam());
     }
 
 }

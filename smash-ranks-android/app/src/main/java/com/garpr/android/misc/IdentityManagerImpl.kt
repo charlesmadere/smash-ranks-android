@@ -52,7 +52,7 @@ class IdentityManagerImpl(
         get() = identityPreference.exists
 
     override fun isPlayer(player: AbsPlayer?): Boolean {
-        return identity?.let { it == player } == true
+        return player != null && identity == player
     }
 
     override fun isPlayer(id: String?): Boolean {

@@ -120,7 +120,7 @@ class WinsLossesGraphView : View {
         calculateRects()
     }
 
-    private fun performScaleAnimation() {
+    private fun performAnimation() {
         scaleX = 0f
         scaleY = 0f
 
@@ -132,15 +132,15 @@ class WinsLossesGraphView : View {
                 .start()
     }
 
-    internal fun setWinsLosses(winsLosses: WinsLosses, animate: Boolean) {
+    internal fun setWinsLosses(winsLosses: WinsLosses, hasAnimated: Boolean) {
         this.winsLosses = winsLosses
 
-        if (animate) {
-            performScaleAnimation()
-        } else {
+        if (hasAnimated) {
             scaleX = 1f
             scaleY = 1f
             calculateRects()
+        } else {
+            performAnimation()
         }
     }
 

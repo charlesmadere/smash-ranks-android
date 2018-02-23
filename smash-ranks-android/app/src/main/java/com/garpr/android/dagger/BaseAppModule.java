@@ -370,7 +370,7 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
-        return new TimberImpl(deviceUtils.hasLowRam(), crashlyticsWrapper);
+        return new TimberImpl(deviceUtils.getHasLowRam(), crashlyticsWrapper);
     }
 
     @Provides
