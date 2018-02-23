@@ -6,9 +6,18 @@
     android:layout_height="@dimen/wins_losses_height"
     android:layout_width="match_parent">
 
+    <com.garpr.android.views.WinsLossesGraphView
+        android:id="@+id/winsLossesGraphView"
+        android:layout_height="@dimen/wins_losses_graph_size"
+        android:layout_width="@dimen/wins_losses_graph_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.garpr.android.views.WinsLossesColumnView
         android:id="@+id/playerColumnView"
-        app:layout_constraintEnd_toStartOf="@+id/winsLossesGraphView"
+        app:layout_constraintEnd_toStartOf="@id/winsLossesGraphView"
         app:layout_constraintStart_toStartOf="parent"
         app:playerOrOpponent="player"
         style="@style/WinsLossesColumnView">
@@ -23,19 +32,10 @@
 
     </com.garpr.android.views.WinsLossesColumnView>
 
-    <com.garpr.android.views.WinsLossesGraphView
-        android:id="@id/winsLossesGraphView"
-        android:layout_height="@dimen/wins_losses_graph_size"
-        android:layout_width="@dimen/wins_losses_graph_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/playerColumnView"
-        app:layout_constraintStart_toStartOf="@+id/opponentColumnView"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.garpr.android.views.WinsLossesColumnView
-        android:id="@id/opponentColumnView"
+        android:id="@+id/opponentColumnView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/winsLossesGraphView"
+        app:layout_constraintStart_toEndOf="@id/winsLossesGraphView"
         app:playerOrOpponent="opponent"
         style="@style/WinsLossesColumnView">
 
