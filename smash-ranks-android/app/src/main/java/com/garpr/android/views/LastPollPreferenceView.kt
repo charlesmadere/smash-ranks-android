@@ -1,10 +1,7 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import com.garpr.android.App
 import com.garpr.android.R
@@ -13,21 +10,16 @@ import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import javax.inject.Inject
 
-class LastPollPreferenceView : SimplePreferenceView,
+class LastPollPreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : SimplePreferenceView(context, attrs, defStyleAttr),
         Preference.OnPreferenceChangeListener<SimpleDate> {
 
     @Inject
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

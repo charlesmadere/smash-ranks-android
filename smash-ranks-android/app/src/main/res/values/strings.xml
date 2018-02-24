@@ -12,11 +12,11 @@
     <string name="auto">Auto</string>
     <string name="bowser">Bowser</string>
     <string name="build_x">Build %1$d</string>
-    <string name="build_x_debug">Build %1$d (Debug)</string>
+    <string name="build_x_debug">Build %1$d (Debug)</string>s
     <string name="cancel">Cancel</string>
     <string name="cancel_all">Cancel all</string>
     <string name="captain_falcon">Captain Falcon</string>
-    <string name="charles_twitter_url">twitter.com/charlesmadere</string>
+    <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
     <string name="contribute_your_changes">Contribute your changes!</string>
     <string name="daily">Daily</string>
@@ -47,8 +47,8 @@
     <string name="filter_to_losses">Filter to losses</string>
     <string name="filter_to_wins">Filter to wins</string>
     <string name="fox">Fox</string>
-    <string name="gar_pr">GAR PR</string>
-    <string name="gar_twitter_url">twitter.com/garsh0p</string>
+    <string name="gar_pr" translatable="false">GAR PR</string>
+    <string name="gar_twitter_url" translatable="false">twitter.com/garsh0p</string>
     <string name="google_play_services_error_cant_be_resolved">Sorry, but your Google Play Services error (%1$d) can\'t be resolved.</string>
     <string name="google_play_services_error_has_been_resolved">Google Play Services error has been resolved!</string>
     <string name="head_to_head">Head to Head</string>
@@ -69,15 +69,14 @@
     <string name="matches">Matches</string>
     <string name="mewtwo">Mewtwo</string>
     <string name="miscellaneous">Miscellaneous</string>
-    <string name="more">More</string>
     <string name="mr_game_and_watch">Mr. Game &amp; Watch</string>
     <string name="must_be_charging">Must be charging</string>
     <string name="must_be_on_wifi">Must be on wifi</string>
     <string name="ness">Ness</string>
     <string name="night">Night</string>
     <string name="none">None</string>
-    <string name="norcal">Norcal</string>
-    <string name="not_gar_pr">Not GAR PR</string>
+    <string name="norcal" translatable="false">Norcal</string>
+    <string name="not_gar_pr" translatable="false">Not GAR PR</string>
     <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
     <string name="no_head_to_head_data">No head to head data</string>

@@ -1,11 +1,8 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
@@ -17,21 +14,16 @@ import com.garpr.android.misc.IdentityManager
 import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
 
-class IdentityPreferenceView : SimplePreferenceView, DialogInterface.OnClickListener,
+class IdentityPreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : SimplePreferenceView(context, attrs, defStyleAttr), DialogInterface.OnClickListener,
         IdentityManager.OnIdentityChangeListener, View.OnClickListener {
 
     @Inject
     protected lateinit var identityManager: IdentityManager
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

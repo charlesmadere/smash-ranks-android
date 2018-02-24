@@ -17,7 +17,7 @@ class WinsLossesView @JvmOverloads constructor(
         @AttrRes defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<WinsLosses> {
 
-    private var hasAnimated = true
+    private var hasAnimated = false
 
     private val playerColumnView: WinsLossesColumnView by bindView(R.id.playerColumnView)
     private val opponentColumnView: WinsLossesColumnView by bindView(R.id.opponentColumnView)
@@ -55,7 +55,7 @@ class WinsLossesView @JvmOverloads constructor(
         if (hasAnimated) {
             alpha = 1f
         } else {
-            hasAnimated = false
+            hasAnimated = true
             performAnimation()
         }
     }

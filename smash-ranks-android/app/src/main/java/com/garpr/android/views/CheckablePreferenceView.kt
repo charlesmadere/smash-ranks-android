@@ -1,17 +1,14 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.os.Parcelable
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
@@ -19,7 +16,11 @@ import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
 import kotterknife.bindView
 
-open class CheckablePreferenceView : LifecycleFrameLayout,
+class CheckablePreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : LifecycleConstraintLayout(context, attrs, defStyleAttr),
         Preference.OnPreferenceChangeListener<Boolean>, Refreshable, View.OnClickListener {
 
     private var disabledDescriptionText: CharSequence? = null
@@ -37,18 +38,7 @@ open class CheckablePreferenceView : LifecycleFrameLayout,
         private const val CHECKABLE_TYPE_SWITCH_COMPAT = 1
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        parseAttributes(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) {
-        parseAttributes(attrs)
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    init {
         parseAttributes(attrs)
     }
 
@@ -107,8 +97,9 @@ open class CheckablePreferenceView : LifecycleFrameLayout,
         }
 
         if (disabledDescriptionText.isNullOrBlank() || enabledDescriptionText.isNullOrBlank()) {
-            val layoutParams = title.layoutParams as RelativeLayout.LayoutParams
-            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL)
+            val layoutParams = title.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            layoutParams.bottomMargin = layoutParams.topMargin
             title.layoutParams = layoutParams
             description.visibility = View.GONE
         }

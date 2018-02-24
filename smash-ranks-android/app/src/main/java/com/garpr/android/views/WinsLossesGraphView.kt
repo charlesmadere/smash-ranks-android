@@ -51,34 +51,9 @@ class WinsLossesGraphView : View {
         rect.set(paddingStart.toFloat(), paddingTop + (height.toFloat() / 2f) - (size / 2f),
                 paddingRight + size, paddingBottom + (height.toFloat() / 2f) + (size / 2f))
 
-        val percentPlayerWins: Float
-        val percentOpponentWins: Float
-
-        when {
-            winsLosses.playerWins == 0 && winsLosses.opponentWins == 0 -> {
-                percentPlayerWins = 0f
-                percentOpponentWins = 0f
-            }
-
-            winsLosses.playerWins == 0 -> {
-                percentPlayerWins = 0f
-                percentOpponentWins = 1f
-            }
-
-            winsLosses.opponentWins == 0 -> {
-                percentPlayerWins = 1f
-                percentOpponentWins = 0f
-            }
-
-            else -> {
-                percentPlayerWins = winsLosses.playerWins.toFloat() /
-                        (winsLosses.playerWins + winsLosses.opponentWins).toFloat()
-                percentOpponentWins = 1f - percentPlayerWins
-            }
-        }
-
-        playerPalette.arcEnd = percentPlayerWins * 360f
-        opponentPalette.arcEnd = percentOpponentWins * 360f
+        val winLossPercentages = winsLosses.winLossPercentages
+        playerPalette.arcEnd = winLossPercentages[0] * 360f
+        opponentPalette.arcEnd = winLossPercentages[1] * 360f
     }
 
     override fun onDraw(canvas: Canvas) {

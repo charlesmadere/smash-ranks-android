@@ -1,12 +1,9 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Parcelable
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
@@ -20,29 +17,22 @@ import com.garpr.android.extensions.setTintedImageDrawable
 import com.garpr.android.misc.Refreshable
 import kotterknife.bindView
 
-open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
+open class SimplePreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : LifecycleConstraintLayout(context, attrs, defStyleAttr), Refreshable {
 
     private var _descriptionText: CharSequence? = null
     private var _titleText: CharSequence? = null
     private var _iconDrawable: Drawable? = null
 
-    private val icon: ImageView by bindView(R.id.icon)
+    private val icon: ImageView by bindView(R.id.checkable)
     private val description: TextView by bindView(R.id.description)
     private val title: TextView by bindView(R.id.title)
 
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        parseAttributes(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) {
-        parseAttributes(attrs)
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    init {
         parseAttributes(attrs)
     }
 

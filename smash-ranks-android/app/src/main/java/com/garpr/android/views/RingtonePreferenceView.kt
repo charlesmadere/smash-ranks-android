@@ -1,14 +1,11 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
@@ -21,7 +18,11 @@ import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import javax.inject.Inject
 
-class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChangeListener<Uri>,
+class RingtonePreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : SimplePreferenceView(context, attrs, defStyleAttr), Preference.OnPreferenceChangeListener<Uri>,
         View.OnClickListener {
 
     @Inject
@@ -34,15 +35,6 @@ class RingtonePreferenceView : SimplePreferenceView, Preference.OnPreferenceChan
     companion object {
         private const val TAG = "RingtonePreferenceView"
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     fun onActivityResult(data: Intent?) {
         if (data == null || !data.hasExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)) {

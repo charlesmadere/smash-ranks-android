@@ -20,6 +20,29 @@ data class WinsLosses(
                 it.readAbsPlayer(), it.readInt()) }
     }
 
+    val winLossPercentages: FloatArray
+        get() {
+            return when {
+                playerWins == 0 && opponentWins == 0 -> {
+                    floatArrayOf(0f, 0f)
+                }
+
+                playerWins == 0 -> {
+                    floatArrayOf(0f, 1f)
+                }
+
+                opponentWins == 0 -> {
+                    floatArrayOf(1f, 0f)
+                }
+
+                else -> {
+                    val percentPlayerWins: Float = playerWins.toFloat() /
+                            (playerWins.toFloat() + opponentWins.toFloat())
+                    floatArrayOf(percentPlayerWins, 1f - percentPlayerWins)
+                }
+            }
+        }
+
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

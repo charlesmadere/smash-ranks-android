@@ -1,11 +1,8 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
@@ -15,7 +12,11 @@ import com.garpr.android.misc.FavoritePlayersManager
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterface.OnClickListener,
+class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0
+) : SimplePreferenceView(context, attrs, defStyleAttr), DialogInterface.OnClickListener,
         FavoritePlayersManager.OnFavoritePlayersChangeListener, View.OnClickListener {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
@@ -23,15 +24,6 @@ class DeleteFavoritePlayersPreferenceView : SimplePreferenceView, DialogInterfac
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
