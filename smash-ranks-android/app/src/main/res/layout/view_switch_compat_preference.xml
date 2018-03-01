@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="android.support.constraint.ConstraintLayout"
-    style="@style/PreferenceView">
+    tools:parentTag="com.garpr.android.views.CheckablePreferenceView"
+    tools:style="@style/PreferenceView">
 
     <android.support.v7.widget.SwitchCompat
         style="@style/PreferenceViewCheckable" />

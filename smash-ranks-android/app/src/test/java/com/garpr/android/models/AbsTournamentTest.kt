@@ -13,13 +13,13 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class AbsTournamentTest : BaseTest() {
 
-    lateinit private var fullTournament: AbsTournament
-    lateinit private var liteTournament1: AbsTournament
-    lateinit private var liteTournament2: AbsTournament
-    lateinit private var liteTournament3: AbsTournament
+    private lateinit var fullTournament: AbsTournament
+    private lateinit var liteTournament1: AbsTournament
+    private lateinit var liteTournament2: AbsTournament
+    private lateinit var liteTournament3: AbsTournament
 
     @Inject
-    lateinit protected var mGson: Gson
+    protected lateinit var mGson: Gson
 
 
     companion object {

@@ -13,17 +13,17 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class AbsPlayerTest : BaseTest() {
 
-    lateinit private var favoritePlayer1: AbsPlayer
-    lateinit private var favoritePlayer2: AbsPlayer
-    lateinit private var fullPlayer1: AbsPlayer
-    lateinit private var litePlayer1: AbsPlayer
-    lateinit private var litePlayer2: AbsPlayer
-    lateinit private var rankedPlayer1: AbsPlayer
-    lateinit private var rankedPlayer2: AbsPlayer
+    private lateinit var favoritePlayer1: AbsPlayer
+    private lateinit var favoritePlayer2: AbsPlayer
+    private lateinit var fullPlayer1: AbsPlayer
+    private lateinit var litePlayer1: AbsPlayer
+    private lateinit var litePlayer2: AbsPlayer
+    private lateinit var rankedPlayer1: AbsPlayer
+    private lateinit var rankedPlayer2: AbsPlayer
 
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
 
     companion object {

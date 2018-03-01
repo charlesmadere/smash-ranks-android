@@ -15,18 +15,18 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class RegionManagerTest : BaseTest() {
 
-    lateinit private var mAlabama: Region
-    lateinit private var mGeorgia: Region
-    lateinit private var mNyc: Region
+    private lateinit var alabama: Region
+    private lateinit var georgia: Region
+    private lateinit var nyc: Region
 
     @Inject
-    lateinit protected var mApplication: Application
+    protected lateinit var application: Application
 
     @Inject
-    lateinit protected var mGson: Gson
+    protected lateinit var gson: Gson
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     companion object {
@@ -41,9 +41,9 @@ class RegionManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mAlabama = mGson.fromJson(JSON_REGION_ALABAMA, Region::class.java)
-        mGeorgia = mGson.fromJson(JSON_REGION_GEORGIA, Region::class.java)
-        mNyc = mGson.fromJson(JSON_REGION_NYC, Region::class.java)
+        alabama = gson.fromJson(JSON_REGION_ALABAMA, Region::class.java)
+        georgia = gson.fromJson(JSON_REGION_GEORGIA, Region::class.java)
+        nyc = gson.fromJson(JSON_REGION_NYC, Region::class.java)
     }
 
     @Test
@@ -57,23 +57,23 @@ class RegionManagerTest : BaseTest() {
             }
         }
 
-        mRegionManager.addListener(listener)
+        regionManager.addListener(listener)
         assertNull(array[0])
 
-        mRegionManager.setRegion(mAlabama)
-        assertEquals(mAlabama, array[0])
+        regionManager.setRegion(alabama)
+        assertEquals(alabama, array[0])
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRegion() {
-        assertNotNull(mRegionManager.getRegion())
+        assertNotNull(regionManager.getRegion())
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRegionWithContext() {
-        assertNotNull(mRegionManager.getRegion(mApplication))
+        assertNotNull(regionManager.getRegion(application))
     }
 
     @Test
@@ -87,24 +87,24 @@ class RegionManagerTest : BaseTest() {
             }
         }
 
-        mRegionManager.addListener(listener)
+        regionManager.addListener(listener)
         assertNull(array[0])
 
-        mRegionManager.setRegion(mNyc)
-        assertEquals(mNyc, array[0])
+        regionManager.setRegion(nyc)
+        assertEquals(nyc, array[0])
 
-        mRegionManager.removeListener(listener)
-        mRegionManager.setRegion(mGeorgia)
-        assertEquals(mNyc, array[0])
+        regionManager.removeListener(listener)
+        regionManager.setRegion(georgia)
+        assertEquals(nyc, array[0])
     }
 
     @Test
     @Throws(Exception::class)
     fun testSetRegion() {
-        assertNotNull(mRegionManager.getRegion())
+        assertNotNull(regionManager.getRegion())
 
-        mRegionManager.setRegion(mGeorgia)
-        assertEquals(mGeorgia, mRegionManager.getRegion())
+        regionManager.setRegion(georgia)
+        assertEquals(georgia, regionManager.getRegion())
     }
 
 }

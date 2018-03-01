@@ -14,7 +14,7 @@ import javax.inject.Inject
 class PersistentLongPreferenceTest : BaseTest() {
 
     @Inject
-    lateinit protected var keyValueStore: KeyValueStore
+    protected lateinit var keyValueStore: KeyValueStore
 
 
     @Before

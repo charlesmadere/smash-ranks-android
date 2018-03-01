@@ -14,14 +14,14 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class TournamentToolbarManagerTest : BaseTest() {
 
-    lateinit private var tournamentWithUrl: FullTournament
-    lateinit private var tournamentWithoutUrl: FullTournament
+    private lateinit var tournamentWithUrl: FullTournament
+    private lateinit var tournamentWithoutUrl: FullTournament
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
     @Inject
-    lateinit protected var tournamentToolbarManager: TournamentToolbarManager
+    protected lateinit var tournamentToolbarManager: TournamentToolbarManager
 
 
     companion object {

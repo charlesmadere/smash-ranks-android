@@ -13,23 +13,17 @@
         <attr name="disabledDescriptionText" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="NoContentLinearLayout">
-        <attr name="imageSrc" format="reference" />
-    </declare-styleable>
-
     <declare-styleable name="RefreshLayout">
         <attr name="scrollingChild" format="reference" />
         <attr name="spinnerBackground" format="color" />
         <attr name="spinnerColors" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="SimplePreferenceView">
-        <attr name="simpleIcon" format="reference" />
-    </declare-styleable>
-
     <declare-styleable name="View">
         <attr name="descriptionText" format="string" />
         <attr name="drawableTintColor" format="color" />
+        <attr name="icon" format="reference" />
+        <attr name="image" format="reference" />
         <attr name="titleText" format="string" />
     </declare-styleable>
 

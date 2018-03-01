@@ -13,7 +13,7 @@ import javax.inject.Inject
 class PersistentBooleanPreferenceTest : BaseTest() {
 
     @Inject
-    lateinit protected var keyValueStore: KeyValueStore
+    protected lateinit var keyValueStore: KeyValueStore
 
 
     @Before

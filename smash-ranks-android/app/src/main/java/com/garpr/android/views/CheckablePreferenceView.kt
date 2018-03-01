@@ -42,11 +42,11 @@ class CheckablePreferenceView @JvmOverloads constructor(
         parseAttributes(attrs)
     }
 
-    override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>?) {
+    override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>) {
         dispatchThawSelfOnly(container)
     }
 
-    override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>?) {
+    override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>) {
         dispatchFreezeSelfOnly(container)
     }
 

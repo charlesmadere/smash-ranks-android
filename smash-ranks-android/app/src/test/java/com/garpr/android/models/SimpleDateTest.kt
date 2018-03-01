@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SimpleDateTest : BaseTest() {
 
     @Inject
-    lateinit protected var mGson: Gson
+    protected lateinit var gson: Gson
 
 
     companion object {
@@ -50,59 +50,59 @@ class SimpleDateTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testFromBlankString() {
-        val simpleDate = mGson.fromJson(" ", SimpleDate::class.java)
+        val simpleDate = gson.fromJson(" ", SimpleDate::class.java)
         assertNull(simpleDate)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromEmptyString() {
-        val simpleDate = mGson.fromJson("", SimpleDate::class.java)
+        val simpleDate = gson.fromJson("", SimpleDate::class.java)
         assertNull(simpleDate)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromJson() {
-        var simpleDate = mGson.fromJson(JSON_ONE, SimpleDate::class.java)
+        var simpleDate = gson.fromJson(JSON_ONE, SimpleDate::class.java)
         assertNotNull(simpleDate)
 
-        simpleDate = mGson.fromJson(JSON_TWO, SimpleDate::class.java)
+        simpleDate = gson.fromJson(JSON_TWO, SimpleDate::class.java)
         assertNotNull(simpleDate)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromLong() {
-        var simpleDate = mGson.fromJson(LONG_ONE, SimpleDate::class.java)
+        var simpleDate = gson.fromJson(LONG_ONE, SimpleDate::class.java)
         assertNotNull(simpleDate)
         assertEquals(0, simpleDate.date.time)
 
-        simpleDate = mGson.fromJson(LONG_TWO, SimpleDate::class.java)
+        simpleDate = gson.fromJson(LONG_TWO, SimpleDate::class.java)
         assertNotNull(simpleDate)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromNullJsonElement() {
-        val simpleDate = mGson.fromJson(null as JsonElement?, SimpleDate::class.java)
+        val simpleDate = gson.fromJson(null as JsonElement?, SimpleDate::class.java)
         assertNull(simpleDate)
     }
 
     @Test
     @Throws(Exception::class)
     fun testFromNullString() {
-        val simpleDate = mGson.fromJson(null as String?, SimpleDate::class.java)
+        val simpleDate = gson.fromJson(null as String?, SimpleDate::class.java)
         assertNull(simpleDate)
     }
 
     @Test
     @Throws(Exception::class)
     fun testHappenedAfter() {
-        val simpleDate1 = mGson.fromJson(JSON_ONE, SimpleDate::class.java)
-        val simpleDate2 = mGson.fromJson(JSON_TWO, SimpleDate::class.java)
-        val simpleDate3 = mGson.fromJson(LONG_ONE, SimpleDate::class.java)
-        val simpleDate4 = mGson.fromJson(LONG_TWO, SimpleDate::class.java)
+        val simpleDate1 = gson.fromJson(JSON_ONE, SimpleDate::class.java)
+        val simpleDate2 = gson.fromJson(JSON_TWO, SimpleDate::class.java)
+        val simpleDate3 = gson.fromJson(LONG_ONE, SimpleDate::class.java)
+        val simpleDate4 = gson.fromJson(LONG_TWO, SimpleDate::class.java)
 
         assertFalse(simpleDate1.happenedAfter(simpleDate1))
         assertTrue(simpleDate1.happenedAfter(simpleDate2))
@@ -142,21 +142,21 @@ class SimpleDateTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testToJson() {
-        var simpleDate1 = mGson.fromJson(JSON_ONE, SimpleDate::class.java)
-        var json = mGson.toJson(simpleDate1, SimpleDate::class.java)
-        var simpleDate2 = mGson.fromJson(json, SimpleDate::class.java)
+        var simpleDate1 = gson.fromJson(JSON_ONE, SimpleDate::class.java)
+        var json = gson.toJson(simpleDate1, SimpleDate::class.java)
+        var simpleDate2 = gson.fromJson(json, SimpleDate::class.java)
         assertEquals(simpleDate1, simpleDate2)
 
-        simpleDate1 = mGson.fromJson(JSON_TWO, SimpleDate::class.java)
-        json = mGson.toJson(simpleDate1, SimpleDate::class.java)
-        simpleDate2 = mGson.fromJson(json, SimpleDate::class.java)
+        simpleDate1 = gson.fromJson(JSON_TWO, SimpleDate::class.java)
+        json = gson.toJson(simpleDate1, SimpleDate::class.java)
+        simpleDate2 = gson.fromJson(json, SimpleDate::class.java)
         assertEquals(simpleDate1, simpleDate2)
     }
 
     @Test
     @Throws(Exception::class)
     fun testValuesWithJsonOne() {
-        val simpleDate = mGson.fromJson(JSON_ONE, SimpleDate::class.java)
+        val simpleDate = gson.fromJson(JSON_ONE, SimpleDate::class.java)
         val calendar = Calendar.getInstance()
         calendar.time = simpleDate.date
 
@@ -168,7 +168,7 @@ class SimpleDateTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testValuesWithJsonTwo() {
-        val simpleDate = mGson.fromJson(JSON_TWO, SimpleDate::class.java)
+        val simpleDate = gson.fromJson(JSON_TWO, SimpleDate::class.java)
         val calendar = Calendar.getInstance()
         calendar.time = simpleDate.date
 
@@ -180,7 +180,7 @@ class SimpleDateTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testValuesWithLongOne() {
-        val simpleDate = mGson.fromJson(LONG_ONE, SimpleDate::class.java)
+        val simpleDate = gson.fromJson(LONG_ONE, SimpleDate::class.java)
         assertEquals(0, simpleDate.date.time)
 
         val calendar = Calendar.getInstance()
@@ -194,7 +194,7 @@ class SimpleDateTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testValuesWithLongTwo() {
-        val simpleDate = mGson.fromJson(LONG_TWO, SimpleDate::class.java)
+        val simpleDate = gson.fromJson(LONG_TWO, SimpleDate::class.java)
         assertEquals(1505859302322, simpleDate.date.time)
 
         val calendar = Calendar.getInstance()

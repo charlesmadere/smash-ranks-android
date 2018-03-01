@@ -26,23 +26,23 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         RegionManager.OnRegionChangeListener, Searchable, SearchQueryHandle,
         SearchToolbar.Listener {
 
-    private lateinit var mAdapter: HomePagerAdapter
+    private lateinit var adapter: HomePagerAdapter
 
     @Inject
-    protected lateinit var mIdentityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
     @Inject
-    protected lateinit var mRankingsPollingSyncManager: RankingsPollingSyncManager
+    protected lateinit var rankingsPollingSyncManager: RankingsPollingSyncManager
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mShareUtils: ShareUtils
+    protected lateinit var shareUtils: ShareUtils
 
-    private val mBottomNavigationView: BottomNavigationView by bindView(R.id.bottomNavigationView)
-    private val mHomeToolbar: HomeToolbar by bindView(R.id.toolbar)
-    private val mViewPager: ViewPager by bindView(R.id.viewPager)
+    private val bottomNavigationView: BottomNavigationView by bindView(R.id.bottomNavigationView)
+    private val homeToolbar: HomeToolbar by bindView(R.id.toolbar)
+    private val viewPager: ViewPager by bindView(R.id.viewPager)
 
 
     companion object {
@@ -70,13 +70,13 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override val activityName = TAG
 
     override fun onBackPressed() {
-        if (mHomeToolbar.isSearchLayoutExpanded) {
-            mHomeToolbar.closeSearchLayout()
+        if (homeToolbar.isSearchLayoutExpanded) {
+            homeToolbar.closeSearchLayout()
             return
         }
 
-        if (mViewPager.currentItem != 0) {
-            mViewPager.setCurrentItem(0, false)
+        if (viewPager.currentItem != 0) {
+            viewPager.setCurrentItem(0, false)
             return
         }
 
@@ -88,13 +88,13 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_home)
         setInitialPosition(savedInstanceState)
-        mRankingsPollingSyncManager.enableOrDisable()
-        mRegionManager.addListener(this)
+        rankingsPollingSyncManager.enableOrDisable()
+        regionManager.addListener(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mRegionManager.removeListener(this)
+        regionManager.removeListener(this)
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
@@ -105,23 +105,23 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             else -> throw RuntimeException("unknown item: ${item.title}")
         }
 
-        mAdapter.onNavigationItemReselected(position)
+        adapter.onNavigationItemReselected(position)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionFavoritePlayers -> {
-                mViewPager.setCurrentItem(POSITION_FAVORITE_PLAYERS, false)
+                viewPager.setCurrentItem(POSITION_FAVORITE_PLAYERS, false)
                 return true
             }
 
             R.id.actionRankings -> {
-                mViewPager.setCurrentItem(POSITION_RANKINGS, false)
+                viewPager.setCurrentItem(POSITION_RANKINGS, false)
                 return true
             }
 
             R.id.actionTournaments -> {
-                mViewPager.setCurrentItem(POSITION_TOURNAMENTS, false)
+                viewPager.setCurrentItem(POSITION_TOURNAMENTS, false)
                 return true
             }
 
@@ -152,9 +152,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             }
 
             R.id.miViewYourself -> {
-                val identity = mIdentityManager.identity ?: throw NullPointerException("identity is null")
+                val identity = identityManager.identity ?: throw NullPointerException("identity is null")
                 startActivity(PlayerActivity.getLaunchIntent(this, identity,
-                        mRegionManager.getRegion(this)))
+                        regionManager.getRegion(this)))
                 true
             }
 
@@ -169,31 +169,30 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onRegionChange(regionManager: RegionManager) {
         prepareMenuAndTitleAndSubtitle(null)
-        mAdapter.refresh()
+        adapter.refresh()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(KEY_CURRENT_POSITION, mViewPager.currentItem)
+        outState.putInt(KEY_CURRENT_POSITION, viewPager.currentItem)
     }
 
     override fun onViewsBound() {
         super.onViewsBound()
 
-        mBottomNavigationView.setOnNavigationItemReselectedListener(this)
-        mBottomNavigationView.setOnNavigationItemSelectedListener(this)
-        mViewPager.addOnPageChangeListener(mOnPageChangeListener)
-        mViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
-        mViewPager.offscreenPageLimit = 3
+        bottomNavigationView.setOnNavigationItemReselectedListener(this)
+        bottomNavigationView.setOnNavigationItemSelectedListener(this)
+        viewPager.addOnPageChangeListener(mOnPageChangeListener)
+        viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
+        viewPager.offscreenPageLimit = 3
 
-        mAdapter = HomePagerAdapter()
-        mViewPager.adapter = mAdapter
+        adapter = HomePagerAdapter()
+        viewPager.adapter = adapter
     }
 
     private fun prepareMenuAndTitleAndSubtitle(layout: RankingsLayout?) {
-        title = mRegionManager.getRegion(this).displayName
-
-        val region = mRegionManager.getRegion(this)
+        val region = regionManager.getRegion(this)
+        title = region.displayName
 
         subtitle = layout?.rankingsBundle?.let {
             getString(R.string.updated_x, it.time.shortForm)
@@ -202,10 +201,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         invalidateOptionsMenu()
     }
 
-    override fun search(query: String?) = mAdapter.search(query)
+    override fun search(query: String?) {
+        adapter.search(query)
+    }
 
     override val searchQuery: CharSequence?
-        get() = mHomeToolbar.searchQuery
+        get() = homeToolbar.searchQuery
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {
         var initialPosition = -1
@@ -219,20 +220,20 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
         if (initialPosition != -1) {
-            mViewPager.currentItem = initialPosition
+            viewPager.currentItem = initialPosition
         }
     }
 
     private fun share() {
-        val region = mRegionManager.getRegion(this).displayName
+        val region = regionManager.getRegion(this).displayName
         val items = arrayOf(getString(R.string.x_rankings, region),
                 getString(R.string.x_tournaments, region))
 
         AlertDialog.Builder(this)
                 .setItems(items) { dialog, which ->
                     when (which) {
-                        0 -> mShareUtils.shareRankings(this)
-                        1 -> mShareUtils.shareTournaments(this)
+                        0 -> shareUtils.shareRankings(this)
+                        1 -> shareUtils.shareTournaments(this)
                         else -> throw RuntimeException("illegal which: $which")
                     }
                 }
@@ -241,7 +242,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     private fun showActivityRequirements() {
-        val rankingCriteria = mAdapter.rankingsBundle?.rankingCriteria ?: return
+        val rankingCriteria = adapter.rankingsBundle?.rankingCriteria ?: return
         val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
         val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
 
@@ -265,14 +266,14 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         get() = !TextUtils.isEmpty(subtitle)
 
     private fun updateSelectedBottomNavigationItem() {
-        val itemId = when (mViewPager.currentItem) {
+        val itemId = when (viewPager.currentItem) {
             POSITION_FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
             POSITION_RANKINGS -> R.id.actionRankings
             POSITION_TOURNAMENTS -> R.id.actionTournaments
-            else -> throw RuntimeException("unknown current item: ${mViewPager.currentItem}")
+            else -> throw RuntimeException("unknown current item: ${viewPager.currentItem}")
         }
 
-        mBottomNavigationView.menu.findItem(itemId).isChecked = true
+        bottomNavigationView.menu.findItem(itemId).isChecked = true
     }
 
     private val mOnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {

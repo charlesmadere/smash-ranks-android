@@ -17,12 +17,12 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class PlayerMatchesBundleApiCallTest : BaseTest() {
 
-    lateinit private var matchesSpark: MatchesBundle
-    lateinit private var playerSpark: FullPlayer
-    lateinit private var norcal: Region
+    private lateinit var matchesSpark: MatchesBundle
+    private lateinit var playerSpark: FullPlayer
+    private lateinit var norcal: Region
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
 
     companion object {

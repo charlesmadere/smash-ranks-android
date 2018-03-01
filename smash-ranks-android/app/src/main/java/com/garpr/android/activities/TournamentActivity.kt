@@ -31,25 +31,25 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
         TournamentToolbar.DataProvider {
 
-    private var mFullTournament: FullTournament? = null
-    private lateinit var mTournamentId: String
-    private lateinit var mAdapter: TournamentPagerAdapter
+    private var _fullTournament: FullTournament? = null
+    private lateinit var tournamentId: String
+    private lateinit var adapter: TournamentPagerAdapter
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var serverApi: ServerApi
 
     @Inject
-    protected lateinit var mShareUtils: ShareUtils
+    protected lateinit var shareUtils: ShareUtils
 
-    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mTabLayout: TabLayout by bindView(R.id.tabLayout)
-    private val mTournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
-    private val mEmpty: View by bindView(R.id.empty)
-    private val mViewPager: ViewPager by bindView(R.id.viewPager)
+    private val error: ErrorContentLinearLayout by bindView(R.id.error)
+    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val tabLayout: TabLayout by bindView(R.id.tabLayout)
+    private val tournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
+    private val empty: View by bindView(R.id.empty)
+    private val viewPager: ViewPager by bindView(R.id.viewPager)
 
 
     companion object {
@@ -93,66 +93,91 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     override val activityName = TAG
 
     override fun failure(errorCode: Int) {
-        mFullTournament = null
+        _fullTournament = null
         showError(errorCode)
     }
 
     private fun fetchFullTournament() {
-        mRefreshLayout.isRefreshing = true
-        mServerApi.getTournament(mRegionManager.getRegion(this), mTournamentId, ApiCall(this))
+        refreshLayout.isRefreshing = true
+        serverApi.getTournament(regionManager.getRegion(this), tournamentId,
+                ApiCall(this))
     }
 
     override val fullTournament: FullTournament?
-        get() = mFullTournament
+        get() = _fullTournament
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_tournament)
 
-        mTournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)
+        tournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)
 
         prepareMenuAndTitles()
         fetchFullTournament()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.miShare -> {
-                val fullTournament = mFullTournament ?: throw RuntimeException()
-                mShareUtils.shareTournament(this, fullTournament)
+                fullTournament?.let { shareUtils.shareTournament(this, it) }
+                        ?: throw NullPointerException("fullTournament is null")
                 true
             }
 
             R.id.miViewTournamentPage -> {
-                val fullTournament = mFullTournament ?: throw RuntimeException()
-                mShareUtils.openUrl(this, fullTournament.url)
+                fullTournament?.let { shareUtils.openUrl(this, it.url) }
+                        ?: throw NullPointerException("fullTournament is null")
                 true
             }
 
-             else -> {
-                 super.onOptionsItemSelected(item)
-             }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
+    }
+
+    private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            closeKeyboard()
+        }
+    }
 
     override fun onRefresh() {
         fetchFullTournament()
     }
 
+    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+        override fun onTabReselected(tab: TabLayout.Tab?) {
+            if (tab != null) {
+                adapter.onTabReselected(tab.position)
+            }
+        }
+
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+            // intentionally empty
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
+            // intentionally empty
+        }
+    }
+
     override fun onViewsBound() {
         super.onViewsBound()
 
-        mRefreshLayout.setOnRefreshListener(this)
-        mViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
-        mTabLayout.setupWithViewPager(mViewPager)
-        mTabLayout.addOnTabSelectedListener(mOnTabSelectedListener)
-        mViewPager.addOnPageChangeListener(mOnPageChangeListener)
+        refreshLayout.setOnRefreshListener(this)
+        viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
+        tabLayout.setupWithViewPager(viewPager)
+        tabLayout.addOnTabSelectedListener(onTabSelectedListener)
+        viewPager.addOnPageChangeListener(onPageChangeListener)
     }
 
     private fun prepareMenuAndTitles() {
         if (title.isNullOrBlank()) {
             var title: String? = null
-            val fullTournament = mFullTournament
+            val fullTournament = this.fullTournament
 
             if (fullTournament != null) {
                 title = fullTournament.name
@@ -167,7 +192,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
         if (subtitle.isNullOrBlank()) {
             var subtitle: SimpleDate? = null
-            val fullTournament = mFullTournament
+            val fullTournament = this.fullTournament
 
             if (fullTournament != null) {
                 subtitle = fullTournament.date
@@ -183,75 +208,54 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         invalidateOptionsMenu()
     }
 
-    override fun search(query: String?) = mAdapter.search(query)
+    override fun search(query: String?) {
+        adapter.search(query)
+    }
 
     override val searchQuery: CharSequence?
-        get() = mTournamentToolbar.searchQuery
+        get() = tournamentToolbar.searchQuery
 
     private fun showEmpty() {
-        mError.visibility = View.GONE
-        mViewPager.visibility = View.GONE
-        mEmpty.visibility = View.VISIBLE
+        error.visibility = View.GONE
+        viewPager.visibility = View.GONE
+        empty.visibility = View.VISIBLE
         prepareMenuAndTitles()
-        mRefreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
-        mEmpty.visibility = View.GONE
-        mViewPager.visibility = View.GONE
-        mError.setVisibility(View.VISIBLE, errorCode)
+        empty.visibility = View.GONE
+        viewPager.visibility = View.GONE
+        error.setVisibility(View.VISIBLE, errorCode)
         prepareMenuAndTitles()
-        mRefreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = false
     }
 
     private fun showFullTournament() {
-        val fullTournament = mFullTournament ?: throw RuntimeException()
-        mAdapter = TournamentPagerAdapter(this, fullTournament)
-        mViewPager.adapter = mAdapter
+        val fullTournament = this.fullTournament ?: throw NullPointerException("fullTournament is null")
+        adapter = TournamentPagerAdapter(this, fullTournament)
+        viewPager.adapter = adapter
 
-        mEmpty.visibility = View.GONE
-        mError.visibility = View.GONE
-        mViewPager.visibility = View.VISIBLE
+        empty.visibility = View.GONE
+        error.visibility = View.GONE
+        viewPager.visibility = View.VISIBLE
         prepareMenuAndTitles()
-        mRefreshLayout.isRefreshing = false
-        mRefreshLayout.isEnabled = false
+        refreshLayout.isRefreshing = false
+        refreshLayout.isEnabled = false
     }
 
     override val showSearchMenuItem: Boolean
-        get() = mFullTournament != null
+        get() = fullTournament != null
 
     override val showUpNavigation = true
 
     override fun success(`object`: FullTournament?) {
-        mFullTournament = `object`
+        _fullTournament = `object`
 
         if (`object`?.matches?.isNotEmpty() == true || `object`?.players?.isNotEmpty() == true) {
             showFullTournament()
         } else {
             showEmpty()
-        }
-    }
-
-    private val mOnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            closeKeyboard()
-        }
-    }
-
-    private val mOnTabSelectedListener = object : TabLayout.OnTabSelectedListener {
-        override fun onTabReselected(tab: TabLayout.Tab?) {
-            if (tab != null) {
-                mAdapter.onTabReselected(tab.position)
-            }
-        }
-
-        override fun onTabSelected(tab: TabLayout.Tab?) {
-            // intentionally empty
-        }
-
-        override fun onTabUnselected(tab: TabLayout.Tab?) {
-            // intentionally empty
         }
     }
 

@@ -37,7 +37,7 @@ open class SimplePreferenceView @JvmOverloads constructor(
     }
 
     var descriptionText: CharSequence?
-        get() = description.text.toString()
+        get() = _descriptionText
         set(value) {
             _descriptionText = value
             description.text = value
@@ -77,13 +77,10 @@ open class SimplePreferenceView @JvmOverloads constructor(
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
         _descriptionText = ta.getText(R.styleable.View_descriptionText)
+        _iconDrawable = ta.getDrawable(R.styleable.View_icon)
         _titleText = ta.getText(R.styleable.View_titleText)
-        ta.recycle()
-
-        ta = context.obtainStyledAttributes(attrs, R.styleable.SimplePreferenceView)
-        _iconDrawable = ta.getDrawable(R.styleable.SimplePreferenceView_simpleIcon)
         ta.recycle()
     }
 
@@ -98,7 +95,7 @@ open class SimplePreferenceView @JvmOverloads constructor(
     }
 
     var titleText: CharSequence?
-        get() = title.text.toString()
+        get() = _titleText
         set(value) {
             _titleText = value
             title.text = value

@@ -15,10 +15,10 @@ import javax.inject.Inject
 class PersistentGsonPreferenceTest : BaseTest() {
 
     @Inject
-    lateinit protected var gson: Gson
+    protected lateinit var gson: Gson
 
     @Inject
-    lateinit protected var keyValueStore: KeyValueStore
+    protected lateinit var keyValueStore: KeyValueStore
 
 
     companion object {

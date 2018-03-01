@@ -16,24 +16,24 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class PlayerToolbarManagerTest : BaseTest() {
 
-    lateinit private var mFullPlayer1: FullPlayer
-    lateinit private var mFullPlayer2: FullPlayer
-    lateinit private var mMatchesBundle: MatchesBundle
+    private lateinit var fullPlayer1: FullPlayer
+    private lateinit var fullPlayer2: FullPlayer
+    private lateinit var matchesBundle: MatchesBundle
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit protected var mGson: Gson
+    protected lateinit var gson: Gson
 
     @Inject
-    lateinit protected var mIdentityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
     @Inject
-    lateinit protected var mPlayerToolbarManager: PlayerToolbarManager
+    protected lateinit var playerToolbarManager: PlayerToolbarManager
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     companion object {
@@ -48,15 +48,15 @@ class PlayerToolbarManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mFullPlayer1 = mGson.fromJson(JSON_FULL_PLAYER_1, FullPlayer::class.java)
-        mFullPlayer2 = mGson.fromJson(JSON_FULL_PLAYER_2, FullPlayer::class.java)
-        mMatchesBundle = mGson.fromJson(JSON_MATCHES_BUNDLE, MatchesBundle::class.java)
+        fullPlayer1 = gson.fromJson(JSON_FULL_PLAYER_1, FullPlayer::class.java)
+        fullPlayer2 = gson.fromJson(JSON_FULL_PLAYER_2, FullPlayer::class.java)
+        matchesBundle = gson.fromJson(JSON_MATCHES_BUNDLE, MatchesBundle::class.java)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetPresentationWithOnlyNull() {
-        val presentation = mPlayerToolbarManager.getPresentation(null, null,
+        val presentation = playerToolbarManager.getPresentation(null, null,
                 null)
         assertFalse(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isAliasesVisible)
@@ -73,7 +73,7 @@ class PlayerToolbarManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testGetPresentationWithFullPlayerAndNullMatchesBundleAndNullResult() {
-        var presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, null,
+        var presentation = playerToolbarManager.getPresentation(fullPlayer1, null,
                 null)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertTrue(presentation.isAliasesVisible)
@@ -86,9 +86,9 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
 
-        mFavoritePlayersManager.addPlayer(mFullPlayer1, mRegionManager.getRegion())
+        favoritePlayersManager.addPlayer(fullPlayer1, regionManager.getRegion())
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, null,
+        presentation = playerToolbarManager.getPresentation(fullPlayer1, null,
                 null)
         assertTrue(presentation.isAliasesVisible)
         assertFalse(presentation.isAddToFavoritesVisible)
@@ -102,9 +102,9 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
 
-        mIdentityManager.setIdentity(mFullPlayer2, mRegionManager.getRegion())
+        identityManager.setIdentity(fullPlayer2, regionManager.getRegion())
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, null,
+        presentation = playerToolbarManager.getPresentation(fullPlayer1, null,
                 null)
         assertTrue(presentation.isAliasesVisible)
         assertFalse(presentation.isAddToFavoritesVisible)
@@ -118,9 +118,9 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertTrue(presentation.isViewYourselfVsThisOpponentVisible)
 
-        mFavoritePlayersManager.removePlayer(mFullPlayer1)
+        favoritePlayersManager.removePlayer(fullPlayer1)
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, null,
+        presentation = playerToolbarManager.getPresentation(fullPlayer1, null,
                 null)
         assertTrue(presentation.isAliasesVisible)
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -138,7 +138,7 @@ class PlayerToolbarManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testGetPresentationWithFullPlayerAndMatchesBundleAndNullResult() {
-        var presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, mMatchesBundle,
+        var presentation = playerToolbarManager.getPresentation(fullPlayer1, matchesBundle,
                 null)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertTrue(presentation.isAliasesVisible)
@@ -151,9 +151,9 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
 
-        mFavoritePlayersManager.addPlayer(mFullPlayer1, mRegionManager.getRegion())
+        favoritePlayersManager.addPlayer(fullPlayer1, regionManager.getRegion())
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, mMatchesBundle,
+        presentation = playerToolbarManager.getPresentation(fullPlayer1, matchesBundle,
                 null)
         assertTrue(presentation.isAliasesVisible)
         assertFalse(presentation.isAddToFavoritesVisible)
@@ -167,9 +167,9 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
 
-        mIdentityManager.setIdentity(mFullPlayer1, mRegionManager.getRegion())
+        identityManager.setIdentity(fullPlayer1, regionManager.getRegion())
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, mMatchesBundle,
+        presentation = playerToolbarManager.getPresentation(fullPlayer1, matchesBundle,
                 null)
         assertTrue(presentation.isAliasesVisible)
         assertFalse(presentation.isAddToFavoritesVisible)
@@ -183,9 +183,9 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
 
-        mFavoritePlayersManager.removePlayer(mFullPlayer1)
+        favoritePlayersManager.removePlayer(fullPlayer1)
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, mMatchesBundle,
+        presentation = playerToolbarManager.getPresentation(fullPlayer1, matchesBundle,
                 null)
         assertTrue(presentation.isAliasesVisible)
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -199,7 +199,7 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer2, mMatchesBundle,
+        presentation = playerToolbarManager.getPresentation(fullPlayer2, matchesBundle,
                 null)
         assertFalse(presentation.isAliasesVisible)
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -217,7 +217,7 @@ class PlayerToolbarManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testGetPresentationWithFullPlayerAndMatchesBundleAndLoseResult() {
-        var presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, mMatchesBundle,
+        var presentation = playerToolbarManager.getPresentation(fullPlayer1, matchesBundle,
                 MatchResult.LOSE)
         assertTrue(presentation.isAliasesVisible)
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -230,7 +230,7 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer2, mMatchesBundle,
+        presentation = playerToolbarManager.getPresentation(fullPlayer2, matchesBundle,
                 MatchResult.LOSE)
         assertFalse(presentation.isAliasesVisible)
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -247,7 +247,7 @@ class PlayerToolbarManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testGetPresentationWithFullPlayerAndMatchesBundleAndWinResult() {
-        var presentation = mPlayerToolbarManager.getPresentation(mFullPlayer1, mMatchesBundle,
+        var presentation = playerToolbarManager.getPresentation(fullPlayer1, matchesBundle,
                 MatchResult.WIN)
         assertTrue(presentation.isAliasesVisible)
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -260,7 +260,7 @@ class PlayerToolbarManagerTest : BaseTest() {
         assertTrue(presentation.isShareVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
 
-        presentation = mPlayerToolbarManager.getPresentation(mFullPlayer2, mMatchesBundle,
+        presentation = playerToolbarManager.getPresentation(fullPlayer2, matchesBundle,
                 MatchResult.WIN)
         assertFalse(presentation.isAliasesVisible)
         assertTrue(presentation.isAddToFavoritesVisible)

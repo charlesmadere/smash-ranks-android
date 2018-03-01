@@ -2,7 +2,7 @@ package com.garpr.android.preferences
 
 import com.garpr.android.models.SmashRosterSyncResult
 
-interface SmashRosterPreferenceStore {
+interface SmashRosterPreferenceStore : PreferenceStore {
 
     val enabled: Preference<Boolean>
 

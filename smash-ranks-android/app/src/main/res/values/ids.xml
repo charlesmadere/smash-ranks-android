@@ -6,10 +6,9 @@
     <item name="description" type="id" />
     <item name="empty" type="id" />
     <item name="error" type="id" />
+    <item name="icon" type="id" />
+    <item name="image" type="id" />
     <item name="list" type="id" />
-    <item name="noContentImage" type="id" />
-    <item name="noContentLine1" type="id" />
-    <item name="noContentLine2" type="id" />
     <item name="playerName" type="id" />
     <item name="recyclerView" type="id" />
     <item name="refreshLayout" type="id" />

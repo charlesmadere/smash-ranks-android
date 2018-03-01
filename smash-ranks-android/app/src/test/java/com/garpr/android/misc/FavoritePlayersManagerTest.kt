@@ -13,17 +13,17 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class FavoritePlayersManagerTest : BaseTest() {
 
-    lateinit private var mPlayer1: AbsPlayer
-    lateinit private var mPlayer2: AbsPlayer
+    private lateinit var player1: AbsPlayer
+    private lateinit var player2: AbsPlayer
 
     @Inject
-    lateinit protected var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    lateinit protected var mGson: Gson
+    protected lateinit var gson: Gson
 
     @Inject
-    lateinit protected var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
 
     companion object {
@@ -37,25 +37,25 @@ class FavoritePlayersManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mPlayer1 = mGson.fromJson(JSON_PLAYER_1, AbsPlayer::class.java)
-        mPlayer2 = mGson.fromJson(JSON_PLAYER_2, AbsPlayer::class.java)
+        player1 = gson.fromJson(JSON_PLAYER_1, AbsPlayer::class.java)
+        player2 = gson.fromJson(JSON_PLAYER_2, AbsPlayer::class.java)
     }
 
     @Test
     @Throws(Exception::class)
     fun testAbsPlayers() {
-        var absPlayers = mFavoritePlayersManager.absPlayers
+        var absPlayers = favoritePlayersManager.absPlayers
         assertTrue(absPlayers == null || absPlayers.isEmpty())
 
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
 
-        absPlayers = mFavoritePlayersManager.absPlayers
+        absPlayers = favoritePlayersManager.absPlayers
         assertNotNull(absPlayers)
         assertEquals(2, absPlayers?.size)
 
-        assertEquals(mPlayer1, absPlayers?.get(0))
-        assertEquals(mPlayer2, absPlayers?.get(1))
+        assertEquals(player1, absPlayers?.get(0))
+        assertEquals(player2, absPlayers?.get(1))
     }
 
     @Test
@@ -69,174 +69,174 @@ class FavoritePlayersManagerTest : BaseTest() {
             }
         }
 
-        mFavoritePlayersManager.addListener(listener)
+        favoritePlayersManager.addListener(listener)
         assertNull(array[0])
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
         assertNotNull(array[0])
         assertEquals(1, array[0]?.size)
-        assertEquals(mPlayer1, array[0]?.get(0))
+        assertEquals(player1, array[0]?.get(0))
 
-        mFavoritePlayersManager.removePlayer(mPlayer1)
+        favoritePlayersManager.removePlayer(player1)
         assertTrue(array[0] == null || array[0]?.isEmpty() == true)
     }
 
     @Test
     @Throws(Exception::class)
     fun testAddPlayer() {
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
 
-        val players = mFavoritePlayersManager.players
+        val players = favoritePlayersManager.players
         assertNotNull(players)
         assertEquals(1, players?.size)
-        assertEquals(mPlayer1, players?.get(0))
+        assertEquals(player1, players?.get(0))
     }
 
     @Test
     @Throws(Exception::class)
     fun testAddPlayers() {
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
 
-        val players = mFavoritePlayersManager.players
+        val players = favoritePlayersManager.players
         assertNotNull(players)
         assertEquals(2, players?.size)
-        assertEquals(mPlayer1, players?.get(0))
-        assertEquals(mPlayer2, players?.get(1))
+        assertEquals(player1, players?.get(0))
+        assertEquals(player2, players?.get(1))
     }
 
     @Test
     @Throws(Exception::class)
     fun testClear() {
-        mFavoritePlayersManager.clear()
-        assertTrue(mFavoritePlayersManager.isEmpty)
+        favoritePlayersManager.clear()
+        assertTrue(favoritePlayersManager.isEmpty)
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        assertFalse(mFavoritePlayersManager.isEmpty)
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        assertFalse(favoritePlayersManager.isEmpty)
 
-        mFavoritePlayersManager.clear()
-        assertTrue(mFavoritePlayersManager.isEmpty)
+        favoritePlayersManager.clear()
+        assertTrue(favoritePlayersManager.isEmpty)
 
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        mFavoritePlayersManager.clear()
-        assertTrue(mFavoritePlayersManager.isEmpty)
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        favoritePlayersManager.clear()
+        assertTrue(favoritePlayersManager.isEmpty)
 
     }
 
     @Test
     @Throws(Exception::class)
     fun testContains() {
-        assertFalse(mPlayer1 in mFavoritePlayersManager)
-        assertFalse(mPlayer1.id in mFavoritePlayersManager)
-        assertFalse(mPlayer2 in mFavoritePlayersManager)
-        assertFalse(mPlayer2.id in mFavoritePlayersManager)
+        assertFalse(player1 in favoritePlayersManager)
+        assertFalse(player1.id in favoritePlayersManager)
+        assertFalse(player2 in favoritePlayersManager)
+        assertFalse(player2.id in favoritePlayersManager)
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        assertTrue(mPlayer1 in mFavoritePlayersManager)
-        assertTrue(mPlayer1.id in mFavoritePlayersManager)
-        assertFalse(mPlayer2 in mFavoritePlayersManager)
-        assertFalse(mPlayer2.id in mFavoritePlayersManager)
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        assertTrue(player1 in favoritePlayersManager)
+        assertTrue(player1.id in favoritePlayersManager)
+        assertFalse(player2 in favoritePlayersManager)
+        assertFalse(player2.id in favoritePlayersManager)
 
-        mFavoritePlayersManager.removePlayer(mPlayer2)
-        assertTrue(mPlayer1 in mFavoritePlayersManager)
-        assertTrue(mPlayer1.id in mFavoritePlayersManager)
-        assertFalse(mPlayer2 in mFavoritePlayersManager)
-        assertFalse(mPlayer2.id in mFavoritePlayersManager)
+        favoritePlayersManager.removePlayer(player2)
+        assertTrue(player1 in favoritePlayersManager)
+        assertTrue(player1.id in favoritePlayersManager)
+        assertFalse(player2 in favoritePlayersManager)
+        assertFalse(player2.id in favoritePlayersManager)
 
-        mFavoritePlayersManager.removePlayer(mPlayer1)
-        assertFalse(mPlayer1 in mFavoritePlayersManager)
-        assertFalse(mPlayer1.id in mFavoritePlayersManager)
-        assertFalse(mPlayer2 in mFavoritePlayersManager)
-        assertFalse(mPlayer2.id in mFavoritePlayersManager)
+        favoritePlayersManager.removePlayer(player1)
+        assertFalse(player1 in favoritePlayersManager)
+        assertFalse(player1.id in favoritePlayersManager)
+        assertFalse(player2 in favoritePlayersManager)
+        assertFalse(player2.id in favoritePlayersManager)
 
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
-        assertFalse(mPlayer1 in mFavoritePlayersManager)
-        assertFalse(mPlayer1.id in mFavoritePlayersManager)
-        assertTrue(mPlayer2 in mFavoritePlayersManager)
-        assertTrue(mPlayer2.id in mFavoritePlayersManager)
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
+        assertFalse(player1 in favoritePlayersManager)
+        assertFalse(player1.id in favoritePlayersManager)
+        assertTrue(player2 in favoritePlayersManager)
+        assertTrue(player2.id in favoritePlayersManager)
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        assertTrue(mPlayer1 in mFavoritePlayersManager)
-        assertTrue(mPlayer1.id in mFavoritePlayersManager)
-        assertTrue(mPlayer2 in mFavoritePlayersManager)
-        assertTrue(mPlayer2.id in mFavoritePlayersManager)
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        assertTrue(player1 in favoritePlayersManager)
+        assertTrue(player1.id in favoritePlayersManager)
+        assertTrue(player2 in favoritePlayersManager)
+        assertTrue(player2.id in favoritePlayersManager)
 
-        mFavoritePlayersManager.clear()
-        assertFalse(mPlayer1 in mFavoritePlayersManager)
-        assertFalse(mPlayer1.id in mFavoritePlayersManager)
-        assertFalse(mPlayer2 in mFavoritePlayersManager)
-        assertFalse(mPlayer2.id in mFavoritePlayersManager)
+        favoritePlayersManager.clear()
+        assertFalse(player1 in favoritePlayersManager)
+        assertFalse(player1.id in favoritePlayersManager)
+        assertFalse(player2 in favoritePlayersManager)
+        assertFalse(player2.id in favoritePlayersManager)
     }
 
     @Test
     @Throws(Exception::class)
     fun testIsEmpty() {
-        assertTrue(mFavoritePlayersManager.isEmpty)
+        assertTrue(favoritePlayersManager.isEmpty)
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        assertFalse(mFavoritePlayersManager.isEmpty)
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        assertFalse(favoritePlayersManager.isEmpty)
 
-        mFavoritePlayersManager.removePlayer(mPlayer2)
-        assertFalse(mFavoritePlayersManager.isEmpty)
+        favoritePlayersManager.removePlayer(player2)
+        assertFalse(favoritePlayersManager.isEmpty)
 
-        mFavoritePlayersManager.removePlayer(mPlayer2.id)
-        assertFalse(mFavoritePlayersManager.isEmpty)
+        favoritePlayersManager.removePlayer(player2.id)
+        assertFalse(favoritePlayersManager.isEmpty)
 
-        mFavoritePlayersManager.removePlayer(mPlayer1.id)
-        assertTrue(mFavoritePlayersManager.isEmpty)
+        favoritePlayersManager.removePlayer(player1.id)
+        assertTrue(favoritePlayersManager.isEmpty)
     }
 
     @Test
     @Throws(Exception::class)
     fun testPlayers() {
-        var players = mFavoritePlayersManager.players
+        var players = favoritePlayersManager.players
         assertTrue(players == null || players.isEmpty())
 
-        var absPlayers = mFavoritePlayersManager.absPlayers
+        var absPlayers = favoritePlayersManager.absPlayers
         assertTrue(absPlayers == null || absPlayers.isEmpty())
 
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
-        players = mFavoritePlayersManager.players
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
+        players = favoritePlayersManager.players
         assertNotNull(players)
         assertEquals(1, players?.size)
 
-        absPlayers = mFavoritePlayersManager.absPlayers
+        absPlayers = favoritePlayersManager.absPlayers
         assertNotNull(absPlayers)
         assertEquals(1, absPlayers?.size)
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        players = mFavoritePlayersManager.players
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        players = favoritePlayersManager.players
         assertNotNull(players)
         assertEquals(2, players?.size)
 
-        absPlayers = mFavoritePlayersManager.absPlayers
+        absPlayers = favoritePlayersManager.absPlayers
         assertNotNull(absPlayers)
         assertEquals(2, absPlayers?.size)
 
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
-        players = mFavoritePlayersManager.players
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
+        players = favoritePlayersManager.players
         assertNotNull(players)
         assertEquals(2, players?.size)
 
-        absPlayers = mFavoritePlayersManager.absPlayers
+        absPlayers = favoritePlayersManager.absPlayers
         assertNotNull(absPlayers)
         assertEquals(2, absPlayers?.size)
 
-        mFavoritePlayersManager.removePlayer(mPlayer1)
-        players = mFavoritePlayersManager.players
+        favoritePlayersManager.removePlayer(player1)
+        players = favoritePlayersManager.players
         assertNotNull(players)
         assertEquals(1, players?.size)
 
-        absPlayers = mFavoritePlayersManager.absPlayers
+        absPlayers = favoritePlayersManager.absPlayers
         assertNotNull(absPlayers)
         assertEquals(1, absPlayers?.size)
 
-        mFavoritePlayersManager.removePlayer(mPlayer2)
-        players = mFavoritePlayersManager.players
+        favoritePlayersManager.removePlayer(player2)
+        players = favoritePlayersManager.players
         assertTrue(players == null || players.isEmpty())
 
-        absPlayers = mFavoritePlayersManager.absPlayers
+        absPlayers = favoritePlayersManager.absPlayers
         assertTrue(absPlayers == null || absPlayers.isEmpty())
     }
 
@@ -251,66 +251,66 @@ class FavoritePlayersManagerTest : BaseTest() {
             }
         }
 
-        mFavoritePlayersManager.addListener(listener)
+        favoritePlayersManager.addListener(listener)
         assertNull(array[0])
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
         assertNotNull(array[0])
         assertEquals(1, array[0]?.size)
-        assertEquals(mPlayer1, array[0]?.get(0))
+        assertEquals(player1, array[0]?.get(0))
 
-        mFavoritePlayersManager.removeListener(listener)
-        mFavoritePlayersManager.removePlayer(mPlayer1)
+        favoritePlayersManager.removeListener(listener)
+        favoritePlayersManager.removePlayer(player1)
         assertNotNull(array[0])
         assertEquals(1, array[0]?.size)
-        assertEquals(mPlayer1, array[0]?.get(0))
+        assertEquals(player1, array[0]?.get(0))
     }
 
     @Test
     @Throws(Exception::class)
     fun testRemovePlayers() {
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
 
-        mFavoritePlayersManager.removePlayer(mPlayer1)
-        mFavoritePlayersManager.removePlayer(mPlayer2)
-        var players = mFavoritePlayersManager.players
+        favoritePlayersManager.removePlayer(player1)
+        favoritePlayersManager.removePlayer(player2)
+        var players = favoritePlayersManager.players
         assertTrue(players == null || players.isEmpty())
-        assertTrue(mFavoritePlayersManager.isEmpty)
+        assertTrue(favoritePlayersManager.isEmpty)
 
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        mFavoritePlayersManager.removePlayer(mPlayer2.id)
-        mFavoritePlayersManager.removePlayer(mPlayer1.id)
-        players = mFavoritePlayersManager.players
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        favoritePlayersManager.removePlayer(player2.id)
+        favoritePlayersManager.removePlayer(player1.id)
+        players = favoritePlayersManager.players
         assertTrue(players == null || players.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
     fun testSize() {
-        assertEquals(0, mFavoritePlayersManager.size)
+        assertEquals(0, favoritePlayersManager.size)
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        assertEquals(1, mFavoritePlayersManager.size)
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        assertEquals(1, favoritePlayersManager.size)
 
-        mFavoritePlayersManager.addPlayer(mPlayer2, mRegionManager.getRegion())
-        assertEquals(2, mFavoritePlayersManager.size)
+        favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
+        assertEquals(2, favoritePlayersManager.size)
 
-        mFavoritePlayersManager.addPlayer(mPlayer1, mRegionManager.getRegion())
-        assertEquals(2, mFavoritePlayersManager.size)
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        assertEquals(2, favoritePlayersManager.size)
 
-        mFavoritePlayersManager.removePlayer(mPlayer1)
-        assertEquals(1, mFavoritePlayersManager.size)
+        favoritePlayersManager.removePlayer(player1)
+        assertEquals(1, favoritePlayersManager.size)
 
-        mFavoritePlayersManager.removePlayer(mPlayer1)
-        assertEquals(1, mFavoritePlayersManager.size)
+        favoritePlayersManager.removePlayer(player1)
+        assertEquals(1, favoritePlayersManager.size)
 
-        mFavoritePlayersManager.clear()
-        assertEquals(0, mFavoritePlayersManager.size)
+        favoritePlayersManager.clear()
+        assertEquals(0, favoritePlayersManager.size)
 
-        mFavoritePlayersManager.removePlayer(mPlayer2)
-        assertEquals(0, mFavoritePlayersManager.size)
+        favoritePlayersManager.removePlayer(player2)
+        assertEquals(0, favoritePlayersManager.size)
     }
 
 }

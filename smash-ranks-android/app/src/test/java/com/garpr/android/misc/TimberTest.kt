@@ -13,7 +13,7 @@ import javax.inject.Inject
 class TimberTest : BaseTest() {
 
     @Inject
-    lateinit protected var mTimber: Timber
+    protected lateinit var timber: Timber
 
 
     companion object {
@@ -30,48 +30,48 @@ class TimberTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testClearEntries() {
-        mTimber.clearEntries()
+        timber.clearEntries()
 
-        var entries = mTimber.entries
+        var entries = timber.entries
         assertTrue(entries.isEmpty())
 
-        mTimber.d(TAG, "blah")
-        mTimber.clearEntries()
-        entries = mTimber.entries
+        timber.d(TAG, "blah")
+        timber.clearEntries()
+        entries = timber.entries
         assertTrue(entries.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetEntries() {
-        val entries = mTimber.entries
+        val entries = timber.entries
         assertTrue(entries.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetEntriesWithOne() {
-        mTimber.d(TAG, "one")
-        val entries = mTimber.entries
+        timber.d(TAG, "one")
+        val entries = timber.entries
         assertEquals(1, entries.size)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetEntriesWithTwo() {
-        mTimber.d(TAG, "one")
-        mTimber.w(TAG, "two")
-        val entries = mTimber.entries
+        timber.d(TAG, "one")
+        timber.w(TAG, "two")
+        val entries = timber.entries
         assertEquals(2, entries.size)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetEntriesWithThree() {
-        mTimber.d(TAG, "one")
-        mTimber.w(TAG, "two")
-        mTimber.e(TAG, "three")
-        val entries = mTimber.entries
+        timber.d(TAG, "one")
+        timber.w(TAG, "two")
+        timber.e(TAG, "three")
+        val entries = timber.entries
         assertEquals(3, entries.size)
     }
 

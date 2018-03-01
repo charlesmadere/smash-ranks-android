@@ -11,13 +11,11 @@ open class DeviceUtilsImpl(
 ) : DeviceUtils {
 
     override val hasLowRam: Boolean
-        get() {
-            return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                true
-            } else {
-                ActivityManagerCompat.isLowRamDevice(application.activityManager)
-            }
-        }
+        get() = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                    true
+                } else {
+                    ActivityManagerCompat.isLowRamDevice(application.activityManager)
+                }
 
     override val hasNetworkConnection: Boolean
         get() = application.connectivityManager.activeNetworkInfo?.isConnected == true

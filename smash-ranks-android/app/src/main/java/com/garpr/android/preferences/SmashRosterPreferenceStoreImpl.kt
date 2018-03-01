@@ -7,10 +7,8 @@ import com.google.gson.Gson
 
 class SmashRosterPreferenceStoreImpl(
         gson: Gson,
-        keyValueStore: KeyValueStore
-) : BasePreferenceStore(
-        keyValueStore
-), SmashRosterPreferenceStore {
+        override val keyValueStore: KeyValueStore
+) : SmashRosterPreferenceStore {
 
     override val enabled by lazy { PersistentBooleanPreference("ENABLED", true,
             keyValueStore) }

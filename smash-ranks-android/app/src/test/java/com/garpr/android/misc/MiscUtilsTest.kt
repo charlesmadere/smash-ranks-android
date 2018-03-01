@@ -12,7 +12,7 @@ class MiscUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testHashCodeDouble() {
-        val double = Math.PI
+        val double: Double = Math.PI
         assertEquals(double.hashCode(), MiscUtils.hashCode(double))
     }
 

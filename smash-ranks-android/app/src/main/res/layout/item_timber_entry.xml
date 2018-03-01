@@ -8,11 +8,13 @@
     android:paddingEnd="@dimen/root_padding"
     android:paddingStart="@dimen/root_padding"
     android:paddingTop="@dimen/root_padding_half">
+
     <TextView
         android:id="@+id/tvTagAndMessage"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         tools:text="GoogleApiWrapperImpl: Showing Play Services resolution dialog" />
+
     <TextView
         android:id="@+id/tvStackTrace"
         android:layout_height="wrap_content"
@@ -21,4 +23,5 @@
         android:visibility="gone"
         tools:text="android.content.pm.PackageManager$NameNotFoundException"
         tools:visibility="visible" />
+
 </com.garpr.android.views.TimberEntryItemView>

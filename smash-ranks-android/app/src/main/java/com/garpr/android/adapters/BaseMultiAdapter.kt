@@ -6,9 +6,7 @@ import android.support.annotation.LayoutRes
 abstract class BaseMultiAdapter(
         context: Context,
         private val layoutKeyMap: Map<Class<*>, Int>
-) : BaseAdapter<Any>(
-        context
-) {
+) : BaseAdapter<Any>(context) {
 
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
