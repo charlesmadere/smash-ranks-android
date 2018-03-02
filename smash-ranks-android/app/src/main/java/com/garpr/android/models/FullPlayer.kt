@@ -27,6 +27,38 @@ class FullPlayer(
     override val kind
         get() = Kind.FULL
 
+    val uniqueAliases: Array<String>?
+        get() {
+            if (aliases == null || aliases.isEmpty()) {
+                return null
+            }
+
+            val uniqueAliases = mutableListOf<String>()
+
+            for (alias in aliases) {
+                if (!alias.equals(name, true)) {
+                    var add = true
+
+                    for (uniqueAlias in uniqueAliases) {
+                        if (alias.equals(uniqueAlias, true)) {
+                            add = false
+                            break
+                        }
+                    }
+
+                    if (add) {
+                        uniqueAliases.add(alias)
+                    }
+                }
+            }
+
+            return if (uniqueAliases.isEmpty()) {
+                null
+            } else {
+                uniqueAliases.toTypedArray()
+            }
+        }
+
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
         dest.writeStringList(aliases)

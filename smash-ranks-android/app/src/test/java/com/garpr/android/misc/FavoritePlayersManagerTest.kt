@@ -2,6 +2,7 @@ package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
 import com.garpr.android.models.AbsPlayer
+import com.garpr.android.models.FavoritePlayer
 import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Before
@@ -61,24 +62,24 @@ class FavoritePlayersManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testAddListener() {
-        val array = arrayOfNulls<List<*>>(1)
+        var players: List<FavoritePlayer>? = null
 
         val listener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
-            override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
-                array[0] = manager.players
+            override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
+                players = favoritePlayersManager.players
             }
         }
 
         favoritePlayersManager.addListener(listener)
-        assertNull(array[0])
+        assertNull(players)
 
         favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
-        assertNotNull(array[0])
-        assertEquals(1, array[0]?.size)
-        assertEquals(player1, array[0]?.get(0))
+        assertNotNull(players)
+        assertEquals(1, players?.size)
+        assertEquals(player1, players?.get(0))
 
         favoritePlayersManager.removePlayer(player1)
-        assertTrue(array[0] == null || array[0]?.isEmpty() == true)
+        assertTrue(players == null || players?.isEmpty() == true)
     }
 
     @Test
@@ -243,27 +244,27 @@ class FavoritePlayersManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testRemoveListener() {
-        val array = arrayOfNulls<List<*>>(1)
+        var players: List<FavoritePlayer>? = null
 
         val listener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
-            override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
-                array[0] = manager.players
+            override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
+                players = favoritePlayersManager.players
             }
         }
 
         favoritePlayersManager.addListener(listener)
-        assertNull(array[0])
+        assertNull(players)
 
         favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
-        assertNotNull(array[0])
-        assertEquals(1, array[0]?.size)
-        assertEquals(player1, array[0]?.get(0))
+        assertNotNull(players)
+        assertEquals(1, players?.size)
+        assertEquals(player1, players?.get(0))
 
         favoritePlayersManager.removeListener(listener)
         favoritePlayersManager.removePlayer(player1)
-        assertNotNull(array[0])
-        assertEquals(1, array[0]?.size)
-        assertEquals(player1, array[0]?.get(0))
+        assertNotNull(players)
+        assertEquals(1, players?.size)
+        assertEquals(player1, players?.get(0))
     }
 
     @Test

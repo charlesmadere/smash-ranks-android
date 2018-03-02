@@ -65,7 +65,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
         favoritePlayersManager.addListener(this)
     }
 
-    override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
             refresh()
         }

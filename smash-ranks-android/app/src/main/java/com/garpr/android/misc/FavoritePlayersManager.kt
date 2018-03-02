@@ -9,7 +9,7 @@ import com.garpr.android.models.Region
 interface FavoritePlayersManager {
 
     interface OnFavoritePlayersChangeListener {
-        fun onFavoritePlayersChanged(manager: FavoritePlayersManager)
+        fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager)
     }
 
     val absPlayers: List<AbsPlayer>?

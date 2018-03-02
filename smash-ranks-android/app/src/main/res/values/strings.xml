@@ -6,6 +6,7 @@
     <string name="add_to_favorites">Add to favorites</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="aliases">Aliases</string>
+    <string name="aliases_x">Aliases: %1$s</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
@@ -24,6 +25,7 @@
     <string name="debug_only">Debug only</string>
     <string name="delete_favorite_players">Delete favorite players</string>
     <string name="delete_identity">Delete identity</string>
+    <string name="delimiter">,\u0020</string>
     <string name="donkey_kong">Donkey Kong</string>
     <string name="dr_mario">Dr. Mario</string>
     <string name="easily_find_yourself_throughout_the_app">Easily find yourself throughout the app</string>

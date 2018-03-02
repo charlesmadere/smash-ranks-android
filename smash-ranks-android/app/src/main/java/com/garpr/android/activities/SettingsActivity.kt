@@ -230,7 +230,7 @@ class SettingsActivity : BaseActivity() {
     private val googleApiWrapperOnCancelListener = DialogInterface.OnCancelListener { refresh() }
 
     private val onFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
-        override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
+        override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
             refresh()
         }
     }

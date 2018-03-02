@@ -54,7 +54,7 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         favoritePlayersManager.removeListener(this)
     }
 
-    override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
             refresh()
         }

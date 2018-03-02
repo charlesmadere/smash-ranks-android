@@ -59,7 +59,7 @@ class PlayerToolbar @JvmOverloads constructor(
         identityManager.removeListener(this)
     }
 
-    override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
             postRefreshMenu()
         }

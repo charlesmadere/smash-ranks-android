@@ -310,7 +310,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         val playerMatchesBundle = this.playerMatchesBundle ?: throw RuntimeException(
                 "playerMatchesBundle is null")
         val player = fullPlayer ?: throw RuntimeException("fullPlayer is null")
-        val list = ListUtils.createPlayerMatchesList(this, regionManager, player,
+        val list = ListUtils.createPlayerMatchesList(this, player,
                 playerMatchesBundle.matchesBundle)
         this.list = list
 

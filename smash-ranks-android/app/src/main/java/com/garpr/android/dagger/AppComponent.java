@@ -24,6 +24,7 @@ import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.PlayerItemView;
+import com.garpr.android.views.PlayerProfileItemView;
 import com.garpr.android.views.PlayersLayout;
 import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.RankingItemView;
@@ -87,6 +88,7 @@ public interface AppComponent {
     void inject(LastPollPreferenceView view);
     void inject(MatchItemView view);
     void inject(PlayerItemView view);
+    void inject(PlayerProfileItemView view);
     void inject(PlayersLayout view);
     void inject(PollFrequencyPreferenceView view);
     void inject(RankingItemView view);
