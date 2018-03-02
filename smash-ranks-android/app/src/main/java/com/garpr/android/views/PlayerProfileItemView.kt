@@ -39,6 +39,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     private val addToOrRemoveFromFavorites: TintedTextView by bindView(R.id.ttvAddToOrRemoveFromFavorites)
     private val aliases: TextView by bindView(R.id.tvAliases)
     private val rating: TextView by bindView(R.id.tvRating)
+    private val setAsYourIdentity: TextView by bindView(R.id.tvSetAsYourIdentity)
     private val share: TextView by bindView(R.id.tvShare)
     private val unadjustedRating: TextView by bindView(R.id.tvUnadjustedRating)
     private val viewYourselfVsThisOpponent: TextView by bindView(R.id.tvViewYourselfVsThisOpponent)
@@ -93,6 +94,11 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         App.get().appComponent.inject(this)
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
+
+        setAsYourIdentity.setOnClickListener {
+            val player = fullPlayer ?: throw RuntimeException("fullPlayer is null")
+            identityManager.setIdentity(player, regionManager.getRegion(context))
+        }
 
         addToOrRemoveFromFavorites.setOnClickListener {
             fullPlayer?.let {
@@ -160,9 +166,16 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
 
         addToOrRemoveFromFavorites.refresh()
 
-        if (identityManager.hasIdentity && !identityManager.isPlayer(player)) {
-            viewYourselfVsThisOpponent.visibility = View.VISIBLE
+        if (identityManager.hasIdentity) {
+            setAsYourIdentity.visibility = View.GONE
+
+            if (identityManager.isPlayer(player)) {
+                viewYourselfVsThisOpponent.visibility = View.GONE
+            } else {
+                viewYourselfVsThisOpponent.visibility = View.VISIBLE
+            }
         } else {
+            setAsYourIdentity.visibility = View.VISIBLE
             viewYourselfVsThisOpponent.visibility = View.GONE
         }
     }
