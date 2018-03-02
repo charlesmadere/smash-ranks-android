@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/root_padding_half"
-    android:paddingTop="@dimen/root_padding_half">
+    android:orientation="vertical">
+
+    <Space
+        android:layout_height="@dimen/root_padding_half"
+        android:layout_width="match_parent" />
 
     <TextView
         android:ellipsize="end"
@@ -16,7 +18,7 @@
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:maxLines="2"
-        android:textStyle="italic"
+        android:textSize="@dimen/text_size_small"
         android:visibility="gone"
         tools:text="Aliases: Charles, Charliehorse"
         tools:visibility="visible" />
@@ -37,6 +39,7 @@
     <TextView
         android:id="@+id/tvUnadjustedRating"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
@@ -44,20 +47,6 @@
         android:visibility="gone"
         tools:text="Unadjusted: 45.679 (+/- 2.193)"
         tools:visibility="visible" />
-
-    <com.garpr.android.views.TintedTextView
-        android:background="?attr/selectableItemBackground"
-        android:drawableEnd="@drawable/ic_favorite_white_24dp"
-        android:drawablePadding="@dimen/root_padding"
-        android:gravity="center_vertical"
-        android:id="@+id/ttvAddToOrRemoveFromFavorites"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/root_padding_half"
-        android:layout_width="match_parent"
-        android:minHeight="@dimen/list_item_height"
-        android:paddingEnd="@dimen/root_padding"
-        android:paddingStart="@dimen/root_padding"
-        android:text="@string/add_to_favorites" />
 
     <com.garpr.android.views.TintedTextView
         android:background="?attr/selectableItemBackground"
@@ -75,6 +64,19 @@
 
     <com.garpr.android.views.TintedTextView
         android:background="?attr/selectableItemBackground"
+        android:drawableEnd="@drawable/ic_favorite_white_24dp"
+        android:drawablePadding="@dimen/root_padding"
+        android:gravity="center_vertical"
+        android:id="@+id/ttvAddToOrRemoveFromFavorites"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/list_item_height"
+        android:paddingEnd="@dimen/root_padding"
+        android:paddingStart="@dimen/root_padding"
+        android:text="@string/add_to_favorites" />
+
+    <com.garpr.android.views.TintedTextView
+        android:background="?attr/selectableItemBackground"
         android:drawableEnd="@drawable/ic_share_white_24dp"
         android:gravity="center_vertical"
         android:id="@+id/tvShare"
@@ -85,7 +87,12 @@
         android:paddingStart="@dimen/root_padding"
         android:text="@string/share" />
 
-    <com.garpr.android.views.DashedLineView
+    <Space
+        android:layout_height="@dimen/root_padding_half"
+        android:layout_width="match_parent" />
+
+    <View
+        android:background="?android:attr/listDivider"
         android:layout_height="1dp"
         android:layout_width="match_parent" />
 
