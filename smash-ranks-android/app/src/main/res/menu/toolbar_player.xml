@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:compat="http://schemas.android.com/apk/res-auto">
+
     <item
         android:icon="@drawable/ic_search_white_24dp"
         android:id="@+id/miSearch"
@@ -8,56 +9,33 @@
         android:visible="false"
         compat:actionViewClass="android.support.v7.widget.SearchView"
         compat:showAsAction="collapseActionView|ifRoom" />
+
     <item
         android:icon="@drawable/ic_filter_list_white_24dp"
         android:id="@+id/miFilter"
         android:title="@string/filter"
         android:visible="false"
         compat:showAsAction="ifRoom">
+
         <menu>
+
             <item
                 android:id="@+id/miShowAll"
                 android:title="@string/show_all"
                 android:visible="false" />
+
             <item
                 android:id="@+id/miFilterToWins"
                 android:title="@string/filter_to_wins"
                 android:visible="false" />
+
             <item
                 android:id="@+id/miFilterToLosses"
                 android:title="@string/filter_to_losses"
                 android:visible="false" />
+
         </menu>
+
     </item>
-    <item
-        android:icon="@drawable/ic_share_white_24dp"
-        android:id="@+id/miShare"
-        android:title="@string/share"
-        android:visible="false"
-        compat:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/miAliases"
-        android:title="@string/aliases"
-        android:visible="false"
-        compat:showAsAction="never" />
-    <item
-        android:id="@+id/miAddToFavorites"
-        android:title="@string/add_to_favorites"
-        android:visible="false"
-        compat:showAsAction="never" />
-    <item
-        android:id="@+id/miRemoveFromFavorites"
-        android:title="@string/remove_from_favorites"
-        android:visible="false"
-        compat:showAsAction="never" />
-    <item
-        android:id="@+id/miSetAsYourIdentity"
-        android:title="@string/set_this_player_as_your_identity"
-        android:visible="false"
-        compat:showAsAction="never" />
-    <item
-        android:id="@+id/miViewYourselfVsThisOpponent"
-        android:title="@string/view_yourself_vs_this_opponent"
-        android:visible="false"
-        compat:showAsAction="never" />
+
 </menu>

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.MenuItem
@@ -46,9 +45,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     @Inject
     protected lateinit var serverApi: ServerApi
-
-    @Inject
-    protected lateinit var shareUtils: ShareUtils
 
     @Inject
     protected lateinit var threadUtils: ThreadUtils
@@ -95,12 +91,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override val activityName = TAG
 
-    private fun addToFavorites() {
-        fullPlayer?.let {
-            favoritePlayersManager.addPlayer(it, regionManager.getRegion(this))
-        } ?: throw RuntimeException("fullPlayer is null")
-    }
-
     override fun failure(errorCode: Int) {
         playerMatchesBundle = null
         list = null
@@ -144,14 +134,11 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         })
     }
 
-    override val fullPlayer: FullPlayer?
-        get() = playerMatchesBundle?.fullPlayer
-
     override val matchesBundle: MatchesBundle?
         get() = playerMatchesBundle?.matchesBundle
 
     override fun onClick(v: MatchItemView) {
-        val player = fullPlayer ?: return
+        val player = playerMatchesBundle?.fullPlayer ?: return
         val match = v.match ?: return
         startActivity(HeadToHeadActivity.getLaunchIntent(this, player, match,
                 regionManager.getRegion(this)))
@@ -170,16 +157,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.miAddToFavorites -> {
-                addToFavorites()
-                true
-            }
-
-            R.id.miAliases -> {
-                showAliases()
-                true
-            }
-
             R.id.miFilterToLosses -> {
                 filter(MatchResult.LOSE)
                 true
@@ -190,29 +167,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 true
             }
 
-            R.id.miRemoveFromFavorites -> {
-                favoritePlayersManager.removePlayer(playerId)
-                true
-            }
-
-            R.id.miSetAsYourIdentity -> {
-                val player = fullPlayer ?: throw RuntimeException("fullPlayer is null")
-                identityManager.setIdentity(player, regionManager.getRegion(this))
-                true
-            }
-
-            R.id.miShare -> {
-                share()
-                true
-            }
-
             R.id.miShowAll -> {
                 filter(null)
-                true
-            }
-
-            R.id.miViewYourselfVsThisOpponent -> {
-                viewYourselfVsThisOpponent()
                 true
             }
 
@@ -287,30 +243,10 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         subtitle = regionManager.getRegion(this).displayName
     }
 
-    private fun share() {
-        fullPlayer?.let {
-            shareUtils.sharePlayer(this, it)
-        } ?: throw RuntimeException("fullPlayer is null")
-    }
-
-    private fun showAliases() {
-        val aliases = fullPlayer?.aliases
-
-        if (aliases == null || aliases.isEmpty()) {
-            return
-        }
-
-        AlertDialog.Builder(this)
-                .setItems(aliases.toTypedArray<CharSequence>(), null)
-                .setTitle(R.string.aliases)
-                .show()
-    }
-
     private fun showData() {
         val playerMatchesBundle = this.playerMatchesBundle ?: throw RuntimeException(
                 "playerMatchesBundle is null")
-        val player = fullPlayer ?: throw RuntimeException("fullPlayer is null")
-        val list = ListUtils.createPlayerMatchesList(this, player,
+        val list = ListUtils.createPlayerMatchesList(this, playerMatchesBundle.fullPlayer,
                 playerMatchesBundle.matchesBundle)
         this.list = list
 
@@ -350,13 +286,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         list = null
         _matchResult = null
         showData()
-    }
-
-    private fun viewYourselfVsThisOpponent() {
-        val identity = identityManager.identity ?: throw RuntimeException("identity is null")
-        val fullPlayer = fullPlayer ?: throw RuntimeException("fullPlayer is null")
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, identity, fullPlayer,
-                regionManager.getRegion(this)))
     }
 
 }

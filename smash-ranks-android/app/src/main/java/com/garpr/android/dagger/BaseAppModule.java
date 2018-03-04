@@ -22,6 +22,8 @@ import com.garpr.android.misc.IdentityManager;
 import com.garpr.android.misc.IdentityManagerImpl;
 import com.garpr.android.misc.NotificationsManager;
 import com.garpr.android.misc.NotificationsManagerImpl;
+import com.garpr.android.misc.PlayerProfileManager;
+import com.garpr.android.misc.PlayerProfileManagerImpl;
 import com.garpr.android.misc.PlayerToolbarManager;
 import com.garpr.android.misc.PlayerToolbarManagerImpl;
 import com.garpr.android.misc.PreviousRankUtils;
@@ -245,10 +247,17 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    PlayerToolbarManager providesPlayerToolbarManager(
+    PlayerProfileManager providesPlayerProfileViewManager(
             final FavoritePlayersManager favoritePlayersManager,
-            final IdentityManager identityManager) {
-        return new PlayerToolbarManagerImpl(favoritePlayersManager, identityManager);
+            final IdentityManager identityManager, final RegionManager regionManager) {
+        return new PlayerProfileManagerImpl(mApplication, favoritePlayersManager, identityManager,
+                regionManager);
+    }
+
+    @Provides
+    @Singleton
+    PlayerToolbarManager providesPlayerToolbarManager() {
+        return new PlayerToolbarManagerImpl();
     }
 
     @Provides

@@ -1,5 +1,8 @@
 package com.garpr.android.views
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
@@ -9,6 +12,8 @@ import android.support.v4.widget.TextViewCompat
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
@@ -29,6 +34,9 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
 
     @Inject
     protected lateinit var identityManager: IdentityManager
+
+    @Inject
+    protected lateinit var playerProfileManager: PlayerProfileManager
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -53,6 +61,35 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+
+    private fun animateAwaySetAsYourIdentity() {
+        val duration = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+
+        setAsYourIdentity.animate()
+                .alpha(0f)
+                .setDuration(duration)
+                .setInterpolator(AccelerateInterpolator())
+                .withEndAction {
+                    val animator = ValueAnimator.ofInt(setAsYourIdentity.height, 0)
+                    animator.duration = duration
+                    animator.interpolator = DecelerateInterpolator()
+
+                    val layoutParams = setAsYourIdentity.layoutParams
+                    animator.addUpdateListener {
+                        layoutParams.height = it.animatedValue as Int
+                        setAsYourIdentity.layoutParams = layoutParams
+                    }
+
+                    animator.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            setAsYourIdentity.visibility = View.GONE
+                        }
+                    })
+
+                    animator.start()
+                }
+                .start()
+    }
 
     private var fullPlayer: FullPlayer? = null
         set(value) {
@@ -96,6 +133,11 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         identityManager.addListener(this)
 
         setAsYourIdentity.setOnClickListener {
+            if (identityManager.hasIdentity) {
+                // prevent double clicks
+                return@setOnClickListener
+            }
+
             val player = fullPlayer ?: throw RuntimeException("fullPlayer is null")
             identityManager.setIdentity(player, regionManager.getRegion(context))
         }
@@ -167,7 +209,11 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         addToOrRemoveFromFavorites.refresh()
 
         if (identityManager.hasIdentity) {
-            setAsYourIdentity.visibility = View.GONE
+            if (setAsYourIdentity.visibility == View.VISIBLE) {
+                animateAwaySetAsYourIdentity()
+            } else {
+                setAsYourIdentity.visibility = View.GONE
+            }
 
             if (identityManager.isPlayer(player)) {
                 viewYourselfVsThisOpponent.visibility = View.GONE
