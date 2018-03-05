@@ -13,7 +13,7 @@ import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.models.FullTournament
 import kotterknife.bindView
 
-abstract class TournamentPageLayout : SearchableFrameLayout, BaseAdapterView<FullTournament> {
+abstract class TournamentPageLayout : SearchableFrameLayout, TournamentPagerAdapterView {
 
     protected val empty: View by bindView(R.id.empty)
 

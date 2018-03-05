@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.garpr.android.R
+import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Searchable
 import com.garpr.android.models.FullTournament
+import com.garpr.android.views.TournamentInfoLayout
 import com.garpr.android.views.TournamentMatchesLayout
-import com.garpr.android.views.TournamentPageLayout
+import com.garpr.android.views.TournamentPagerAdapterView
 import com.garpr.android.views.TournamentPlayersLayout
 
 import java.lang.ref.WeakReference
@@ -20,12 +22,13 @@ class TournamentPagerAdapter(
         private val tournament: FullTournament
 ) : PagerAdapter(), Searchable {
 
-    private val pages = SparseArrayCompat<WeakReference<TournamentPageLayout>>(count)
+    private val pages = SparseArrayCompat<WeakReference<TournamentPagerAdapterView>>(count)
 
 
     companion object {
-        private const val POSITION_MATCHES = 0
-        private const val POSITION_PLAYERS = 1
+        private const val POSITION_INFO = 0
+        private const val POSITION_MATCHES = 1
+        private const val POSITION_PLAYERS = 2
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -37,17 +40,23 @@ class TournamentPagerAdapter(
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            POSITION_MATCHES -> context.getString(R.string.matches)
-            POSITION_PLAYERS -> context.getString(R.string.players)
+            POSITION_INFO -> context.getText(R.string.info)
+            POSITION_MATCHES -> context.getText(R.string.matches)
+            POSITION_PLAYERS -> context.getText(R.string.players)
             else -> throw RuntimeException("illegal position: $position")
         }
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val view = when (position) {
+        val view: TournamentPagerAdapterView = when (position) {
+            POSITION_INFO -> TournamentInfoLayout.inflate(container)
             POSITION_MATCHES -> TournamentMatchesLayout.inflate(container)
             POSITION_PLAYERS -> TournamentPlayersLayout.inflate(container)
             else -> throw RuntimeException("illegal position: $position")
+        }
+
+        if (view !is View) {
+            throw RuntimeException("view: $view is not an Android View")
         }
 
         view.setContent(tournament)
@@ -65,7 +74,7 @@ class TournamentPagerAdapter(
         val view = pages[position].get()
 
         if (view?.isAlive == true) {
-            view.smoothScrollToTop()
+            (view as? ListLayout)?.smoothScrollToTop()
         }
     }
 
@@ -77,7 +86,7 @@ class TournamentPagerAdapter(
                 val view = reference.get()
 
                 if (view?.isAlive == true) {
-                    view.search(query)
+                    (view as? Searchable)?.search(query)
                 }
             }
         }
