@@ -36,12 +36,7 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
     val rankingsBundle: RankingsBundle?
         get() {
             val view = pages[POSITION_RANKINGS]?.get()
-
-            return if ((view as? RankingsLayout)?.isAlive == true) {
-                view.rankingsBundle
-            } else {
-                null
-            }
+            return if ((view as? RankingsLayout)?.isAlive == true) view.rankingsBundle else null
         }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
