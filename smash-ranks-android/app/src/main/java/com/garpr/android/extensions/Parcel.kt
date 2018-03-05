@@ -191,7 +191,7 @@ fun Parcel.readRatingsMap(): Map<String, Rating>? {
     val map = mutableMapOf<String, Rating>()
 
     for (key in bundle.keySet()) {
-        map.put(key, bundle.getParcelable(key))
+        map[key] = bundle.getParcelable(key)
     }
 
     return map
@@ -219,7 +219,7 @@ fun Parcel.readSmashCharacterMap(): Map<String, SmashCharacter>? {
     val map = mutableMapOf<String, SmashCharacter>()
 
     for (key in bundle.keySet()) {
-        map.put(key, bundle.getParcelable(key))
+        map[key] = bundle.getParcelable(key)
     }
 
     return map
