@@ -39,7 +39,7 @@ class TournamentPagerAdapter(
         return when (position) {
             POSITION_MATCHES -> context.getString(R.string.matches)
             POSITION_PLAYERS -> context.getString(R.string.players)
-            else -> throw RuntimeException("illegal position: " + position)
+            else -> throw RuntimeException("illegal position: $position")
         }
     }
 
@@ -47,7 +47,7 @@ class TournamentPagerAdapter(
         val view = when (position) {
             POSITION_MATCHES -> TournamentMatchesLayout.inflate(container)
             POSITION_PLAYERS -> TournamentPlayersLayout.inflate(container)
-            else -> throw RuntimeException("illegal position: " + position)
+            else -> throw RuntimeException("illegal position: $position")
         }
 
         view.setContent(tournament)

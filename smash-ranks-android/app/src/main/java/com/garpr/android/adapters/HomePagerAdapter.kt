@@ -49,7 +49,7 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
             POSITION_FAVORITE_PLAYERS -> FavoritePlayersLayout.inflate(container)
             POSITION_RANKINGS -> RankingsLayout.inflate(container)
             POSITION_TOURNAMENTS -> TournamentsLayout.inflate(container)
-            else -> throw RuntimeException("illegal position: " + position)
+            else -> throw RuntimeException("illegal position: $position")
         }
 
         container.addView(view)
