@@ -8,6 +8,7 @@ import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.models.FullTournament
@@ -15,6 +16,9 @@ import kotterknife.bindView
 
 class TournamentInfoLayout : LifecycleScrollView, TournamentPagerAdapterView {
 
+    private val openLink: Button by bindView(R.id.bOpenLink)
+    private val share: Button by bindView(R.id.bShare)
+    private val entrants: TextView by bindView(R.id.tvEntrants)
     private val name: TextView by bindView(R.id.tvName)
 
 

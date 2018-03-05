@@ -40,36 +40,38 @@
 
         <Button
             android:drawablePadding="@dimen/root_padding"
-            android:drawableStart="@drawable/ic_share_white_24dp"
-            android:id="@+id/bOpenUrl"
+            android:drawableStart="@drawable/ic_open_in_browser_white_24dp"
+            android:id="@+id/bShare"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/root_padding"
             android:layout_marginStart="@dimen/root_padding"
-            android:layout_marginTop="@dimen/root_padding_double"
+            android:layout_marginTop="@dimen/root_padding"
             android:layout_width="wrap_content"
-            android:text="@string/share"
+            android:text="@string/open_smash_gg_link"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEntrants" />
+            app:layout_constraintTop_toBottomOf="@id/tvEntrants"
+            tools:visibility="visible" />
 
         <Button
             android:drawablePadding="@dimen/root_padding"
             android:drawableStart="@drawable/ic_share_white_24dp"
-            android:id="@+id/bShare"
+            android:id="@+id/bOpenLink"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/root_padding"
             android:layout_marginStart="@dimen/root_padding"
-            android:layout_marginTop="@dimen/root_padding_double"
             android:layout_width="wrap_content"
             android:text="@string/share"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEntrants" />
+            app:layout_constraintTop_toBottomOf="@id/bShare"
+            tools:visibility="visible" />
 
         <Space
             android:layout_height="@dimen/root_padding_double"
             android:layout_width="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bShare" />
+            app:layout_constraintTop_toBottomOf="@id/bOpenLink" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -92,6 +92,9 @@
     <string name="no_tournament_data">No tournament data</string>
     <string name="no_tournaments">No tournaments</string>
     <string name="ok">OK</string>
+    <string name="open_link">Open link</string>
+    <string name="open_challonge_link">Open Challonge link</string>
+    <string name="open_smash_gg_link">Open smash.gg link</string>
     <string name="open_source_on_github">Open source on GitHub</string>
     <string name="peach">Peach</string>
     <string name="pichu">Pichu</string>

@@ -7,12 +7,13 @@ import android.util.AttributeSet
 import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.setTintedImageColor
+import com.garpr.android.misc.Refreshable
 
 class TintedImageView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         @AttrRes defStyleAttr: Int = 0
-) : LifecycleImageView(context, attrs, defStyleAttr) {
+) : LifecycleImageView(context, attrs, defStyleAttr), Refreshable {
 
     @ColorInt
     private var drawableTintColor: Int = 0
@@ -24,12 +25,12 @@ class TintedImageView @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        setTintedImageColor(drawableTintColor)
+        refresh()
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        setTintedImageColor(drawableTintColor)
+        refresh()
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
@@ -37,6 +38,10 @@ class TintedImageView @JvmOverloads constructor(
         drawableTintColor = ta.getColor(R.styleable.View_drawableTintColor,
                 context.getAttrColor(android.R.attr.textColorSecondary))
         ta.recycle()
+    }
+
+    override fun refresh() {
+        setTintedImageColor(drawableTintColor)
     }
 
 }
