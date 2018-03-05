@@ -1,12 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.TournamentInfoLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <TextView
+    <android.support.constraint.ConstraintLayout
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        tools:text="Melee at the MADE #32" />
+        android:layout_width="match_parent">
+
+        <TextView
+            android:fontFamily="sans-serif-thin"
+            android:id="@+id/tvName"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/root_padding"
+            android:layout_marginStart="@dimen/root_padding"
+            android:layout_marginTop="@dimen/root_padding"
+            android:layout_width="0dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_xxxlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Melee at the MADE #32" />
+
+        <TextView
+            android:id="@+id/tvEntrants"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/root_padding"
+            android:layout_marginStart="@dimen/root_padding"
+            android:layout_width="0dp"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvName"
+            tools:text="1,024 entrants" />
+
+        <Button
+            android:drawablePadding="@dimen/root_padding"
+            android:drawableStart="@drawable/ic_share_white_24dp"
+            android:id="@+id/bOpenUrl"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/root_padding"
+            android:layout_marginStart="@dimen/root_padding"
+            android:layout_marginTop="@dimen/root_padding_double"
+            android:layout_width="wrap_content"
+            android:text="@string/share"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEntrants" />
+
+        <Button
+            android:drawablePadding="@dimen/root_padding"
+            android:drawableStart="@drawable/ic_share_white_24dp"
+            android:id="@+id/bShare"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/root_padding"
+            android:layout_marginStart="@dimen/root_padding"
+            android:layout_marginTop="@dimen/root_padding_double"
+            android:layout_width="wrap_content"
+            android:text="@string/share"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEntrants" />
+
+        <Space
+            android:layout_height="@dimen/root_padding_double"
+            android:layout_width="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bShare" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </com.garpr.android.views.TournamentInfoLayout>
