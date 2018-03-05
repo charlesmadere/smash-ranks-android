@@ -50,20 +50,6 @@
 
     <com.garpr.android.views.TintedTextView
         android:background="?attr/selectableItemBackground"
-        android:drawableEnd="@drawable/ic_face_white_24dp"
-        android:gravity="center_vertical"
-        android:id="@+id/tvSetAsYourIdentity"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:minHeight="@dimen/list_item_height"
-        android:paddingEnd="@dimen/root_padding"
-        android:paddingStart="@dimen/root_padding"
-        android:text="@string/set_this_player_as_your_identity"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <com.garpr.android.views.TintedTextView
-        android:background="?attr/selectableItemBackground"
         android:drawableEnd="@drawable/ic_chevron_right_white_24dp"
         android:gravity="center_vertical"
         android:id="@+id/tvViewYourselfVsThisOpponent"

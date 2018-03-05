@@ -6,6 +6,7 @@ import com.garpr.android.misc.FullTournamentUtilsTest;
 import com.garpr.android.misc.HomeToolbarManagerTest;
 import com.garpr.android.misc.IdentityManagerTest;
 import com.garpr.android.misc.ListUtilsTest;
+import com.garpr.android.misc.PlayerProfileManagerTest;
 import com.garpr.android.misc.PlayerToolbarManagerTest;
 import com.garpr.android.misc.PreviousRankUtilsTest;
 import com.garpr.android.misc.RankingsNotificationsUtilsTest;
@@ -63,6 +64,7 @@ public interface TestAppComponent {
     void inject(AbsRegionTest test);
     void inject(AbsTournamentTest test);
     void inject(MatchTest test);
+    void inject(PlayerProfileManagerTest test);
     void inject(RankingCriteriaTest test);
     void inject(RankingsBundleTest test);
     void inject(RegionsBundleTest test);
