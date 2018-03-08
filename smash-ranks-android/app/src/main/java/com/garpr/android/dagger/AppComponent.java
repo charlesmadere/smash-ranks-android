@@ -37,13 +37,13 @@ import com.garpr.android.views.TestNotificationView;
 import com.garpr.android.views.ThemePreferenceView;
 import com.garpr.android.views.TintedImageView;
 import com.garpr.android.views.TournamentDividerView;
+import com.garpr.android.views.TournamentInfoLayout;
 import com.garpr.android.views.TournamentItemView;
 import com.garpr.android.views.TournamentMatchItemView;
 import com.garpr.android.views.TournamentsLayout;
 import com.garpr.android.views.WinsLossesColumnView;
 import com.garpr.android.views.toolbars.HomeToolbar;
 import com.garpr.android.views.toolbars.PlayerToolbar;
-import com.garpr.android.views.toolbars.TournamentToolbar;
 
 import javax.inject.Singleton;
 
@@ -75,7 +75,6 @@ public interface AppComponent {
     // toolbars
     void inject(HomeToolbar toolbar);
     void inject(PlayerToolbar toolbar);
-    void inject(TournamentToolbar toolbar);
 
     // views
     void inject(DeleteFavoritePlayersPreferenceView view);
@@ -101,6 +100,7 @@ public interface AppComponent {
     void inject(ThemePreferenceView view);
     void inject(TintedImageView view);
     void inject(TournamentDividerView view);
+    void inject(TournamentInfoLayout view);
     void inject(TournamentItemView view);
     void inject(TournamentMatchItemView view);
     void inject(TournamentsLayout view);

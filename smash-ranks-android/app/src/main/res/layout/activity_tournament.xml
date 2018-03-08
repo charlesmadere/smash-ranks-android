@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar_tournament" />
+    <com.garpr.android.views.toolbars.TournamentToolbar
+        style="@style/Toolbar" />
 
     <android.support.design.widget.TabLayout
         style="@style/TabLayout" />

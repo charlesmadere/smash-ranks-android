@@ -16,7 +16,7 @@ class PlayerProfileManagerImpl(
 
     override fun getPresentation(player: FullPlayer, region: AbsRegion): Presentation {
         var presentation = Presentation(
-                isAddToFavoritesVisible = favoritePlayersManager.contains(player),
+                isAddToFavoritesVisible = !favoritePlayersManager.contains(player),
                 isViewYourselfVsThisOpponentVisible = identityManager.hasIdentity &&
                         !identityManager.isPlayer(player))
 

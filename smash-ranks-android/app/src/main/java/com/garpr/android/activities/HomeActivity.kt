@@ -182,7 +182,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         bottomNavigationView.setOnNavigationItemReselectedListener(this)
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
-        viewPager.addOnPageChangeListener(mOnPageChangeListener)
+        viewPager.addOnPageChangeListener(onPageChangeListener)
         viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         viewPager.offscreenPageLimit = 3
 
@@ -276,7 +276,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         bottomNavigationView.menu.findItem(itemId).isChecked = true
     }
 
-    private val mOnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+    private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             updateSelectedBottomNavigationItem()

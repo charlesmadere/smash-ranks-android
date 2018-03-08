@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.widget.TextView
@@ -12,9 +11,8 @@ import kotterknife.bindView
 
 class EndpointDividerView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<Endpoint> {
+        attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs), BaseAdapterView<Endpoint> {
 
     private val name: TextView by bindView(R.id.tvName)
 

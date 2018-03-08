@@ -2,77 +2,77 @@
 <com.garpr.android.views.TournamentInfoLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fillViewport="true"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <TextView
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center_vertical"
+        android:id="@+id/tvName"
+        android:layout_height="192dp"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_width="0dp"
+        android:textColor="?android:attr/textColorPrimary"
+        app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
+        app:autoSizeMinTextSize="@dimen/text_size_xlarge"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/tvDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Melee @ the Made #32" />
+
+    <TextView
+        android:fontFamily="sans-serif-light"
+        android:id="@id/tvDate"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_width="0dp"
+        android:textSize="@dimen/text_size_xlarge"
+        app:layout_constraintBottom_toTopOf="@+id/tvEntrants"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        tools:text="November 28, 1989" />
 
-        <TextView
-            android:fontFamily="sans-serif-thin"
-            android:id="@+id/tvName"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/root_padding"
-            android:layout_marginStart="@dimen/root_padding"
-            android:layout_marginTop="@dimen/root_padding"
-            android:layout_width="0dp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_xxxlarge"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Melee at the MADE #32" />
+    <com.garpr.android.views.TintedTextView
+        android:drawableTop="@drawable/ic_people_white_24dp"
+        android:id="@id/tvEntrants"
+        android:layout_marginBottom="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_double"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvOpenLink"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDate"
+        tools:text="1,024 entrants"
+        style="@style/TextButton" />
 
-        <TextView
-            android:id="@+id/tvEntrants"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/root_padding"
-            android:layout_marginStart="@dimen/root_padding"
-            android:layout_width="0dp"
-            android:textAllCaps="true"
-            android:textSize="@dimen/text_size_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvName"
-            tools:text="1,024 entrants" />
+    <com.garpr.android.views.TintedTextView
+        android:drawableTop="@drawable/ic_open_in_browser_white_24dp"
+        android:id="@id/tvOpenLink"
+        android:text="@string/open_bracket_link"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/tvShare"
+        app:layout_constraintStart_toStartOf="@id/tvEntrants"
+        app:layout_constraintTop_toTopOf="@id/tvEntrants"
+        tools:visibility="visible"
+        style="@style/TextButton" />
 
-        <Button
-            android:drawablePadding="@dimen/root_padding"
-            android:drawableStart="@drawable/ic_open_in_browser_white_24dp"
-            android:id="@+id/bShare"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/root_padding"
-            android:layout_marginTop="@dimen/root_padding"
-            android:layout_width="wrap_content"
-            android:text="@string/open_smash_gg_link"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEntrants"
-            tools:visibility="visible" />
-
-        <Button
-            android:drawablePadding="@dimen/root_padding"
-            android:drawableStart="@drawable/ic_share_white_24dp"
-            android:id="@+id/bOpenLink"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/root_padding"
-            android:layout_marginStart="@dimen/root_padding"
-            android:layout_width="wrap_content"
-            android:text="@string/share"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bShare"
-            tools:visibility="visible" />
-
-        <Space
-            android:layout_height="@dimen/root_padding_double"
-            android:layout_width="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bOpenLink" />
-
-    </android.support.constraint.ConstraintLayout>
+    <com.garpr.android.views.TintedTextView
+        android:drawableTop="@drawable/ic_share_white_24dp"
+        android:id="@id/tvShare"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:text="@string/share"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvOpenLink"
+        app:layout_constraintTop_toTopOf="@id/tvShare"
+        tools:visibility="visible"
+        style="@style/TextButton" />
 
 </com.garpr.android.views.TournamentInfoLayout>

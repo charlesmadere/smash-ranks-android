@@ -57,9 +57,8 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
         get() = _isAlive
 
     private fun jobFinished(needsReschedule: Boolean) {
-        jobParameters?.let {
-            jobFinished(it, needsReschedule)
-        }
+        timber.d(TAG, "job finished... needs reschedule: $needsReschedule")
+        jobParameters?.let { jobFinished(it, needsReschedule) }
     }
 
     override fun onCreate() {
@@ -68,6 +67,8 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     }
 
     override fun onStartJob(job: JobParameters): Boolean {
+        timber.d(TAG, "starting job...")
+
         jobParameters = job
 
         val pollStatus = rankingsNotificationsUtils.getPollStatus()
@@ -83,6 +84,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
     override fun onStopJob(job: JobParameters): Boolean {
         _isAlive = false
+        timber.d(TAG, "stopping job... retry: ${pollStatus?.retry}")
         return pollStatus?.retry == true
     }
 

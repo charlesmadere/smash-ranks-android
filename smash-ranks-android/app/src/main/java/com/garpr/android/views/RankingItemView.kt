@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -18,9 +17,8 @@ import javax.inject.Inject
 
 class RankingItemView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<RankedPlayer>,
+        attrs: AttributeSet? = null
+) : IdentityConstraintLayout(context, attrs), BaseAdapterView<RankedPlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
     private val numberFormat = NumberFormat.getIntegerInstance()

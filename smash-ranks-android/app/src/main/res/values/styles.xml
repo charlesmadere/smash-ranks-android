@@ -299,6 +299,13 @@
         <item name="android:theme">@style/TabLayoutTheme</item>
     </style>
 
+    <style name="TextButton">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:drawablePadding">@dimen/root_padding_half</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
     <style name="Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>

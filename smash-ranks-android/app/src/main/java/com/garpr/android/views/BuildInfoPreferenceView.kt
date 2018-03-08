@@ -1,16 +1,14 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
 
 class BuildInfoPreferenceView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : SimplePreferenceView(context, attrs, defStyleAttr) {
+        attrs: AttributeSet? = null
+) : SimplePreferenceView(context, attrs) {
 
     override fun onFinishInflate() {
         super.onFinishInflate()

@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
@@ -19,9 +18,8 @@ import kotterknife.bindView
 
 open class SimplePreferenceView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : LifecycleConstraintLayout(context, attrs, defStyleAttr), Refreshable {
+        attrs: AttributeSet? = null
+) : LifecycleConstraintLayout(context, attrs), Refreshable {
 
     private var _descriptionText: CharSequence? = null
     private var _titleText: CharSequence? = null

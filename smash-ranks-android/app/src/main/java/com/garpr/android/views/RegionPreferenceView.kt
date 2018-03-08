@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.App
@@ -14,9 +13,8 @@ import javax.inject.Inject
 
 class RegionPreferenceView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : SimplePreferenceView(context, attrs, defStyleAttr), RegionManager.OnRegionChangeListener,
+        attrs: AttributeSet? = null
+) : SimplePreferenceView(context, attrs), RegionManager.OnRegionChangeListener,
         View.OnClickListener {
 
     @Inject

@@ -215,7 +215,7 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
 }
 
 fun Parcel.readSmashCharacterMap(): Map<String, SmashCharacter>? {
-    val bundle = readBundle(String::class.java.classLoader) ?: return null
+    val bundle = readBundle(SmashCharacter::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, SmashCharacter>()
 
     for (key in bundle.keySet()) {

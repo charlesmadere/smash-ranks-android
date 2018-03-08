@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
@@ -18,10 +17,8 @@ import javax.inject.Inject
 
 class TournamentItemView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<AbsTournament>,
-        View.OnClickListener {
+        attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs), BaseAdapterView<AbsTournament>, View.OnClickListener {
 
     @Inject
     protected lateinit var regionManager: RegionManager

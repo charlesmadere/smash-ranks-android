@@ -36,7 +36,7 @@ class TournamentPagerAdapter(
         pages.removeAt(position)
     }
 
-    override fun getCount() = 2
+    override fun getCount() = 3
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {

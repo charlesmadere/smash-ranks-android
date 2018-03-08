@@ -13,7 +13,6 @@ import com.garpr.android.misc.RankingsNotificationsUtilsTest;
 import com.garpr.android.misc.RegionManagerTest;
 import com.garpr.android.misc.SmashRosterStorageTest;
 import com.garpr.android.misc.TimberTest;
-import com.garpr.android.misc.TournamentToolbarManagerTest;
 import com.garpr.android.models.AbsPlayerTest;
 import com.garpr.android.models.AbsRegionTest;
 import com.garpr.android.models.AbsTournamentTest;
@@ -57,7 +56,6 @@ public interface TestAppComponent {
     void inject(RegionManagerTest test);
     void inject(SmashRosterStorageTest test);
     void inject(TimberTest test);
-    void inject(TournamentToolbarManagerTest test);
 
     // models
     void inject(AbsPlayerTest test);

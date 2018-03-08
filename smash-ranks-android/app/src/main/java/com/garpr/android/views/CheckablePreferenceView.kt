@@ -2,7 +2,6 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.os.Parcelable
-import android.support.annotation.AttrRes
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.util.SparseArray
@@ -18,10 +17,9 @@ import kotterknife.bindView
 
 class CheckablePreferenceView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : LifecycleConstraintLayout(context, attrs, defStyleAttr),
-        Preference.OnPreferenceChangeListener<Boolean>, Refreshable, View.OnClickListener {
+        attrs: AttributeSet? = null
+) : LifecycleConstraintLayout(context, attrs), Preference.OnPreferenceChangeListener<Boolean>,
+        Refreshable, View.OnClickListener {
 
     private var disabledDescriptionText: CharSequence? = null
     private var enabledDescriptionText: CharSequence? = null

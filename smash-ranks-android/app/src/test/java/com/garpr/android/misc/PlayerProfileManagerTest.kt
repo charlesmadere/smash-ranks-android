@@ -1,10 +1,10 @@
 package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.AbsRegion
+import com.garpr.android.models.Endpoint
 import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.LiteRegion
 import com.garpr.android.models.Rating
+import com.garpr.android.models.Region
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -47,12 +47,17 @@ class PlayerProfileManagerTest : BaseTest() {
                 "googlemtv" to Rating(25f, 1f)
         ))
 
-        private val REGION_1: AbsRegion = LiteRegion(null, null,
+        private val REGION_1 = Region(null, null,
                 null, null, "Norcal",
-                "norcal")
-        private val REGION_2: AbsRegion = LiteRegion(null, null,
+                "norcal", Endpoint.GAR_PR)
+
+        private val REGION_2 = Region(null, null,
                 null, null, "New York City",
-                "nyc")
+                "nyc", Endpoint.NOT_GAR_PR)
+
+        private val REGION_3 = Region(null, null,
+                null, null, "Atlanta",
+                "atlanta", Endpoint.NOT_GAR_PR)
     }
 
     @Before
@@ -74,32 +79,82 @@ class PlayerProfileManagerTest : BaseTest() {
 
     @Test
     fun testFullPlayer2() {
-        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_2, REGION_1)
+        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_2, REGION_2)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.aliases.isNullOrBlank())
         assertTrue(presentation.rating.isNullOrBlank())
         assertTrue(presentation.unadjustedRating.isNullOrBlank())
     }
 
     @Test
     fun testFullPlayer3() {
-        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_3, REGION_2)
+        var presentation = playerProfileManager.getPresentation(FULL_PLAYER_3, REGION_2)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+
+        presentation = playerProfileManager.getPresentation(FULL_PLAYER_3, REGION_1)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertFalse(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+
+        presentation = playerProfileManager.getPresentation(FULL_PLAYER_3, REGION_3)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertFalse(presentation.aliases.isNullOrBlank())
         assertTrue(presentation.rating.isNullOrBlank())
         assertTrue(presentation.unadjustedRating.isNullOrBlank())
     }
 
     @Test
     fun testFullPlayer4() {
-        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
+        var presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
         assertTrue(presentation.aliases.isNullOrBlank())
-        assertTrue(presentation.rating.isNullOrBlank())
-        assertTrue(presentation.unadjustedRating.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+
+        favoritePlayersManager.addPlayer(FULL_PLAYER_4, REGION_1)
+
+        presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
+        assertFalse(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+
+        favoritePlayersManager.removePlayer(FULL_PLAYER_4)
+
+        presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+
+        identityManager.setIdentity(FULL_PLAYER_4, REGION_1)
+
+        presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+
+        favoritePlayersManager.addPlayer(FULL_PLAYER_4, REGION_1)
+
+        presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
+        assertFalse(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
     }
 
 }

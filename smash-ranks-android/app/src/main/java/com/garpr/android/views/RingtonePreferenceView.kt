@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
@@ -20,9 +19,8 @@ import javax.inject.Inject
 
 class RingtonePreferenceView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : SimplePreferenceView(context, attrs, defStyleAttr), Preference.OnPreferenceChangeListener<Uri>,
+        attrs: AttributeSet? = null
+) : SimplePreferenceView(context, attrs), Preference.OnPreferenceChangeListener<Uri>,
         View.OnClickListener {
 
     @Inject

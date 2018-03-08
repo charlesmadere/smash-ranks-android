@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.annotation.ColorInt
 import android.util.AttributeSet
 import com.garpr.android.R
@@ -11,9 +10,8 @@ import com.garpr.android.misc.Refreshable
 
 class TintedImageView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : LifecycleImageView(context, attrs, defStyleAttr), Refreshable {
+        attrs: AttributeSet? = null
+) : LifecycleImageView(context, attrs), Refreshable {
 
     @ColorInt
     private var drawableTintColor: Int = 0

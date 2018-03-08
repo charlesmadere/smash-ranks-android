@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -23,9 +22,8 @@ import javax.inject.Inject
 
 class HeadToHeadMatchItemView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<HeadToHeadMatch>,
+        attrs: AttributeSet? = null
+) : IdentityConstraintLayout(context, attrs), BaseAdapterView<HeadToHeadMatch>,
         View.OnClickListener {
 
     @ColorInt

@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.support.annotation.AttrRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
@@ -16,9 +15,8 @@ import javax.inject.Inject
 
 abstract class IdentityConstraintLayout @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : LifecycleConstraintLayout(context, attrs, defStyleAttr), IdentityManager.OnIdentityChangeListener {
+        attrs: AttributeSet? = null
+) : LifecycleConstraintLayout(context, attrs), IdentityManager.OnIdentityChangeListener {
 
     private var originalBackground: Drawable? = null
 

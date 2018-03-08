@@ -57,7 +57,7 @@ data class SimpleDate(
                 // this Exception can be safely ignored
             }
 
-            throw JsonParseException("unable to parse date: " + json)
+            throw JsonParseException("unable to parse date: $json")
         }
 
         val JSON_SERIALIZER = JsonSerializer<SimpleDate> { src, typeOfSrc, context ->
@@ -73,6 +73,8 @@ data class SimpleDate(
         return other is SimpleDate && date == other.date
     }
 
+    val fullForm: CharSequence = DateFormat.getDateInstance(DateFormat.FULL).format(date)
+
     fun getRelativeDateTimeText(context: Context): CharSequence {
         return DateUtils.getRelativeDateTimeString(context, date.time, DateUtils.DAY_IN_MILLIS,
                 DateUtils.WEEK_IN_MILLIS, 0)
@@ -83,8 +85,6 @@ data class SimpleDate(
     }
 
     override fun hashCode() = date.hashCode()
-
-    val longForm: CharSequence = DateFormat.getDateInstance(DateFormat.LONG).format(date)
 
     val mediumForm: CharSequence = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date)
 

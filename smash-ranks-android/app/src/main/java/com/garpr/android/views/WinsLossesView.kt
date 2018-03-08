@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -13,9 +12,8 @@ import kotterknife.bindView
 
 class WinsLossesView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<WinsLosses> {
+        attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs), BaseAdapterView<WinsLosses> {
 
     private var hasAnimated = false
 

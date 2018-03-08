@@ -4,10 +4,11 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.v4.graphics.drawable.DrawableCompat
 import java.text.DecimalFormat
+import java.text.NumberFormat
 
 object MiscUtils {
 
-    private val DECIMAL_FORMAT = DecimalFormat("#.###")
+    private val DECIMAL_FORMAT: NumberFormat = DecimalFormat("#.###")
 
 
     init {

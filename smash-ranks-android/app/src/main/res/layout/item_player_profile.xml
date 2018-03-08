@@ -1,37 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.PlayerProfileItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/root_padding_half"
+    android:paddingEnd="@dimen/root_padding"
+    android:paddingStart="@dimen/root_padding"
+    android:paddingTop="@dimen/root_padding_half">
 
-    <Space
-        android:layout_height="@dimen/root_padding_half"
-        android:layout_width="match_parent" />
+    <TextView
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center_vertical"
+        android:id="@+id/tvName"
+        android:layout_height="64dp"
+        android:layout_width="match_parent"
+        android:textColor="?android:attr/textColorPrimary"
+        app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
+        app:autoSizeMinTextSize="@dimen/text_size_xlarge"
+        app:autoSizeTextType="uniform"
+        tools:text="Charlezard" />
 
     <TextView
         android:ellipsize="end"
         android:id="@+id/tvAliases"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/root_padding_half"
-        android:layout_marginEnd="@dimen/root_padding"
-        android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:maxLines="2"
+        android:textAllCaps="true"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone"
         tools:text="Aliases: Charles, Charliehorse"
         tools:visibility="visible" />
 
+    <Space
+        android:layout_height="@dimen/root_padding"
+        android:layout_width="match_parent" />
+
     <TextView
         android:fontFamily="sans-serif-light"
         android:id="@+id/tvRating"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/root_padding"
-        android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_xxlarge"
+        android:textSize="@dimen/text_size_xlarge"
         android:visibility="gone"
         tools:text="Rating: 39.101"
         tools:visibility="visible" />
@@ -39,53 +52,47 @@
     <TextView
         android:id="@+id/tvUnadjustedRating"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/root_padding_half"
-        android:layout_marginEnd="@dimen/root_padding"
-        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginBottom="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone"
         tools:text="Unadjusted: 45.679 (+/- 2.193)"
         tools:visibility="visible" />
 
-    <com.garpr.android.views.TintedTextView
-        android:background="?attr/selectableItemBackground"
-        android:drawableEnd="@drawable/ic_chevron_right_white_24dp"
-        android:gravity="center_vertical"
-        android:id="@+id/tvViewYourselfVsThisOpponent"
+    <Button
+        android:id="@+id/bViewYourselfVsThisOpponent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:minHeight="@dimen/list_item_height"
-        android:paddingEnd="@dimen/root_padding"
-        android:paddingStart="@dimen/root_padding"
+        android:layout_width="wrap_content"
         android:text="@string/view_yourself_vs_this_opponent"
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <com.garpr.android.views.TintedTextView
-        android:background="?attr/selectableItemBackground"
-        android:drawableEnd="@drawable/ic_favorite_white_24dp"
-        android:drawablePadding="@dimen/root_padding"
-        android:gravity="center_vertical"
-        android:id="@+id/ttvAddToOrRemoveFromFavorites"
+    <com.garpr.android.views.TintedButton
+        android:drawablePadding="@dimen/root_padding_half"
+        android:drawableStart="@drawable/ic_favorite_white_24dp"
+        android:id="@+id/bAddToFavorites"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:minHeight="@dimen/list_item_height"
-        android:paddingEnd="@dimen/root_padding"
-        android:paddingStart="@dimen/root_padding"
-        android:text="@string/add_to_favorites" />
+        android:layout_width="wrap_content"
+        android:text="@string/add_to_favorites"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
-    <com.garpr.android.views.TintedTextView
-        android:background="?attr/selectableItemBackground"
-        android:drawableEnd="@drawable/ic_share_white_24dp"
-        android:gravity="center_vertical"
-        android:id="@+id/tvShare"
+    <com.garpr.android.views.TintedButton
+        android:drawablePadding="@dimen/root_padding_half"
+        android:drawableStart="@drawable/ic_favorite_border_white_24dp"
+        android:id="@+id/bRemoveFromFavorites"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/root_padding_quarter"
-        android:layout_width="match_parent"
-        android:minHeight="@dimen/list_item_height"
-        android:paddingEnd="@dimen/root_padding"
-        android:paddingStart="@dimen/root_padding"
+        android:layout_width="wrap_content"
+        android:text="@string/remove_from_favorites"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <com.garpr.android.views.TintedButton
+        android:drawablePadding="@dimen/root_padding_half"
+        android:drawableStart="@drawable/ic_share_white_24dp"
+        android:id="@+id/bShare"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:text="@string/share" />
 
 </com.garpr.android.views.PlayerProfileItemView>

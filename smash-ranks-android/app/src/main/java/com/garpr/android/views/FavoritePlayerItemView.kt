@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -17,9 +16,8 @@ import javax.inject.Inject
 
 class FavoritePlayerItemView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-): IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<FavoritePlayer>,
+        attrs: AttributeSet? = null
+): IdentityConstraintLayout(context, attrs), BaseAdapterView<FavoritePlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
     @Inject

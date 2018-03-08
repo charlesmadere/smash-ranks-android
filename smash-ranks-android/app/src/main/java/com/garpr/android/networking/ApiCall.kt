@@ -16,10 +16,7 @@ class ApiCall<in T>(listener: ApiListener<T>) : ApiListener<T> {
     }
 
     override val isAlive: Boolean
-        get() {
-            val listener = reference.get()
-            return listener != null && listener.isAlive
-        }
+        get() = reference.get()?.isAlive == true
 
     override fun success(`object`: T?) {
         val listener = reference.get()

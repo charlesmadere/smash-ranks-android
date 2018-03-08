@@ -2,7 +2,6 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.content.DialogInterface
-import android.support.annotation.AttrRes
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
@@ -15,9 +14,8 @@ import javax.inject.Inject
 
 class PollFrequencyPreferenceView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : SimplePreferenceView(context, attrs, defStyleAttr), DialogInterface.OnClickListener,
+        attrs: AttributeSet? = null
+) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
         Preference.OnPreferenceChangeListener<PollFrequency>, View.OnClickListener {
 
     @Inject

@@ -39,7 +39,7 @@ class RankingsNotificationsUtilsImpl(
         }
 
         if (!deviceUtils.hasNetworkConnection) {
-            timber.d(TAG, "will retry sync, the device does not have a network connection")
+            timber.d(TAG, "will retry sync later, the device does not have a network connection")
             return PollStatus(oldRankingsDate, false, true)
         }
 
