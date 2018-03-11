@@ -182,7 +182,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) =
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             R.id.miFilterToLosses -> {
                 filter(MatchResult.LOSE)

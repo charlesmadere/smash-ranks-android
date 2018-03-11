@@ -160,7 +160,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override fun onMenuItemActionExpand(item: MenuItem) = true
 
-    override fun onOptionsItemSelected(item: MenuItem) =
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             R.id.miSave -> {
                 save()
