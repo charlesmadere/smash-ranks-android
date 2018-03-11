@@ -8,31 +8,42 @@
     <com.garpr.android.views.toolbars.TournamentToolbar
         style="@style/Toolbar" />
 
-    <android.support.design.widget.TabLayout
-        style="@style/TabLayout" />
-
     <com.garpr.android.views.RefreshLayout
-        android:id="@+id/refreshLayout"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        app:scrollingChild="@id/nestedScrollView"
+        style="@style/RefreshLayout">
 
-        <FrameLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
+        <android.support.v4.widget.NestedScrollView
+            style="@style/NestedScrollView">
 
-            <android.support.v4.view.ViewPager
-                android:visibility="gone"
-                style="@style/ViewPager" />
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
 
-            <com.garpr.android.views.NoContentLinearLayout
-                app:titleText="@string/no_tournament_data"
-                style="@style/NoContentLinearLayout.Empty" />
+                <include
+                    layout="@layout/view_tournament_info" />
 
-            <com.garpr.android.views.ErrorContentLinearLayout
-                app:titleText="@string/error_loading_tournament"
-                style="@style/NoContentLinearLayout.Error" />
+                <android.support.v7.widget.RecyclerView
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    style="@style/RecyclerView" />
 
-        </FrameLayout>
+                <com.garpr.android.views.ErrorContentLinearLayout
+                    app:titleText="@string/error_loading_tournament"
+                    style="@style/NoContentLinearLayout.Error" />
+
+                <com.garpr.android.views.NoContentLinearLayout
+                    android:id="@+id/emptyMatches"
+                    app:titleText="@string/no_matches"
+                    style="@style/NoContentLinearLayout.Empty" />
+
+                <com.garpr.android.views.NoContentLinearLayout
+                    android:id="@+id/emptyPlayers"
+                    app:titleText="@string/no_players"
+                    style="@style/NoContentLinearLayout.Empty" />
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
 
     </com.garpr.android.views.RefreshLayout>
 

@@ -28,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:maxLines="2"
-        android:textAllCaps="true"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone"
         tools:text="Aliases: Charles, Charliehorse"
@@ -39,12 +38,11 @@
         android:layout_width="match_parent" />
 
     <TextView
-        android:fontFamily="sans-serif-light"
         android:id="@+id/tvRating"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_xlarge"
+        android:textSize="@dimen/text_size_large"
         android:visibility="gone"
         tools:text="Rating: 39.101"
         tools:visibility="visible" />
@@ -59,7 +57,9 @@
         tools:text="Unadjusted: 45.679 (+/- 2.193)"
         tools:visibility="visible" />
 
-    <Button
+    <com.garpr.android.views.TintedButton
+        android:drawablePadding="@dimen/root_padding_half"
+        android:drawableStart="@drawable/ic_face_white_24dp"
         android:id="@+id/bViewYourselfVsThisOpponent"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

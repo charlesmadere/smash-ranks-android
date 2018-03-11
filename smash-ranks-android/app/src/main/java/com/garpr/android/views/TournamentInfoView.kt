@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.getActivity
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.BracketSource
@@ -16,10 +17,10 @@ import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class TournamentInfoLayout @JvmOverloads constructor(
+class TournamentInfoView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleConstraintLayout(context, attrs), TournamentPagerAdapterView {
+) : LifecycleConstraintLayout(context, attrs), BaseAdapterView<FullTournament> {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
@@ -34,9 +35,9 @@ class TournamentInfoLayout @JvmOverloads constructor(
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentInfoLayout = LayoutInflater.from(
-                parent.context).inflate(R.layout.layout_tournament_info, parent,
-                false) as TournamentInfoLayout
+        fun inflate(parent: ViewGroup): TournamentInfoView = LayoutInflater.from(
+                parent.context).inflate(R.layout.view_tournament_info, parent,
+                false) as TournamentInfoView
     }
 
     override fun onFinishInflate() {
@@ -44,10 +45,6 @@ class TournamentInfoLayout @JvmOverloads constructor(
 
         if (!isInEditMode) {
             App.get().appComponent.inject(this)
-        }
-
-        entrants.setOnClickListener {
-            // TODO
         }
 
         openLink.setOnClickListener {

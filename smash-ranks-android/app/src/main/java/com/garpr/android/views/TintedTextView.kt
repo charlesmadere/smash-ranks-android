@@ -5,7 +5,7 @@ import android.support.annotation.ColorInt
 import android.util.AttributeSet
 import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.extensions.setTintedImageColor
+import com.garpr.android.extensions.setTintedDrawableColor
 import com.garpr.android.misc.Refreshable
 
 class TintedTextView @JvmOverloads constructor(
@@ -39,7 +39,7 @@ class TintedTextView @JvmOverloads constructor(
     }
 
     override fun refresh() {
-        setTintedImageColor(drawableTintColor)
+        setTintedDrawableColor(drawableTintColor)
     }
 
 }

@@ -3,14 +3,16 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.adapters.TournamentPagerAdapter
-import com.garpr.android.extensions.closeKeyboard
+import com.garpr.android.adapters.PlayersAdapter
+import com.garpr.android.adapters.TournamentMatchesAdapter
+import com.garpr.android.misc.Constants
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
@@ -19,7 +21,10 @@ import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
+import com.garpr.android.views.NoContentLinearLayout
+import com.garpr.android.views.TournamentInfoView
 import com.garpr.android.views.toolbars.SearchToolbar
+import com.garpr.android.views.toolbars.TournamentToolbar
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -27,8 +32,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private var fullTournament: FullTournament? = null
+    private lateinit var playersAdapter: PlayersAdapter
     private lateinit var tournamentId: String
-    private lateinit var adapter: TournamentPagerAdapter
+    private lateinit var tournamentMatchesAdapter: TournamentMatchesAdapter
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -37,19 +43,20 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     protected lateinit var serverApi: ServerApi
 
     private val error: ErrorContentLinearLayout by bindView(R.id.error)
+    private val emptyMatches: NoContentLinearLayout by bindView(R.id.emptyMatches)
+    private val emptyPlayers: NoContentLinearLayout by bindView(R.id.emptyPlayers)
+    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val tabLayout: TabLayout by bindView(R.id.tabLayout)
-    private val searchToolbar: SearchToolbar by bindView(R.id.toolbar)
-    private val empty: View by bindView(R.id.empty)
-    private val viewPager: ViewPager by bindView(R.id.viewPager)
+    private val tournamentInfoView: TournamentInfoView by bindView(R.id.tournamentInfoView)
+    private val tournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
 
 
     companion object {
         private const val TAG = "TournamentActivity"
         private val CNAME = TournamentActivity::class.java.canonicalName
-        private val EXTRA_TOURNAMENT_DATE = CNAME + ".TournamentDate"
-        private val EXTRA_TOURNAMENT_ID = CNAME + ".TournamentId"
-        private val EXTRA_TOURNAMENT_NAME = CNAME + ".TournamentName"
+        private val EXTRA_TOURNAMENT_DATE = "$CNAME.TournamentDate"
+        private val EXTRA_TOURNAMENT_ID = "$CNAME.TournamentId"
+        private val EXTRA_TOURNAMENT_NAME = "$CNAME.TournamentName"
 
         fun getLaunchIntent(context: Context, tournament: AbsTournament,
                 region: Region? = null): Intent {
@@ -105,91 +112,90 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         fetchFullTournament()
     }
 
-    private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            closeKeyboard()
-        }
-    }
-
     override fun onRefresh() {
         fetchFullTournament()
-    }
-
-    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
-        override fun onTabReselected(tab: TabLayout.Tab) {
-            adapter.onTabReselected(tab.position)
-        }
-
-        override fun onTabSelected(tab: TabLayout.Tab?) {
-            // intentionally empty
-        }
-
-        override fun onTabUnselected(tab: TabLayout.Tab?) {
-            // intentionally empty
-        }
     }
 
     override fun onViewsBound() {
         super.onViewsBound()
 
         refreshLayout.setOnRefreshListener(this)
-        tabLayout.setupWithViewPager(viewPager)
-        tabLayout.addOnTabSelectedListener(onTabSelectedListener)
-        viewPager.addOnPageChangeListener(onPageChangeListener)
-        viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
-        viewPager.offscreenPageLimit = 3
+        recyclerView.addItemDecoration(DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL))
+        recyclerView.setHasFixedSize(true)
+        ViewCompat.setNestedScrollingEnabled(recyclerView, true)
+
+        playersAdapter = PlayersAdapter(this)
+        tournamentMatchesAdapter = TournamentMatchesAdapter(this)
+        recyclerView.adapter = tournamentMatchesAdapter
     }
 
     override fun search(query: String?) {
-        adapter.search(query)
+        // TODO
     }
 
     override val searchQuery: CharSequence?
-        get() = searchToolbar.searchQuery
+        get() = tournamentToolbar.searchQuery
 
-    private fun showEmpty() {
-        error.visibility = View.GONE
-        viewPager.visibility = View.GONE
-        empty.visibility = View.VISIBLE
-        invalidateOptionsMenu()
-        refreshLayout.isRefreshing = false
-    }
-
-    private fun showError(errorCode: Int) {
-        empty.visibility = View.GONE
-        viewPager.visibility = View.GONE
+    private fun showError(errorCode: Int = Constants.ERROR_CODE_UNKNOWN) {
+        tournamentInfoView.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        emptyMatches.visibility = View.GONE
+        emptyPlayers.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
         invalidateOptionsMenu()
         refreshLayout.isRefreshing = false
     }
 
     private fun showFullTournament() {
-        val tournament = this.fullTournament ?: throw NullPointerException("fullTournament is null")
-        adapter = TournamentPagerAdapter(this, tournament)
-        viewPager.adapter = adapter
+        val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
 
-        empty.visibility = View.GONE
+        playersAdapter.set(tournament)
+        tournamentMatchesAdapter.set(tournament)
+
         error.visibility = View.GONE
-        viewPager.visibility = View.VISIBLE
+
+        tournamentInfoView.setContent(tournament)
+        tournamentInfoView.visibility = View.VISIBLE
+
+        if (recyclerView.adapter == playersAdapter) {
+            if (playersAdapter.isEmpty) {
+                recyclerView.visibility = View.GONE
+                emptyPlayers.visibility = View.VISIBLE
+            } else {
+                emptyPlayers.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            }
+        } else if (recyclerView.adapter == tournamentMatchesAdapter) {
+            if (tournamentMatchesAdapter.isEmpty) {
+                recyclerView.visibility = View.GONE
+                emptyMatches.visibility = View.VISIBLE
+            } else {
+                emptyMatches.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            }
+        } else {
+            throw IllegalStateException("recyclerView has an unknown adapter: ${recyclerView.adapter}")
+        }
+
         invalidateOptionsMenu()
         refreshLayout.isRefreshing = false
         refreshLayout.isEnabled = false
     }
 
     override val showSearchMenuItem: Boolean
-        get() = fullTournament?.matches?.isNotEmpty() == true ||
-                fullTournament?.players?.isNotEmpty() == true
+        get() = fullTournament != null && recyclerView.visibility == View.VISIBLE &&
+                recyclerView.adapter?.itemCount ?: 0 > 0
 
     override val showUpNavigation = true
 
     override fun success(`object`: FullTournament?) {
         fullTournament = `object`
 
-        if (`object`?.matches?.isNotEmpty() == true || `object`?.players?.isNotEmpty() == true) {
-            showFullTournament()
+        if (`object` == null) {
+            showError()
         } else {
-            showEmpty()
+            showFullTournament()
         }
     }
 

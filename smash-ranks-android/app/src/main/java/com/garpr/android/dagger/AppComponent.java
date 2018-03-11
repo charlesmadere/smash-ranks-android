@@ -37,7 +37,7 @@ import com.garpr.android.views.TestNotificationView;
 import com.garpr.android.views.ThemePreferenceView;
 import com.garpr.android.views.TintedImageView;
 import com.garpr.android.views.TournamentDividerView;
-import com.garpr.android.views.TournamentInfoLayout;
+import com.garpr.android.views.TournamentInfoView;
 import com.garpr.android.views.TournamentItemView;
 import com.garpr.android.views.TournamentMatchItemView;
 import com.garpr.android.views.TournamentsLayout;
@@ -100,7 +100,7 @@ public interface AppComponent {
     void inject(ThemePreferenceView view);
     void inject(TintedImageView view);
     void inject(TournamentDividerView view);
-    void inject(TournamentInfoLayout view);
+    void inject(TournamentInfoView view);
     void inject(TournamentItemView view);
     void inject(TournamentMatchItemView view);
     void inject(TournamentsLayout view);
