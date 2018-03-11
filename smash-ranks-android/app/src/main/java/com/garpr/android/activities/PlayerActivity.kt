@@ -59,8 +59,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     companion object {
         private const val TAG = "PlayerActivity"
         private val CNAME = PlayerActivity::class.java.canonicalName
-        private val EXTRA_PLAYER_ID = CNAME + ".PlayerId"
-        private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
+        private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
+        private val EXTRA_PLAYER_NAME = "$CNAME.PlayerName"
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region? = null): Intent {
             var regionCopy = region

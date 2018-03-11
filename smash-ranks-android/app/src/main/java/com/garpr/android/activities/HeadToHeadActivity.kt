@@ -53,10 +53,10 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     companion object {
         private const val TAG = "HeadToHeadActivity"
         private val CNAME = HeadToHeadActivity::class.java.canonicalName
-        private val EXTRA_PLAYER_ID = CNAME + ".PlayerId"
-        private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
-        private val EXTRA_OPPONENT_ID = CNAME + ".OpponentId"
-        private val EXTRA_OPPONENT_NAME = CNAME + ".OpponentName"
+        private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
+        private val EXTRA_PLAYER_NAME = "$CNAME.PlayerName"
+        private val EXTRA_OPPONENT_ID = "$CNAME.OpponentId"
+        private val EXTRA_OPPONENT_NAME = "$CNAME.OpponentName"
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, opponent: AbsPlayer,
                 region: Region? = null): Intent {
