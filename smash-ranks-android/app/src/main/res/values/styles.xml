@@ -324,23 +324,29 @@
     <style name="WinsLossesCount">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:gravity">center</item>
-        <item name="android:id">@id/winCount</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginEnd">@dimen/root_padding</item>
+        <item name="android:layout_marginStart">@dimen/root_padding</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:lines">1</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_xxxlarge</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintVertical_chainStyle">packed</item>
     </style>
 
     <style name="WinsLossesPlayerNameBase">
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
-        <item name="android:id">@id/playerName</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginEnd">@dimen/root_padding</item>
+        <item name="android:layout_marginStart">@dimen/root_padding</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:maxLines">3</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
     </style>
 
     <style name="WinsLossesPlayerName" parent="WinsLossesPlayerNameBase">

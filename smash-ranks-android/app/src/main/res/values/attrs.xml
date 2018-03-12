@@ -27,11 +27,4 @@
         <attr name="titleText" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="WinsLossesColumnView">
-        <attr name="playerOrOpponent" format="enum">
-            <enum name="player" value="0" />
-            <enum name="opponent" value="1" />
-        </attr>
-    </declare-styleable>
-
 </resources>

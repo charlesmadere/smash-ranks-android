@@ -4,11 +4,13 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.models.LitePlayer
 import com.garpr.android.models.WinsLosses
 import kotterknife.bindView
+import java.text.NumberFormat
 
 class WinsLossesView @JvmOverloads constructor(
         context: Context,
@@ -16,9 +18,12 @@ class WinsLossesView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs), BaseAdapterView<WinsLosses> {
 
     private var hasAnimated = false
+    private val numberFormat = NumberFormat.getIntegerInstance()
 
-    private val playerColumnView: WinsLossesColumnView by bindView(R.id.playerColumnView)
-    private val opponentColumnView: WinsLossesColumnView by bindView(R.id.opponentColumnView)
+    private val opponentName: TextView by bindView(R.id.tvOpponentName)
+    private val opponentWins: TextView by bindView(R.id.tvOpponentWinCount)
+    private val playerName: TextView by bindView(R.id.tvPlayerName)
+    private val playerWins: TextView by bindView(R.id.tvPlayerWinCount)
     private val winsLossesGraphView: WinsLossesGraphView by bindView(R.id.winsLossesGraphView)
 
 
@@ -46,8 +51,12 @@ class WinsLossesView @JvmOverloads constructor(
             hasAnimated = true
         }
 
-        playerColumnView.winsLosses = content
-        opponentColumnView.winsLosses = content
+        playerName.text = content.player.name
+        playerWins.text = numberFormat.format(content.playerWins)
+
+        opponentName.text = content.opponent.name
+        opponentWins.text = numberFormat.format(content.opponentWins)
+
         winsLossesGraphView.setWinsLosses(content, hasAnimated)
 
         if (hasAnimated) {

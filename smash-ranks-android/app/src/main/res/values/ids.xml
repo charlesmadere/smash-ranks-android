@@ -9,7 +9,6 @@
     <item name="icon" type="id" />
     <item name="image" type="id" />
     <item name="nestedScrollView" type="id" />
-    <item name="playerName" type="id" />
     <item name="recyclerView" type="id" />
     <item name="refreshLayout" type="id" />
     <item name="searchLayout" type="id" />
@@ -18,6 +17,5 @@
     <item name="title" type="id" />
     <item name="toolbar" type="id" />
     <item name="viewPager" type="id" />
-    <item name="winCount" type="id" />
 
 </resources>
