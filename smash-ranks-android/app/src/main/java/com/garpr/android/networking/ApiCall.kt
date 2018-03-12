@@ -10,7 +10,7 @@ class ApiCall<in T>(listener: ApiListener<T>) : ApiListener<T> {
     override fun failure(errorCode: Int) {
         val listener = reference.get()
 
-        if (listener != null && listener.isAlive) {
+        if (listener?.isAlive == true) {
             listener.failure(errorCode)
         }
     }
@@ -21,7 +21,7 @@ class ApiCall<in T>(listener: ApiListener<T>) : ApiListener<T> {
     override fun success(`object`: T?) {
         val listener = reference.get()
 
-        if (listener != null && listener.isAlive) {
+        if (listener?.isAlive == true) {
             listener.success(`object`)
         }
     }
