@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.view.View
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
@@ -21,6 +22,7 @@ class TournamentTabsItemView @JvmOverloads constructor(
 
     private val matches: TextView by bindView(R.id.tvMatches)
     private val players: TextView by bindView(R.id.tvPlayers)
+    private var scrollListener: RecyclerView.OnScrollListener? = null
 
 
     interface Listeners {
@@ -33,7 +35,29 @@ class TournamentTabsItemView @JvmOverloads constructor(
     }
 
     private fun attachScrollListener() {
-        // TODO
+        val recyclerView = findRecyclerViewParent(parent as? View)
+                ?: throw NullPointerException("couldn't find parent RecyclerView")
+
+        var scrollListener = this.scrollListener
+
+        if (scrollListener == null) {
+            scrollListener = object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    // TODO
+                }
+            }
+
+            this.scrollListener = scrollListener
+        } else {
+            recyclerView.removeOnScrollListener(scrollListener)
+        }
+
+        recyclerView.addOnScrollListener(scrollListener)
+    }
+
+    private fun findRecyclerViewParent(view: View?): RecyclerView? {
+        return view as? RecyclerView ?: findRecyclerViewParent(view?.parent as? View)
     }
 
     override fun onAttachedToWindow() {
@@ -84,13 +108,6 @@ class TournamentTabsItemView @JvmOverloads constructor(
             else -> {
 
             }
-        }
-    }
-
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            // TODO
         }
     }
 

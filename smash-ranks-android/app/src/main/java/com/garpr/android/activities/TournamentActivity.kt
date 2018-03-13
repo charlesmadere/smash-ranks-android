@@ -115,8 +115,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>,
 
     override fun onTournamentModeClick(v: TournamentTabsItemView, tournamentMode: TournamentMode) {
         _tournamentMode = tournamentMode
-
-        // TODO
+        val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
+        tournamentAdapter.set(tournamentMode, tournament)
     }
 
     override fun onViewsBound() {
