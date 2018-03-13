@@ -5,6 +5,7 @@ import com.garpr.android.R
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.AbsTournament
 import com.garpr.android.models.FullTournament
+import com.garpr.android.models.Match
 
 class TournamentAdapterManagerImpl(
         private val application: Application
@@ -72,7 +73,7 @@ class TournamentAdapterManagerImpl(
                 TournamentAdapterManager.ViewType.PLAYER
             }
 
-            item is AbsTournament -> {
+            item is Match -> {
                 TournamentAdapterManager.ViewType.MATCH
             }
 
