@@ -36,12 +36,6 @@ class TournamentTabsItemView @JvmOverloads constructor(
         // TODO
     }
 
-    private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsItemView)
-        enableScrollListener = ta.getBoolean(R.styleable.TournamentTabsItemView_enableScrollListener, enableScrollListener)
-        ta.recycle()
-    }
-
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         refresh()
@@ -63,6 +57,12 @@ class TournamentTabsItemView @JvmOverloads constructor(
         }
 
         refresh()
+    }
+
+    private fun parseAttributes(attrs: AttributeSet?) {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsItemView)
+        enableScrollListener = ta.getBoolean(R.styleable.TournamentTabsItemView_enableScrollListener, enableScrollListener)
+        ta.recycle()
     }
 
     override fun refresh() {
