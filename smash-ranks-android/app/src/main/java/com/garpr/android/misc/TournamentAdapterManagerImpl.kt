@@ -4,7 +4,7 @@ import android.app.Application
 import com.garpr.android.R
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FullTournament
-import com.garpr.android.models.Match
+import com.garpr.android.models.FullTournament.Match
 
 class TournamentAdapterManagerImpl(
         private val application: Application
