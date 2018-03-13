@@ -39,6 +39,8 @@ import com.garpr.android.misc.SmashRosterStorageImpl;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
+import com.garpr.android.misc.TournamentAdapterManager;
+import com.garpr.android.misc.TournamentAdapterManagerImpl;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsRegion;
 import com.garpr.android.models.AbsTournament;
@@ -378,6 +380,12 @@ public abstract class BaseAppModule {
     @Singleton
     Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
         return new TimberImpl(deviceUtils.getHasLowRam(), crashlyticsWrapper);
+    }
+
+    @Provides
+    @Singleton
+    TournamentAdapterManager providesTournamentAdapterManager() {
+        return new TournamentAdapterManagerImpl(mApplication);
     }
 
 }

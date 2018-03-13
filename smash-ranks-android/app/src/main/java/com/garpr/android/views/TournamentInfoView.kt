@@ -36,7 +36,7 @@ class TournamentInfoView @JvmOverloads constructor(
 
     companion object {
         fun inflate(parent: ViewGroup): TournamentInfoView = LayoutInflater.from(
-                parent.context).inflate(R.layout.view_tournament_info, parent,
+                parent.context).inflate(R.layout.item_tournament_info, parent,
                 false) as TournamentInfoView
     }
 

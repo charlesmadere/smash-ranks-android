@@ -9,41 +9,21 @@
         style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout
-        app:scrollingChild="@id/nestedScrollView"
         style="@style/RefreshLayout">
 
-        <android.support.v4.widget.NestedScrollView
-            style="@style/NestedScrollView">
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
 
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                style="@style/RecyclerView" />
 
-                <include
-                    layout="@layout/view_tournament_info" />
+            <com.garpr.android.views.ErrorContentLinearLayout
+                app:titleText="@string/error_loading_tournament"
+                style="@style/NoContentLinearLayout.Error" />
 
-                <android.support.v7.widget.RecyclerView
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    style="@style/RecyclerView" />
-
-                <com.garpr.android.views.ErrorContentLinearLayout
-                    app:titleText="@string/error_loading_tournament"
-                    style="@style/NoContentLinearLayout.Error" />
-
-                <com.garpr.android.views.NoContentLinearLayout
-                    android:id="@+id/emptyMatches"
-                    app:titleText="@string/no_matches"
-                    style="@style/NoContentLinearLayout.Empty" />
-
-                <com.garpr.android.views.NoContentLinearLayout
-                    android:id="@+id/emptyPlayers"
-                    app:titleText="@string/no_players"
-                    style="@style/NoContentLinearLayout.Empty" />
-
-            </LinearLayout>
-
-        </android.support.v4.widget.NestedScrollView>
+        </FrameLayout>
 
     </com.garpr.android.views.RefreshLayout>
 

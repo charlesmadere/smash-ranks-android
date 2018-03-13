@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.TournamentTabsItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+
+    <TextView
+        android:id="@+id/tvMatches"
+        android:text="@string/matches"
+        app:layout_constraintEnd_toStartOf="@+id/tvPlayers"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/TextViewTab" />
+
+    <TextView
+        android:id="@id/tvPlayers"
+        android:text="@string/players"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvMatches"
+        style="@style/TextViewTab" />
+
+</com.garpr.android.views.TournamentTabsItemView>
