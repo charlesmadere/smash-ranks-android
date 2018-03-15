@@ -1,6 +1,7 @@
 package com.garpr.android.views
 
 import android.content.Context
+import android.support.annotation.IdRes
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -10,6 +11,7 @@ import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.requireViewByIdFromRoot
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.TournamentModeListeners
 import com.garpr.android.models.TournamentMode
@@ -20,7 +22,8 @@ class TournamentTabsView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs), BaseAdapterView<Any?>, Refreshable {
 
-    private var enableScrollListener = false
+    @IdRes
+    private var recyclerViewId: Int = View.NO_ID
     private var scrollListener: RecyclerView.OnScrollListener? = null
 
     private val matchesTab: TextView by bindView(R.id.tvMatchesTab)
@@ -33,7 +36,7 @@ class TournamentTabsView @JvmOverloads constructor(
     }
 
     private fun attachScrollListener() {
-        val recyclerView = findRecyclerViewParent(parent as? View)
+        val recyclerView: RecyclerView = requireViewByIdFromRoot(recyclerViewId)
         var scrollListener = this.scrollListener
 
         if (scrollListener == null) {
@@ -50,11 +53,6 @@ class TournamentTabsView @JvmOverloads constructor(
         }
 
         recyclerView.addOnScrollListener(scrollListener)
-    }
-
-    private fun findRecyclerViewParent(view: View?): RecyclerView {
-        return view as? RecyclerView ?: findRecyclerViewParent(view?.parent as? View)
-                ?: throw NullPointerException("couldn't find parent RecyclerView")
     }
 
     override fun onAttachedToWindow() {
@@ -82,13 +80,12 @@ class TournamentTabsView @JvmOverloads constructor(
 
     private fun parseAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsView)
-        enableScrollListener = ta.getBoolean(R.styleable.TournamentTabsView_enableScrollListener,
-                enableScrollListener)
+        recyclerViewId = ta.getResourceId(R.styleable.TournamentTabsView_recyclerViewId, View.NO_ID)
         ta.recycle()
     }
 
     override fun refresh() {
-        if (enableScrollListener) {
+        if (recyclerViewId != View.NO_ID) {
             attachScrollListener()
         }
 
