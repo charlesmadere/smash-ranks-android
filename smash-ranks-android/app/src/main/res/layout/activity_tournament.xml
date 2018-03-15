@@ -21,7 +21,7 @@
                 style="@style/RecyclerView" />
 
             <com.garpr.android.views.TournamentTabsView
-                android:id="@+id/tournamentTabsView"
+                android:id="@+id/topTournamentTabsView"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:visibility="invisible"
