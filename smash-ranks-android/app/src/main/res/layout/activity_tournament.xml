@@ -15,6 +15,12 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent">
 
+            <com.garpr.android.views.TournamentTabsView
+                android:id="@+id/tournamentTabsView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                app:recyclerViewId="@id/recyclerView" />
+
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
                 style="@style/RecyclerView" />

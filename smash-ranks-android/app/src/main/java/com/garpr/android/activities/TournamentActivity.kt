@@ -16,6 +16,7 @@ import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
+import com.garpr.android.views.TournamentTabsView
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.garpr.android.views.toolbars.TournamentToolbar
 import kotterknife.bindView
@@ -38,6 +39,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Tourname
     private val error: ErrorContentLinearLayout by bindView(R.id.error)
     private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val tournamentTabsView: TournamentTabsView by bindView(R.id.tournamentTabsView)
     private val tournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
 
 
@@ -117,6 +119,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Tourname
 
         val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
         tournamentAdapter.set(tournamentMode, tournament)
+        tournamentTabsView.refresh()
     }
 
     override fun onViewsBound() {

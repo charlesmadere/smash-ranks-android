@@ -74,8 +74,6 @@ class TournamentTabsView @JvmOverloads constructor(
             tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
             refresh()
         }
-
-        refresh()
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
