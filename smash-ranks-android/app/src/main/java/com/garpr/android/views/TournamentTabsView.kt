@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import com.garpr.android.R
@@ -14,7 +15,7 @@ import com.garpr.android.misc.TournamentModeListeners
 import com.garpr.android.models.TournamentMode
 import kotterknife.bindView
 
-class TournamentTabsItemView @JvmOverloads constructor(
+class TournamentTabsView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs), BaseAdapterView<Any?>, Refreshable {
@@ -32,8 +33,6 @@ class TournamentTabsItemView @JvmOverloads constructor(
 
     private fun attachScrollListener() {
         val recyclerView = findRecyclerViewParent(parent as? View)
-                ?: throw NullPointerException("couldn't find parent RecyclerView")
-
         var scrollListener = this.scrollListener
 
         if (scrollListener == null) {
@@ -52,8 +51,9 @@ class TournamentTabsItemView @JvmOverloads constructor(
         recyclerView.addOnScrollListener(scrollListener)
     }
 
-    private fun findRecyclerViewParent(view: View?): RecyclerView? {
+    private fun findRecyclerViewParent(view: View?): RecyclerView {
         return view as? RecyclerView ?: findRecyclerViewParent(view?.parent as? View)
+                ?: throw NullPointerException("couldn't find parent RecyclerView")
     }
 
     override fun onAttachedToWindow() {
@@ -63,6 +63,8 @@ class TournamentTabsItemView @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+
+        LayoutInflater.from(context).inflate(R.layout.view_tournament_tabs, this)
 
         matchesTab.setOnClickListener {
             tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
@@ -78,8 +80,9 @@ class TournamentTabsItemView @JvmOverloads constructor(
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsItemView)
-        enableScrollListener = ta.getBoolean(R.styleable.TournamentTabsItemView_enableScrollListener, enableScrollListener)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsView)
+        enableScrollListener = ta.getBoolean(R.styleable.TournamentTabsView_enableScrollListener,
+                enableScrollListener)
         ta.recycle()
     }
 

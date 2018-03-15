@@ -19,7 +19,7 @@
         <attr name="spinnerColors" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="TournamentTabsItemView">
+    <declare-styleable name="TournamentTabsView">
         <attr name="enableScrollListener" format="boolean" />
     </declare-styleable>
 

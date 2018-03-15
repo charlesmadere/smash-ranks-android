@@ -1,12 +1,16 @@
 package com.garpr.android.views
 
+import android.annotation.TargetApi
 import android.content.Context
-import android.support.constraint.ConstraintLayout
+import android.os.Build
+import android.support.annotation.AttrRes
+import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
@@ -23,10 +27,7 @@ import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class TournamentInfoItemView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs), BaseAdapterView<FullTournament>, Refreshable {
+class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament>, Refreshable {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
@@ -47,6 +48,15 @@ class TournamentInfoItemView @JvmOverloads constructor(
                 parent.context).inflate(R.layout.item_tournament_info, parent,
                 false) as TournamentInfoItemView
     }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
+                @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onFinishInflate() {
         super.onFinishInflate()

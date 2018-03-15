@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.TournamentTabsItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/tournamentTabsItemView"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="com.garpr.android.views.TournamentTabsView">
 
     <TextView
         android:id="@+id/tvMatchesTab"
         android:text="@string/matches"
         app:layout_constraintEnd_toStartOf="@+id/tvPlayersTab"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bOpenLink"
         style="@style/TextViewTab" />
 
     <TextView
@@ -17,6 +17,7 @@
         android:text="@string/players"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvMatchesTab"
+        app:layout_constraintTop_toTopOf="@id/tvMatchesTab"
         style="@style/TextViewTab" />
 
-</com.garpr.android.views.TournamentTabsItemView>
+</merge>
