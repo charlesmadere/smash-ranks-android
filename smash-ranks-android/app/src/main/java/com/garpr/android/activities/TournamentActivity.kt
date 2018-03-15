@@ -58,7 +58,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
         fun getLaunchIntent(context: Context, tournament: AbsTournament,
                 region: Region? = null): Intent {
-            return getLaunchIntent(context, tournament.id, tournament.name, tournament.date, region)
+            return getLaunchIntent(context, tournament.id, tournament.name, tournament.date,
+                    region)
         }
 
         fun getLaunchIntent(context: Context, match: Match, region: Region? = null): Intent {
