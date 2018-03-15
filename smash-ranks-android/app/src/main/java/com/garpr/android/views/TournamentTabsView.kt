@@ -13,7 +13,6 @@ import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.extensions.requireViewByIdFromRoot
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.misc.TournamentModeListeners
 import com.garpr.android.models.TournamentMode
 import kotterknife.bindView
 
@@ -30,6 +29,12 @@ class TournamentTabsView @JvmOverloads constructor(
     private val playersTab: TextView by bindView(R.id.tvPlayersTab)
     private val indicatorLine: View by bindView(R.id.indicatorLine)
 
+
+    interface Listeners {
+        fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode)
+        val tournamentMode: TournamentMode
+
+    }
 
     init {
         parseAttributes(attrs)
@@ -66,12 +71,12 @@ class TournamentTabsView @JvmOverloads constructor(
         LayoutInflater.from(context).inflate(R.layout.view_tournament_tabs, this)
 
         matchesTab.setOnClickListener {
-            tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
+            listeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
             refresh()
         }
 
         playersTab.setOnClickListener {
-            tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
+            listeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
             refresh()
         }
     }
@@ -89,7 +94,7 @@ class TournamentTabsView @JvmOverloads constructor(
 
         val layoutParams = indicatorLine.layoutParams as? ConstraintLayout.LayoutParams ?: return
 
-        when (tournamentModeListeners?.tournamentMode) {
+        when (listeners?.tournamentMode) {
             TournamentMode.MATCHES -> {
                 layoutParams.endToEnd = matchesTab.id
                 layoutParams.startToStart = matchesTab.id
@@ -116,7 +121,7 @@ class TournamentTabsView @JvmOverloads constructor(
         refresh()
     }
 
-    private val tournamentModeListeners: TournamentModeListeners?
-        get() = context.optActivity() as? TournamentModeListeners
+    private val listeners: Listeners?
+        get() = context.optActivity() as? Listeners
 
 }

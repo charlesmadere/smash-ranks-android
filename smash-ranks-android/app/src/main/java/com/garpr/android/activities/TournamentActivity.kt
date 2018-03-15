@@ -10,7 +10,10 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
-import com.garpr.android.misc.*
+import com.garpr.android.misc.Constants
+import com.garpr.android.misc.RegionManager
+import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
@@ -22,8 +25,9 @@ import com.garpr.android.views.toolbars.TournamentToolbar
 import kotterknife.bindView
 import javax.inject.Inject
 
-class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, TournamentModeListeners,
-        Searchable, SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
+class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchable,
+        SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
+        TournamentTabsView.Listeners {
 
     private var fullTournament: FullTournament? = null
     private lateinit var tournamentId: String
@@ -110,7 +114,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Tourname
         fetchFullTournament()
     }
 
-    override fun onTournamentModeClick(v: View, tournamentMode: TournamentMode) {
+    override fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode) {
         if (this.tournamentMode == tournamentMode) {
             return
         }
