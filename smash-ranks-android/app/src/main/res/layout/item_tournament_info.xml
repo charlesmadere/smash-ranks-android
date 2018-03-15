@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.TournamentInfoView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.views.TournamentInfoItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="0dp"
         android:textSize="@dimen/text_size_xlarge"
-        app:layout_constraintBottom_toTopOf="@+id/tvEntrants"
+        app:layout_constraintBottom_toTopOf="@+id/tvEntrantsCount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvName"
@@ -40,13 +40,13 @@
 
     <TextView
         android:fontFamily="sans-serif-light"
-        android:id="@id/tvEntrants"
+        android:id="@id/tvEntrantsCount"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="0dp"
         android:textSize="@dimen/text_size_xlarge"
-        app:layout_constraintBottom_toTopOf="@+id/tvOpenLink"
+        app:layout_constraintBottom_toTopOf="@+id/bOpenLink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDate"
@@ -55,31 +55,48 @@
     <com.garpr.android.views.TintedButton
         android:drawablePadding="@dimen/root_padding_half"
         android:drawableStart="@drawable/ic_open_in_browser_white_24dp"
-        android:id="@id/tvOpenLink"
+        android:id="@id/bOpenLink"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_marginTop="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:text="@string/open_bracket_link"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/tvShare"
+        app:layout_constraintEnd_toStartOf="@+id/bShare"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEntrants"
+        app:layout_constraintTop_toBottomOf="@id/tvEntrantsCount"
         tools:visibility="visible" />
 
     <com.garpr.android.views.TintedButton
         android:drawablePadding="@dimen/root_padding_half"
         android:drawableStart="@drawable/ic_share_white_24dp"
-        android:id="@id/tvShare"
+        android:id="@id/bShare"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:text="@string/share"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvOpenLink"
-        app:layout_constraintTop_toTopOf="@id/tvOpenLink"
+        app:layout_constraintStart_toEndOf="@id/bOpenLink"
+        app:layout_constraintTop_toTopOf="@id/bOpenLink"
         tools:visibility="visible" />
 
-</com.garpr.android.views.TournamentInfoView>
+    <TextView
+        android:id="@+id/tvMatchesTab"
+        android:layout_marginTop="@dimen/root_padding"
+        android:text="@string/matches"
+        app:layout_constraintEnd_toStartOf="@+id/tvPlayersTab"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bOpenLink"
+        style="@style/TextViewTab" />
+
+    <TextView
+        android:id="@id/tvPlayersTab"
+        android:text="@string/players"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvMatchesTab"
+        app:layout_constraintTop_toTopOf="@id/tvMatchesTab"
+        style="@style/TextViewTab" />
+
+</com.garpr.android.views.TournamentInfoItemView>

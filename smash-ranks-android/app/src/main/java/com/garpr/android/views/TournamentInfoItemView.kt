@@ -1,43 +1,51 @@
 package com.garpr.android.views
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.getActivity
+import com.garpr.android.extensions.optActivity
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
+import com.garpr.android.misc.TournamentModeListeners
 import com.garpr.android.models.BracketSource
 import com.garpr.android.models.FullTournament
+import com.garpr.android.models.TournamentMode
 import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class TournamentInfoView @JvmOverloads constructor(
+class TournamentInfoItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleConstraintLayout(context, attrs), BaseAdapterView<FullTournament> {
+) : ConstraintLayout(context, attrs), BaseAdapterView<FullTournament>, Refreshable {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
 
+    private val openLink: Button by bindView(R.id.bOpenLink)
+    private val share: Button by bindView(R.id.bShare)
     private val date: TextView by bindView(R.id.tvDate)
-    private val entrants: TextView by bindView(R.id.tvEntrants)
+    private val entrantsCount: TextView by bindView(R.id.tvEntrantsCount)
+    private val matchesTab: TextView by bindView(R.id.tvMatchesTab)
     private val name: TextView by bindView(R.id.tvName)
-    private val openLink: TextView by bindView(R.id.tvOpenLink)
-    private val share: TextView by bindView(R.id.tvShare)
+    private val playersTab: TextView by bindView(R.id.tvPlayersTab)
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentInfoView = LayoutInflater.from(
+        fun inflate(parent: ViewGroup): TournamentInfoItemView = LayoutInflater.from(
                 parent.context).inflate(R.layout.item_tournament_info, parent,
-                false) as TournamentInfoView
+                false) as TournamentInfoItemView
     }
 
     override fun onFinishInflate() {
@@ -54,6 +62,42 @@ class TournamentInfoView @JvmOverloads constructor(
         share.setOnClickListener {
             tournament?.let { shareUtils.shareTournament(context.getActivity(), it) }
         }
+
+        matchesTab.setOnClickListener {
+            tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
+            refresh()
+        }
+
+        playersTab.setOnClickListener {
+            tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
+            refresh()
+        }
+    }
+
+    override fun refresh() {
+        refreshTabs()
+    }
+
+    private fun refreshTabs() {
+        // TODO
+
+        when (tournamentModeListeners?.tournamentMode) {
+            TournamentMode.MATCHES -> {
+
+            }
+
+            TournamentMode.PLAYERS -> {
+
+            }
+
+            else -> {
+
+            }
+        }
+    }
+
+    override fun setContent(content: FullTournament) {
+        tournament = content
     }
 
     private var tournament: FullTournament? = null
@@ -67,9 +111,9 @@ class TournamentInfoView @JvmOverloads constructor(
             name.text = value.name
             date.text = value.date.fullForm
 
-            val players = value.players?.size ?: 0
-            entrants.text = resources.getQuantityString(R.plurals.x_entrants, players,
-                    numberFormat.format(players))
+            val entrants = value.players?.size ?: 0
+            entrantsCount.text = resources.getQuantityString(R.plurals.x_entrants, entrants,
+                    numberFormat.format(entrants))
 
             if (value.url.isNullOrBlank()) {
                 openLink.visibility = View.GONE
@@ -92,10 +136,11 @@ class TournamentInfoView @JvmOverloads constructor(
                 openLink.visibility = View.VISIBLE
                 share.visibility = View.VISIBLE
             }
+
+            refreshTabs()
         }
 
-    override fun setContent(content: FullTournament) {
-        tournament = content
-    }
+    private val tournamentModeListeners: TournamentModeListeners?
+        get() = context.optActivity() as? TournamentModeListeners
 
 }

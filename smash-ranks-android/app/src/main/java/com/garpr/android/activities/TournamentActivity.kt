@@ -10,24 +10,19 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
-import com.garpr.android.misc.Constants
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.*
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
-import com.garpr.android.views.TournamentTabsItemView
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.garpr.android.views.toolbars.TournamentToolbar
 import kotterknife.bindView
 import javax.inject.Inject
 
-class TournamentActivity : BaseActivity(), ApiListener<FullTournament>,
-        TournamentTabsItemView.Listeners, Searchable, SearchQueryHandle, SearchToolbar.Listener,
-        SwipeRefreshLayout.OnRefreshListener {
+class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, TournamentModeListeners,
+        Searchable, SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private var fullTournament: FullTournament? = null
     private lateinit var tournamentId: String
@@ -104,7 +99,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>,
         setContentView(R.layout.activity_tournament)
 
         tournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)
-        _tournamentMode = savedInstanceState?.getParcelable(KEY_TOURNAMENT_MODE) ?: _tournamentMode
+        _tournamentMode = savedInstanceState?.getParcelable(KEY_TOURNAMENT_MODE) ?: tournamentMode
 
         fetchFullTournament()
     }
@@ -113,8 +108,13 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>,
         fetchFullTournament()
     }
 
-    override fun onTournamentModeClick(v: TournamentTabsItemView, tournamentMode: TournamentMode) {
+    override fun onTournamentModeClick(v: View, tournamentMode: TournamentMode) {
+        if (this.tournamentMode == tournamentMode) {
+            return
+        }
+
         _tournamentMode = tournamentMode
+
         val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
         tournamentAdapter.set(tournamentMode, tournament)
     }

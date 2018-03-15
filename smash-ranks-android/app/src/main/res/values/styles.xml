@@ -296,21 +296,16 @@
     </style>
 
     <style name="TextViewTab">
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">@dimen/tab_height</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:minHeight">@dimen/list_item_height</item>
-        <item name="android:paddingBottom">@dimen/root_padding_half</item>
         <item name="android:paddingEnd">@dimen/root_padding</item>
         <item name="android:paddingStart">@dimen/root_padding</item>
-        <item name="android:paddingTop">@dimen/root_padding_half</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textStyle">bold</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
     <style name="Toolbar">

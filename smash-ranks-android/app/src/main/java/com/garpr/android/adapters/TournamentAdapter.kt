@@ -27,10 +27,6 @@ class TournamentAdapter(context: Context) : BaseAdapter<Any>(context) {
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
         return when (tournamentAdapterManager.getItemViewType(position, getItem(position))) {
-            TournamentAdapterManager.ViewType.INFO -> {
-                R.layout.item_tournament_info
-            }
-
             TournamentAdapterManager.ViewType.MATCH -> {
                 R.layout.item_tournament_match
             }
@@ -43,8 +39,8 @@ class TournamentAdapter(context: Context) : BaseAdapter<Any>(context) {
                 R.layout.item_player
             }
 
-            TournamentAdapterManager.ViewType.TABS -> {
-                R.layout.item_tournament_tabs
+            TournamentAdapterManager.ViewType.TOURNAMENT_INFO -> {
+                R.layout.item_tournament_info
             }
         }
     }

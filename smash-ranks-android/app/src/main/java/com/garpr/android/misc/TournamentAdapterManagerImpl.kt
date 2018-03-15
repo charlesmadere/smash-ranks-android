@@ -10,14 +10,9 @@ class TournamentAdapterManagerImpl(
         private val application: Application
 ) : TournamentAdapterManager {
 
-    companion object {
-        private val TABS = Any()
-    }
-
     override fun buildMatchesList(content: FullTournament): List<Any> {
         val list = mutableListOf<Any>()
         list.add(content)
-        list.add(TABS)
 
         if (content.matches?.isNotEmpty() == true) {
             list.addAll(content.matches)
@@ -31,7 +26,6 @@ class TournamentAdapterManagerImpl(
     override fun buildPlayersList(content: FullTournament): List<Any> {
         val list = mutableListOf<Any>()
         list.add(content)
-        list.add(TABS)
 
         if (content.players?.isNotEmpty() == true) {
             list.addAll(content.players)
@@ -48,10 +42,6 @@ class TournamentAdapterManagerImpl(
                 Long.MIN_VALUE
             }
 
-            1 -> {
-                Long.MIN_VALUE + 1L
-            }
-
             else -> {
                 item.hashCode().toLong()
             }
@@ -61,11 +51,7 @@ class TournamentAdapterManagerImpl(
     override fun getItemViewType(position: Int, item: Any): TournamentAdapterManager.ViewType {
         return when {
             position == 0 -> {
-                TournamentAdapterManager.ViewType.INFO
-            }
-
-            position == 1 -> {
-                TournamentAdapterManager.ViewType.TABS
+                TournamentAdapterManager.ViewType.TOURNAMENT_INFO
             }
 
             item is AbsPlayer -> {

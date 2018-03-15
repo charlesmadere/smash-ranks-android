@@ -16,6 +16,7 @@
     <dimen name="root_padding_half">8dp</dimen>
     <dimen name="root_padding_quadruple">64dp</dimen>
     <dimen name="root_padding_triple">48dp</dimen>
+    <dimen name="tab_height">56dp</dimen>
     <dimen name="text_size_normal">14sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_large">16sp</dimen>

@@ -21,11 +21,6 @@ class TintedImageView @JvmOverloads constructor(
         parseAttributes(attrs)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        refresh()
-    }
-
     override fun onFinishInflate() {
         super.onFinishInflate()
         refresh()

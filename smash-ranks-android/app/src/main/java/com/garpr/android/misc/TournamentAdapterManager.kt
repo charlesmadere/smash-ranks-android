@@ -5,7 +5,7 @@ import com.garpr.android.models.FullTournament
 interface TournamentAdapterManager {
 
     enum class ViewType {
-        INFO, MATCH, MESSAGE, PLAYER, TABS
+        MATCH, MESSAGE, PLAYER, TOURNAMENT_INFO
     }
 
     fun buildMatchesList(content: FullTournament): List<Any>

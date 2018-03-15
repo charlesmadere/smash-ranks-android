@@ -10,6 +10,7 @@ import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.TournamentModeListeners
 import com.garpr.android.models.TournamentMode
 import kotterknife.bindView
 
@@ -20,15 +21,10 @@ class TournamentTabsItemView @JvmOverloads constructor(
 
     private var enableScrollListener = false
 
-    private val matches: TextView by bindView(R.id.tvMatches)
-    private val players: TextView by bindView(R.id.tvPlayers)
+    private val matchesTab: TextView by bindView(R.id.tvMatchesTab)
+    private val playersTab: TextView by bindView(R.id.tvPlayersTab)
     private var scrollListener: RecyclerView.OnScrollListener? = null
 
-
-    interface Listeners {
-        fun onTournamentModeClick(v: TournamentTabsItemView, tournamentMode: TournamentMode)
-        val tournamentMode: TournamentMode
-    }
 
     init {
         parseAttributes(attrs)
@@ -68,15 +64,13 @@ class TournamentTabsItemView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        matches.setOnClickListener {
-            (context.optActivity() as? Listeners)?.onTournamentModeClick(this,
-                    TournamentMode.MATCHES)
+        matchesTab.setOnClickListener {
+            tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
             refresh()
         }
 
-        players.setOnClickListener {
-            (context.optActivity() as? Listeners)?.onTournamentModeClick(this,
-                    TournamentMode.PLAYERS)
+        playersTab.setOnClickListener {
+            tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
             refresh()
         }
 
@@ -96,7 +90,7 @@ class TournamentTabsItemView @JvmOverloads constructor(
 
         // TODO
 
-        when ((context.optActivity() as? Listeners)?.tournamentMode) {
+        when (tournamentModeListeners?.tournamentMode) {
             TournamentMode.MATCHES -> {
 
             }
@@ -114,5 +108,8 @@ class TournamentTabsItemView @JvmOverloads constructor(
     override fun setContent(content: Any?) {
         refresh()
     }
+
+    private val tournamentModeListeners: TournamentModeListeners?
+        get() = context.optActivity() as? TournamentModeListeners
 
 }
