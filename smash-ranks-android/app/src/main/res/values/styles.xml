@@ -304,7 +304,6 @@
         <item name="android:paddingStart">@dimen/root_padding</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textStyle">bold</item>
     </style>
 
