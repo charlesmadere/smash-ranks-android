@@ -43,7 +43,7 @@ open class RefreshLayout @JvmOverloads constructor(
 
         scrollingChildId?.let {
             scrollingChild = findViewById(it) ?: throw NullPointerException(
-                    "unable to find scrolling child")
+                    "unable to find scrolling child (${resources.getResourceName(it)})")
         }
 
         setProgressBackgroundColorSchemeResource(R.color.card_background)
