@@ -21,10 +21,11 @@ class TournamentTabsView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs), BaseAdapterView<Any?>, Refreshable {
 
     private var enableScrollListener = false
+    private var scrollListener: RecyclerView.OnScrollListener? = null
 
     private val matchesTab: TextView by bindView(R.id.tvMatchesTab)
     private val playersTab: TextView by bindView(R.id.tvPlayersTab)
-    private var scrollListener: RecyclerView.OnScrollListener? = null
+    private val indicatorLine: View by bindView(R.id.indicatorLine)
 
 
     init {
@@ -91,21 +92,29 @@ class TournamentTabsView @JvmOverloads constructor(
             attachScrollListener()
         }
 
-        // TODO
+        val layoutParams = indicatorLine.layoutParams as? ConstraintLayout.LayoutParams ?: return
 
         when (tournamentModeListeners?.tournamentMode) {
             TournamentMode.MATCHES -> {
-
+                layoutParams.endToEnd = matchesTab.id
+                layoutParams.startToStart = matchesTab.id
+                indicatorLine.visibility = View.VISIBLE
             }
 
             TournamentMode.PLAYERS -> {
-
+                layoutParams.endToEnd = playersTab.id
+                layoutParams.startToStart = playersTab.id
+                indicatorLine.visibility = View.VISIBLE
             }
 
             else -> {
-
+                layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                indicatorLine.visibility = View.INVISIBLE
             }
         }
+
+        indicatorLine.layoutParams = layoutParams
     }
 
     override fun setContent(content: Any?) {

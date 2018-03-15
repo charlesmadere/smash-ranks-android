@@ -20,4 +20,15 @@
         app:layout_constraintTop_toTopOf="@id/tvMatchesTab"
         style="@style/TextViewTab" />
 
+    <View
+        android:background="?attr/colorAccent"
+        android:id="@+id/indicatorLine"
+        android:layout_height="@dimen/divider_height"
+        android:layout_width="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tvMatchesTab"
+        app:layout_constraintStart_toStartOf="@id/tvMatchesTab"
+        tools:visibility="visible" />
+
 </merge>

@@ -16,18 +16,14 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.getActivity
-import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.misc.TournamentModeListeners
 import com.garpr.android.models.BracketSource
 import com.garpr.android.models.FullTournament
-import com.garpr.android.models.TournamentMode
 import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament>, Refreshable {
+class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
@@ -38,9 +34,7 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament>, Re
     private val share: Button by bindView(R.id.bShare)
     private val date: TextView by bindView(R.id.tvDate)
     private val entrantsCount: TextView by bindView(R.id.tvEntrantsCount)
-    private val matchesTab: TextView by bindView(R.id.tvMatchesTab)
     private val name: TextView by bindView(R.id.tvName)
-    private val playersTab: TextView by bindView(R.id.tvPlayersTab)
 
 
     companion object {
@@ -71,38 +65,6 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament>, Re
 
         share.setOnClickListener {
             tournament?.let { shareUtils.shareTournament(context.getActivity(), it) }
-        }
-
-        matchesTab.setOnClickListener {
-            tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
-            refresh()
-        }
-
-        playersTab.setOnClickListener {
-            tournamentModeListeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
-            refresh()
-        }
-    }
-
-    override fun refresh() {
-        refreshTabs()
-    }
-
-    private fun refreshTabs() {
-        // TODO
-
-        when (tournamentModeListeners?.tournamentMode) {
-            TournamentMode.MATCHES -> {
-
-            }
-
-            TournamentMode.PLAYERS -> {
-
-            }
-
-            else -> {
-
-            }
         }
     }
 
@@ -146,11 +108,6 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament>, Re
                 openLink.visibility = View.VISIBLE
                 share.visibility = View.VISIBLE
             }
-
-            refreshTabs()
         }
-
-    private val tournamentModeListeners: TournamentModeListeners?
-        get() = context.optActivity() as? TournamentModeListeners
 
 }
