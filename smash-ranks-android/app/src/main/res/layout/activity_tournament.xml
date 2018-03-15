@@ -25,7 +25,6 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:visibility="invisible"
-                app:recyclerViewId="@id/recyclerView"
                 tools:visibility="visible" />
 
             <com.garpr.android.views.ErrorContentLinearLayout

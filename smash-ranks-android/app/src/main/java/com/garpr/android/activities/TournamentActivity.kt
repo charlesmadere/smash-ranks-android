@@ -19,6 +19,7 @@ import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
+import com.garpr.android.views.TournamentInfoItemView
 import com.garpr.android.views.TournamentTabsView
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.garpr.android.views.toolbars.TournamentToolbar
@@ -88,6 +89,12 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     override val activityName = TAG
 
+    private fun checkTournamentTabViewScrollStates() {
+        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView ?: return
+
+        // TODO
+    }
+
     override fun failure(errorCode: Int) {
         fullTournament = null
         showError(errorCode)
@@ -114,6 +121,13 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         fetchFullTournament()
     }
 
+    private val onScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            checkTournamentTabViewScrollStates()
+        }
+    }
+
     override fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode) {
         if (this.tournamentMode == tournamentMode) {
             return
@@ -133,6 +147,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         recyclerView.addItemDecoration(DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
+        recyclerView.addOnScrollListener(onScrollListener)
 
         tournamentAdapter = TournamentAdapter(this)
         recyclerView.adapter = tournamentAdapter

@@ -19,10 +19,6 @@
         <attr name="spinnerColors" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="TournamentTabsView">
-        <attr name="recyclerViewId" format="reference" />
-    </declare-styleable>
-
     <declare-styleable name="View">
         <attr name="descriptionText" format="string" />
         <attr name="drawableTintColor" format="color" />
