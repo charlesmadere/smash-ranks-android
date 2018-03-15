@@ -29,6 +29,16 @@ class TournamentTabsView @JvmOverloads constructor(
 
     }
 
+    fun animateIn() {
+        visibility = View.VISIBLE
+        // TODO
+    }
+
+    fun animateOut() {
+        visibility = View.INVISIBLE
+        // TODO
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         refresh()

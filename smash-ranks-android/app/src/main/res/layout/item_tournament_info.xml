@@ -69,6 +69,7 @@
         tools:visibility="visible" />
 
     <com.garpr.android.views.TournamentTabsView
+        android:id="@+id/tournamentTabsView"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 

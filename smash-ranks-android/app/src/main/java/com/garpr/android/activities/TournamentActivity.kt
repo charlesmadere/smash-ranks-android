@@ -91,10 +91,13 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     override val activityName = TAG
 
     private fun checkTournamentTabViewScrollStates() {
-        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView ?: return
+        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
 
-        // TODO
-        // calculate tops
+        if (view == null || view.tabsTop <= 0) {
+            tournamentTabsView.animateIn()
+        } else {
+            tournamentTabsView.animateOut()
+        }
     }
 
     override fun failure(errorCode: Int) {

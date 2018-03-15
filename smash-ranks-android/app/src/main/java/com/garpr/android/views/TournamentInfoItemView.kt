@@ -35,6 +35,7 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
     private val date: TextView by bindView(R.id.tvDate)
     private val entrantsCount: TextView by bindView(R.id.tvEntrantsCount)
     private val name: TextView by bindView(R.id.tvName)
+    private val tournamentTabsView: TournamentTabsView by bindView(R.id.tournamentTabsView)
 
 
     companion object {
@@ -71,6 +72,9 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
     override fun setContent(content: FullTournament) {
         tournament = content
     }
+
+    val tabsTop: Int
+        get() = tournamentTabsView.top
 
     private var tournament: FullTournament? = null
         set(value) {
