@@ -93,6 +93,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         val view = recyclerView.getChildAt(0) as? TournamentInfoItemView ?: return
 
         // TODO
+        // calculate tops
     }
 
     override fun failure(errorCode: Int) {
