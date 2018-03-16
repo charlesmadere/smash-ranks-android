@@ -49,6 +49,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     private val aliases: TextView by bindView(R.id.tvAliases)
     private val name: TextView by bindView(R.id.tvName)
     private val rating: TextView by bindView(R.id.tvRating)
+    private val region: TextView by bindView(R.id.tvRegion)
     private val unadjustedRating: TextView by bindView(R.id.tvUnadjustedRating)
 
 
@@ -152,8 +153,8 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         val player = fullPlayer ?: return
         name.text = player.name
 
-        val presentation = playerProfileManager.getPresentation(player,
-                regionManager.getRegion(context))
+        val region = regionManager.getRegion(context)
+        val presentation = playerProfileManager.getPresentation(player, region)
 
         if (presentation.aliases.isNullOrBlank()) {
             aliases.visibility = View.GONE
@@ -161,6 +162,8 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
             aliases.text = presentation.aliases
             aliases.visibility = View.VISIBLE
         }
+
+        this.region.text = region.displayName
 
         if (presentation.rating.isNullOrBlank() || presentation.unadjustedRating.isNullOrBlank()) {
             rating.visibility = View.GONE
