@@ -10,6 +10,8 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
+import com.garpr.android.extensions.smoothScrollToTop
+import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
@@ -90,10 +92,19 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     override val activityName = TAG
 
-    private fun checkTournamentTabViewScrollStates() {
+    private fun checkTournamentTabViewsScrollStates() {
         val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
 
-        if (view == null || view.tabsTop <= 0) {
+        if (view == null) {
+            tournamentTabsView.animateIn()
+            return
+        }
+
+        val tabsVerticalPositionInWindow = view.tabsVerticalPositionInWindow
+        val toolbarVerticalPositionInWindow = tournamentToolbar.verticalPositionInWindow +
+                tournamentToolbar.height
+
+        if (tabsVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
             tournamentTabsView.animateIn()
         } else {
             tournamentTabsView.animateOut()
@@ -129,12 +140,18 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            checkTournamentTabViewScrollStates()
+            checkTournamentTabViewsScrollStates()
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            checkTournamentTabViewsScrollStates()
         }
     }
 
     override fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode) {
         if (this.tournamentMode == tournamentMode) {
+            recyclerView.smoothScrollToTop()
             return
         }
 

@@ -1,14 +1,17 @@
 package com.garpr.android.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewPropertyAnimator
 import android.widget.TextView
 import com.garpr.android.R
-import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.optActivity
+import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.TournamentMode
 import kotterknife.bindView
@@ -16,7 +19,14 @@ import kotterknife.bindView
 class TournamentTabsView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs), BaseAdapterView<Any?>, Refreshable {
+) : ConstraintLayout(context, attrs), Refreshable {
+
+    private val animationDuration: Long by lazy {
+        resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+    }
+
+    private var inAnimation: ViewPropertyAnimator? = null
+    private var outAnimation: ViewPropertyAnimator? = null
 
     private val matchesTab: TextView by bindView(R.id.tvMatchesTab)
     private val playersTab: TextView by bindView(R.id.tvPlayersTab)
@@ -26,18 +36,53 @@ class TournamentTabsView @JvmOverloads constructor(
     interface Listeners {
         fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode)
         val tournamentMode: TournamentMode
-
     }
 
     fun animateIn() {
-        visibility = View.VISIBLE
-        // TODO
+        if (inAnimation != null) {
+            return
+        }
+
+        outAnimation?.cancel()
+        outAnimation = null
+
+        val animation = animate()
+                .alpha(1f)
+                .setDuration(animationDuration)
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .withEndAction {
+                    inAnimation = null
+                }
+
+        inAnimation = animation
+        animation.start()
     }
 
     fun animateOut() {
-        visibility = View.INVISIBLE
-        // TODO
+        if (outAnimation != null) {
+            return
+        }
+
+        inAnimation?.cancel()
+        inAnimation = null
+
+        val animation = animate()
+                .alpha(0f)
+                .setDuration(animationDuration)
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .withEndAction {
+                    outAnimation = null
+                }
+
+        outAnimation = animation
+        animation.start()
     }
+
+    private val canBeTouched: Boolean
+        get() = alpha == 1f && visibility == View.VISIBLE
+
+    private val listeners: Listeners?
+        get() = context.optActivity() as? Listeners
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -58,6 +103,15 @@ class TournamentTabsView @JvmOverloads constructor(
             listeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
             refresh()
         }
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        return if (canBeTouched) super.onInterceptTouchEvent(ev) else true
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return if (canBeTouched) super.onTouchEvent(event) else false
     }
 
     override fun refresh() {
@@ -85,12 +139,5 @@ class TournamentTabsView @JvmOverloads constructor(
 
         indicatorLine.layoutParams = layoutParams
     }
-
-    override fun setContent(content: Any?) {
-        refresh()
-    }
-
-    private val listeners: Listeners?
-        get() = context.optActivity() as? Listeners
 
 }

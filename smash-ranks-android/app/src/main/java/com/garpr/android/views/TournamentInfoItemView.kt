@@ -16,6 +16,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.getActivity
+import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.BracketSource
 import com.garpr.android.models.FullTournament
@@ -73,8 +74,8 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
         tournament = content
     }
 
-    val tabsTop: Int
-        get() = tournamentTabsView.top
+    val tabsVerticalPositionInWindow: Int
+        get() = tournamentTabsView.verticalPositionInWindow
 
     private var tournament: FullTournament? = null
         set(value) {

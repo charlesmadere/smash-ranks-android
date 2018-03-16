@@ -3,10 +3,10 @@ package com.garpr.android.views
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.models.LitePlayer
 import com.garpr.android.models.WinsLosses
 import kotterknife.bindView
@@ -42,7 +42,7 @@ class WinsLossesView @JvmOverloads constructor(
         animate()
                 .alpha(1f)
                 .setDuration(resources.getInteger(R.integer.win_losses_animation).toLong())
-                .setInterpolator(AccelerateDecelerateInterpolator())
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
                 .start()
     }
 

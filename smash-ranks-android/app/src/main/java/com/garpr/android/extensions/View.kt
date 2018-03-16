@@ -11,3 +11,10 @@ fun <T : View> View.requireViewByIdFromRoot(@IdRes id: Int): T {
     return findViewByIdFromRoot(id) ?: throw NullPointerException(
             "can't find view (${resources.getResourceName(id)})")
 }
+
+val View.verticalPositionInWindow: Int
+    get() {
+        val array = IntArray(2)
+        getLocationInWindow(array)
+        return array[1]
+    }

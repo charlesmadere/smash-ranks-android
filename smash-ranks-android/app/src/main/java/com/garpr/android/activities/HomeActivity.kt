@@ -250,7 +250,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             throw RuntimeException("Region (${rankingCriteria.displayName}) is missing necessary data")
         }
 
-        val numberFormat = NumberFormat.getInstance()
+        val numberFormat = NumberFormat.getIntegerInstance()
         val tournaments = resources.getQuantityString(R.plurals.x_tournaments,
                 rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended))
         val days = resources.getQuantityString(R.plurals.x_days,

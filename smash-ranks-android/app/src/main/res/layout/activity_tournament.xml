@@ -21,11 +21,14 @@
                 style="@style/RecyclerView" />
 
             <com.garpr.android.views.TournamentTabsView
+                android:alpha="0"
+                android:background="?attr/colorPrimary"
+                android:elevation="@dimen/elevation"
                 android:id="@+id/topTournamentTabsView"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                android:theme="@style/ToolbarTheme"
+                tools:ignore="UnusedAttribute" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
                 app:titleText="@string/error_loading_tournament"

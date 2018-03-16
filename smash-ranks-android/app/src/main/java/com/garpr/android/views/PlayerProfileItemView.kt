@@ -7,8 +7,6 @@ import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.AccelerateInterpolator
 import android.widget.Button
 import android.widget.TextView
 import com.garpr.android.App
@@ -24,6 +22,10 @@ import javax.inject.Inject
 class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>,
         FavoritePlayersManager.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener, Refreshable {
+
+    private val animationDuration: Long by lazy {
+        resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+    }
 
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
@@ -60,17 +62,15 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private fun animateFavoritesButtons(animateOut: View, animateIn: View) {
-        val duration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-
         animateOut.animate()
                 .alpha(0f)
-                .setDuration(duration)
-                .setInterpolator(AccelerateInterpolator())
+                .setDuration(animationDuration)
+                .setInterpolator(AnimationUtils.ACCELERATE_INTERPOLATOR)
                 .withEndAction {
                     animateIn.animate()
                             .alpha(1f)
-                            .setDuration(duration)
-                            .setInterpolator(AccelerateDecelerateInterpolator())
+                            .setDuration(animationDuration)
+                            .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
                             .withStartAction {
                                 animateOut.visibility = View.GONE
                                 animateIn.alpha = 0f
