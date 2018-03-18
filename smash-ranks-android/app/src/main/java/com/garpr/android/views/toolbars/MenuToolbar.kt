@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.ColorUtils
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.Toolbar
 import android.text.style.ForegroundColorSpan
@@ -41,17 +40,13 @@ abstract class MenuToolbar @JvmOverloads constructor(
 
     private val titleAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
         ValueAnimator.AnimatorUpdateListener {
-            val value = it.animatedValue as Int
-            setTitleTextColor(ColorUtils.setAlphaComponent(
-                    context.getAttrColor(android.R.attr.textColorPrimary), value))
+            setTitleTextColor(it.animatedValue as Int)
         }
     }
 
     private val subtitleAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
         ValueAnimator.AnimatorUpdateListener {
-            val value = it.animatedValue as Int
-            setSubtitleTextColor(ColorUtils.setAlphaComponent(
-                    context.getAttrColor(android.R.attr.textColorSecondary), value))
+            setSubtitleTextColor(it.animatedValue as Int)
         }
     }
     // end Animation Variables
