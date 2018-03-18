@@ -46,7 +46,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
 
         loserName.clear()
         winnerName.clear()
-        refreshIdentity()
+        refresh()
     }
 
     private var match: FullTournament.Match? = null
@@ -69,7 +69,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
                 winnerName.setTextColor(winColor)
             }
 
-            refreshIdentity()
+            refresh()
         }
 
     override fun onClick(v: View) {
@@ -110,7 +110,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
         setOnClickListener(this)
     }
 
-    override fun refreshIdentity() {
+    override fun refresh() {
         val match = this.match
 
         if (match != null && identityManager.isPlayer(match.winnerId)) {

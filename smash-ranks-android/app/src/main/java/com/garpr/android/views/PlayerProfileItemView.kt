@@ -14,6 +14,7 @@ import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.getActivity
+import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.misc.*
 import com.garpr.android.models.FullPlayer
 import kotterknife.bindView
@@ -198,6 +199,9 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
             viewYourselfVsThisOpponent.visibility = View.GONE
         }
     }
+
+    val regionVerticalPositionInWindow: Int
+        get() = region.verticalPositionInWindow
 
     override fun setContent(content: FullPlayer) {
         fullPlayer = content

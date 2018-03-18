@@ -52,7 +52,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
         super.clear()
 
         name.clear()
-        refreshIdentity()
+        refresh()
     }
 
     override fun identityIsSomeoneElse() {
@@ -83,7 +83,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
                 MatchResult.WIN -> name.setTextColor(ContextCompat.getColor(context, R.color.win))
             }
 
-            refreshIdentity()
+            refresh()
         }
 
     override fun onClick(v: View) {

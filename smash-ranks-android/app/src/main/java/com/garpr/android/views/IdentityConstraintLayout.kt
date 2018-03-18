@@ -10,13 +10,15 @@ import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.misc.IdentityManager
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.AbsPlayer
 import javax.inject.Inject
 
 abstract class IdentityConstraintLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleConstraintLayout(context, attrs), IdentityManager.OnIdentityChangeListener {
+) : LifecycleConstraintLayout(context, attrs), IdentityManager.OnIdentityChangeListener,
+        Refreshable {
 
     private var originalBackground: Drawable? = null
 
@@ -70,11 +72,11 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
 
     override fun onIdentityChange(identityManager: IdentityManager) {
         if (isAlive) {
-            refreshIdentity()
+            refresh()
         }
     }
 
-    protected open fun refreshIdentity() {
+    override fun refresh() {
         if (identityManager.isPlayer(identity) || identityManager.isPlayer(identityId)) {
             identityIsUser()
         } else {

@@ -59,7 +59,7 @@ class PlayerToolbar @JvmOverloads constructor(
 
     override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
-            postRefreshMenu()
+            postRefresh()
         }
     }
 
@@ -75,7 +75,7 @@ class PlayerToolbar @JvmOverloads constructor(
 
     override fun onIdentityChange(identityManager: IdentityManager) {
         if (isAlive) {
-            postRefreshMenu()
+            postRefresh()
         }
     }
 

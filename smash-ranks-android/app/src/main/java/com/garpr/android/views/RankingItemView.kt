@@ -81,7 +81,7 @@ class RankingItemView @JvmOverloads constructor(
         name.text = content.name
         rating.text = MiscUtils.truncateFloat(content.rating)
 
-        refreshIdentity()
+        refresh()
     }
 
 }

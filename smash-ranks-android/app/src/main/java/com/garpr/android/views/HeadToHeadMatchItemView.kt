@@ -47,7 +47,7 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
 
         playerName.clear()
         opponentName.clear()
-        refreshIdentity()
+        refresh()
     }
 
     private var match: HeadToHeadMatch? = null

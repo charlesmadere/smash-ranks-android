@@ -9,11 +9,12 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.Refreshable
 
 abstract class MenuToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : Toolbar(context, attrs), Heartbeat {
+) : Toolbar(context, attrs), Heartbeat, Refreshable {
 
     private val sparseMenuItemsArray = SparseBooleanArray()
 
@@ -38,7 +39,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
             return
         }
 
-        refreshMenu()
+        refresh()
     }
 
     open fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
@@ -46,29 +47,29 @@ abstract class MenuToolbar @JvmOverloads constructor(
         isMenuCreated = true
     }
 
-    fun onOptionsItemSelected(item: MenuItem): Boolean {
+    open fun onOptionsItemSelected(item: MenuItem): Boolean {
         // intentionally empty, children can override
         return false
     }
 
-    open fun onRefreshMenu() {
+    protected open fun onRefreshMenu() {
         for (i in 0 until menu.size()) {
             val menuItem = menu.getItem(i)
             menuItem.isVisible = sparseMenuItemsArray.get(menuItem.itemId)
         }
     }
 
-    protected fun postRefreshMenu() {
+    protected fun postRefresh() {
         if (isAlive) {
             post {
                 if (isAlive) {
-                    refreshMenu()
+                    refresh()
                 }
             }
         }
     }
 
-    fun refreshMenu() {
+    final override fun refresh() {
         if (isMenuCreated) {
             onRefreshMenu()
         }

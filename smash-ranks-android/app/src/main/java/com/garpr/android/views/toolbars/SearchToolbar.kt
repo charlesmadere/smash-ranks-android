@@ -49,12 +49,12 @@ abstract class SearchToolbar @JvmOverloads constructor(
     }
 
     override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-        postRefreshMenu()
+        postRefresh()
         return true
     }
 
     override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-        postRefreshMenu()
+        postRefresh()
         return true
     }
 

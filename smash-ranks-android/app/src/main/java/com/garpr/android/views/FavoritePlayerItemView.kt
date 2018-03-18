@@ -66,7 +66,7 @@ class FavoritePlayerItemView @JvmOverloads constructor(
         identity = content
         name.text = content.name
         region.text = content.region.displayName
-        refreshIdentity()
+        refresh()
     }
 
 }

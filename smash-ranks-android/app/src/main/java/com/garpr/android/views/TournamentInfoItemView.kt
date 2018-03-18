@@ -45,14 +45,23 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
                 false) as TournamentInfoItemView
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        parseAttributes(attrs)
+    }
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+            super(context, attrs, defStyleAttr) {
+        parseAttributes(attrs)
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-                @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+                @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+        parseAttributes(attrs)
+    }
+
+    val dateVerticalPositionInWindow: Int
+        get() = date.verticalPositionInWindow
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -68,6 +77,10 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
         share.setOnClickListener {
             tournament?.let { shareUtils.shareTournament(context.getActivity(), it) }
         }
+    }
+
+    private fun parseAttributes(attrs: AttributeSet?) {
+
     }
 
     override fun setContent(content: FullTournament) {

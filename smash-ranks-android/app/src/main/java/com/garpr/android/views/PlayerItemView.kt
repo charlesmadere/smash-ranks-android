@@ -75,7 +75,7 @@ class PlayerItemView : IdentityFrameLayout, BaseAdapterView<AbsPlayer>, View.OnC
     override fun setContent(content: AbsPlayer) {
         identity = content
         name.text = content.name
-        refreshIdentity()
+        refresh()
     }
 
 }

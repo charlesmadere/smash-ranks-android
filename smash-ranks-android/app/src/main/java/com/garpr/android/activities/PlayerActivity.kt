@@ -12,6 +12,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
 import com.garpr.android.extensions.subtitle
+import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.misc.*
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
@@ -19,6 +20,7 @@ import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.MatchItemView
+import com.garpr.android.views.PlayerProfileItemView
 import com.garpr.android.views.toolbars.PlayerToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import kotterknife.bindView
@@ -90,6 +92,25 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override val activityName = TAG
+
+    private fun checkNameAndRegionViewScrollStates() {
+        val view = recyclerView.getChildAt(0) as? PlayerProfileItemView
+
+        if (view == null) {
+            // TODO
+            return
+        }
+
+        val dateVerticalPositionInWindow = view.regionVerticalPositionInWindow
+        val toolbarVerticalPositionInWindow = playerToolbar.verticalPositionInWindow +
+                playerToolbar.height
+
+        if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
+            // TODO
+        } else {
+            // TODO
+        }
+    }
 
     override fun failure(errorCode: Int) {
         playerMatchesBundle = null
@@ -180,6 +201,18 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override fun onRefresh() {
         fetchPlayerMatchesBundle()
+    }
+
+    private val onScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            checkNameAndRegionViewScrollStates()
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            checkNameAndRegionViewScrollStates()
+        }
     }
 
     override fun onViewsBound() {

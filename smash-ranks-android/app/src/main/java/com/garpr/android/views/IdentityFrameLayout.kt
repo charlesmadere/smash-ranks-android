@@ -14,11 +14,12 @@ import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.misc.IdentityManager
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.AbsPlayer
 import javax.inject.Inject
 
 abstract class IdentityFrameLayout : LifecycleFrameLayout,
-        IdentityManager.OnIdentityChangeListener {
+        IdentityManager.OnIdentityChangeListener, Refreshable {
 
     private var originalBackground: Drawable? = null
 
@@ -81,11 +82,11 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout,
 
     override fun onIdentityChange(identityManager: IdentityManager) {
         if (isAlive) {
-            refreshIdentity()
+            refresh()
         }
     }
 
-    protected open fun refreshIdentity() {
+    override fun refresh() {
         if (identityManager.isPlayer(identity) || identityManager.isPlayer(identityId)) {
             identityIsUser()
         } else {

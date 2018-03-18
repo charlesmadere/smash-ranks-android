@@ -61,7 +61,7 @@ class HomeToolbar @JvmOverloads constructor(
 
     override fun onIdentityChange(identityManager: IdentityManager) {
         if (isAlive) {
-            postRefreshMenu()
+            postRefresh()
         }
     }
 
@@ -80,7 +80,7 @@ class HomeToolbar @JvmOverloads constructor(
     override fun onRegionChange(regionManager: RegionManager) {
         if (isAlive) {
             closeSearchLayout()
-            postRefreshMenu()
+            postRefresh()
         }
     }
 

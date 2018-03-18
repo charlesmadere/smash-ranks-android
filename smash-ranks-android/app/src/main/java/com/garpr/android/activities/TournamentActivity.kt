@@ -92,6 +92,25 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     override val activityName = TAG
 
+    private fun checkNameAndDateViewScrollStates() {
+        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
+
+        if (view == null) {
+            // TODO
+            return
+        }
+
+        val dateVerticalPositionInWindow = view.dateVerticalPositionInWindow
+        val toolbarVerticalPositionInWindow = tournamentToolbar.verticalPositionInWindow +
+                tournamentToolbar.height
+
+        if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
+            // TODO
+        } else {
+            // TODO
+        }
+    }
+
     private fun checkTournamentTabViewsScrollStates() {
         val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
 
@@ -140,11 +159,13 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
+            checkNameAndDateViewScrollStates()
             checkTournamentTabViewsScrollStates()
         }
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
+            checkNameAndDateViewScrollStates()
             checkTournamentTabViewsScrollStates()
         }
     }
