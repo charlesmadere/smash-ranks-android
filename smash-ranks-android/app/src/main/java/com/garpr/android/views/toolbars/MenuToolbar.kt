@@ -16,7 +16,12 @@ abstract class MenuToolbar @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : Toolbar(context, attrs), Heartbeat, Refreshable {
 
+    private val animationDuration: Long by lazy {
+        resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+    }
+
     private val sparseMenuItemsArray = SparseBooleanArray()
+    private val toolbarUtils: ToolbarUtils by lazy { ToolbarUtils(this) }
 
 
     private fun createSparseMenuItemsArray() {
@@ -24,6 +29,33 @@ abstract class MenuToolbar @JvmOverloads constructor(
             val menuItem = menu.getItem(i)
             sparseMenuItemsArray.put(menuItem.itemId, menuItem.isVisible)
         }
+    }
+
+    fun fadeInTitleAndSubtitle(title: CharSequence, subtitle: CharSequence) {
+        val titleTextView = toolbarUtils.titleTextView
+        val subtitleTextView = toolbarUtils.subtitleTextView
+
+        if (titleTextView == null || subtitleTextView == null) {
+            this.title = title
+            this.subtitle = subtitle
+            return
+        }
+
+
+        // TODO
+    }
+
+    fun fadeOutTitleAndSubtitle() {
+        val titleTextView = toolbarUtils.titleTextView
+        val subtitleTextView = toolbarUtils.subtitleTextView
+
+        if (titleTextView == null || subtitleTextView == null) {
+            title = ""
+            subtitle = ""
+            return
+        }
+
+        // TODO
     }
 
     override val isAlive: Boolean
@@ -61,17 +93,19 @@ abstract class MenuToolbar @JvmOverloads constructor(
 
     protected fun postRefresh() {
         if (isAlive) {
-            post {
-                if (isAlive) {
-                    refresh()
-                }
-            }
+            post(refreshRunnable)
         }
     }
 
     final override fun refresh() {
         if (isMenuCreated) {
             onRefreshMenu()
+        }
+    }
+
+    private val refreshRunnable = Runnable {
+        if (isAlive) {
+            refresh()
         }
     }
 

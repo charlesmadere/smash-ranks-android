@@ -2,6 +2,8 @@ package com.garpr.android.views
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.support.annotation.ColorInt
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewPropertyAnimator
 import android.widget.TextView
 import com.garpr.android.R
+import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
@@ -25,6 +28,9 @@ class TournamentTabsView @JvmOverloads constructor(
         resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
     }
 
+    @ColorInt
+    private var indicatorLineColor: Int = Color.TRANSPARENT
+
     private var inAnimation: ViewPropertyAnimator? = null
     private var outAnimation: ViewPropertyAnimator? = null
 
@@ -36,6 +42,10 @@ class TournamentTabsView @JvmOverloads constructor(
     interface Listeners {
         fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode)
         val tournamentMode: TournamentMode
+    }
+
+    init {
+        parseAttributes(attrs)
     }
 
     fun animateIn() {
@@ -103,6 +113,8 @@ class TournamentTabsView @JvmOverloads constructor(
             listeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
             refresh()
         }
+
+        indicatorLine.setBackgroundColor(indicatorLineColor)
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
@@ -112,6 +124,13 @@ class TournamentTabsView @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         return if (canBeTouched) super.onTouchEvent(event) else false
+    }
+
+    private fun parseAttributes(attrs: AttributeSet?) {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsView)
+        indicatorLineColor = ta.getColor(R.styleable.TournamentTabsView_indicatorLineColor,
+                context.getAttrColor(R.attr.colorAccent))
+        ta.recycle()
     }
 
     override fun refresh() {

@@ -17,6 +17,7 @@ import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.getActivity
 import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.BracketSource
 import com.garpr.android.models.FullTournament
@@ -29,6 +30,9 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
     private val numberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
+    protected lateinit var regionManager: RegionManager
+
+    @Inject
     protected lateinit var shareUtils: ShareUtils
 
     private val openLink: Button by bindView(R.id.bOpenLink)
@@ -36,6 +40,7 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
     private val date: TextView by bindView(R.id.tvDate)
     private val entrantsCount: TextView by bindView(R.id.tvEntrantsCount)
     private val name: TextView by bindView(R.id.tvName)
+    private val region: TextView by bindView(R.id.tvRegion)
     private val tournamentTabsView: TournamentTabsView by bindView(R.id.tournamentTabsView)
 
 
@@ -45,20 +50,14 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
                 false) as TournamentInfoItemView
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        parseAttributes(attrs)
-    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) {
-        parseAttributes(attrs)
-    }
+            super(context, attrs, defStyleAttr)
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-                @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
-        parseAttributes(attrs)
-    }
+                @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     val dateVerticalPositionInWindow: Int
         get() = date.verticalPositionInWindow
@@ -79,10 +78,6 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
         }
     }
 
-    private fun parseAttributes(attrs: AttributeSet?) {
-
-    }
-
     override fun setContent(content: FullTournament) {
         tournament = content
     }
@@ -100,6 +95,7 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
 
             name.text = value.name
             date.text = value.date.fullForm
+            region.text = regionManager.getRegion(context).displayName
 
             val entrants = value.players?.size ?: 0
             entrantsCount.text = resources.getQuantityString(R.plurals.x_entrants, entrants,

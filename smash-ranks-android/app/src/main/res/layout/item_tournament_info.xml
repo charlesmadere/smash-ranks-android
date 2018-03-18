@@ -33,6 +33,16 @@
 
     <TextView
         android:fontFamily="sans-serif-light"
+        android:id="@+id/tvRegion"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size_xlarge"
+        tools:text="@string/norcal" />
+
+    <TextView
+        android:fontFamily="sans-serif-light"
         android:id="@+id/tvEntrantsCount"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding"
