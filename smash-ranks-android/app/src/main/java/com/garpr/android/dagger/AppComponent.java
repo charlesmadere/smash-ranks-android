@@ -44,7 +44,6 @@ import com.garpr.android.views.TournamentMatchItemView;
 import com.garpr.android.views.TournamentsLayout;
 import com.garpr.android.views.toolbars.HomeToolbar;
 import com.garpr.android.views.toolbars.PlayerToolbar;
-import com.garpr.android.views.toolbars.ToolbarUtils;
 
 import javax.inject.Singleton;
 
@@ -79,7 +78,6 @@ public interface AppComponent {
     // toolbars
     void inject(HomeToolbar toolbar);
     void inject(PlayerToolbar toolbar);
-    void inject(ToolbarUtils toolbar);
 
     // views
     void inject(DeleteFavoritePlayersPreferenceView view);

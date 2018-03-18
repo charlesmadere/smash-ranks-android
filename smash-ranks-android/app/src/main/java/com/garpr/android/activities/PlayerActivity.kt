@@ -96,11 +96,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     private fun checkNameAndRegionViewScrollStates() {
         val view = recyclerView.getChildAt(0) as? PlayerProfileItemView
 
-        val title: CharSequence = playerMatchesBundle?.fullPlayer?.name ?: ""
-        val subtitle: CharSequence = regionManager.getRegion(this).displayName
-
         if (view == null) {
-            playerToolbar.fadeInTitleAndSubtitle(title, subtitle)
+            playerToolbar.fadeInTitleAndSubtitle()
             return
         }
 
@@ -109,7 +106,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 playerToolbar.height
 
         if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            playerToolbar.fadeInTitleAndSubtitle(title, subtitle)
+            playerToolbar.fadeInTitleAndSubtitle()
         } else {
             playerToolbar.fadeOutTitleAndSubtitle()
         }

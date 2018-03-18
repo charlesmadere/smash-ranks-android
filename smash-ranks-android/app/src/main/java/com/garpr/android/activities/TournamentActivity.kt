@@ -95,11 +95,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private fun checkNameAndDateViewScrollStates() {
         val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
 
-        val title: CharSequence = fullTournament?.name ?: ""
-        val subtitle: CharSequence = regionManager.getRegion(this).displayName
-
         if (view == null) {
-            tournamentToolbar.fadeInTitleAndSubtitle(title, subtitle)
+            tournamentToolbar.fadeInTitleAndSubtitle()
             return
         }
 
@@ -108,7 +105,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
                 tournamentToolbar.height
 
         if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            tournamentToolbar.fadeInTitleAndSubtitle(title, subtitle)
+            tournamentToolbar.fadeInTitleAndSubtitle()
         } else {
             tournamentToolbar.fadeOutTitleAndSubtitle()
         }
