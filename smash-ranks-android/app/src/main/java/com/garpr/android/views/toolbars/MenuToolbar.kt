@@ -4,7 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
-import android.support.v4.content.ContextCompat
+import android.support.v4.graphics.ColorUtils
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.Toolbar
 import android.text.style.ForegroundColorSpan
@@ -13,7 +13,6 @@ import android.util.SparseBooleanArray
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
@@ -26,7 +25,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
 
     private val sparseMenuItemsArray = SparseBooleanArray()
 
-    // Animation Variables
+    // begin Animation Variables
     private var alphaColorSpan: ForegroundColorSpan? = null
 
     private val animationDuration: Long by lazy {
@@ -40,13 +39,17 @@ abstract class MenuToolbar @JvmOverloads constructor(
 
     private val titleAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
         ValueAnimator.AnimatorUpdateListener {
-            setTitleTextColor(it.animatedValue as Int)
+            val value = it.animatedValue as Int
+            setTitleTextColor(ColorUtils.setAlphaComponent(
+                    context.getAttrColor(android.R.attr.textColorPrimary), value))
         }
     }
 
     private val subtitleAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
         ValueAnimator.AnimatorUpdateListener {
-            setSubtitleTextColor(it.animatedValue as Int)
+            val value = it.animatedValue as Int
+            setSubtitleTextColor(ColorUtils.setAlphaComponent(
+                    context.getAttrColor(android.R.attr.textColorSecondary), value))
         }
     }
     // end Animation Variables
@@ -69,8 +72,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
         outSubtitleAnimation?.cancel()
         outSubtitleAnimation = null
 
-        val titleAnimation = ValueAnimator.ofInt(ContextCompat.getColor(context, R.color.transparent),
-                context.getAttrColor(android.R.attr.textColorPrimary))
+        val titleAnimation = ValueAnimator.ofInt(0, 255)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
         titleAnimation.duration = animationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
@@ -81,11 +83,10 @@ abstract class MenuToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = ValueAnimator.ofInt(ContextCompat.getColor(context, R.color.transparent),
-                context.getAttrColor(android.R.attr.textColorSecondary))
+        val subtitleAnimation = ValueAnimator.ofInt(0, 255)
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
-        subtitleAnimation.duration = animationDuration
-        subtitleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
+        subtitleAnimation.duration = titleAnimation.duration
+        subtitleAnimation.interpolator = titleAnimation.interpolator
 
         subtitleAnimation.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
@@ -110,8 +111,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
         inSubtitleAnimation?.cancel()
         inSubtitleAnimation = null
 
-        val titleAnimation = ValueAnimator.ofInt(context.getAttrColor(android.R.attr.textColorPrimary),
-                ContextCompat.getColor(context, R.color.transparent))
+        val titleAnimation = ValueAnimator.ofInt(255, 0)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
         titleAnimation.duration = animationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
@@ -122,11 +122,10 @@ abstract class MenuToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = ValueAnimator.ofInt(context.getAttrColor(android.R.attr.textColorSecondary),
-                ContextCompat.getColor(context, R.color.transparent))
+        val subtitleAnimation = ValueAnimator.ofInt(255, 0)
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
-        subtitleAnimation.duration = animationDuration
-        subtitleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
+        subtitleAnimation.duration = titleAnimation.duration
+        subtitleAnimation.interpolator = titleAnimation.interpolator
 
         subtitleAnimation.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
