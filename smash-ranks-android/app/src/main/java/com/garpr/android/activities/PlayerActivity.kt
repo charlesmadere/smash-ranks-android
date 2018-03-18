@@ -220,6 +220,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
+        recyclerView.addOnScrollListener(onScrollListener)
+
         adapter = PlayerAdapter(this)
         recyclerView.adapter = adapter
     }
