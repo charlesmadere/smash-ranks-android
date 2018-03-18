@@ -89,7 +89,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        (toolbar as? MenuToolbar)?.refreshMenu()
+        (toolbar as? MenuToolbar)?.refresh()
         return super.onPrepareOptionsMenu(menu)
     }
 
