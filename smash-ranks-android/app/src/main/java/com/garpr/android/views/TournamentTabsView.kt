@@ -24,6 +24,12 @@ class TournamentTabsView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs), Refreshable {
 
+    interface Listeners {
+        fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode)
+        val tournamentMode: TournamentMode
+    }
+
+
     private val animationDuration: Long by lazy {
         resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
     }
@@ -38,11 +44,6 @@ class TournamentTabsView @JvmOverloads constructor(
     private val playersTab: TextView by bindView(R.id.tvPlayersTab)
     private val indicatorLine: View by bindView(R.id.indicatorLine)
 
-
-    interface Listeners {
-        fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode)
-        val tournamentMode: TournamentMode
-    }
 
     init {
         parseAttributes(attrs)

@@ -51,12 +51,19 @@ class NotificationsManagerImpl(
         }
     }
 
+
+    private val impl: Impl by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Api26Impl()
+        } else {
+            BaseImpl()
+        }
+    }
+
     companion object {
         private const val RANKINGS_CHANNEL = "rankings"
-        private const val RANKINGS_ID = 1001
+        private const val RANKINGS_ID: Int = 1001
         private const val TAG = "NotificationsManagerImpl"
-
-        private val IMPL: Impl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Api26Impl() else BaseImpl()
     }
 
     override fun cancelAll() {
@@ -65,7 +72,7 @@ class NotificationsManagerImpl(
     }
 
     override fun rankingsUpdated() {
-        val builder = IMPL.createBuilder(application)
+        val builder = impl.createBuilder(application)
 
         builder.setContentIntent(PendingIntent.getActivity(application, 0,
                 HomeActivity.getLaunchIntent(application), PendingIntent.FLAG_UPDATE_CURRENT))

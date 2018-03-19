@@ -4,10 +4,12 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
+import android.os.Build
+import android.support.annotation.ColorInt
+import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.Toolbar
-import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.util.SparseBooleanArray
 import android.view.Menu
@@ -24,10 +26,35 @@ abstract class MenuToolbar @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : Toolbar(context, attrs), Heartbeat, Refreshable {
 
+    private interface AnimationImpl {
+        fun createValueAnimator(@ColorInt startColor: Int, @ColorInt endColor: Int): ValueAnimator
+    }
+
+    private open class BaseImpl : AnimationImpl {
+        override fun createValueAnimator(startColor: Int, endColor: Int): ValueAnimator {
+            return ValueAnimator.ofObject(AnimationUtils.ARGB_EVALUATOR, startColor, endColor)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private class Api21Impl : AnimationImpl {
+        override fun createValueAnimator(startColor: Int, endColor: Int): ValueAnimator {
+            return ValueAnimator.ofArgb(startColor, endColor)
+        }
+    }
+
+
     private val sparseMenuItemsArray = SparseBooleanArray()
 
+
     // begin Animation Variables
-    private var alphaColorSpan: ForegroundColorSpan? = null
+    private val animationImpl: AnimationImpl by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Api21Impl()
+        } else {
+            BaseImpl()
+        }
+    }
 
     private val animationDuration: Long by lazy {
         resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
@@ -69,7 +96,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
         outSubtitleAnimation?.cancel()
         outSubtitleAnimation = null
 
-        val titleAnimation = ValueAnimator.ofObject(AnimationUtils.ARGB_EVALUATOR,
+        val titleAnimation = animationImpl.createValueAnimator(
                 ContextCompat.getColor(context, R.color.transparent),
                 context.getAttrColor(android.R.attr.textColorPrimary))
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
@@ -82,7 +109,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = ValueAnimator.ofObject(AnimationUtils.ARGB_EVALUATOR,
+        val subtitleAnimation = animationImpl.createValueAnimator(
                 ContextCompat.getColor(context, R.color.transparent),
                 context.getAttrColor(android.R.attr.textColorSecondary))
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
@@ -112,7 +139,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
         inSubtitleAnimation?.cancel()
         inSubtitleAnimation = null
 
-        val titleAnimation = ValueAnimator.ofObject(AnimationUtils.ARGB_EVALUATOR,
+        val titleAnimation = animationImpl.createValueAnimator(
                 context.getAttrColor(android.R.attr.textColorPrimary),
                 ContextCompat.getColor(context, R.color.transparent))
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
@@ -125,7 +152,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = ValueAnimator.ofObject(AnimationUtils.ARGB_EVALUATOR,
+        val subtitleAnimation = animationImpl.createValueAnimator(
                 context.getAttrColor(android.R.attr.textColorSecondary),
                 ContextCompat.getColor(context, R.color.transparent))
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
