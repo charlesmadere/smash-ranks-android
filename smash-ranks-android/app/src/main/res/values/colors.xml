@@ -2,6 +2,7 @@
 <resources>
 
     <color name="black">#000000</color>
+    <color name="blue">#5A9ADA</color>
     <color name="card_background">#FFFFFF</color>
     <color name="debug">@color/black</color>
     <color name="error">#FF2222</color>
@@ -11,11 +12,9 @@
     <color name="lose">#C1455A</color>
     <color name="lose_background">#22C1455A</color>
     <color name="overlay">#11000000</color>
-    <color name="purple_dark">#453B81</color>
-    <color name="purple_light">#655AA9</color>
     <color name="salmon">#C4636C</color>
     <color name="fast_scroll_thumb_normal">#44000000</color>
-    <color name="fast_scroll_thumb_pressed">@color/purple_light</color>
+    <color name="fast_scroll_thumb_pressed">@color/blue</color>
     <color name="fast_scroll_track">#22000000</color>
     <color name="transparent">#00000000</color>
     <color name="warn">#FF7070</color>
@@ -25,8 +24,8 @@
     <color name="window_background">#E6E6E6</color>
 
     <array name="spinner_colors">
-        <item>@color/purple_light</item>
-        <item>@color/purple_dark</item>
+        <item>@color/blue</item>
+        <item>@color/gray</item>
     </array>
 
     <color name="r">#FF0000</color>

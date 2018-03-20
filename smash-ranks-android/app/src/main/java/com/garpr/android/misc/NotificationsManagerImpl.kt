@@ -52,12 +52,10 @@ class NotificationsManagerImpl(
     }
 
 
-    private val impl: Impl by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Api26Impl()
-        } else {
-            BaseImpl()
-        }
+    private val impl: Impl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        Api26Impl()
+    } else {
+        BaseImpl()
     }
 
     companion object {

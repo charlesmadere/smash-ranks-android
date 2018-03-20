@@ -11,6 +11,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
 import com.garpr.android.extensions.smoothScrollToTop
+import com.garpr.android.extensions.subtitle
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.RegionManager
@@ -53,33 +54,26 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     companion object {
         private const val TAG = "TournamentActivity"
         private val CNAME = TournamentActivity::class.java.canonicalName
-        private val EXTRA_TOURNAMENT_DATE = "$CNAME.TournamentDate"
         private val EXTRA_TOURNAMENT_ID = "$CNAME.TournamentId"
         private val EXTRA_TOURNAMENT_NAME = "$CNAME.TournamentName"
         private const val KEY_TOURNAMENT_MODE = "TournamentMode"
 
         fun getLaunchIntent(context: Context, tournament: AbsTournament,
                 region: Region? = null): Intent {
-            return getLaunchIntent(context, tournament.id, tournament.name, tournament.date,
-                    region)
+            return getLaunchIntent(context, tournament.id, tournament.name, region)
         }
 
         fun getLaunchIntent(context: Context, match: Match, region: Region? = null): Intent {
-            return getLaunchIntent(context, match.tournament.id, match.tournament.name,
-                    match.tournament.date, region)
+            return getLaunchIntent(context, match.tournament.id, match.tournament.name, region)
         }
 
         fun getLaunchIntent(context: Context, tournamentId: String, tournamentName: String?,
-                tournamentDate: SimpleDate?, region: Region? = null): Intent {
+                region: Region? = null): Intent {
             val intent = Intent(context, TournamentActivity::class.java)
                     .putExtra(EXTRA_TOURNAMENT_ID, tournamentId)
 
             if (tournamentName?.isNotBlank() == true) {
                 intent.putExtra(EXTRA_TOURNAMENT_NAME, tournamentName)
-            }
-
-            if (tournamentDate != null) {
-                intent.putExtra(EXTRA_TOURNAMENT_DATE, tournamentDate)
             }
 
             if (region != null) {
@@ -149,6 +143,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         tournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)
         _tournamentMode = savedInstanceState?.getParcelable(KEY_TOURNAMENT_MODE) ?: tournamentMode
 
+        setTitleAndSubtitle()
         fetchFullTournament()
     }
 
@@ -208,6 +203,24 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     override val searchQuery: CharSequence?
         get() = tournamentToolbar.searchQuery
 
+    private fun setTitleAndSubtitle() {
+        if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
+            return
+        }
+
+        val tournament = fullTournament
+
+        if (tournament == null) {
+            if (intent.hasExtra(EXTRA_TOURNAMENT_NAME)) {
+                title = intent.getStringExtra(EXTRA_TOURNAMENT_NAME)
+            }
+        } else {
+            title = tournament.name
+        }
+
+        subtitle = regionManager.getRegion(this).displayName
+    }
+
     private fun showError(errorCode: Int = Constants.ERROR_CODE_UNKNOWN) {
         recyclerView.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
@@ -222,6 +235,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         error.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
 
+        setTitleAndSubtitle()
         invalidateOptionsMenu()
 
         refreshLayout.isRefreshing = false

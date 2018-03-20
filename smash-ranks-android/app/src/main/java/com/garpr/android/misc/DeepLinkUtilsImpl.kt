@@ -176,8 +176,8 @@ class DeepLinkUtilsImpl(
             return
         }
 
-        intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId, null, null,
-                if (sameRegion) null else region))
+        intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId,
+                null, if (sameRegion) null else region))
     }
 
     override fun getEndpoint(intent: Intent?): Endpoint? {

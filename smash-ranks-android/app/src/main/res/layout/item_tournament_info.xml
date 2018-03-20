@@ -8,7 +8,6 @@
 
     <TextView
         android:ellipsize="end"
-        android:fontFamily="sans-serif-thin"
         android:gravity="center_vertical"
         android:id="@+id/tvName"
         android:layout_height="160dp"
@@ -22,34 +21,32 @@
         tools:text="Melee @ the Made #32" />
 
     <TextView
-        android:fontFamily="sans-serif-light"
+        android:id="@+id/tvRegion"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size_small"
+        tools:text="@string/norcal" />
+
+    <TextView
         android:id="@+id/tvDate"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_xlarge"
+        android:textColor="?android:attr/textColorPrimary"
         tools:text="November 28, 1989" />
 
     <TextView
-        android:fontFamily="sans-serif-light"
-        android:id="@+id/tvRegion"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/root_padding"
-        android:layout_marginStart="@dimen/root_padding"
-        android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_xlarge"
-        tools:text="@string/norcal" />
-
-    <TextView
-        android:fontFamily="sans-serif-light"
         android:id="@+id/tvEntrantsCount"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_xlarge"
+        android:textSize="@dimen/text_size_small"
         tools:text="1,024 entrants" />
 
     <com.garpr.android.views.TintedButton

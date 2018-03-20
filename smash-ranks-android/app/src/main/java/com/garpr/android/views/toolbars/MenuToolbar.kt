@@ -4,10 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
-import android.os.Build
-import android.support.annotation.ColorInt
-import android.support.annotation.RequiresApi
-import android.support.v4.content.ContextCompat
+import android.graphics.Color
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
@@ -26,38 +23,25 @@ abstract class MenuToolbar @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : Toolbar(context, attrs), Heartbeat, Refreshable {
 
-    private interface AnimationImpl {
-        fun createValueAnimator(@ColorInt startColor: Int, @ColorInt endColor: Int): ValueAnimator
-    }
-
-    private open class BaseImpl : AnimationImpl {
-        override fun createValueAnimator(startColor: Int, endColor: Int): ValueAnimator {
-            return ValueAnimator.ofObject(AnimationUtils.ARGB_EVALUATOR, startColor, endColor)
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private class Api21Impl : AnimationImpl {
-        override fun createValueAnimator(startColor: Int, endColor: Int): ValueAnimator {
-            return ValueAnimator.ofArgb(startColor, endColor)
-        }
-    }
-
-
+    private var startWithTransparentTextColors: Boolean = false
     private val sparseMenuItemsArray = SparseBooleanArray()
 
 
     // begin Animation Variables
-    private val animationImpl: AnimationImpl by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Api21Impl()
-        } else {
-            BaseImpl()
-        }
-    }
-
     private val animationDuration: Long by lazy {
         resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+    }
+
+    private val textColorPrimary: Int by lazy {
+        context.getAttrColor(android.R.attr.textColorPrimary)
+    }
+
+    private val textColorSecondary: Int by lazy {
+        context.getAttrColor(android.R.attr.textColorSecondary)
+    }
+
+    private val toolbarReflectionHelper: ToolbarReflectionHelper by lazy {
+        ToolbarReflectionHelper(this)
     }
 
     private var inTitleAnimation: ValueAnimator? = null
@@ -79,6 +63,10 @@ abstract class MenuToolbar @JvmOverloads constructor(
     // end Animation Variables
 
 
+    init {
+        parseAttributes(attrs)
+    }
+
     private fun createSparseMenuItemsArray() {
         for (i in 0 until menu.size()) {
             val menuItem = menu.getItem(i)
@@ -96,9 +84,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
         outSubtitleAnimation?.cancel()
         outSubtitleAnimation = null
 
-        val titleAnimation = animationImpl.createValueAnimator(
-                ContextCompat.getColor(context, R.color.transparent),
-                context.getAttrColor(android.R.attr.textColorPrimary))
+        val titleAnimation = AnimationUtils.createArgbValueAnimator(
+                toolbarReflectionHelper.titleTextColor, textColorPrimary)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
         titleAnimation.duration = animationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
@@ -109,9 +96,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = animationImpl.createValueAnimator(
-                ContextCompat.getColor(context, R.color.transparent),
-                context.getAttrColor(android.R.attr.textColorSecondary))
+        val subtitleAnimation = AnimationUtils.createArgbValueAnimator(
+                toolbarReflectionHelper.subtitleTextColor, textColorSecondary)
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
         subtitleAnimation.duration = titleAnimation.duration
         subtitleAnimation.interpolator = titleAnimation.interpolator
@@ -139,9 +125,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
         inSubtitleAnimation?.cancel()
         inSubtitleAnimation = null
 
-        val titleAnimation = animationImpl.createValueAnimator(
-                context.getAttrColor(android.R.attr.textColorPrimary),
-                ContextCompat.getColor(context, R.color.transparent))
+        val titleAnimation = AnimationUtils.createArgbValueAnimator(
+                toolbarReflectionHelper.titleTextColor, Color.TRANSPARENT)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
         titleAnimation.duration = animationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
@@ -152,9 +137,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = animationImpl.createValueAnimator(
-                context.getAttrColor(android.R.attr.textColorSecondary),
-                ContextCompat.getColor(context, R.color.transparent))
+        val subtitleAnimation = AnimationUtils.createArgbValueAnimator(
+                toolbarReflectionHelper.subtitleTextColor, Color.TRANSPARENT)
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
         subtitleAnimation.duration = titleAnimation.duration
         subtitleAnimation.interpolator = titleAnimation.interpolator
@@ -205,6 +189,18 @@ abstract class MenuToolbar @JvmOverloads constructor(
         }
     }
 
+    private fun parseAttributes(attrs: AttributeSet?) {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.MenuToolbar)
+
+        if (ta.getBoolean(R.styleable.MenuToolbar_startWithTransparentTextColors, false)) {
+            startWithTransparentTextColors = true
+            setTitleTextColor(Color.TRANSPARENT)
+            setSubtitleTextColor(Color.TRANSPARENT)
+        }
+
+        ta.recycle()
+    }
+
     protected fun postRefresh() {
         if (isAlive) {
             post(refreshRunnable)
@@ -220,6 +216,22 @@ abstract class MenuToolbar @JvmOverloads constructor(
     private val refreshRunnable = Runnable {
         if (isAlive) {
             refresh()
+        }
+    }
+
+    override fun setTitle(title: CharSequence?) {
+        super.setTitle(title)
+
+        if (startWithTransparentTextColors) {
+            setTitleTextColor(toolbarReflectionHelper.titleTextColor)
+        }
+    }
+
+    override fun setSubtitle(subtitle: CharSequence?) {
+        super.setSubtitle(subtitle)
+
+        if (startWithTransparentTextColors) {
+            setSubtitleTextColor(toolbarReflectionHelper.subtitleTextColor)
         }
     }
 

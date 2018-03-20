@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <com.garpr.android.views.toolbars.PlayerToolbar
+        app:startWithTransparentTextColors="true"
         style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout

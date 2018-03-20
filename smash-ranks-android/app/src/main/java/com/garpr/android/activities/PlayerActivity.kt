@@ -172,7 +172,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
         playerId = intent.getStringExtra(EXTRA_PLAYER_ID)
 
-        setTitle()
+        setTitleAndSubtitle()
         fetchPlayerMatchesBundle()
     }
 
@@ -260,8 +260,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     override val searchQuery: CharSequence?
         get() = playerToolbar.searchQuery
 
-    private fun setTitle() {
-        if (title.isNotBlank()) {
+    private fun setTitleAndSubtitle() {
+        if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
             return
         }
 
@@ -297,9 +297,10 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             recyclerView.visibility = View.VISIBLE
         }
 
-        refreshLayout.isRefreshing = false
-        setTitle()
+        setTitleAndSubtitle()
         invalidateOptionsMenu()
+
+        refreshLayout.isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
