@@ -8,9 +8,9 @@
 
     <TextView
         android:ellipsize="end"
-        android:gravity="center_vertical"
+        android:gravity="bottom"
         android:id="@+id/tvName"
-        android:layout_height="160dp"
+        android:layout_height="144dp"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="match_parent"
