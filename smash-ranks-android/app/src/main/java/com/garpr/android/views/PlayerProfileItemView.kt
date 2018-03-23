@@ -15,7 +15,13 @@ import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.getActivity
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.misc.*
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.PlayerProfileManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.AnimationUtils
+import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.FullPlayer
 import kotterknife.bindView
 import javax.inject.Inject
@@ -107,7 +113,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         identityManager.removeListener(this)
     }
 
-    override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
             refresh()
         }

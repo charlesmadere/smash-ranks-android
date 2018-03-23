@@ -6,9 +6,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.misc.HomeToolbarManager
-import com.garpr.android.misc.IdentityManager
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.HomeToolbarManager
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.RegionManager
 import javax.inject.Inject
 
 class HomeToolbar @JvmOverloads constructor(

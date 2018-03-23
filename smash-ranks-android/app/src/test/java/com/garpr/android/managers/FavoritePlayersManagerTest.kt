@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
 import com.garpr.android.models.AbsPlayer
@@ -65,7 +65,7 @@ class FavoritePlayersManagerTest : BaseTest() {
         var players: List<FavoritePlayer>? = null
 
         val listener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
-            override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
+            override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
                 players = favoritePlayersManager.players
             }
         }
@@ -80,6 +80,23 @@ class FavoritePlayersManagerTest : BaseTest() {
 
         favoritePlayersManager.removePlayer(player1)
         assertTrue(players == null || players?.isEmpty() == true)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testAddListenerTwice() {
+        var count = 0
+
+        val listener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
+            override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
+                ++count
+            }
+        }
+
+        favoritePlayersManager.addListener(listener)
+        favoritePlayersManager.addListener(listener)
+        favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
+        assertEquals(1, count)
     }
 
     @Test
@@ -247,7 +264,7 @@ class FavoritePlayersManagerTest : BaseTest() {
         var players: List<FavoritePlayer>? = null
 
         val listener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
-            override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
+            override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
                 players = favoritePlayersManager.players
             }
         }

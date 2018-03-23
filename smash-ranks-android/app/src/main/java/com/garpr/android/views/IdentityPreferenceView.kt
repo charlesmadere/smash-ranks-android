@@ -9,7 +9,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.SetIdentityActivity
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.IdentityManager
+import com.garpr.android.managers.IdentityManager
 import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
 

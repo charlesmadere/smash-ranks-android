@@ -1,9 +1,9 @@
-package com.garpr.android.misc
+package com.garpr.android.wrappers
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher
 
 interface FirebaseApiWrapper {
 
-    fun getJobDispatcher(): FirebaseJobDispatcher
+    val jobDispatcher: FirebaseJobDispatcher
 
 }

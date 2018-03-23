@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.extensions.subtitle
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Region
 import javax.inject.Inject
 

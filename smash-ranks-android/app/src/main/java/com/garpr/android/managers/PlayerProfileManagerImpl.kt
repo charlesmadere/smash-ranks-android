@@ -1,9 +1,10 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import android.app.Application
 import android.text.TextUtils
 import com.garpr.android.R
-import com.garpr.android.misc.PlayerProfileManager.Presentation
+import com.garpr.android.managers.PlayerProfileManager.Presentation
+import com.garpr.android.misc.MiscUtils
 import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.FullPlayer
 

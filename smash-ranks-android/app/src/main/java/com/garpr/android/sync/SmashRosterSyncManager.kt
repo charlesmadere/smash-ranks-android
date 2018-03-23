@@ -4,18 +4,18 @@ import com.garpr.android.models.SmashRosterSyncResult
 
 interface SmashRosterSyncManager {
 
-    interface Listeners {
+    interface OnSyncListeners {
         fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager)
         fun onSmashRosterSyncComplete(smashRosterSyncManager: SmashRosterSyncManager)
     }
 
-    fun addListener(listener: Listeners)
+    fun addListener(listener: OnSyncListeners)
 
     fun enableOrDisable()
 
     var isEnabled: Boolean
 
-    fun removeListener(listener: Listeners)
+    fun removeListener(listener: OnSyncListeners)
 
     fun sync()
 

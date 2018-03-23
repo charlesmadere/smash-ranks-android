@@ -7,7 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.misc.FavoritePlayersManager
+import com.garpr.android.managers.FavoritePlayersManager
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -52,7 +52,7 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         favoritePlayersManager.removeListener(this)
     }
 
-    override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
             refresh()
         }

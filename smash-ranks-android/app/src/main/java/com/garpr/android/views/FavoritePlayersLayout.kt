@@ -15,7 +15,7 @@ import android.view.ViewGroup
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.FavoritePlayersAdapter
-import com.garpr.android.misc.FavoritePlayersManager
+import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils
@@ -65,7 +65,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
         favoritePlayersManager.addListener(this)
     }
 
-    override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
             refresh()
         }

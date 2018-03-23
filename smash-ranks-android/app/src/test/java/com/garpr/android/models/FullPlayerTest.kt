@@ -20,6 +20,8 @@ class FullPlayerTest : BaseTest() {
                 listOf(), null, null)
         private val FULL_PLAYER_5 = FullPlayer("5", "grandma Dan",
                 null, null, null)
+        private val FULL_PLAYER_6 = FullPlayer("6", "Any%",
+                listOf(""), null, null)
     }
 
     @Test
@@ -54,6 +56,13 @@ class FullPlayerTest : BaseTest() {
     @Throws(Exception::class)
     fun testUniqueAliasesWithFullPlayer5() {
         val uniqueAliases = FULL_PLAYER_5.uniqueAliases
+        assertTrue(uniqueAliases == null || uniqueAliases.isEmpty())
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testUniqueAliasesWithFullPlayer6() {
+        val uniqueAliases = FULL_PLAYER_6.uniqueAliases
         assertTrue(uniqueAliases == null || uniqueAliases.isEmpty())
     }
 

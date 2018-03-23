@@ -3,10 +3,10 @@ package com.garpr.android.sync
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
 import com.garpr.android.App
-import com.garpr.android.misc.NotificationsManager
+import com.garpr.android.managers.NotificationsManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingsNotificationsUtils
 import com.garpr.android.misc.RankingsNotificationsUtils.PollStatus
-import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiListener

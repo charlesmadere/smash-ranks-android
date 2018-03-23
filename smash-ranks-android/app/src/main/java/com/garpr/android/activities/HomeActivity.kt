@@ -6,13 +6,16 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
-import android.text.TextUtils
 import android.view.MenuItem
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
 import com.garpr.android.extensions.subtitle
-import com.garpr.android.misc.*
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.ShareUtils
 import com.garpr.android.sync.RankingsPollingSyncManager
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
@@ -129,7 +132,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) =
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             R.id.miActivityRequirements -> {
                 showActivityRequirements()
@@ -152,9 +155,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             }
 
             R.id.miViewYourself -> {
-                val identity = identityManager.identity ?: throw NullPointerException("identity is null")
-                startActivity(PlayerActivity.getLaunchIntent(this, identity,
-                        regionManager.getRegion(this)))
+                identityManager.identity?.let {
+                    startActivity(PlayerActivity.getLaunchIntent(this, it,
+                            regionManager.getRegion(this)))
+                } ?: throw NullPointerException("identity is null")
                 true
             }
 
@@ -263,7 +267,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override val showSearchMenuItem: Boolean
-        get() = !TextUtils.isEmpty(subtitle)
+        get() = subtitle?.isNotBlank() == true
 
     private fun updateSelectedBottomNavigationItem() {
         val itemId = when (viewPager.currentItem) {

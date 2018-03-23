@@ -1,8 +1,7 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import android.app.Application
 import com.garpr.android.BaseTest
-import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.Region
 import com.google.gson.Gson
 import org.junit.Assert.*
@@ -49,19 +48,36 @@ class RegionManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testAddListener() {
-        val array = arrayOfNulls<AbsRegion>(1)
+        var region: Region? = null
 
         val listener = object : RegionManager.OnRegionChangeListener {
             override fun onRegionChange(regionManager: RegionManager) {
-                array[0] = regionManager.getRegion()
+                region = regionManager.getRegion()
             }
         }
 
         regionManager.addListener(listener)
-        assertNull(array[0])
+        assertNull(region)
 
         regionManager.setRegion(alabama)
-        assertEquals(alabama, array[0])
+        assertEquals(alabama, region)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testAddListenerTwice() {
+        var count = 0
+
+        val listener = object : RegionManager.OnRegionChangeListener {
+            override fun onRegionChange(regionManager: RegionManager) {
+                ++count
+            }
+        }
+
+        regionManager.addListener(listener)
+        regionManager.addListener(listener)
+        regionManager.setRegion(alabama)
+        assertEquals(1, count)
     }
 
     @Test
@@ -79,23 +95,23 @@ class RegionManagerTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testRemoveListener() {
-        val array = arrayOfNulls<Region>(1)
+        var region: Region? = null
 
         val listener = object : RegionManager.OnRegionChangeListener {
             override fun onRegionChange(regionManager: RegionManager) {
-                array[0] = regionManager.getRegion()
+                region = regionManager.getRegion()
             }
         }
 
         regionManager.addListener(listener)
-        assertNull(array[0])
+        assertNull(region)
 
         regionManager.setRegion(nyc)
-        assertEquals(nyc, array[0])
+        assertEquals(nyc, region)
 
         regionManager.removeListener(listener)
         regionManager.setRegion(georgia)
-        assertEquals(nyc, array[0])
+        assertEquals(nyc, region)
     }
 
     @Test

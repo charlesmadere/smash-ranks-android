@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.garpr.android.activities.*
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
@@ -143,7 +144,7 @@ class DeepLinkUtilsImpl(
             return
         }
 
-        intentStack.add(PlayerActivity.getLaunchIntent(context, playerId, null,
+        intentStack.add(PlayerActivity.getLaunchIntent(context, playerId,
                 if (sameRegion) null else region))
     }
 
@@ -177,7 +178,7 @@ class DeepLinkUtilsImpl(
         }
 
         intentStack.add(TournamentActivity.getLaunchIntent(context, tournamentId,
-                null, if (sameRegion) null else region))
+                if (sameRegion) null else region))
     }
 
     override fun getEndpoint(intent: Intent?): Endpoint? {

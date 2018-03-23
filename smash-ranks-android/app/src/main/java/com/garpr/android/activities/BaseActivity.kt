@@ -9,8 +9,8 @@ import android.view.Menu
 import android.view.MenuItem
 import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.managers.RegionManager.RegionHandle
 import com.garpr.android.misc.Heartbeat
-import com.garpr.android.misc.RegionManager.RegionHandle
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore

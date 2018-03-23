@@ -8,7 +8,7 @@ import android.view.View
 import com.garpr.android.App
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
-import com.garpr.android.misc.NotificationsManager
+import com.garpr.android.managers.NotificationsManager
 import javax.inject.Inject
 
 class TestNotificationView @JvmOverloads constructor(

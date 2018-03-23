@@ -1,15 +1,16 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import android.content.Context
 import android.support.v7.app.AlertDialog
 import com.garpr.android.R
-import com.garpr.android.misc.FavoritePlayersManager.OnFavoritePlayersChangeListener
+import com.garpr.android.managers.FavoritePlayersManager.OnFavoritePlayersChangeListener
+import com.garpr.android.misc.Timber
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.wrappers.WeakReferenceWrapper
 import com.google.gson.Gson
-import java.lang.ref.WeakReference
 import java.util.*
 
 class FavoritePlayersManagerImpl(
@@ -18,7 +19,7 @@ class FavoritePlayersManagerImpl(
         private val timber: Timber
 ) : FavoritePlayersManager {
 
-    private val listeners = mutableListOf<WeakReference<OnFavoritePlayersChangeListener>>()
+    private val listeners = mutableSetOf<WeakReferenceWrapper<OnFavoritePlayersChangeListener>>()
 
 
     companion object {
@@ -40,24 +41,10 @@ class FavoritePlayersManagerImpl(
         }
 
     override fun addListener(listener: OnFavoritePlayersChangeListener) {
+        cleanListeners()
+
         synchronized (listeners) {
-            var addListener = true
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null) {
-                    iterator.remove()
-                } else if (item == listener) {
-                    addListener = false
-                }
-            }
-
-            if (addListener) {
-                listeners.add(WeakReference(listener))
-            }
+            listeners.add(WeakReferenceWrapper(listener))
         }
     }
 
@@ -73,6 +60,20 @@ class FavoritePlayersManagerImpl(
         val playerJson = gson.toJson(favoritePlayer, FavoritePlayer::class.java)
         keyValueStore.setString(player.id, playerJson)
         notifyListeners()
+    }
+
+    private fun cleanListeners(listenerToRemove: OnFavoritePlayersChangeListener? = null) {
+        synchronized (listeners) {
+            val iterator = listeners.iterator()
+
+            while (iterator.hasNext()) {
+                val listener = iterator.next().get()
+
+                if (listener == null || listener == listenerToRemove) {
+                    iterator.remove()
+                }
+            }
+        }
     }
 
     override fun clear() {
@@ -95,18 +96,13 @@ class FavoritePlayersManagerImpl(
         }
 
     private fun notifyListeners() {
+        cleanListeners()
+
         synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null) {
-                    iterator.remove()
-                } else {
-                    item.onFavoritePlayersChanged(this)
-                }
+                iterator.next().get()?.onFavoritePlayersChange(this)
             }
         }
     }
@@ -131,18 +127,7 @@ class FavoritePlayersManagerImpl(
         }
 
     override fun removeListener(listener: OnFavoritePlayersChangeListener?) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null || item == listener) {
-                    iterator.remove()
-                }
-            }
-        }
+        cleanListeners(listener)
     }
 
     override fun removePlayer(player: AbsPlayer) {
@@ -164,10 +149,14 @@ class FavoritePlayersManagerImpl(
 
         if (player in this) {
             builder.setMessage(context.getString(R.string.remove_x_from_favorites, player.name))
-                    .setPositiveButton(R.string.yes) { dialog, which -> removePlayer(player) }
+                    .setPositiveButton(R.string.yes) { dialog, which ->
+                        removePlayer(player)
+                    }
         } else {
             builder.setMessage(context.getString(R.string.add_x_to_favorites, player.name))
-                    .setPositiveButton(R.string.yes) { dialog, which -> addPlayer(player, region) }
+                    .setPositiveButton(R.string.yes) { dialog, which ->
+                        addPlayer(player, region)
+                    }
         }
 
         builder.show()

@@ -4,11 +4,11 @@ import com.firebase.jobdispatcher.Constraint
 import com.firebase.jobdispatcher.Lifetime
 import com.firebase.jobdispatcher.RetryStrategy
 import com.firebase.jobdispatcher.Trigger
-import com.garpr.android.misc.FirebaseApiWrapper
-import com.garpr.android.misc.GoogleApiWrapper
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.wrappers.FirebaseApiWrapper
+import com.garpr.android.wrappers.GoogleApiWrapper
 import java.util.concurrent.TimeUnit
 
 class RankingsPollingSyncManagerImpl(
@@ -23,7 +23,7 @@ class RankingsPollingSyncManagerImpl(
     }
 
     private fun disable() {
-        firebaseApiWrapper.getJobDispatcher().cancel(TAG)
+        firebaseApiWrapper.jobDispatcher.cancel(TAG)
         timber.d(TAG, "sync has been disabled")
     }
 
@@ -33,7 +33,7 @@ class RankingsPollingSyncManagerImpl(
             return
         }
 
-        val jobDispatcher = firebaseApiWrapper.getJobDispatcher()
+        val jobDispatcher = firebaseApiWrapper.jobDispatcher
 
         val jobBuilder = jobDispatcher.newJobBuilder()
                 .setLifetime(Lifetime.FOREVER)

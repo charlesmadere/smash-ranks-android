@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import android.app.*
 import android.content.Context
@@ -9,6 +9,7 @@ import com.garpr.android.R
 import com.garpr.android.activities.HomeActivity
 import com.garpr.android.extensions.notificationManager
 import com.garpr.android.extensions.notificationManagerCompat
+import com.garpr.android.misc.Timber
 import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 

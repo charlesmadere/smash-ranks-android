@@ -33,12 +33,6 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
 
     override fun getCount() = 3
 
-    val rankingsBundle: RankingsBundle?
-        get() {
-            val view = pages[POSITION_RANKINGS]?.get()
-            return if ((view as? RankingsLayout)?.isAlive == true) view.rankingsBundle else null
-        }
-
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view: View = when (position) {
             POSITION_FAVORITE_PLAYERS -> FavoritePlayersLayout.inflate(container)
@@ -64,6 +58,12 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
             (view as? ListLayout)?.smoothScrollToTop()
         }
     }
+
+    val rankingsBundle: RankingsBundle?
+        get() {
+            val view = pages[POSITION_RANKINGS]?.get()
+            return if ((view as? RankingsLayout)?.isAlive == true) view.rankingsBundle else null
+        }
 
     override fun refresh() {
         for (i in 0 until pages.size()) {

@@ -1,18 +1,19 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
-import com.garpr.android.misc.IdentityManager.OnIdentityChangeListener
+import com.garpr.android.managers.IdentityManager.OnIdentityChangeListener
+import com.garpr.android.misc.Timber
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.Preference
-import java.lang.ref.WeakReference
+import com.garpr.android.wrappers.WeakReferenceWrapper
 
 class IdentityManagerImpl(
         private val identityPreference: Preference<FavoritePlayer>,
         private val timber: Timber
 ) : IdentityManager {
 
-    private val listeners = mutableListOf<WeakReference<OnIdentityChangeListener>>()
+    private val listeners = mutableSetOf<WeakReferenceWrapper<OnIdentityChangeListener>>()
 
 
     companion object {
@@ -20,23 +21,23 @@ class IdentityManagerImpl(
     }
 
     override fun addListener(listener: OnIdentityChangeListener) {
+        cleanListeners()
+
         synchronized (listeners) {
-            var addListener = true
+            listeners.add(WeakReferenceWrapper(listener))
+        }
+    }
+
+    private fun cleanListeners(listenerToRemove: OnIdentityChangeListener? = null) {
+        synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
+                val listener = iterator.next().get()
 
-                if (item == null) {
+                if (listener == null || listener == listenerToRemove) {
                     iterator.remove()
-                } else if (item == listener) {
-                    addListener = false
                 }
-            }
-
-            if (addListener) {
-                listeners.add(WeakReference(listener))
             }
         }
     }
@@ -60,18 +61,13 @@ class IdentityManagerImpl(
     }
 
     private fun notifyListeners() {
+        cleanListeners()
+
         synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null) {
-                    iterator.remove()
-                } else {
-                    item.onIdentityChange(this)
-                }
+                iterator.next().get()?.onIdentityChange(this)
             }
         }
     }
@@ -85,18 +81,7 @@ class IdentityManagerImpl(
     }
 
     override fun removeListener(listener: OnIdentityChangeListener?) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null || item == listener) {
-                    iterator.remove()
-                }
-            }
-        }
+        cleanListeners(listener)
     }
 
     override fun setIdentity(player: AbsPlayer, region: Region) {

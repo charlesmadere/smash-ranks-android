@@ -13,7 +13,7 @@ import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.HeadToHeadMatch
 import com.garpr.android.models.LitePlayer
 import com.garpr.android.models.MatchResult

@@ -8,44 +8,39 @@ abstract class BasePreference<T>(
         override val defaultValue: T?
 ) : Preference<T> {
 
-    private val listeners = mutableListOf<WeakReference<OnPreferenceChangeListener<T>>>()
+    private val listeners = mutableSetOf<WeakReference<OnPreferenceChangeListener<T>>>()
 
 
     override fun addListener(listener: OnPreferenceChangeListener<T>) {
+        cleanListeners()
+
         synchronized (listeners) {
-            var addListener = true
+            listeners.add(WeakReference(listener))
+        }
+    }
+
+    private fun cleanListeners(listenerToRemove: OnPreferenceChangeListener<T>? = null) {
+        synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
+                val listener = iterator.next().get()
 
-                if (item == null) {
+                if (listener == null || listener == listenerToRemove) {
                     iterator.remove()
-                } else if (item == listener) {
-                    addListener = false
                 }
-            }
-
-            if (addListener) {
-                listeners.add(WeakReference(listener))
             }
         }
     }
 
     protected fun notifyListeners() {
+        cleanListeners()
+
         synchronized(listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null) {
-                    iterator.remove()
-                } else {
-                    item.onPreferenceChange(this)
-                }
+                iterator.next().get()?.onPreferenceChange(this)
             }
         }
     }
@@ -53,18 +48,7 @@ abstract class BasePreference<T>(
     protected abstract fun performSet(newValue: T, notifyListeners: Boolean = true)
 
     override fun removeListener(listener: OnPreferenceChangeListener<T>) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val next = iterator.next()
-                val item = next.get()
-
-                if (item == null || item == listener) {
-                    iterator.remove()
-                }
-            }
-        }
+        cleanListeners(listener)
     }
 
     override fun set(preference: Preference<T>, notifyListeners: Boolean) {

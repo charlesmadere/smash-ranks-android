@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
 import com.garpr.android.models.Endpoint

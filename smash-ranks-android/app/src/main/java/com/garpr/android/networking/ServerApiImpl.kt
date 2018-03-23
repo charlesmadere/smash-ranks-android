@@ -1,7 +1,7 @@
 package com.garpr.android.networking
 
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.FullTournamentUtils
-import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.*
 import com.garpr.android.preferences.RankingsPollingPreferenceStore

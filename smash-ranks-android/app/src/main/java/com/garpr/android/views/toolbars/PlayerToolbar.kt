@@ -7,9 +7,9 @@ import android.view.MenuInflater
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.FavoritePlayersManager
-import com.garpr.android.misc.IdentityManager
-import com.garpr.android.misc.PlayerToolbarManager
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.PlayerToolbarManager
 import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 import javax.inject.Inject
@@ -57,7 +57,7 @@ class PlayerToolbar @JvmOverloads constructor(
         identityManager.removeListener(this)
     }
 
-    override fun onFavoritePlayersChanged(favoritePlayersManager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
             postRefresh()
         }

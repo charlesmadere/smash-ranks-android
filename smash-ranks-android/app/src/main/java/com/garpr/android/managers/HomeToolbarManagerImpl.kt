@@ -1,7 +1,7 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import android.content.Context
-import com.garpr.android.misc.HomeToolbarManager.Presentation
+import com.garpr.android.managers.HomeToolbarManager.Presentation
 
 class HomeToolbarManagerImpl(
         val identityManager: IdentityManager,

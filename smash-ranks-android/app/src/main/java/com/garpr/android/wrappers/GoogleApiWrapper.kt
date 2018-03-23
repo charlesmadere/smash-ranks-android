@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.wrappers
 
 import android.app.Activity
 import android.content.DialogInterface.OnCancelListener

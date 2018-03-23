@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import android.app.Notification
 import android.support.v4.app.NotificationCompat

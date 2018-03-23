@@ -13,7 +13,13 @@ import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.misc.*
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.ListUtils
+import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
@@ -62,7 +68,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         private const val TAG = "PlayerActivity"
         private val CNAME = PlayerActivity::class.java.canonicalName
         private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
-        private val EXTRA_PLAYER_NAME = "$CNAME.PlayerName"
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region? = null): Intent {
             var regionCopy = region
@@ -71,17 +76,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 regionCopy = player.region
             }
 
-            return getLaunchIntent(context, player.id, player.name, regionCopy)
+            return getLaunchIntent(context, player.id, regionCopy)
         }
 
-        fun getLaunchIntent(context: Context, playerId: String, playerName: String?,
-                region: Region? = null): Intent {
+        fun getLaunchIntent(context: Context, playerId: String, region: Region? = null): Intent {
             val intent = Intent(context, PlayerActivity::class.java)
                     .putExtra(EXTRA_PLAYER_ID, playerId)
-
-            if (playerName?.isNotBlank() == true) {
-                intent.putExtra(EXTRA_PLAYER_NAME, playerName)
-            }
 
             if (region != null) {
                 intent.putExtra(EXTRA_REGION, region)
@@ -240,19 +240,15 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             private var list: List<Any>? = null
 
             override fun onBackground() {
-                if (!isAlive || !TextUtils.equals(query, searchQuery)) {
-                    return
+                if (isAlive && TextUtils.equals(query, searchQuery)) {
+                    this.list = ListUtils.searchPlayerMatchesList(query, list)
                 }
-
-                this.list = ListUtils.searchPlayerMatchesList(query, list)
             }
 
             override fun onUi() {
-                if (!isAlive || !TextUtils.equals(query, searchQuery)) {
-                    return
+                if (isAlive && TextUtils.equals(query, searchQuery)) {
+                    adapter.set(this.list)
                 }
-
-                adapter.set(this.list)
             }
         })
     }
@@ -265,24 +261,16 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
             return
         }
 
-        val playerMatchesBundle = this.playerMatchesBundle
-
-        if (playerMatchesBundle == null) {
-            if (intent.hasExtra(EXTRA_PLAYER_NAME)) {
-                title = intent.getStringExtra(EXTRA_PLAYER_NAME)
-            }
-        } else {
-            title = playerMatchesBundle.fullPlayer.name
-        }
+        val bundle = playerMatchesBundle ?: return
+        title = bundle.fullPlayer.name
 
         subtitle = regionManager.getRegion(this).displayName
     }
 
     private fun showData() {
-        val playerMatchesBundle = this.playerMatchesBundle ?: throw RuntimeException(
-                "playerMatchesBundle is null")
-        val list = ListUtils.createPlayerMatchesList(this, playerMatchesBundle.fullPlayer,
-                playerMatchesBundle.matchesBundle)
+        val bundle = playerMatchesBundle ?: throw RuntimeException("playerMatchesBundle is null")
+        val list = ListUtils.createPlayerMatchesList(this, bundle.fullPlayer,
+                bundle.matchesBundle)
         this.list = list
 
         error.visibility = View.GONE

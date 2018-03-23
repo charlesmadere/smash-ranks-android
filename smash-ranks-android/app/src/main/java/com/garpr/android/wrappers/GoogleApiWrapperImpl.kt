@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.wrappers
 
 import android.app.Activity
 import android.app.Application
@@ -7,6 +7,8 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 
 import com.garpr.android.R
+import com.garpr.android.misc.CrashlyticsWrapper
+import com.garpr.android.misc.Timber
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 

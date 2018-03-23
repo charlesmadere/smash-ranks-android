@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.wrappers
 
 import android.app.Application
 import com.firebase.jobdispatcher.FirebaseJobDispatcher
@@ -8,8 +8,7 @@ class FirebaseApiWrapperImpl(
         private val application: Application
 ) : FirebaseApiWrapper {
 
-    override fun getJobDispatcher(): FirebaseJobDispatcher {
-        return FirebaseJobDispatcher(GooglePlayDriver(application))
-    }
+    override val jobDispatcher: FirebaseJobDispatcher
+        get() = FirebaseJobDispatcher(GooglePlayDriver(application))
 
 }

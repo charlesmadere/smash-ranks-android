@@ -20,7 +20,8 @@
         app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
         app:autoSizeMinTextSize="@dimen/text_size_xlarge"
         app:autoSizeTextType="uniform"
-        tools:text="Charlezard" />
+        tools:text="Charlezard"
+        style="@style/MediumOrBoldText" />
 
     <TextView
         android:ellipsize="end"

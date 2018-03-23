@@ -14,7 +14,7 @@ import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.FullTournament
 import kotterknife.bindView
 import javax.inject.Inject
@@ -81,10 +81,10 @@ class TournamentMatchItemView @JvmOverloads constructor(
                 .setItems(items, { dialog, which ->
                     when (which) {
                         0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.winnerId, match.winnerName, regionManager.getRegion(context)))
+                                match.winnerId, regionManager.getRegion(context)))
 
                         1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.loserId, match.loserName, regionManager.getRegion(context)))
+                                match.loserId, regionManager.getRegion(context)))
 
                         2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
                                 match, regionManager.getRegion(context)))

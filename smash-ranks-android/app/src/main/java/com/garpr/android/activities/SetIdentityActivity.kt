@@ -17,7 +17,11 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersSelectionAdapter
 import com.garpr.android.extensions.subtitle
-import com.garpr.android.misc.*
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.ListUtils
+import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.PlayersBundle
 import com.garpr.android.networking.ApiCall

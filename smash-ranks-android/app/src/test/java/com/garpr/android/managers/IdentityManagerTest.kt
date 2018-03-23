@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
 import com.garpr.android.models.AbsPlayer
@@ -66,6 +66,23 @@ class IdentityManagerTest : BaseTest() {
 
         identityManager.removeIdentity()
         assertNull(identity)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testAddListenerTwice() {
+        var count = 0
+
+        val listener = object : IdentityManager.OnIdentityChangeListener {
+            override fun onIdentityChange(identityManager: IdentityManager) {
+                ++count
+            }
+        }
+
+        identityManager.addListener(listener)
+        identityManager.addListener(listener)
+        identityManager.setIdentity(litePlayer, regionManager.getRegion())
+        assertEquals(1, count)
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import android.app.Application
 import com.garpr.android.BaseTest

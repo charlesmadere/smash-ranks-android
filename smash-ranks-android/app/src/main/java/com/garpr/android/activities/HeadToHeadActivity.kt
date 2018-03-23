@@ -12,8 +12,8 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
 import com.garpr.android.extensions.subtitle
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall

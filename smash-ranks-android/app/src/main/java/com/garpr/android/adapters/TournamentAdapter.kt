@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.annotation.LayoutRes
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.misc.TournamentAdapterManager
+import com.garpr.android.managers.TournamentAdapterManager
 import com.garpr.android.models.FullTournament
 import com.garpr.android.models.TournamentMode
 import javax.inject.Inject

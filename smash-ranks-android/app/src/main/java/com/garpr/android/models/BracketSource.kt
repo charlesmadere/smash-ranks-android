@@ -7,7 +7,7 @@ import com.garpr.android.extensions.createParcel
 import com.google.gson.annotations.SerializedName
 
 enum class BracketSource(
-        val host: String
+        private val host: String
 ) : Parcelable {
 
     @SerializedName("challonge")

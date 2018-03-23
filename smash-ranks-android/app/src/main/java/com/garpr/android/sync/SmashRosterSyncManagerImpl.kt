@@ -2,14 +2,14 @@ package com.garpr.android.sync
 
 import android.support.annotation.UiThread
 import android.support.annotation.WorkerThread
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.SmashRosterSyncResult
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
-import com.garpr.android.sync.SmashRosterSyncManager.Listeners
-import java.lang.ref.WeakReference
+import com.garpr.android.sync.SmashRosterSyncManager.OnSyncListeners
+import com.garpr.android.wrappers.WeakReferenceWrapper
 
 class SmashRosterSyncManagerImpl(
         private val regionManager: RegionManager,
@@ -19,27 +19,27 @@ class SmashRosterSyncManagerImpl(
         private val threadUtils: ThreadUtils
 ) : SmashRosterSyncManager {
 
-    private val listeners = mutableListOf<WeakReference<Listeners>>()
+    private val listeners = mutableSetOf<WeakReferenceWrapper<OnSyncListeners>>()
 
 
-    override fun addListener(listener: Listeners) {
+    override fun addListener(listener: OnSyncListeners) {
+        cleanListeners()
+
         synchronized (listeners) {
-            var addListener = true
+            listeners.add(WeakReferenceWrapper(listener))
+        }
+    }
+
+    private fun cleanListeners(listenerToRemove: OnSyncListeners? = null) {
+        synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
+                val listener = iterator.next().get()
 
-                if (item == null) {
+                if (listener == null || listener == listenerToRemove) {
                     iterator.remove()
-                } else if (item == listener) {
-                    addListener = false
                 }
-            }
-
-            if (addListener) {
-                listeners.add(WeakReference(listener))
             }
         }
     }
@@ -69,36 +69,26 @@ class SmashRosterSyncManagerImpl(
 
     @UiThread
     private fun notifyListenersOfOnSyncBegin() {
+        cleanListeners()
+
         synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null) {
-                    iterator.remove()
-                } else {
-                    item.onSmashRosterSyncBegin(this)
-                }
+                iterator.next().get()?.onSmashRosterSyncBegin(this)
             }
         }
     }
 
     @UiThread
     private fun notifyListenersOfOnSyncComplete() {
+        cleanListeners()
+
         synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null) {
-                    iterator.remove()
-                } else {
-                    item.onSmashRosterSyncComplete(this)
-                }
+                iterator.next().get()?.onSmashRosterSyncComplete(this)
             }
         }
     }
@@ -108,19 +98,8 @@ class SmashRosterSyncManagerImpl(
         // TODO
     }
 
-    override fun removeListener(listener: Listeners) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val next = iterator.next()
-                val item = next.get()
-
-                if (item == null || item == listener) {
-                    iterator.remove()
-                }
-            }
-        }
+    override fun removeListener(listener: OnSyncListeners) {
+        cleanListeners(listener)
     }
 
     override fun sync() {

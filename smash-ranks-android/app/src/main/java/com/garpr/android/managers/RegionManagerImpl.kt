@@ -1,12 +1,13 @@
-package com.garpr.android.misc
+package com.garpr.android.managers
 
 import android.content.Context
 import android.content.ContextWrapper
-import com.garpr.android.misc.RegionManager.OnRegionChangeListener
+import com.garpr.android.managers.RegionManager.OnRegionChangeListener
+import com.garpr.android.misc.Timber
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import java.lang.ref.WeakReference
+import com.garpr.android.wrappers.WeakReferenceWrapper
 
 class RegionManagerImpl(
         private val generalPreferenceStore: GeneralPreferenceStore,
@@ -14,7 +15,7 @@ class RegionManagerImpl(
         private val timber: Timber
 ) : RegionManager {
 
-    private val listeners = mutableListOf<WeakReference<OnRegionChangeListener>>()
+    private val listeners = mutableSetOf<WeakReferenceWrapper<OnRegionChangeListener>>()
 
 
     companion object {
@@ -22,23 +23,23 @@ class RegionManagerImpl(
     }
 
     override fun addListener(listener: OnRegionChangeListener) {
+        cleanListeners()
+
         synchronized (listeners) {
-            var addListener = true
+            listeners.add(WeakReferenceWrapper(listener))
+        }
+    }
+
+    private fun cleanListeners(listenerToRemove: OnRegionChangeListener? = null) {
+        synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
+                val listener = iterator.next().get()
 
-                if (item == null) {
+                if (listener == null || listener == listenerToRemove) {
                     iterator.remove()
-                } else if (item == listener) {
-                    addListener = false
                 }
-            }
-
-            if (addListener) {
-                listeners.add(WeakReference(listener))
             }
         }
     }
@@ -63,35 +64,19 @@ class RegionManagerImpl(
     }
 
     private fun notifyListeners() {
+        cleanListeners()
+
         synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null) {
-                    iterator.remove()
-                } else {
-                    item.onRegionChange(this)
-                }
+                iterator.next().get()?.onRegionChange(this)
             }
         }
     }
 
     override fun removeListener(listener: OnRegionChangeListener?) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val reference = iterator.next()
-                val item = reference.get()
-
-                if (item == null || item == listener) {
-                    iterator.remove()
-                }
-            }
-        }
+        cleanListeners(listener)
     }
 
     override fun setRegion(region: Region) {

@@ -10,7 +10,7 @@ import com.garpr.android.R
 import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.clear
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.AbsTournament
 import kotterknife.bindView
 import javax.inject.Inject

@@ -12,6 +12,7 @@
     <color name="lose">#C1455A</color>
     <color name="lose_background">#22C1455A</color>
     <color name="overlay">#11000000</color>
+    <color name="red">#AD0013</color>
     <color name="salmon">#C4636C</color>
     <color name="fast_scroll_thumb_normal">#44000000</color>
     <color name="fast_scroll_thumb_pressed">@color/blue</color>
@@ -25,7 +26,7 @@
 
     <array name="spinner_colors">
         <item>@color/blue</item>
-        <item>@color/gray</item>
+        <item>@color/red</item>
     </array>
 
     <color name="r">#FF0000</color>

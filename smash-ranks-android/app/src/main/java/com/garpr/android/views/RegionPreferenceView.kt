@@ -7,7 +7,7 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.SetRegionActivity
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
 
