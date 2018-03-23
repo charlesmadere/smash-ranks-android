@@ -162,11 +162,11 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         if (presentation.isAddToFavoritesVisible) {
             addToOrRemoveFromFavorites.setText(R.string.add_to_favorites)
             TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(addToOrRemoveFromFavorites,
-                    R.drawable.ic_favorite_white_24dp, 0, 0, 0)
+                    0, R.drawable.ic_favorite_white_24dp, 0, 0)
         } else {
             addToOrRemoveFromFavorites.setText(R.string.remove_from_favorites)
             TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(addToOrRemoveFromFavorites,
-                    R.drawable.ic_favorite_border_white_24dp, 0, 0, 0)
+                    0, R.drawable.ic_favorite_border_white_24dp, 0, 0)
         }
 
         addToOrRemoveFromFavorites.refresh()
