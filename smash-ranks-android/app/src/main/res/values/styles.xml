@@ -300,7 +300,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:minHeight">@dimen/list_item_height</item>
         <item name="android:padding">@dimen/root_padding_quarter</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
