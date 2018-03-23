@@ -65,42 +65,29 @@
         tools:text="Unadjusted: 45.679 (+/- 2.193)"
         tools:visibility="visible" />
 
-    <com.garpr.android.views.TintedButton
-        android:drawablePadding="@dimen/root_padding_half"
-        android:drawableStart="@drawable/ic_face_white_24dp"
-        android:id="@+id/bViewYourselfVsThisOpponent"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/view_yourself_vs_this_opponent"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
 
-    <com.garpr.android.views.TintedButton
-        android:drawablePadding="@dimen/root_padding_half"
-        android:drawableStart="@drawable/ic_favorite_white_24dp"
-        android:id="@+id/bAddToFavorites"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/add_to_favorites"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_favorite_white_24dp"
+            android:id="@+id/tvAddToOrRemoveFromFavorites"
+            android:text="@string/add_to_favorites"
+            style="@style/TextButton" />
 
-    <com.garpr.android.views.TintedButton
-        android:drawablePadding="@dimen/root_padding_half"
-        android:drawableStart="@drawable/ic_favorite_border_white_24dp"
-        android:id="@+id/bRemoveFromFavorites"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/remove_from_favorites"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_face_white_24dp"
+            android:id="@+id/tvViewYourselfVsThisOpponent"
+            android:text="@string/view_yourself_vs_this_opponent"
+            style="@style/TextButton" />
 
-    <com.garpr.android.views.TintedButton
-        android:drawablePadding="@dimen/root_padding_half"
-        android:drawableStart="@drawable/ic_share_white_24dp"
-        android:id="@+id/bShare"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/share" />
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_share_white_24dp"
+            android:id="@+id/tvShare"
+            android:text="@string/share"
+            style="@style/TextButton" />
+
+    </LinearLayout>
 
 </com.garpr.android.views.PlayerProfileItemView>

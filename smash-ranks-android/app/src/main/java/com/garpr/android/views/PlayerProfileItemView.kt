@@ -5,9 +5,9 @@ import android.content.Context
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
+import android.support.v4.widget.TextViewCompat
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import com.garpr.android.App
 import com.garpr.android.R
@@ -19,7 +19,6 @@ import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.PlayerProfileManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.FullPlayer
@@ -29,10 +28,6 @@ import javax.inject.Inject
 class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>,
         FavoritePlayersManager.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener, Refreshable {
-
-    private val animationDuration: Long by lazy {
-        resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-    }
 
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
@@ -49,15 +44,14 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     @Inject
     protected lateinit var shareUtils: ShareUtils
 
-    private val addToFavorites: Button by bindView(R.id.bAddToFavorites)
-    private val removeFromFavorites: Button by bindView(R.id.bRemoveFromFavorites)
-    private val share: Button by bindView(R.id.bShare)
-    private val viewYourselfVsThisOpponent: Button by bindView(R.id.bViewYourselfVsThisOpponent)
+    private val addToOrRemoveFromFavorites: TintedTextView by bindView(R.id.tvAddToOrRemoveFromFavorites)
     private val aliases: TextView by bindView(R.id.tvAliases)
     private val name: TextView by bindView(R.id.tvName)
     private val rating: TextView by bindView(R.id.tvRating)
     private val region: TextView by bindView(R.id.tvRegion)
+    private val share: TextView by bindView(R.id.tvShare)
     private val unadjustedRating: TextView by bindView(R.id.tvUnadjustedRating)
+    private val viewYourselfVsThisOpponent: TextView by bindView(R.id.tvViewYourselfVsThisOpponent)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -68,26 +62,6 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
-
-    private fun animateFavoritesButtons(animateOut: View, animateIn: View) {
-        animateOut.animate()
-                .alpha(0f)
-                .setDuration(animationDuration)
-                .setInterpolator(AnimationUtils.ACCELERATE_INTERPOLATOR)
-                .withEndAction {
-                    animateIn.animate()
-                            .alpha(1f)
-                            .setDuration(animationDuration)
-                            .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
-                            .withStartAction {
-                                animateOut.visibility = View.GONE
-                                animateIn.alpha = 0f
-                                animateIn.visibility = View.VISIBLE
-                            }
-                            .start()
-                }
-                .start()
-    }
 
     private var fullPlayer: FullPlayer? = null
         set(value) {
@@ -130,19 +104,21 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
 
+        addToOrRemoveFromFavorites.setOnClickListener {
+            val player = fullPlayer ?: return@setOnClickListener
+
+            if (favoritePlayersManager.contains(player)) {
+                favoritePlayersManager.removePlayer(player)
+            } else {
+                favoritePlayersManager.addPlayer(player, regionManager.getRegion(context))
+            }
+        }
+
         viewYourselfVsThisOpponent.setOnClickListener {
             val identity = identityManager.identity ?: throw NullPointerException("identity is null")
             val player = fullPlayer ?: throw NullPointerException("fullPlayer is null")
             context.startActivity(HeadToHeadActivity.getLaunchIntent(context, identity, player,
                     regionManager.getRegion(context)))
-        }
-
-        addToFavorites.setOnClickListener {
-            fullPlayer?.let { favoritePlayersManager.addPlayer(it, regionManager.getRegion(context)) }
-        }
-
-        removeFromFavorites.setOnClickListener {
-            fullPlayer?.let { favoritePlayersManager.removePlayer(it) }
         }
 
         share.setOnClickListener {
@@ -184,22 +160,18 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         }
 
         if (presentation.isAddToFavoritesVisible) {
-            if (removeFromFavorites.visibility == View.VISIBLE) {
-                animateFavoritesButtons(removeFromFavorites, addToFavorites)
-            } else {
-                removeFromFavorites.visibility = View.GONE
-                addToFavorites.visibility = View.VISIBLE
-            }
+            addToOrRemoveFromFavorites.setText(R.string.add_to_favorites)
+            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(addToOrRemoveFromFavorites,
+                    R.drawable.ic_favorite_white_24dp, 0, 0, 0)
         } else {
-            if (addToFavorites.visibility == View.VISIBLE) {
-                animateFavoritesButtons(addToFavorites, removeFromFavorites)
-            } else {
-                addToFavorites.visibility = View.GONE
-                removeFromFavorites.visibility = View.VISIBLE
-            }
+            addToOrRemoveFromFavorites.setText(R.string.remove_from_favorites)
+            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(addToOrRemoveFromFavorites,
+                    R.drawable.ic_favorite_border_white_24dp, 0, 0, 0)
         }
 
-        if (identityManager.hasIdentity && !identityManager.isPlayer(player)) {
+        addToOrRemoveFromFavorites.refresh()
+
+        if (presentation.isViewYourselfVsThisOpponentVisible) {
             viewYourselfVsThisOpponent.visibility = View.VISIBLE
         } else {
             viewYourselfVsThisOpponent.visibility = View.GONE
