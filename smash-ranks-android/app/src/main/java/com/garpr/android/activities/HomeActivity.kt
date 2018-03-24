@@ -206,6 +206,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun search(query: String?) {
+        // TODO only search current page
         adapter.search(query)
     }
 
@@ -282,6 +283,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
+            homeToolbar.closeSearchLayout()
             super.onPageSelected(position)
             updateSelectedBottomNavigationItem()
         }
