@@ -44,8 +44,8 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     @Inject
     protected lateinit var shareUtils: ShareUtils
 
-    private val addToOrRemoveFromFavorites: TintedTextView by bindView(R.id.tvAddToOrRemoveFromFavorites)
     private val aliases: TextView by bindView(R.id.tvAliases)
+    private val favoriteOrUnfavorite: TintedTextView by bindView(R.id.tvFavoriteOrUnfavorite)
     private val name: TextView by bindView(R.id.tvName)
     private val rating: TextView by bindView(R.id.tvRating)
     private val region: TextView by bindView(R.id.tvRegion)
@@ -104,13 +104,13 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
 
-        addToOrRemoveFromFavorites.setOnClickListener {
-            val player = fullPlayer ?: return@setOnClickListener
-
-            if (favoritePlayersManager.contains(player)) {
-                favoritePlayersManager.removePlayer(player)
-            } else {
-                favoritePlayersManager.addPlayer(player, regionManager.getRegion(context))
+        favoriteOrUnfavorite.setOnClickListener {
+            fullPlayer?.let {
+                if (favoritePlayersManager.contains(it)) {
+                    favoritePlayersManager.removePlayer(it)
+                } else {
+                    favoritePlayersManager.addPlayer(it, regionManager.getRegion(context))
+                }
             }
         }
 
@@ -160,16 +160,16 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         }
 
         if (presentation.isAddToFavoritesVisible) {
-            addToOrRemoveFromFavorites.setText(R.string.add_to_favorites)
-            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(addToOrRemoveFromFavorites,
+            favoriteOrUnfavorite.setText(R.string.favorite)
+            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(favoriteOrUnfavorite,
                     0, R.drawable.ic_favorite_white_24dp, 0, 0)
         } else {
-            addToOrRemoveFromFavorites.setText(R.string.remove_from_favorites)
-            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(addToOrRemoveFromFavorites,
+            favoriteOrUnfavorite.setText(R.string.unfavorite)
+            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(favoriteOrUnfavorite,
                     0, R.drawable.ic_favorite_border_white_24dp, 0, 0)
         }
 
-        addToOrRemoveFromFavorites.refresh()
+        favoriteOrUnfavorite.refresh()
 
         if (presentation.isViewYourselfVsThisOpponentVisible) {
             viewYourselfVsThisOpponent.visibility = View.VISIBLE

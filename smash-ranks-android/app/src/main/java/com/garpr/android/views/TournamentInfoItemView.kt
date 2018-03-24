@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.garpr.android.App
@@ -35,12 +34,12 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
     @Inject
     protected lateinit var shareUtils: ShareUtils
 
-    private val openLink: Button by bindView(R.id.bOpenLink)
-    private val share: Button by bindView(R.id.bShare)
     private val date: TextView by bindView(R.id.tvDate)
     private val entrantsCount: TextView by bindView(R.id.tvEntrantsCount)
     private val name: TextView by bindView(R.id.tvName)
+    private val openLink: TextView by bindView(R.id.tvOpenLink)
     private val region: TextView by bindView(R.id.tvRegion)
+    private val share: TextView by bindView(R.id.tvShare)
     private val tournamentTabsView: TournamentTabsView by bindView(R.id.tournamentTabsView)
 
 

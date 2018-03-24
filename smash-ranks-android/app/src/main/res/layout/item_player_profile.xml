@@ -72,14 +72,18 @@
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_favorite_white_24dp"
-            android:id="@+id/tvAddToOrRemoveFromFavorites"
-            android:text="@string/add_to_favorites"
+            android:id="@+id/tvFavoriteOrUnfavorite"
+            android:layout_marginEnd="@dimen/root_padding_half"
+            android:text="@string/favorite"
             style="@style/TextButton" />
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_face_white_24dp"
             android:id="@+id/tvViewYourselfVsThisOpponent"
-            android:text="@string/view_yourself_vs_this_opponent"
+            android:layout_marginEnd="@dimen/root_padding_half"
+            android:text="@string/compare"
+            android:visibility="gone"
+            tools:visibility="visible"
             style="@style/TextButton" />
 
         <com.garpr.android.views.TintedTextView

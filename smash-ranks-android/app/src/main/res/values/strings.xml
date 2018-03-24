@@ -3,7 +3,6 @@
 
     <string name="activity_requirements">Activity requirements</string>
     <string name="x_activity_requirements">%1$s Activity Requirements</string>
-    <string name="add_to_favorites">Add to favorites</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="aliases">Aliases</string>
     <string name="aliases_x">Aliases: %1$s</string>
@@ -11,14 +10,13 @@
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
-    <string name="bowser">Bowser</string>
     <string name="build_x">Build %1$d</string>
     <string name="build_x_debug">Build %1$d (Debug)</string>s
     <string name="cancel">Cancel</string>
     <string name="cancel_all">Cancel all</string>
-    <string name="captain_falcon">Captain Falcon</string>
     <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
+    <string name="compare">Compare</string>
     <string name="contribute_your_changes">Contribute your changes!</string>
     <string name="daily">Daily</string>
     <string name="day">Day</string>
@@ -26,8 +24,6 @@
     <string name="delete_favorite_players">Delete favorite players</string>
     <string name="delete_identity">Delete identity</string>
     <string name="delimiter">,\u0020</string>
-    <string name="donkey_kong">Donkey Kong</string>
-    <string name="dr_mario">Dr. Mario</string>
     <string name="easily_find_yourself_throughout_the_app">Easily find yourself throughout the app</string>
     <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
@@ -43,39 +39,28 @@
     <string name="every_5_days">Every 5 days</string>
     <string name="every_10_days">Every 10 days</string>
     <string name="every_8_hours">Every 8 hours</string>
-    <string name="falco">Falco</string>
+    <string name="favorite">Favorite</string>
     <string name="favorite_players">Favorite Players</string>
     <string name="filter">Filter</string>
     <string name="filter_to_losses">Filter to losses</string>
     <string name="filter_to_wins">Filter to wins</string>
-    <string name="fox">Fox</string>
     <string name="gar_pr" translatable="false">GAR PR</string>
     <string name="gar_twitter_url" translatable="false">twitter.com/garsh0p</string>
     <string name="google_play_services_error_cant_be_resolved">Sorry, but your Google Play Services error (%1$d) can\'t be resolved.</string>
     <string name="google_play_services_error_has_been_resolved">Google Play Services error has been resolved!</string>
     <string name="head_to_head">Head to Head</string>
     <string name="head_to_head_swipe_to_refresh_to_check_again">Swipe down to refresh to check again. This probably means that these two competitors have never played in tournament before.</string>
-    <string name="ice_climbers">Ice Climbers</string>
     <string name="identity">Identity</string>
     <string name="identity_region_format">%1$s (%2$s)</string>
     <string name="info">Info</string>
     <string name="identity_saved_">Identity saved!</string>
-    <string name="jigglypuff">Jigglypuff</string>
-    <string name="kirby">Kirby</string>
     <string name="last_poll">Last poll</string>
-    <string name="link">Link</string>
     <string name="loading_deep_link_">Loading deep link…</string>
     <string name="log_viewer">Log Viewer</string>
-    <string name="luigi">Luigi</string>
-    <string name="mario">Mario</string>
-    <string name="marth">Marth</string>
     <string name="matches">Matches</string>
-    <string name="mewtwo">Mewtwo</string>
     <string name="miscellaneous">Miscellaneous</string>
-    <string name="mr_game_and_watch">Mr. Game &amp; Watch</string>
     <string name="must_be_charging">Must be charging</string>
     <string name="must_be_on_wifi">Must be on wifi</string>
-    <string name="ness">Ness</string>
     <string name="night">Night</string>
     <string name="none">None</string>
     <string name="norcal" translatable="false">Norcal</string>
@@ -96,9 +81,6 @@
     <string name="open_challonge_link">Open Challonge link</string>
     <string name="open_smash_gg_link">Open smash.gg link</string>
     <string name="open_source_on_github">Open source on GitHub</string>
-    <string name="peach">Peach</string>
-    <string name="pichu">Pichu</string>
-    <string name="pikachu">Pikachu</string>
     <string name="players">Players</string>
     <string name="please_wait_">Please wait…</string>
     <string name="poll_frequency">Poll frequency</string>
@@ -116,11 +98,8 @@
     <string name="region_endpoint_format">%1$s (%2$s)</string>
     <string name="region_mismatch_error">A region and / or GAR PR server endpoint mismatch error may have occurred. This is not a resolvable error, sorry!</string>
     <string name="region_saved_">Region saved!</string>
-    <string name="remove_from_favorites">Remove from favorites</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>
     <string name="ringtone">Ringtone</string>
-    <string name="roy">Roy</string>
-    <string name="samus">Samus</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="search_">Search…</string>
@@ -132,7 +111,6 @@
     <string name="share_rankings">Share rankings</string>
     <string name="share_tournaments">Share tournaments</string>
     <string name="share_x">Share %1$s</string>
-    <string name="sheik">Sheik</string>
     <string name="show">Show</string>
     <string name="show_all">Show all</string>
     <string name="show_test_notification">Show test notification</string>
@@ -150,6 +128,7 @@
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
     <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
+    <string name="unfavorite">Unfavorite</string>
     <string name="updated_x">Updated %1$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
     <string name="version_x">Version %1$s</string>
@@ -165,11 +144,36 @@
     <string name="weekly">Weekly</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>
     <string name="yes">Yes</string>
-    <string name="yoshi">Yoshi</string>
-    <string name="young_link">Young Link</string>
     <string name="youve_selected_a_region_but_havent_saved">You\'ve selected a region but haven\'t saved. Are you sure you still want to close this screen?</string>
     <string name="youve_selected_an_identity_but_havent_saved">You\'ve selected an identity but haven\'t saved. Are you sure you still want to close this screen?</string>
     <string name="you_can_add_a_player_to_your_favorites">You can add a player to your favorites when viewing their profile screen, or by long-pressing on their name in player lists.</string>
+
+
+    <!-- Smash Characters -->
+    <string name="bowser">Bowser</string>
+    <string name="captain_falcon">Captain Falcon</string>
+    <string name="donkey_kong">Donkey Kong</string>
+    <string name="dr_mario">Dr. Mario</string>
+    <string name="falco">Falco</string>
+    <string name="fox">Fox</string>
+    <string name="ice_climbers">Ice Climbers</string>
+    <string name="jigglypuff">Jigglypuff</string>
+    <string name="kirby">Kirby</string>
+    <string name="link">Link</string>
+    <string name="luigi">Luigi</string>
+    <string name="mario">Mario</string>
+    <string name="marth">Marth</string>
+    <string name="mewtwo">Mewtwo</string>
+    <string name="peach">Peach</string>
+    <string name="pichu">Pichu</string>
+    <string name="pikachu">Pikachu</string>
+    <string name="mr_game_and_watch">Mr. Game &amp; Watch</string>
+    <string name="ness">Ness</string>
+    <string name="roy">Roy</string>
+    <string name="samus">Samus</string>
+    <string name="sheik">Sheik</string>
+    <string name="yoshi">Yoshi</string>
+    <string name="young_link">Young Link</string>
     <string name="zelda">Zelda</string>
 
 </resources>

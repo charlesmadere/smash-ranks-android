@@ -50,31 +50,28 @@
         android:textSize="@dimen/text_size_small"
         tools:text="1,024 entrants" />
 
-    <com.garpr.android.views.TintedButton
-        android:drawablePadding="@dimen/root_padding_half"
-        android:drawableStart="@drawable/ic_open_in_browser_white_24dp"
-        android:id="@+id/bOpenLink"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/root_padding"
-        android:layout_marginStart="@dimen/root_padding"
-        android:layout_marginTop="@dimen/root_padding_half"
-        android:layout_width="wrap_content"
-        android:text="@string/open_bracket_link"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <com.garpr.android.views.TintedButton
-        android:drawablePadding="@dimen/root_padding_half"
-        android:drawableStart="@drawable/ic_share_white_24dp"
-        android:id="@+id/bShare"
+    <LinearLayout
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
-        android:layout_width="wrap_content"
-        android:text="@string/share"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_open_in_browser_white_24dp"
+            android:id="@+id/tvOpenLink"
+            android:layout_marginEnd="@dimen/root_padding_half"
+            android:text="@string/open_bracket_link"
+            style="@style/TextButton" />
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_share_white_24dp"
+            android:id="@+id/tvShare"
+            android:text="@string/share"
+            style="@style/TextButton" />
+
+    </LinearLayout>
 
     <com.garpr.android.views.TournamentTabsView
         android:id="@+id/tournamentTabsView"
