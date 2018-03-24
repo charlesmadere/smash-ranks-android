@@ -106,7 +106,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
 
         favoriteOrUnfavorite.setOnClickListener {
             fullPlayer?.let {
-                if (favoritePlayersManager.contains(it)) {
+                if (it in favoritePlayersManager) {
                     favoritePlayersManager.removePlayer(it)
                 } else {
                     favoritePlayersManager.addPlayer(it, regionManager.getRegion(context))
