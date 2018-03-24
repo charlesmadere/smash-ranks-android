@@ -9,7 +9,6 @@
         android:text="@string/matches"
         app:layout_constraintEnd_toStartOf="@+id/tvPlayersTab"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bOpenLink"
         style="@style/TextViewTab" />
 
     <TextView
