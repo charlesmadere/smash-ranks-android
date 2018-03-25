@@ -32,8 +32,8 @@ public final class ToolbarReflectionHelper {
 
 
     public ToolbarReflectionHelper(@NonNull final Toolbar toolbar) {
-        mToolbar = toolbar;
         App.get().getAppComponent().inject(this);
+        mToolbar = toolbar;
     }
 
     @NonNull
