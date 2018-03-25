@@ -15,8 +15,8 @@ class WeakReferenceWrapperTest {
         val b = WeakReferenceWrapper(5)
         assertEquals(a, b)
 
-        val c = WeakReferenceWrapper(10)
-        val d = WeakReferenceWrapper(20)
+        val c = WeakReferenceWrapper(Integer.MIN_VALUE)
+        val d = WeakReferenceWrapper(Integer.MAX_VALUE)
         assertNotEquals(c, d)
     }
 
