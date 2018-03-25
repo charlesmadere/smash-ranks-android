@@ -95,6 +95,36 @@ class TournamentAdapterManagerTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testBuildSearchedMatchesList() {
+        val list = tournamentAdapterManager.buildSearchedMatchesList(FULL_TOURNAMENT_1,
+                listOf(MATCH_1, MATCH_2))
+        assertEquals(3, list.size)
+
+        assertTrue(list[0] is FullTournament)
+        assertTrue(list[1] is FullTournament.Match)
+        assertTrue(list[2] is FullTournament.Match)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBuildSearchedMatchesListForEmptyMatches() {
+        val list = tournamentAdapterManager.buildSearchedMatchesList(FULL_TOURNAMENT_2, listOf())
+        assertEquals(1, list.size)
+
+        assertTrue(list[0] is FullTournament)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBuildSearchedMatchesListForNullMatches() {
+        val list = tournamentAdapterManager.buildSearchedMatchesList(FULL_TOURNAMENT_3, null)
+        assertEquals(1, list.size)
+
+        assertTrue(list[0] is FullTournament)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testBuildPlayersListForFullTournament1() {
         val list = tournamentAdapterManager.buildPlayersList(FULL_TOURNAMENT_1)
         assertEquals(2, list.size)
@@ -135,6 +165,37 @@ class TournamentAdapterManagerTest : BaseTest() {
         assertTrue(list[1] is AbsPlayer)
         assertTrue(list[2] is AbsPlayer)
         assertTrue(list[3] is AbsPlayer)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBuildSearchedPlayersList() {
+        val list = tournamentAdapterManager.buildSearchedPlayersList(FULL_TOURNAMENT_1,
+                listOf(PLAYER_1, PLAYER_2, PLAYER_3))
+        assertEquals(4, list.size)
+
+        assertTrue(list[0] is FullTournament)
+        assertTrue(list[1] is AbsPlayer)
+        assertTrue(list[2] is AbsPlayer)
+        assertTrue(list[3] is AbsPlayer)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBuildSearchedPlayersListForEmptyPlayers() {
+        val list = tournamentAdapterManager.buildSearchedPlayersList(FULL_TOURNAMENT_1, listOf())
+        assertEquals(1, list.size)
+
+        assertTrue(list[0] is FullTournament)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testBuildSearchedPlayersListForNullPlayers() {
+        val list = tournamentAdapterManager.buildSearchedPlayersList(FULL_TOURNAMENT_1, null)
+        assertEquals(1, list.size)
+
+        assertTrue(list[0] is FullTournament)
     }
 
     @Test
