@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.managers.TournamentAdapterManager
+import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FullTournament
 import com.garpr.android.models.TournamentMode
 import javax.inject.Inject
@@ -25,8 +26,8 @@ class TournamentAdapter(context: Context) : BaseAdapter<Any>(context) {
     }
 
     @LayoutRes
-    override fun getItemViewType(position: Int): Int {
-        return when (tournamentAdapterManager.getItemViewType(position, getItem(position))) {
+    override fun getItemViewType(position: Int): Int =
+        when (tournamentAdapterManager.getItemViewType(position, getItem(position))) {
             TournamentAdapterManager.ViewType.MATCH -> {
                 R.layout.item_tournament_match
             }
@@ -43,7 +44,6 @@ class TournamentAdapter(context: Context) : BaseAdapter<Any>(context) {
                 R.layout.item_tournament_info
             }
         }
-    }
 
     fun set(mode: TournamentMode, content: FullTournament) {
         when (mode) {
@@ -55,6 +55,14 @@ class TournamentAdapter(context: Context) : BaseAdapter<Any>(context) {
                 set(tournamentAdapterManager.buildPlayersList(content))
             }
         }
+    }
+
+    fun setSearchedMatchesList(content: FullTournament, matches: List<FullTournament.Match>?) {
+        set(tournamentAdapterManager.buildSearchedMatchesList(content, matches))
+    }
+
+    fun setSearchedPlayersList(content: FullTournament, players: List<AbsPlayer>?) {
+        set(tournamentAdapterManager.buildSearchedPlayersList(content, players))
     }
 
 }

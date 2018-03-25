@@ -23,6 +23,17 @@ class TournamentAdapterManagerImpl(
         return list
     }
 
+    override fun buildSearchedMatchesList(content: FullTournament, matches: List<Match>?): List<Any> {
+        val list = mutableListOf<Any>()
+        list.add(content)
+
+        if (matches?.isNotEmpty() == true) {
+            list.addAll(matches)
+        }
+
+        return list
+    }
+
     override fun buildPlayersList(content: FullTournament): List<Any> {
         val list = mutableListOf<Any>()
         list.add(content)
@@ -36,8 +47,19 @@ class TournamentAdapterManagerImpl(
         return list
     }
 
-    override fun getItemId(position: Int, item: Any): Long {
-        return when (position) {
+    override fun buildSearchedPlayersList(content: FullTournament, players: List<AbsPlayer>?): List<Any> {
+        val list = mutableListOf<Any>()
+        list.add(content)
+
+        if (players?.isNotEmpty() == true) {
+            list.addAll(players)
+        }
+
+        return list
+    }
+
+    override fun getItemId(position: Int, item: Any): Long =
+        when (position) {
             0 -> {
                 Long.MIN_VALUE
             }
@@ -46,10 +68,9 @@ class TournamentAdapterManagerImpl(
                 item.hashCode().toLong()
             }
         }
-    }
 
-    override fun getItemViewType(position: Int, item: Any): TournamentAdapterManager.ViewType {
-        return when {
+    override fun getItemViewType(position: Int, item: Any): TournamentAdapterManager.ViewType =
+        when {
             position == 0 -> {
                 TournamentAdapterManager.ViewType.TOURNAMENT_INFO
             }
@@ -70,6 +91,5 @@ class TournamentAdapterManagerImpl(
                 throw IllegalArgumentException("position $position has an unknown item: $item")
             }
         }
-    }
 
 }

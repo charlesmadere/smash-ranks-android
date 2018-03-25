@@ -173,6 +173,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
         adapter.set(tournamentMode, tournament)
         tournamentTabsView.refresh()
+        tournamentToolbar.closeSearchLayout()
     }
 
     override fun onViewsBound() {
@@ -209,7 +210,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         get() = tournamentToolbar.searchQuery
 
     private fun searchTournamentMatches(query: String?, matches: List<FullTournament.Match>?) {
-        if (matches == null || matches.isEmpty()) {
+        val tournament = fullTournament
+
+        if (tournament == null || matches == null || matches.isEmpty()) {
             return
         }
 
@@ -226,14 +229,16 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
             override fun onUi() {
                 if (isAlive && TextUtils.equals(query, searchQuery) &&
                         tournamentMode == TournamentMode.MATCHES) {
-                    // TODO
+                    adapter.setSearchedMatchesList(tournament, list)
                 }
             }
         })
     }
 
     private fun searchTournamentPlayers(query: String?, players: List<AbsPlayer>?) {
-        if (players == null || players.isEmpty()) {
+        val tournament = fullTournament
+
+        if (tournament == null || players == null || players.isEmpty()) {
             return
         }
 
@@ -250,7 +255,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
             override fun onUi() {
                 if (isAlive && TextUtils.equals(query, searchQuery) &&
                         tournamentMode == TournamentMode.PLAYERS) {
-                    // TODO
+                    adapter.setSearchedPlayersList(tournament, list)
                 }
             }
         })
