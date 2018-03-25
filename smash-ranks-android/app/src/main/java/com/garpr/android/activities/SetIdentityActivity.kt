@@ -224,7 +224,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     private fun save() {
-        val selectedPlayer = _selectedPlayer ?: throw RuntimeException("_selectedPlayer is null")
+        val selectedPlayer = _selectedPlayer ?: throw NullPointerException("_selectedPlayer is null")
         identityManager.setIdentity(selectedPlayer, regionManager.getRegion(this))
         setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
