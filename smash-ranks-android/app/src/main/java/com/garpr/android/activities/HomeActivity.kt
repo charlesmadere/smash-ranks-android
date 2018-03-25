@@ -206,8 +206,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun search(query: String?) {
-        // TODO only search current page
-        adapter.search(query)
+        adapter.search(viewPager.currentItem, query)
     }
 
     override val searchQuery: CharSequence?

@@ -15,7 +15,7 @@ import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.TournamentsLayout
 import java.lang.ref.WeakReference
 
-class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
+class HomePagerAdapter : PagerAdapter(), Refreshable {
 
     private val pages = SparseArrayCompat<WeakReference<View>>(count)
 
@@ -75,13 +75,27 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
         }
     }
 
-    override fun search(query: String?) {
-        for (i in 0 until pages.size()) {
-            val view = pages[i].get()
-
-            if ((view as? Heartbeat)?.isAlive == true) {
-                (view as? Searchable)?.search(query)
+    fun search(page: Int, query: String?) {
+        val view: View? = when (page) {
+            POSITION_RANKINGS -> {
+                pages[POSITION_RANKINGS]?.get()
             }
+
+            POSITION_TOURNAMENTS -> {
+                pages[POSITION_TOURNAMENTS]?.get()
+            }
+
+            POSITION_FAVORITE_PLAYERS -> {
+                pages[POSITION_FAVORITE_PLAYERS]?.get()
+            }
+
+            else -> {
+                throw IllegalArgumentException("illegal page: $page")
+            }
+        }
+
+        if ((view as? Heartbeat)?.isAlive == true) {
+            (view as? Searchable)?.search(query)
         }
     }
 
