@@ -31,29 +31,29 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         MenuItem.OnActionExpandListener, PlayerSelectionItemView.Listeners, SearchQueryHandle,
         SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private var _selectedPlayer: AbsPlayer? = null
-    private var saveMenuItem: MenuItem? = null
-    private var searchMenuItem: MenuItem? = null
-    private var playersBundle: PlayersBundle? = null
-    private lateinit var adapter: PlayersSelectionAdapter
-    private var searchView: SearchView? = null
+    private var mSelectedPlayer: AbsPlayer? = null
+    private var mSaveMenuItem: MenuItem? = null
+    private var mSearchMenuItem: MenuItem? = null
+    private var mPlayersBundle: PlayersBundle? = null
+    private lateinit var mAdapter: PlayersSelectionAdapter
+    private var mSearchView: SearchView? = null
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var mIdentityManager: IdentityManager
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var mRegionManager: RegionManager
 
     @Inject
-    protected lateinit var serverApi: ServerApi
+    protected lateinit var mServerApi: ServerApi
 
     @Inject
-    protected lateinit var threadUtils: ThreadUtils
+    protected lateinit var mThreadUtils: ThreadUtils
 
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val empty: View by bindView(R.id.empty)
-    private val error: View by bindView(R.id.error)
+    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val mEmpty: View by bindView(R.id.empty)
+    private val mError: View by bindView(R.id.error)
 
 
     companion object {
@@ -65,18 +65,18 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     override val activityName = TAG
 
     override fun failure(errorCode: Int) {
-        _selectedPlayer = null
-        playersBundle = null
+        mSelectedPlayer = null
+        mPlayersBundle = null
         showError()
     }
 
     private fun fetchPlayersBundle() {
-        refreshLayout.isRefreshing = true
-        serverApi.getPlayers(regionManager.getRegion(this), ApiCall(this))
+        mRefreshLayout.isRefreshing = true
+        mServerApi.getPlayers(mRegionManager.getRegion(this), ApiCall(this))
     }
 
     override fun navigateUp() {
-        if (selectedPlayer == null) {
+        if (mSelectedPlayer == null) {
             super.navigateUp()
             return
         }
@@ -91,14 +91,16 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override fun onBackPressed() {
-        if (selectedPlayer == null) {
+        if (mSelectedPlayer == null) {
             super.onBackPressed()
             return
         }
 
-        if (searchMenuItem?.isActionViewExpanded == true) {
-            searchMenuItem?.collapseActionView()
-            return
+        mSearchMenuItem?.let {
+            if (it.isActionViewExpanded) {
+                it.collapseActionView()
+                return
+            }
         }
 
         AlertDialog.Builder(this)
@@ -113,21 +115,21 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     override fun onClick(v: PlayerSelectionItemView) {
         val player = v.player
 
-        _selectedPlayer = if (player == identityManager.identity) {
+        mSelectedPlayer = if (player == mIdentityManager.identity) {
             null
         } else {
             player
         }
 
         refreshMenu()
-        adapter.notifyDataSetChanged()
+        mAdapter.notifyDataSetChanged()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_set_identity)
-        subtitle = regionManager.getRegion(this).displayName
+        subtitle = mRegionManager.getRegion(this).displayName
 
         fetchPlayersBundle()
     }
@@ -138,14 +140,14 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         val searchMenuItem = menu.findItem(R.id.miSearch) ?: throw RuntimeException(
                 "searchMenuItem is null")
         searchMenuItem.setOnActionExpandListener(this)
-        this.searchMenuItem = searchMenuItem
+        mSearchMenuItem = searchMenuItem
 
         val searchView = searchMenuItem.actionView as SearchView
         searchView.queryHint = getText(R.string.search_)
         searchView.setOnQueryTextListener(this)
-        this.searchView = searchView
+        mSearchView = searchView
 
-        saveMenuItem = menu.findItem(R.id.miSave)
+        mSaveMenuItem = menu.findItem(R.id.miSave)
         refreshMenu()
 
         return super.onCreateOptionsMenu(menu)
@@ -158,7 +160,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override fun onMenuItemActionExpand(item: MenuItem) = true
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.miSave -> {
                 save()
@@ -187,58 +189,58 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     override fun onViewsBound() {
         super.onViewsBound()
 
-        refreshLayout.setOnRefreshListener(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        recyclerView.setHasFixedSize(true)
-        adapter = PlayersSelectionAdapter(this)
-        recyclerView.adapter = adapter
+        mRefreshLayout.setOnRefreshListener(this)
+        mRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        mRecyclerView.setHasFixedSize(true)
+        mAdapter = PlayersSelectionAdapter(this)
+        mRecyclerView.adapter = mAdapter
     }
 
     private fun refreshMenu() {
-        val saveMenuItem = this.saveMenuItem
-        val searchMenuItem = this.searchMenuItem
-        val searchView = this.searchView
+        val saveMenuItem = mSaveMenuItem
+        val searchMenuItem = mSearchMenuItem
+        val searchView = mSearchView
 
         if (saveMenuItem == null || searchMenuItem == null || searchView == null) {
             return
         }
 
-        if (refreshLayout.isRefreshing || adapter.isEmpty || empty.visibility == View.VISIBLE
-                || error.visibility == View.VISIBLE) {
+        if (mRefreshLayout.isRefreshing || mAdapter.isEmpty ||
+                mEmpty.visibility == View.VISIBLE || mError.visibility == View.VISIBLE) {
             saveMenuItem.isEnabled = false
             saveMenuItem.isVisible = false
             searchMenuItem.collapseActionView()
             searchMenuItem.isVisible = false
         } else {
-            saveMenuItem.isEnabled = selectedPlayer != null
+            saveMenuItem.isEnabled = mSelectedPlayer != null
             saveMenuItem.isVisible = true
             searchMenuItem.isVisible = true
         }
     }
 
     private fun save() {
-        val selectedPlayer = selectedPlayer ?: throw NullPointerException("selectedPlayer is null")
-        identityManager.setIdentity(selectedPlayer, regionManager.getRegion(this))
+        val selectedPlayer = mSelectedPlayer ?: throw RuntimeException("selectedPlayer is null")
+        mIdentityManager.setIdentity(selectedPlayer, mRegionManager.getRegion(this))
         setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
     }
 
     private fun search(query: String?) {
-        val players = playersBundle?.players
+        val players = mPlayersBundle?.players
 
         if (players == null || players.isEmpty()) {
             return
         }
 
-        threadUtils.run(object : ThreadUtils.Task {
-            private var list: List<AbsPlayer>? = null
+        mThreadUtils.run(object : ThreadUtils.Task {
+            private var mList: List<AbsPlayer>? = null
 
             override fun onBackground() {
                 if (!isAlive || !TextUtils.equals(query, searchQuery)) {
                     return
                 }
 
-                list = ListUtils.searchPlayerList(query, players)
+                mList = ListUtils.searchPlayerList(query, players)
             }
 
             override fun onUi() {
@@ -246,50 +248,50 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
                     return
                 }
 
-                adapter.set(list)
+                mAdapter.set(mList)
             }
         })
     }
 
     override val searchQuery: CharSequence?
-        get() = searchView?.query
+        get() = mSearchView?.query
 
     override val selectedPlayer: AbsPlayer?
-        get() = _selectedPlayer ?: identityManager.identity
+        get() = mSelectedPlayer ?: mIdentityManager.identity
 
     private fun showEmpty() {
-        adapter.clear()
-        recyclerView.visibility = View.GONE
-        error.visibility = View.GONE
-        empty.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        mAdapter.clear()
+        mRecyclerView.visibility = View.GONE
+        mError.visibility = View.GONE
+        mEmpty.visibility = View.VISIBLE
+        mRefreshLayout.isRefreshing = false
         refreshMenu()
     }
 
     private fun showError() {
-        adapter.clear()
-        recyclerView.visibility = View.GONE
-        empty.visibility = View.GONE
-        error.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
+        mAdapter.clear()
+        mRecyclerView.visibility = View.GONE
+        mEmpty.visibility = View.GONE
+        mError.visibility = View.VISIBLE
+        mRefreshLayout.isRefreshing = false
         refreshMenu()
     }
 
     private fun showPlayersBundle() {
-        adapter.set(playersBundle)
-        empty.visibility = View.GONE
-        error.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
-        refreshLayout.isEnabled = false
+        mAdapter.set(mPlayersBundle)
+        mEmpty.visibility = View.GONE
+        mError.visibility = View.GONE
+        mRecyclerView.visibility = View.VISIBLE
+        mRefreshLayout.isRefreshing = false
+        mRefreshLayout.isEnabled = false
         refreshMenu()
     }
 
     override val showUpNavigation = true
 
     override fun success(`object`: PlayersBundle?) {
-        _selectedPlayer = null
-        playersBundle = `object`
+        mSelectedPlayer = null
+        mPlayersBundle = `object`
 
         if (`object` != null && `object`.players?.isNotEmpty() == true) {
             showPlayersBundle()
