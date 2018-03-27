@@ -47,6 +47,30 @@ class AppUpgradeManagerTest : BaseTest() {
     }
 
     @Test
+    fun testUpgradeAppFrom0() {
+        generalPreferenceStore.lastVersion.set(0)
+        favoritePlayersManager.addPlayer(PLAYER_1, REGION_1)
+        identityManager.setIdentity(PLAYER_2, REGION_1)
+        appUpgradeManager.upgradeApp()
+
+        assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
+        assertNull(favoritePlayersManager.absPlayers)
+        assertFalse(identityManager.hasIdentity)
+    }
+
+    @Test
+    fun testUpgradeAppFromCurrentVersion() {
+        generalPreferenceStore.lastVersion.set(BuildConfig.VERSION_CODE)
+        favoritePlayersManager.addPlayer(PLAYER_1, REGION_1)
+        identityManager.setIdentity(PLAYER_2, REGION_1)
+        appUpgradeManager.upgradeApp()
+
+        assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
+        assertEquals(1, favoritePlayersManager.absPlayers?.size ?: 0)
+        assertTrue(identityManager.hasIdentity)
+    }
+
+    @Test
     fun testUpgradeAppFromNull() {
         generalPreferenceStore.lastVersion.delete()
         favoritePlayersManager.addPlayer(PLAYER_1, REGION_1)
