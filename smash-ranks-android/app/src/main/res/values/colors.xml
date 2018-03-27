@@ -12,7 +12,6 @@
     <color name="lose_background">#22C1455A</color>
     <color name="overlay">#11000000</color>
     <color name="red">#AD0013</color>
-    <color name="salmon">#C4636C</color>
     <color name="fast_scroll_thumb_normal">#44000000</color>
     <color name="fast_scroll_thumb_pressed">@color/blue</color>
     <color name="fast_scroll_track">#22000000</color>

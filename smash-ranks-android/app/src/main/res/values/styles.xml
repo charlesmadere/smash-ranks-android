@@ -13,43 +13,6 @@
         <item name="menu">@menu/bottom_navigation_view</item>
     </style>
 
-    <style name="BottomSheetListItemIcon">
-        <item name="android:id">@id/icon</item>
-        <item name="android:importantForAccessibility">no</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_height">@dimen/bottom_sheet_list_item_icon_size</item>
-        <item name="android:layout_marginEnd">@dimen/root_padding</item>
-        <item name="android:layout_width">@dimen/bottom_sheet_list_item_icon_size</item>
-        <item name="android:scaleType">centerInside</item>
-    </style>
-
-    <style name="BottomSheetListItemText">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:id">@id/text</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-
-    <style name="BottomSheetRoot">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:orientation">vertical</item>
-        <item name="layout_behavior">@string/bottom_sheet_behavior</item>
-    </style>
-
-    <style name="BottomSheetTitle">
-        <item name="android:id">@id/title</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:paddingBottom">@dimen/root_padding</item>
-        <item name="android:paddingEnd">@dimen/root_padding</item>
-        <item name="android:paddingStart">@dimen/root_padding</item>
-        <item name="android:paddingTop">@dimen/root_padding_half</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-    </style>
-
     <style name="ConstraintListItem">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>

@@ -2,7 +2,6 @@
 <resources>
 
     <dimen name="bottom_navigation_view_height">56dp</dimen>
-    <dimen name="bottom_sheet_list_item_icon_size">24dp</dimen>
     <dimen name="divider_height">3dp</dimen>
     <dimen name="divider_item_height">32dp</dimen>
     <dimen name="elevation">4dp</dimen>
@@ -24,7 +23,6 @@
     <dimen name="text_size_xlarge">20sp</dimen>
     <dimen name="text_size_xxlarge">24sp</dimen>
     <dimen name="text_size_xxxlarge">48sp</dimen>
-    <dimen name="wins_losses_column_width">112dp</dimen>
     <dimen name="wins_losses_graph_size">64dp</dimen>
     <dimen name="wins_losses_height">128dp</dimen>
 
