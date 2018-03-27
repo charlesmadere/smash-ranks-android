@@ -3,6 +3,8 @@ package com.garpr.android.dagger;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.garpr.android.managers.AppUpgradeManager;
+import com.garpr.android.managers.AppUpgradeManagerImpl;
 import com.garpr.android.managers.FavoritePlayersManager;
 import com.garpr.android.managers.FavoritePlayersManagerImpl;
 import com.garpr.android.managers.HomeToolbarManager;
@@ -102,6 +104,13 @@ public abstract class BaseAppModule {
     @Singleton
     Application providesApplication() {
         return mApplication;
+    }
+
+    @Provides
+    @Singleton
+    AppUpgradeManager providesAppUpgradeManager(final FavoritePlayersManager favoritePlayersManager,
+            final GeneralPreferenceStore generalPreferenceStore, final Timber timber) {
+        return new AppUpgradeManagerImpl(favoritePlayersManager, generalPreferenceStore, timber);
     }
 
     @Provides

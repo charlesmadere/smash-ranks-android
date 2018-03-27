@@ -1,5 +1,6 @@
 package com.garpr.android.dagger;
 
+import com.garpr.android.managers.AppUpgradeManagerTest;
 import com.garpr.android.managers.FavoritePlayersManagerTest;
 import com.garpr.android.managers.HomeToolbarManagerTest;
 import com.garpr.android.managers.IdentityManagerTest;
@@ -45,6 +46,7 @@ import dagger.Component;
 public interface TestAppComponent {
 
     // managers
+    void inject(AppUpgradeManagerTest test);
     void inject(FavoritePlayersManagerTest test);
     void inject(HomeToolbarManagerTest test);
     void inject(IdentityManagerTest test);

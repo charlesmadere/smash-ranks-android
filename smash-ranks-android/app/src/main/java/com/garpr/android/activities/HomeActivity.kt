@@ -78,8 +78,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             return
         }
 
-        if (viewPager.currentItem != 0) {
-            viewPager.setCurrentItem(0, false)
+        if (viewPager.currentItem != POSITION_RANKINGS) {
+            viewPager.setCurrentItem(POSITION_RANKINGS, false)
             return
         }
 
@@ -112,24 +112,17 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionFavoritePlayers -> {
-                viewPager.setCurrentItem(POSITION_FAVORITE_PLAYERS, false)
-                return true
-            }
-
-            R.id.actionRankings -> {
-                viewPager.setCurrentItem(POSITION_RANKINGS, false)
-                return true
-            }
-
-            R.id.actionTournaments -> {
-                viewPager.setCurrentItem(POSITION_TOURNAMENTS, false)
-                return true
-            }
-
+        val position = when (item.itemId) {
+            R.id.actionFavoritePlayers -> POSITION_FAVORITE_PLAYERS
+            R.id.actionRankings -> POSITION_RANKINGS
+            R.id.actionTournaments -> POSITION_TOURNAMENTS
             else -> throw RuntimeException("unknown item: ${item.title}")
         }
+
+        homeToolbar.closeSearchLayout()
+        viewPager.setCurrentItem(position, false)
+
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
@@ -282,7 +275,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
-            homeToolbar.closeSearchLayout()
             super.onPageSelected(position)
             updateSelectedBottomNavigationItem()
         }

@@ -17,7 +17,7 @@ import java.lang.ref.WeakReference
 
 class HomePagerAdapter : PagerAdapter(), Refreshable {
 
-    private val pages = SparseArrayCompat<WeakReference<View>>(count)
+    private val pages = SparseArrayCompat<WeakReference<View>?>(count)
 
 
     companion object {
@@ -52,7 +52,7 @@ class HomePagerAdapter : PagerAdapter(), Refreshable {
     }
 
     fun onNavigationItemReselected(position: Int) {
-        val view = pages[position].get()
+        val view = pages[position]?.get()
 
         if ((view as? Heartbeat)?.isAlive == true) {
             (view as? ListLayout)?.smoothScrollToTop()
@@ -67,35 +67,23 @@ class HomePagerAdapter : PagerAdapter(), Refreshable {
 
     override fun refresh() {
         for (i in 0 until pages.size()) {
-            val view = pages[i].get()
-
-            if ((view as? Heartbeat)?.isAlive == true) {
-                (view as? Refreshable)?.refresh()
+            pages[i]?.let {
+                if ((it as? Heartbeat)?.isAlive == true) {
+                    (it as? Refreshable)?.refresh()
+                }
             }
         }
     }
 
     fun search(page: Int, query: String?) {
-        val view: View? = when (page) {
-            POSITION_RANKINGS -> {
-                pages[POSITION_RANKINGS]?.get()
-            }
-
-            POSITION_TOURNAMENTS -> {
-                pages[POSITION_TOURNAMENTS]?.get()
-            }
-
-            POSITION_FAVORITE_PLAYERS -> {
-                pages[POSITION_FAVORITE_PLAYERS]?.get()
-            }
-
-            else -> {
-                throw IllegalArgumentException("illegal page: $page")
-            }
+        if (page < 0 || page >= count) {
+            throw IllegalArgumentException("illegal page: $page")
         }
 
-        if ((view as? Heartbeat)?.isAlive == true) {
-            (view as? Searchable)?.search(query)
+        pages[page]?.let {
+            if ((it as? Heartbeat)?.isAlive == true) {
+                (it as? Searchable)?.search(query)
+            }
         }
     }
 
