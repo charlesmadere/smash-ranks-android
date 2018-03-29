@@ -11,17 +11,44 @@ enum class SmashCharacter(
         @StringRes val textResId: Int
 ) : Parcelable {
 
+    @SerializedName("byo")
+    BAYONETTA(R.string.bayonetta),
+
     @SerializedName("bow")
     BOWSER(R.string.bowser),
 
+    @SerializedName("bjr")
+    BOWSER_JR(R.string.bowser_jr),
+
     @SerializedName("fcn")
-    CAPTAIN_FALCON(R.string.captain_falcon),
+    CPTN_FALCON(R.string.captain_falcon),
+
+    @SerializedName("olm")
+    CPTN_OLIMAR(R.string.captain_olimar),
+
+    @SerializedName("chr")
+    CHARIZARD(R.string.charizard),
+
+    @SerializedName("cld")
+    CLOUD(R.string.cloud),
+
+    @SerializedName("crn")
+    CORRIN(R.string.corrin),
+
+    @SerializedName("dpt")
+    DARK_PIT(R.string.dark_pit),
+
+    @SerializedName("ddy")
+    DIDDY_KONG(R.string.diddy_kong),
+
+    @SerializedName("doc")
+    DR_MARIO(R.string.dr_mario),
 
     @SerializedName("dnk")
     DONKEY_KONG(R.string.donkey_kong),
 
-    @SerializedName("doc")
-    DR_MARIO(R.string.dr_mario),
+    @SerializedName("dck")
+    DUCK_HUNT(R.string.duck_hunt),
 
     @SerializedName("fco")
     FALCO(R.string.falco),
@@ -29,17 +56,44 @@ enum class SmashCharacter(
     @SerializedName("fox")
     FOX(R.string.fox),
 
-    @SerializedName("ice")
+    @SerializedName("gnn")
+    GANONDORF(R.string.ganondorf),
+
+    @SerializedName("grn")
+    GRENINJA(R.string.greninja),
+
+    @SerializedName("ics")
     ICE_CLIMBERS(R.string.ice_climbers),
+
+    @SerializedName("ike")
+    IKE(R.string.ike),
+
+    @SerializedName("ivy")
+    IVYSAUR(R.string.ivysaur),
 
     @SerializedName("puf")
     JIGGLYPUFF(R.string.jigglypuff),
+
+    @SerializedName("ddd")
+    KING_DEDEDE(R.string.king_dedede),
 
     @SerializedName("kby")
     KIRBY(R.string.kirby),
 
     @SerializedName("lnk")
     LINK(R.string.link),
+
+    @SerializedName("lmc")
+    LITTLE_MAC(R.string.little_mac),
+
+    @SerializedName("lcr")
+    LUCARIO(R.string.lucario),
+
+    @SerializedName("lcs")
+    LUCAS(R.string.lucas),
+
+    @SerializedName("lcn")
+    LUCINA(R.string.lucina),
 
     @SerializedName("lgi")
     LUIGI(R.string.luigi),
@@ -50,14 +104,35 @@ enum class SmashCharacter(
     @SerializedName("mrt")
     MARTH(R.string.marth),
 
-    @SerializedName("mew")
+    @SerializedName("meg")
+    MEGA_MAN(R.string.mega_man),
+
+    @SerializedName("mtk")
+    META_KNIGHT(R.string.meta_knight),
+
+    @SerializedName("mw2")
     MEWTWO(R.string.mewtwo),
+
+    @SerializedName("mib")
+    MII_BRAWLER(R.string.mii_brawler),
+
+    @SerializedName("mig")
+    MII_GUNNER(R.string.mii_gunner),
+
+    @SerializedName("mis")
+    MII_SWORDFIGHTER(R.string.mii_swordfighter),
 
     @SerializedName("gnw")
     MR_GAME_AND_WATCH(R.string.mr_game_and_watch),
 
     @SerializedName("nes")
     NESS(R.string.ness),
+
+    @SerializedName("pac")
+    PAC_MAN(R.string.pac_man),
+
+    @SerializedName("pal")
+    PALUTENA(R.string.palutena),
 
     @SerializedName("pch")
     PEACH(R.string.peach),
@@ -68,14 +143,59 @@ enum class SmashCharacter(
     @SerializedName("pik")
     PIKACHU(R.string.pikachu),
 
+    @SerializedName("pit")
+    PIT(R.string.pit),
+
+    @SerializedName("pkt")
+    POKEMON_TRAINER(R.string.pokemon_trainer),
+
+    @SerializedName("rob")
+    ROB(R.string.rob),
+
+    @SerializedName("rbn")
+    ROBIN(R.string.robin),
+
+    @SerializedName("ros")
+    ROSALINA(R.string.rosalina),
+
     @SerializedName("roy")
     ROY(R.string.roy),
+
+    @SerializedName("ryu")
+    RYU(R.string.ryu),
 
     @SerializedName("sam")
     SAMUS(R.string.samus),
 
     @SerializedName("shk")
     SHEIK(R.string.sheik),
+
+    @SerializedName("slk")
+    SHULK(R.string.shulk),
+
+    @SerializedName("snk")
+    SNAKE(R.string.snake),
+
+    @SerializedName("snc")
+    SONIC(R.string.sonic),
+
+    @SerializedName("sqt")
+    SQUIRTLE(R.string.squirtle),
+
+    @SerializedName("tlk")
+    TOON_LINK(R.string.toon_link),
+
+    @SerializedName("vlg")
+    VILLAGER(R.string.villager),
+
+    @SerializedName("war")
+    WARIO(R.string.wario),
+
+    @SerializedName("wft")
+    WII_FIT_TRAINER(R.string.wii_fit_trainer),
+
+    @SerializedName("wlf")
+    WOLF(R.string.wolf),
 
     @SerializedName("ysh")
     YOSHI(R.string.yoshi),
@@ -84,7 +204,10 @@ enum class SmashCharacter(
     YOUNG_LINK(R.string.young_link),
 
     @SerializedName("zld")
-    ZELDA(R.string.zelda);
+    ZELDA(R.string.zelda),
+
+    @SerializedName("zss")
+    ZERO_SUIT_SAMUS(R.string.zero_suit_samus);
 
 
     companion object {

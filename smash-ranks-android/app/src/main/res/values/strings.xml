@@ -11,7 +11,7 @@
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
     <string name="build_x">Build %1$d</string>
-    <string name="build_x_debug">Build %1$d (Debug)</string>s
+    <string name="build_x_debug">Build %1$d (Debug)</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_all">Cancel all</string>
     <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
@@ -106,7 +106,6 @@
     <string name="settings">Settings</string>
     <string name="set_identity">Set Identity</string>
     <string name="set_region">Set Region</string>
-    <string name="set_this_player_as_your_identity">Set this player as your identity</string>
     <string name="share">Share</string>
     <string name="share_rankings">Share rankings</string>
     <string name="share_tournaments">Share tournaments</string>
@@ -137,9 +136,7 @@
     <string name="view_all_players">View all players</string>
     <string name="view_logs">View logs</string>
     <string name="view_logs_description">Read logs normally only visible via Android\'s Logcat. Really only useful for debug purposes.</string>
-    <string name="view_tournament_page">View tournament page</string>
     <string name="view_yourself">View yourself</string>
-    <string name="view_yourself_vs_this_opponent">View yourself vs this opponent</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>
@@ -150,30 +147,71 @@
 
 
     <!-- Smash Characters -->
+    <string name="bayonetta">Bayonetta</string>
     <string name="bowser">Bowser</string>
+    <string name="bowser_jr">Bowser Jr.</string>
     <string name="captain_falcon">Captain Falcon</string>
+    <string name="captain_olimar">Captain Olimar</string>
+    <string name="charizard">Charizard</string>
+    <string name="cloud">Cloud</string>
+    <string name="corrin">Corrin</string>
+    <string name="dark_pit">Dark Pit</string>
+    <string name="diddy_kong">Diddy Kong</string>
     <string name="donkey_kong">Donkey Kong</string>
     <string name="dr_mario">Dr. Mario</string>
+    <string name="duck_hunt">Duck Hunt</string>
     <string name="falco">Falco</string>
     <string name="fox">Fox</string>
+    <string name="ganondorf">Ganondorf</string>
+    <string name="greninja">Greninja</string>
     <string name="ice_climbers">Ice Climbers</string>
+    <string name="ike">Ike</string>
+    <string name="ivysaur">Ivysaur</string>
     <string name="jigglypuff">Jigglypuff</string>
+    <string name="king_dedede">King Dedede</string>
     <string name="kirby">Kirby</string>
     <string name="link">Link</string>
+    <string name="little_mac">Little Mac</string>
+    <string name="lucario">Lucario</string>
+    <string name="lucas">Lucas</string>
+    <string name="lucina">Lucina</string>
     <string name="luigi">Luigi</string>
     <string name="mario">Mario</string>
     <string name="marth">Marth</string>
+    <string name="mega_man">Mega Man</string>
+    <string name="meta_knight">Meta Knight</string>
     <string name="mewtwo">Mewtwo</string>
+    <string name="mii_brawler">Mii Brawler</string>
+    <string name="mii_gunner">Mii Gunner</string>
+    <string name="mii_swordfighter">Mii Swordfighter</string>
+    <string name="mr_game_and_watch">Mr. Game &amp; Watch</string>
+    <string name="pac_man">Pac-Man</string>
+    <string name="palutena">Palutena</string>
     <string name="peach">Peach</string>
     <string name="pichu">Pichu</string>
     <string name="pikachu">Pikachu</string>
-    <string name="mr_game_and_watch">Mr. Game &amp; Watch</string>
+    <string name="pit">Pit</string>
+    <string name="pokemon_trainer">Pokémon Trainer</string>
     <string name="ness">Ness</string>
+    <string name="rob">R.O.B.</string>
+    <string name="robin">Robin</string>
+    <string name="rosalina">Rosalina</string>
     <string name="roy">Roy</string>
+    <string name="ryu">Ryu</string>
     <string name="samus">Samus</string>
     <string name="sheik">Sheik</string>
+    <string name="shulk">Shulk</string>
+    <string name="snake">Snake</string>
+    <string name="sonic">Sonic</string>
+    <string name="squirtle">Squirtle</string>
+    <string name="toon_link">Toon Link</string>
+    <string name="villager">Villager</string>
+    <string name="wario">Wario</string>
+    <string name="wii_fit_trainer">Wii Fit Trainer</string>
+    <string name="wolf">Wolf</string>
     <string name="yoshi">Yoshi</string>
     <string name="young_link">Young Link</string>
     <string name="zelda">Zelda</string>
+    <string name="zero_suit_samus">Zero Suit Samus</string>
 
 </resources>

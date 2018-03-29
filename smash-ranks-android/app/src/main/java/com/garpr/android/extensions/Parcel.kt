@@ -214,9 +214,9 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
     writeBundle(bundle)
 }
 
-fun Parcel.readSmashCharacterMap(): Map<String, SmashCharacter>? {
-    val bundle = readBundle(SmashCharacter::class.java.classLoader) ?: return null
-    val map = mutableMapOf<String, SmashCharacter>()
+fun Parcel.readSmashCompetitorMap(): Map<String, SmashCompetitor>? {
+    val bundle = readBundle(SmashCompetitor::class.java.classLoader) ?: return null
+    val map = mutableMapOf<String, SmashCompetitor>()
 
     for (key in bundle.keySet()) {
         map[key] = bundle.getParcelable(key)
@@ -225,7 +225,7 @@ fun Parcel.readSmashCharacterMap(): Map<String, SmashCharacter>? {
     return map
 }
 
-fun Parcel.writeSmashCharacterMap(map: Map<String, SmashCharacter>?) {
+fun Parcel.writeSmashCompetitorMap(map: Map<String, SmashCompetitor>?) {
     val size = map?.size ?: 0
 
     if (size == 0) {
@@ -237,6 +237,34 @@ fun Parcel.writeSmashCharacterMap(map: Map<String, SmashCharacter>?) {
 
     for ((key, value) in map!!) {
         bundle.putParcelable(key, value)
+    }
+
+    writeBundle(bundle)
+}
+
+fun Parcel.readStringMap(): Map<String, String>? {
+    val bundle = readBundle(String::class.java.classLoader) ?: return null
+    val map = mutableMapOf<String, String>()
+
+    for (key in bundle.keySet()) {
+        map[key] = bundle.getString(key)
+    }
+
+    return map
+}
+
+fun Parcel.writeStringMap(map: Map<String, String>?) {
+    val size = map?.size ?: 0
+
+    if (size == 0) {
+        writeBundle(null)
+        return
+    }
+
+    val bundle = Bundle(size)
+
+    for ((key, value) in map!!) {
+        bundle.putString(key, value)
     }
 
     writeBundle(bundle)

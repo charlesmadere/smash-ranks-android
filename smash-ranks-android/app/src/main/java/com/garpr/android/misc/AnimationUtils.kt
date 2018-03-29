@@ -6,7 +6,6 @@ import android.os.Build
 import android.support.annotation.ColorInt
 import android.support.annotation.RequiresApi
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.AccelerateInterpolator
 
 object AnimationUtils {
 
@@ -31,7 +30,6 @@ object AnimationUtils {
     val ARGB_EVALUATOR by lazy { ArgbEvaluator() }
 
     // interpolators
-    val ACCELERATE_INTERPOLATOR by lazy { AccelerateInterpolator() }
     val ACCELERATE_DECELERATE_INTERPOLATOR by lazy { AccelerateDecelerateInterpolator() }
 
     private val IMPL: Impl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

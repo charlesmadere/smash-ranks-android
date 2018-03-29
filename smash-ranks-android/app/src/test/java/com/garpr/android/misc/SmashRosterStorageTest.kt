@@ -46,58 +46,58 @@ class SmashRosterStorageTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
-    fun testGetSmashCharacterWithCharlezard() {
-        assertNull(smashRosterStorage.getSmashCharacter(region1, PLAYER_ID_CHARLEZARD))
-        assertNull(smashRosterStorage.getSmashCharacter(region2, PLAYER_ID_CHARLEZARD))
+    fun testGetSmashCompetitorWithCharlezard() {
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_CHARLEZARD))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetSmashCharacterWithDjNintendo() {
-        assertNull(smashRosterStorage.getSmashCharacter(region1, PLAYER_ID_DJ_NINTENDO))
-        assertNull(smashRosterStorage.getSmashCharacter(region2, PLAYER_ID_DJ_NINTENDO))
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_DJ_NINTENDO))
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_DJ_NINTENDO))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetSmashCharacterWithEmptyPlayerId() {
-        assertNull(smashRosterStorage.getSmashCharacter(region1, ""))
-        assertNull(smashRosterStorage.getSmashCharacter(region2, ""))
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, ""))
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, ""))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetSmashCharacterWithHax() {
-        assertNull(smashRosterStorage.getSmashCharacter(region1, PLAYER_ID_HAX))
-        assertNull(smashRosterStorage.getSmashCharacter(region2, PLAYER_ID_HAX))
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_HAX))
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_HAX))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetSmashCharacterWithImyt() {
-        assertNull(smashRosterStorage.getSmashCharacter(region1, PLAYER_ID_IMYT))
-        assertNull(smashRosterStorage.getSmashCharacter(region2, PLAYER_ID_IMYT))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testGetSmashCharacterWithPewPewU() {
-        assertNull(smashRosterStorage.getSmashCharacter(region1, PLAYER_ID_PEWPEWU))
-        assertNull(smashRosterStorage.getSmashCharacter(region2, PLAYER_ID_PEWPEWU))
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_IMYT))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetSmashCharacterWithNullPlayerId() {
-        assertNull(smashRosterStorage.getSmashCharacter(region1, null))
-        assertNull(smashRosterStorage.getSmashCharacter(region2, null))
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, null))
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, null))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testGetSmashCharacterWithPewPewU() {
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_PEWPEWU))
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_PEWPEWU))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetSmashCharacterWithWhitespacePlayerId() {
-        assertNull(smashRosterStorage.getSmashCharacter(region1, " "))
-        assertNull(smashRosterStorage.getSmashCharacter(region2, " "))
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, " "))
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, " "))
     }
 
 }

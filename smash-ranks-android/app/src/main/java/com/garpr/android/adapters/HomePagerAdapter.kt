@@ -17,7 +17,7 @@ import java.lang.ref.WeakReference
 
 class HomePagerAdapter : PagerAdapter(), Refreshable {
 
-    private val pages = SparseArrayCompat<WeakReference<View>?>(count)
+    private val pages = SparseArrayCompat<WeakReference<View?>?>(count)
 
 
     companion object {
@@ -67,7 +67,7 @@ class HomePagerAdapter : PagerAdapter(), Refreshable {
 
     override fun refresh() {
         for (i in 0 until pages.size()) {
-            pages[i]?.get().let {
+            pages[i]?.get()?.let {
                 if ((it as? Heartbeat)?.isAlive == true) {
                     (it as? Refreshable)?.refresh()
                 }
@@ -80,7 +80,7 @@ class HomePagerAdapter : PagerAdapter(), Refreshable {
             throw IllegalArgumentException("illegal page: $page")
         }
 
-        pages[page]?.get().let {
+        pages[page]?.get()?.let {
             if ((it as? Heartbeat)?.isAlive == true) {
                 (it as? Searchable)?.search(query)
             }

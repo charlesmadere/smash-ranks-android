@@ -6,11 +6,11 @@ class TestDeviceUtilsImpl(
         application: Application
 ) : DeviceUtilsImpl(application) {
 
-    private var _hasNetworkConnection: Boolean = true
+    private var _hasNetworkConnection: Boolean? = null
 
 
     override val hasNetworkConnection: Boolean
-        get() = _hasNetworkConnection
+        get() = _hasNetworkConnection?.let { it } ?: super.hasNetworkConnection
 
     fun setHasNetworkConnection(hasNetworkConnection: Boolean) {
         _hasNetworkConnection = hasNetworkConnection

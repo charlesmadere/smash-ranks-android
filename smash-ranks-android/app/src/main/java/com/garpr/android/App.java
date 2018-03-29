@@ -1,6 +1,7 @@
 package com.garpr.android;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.garpr.android.dagger.AppComponent;
@@ -50,8 +51,15 @@ public class App extends Application {
                 NightMode.SYSTEM.getThemeValue());
     }
 
+    @NonNull
     public AppComponent getAppComponent() {
-        return mAppComponent;
+        final AppComponent appComponent = mAppComponent;
+
+        if (appComponent == null) {
+            throw new IllegalStateException("mAppComponent is null");
+        }
+
+        return appComponent;
     }
 
     private void initializeAppComponent() {
@@ -75,7 +83,7 @@ public class App extends Application {
         initializeAppComponent();
         initializeCrashlytics();
 
-        mTimber.d(TAG, "App created");
+        mTimber.d(TAG, "App created", null);
 
         applyNightMode();
         mAppUpgradeManager.upgradeApp();
