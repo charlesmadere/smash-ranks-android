@@ -176,8 +176,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         fetchPlayerMatchesBundle()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
             R.id.miFilterToLosses -> {
                 filter(MatchResult.LOSE)
                 true
@@ -197,7 +197,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 super.onOptionsItemSelected(item)
             }
         }
-    }
 
     override fun onRefresh() {
         fetchPlayerMatchesBundle()
