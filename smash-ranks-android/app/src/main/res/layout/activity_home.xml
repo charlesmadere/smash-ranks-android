@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar_home" />
+    <com.garpr.android.views.toolbars.HomeToolbar
+        style="@style/Toolbar" />
 
     <com.garpr.android.views.NonSwipeableViewPager
         android:layout_height="0dp"

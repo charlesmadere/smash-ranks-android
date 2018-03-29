@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.MenuItem
@@ -13,13 +12,21 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
 import com.garpr.android.extensions.subtitle
-import com.garpr.android.misc.*
+import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.ListUtils
+import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.MatchItemView
+import com.garpr.android.views.PlayerProfileItemView
 import com.garpr.android.views.toolbars.PlayerToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import kotterknife.bindView
@@ -29,42 +36,38 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
         SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
-    private var mList: List<Any>? = null
-    private var mMatchResult: MatchResult? = null
-    private lateinit var mAdapter: PlayerAdapter
-    private var mPlayerMatchesBundle: PlayerMatchesBundle? = null
-    private lateinit var mPlayerId: String
+    private var list: List<Any>? = null
+    private var _matchResult: MatchResult? = null
+    private lateinit var adapter: PlayerAdapter
+    private var playerMatchesBundle: PlayerMatchesBundle? = null
+    private lateinit var playerId: String
 
     @Inject
-    protected lateinit var mFavoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    protected lateinit var mIdentityManager: IdentityManager
+    protected lateinit var identityManager: IdentityManager
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var serverApi: ServerApi
 
     @Inject
-    protected lateinit var mShareUtils: ShareUtils
+    protected lateinit var threadUtils: ThreadUtils
 
-    @Inject
-    protected lateinit var mThreadUtils: ThreadUtils
-
-    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
-    private val mPlayerToolbar: PlayerToolbar by bindView(R.id.toolbar)
-    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mEmpty: View by bindView(R.id.empty)
+    private val error: ErrorContentLinearLayout by bindView(R.id.error)
+    private val playerToolbar: PlayerToolbar by bindView(R.id.toolbar)
+    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val empty: View by bindView(R.id.empty)
 
 
     companion object {
         private const val TAG = "PlayerActivity"
         private val CNAME = PlayerActivity::class.java.canonicalName
-        private val EXTRA_PLAYER_ID = CNAME + ".PlayerId"
-        private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
+        private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region? = null): Intent {
             var regionCopy = region
@@ -73,17 +76,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 regionCopy = player.region
             }
 
-            return getLaunchIntent(context, player.id, player.name, regionCopy)
+            return getLaunchIntent(context, player.id, regionCopy)
         }
 
-        fun getLaunchIntent(context: Context, playerId: String, playerName: String?,
-                region: Region? = null): Intent {
+        fun getLaunchIntent(context: Context, playerId: String, region: Region? = null): Intent {
             val intent = Intent(context, PlayerActivity::class.java)
                     .putExtra(EXTRA_PLAYER_ID, playerId)
-
-            if (playerName?.isNotBlank() == true) {
-                intent.putExtra(EXTRA_PLAYER_NAME, playerName)
-            }
 
             if (region != null) {
                 intent.putExtra(EXTRA_REGION, region)
@@ -95,65 +93,76 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override val activityName = TAG
 
-    private fun addToFavorites() {
-        mPlayerMatchesBundle?.fullPlayer?.let {
-            mFavoritePlayersManager.addPlayer(it, mRegionManager.getRegion(this))
-        } ?: throw RuntimeException("fullPlayer is null")
+    private fun checkNameAndRegionViewScrollStates() {
+        val view = recyclerView.getChildAt(0) as? PlayerProfileItemView
+
+        if (view == null) {
+            playerToolbar.fadeInTitleAndSubtitle()
+            return
+        }
+
+        val dateVerticalPositionInWindow = view.regionVerticalPositionInWindow
+        val toolbarVerticalPositionInWindow = playerToolbar.verticalPositionInWindow +
+                playerToolbar.height
+
+        if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
+            playerToolbar.fadeInTitleAndSubtitle()
+        } else {
+            playerToolbar.fadeOutTitleAndSubtitle()
+        }
     }
 
     override fun failure(errorCode: Int) {
-        mPlayerMatchesBundle = null
-        mList = null
-        mMatchResult = null
+        playerMatchesBundle = null
+        list = null
+        _matchResult = null
         showError(errorCode)
     }
 
     private fun fetchPlayerMatchesBundle() {
-        mRefreshLayout.isRefreshing = true
-        mServerApi.getPlayerMatches(mRegionManager.getRegion(this), mPlayerId, ApiCall(this))
+        refreshLayout.isRefreshing = true
+        serverApi.getPlayerMatches(regionManager.getRegion(this), playerId,
+                ApiCall(this))
     }
 
-    private fun filter(result: MatchResult?) {
-        mMatchResult = result
-        val list = mList
+    private fun filter(matchResult: MatchResult?) {
+        _matchResult = matchResult
+        val list = this.list
 
         if (list == null || list.isEmpty()) {
             return
         }
 
-        mThreadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<Any>? = null
+        threadUtils.run(object : ThreadUtils.Task {
+            private var list: List<Any>? = null
 
             override fun onBackground() {
-                if (!isAlive || mMatchResult != result) {
+                if (!isAlive || matchResult != _matchResult) {
                     return
                 }
 
-                mList = ListUtils.filterPlayerMatchesList(result, list)
+                this.list = ListUtils.filterPlayerMatchesList(matchResult, list)
             }
 
             override fun onUi() {
-                if (!isAlive || mMatchResult != result) {
+                if (!isAlive || matchResult != _matchResult) {
                     return
                 }
 
-                mAdapter.set(mList)
+                adapter.set(this.list)
                 invalidateOptionsMenu()
             }
         })
     }
 
-    override val fullPlayer: FullPlayer?
-        get() = mPlayerMatchesBundle?.fullPlayer
-
     override val matchesBundle: MatchesBundle?
-        get() = mPlayerMatchesBundle?.matchesBundle
+        get() = playerMatchesBundle?.matchesBundle
 
     override fun onClick(v: MatchItemView) {
-        val fullPlayer = mPlayerMatchesBundle?.fullPlayer ?: return
+        val player = playerMatchesBundle?.fullPlayer ?: return
         val match = v.match ?: return
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, fullPlayer, match,
-                mRegionManager.getRegion(this)))
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, player, match,
+                regionManager.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -161,24 +170,14 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_player)
 
-        mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID)
+        playerId = intent.getStringExtra(EXTRA_PLAYER_ID)
 
-        setTitle()
+        setTitleAndSubtitle()
         fetchPlayerMatchesBundle()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) =
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
-            R.id.miAddToFavorites -> {
-                addToFavorites()
-                true
-            }
-
-            R.id.miAliases -> {
-                showAliases()
-                true
-            }
-
             R.id.miFilterToLosses -> {
                 filter(MatchResult.LOSE)
                 true
@@ -189,29 +188,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 true
             }
 
-            R.id.miRemoveFromFavorites -> {
-                mFavoritePlayersManager.removePlayer(mPlayerId)
-                true
-            }
-
-            R.id.miSetAsYourIdentity -> {
-                val player = fullPlayer ?: throw RuntimeException("fullPlayer is null")
-                mIdentityManager.setIdentity(player, mRegionManager.getRegion(this))
-                true
-            }
-
-            R.id.miShare -> {
-                share()
-                true
-            }
-
             R.id.miShowAll -> {
                 filter(null)
-                true
-            }
-
-            R.id.miViewYourselfVsThisOpponent -> {
-                viewYourselfVsThisOpponent()
                 true
             }
 
@@ -224,137 +202,113 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         fetchPlayerMatchesBundle()
     }
 
+    private val onScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            checkNameAndRegionViewScrollStates()
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            checkNameAndRegionViewScrollStates()
+        }
+    }
+
     override fun onViewsBound() {
         super.onViewsBound()
 
-        mRefreshLayout.setOnRefreshListener(this)
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = PlayerAdapter(this)
-        mRecyclerView.adapter = mAdapter
+        refreshLayout.setOnRefreshListener(this)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.addOnScrollListener(onScrollListener)
+
+        adapter = PlayerAdapter(this)
+        recyclerView.adapter = adapter
     }
 
     override val matchResult: MatchResult?
-        get() = mMatchResult
+        get() = _matchResult
 
     override fun search(query: String?) {
-        val list = mList
+        val list = this.list
 
         if (list == null || list.isEmpty()) {
             return
         }
 
-        mThreadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<Any>? = null
+        threadUtils.run(object : ThreadUtils.Task {
+            private var list: List<Any>? = null
 
             override fun onBackground() {
-                if (!isAlive || !TextUtils.equals(query, searchQuery)) {
-                    return
+                if (isAlive && TextUtils.equals(query, searchQuery)) {
+                    this.list = ListUtils.searchPlayerMatchesList(query, list)
                 }
-
-                mList = ListUtils.searchPlayerMatchesList(query, list)
             }
 
             override fun onUi() {
-                if (!isAlive || !TextUtils.equals(query, searchQuery)) {
-                    return
+                if (isAlive && TextUtils.equals(query, searchQuery)) {
+                    adapter.set(this.list)
                 }
-
-                mAdapter.set(mList)
             }
         })
     }
 
     override val searchQuery: CharSequence?
-        get() = mPlayerToolbar.searchQuery
+        get() = playerToolbar.searchQuery
 
-    private fun setTitle() {
-        if (title.isNotBlank()) {
+    private fun setTitleAndSubtitle() {
+        if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
             return
         }
 
-        val playerMatchesBundle = mPlayerMatchesBundle
+        val bundle = playerMatchesBundle ?: return
+        title = bundle.fullPlayer.name
 
-        if (playerMatchesBundle == null) {
-            if (intent.hasExtra(EXTRA_PLAYER_NAME)) {
-                title = intent.getStringExtra(EXTRA_PLAYER_NAME)
-            }
-        } else {
-            title = playerMatchesBundle.fullPlayer.name
-        }
-
-        subtitle = mRegionManager.getRegion(this).displayName
-    }
-
-    private fun share() {
-        mPlayerMatchesBundle?.fullPlayer?.let {
-            mShareUtils.sharePlayer(this, it)
-        } ?: throw RuntimeException("fullPlayer is null")
-    }
-
-    private fun showAliases() {
-        val aliases = mPlayerMatchesBundle?.fullPlayer?.aliases
-
-        if (aliases == null || aliases.isEmpty()) {
-            return
-        }
-
-        AlertDialog.Builder(this)
-                .setItems(aliases.toTypedArray<CharSequence>(), null)
-                .setTitle(R.string.aliases)
-                .show()
+        subtitle = regionManager.getRegion(this).displayName
     }
 
     private fun showData() {
-        val playerMatchesBundle = mPlayerMatchesBundle ?: throw RuntimeException(
-                "mPlayerMatchesBundle is null")
-        val list = ListUtils.createPlayerMatchesList(this, mRegionManager,
-                playerMatchesBundle.fullPlayer, playerMatchesBundle.matchesBundle)
-        mList = list
+        val bundle = playerMatchesBundle ?: throw RuntimeException("playerMatchesBundle is null")
+        val list = ListUtils.createPlayerMatchesList(this, bundle.fullPlayer,
+                bundle.matchesBundle)
+        this.list = list
 
-        mError.visibility = View.GONE
+        error.visibility = View.GONE
 
         if (list == null || list.isEmpty()) {
-            mAdapter.clear()
-            mRecyclerView.visibility = View.GONE
-            mEmpty.visibility = View.VISIBLE
+            adapter.clear()
+            recyclerView.visibility = View.GONE
+            empty.visibility = View.VISIBLE
         } else {
-            mAdapter.set(list)
-            mEmpty.visibility = View.GONE
-            mRecyclerView.visibility = View.VISIBLE
+            adapter.set(list)
+            empty.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
 
-        mRefreshLayout.isRefreshing = false
-        setTitle()
+        setTitleAndSubtitle()
         invalidateOptionsMenu()
+
+        refreshLayout.isRefreshing = false
     }
 
     private fun showError(errorCode: Int) {
-        mAdapter.clear()
-        mRecyclerView.visibility = View.GONE
-        mEmpty.visibility = View.GONE
-        mError.setVisibility(View.VISIBLE, errorCode)
-        mRefreshLayout.isRefreshing = false
+        adapter.clear()
+        recyclerView.visibility = View.GONE
+        empty.visibility = View.GONE
+        error.setVisibility(View.VISIBLE, errorCode)
+        refreshLayout.isRefreshing = false
         invalidateOptionsMenu()
     }
 
     override val showSearchMenuItem: Boolean
-        get() = mPlayerMatchesBundle?.matchesBundle?.matches?.isNotEmpty() == true
+        get() = playerMatchesBundle?.matchesBundle?.matches?.isNotEmpty() == true
 
     override val showUpNavigation = true
 
     override fun success(`object`: PlayerMatchesBundle?) {
-        mPlayerMatchesBundle = `object`
-        mList = null
-        mMatchResult = null
+        playerMatchesBundle = `object`
+        list = null
+        _matchResult = null
         showData()
-    }
-
-    private fun viewYourselfVsThisOpponent() {
-        val identity = mIdentityManager.identity ?: throw RuntimeException("identity is null")
-        val fullPlayer = mPlayerMatchesBundle?.fullPlayer ?: throw RuntimeException(
-                "fullPlayer is null")
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, identity, fullPlayer,
-                mRegionManager.getRegion(this)))
     }
 
 }

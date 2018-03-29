@@ -3,10 +3,10 @@ package com.garpr.android.sync
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
 import com.garpr.android.App
-import com.garpr.android.misc.NotificationsManager
+import com.garpr.android.managers.NotificationsManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingsNotificationsUtils
 import com.garpr.android.misc.RankingsNotificationsUtils.PollStatus
-import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiListener
@@ -57,9 +57,8 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
         get() = _isAlive
 
     private fun jobFinished(needsReschedule: Boolean) {
-        jobParameters?.let {
-            jobFinished(it, needsReschedule)
-        }
+        timber.d(TAG, "job finished... needs reschedule: $needsReschedule")
+        jobParameters?.let { jobFinished(it, needsReschedule) }
     }
 
     override fun onCreate() {
@@ -68,6 +67,8 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     }
 
     override fun onStartJob(job: JobParameters): Boolean {
+        timber.d(TAG, "starting job...")
+
         jobParameters = job
 
         val pollStatus = rankingsNotificationsUtils.getPollStatus()
@@ -83,6 +84,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
     override fun onStopJob(job: JobParameters): Boolean {
         _isAlive = false
+        timber.d(TAG, "stopping job... retry: ${pollStatus?.retry}")
         return pollStatus?.retry == true
     }
 

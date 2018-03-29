@@ -1,17 +1,13 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.os.Parcelable
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
@@ -19,8 +15,11 @@ import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
 import kotterknife.bindView
 
-open class CheckablePreferenceView : LifecycleFrameLayout,
-        Preference.OnPreferenceChangeListener<Boolean>, Refreshable, View.OnClickListener {
+class CheckablePreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LifecycleConstraintLayout(context, attrs), Preference.OnPreferenceChangeListener<Boolean>,
+        Refreshable, View.OnClickListener {
 
     private var disabledDescriptionText: CharSequence? = null
     private var enabledDescriptionText: CharSequence? = null
@@ -37,26 +36,15 @@ open class CheckablePreferenceView : LifecycleFrameLayout,
         private const val CHECKABLE_TYPE_SWITCH_COMPAT = 1
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    init {
         parseAttributes(attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) {
-        parseAttributes(attrs)
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
-        parseAttributes(attrs)
-    }
-
-    override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>?) {
+    override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>) {
         dispatchThawSelfOnly(container)
     }
 
-    override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>?) {
+    override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>) {
         dispatchFreezeSelfOnly(container)
     }
 
@@ -107,8 +95,9 @@ open class CheckablePreferenceView : LifecycleFrameLayout,
         }
 
         if (disabledDescriptionText.isNullOrBlank() || enabledDescriptionText.isNullOrBlank()) {
-            val layoutParams = title.layoutParams as RelativeLayout.LayoutParams
-            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL)
+            val layoutParams = title.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            layoutParams.bottomMargin = layoutParams.topMargin
             title.layoutParams = layoutParams
             description.visibility = View.GONE
         }
@@ -121,11 +110,14 @@ open class CheckablePreferenceView : LifecycleFrameLayout,
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
-        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
-        enabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_enabledDescriptionText)
-        titleText = ta.getText(R.styleable.CheckablePreferenceView_titleText)
+        var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        enabledDescriptionText = ta.getText(R.styleable.View_descriptionText)
+        titleText = ta.getText(R.styleable.View_titleText)
+        ta.recycle()
+
+        ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
         checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType, CHECKABLE_TYPE_CHECKBOX)
+        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
         ta.recycle()
     }
 

@@ -2,7 +2,7 @@
 <resources>
 
     <dimen name="bottom_navigation_view_height">56dp</dimen>
-    <dimen name="bottom_sheet_list_item_icon_size">24dp</dimen>
+    <dimen name="divider_height">3dp</dimen>
     <dimen name="divider_item_height">32dp</dimen>
     <dimen name="elevation">4dp</dimen>
     <dimen name="elevation_half">2dp</dimen>
@@ -16,13 +16,13 @@
     <dimen name="root_padding_half">8dp</dimen>
     <dimen name="root_padding_quadruple">64dp</dimen>
     <dimen name="root_padding_triple">48dp</dimen>
+    <dimen name="tab_height">56dp</dimen>
     <dimen name="text_size_normal">14sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_large">16sp</dimen>
     <dimen name="text_size_xlarge">20sp</dimen>
     <dimen name="text_size_xxlarge">24sp</dimen>
     <dimen name="text_size_xxxlarge">48sp</dimen>
-    <dimen name="wins_losses_column_width">112dp</dimen>
     <dimen name="wins_losses_graph_size">64dp</dimen>
     <dimen name="wins_losses_height">128dp</dimen>
 

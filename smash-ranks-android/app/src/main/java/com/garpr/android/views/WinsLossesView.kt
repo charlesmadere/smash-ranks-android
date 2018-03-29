@@ -1,36 +1,31 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleableRes
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.RelativeLayout
+import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.models.LitePlayer
 import com.garpr.android.models.WinsLosses
 import kotterknife.bindView
+import java.text.NumberFormat
 
-class WinsLossesView : RelativeLayout, BaseAdapterView<WinsLosses> {
+class WinsLossesView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs), BaseAdapterView<WinsLosses> {
 
-    private var animate = true
+    private var hasAnimated = false
+    private val numberFormat = NumberFormat.getIntegerInstance()
 
-    private val playerColumnView: WinsLossesColumnView by bindView(R.id.playerColumnView)
-    private val opponentColumnView: WinsLossesColumnView by bindView(R.id.opponentColumnView)
+    private val opponentName: TextView by bindView(R.id.tvOpponentName)
+    private val opponentWins: TextView by bindView(R.id.tvOpponentWinCount)
+    private val playerName: TextView by bindView(R.id.tvPlayerName)
+    private val playerWins: TextView by bindView(R.id.tvPlayerWinCount)
     private val winsLossesGraphView: WinsLossesGraphView by bindView(R.id.winsLossesGraphView)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleableRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -41,30 +36,34 @@ class WinsLossesView : RelativeLayout, BaseAdapterView<WinsLosses> {
         }
     }
 
-    private fun performAlphaAnimation() {
+    private fun performAnimation() {
         alpha = 0f
 
         animate()
                 .alpha(1f)
                 .setDuration(resources.getInteger(R.integer.win_losses_animation).toLong())
-                .setInterpolator(AccelerateDecelerateInterpolator())
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
                 .start()
     }
 
     override fun setContent(content: WinsLosses) {
         if (isInEditMode) {
-            animate = false
+            hasAnimated = true
         }
 
-        playerColumnView.winsLosses = content
-        opponentColumnView.winsLosses = content
-        winsLossesGraphView.setWinsLosses(content, animate)
+        playerName.text = content.player.name
+        playerWins.text = numberFormat.format(content.playerWins)
 
-        if (animate) {
-            animate = false
-            performAlphaAnimation()
-        } else {
+        opponentName.text = content.opponent.name
+        opponentWins.text = numberFormat.format(content.opponentWins)
+
+        winsLossesGraphView.setWinsLosses(content, hasAnimated)
+
+        if (hasAnimated) {
             alpha = 1f
+        } else {
+            hasAnimated = true
+            performAnimation()
         }
     }
 

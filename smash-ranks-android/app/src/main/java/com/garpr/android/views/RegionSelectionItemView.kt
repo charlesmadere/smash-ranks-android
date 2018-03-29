@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
@@ -16,9 +15,8 @@ import kotterknife.bindView
 
 class RegionSelectionItemView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<Region>, View.OnClickListener {
+        attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs), BaseAdapterView<Region>, View.OnClickListener {
 
     private val radioButton: RadioButton by bindView(R.id.radioButton)
     private val displayName: TextView by bindView(R.id.tvDisplayName)

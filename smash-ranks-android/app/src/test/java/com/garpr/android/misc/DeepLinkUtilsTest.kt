@@ -18,22 +18,22 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class DeepLinkUtilsTest : BaseTest() {
 
-    lateinit private var mChicago: Region
-    lateinit private var mGeorgia: Region
-    lateinit private var mGoogleMtv: Region
-    lateinit private var mNorcal: Region
-    lateinit private var mNyc: Region
-    lateinit private var mRegionsBundle: RegionsBundle
-    lateinit private var mRegionsBundleEmpty: RegionsBundle
+    private lateinit var chicago: Region
+    private lateinit var georgia: Region
+    private lateinit var googleMtv: Region
+    private lateinit var norcal: Region
+    private lateinit var nyc: Region
+    private lateinit var regionsBundle: RegionsBundle
+    private lateinit var regionsBundleEmpty: RegionsBundle
 
     @Inject
-    lateinit protected var mApplication: Application
+    protected lateinit var application: Application
 
     @Inject
-    lateinit protected var mDeepLinkUtils: DeepLinkUtils
+    protected lateinit var deepLinkUtils: DeepLinkUtils
 
     @Inject
-    lateinit protected var mGson: Gson
+    protected lateinit var gson: Gson
 
 
     companion object {
@@ -70,53 +70,53 @@ class DeepLinkUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mChicago = mGson.fromJson(JSON_REGION_CHICAGO, Region::class.java)
-        mGeorgia = mGson.fromJson(JSON_REGION_GEORGIA, Region::class.java)
-        mGoogleMtv = mGson.fromJson(JSON_REGION_GOOGLE_MTV, Region::class.java)
-        mNorcal = mGson.fromJson(JSON_REGION_NORCAL, Region::class.java)
-        mNyc = mGson.fromJson(JSON_REGION_NYC, Region::class.java)
+        chicago = gson.fromJson(JSON_REGION_CHICAGO, Region::class.java)
+        georgia = gson.fromJson(JSON_REGION_GEORGIA, Region::class.java)
+        googleMtv = gson.fromJson(JSON_REGION_GOOGLE_MTV, Region::class.java)
+        norcal = gson.fromJson(JSON_REGION_NORCAL, Region::class.java)
+        nyc = gson.fromJson(JSON_REGION_NYC, Region::class.java)
 
-        mRegionsBundle = mGson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
-        mRegionsBundleEmpty = mGson.fromJson(JSON_REGIONS_BUNDLE_EMPTY, RegionsBundle::class.java)
+        regionsBundle = gson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
+        regionsBundleEmpty = gson.fromJson(JSON_REGIONS_BUNDLE_EMPTY, RegionsBundle::class.java)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRegion() {
-        assertNull(mDeepLinkUtils.getRegion(null as Intent?, null))
-        assertNull(mDeepLinkUtils.getRegion(null as String?, null))
-        assertNull(mDeepLinkUtils.getRegion(null as Uri?, null))
-        assertNull(mDeepLinkUtils.getRegion("", null))
-        assertNull(mDeepLinkUtils.getRegion("   ", null))
-        assertNull(mDeepLinkUtils.getRegion(null as Intent?, mRegionsBundle))
-        assertNull(mDeepLinkUtils.getRegion(null as String?, mRegionsBundle))
-        assertNull(mDeepLinkUtils.getRegion(null as Uri?, mRegionsBundle))
-        assertNull(mDeepLinkUtils.getRegion("", mRegionsBundle))
-        assertNull(mDeepLinkUtils.getRegion("   ", mRegionsBundle))
-        assertNull(mDeepLinkUtils.getRegion(null as Intent?, mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion(null as String?, mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion(null as Uri?, mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion("", mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion("   ", mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion(PLAYER_GINGER, mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion(PLAYER_SFAT, mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion(PLAYER_SWEDISH_DELIGHT, mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion(RANKINGS_LONG_ISLAND, mRegionsBundleEmpty))
-        assertNull(mDeepLinkUtils.getRegion(TOURNAMENTS_NYC, mRegionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion(null as Intent?, null))
+        assertNull(deepLinkUtils.getRegion(null as String?, null))
+        assertNull(deepLinkUtils.getRegion(null as Uri?, null))
+        assertNull(deepLinkUtils.getRegion("", null))
+        assertNull(deepLinkUtils.getRegion("   ", null))
+        assertNull(deepLinkUtils.getRegion(null as Intent?, regionsBundle))
+        assertNull(deepLinkUtils.getRegion(null as String?, regionsBundle))
+        assertNull(deepLinkUtils.getRegion(null as Uri?, regionsBundle))
+        assertNull(deepLinkUtils.getRegion("", regionsBundle))
+        assertNull(deepLinkUtils.getRegion("   ", regionsBundle))
+        assertNull(deepLinkUtils.getRegion(null as Intent?, regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion(null as String?, regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion(null as Uri?, regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion("", regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion("   ", regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion(PLAYER_GINGER, regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion(PLAYER_SFAT, regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion(PLAYER_SWEDISH_DELIGHT, regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion(RANKINGS_LONG_ISLAND, regionsBundleEmpty))
+        assertNull(deepLinkUtils.getRegion(TOURNAMENTS_NYC, regionsBundleEmpty))
 
-        var region = mDeepLinkUtils.getRegion(PLAYER_GINGER, mRegionsBundle)
+        var region = deepLinkUtils.getRegion(PLAYER_GINGER, regionsBundle)
         assertNotNull(region)
         assertEquals("chicago", region?.id)
 
-        region = mDeepLinkUtils.getRegion(PLAYER_SFAT, mRegionsBundle)
+        region = deepLinkUtils.getRegion(PLAYER_SFAT, regionsBundle)
         assertNotNull(region)
         assertEquals("norcal", region?.id)
 
-        region = mDeepLinkUtils.getRegion(RANKINGS_NORCAL, mRegionsBundle)
+        region = deepLinkUtils.getRegion(RANKINGS_NORCAL, regionsBundle)
         assertNotNull(region)
         assertEquals("norcal", region?.id)
 
-        region = mDeepLinkUtils.getRegion(TOURNAMENT_APOLLO_III, mRegionsBundle)
+        region = deepLinkUtils.getRegion(TOURNAMENT_APOLLO_III, regionsBundle)
         assertNotNull(region)
         assertEquals("nyc", region?.id)
     }
@@ -124,73 +124,73 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testEmptyStringBuildIntentStack() {
-        assertNull(mDeepLinkUtils.buildIntentStack(mApplication, "", mGoogleMtv))
+        assertNull(deepLinkUtils.buildIntentStack(application, "", googleMtv))
     }
 
     @Test
     @Throws(Exception::class)
     fun testEmptyStringIsValidUri() {
-        assertFalse(mDeepLinkUtils.isValidUri(""))
+        assertFalse(deepLinkUtils.isValidUri(""))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullIntentBuildIntentStack() {
-        assertNull(mDeepLinkUtils.buildIntentStack(mApplication, null as Intent?, mGeorgia))
+        assertNull(deepLinkUtils.buildIntentStack(application, null as Intent?, georgia))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullIntentGetEndpoint() {
-        assertNull(mDeepLinkUtils.getEndpoint(null as Intent?))
+        assertNull(deepLinkUtils.getEndpoint(null as Intent?))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullIntentIsValidUri() {
-        assertFalse(mDeepLinkUtils.isValidUri(null as Intent?))
+        assertFalse(deepLinkUtils.isValidUri(null as Intent?))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullStringBuildIntentStack() {
-        assertNull(mDeepLinkUtils.buildIntentStack(mApplication, null as String?, mNorcal))
+        assertNull(deepLinkUtils.buildIntentStack(application, null as String?, norcal))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullStringGetEndpoint() {
-        assertNull(mDeepLinkUtils.getEndpoint(null as String?))
+        assertNull(deepLinkUtils.getEndpoint(null as String?))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullStringIsValidUri() {
-        assertFalse(mDeepLinkUtils.isValidUri(null as String?))
+        assertFalse(deepLinkUtils.isValidUri(null as String?))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullUriBuildIntentStack() {
-        assertNull(mDeepLinkUtils.buildIntentStack(mApplication, null as Uri?, mNyc))
+        assertNull(deepLinkUtils.buildIntentStack(application, null as Uri?, nyc))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullUriGetEndpoint() {
-        assertNull(mDeepLinkUtils.getEndpoint(null as Uri?))
+        assertNull(deepLinkUtils.getEndpoint(null as Uri?))
     }
 
     @Test
     @Throws(Exception::class)
     fun testNullUriIsValidUri() {
-        assertFalse(mDeepLinkUtils.isValidUri(null as Uri?))
+        assertFalse(deepLinkUtils.isValidUri(null as Uri?))
     }
 
     @Test
     @Throws(Exception::class)
     fun testPlayerGingerBuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYER_GINGER, mChicago)
+        val intentStack = deepLinkUtils.buildIntentStack(application, PLAYER_GINGER, chicago)
         assertNotNull(intentStack)
         assertEquals(3, intentStack?.size)
     }
@@ -198,21 +198,21 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testPlayerGingerGetEndpoint() {
-        assertEquals(Endpoint.NOT_GAR_PR, mDeepLinkUtils.getEndpoint(PLAYER_GINGER))
-        assertEquals(Endpoint.NOT_GAR_PR, mDeepLinkUtils.getEndpoint(Uri.parse(PLAYER_GINGER)))
+        assertEquals(Endpoint.NOT_GAR_PR, deepLinkUtils.getEndpoint(PLAYER_GINGER))
+        assertEquals(Endpoint.NOT_GAR_PR, deepLinkUtils.getEndpoint(Uri.parse(PLAYER_GINGER)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testPlayerGingerIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(PLAYER_GINGER))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(PLAYER_GINGER)))
+        assertTrue(deepLinkUtils.isValidUri(PLAYER_GINGER))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYER_GINGER)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testPlayerSfatBuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYER_SFAT, mNorcal)
+        val intentStack = deepLinkUtils.buildIntentStack(application, PLAYER_SFAT, norcal)
         assertNotNull(intentStack)
         assertEquals(3, intentStack?.size)
     }
@@ -220,15 +220,15 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testPlayerSfatIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(PLAYER_SFAT))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(PLAYER_SFAT)))
+        assertTrue(deepLinkUtils.isValidUri(PLAYER_SFAT))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYER_SFAT)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testPlayerSwedishDelightBuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYER_SWEDISH_DELIGHT,
-                mNyc)
+        val intentStack = deepLinkUtils.buildIntentStack(application, PLAYER_SWEDISH_DELIGHT,
+                nyc)
         assertNotNull(intentStack)
         assertEquals(3, intentStack?.size)
     }
@@ -236,21 +236,21 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testPlayerSwedishDelightIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(PLAYER_SWEDISH_DELIGHT))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(PLAYER_SWEDISH_DELIGHT)))
+        assertTrue(deepLinkUtils.isValidUri(PLAYER_SWEDISH_DELIGHT))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYER_SWEDISH_DELIGHT)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testPlayersGeorgiaIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(PLAYERS_GEORGIA))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(PLAYERS_GEORGIA)))
+        assertTrue(deepLinkUtils.isValidUri(PLAYERS_GEORGIA))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYERS_GEORGIA)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testPlayersNorcalBuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, PLAYERS_NORCAL, mNorcal)
+        val intentStack = deepLinkUtils.buildIntentStack(application, PLAYERS_NORCAL, norcal)
         assertNotNull(intentStack)
         assertEquals(2, intentStack?.size)
     }
@@ -258,22 +258,22 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testPlayersNorcalGetEndpoint() {
-        assertEquals(Endpoint.GAR_PR, mDeepLinkUtils.getEndpoint(PLAYERS_NORCAL))
-        assertEquals(Endpoint.GAR_PR, mDeepLinkUtils.getEndpoint(Uri.parse(PLAYERS_NORCAL)))
+        assertEquals(Endpoint.GAR_PR, deepLinkUtils.getEndpoint(PLAYERS_NORCAL))
+        assertEquals(Endpoint.GAR_PR, deepLinkUtils.getEndpoint(Uri.parse(PLAYERS_NORCAL)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testPlayersNorcalIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(PLAYERS_NORCAL))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(PLAYERS_NORCAL)))
+        assertTrue(deepLinkUtils.isValidUri(PLAYERS_NORCAL))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYERS_NORCAL)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testRankingsGoogleMtvBuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, RANKINGS_GOOGLEMTV,
-                mGoogleMtv)
+        val intentStack = deepLinkUtils.buildIntentStack(application, RANKINGS_GOOGLEMTV,
+                googleMtv)
         assertNotNull(intentStack)
         assertEquals(2, intentStack?.size)
     }
@@ -281,21 +281,21 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testRankingsGoogleMtvIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(RANKINGS_GOOGLEMTV))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(RANKINGS_GOOGLEMTV)))
+        assertTrue(deepLinkUtils.isValidUri(RANKINGS_GOOGLEMTV))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(RANKINGS_GOOGLEMTV)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testRankingsLongIslandIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(RANKINGS_LONG_ISLAND))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(RANKINGS_LONG_ISLAND)))
+        assertTrue(deepLinkUtils.isValidUri(RANKINGS_LONG_ISLAND))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(RANKINGS_LONG_ISLAND)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testRankingsNorcalBuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, RANKINGS_NORCAL, mNorcal)
+        val intentStack = deepLinkUtils.buildIntentStack(application, RANKINGS_NORCAL, norcal)
         assertNotNull(intentStack)
         assertEquals(1, intentStack?.size)
     }
@@ -303,21 +303,21 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testRankingsNorcalGetEndpoint() {
-        assertEquals(Endpoint.GAR_PR, mDeepLinkUtils.getEndpoint(RANKINGS_NORCAL))
-        assertEquals(Endpoint.GAR_PR, mDeepLinkUtils.getEndpoint(Uri.parse(RANKINGS_NORCAL)))
+        assertEquals(Endpoint.GAR_PR, deepLinkUtils.getEndpoint(RANKINGS_NORCAL))
+        assertEquals(Endpoint.GAR_PR, deepLinkUtils.getEndpoint(Uri.parse(RANKINGS_NORCAL)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testRankingsNorcalIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(RANKINGS_NORCAL))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(RANKINGS_NORCAL)))
+        assertTrue(deepLinkUtils.isValidUri(RANKINGS_NORCAL))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(RANKINGS_NORCAL)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testTournamentApolloIiiBuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, TOURNAMENT_APOLLO_III, mNyc)
+        val intentStack = deepLinkUtils.buildIntentStack(application, TOURNAMENT_APOLLO_III, nyc)
         assertNotNull(intentStack)
         assertEquals(3, intentStack?.size)
     }
@@ -325,22 +325,22 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testTournamentApolloIiiIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(TOURNAMENT_APOLLO_III))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(TOURNAMENT_APOLLO_III)))
+        assertTrue(deepLinkUtils.isValidUri(TOURNAMENT_APOLLO_III))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(TOURNAMENT_APOLLO_III)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testTournamentNorcalValidated2IsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(TOURNAMENT_NORCAL_VALIDATED_2))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(TOURNAMENT_NORCAL_VALIDATED_2)))
+        assertTrue(deepLinkUtils.isValidUri(TOURNAMENT_NORCAL_VALIDATED_2))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(TOURNAMENT_NORCAL_VALIDATED_2)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testTournamentNorcalValidated2BuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication,
-                TOURNAMENT_NORCAL_VALIDATED_2, mNorcal)
+        val intentStack = deepLinkUtils.buildIntentStack(application,
+                TOURNAMENT_NORCAL_VALIDATED_2, norcal)
         assertNotNull(intentStack)
         assertEquals(2, intentStack?.size)
     }
@@ -348,14 +348,14 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testTournamentsNorcalIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(TOURNAMENTS_NORCAL))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(TOURNAMENTS_NORCAL)))
+        assertTrue(deepLinkUtils.isValidUri(TOURNAMENTS_NORCAL))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(TOURNAMENTS_NORCAL)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testTournamentsNycBuildIntentStack() {
-        val intentStack = mDeepLinkUtils.buildIntentStack(mApplication, TOURNAMENTS_NYC, mNyc)
+        val intentStack = deepLinkUtils.buildIntentStack(application, TOURNAMENTS_NYC, nyc)
         assertNotNull(intentStack)
         assertEquals(2, intentStack?.size)
     }
@@ -363,33 +363,33 @@ class DeepLinkUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testTournamentsNycGetEndpoint() {
-        assertEquals(Endpoint.NOT_GAR_PR, mDeepLinkUtils.getEndpoint(TOURNAMENTS_NYC))
-        assertEquals(Endpoint.NOT_GAR_PR, mDeepLinkUtils.getEndpoint(Uri.parse(TOURNAMENTS_NYC)))
+        assertEquals(Endpoint.NOT_GAR_PR, deepLinkUtils.getEndpoint(TOURNAMENTS_NYC))
+        assertEquals(Endpoint.NOT_GAR_PR, deepLinkUtils.getEndpoint(Uri.parse(TOURNAMENTS_NYC)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testTournamentsNycIsValidUri() {
-        assertTrue(mDeepLinkUtils.isValidUri(TOURNAMENTS_NYC))
-        assertTrue(mDeepLinkUtils.isValidUri(Uri.parse(TOURNAMENTS_NYC)))
+        assertTrue(deepLinkUtils.isValidUri(TOURNAMENTS_NYC))
+        assertTrue(deepLinkUtils.isValidUri(Uri.parse(TOURNAMENTS_NYC)))
     }
 
     @Test
     @Throws(Exception::class)
     fun testWhitespaceStringBuildIntentStack() {
-        assertNull(mDeepLinkUtils.buildIntentStack(mApplication, " ", mGeorgia))
+        assertNull(deepLinkUtils.buildIntentStack(application, " ", georgia))
     }
 
     @Test
     @Throws(Exception::class)
     fun testWhitespaceStringGetEndpoint() {
-        assertNull(mDeepLinkUtils.getEndpoint(" "))
+        assertNull(deepLinkUtils.getEndpoint(" "))
     }
 
     @Test
     @Throws(Exception::class)
     fun testWhitespaceStringIsValidUri() {
-        assertFalse(mDeepLinkUtils.isValidUri(" "))
+        assertFalse(deepLinkUtils.isValidUri(" "))
     }
 
 }

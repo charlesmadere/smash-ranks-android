@@ -32,11 +32,6 @@ class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
     constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
             @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        colors.clear()
-    }
-
     override fun setContent(content: Timber.Entry) {
         tagAndMessage.text = resources.getString(R.string.tag_and_message, content.tag,
                 content.msg)

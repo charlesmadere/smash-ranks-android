@@ -12,12 +12,18 @@ import android.widget.TextView
 import android.widget.Toast
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.misc.*
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.Constants
+import com.garpr.android.misc.RequestCodes
+import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.RankingsPollingSyncManager
 import com.garpr.android.views.*
+import com.garpr.android.wrappers.GoogleApiWrapper
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -230,7 +236,7 @@ class SettingsActivity : BaseActivity() {
     private val googleApiWrapperOnCancelListener = DialogInterface.OnCancelListener { refresh() }
 
     private val onFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
-        override fun onFavoritePlayersChanged(manager: FavoritePlayersManager) {
+        override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
             refresh()
         }
     }

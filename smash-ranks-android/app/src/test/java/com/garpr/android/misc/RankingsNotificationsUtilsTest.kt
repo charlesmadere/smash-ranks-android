@@ -141,7 +141,7 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     @Throws(Exception::class)
     private fun setHasNetworkConnection(hasNetworkConnection: Boolean) {
         if (deviceUtils is TestDeviceUtilsImpl) {
-            (deviceUtils as TestDeviceUtilsImpl).mHasNetworkConnection = hasNetworkConnection
+            (deviceUtils as TestDeviceUtilsImpl).setHasNetworkConnection(hasNetworkConnection)
         } else {
             throw IllegalStateException("deviceUtils ($deviceUtils) is not a TestDeviceUtilsImpl")
         }

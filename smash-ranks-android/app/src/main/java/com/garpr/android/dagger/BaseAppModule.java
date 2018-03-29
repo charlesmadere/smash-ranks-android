@@ -3,33 +3,35 @@ package com.garpr.android.dagger;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.garpr.android.managers.AppUpgradeManager;
+import com.garpr.android.managers.AppUpgradeManagerImpl;
+import com.garpr.android.managers.FavoritePlayersManager;
+import com.garpr.android.managers.FavoritePlayersManagerImpl;
+import com.garpr.android.managers.HomeToolbarManager;
+import com.garpr.android.managers.HomeToolbarManagerImpl;
+import com.garpr.android.managers.IdentityManager;
+import com.garpr.android.managers.IdentityManagerImpl;
+import com.garpr.android.managers.NotificationsManager;
+import com.garpr.android.managers.NotificationsManagerImpl;
+import com.garpr.android.managers.PlayerProfileManager;
+import com.garpr.android.managers.PlayerProfileManagerImpl;
+import com.garpr.android.managers.PlayerToolbarManager;
+import com.garpr.android.managers.PlayerToolbarManagerImpl;
+import com.garpr.android.managers.RegionManager;
+import com.garpr.android.managers.RegionManagerImpl;
+import com.garpr.android.managers.TournamentAdapterManager;
+import com.garpr.android.managers.TournamentAdapterManagerImpl;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeepLinkUtils;
 import com.garpr.android.misc.DeepLinkUtilsImpl;
 import com.garpr.android.misc.DeviceUtils;
-import com.garpr.android.misc.FavoritePlayersManager;
-import com.garpr.android.misc.FavoritePlayersManagerImpl;
-import com.garpr.android.misc.FirebaseApiWrapper;
-import com.garpr.android.misc.FirebaseApiWrapperImpl;
 import com.garpr.android.misc.FullTournamentUtils;
 import com.garpr.android.misc.FullTournamentUtilsImpl;
-import com.garpr.android.misc.GoogleApiWrapper;
-import com.garpr.android.misc.GoogleApiWrapperImpl;
-import com.garpr.android.misc.HomeToolbarManager;
-import com.garpr.android.misc.HomeToolbarManagerImpl;
-import com.garpr.android.misc.IdentityManager;
-import com.garpr.android.misc.IdentityManagerImpl;
-import com.garpr.android.misc.NotificationsManager;
-import com.garpr.android.misc.NotificationsManagerImpl;
-import com.garpr.android.misc.PlayerToolbarManager;
-import com.garpr.android.misc.PlayerToolbarManagerImpl;
 import com.garpr.android.misc.PreviousRankUtils;
 import com.garpr.android.misc.PreviousRankUtilsImpl;
 import com.garpr.android.misc.RankingsNotificationsUtils;
 import com.garpr.android.misc.RankingsNotificationsUtilsImpl;
-import com.garpr.android.misc.RegionManager;
-import com.garpr.android.misc.RegionManagerImpl;
 import com.garpr.android.misc.ShareUtils;
 import com.garpr.android.misc.ShareUtilsImpl;
 import com.garpr.android.misc.SmashRosterStorage;
@@ -37,8 +39,6 @@ import com.garpr.android.misc.SmashRosterStorageImpl;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
-import com.garpr.android.misc.TournamentToolbarManager;
-import com.garpr.android.misc.TournamentToolbarManagerImpl;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsRegion;
 import com.garpr.android.models.AbsTournament;
@@ -62,6 +62,10 @@ import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.sync.RankingsPollingSyncManagerImpl;
 import com.garpr.android.sync.SmashRosterSyncManager;
 import com.garpr.android.sync.SmashRosterSyncManagerImpl;
+import com.garpr.android.wrappers.FirebaseApiWrapper;
+import com.garpr.android.wrappers.FirebaseApiWrapperImpl;
+import com.garpr.android.wrappers.GoogleApiWrapper;
+import com.garpr.android.wrappers.GoogleApiWrapperImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -100,6 +104,13 @@ public abstract class BaseAppModule {
     @Singleton
     Application providesApplication() {
         return mApplication;
+    }
+
+    @Provides
+    @Singleton
+    AppUpgradeManager providesAppUpgradeManager(final FavoritePlayersManager favoritePlayersManager,
+            final GeneralPreferenceStore generalPreferenceStore, final Timber timber) {
+        return new AppUpgradeManagerImpl(favoritePlayersManager, generalPreferenceStore, timber);
     }
 
     @Provides
@@ -245,10 +256,17 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    PlayerToolbarManager providesPlayerToolbarManager(
+    PlayerProfileManager providesPlayerProfileViewManager(
             final FavoritePlayersManager favoritePlayersManager,
-            final IdentityManager identityManager) {
-        return new PlayerToolbarManagerImpl(favoritePlayersManager, identityManager);
+            final IdentityManager identityManager, final RegionManager regionManager) {
+        return new PlayerProfileManagerImpl(mApplication, favoritePlayersManager, identityManager,
+                regionManager);
+    }
+
+    @Provides
+    @Singleton
+    PlayerToolbarManager providesPlayerToolbarManager() {
+        return new PlayerToolbarManagerImpl();
     }
 
     @Provides
@@ -370,13 +388,13 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
-        return new TimberImpl(deviceUtils.hasLowRam(), crashlyticsWrapper);
+        return new TimberImpl(deviceUtils.getHasLowRam(), crashlyticsWrapper);
     }
 
     @Provides
     @Singleton
-    TournamentToolbarManager providesTournamentToolbarManager() {
-        return new TournamentToolbarManagerImpl();
+    TournamentAdapterManager providesTournamentAdapterManager() {
+        return new TournamentAdapterManagerImpl(mApplication);
     }
 
 }

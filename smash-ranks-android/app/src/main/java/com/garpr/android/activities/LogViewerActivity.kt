@@ -32,7 +32,7 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun fetchTimberEntries() {
         refreshLayout.isRefreshing = true
-        adapter.set(mTimber.entries)
+        adapter.set(timber.entries)
 
         if (adapter.isEmpty) {
             recyclerView.visibility = View.GONE
@@ -58,10 +58,10 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) =
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             R.id.miClearLog -> {
-                mTimber.clearEntries()
+                timber.clearEntries()
                 fetchTimberEntries()
                 true
             }

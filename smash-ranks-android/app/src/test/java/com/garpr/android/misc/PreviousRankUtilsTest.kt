@@ -14,16 +14,16 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class PreviousRankUtilsTest : BaseTest() {
 
-    lateinit private var mDecreased: RankedPlayer
-    lateinit private var mIncreased: RankedPlayer
-    lateinit private var mNull: RankedPlayer
-    lateinit private var mUnchanged: RankedPlayer
+    private lateinit var decreased: RankedPlayer
+    private lateinit var increased: RankedPlayer
+    private lateinit var nullRank: RankedPlayer
+    private lateinit var unchanged: RankedPlayer
 
     @Inject
-    lateinit protected var mGson: Gson
+    protected lateinit var mGson: Gson
 
     @Inject
-    lateinit protected var mPreviousRankUtils: PreviousRankUtils
+    protected lateinit var mPreviousRankUtils: PreviousRankUtils
 
 
     companion object {
@@ -39,22 +39,22 @@ class PreviousRankUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        mDecreased = mGson.fromJson(JSON_RANKING_DECREASED, RankedPlayer::class.java)
-        mIncreased = mGson.fromJson(JSON_RANKING_INCREASED, RankedPlayer::class.java)
-        mNull = mGson.fromJson(JSON_RANKING_NULL, RankedPlayer::class.java)
-        mUnchanged = mGson.fromJson(JSON_RANKING_UNCHANGED, RankedPlayer::class.java)
+        decreased = mGson.fromJson(JSON_RANKING_DECREASED, RankedPlayer::class.java)
+        increased = mGson.fromJson(JSON_RANKING_INCREASED, RankedPlayer::class.java)
+        nullRank = mGson.fromJson(JSON_RANKING_NULL, RankedPlayer::class.java)
+        unchanged = mGson.fromJson(JSON_RANKING_UNCHANGED, RankedPlayer::class.java)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithDecreasedRanking() {
-        assertEquals(PreviousRankUtils.Info.DECREASE, mPreviousRankUtils.getRankInfo(mDecreased))
+        assertEquals(PreviousRankUtils.Info.DECREASE, mPreviousRankUtils.getRankInfo(decreased))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithIncreasedRanking() {
-        assertEquals(PreviousRankUtils.Info.INCREASE, mPreviousRankUtils.getRankInfo(mIncreased))
+        assertEquals(PreviousRankUtils.Info.INCREASE, mPreviousRankUtils.getRankInfo(increased))
     }
 
     @Test
@@ -66,13 +66,13 @@ class PreviousRankUtilsTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithNullRanking() {
-        assertNull(mPreviousRankUtils.getRankInfo(mNull))
+        assertNull(mPreviousRankUtils.getRankInfo(nullRank))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithUnchangedRanking() {
-        assertNull(mPreviousRankUtils.getRankInfo(mUnchanged))
+        assertNull(mPreviousRankUtils.getRankInfo(unchanged))
     }
 
 }

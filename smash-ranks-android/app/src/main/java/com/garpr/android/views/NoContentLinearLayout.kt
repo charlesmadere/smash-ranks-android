@@ -2,9 +2,9 @@ package com.garpr.android.views
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.support.annotation.AttrRes
-import android.support.annotation.DrawableRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -13,19 +13,18 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.garpr.android.R
+import com.garpr.android.extensions.clear
 import kotterknife.bindView
 
 open class NoContentLinearLayout : LinearLayout {
 
-    @DrawableRes
-    private var imageResId: Int = 0
+    private var _descriptionText: CharSequence? = null
+    private var _titleText: CharSequence? = null
+    private var _imageDrawable: Drawable? = null
 
-    private var line1Text: CharSequence? = null
-    private var line2Text: CharSequence? = null
-
-    protected val image: ImageView by bindView(R.id.noContentImage)
-    protected val line1: TextView by bindView(R.id.noContentLine1)
-    protected val line2: TextView by bindView(R.id.noContentLine2)
+    private val image: ImageView by bindView(R.id.image)
+    private val description: TextView by bindView(R.id.description)
+    private val title: TextView by bindView(R.id.title)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -43,44 +42,51 @@ open class NoContentLinearLayout : LinearLayout {
         parseAttributes(attrs)
     }
 
+    var descriptionText: CharSequence?
+        get() = _descriptionText
+        set(value) {
+            _descriptionText = value
+            description.text = value
+        }
+
+    var imageDrawable: Drawable?
+        get() = _imageDrawable
+        set(value) {
+            _imageDrawable = value
+
+            if (value == null) {
+                image.clear()
+                image.visibility = View.GONE
+            } else {
+                image.setImageDrawable(value)
+                image.visibility = View.VISIBLE
+            }
+        }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
         LayoutInflater.from(context).inflate(R.layout.no_content_linear_layout_body, this,
                 true)
 
-        if (imageResId == 0) {
-            image.setImageResource(0)
-            image.visibility = View.GONE
-        } else {
-            image.setImageResource(imageResId)
-            image.visibility = View.VISIBLE
-        }
-
-        setLine1Text(line1Text)
-        setLine2Text(line2Text)
+        titleText = _titleText
+        descriptionText = _descriptionText
+        imageDrawable = _imageDrawable
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.NoContentLinearLayout)
-        line1Text = ta.getText(R.styleable.NoContentLinearLayout_line1Text)
-        line2Text = ta.getText(R.styleable.NoContentLinearLayout_line2Text)
-
-        if (ta.hasValue(R.styleable.NoContentLinearLayout_imageSrc)) {
-            imageResId = ta.getResourceId(R.styleable.NoContentLinearLayout_imageSrc, 0)
-        }
-
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        _titleText = ta.getText(R.styleable.View_titleText)
+        _descriptionText = ta.getText(R.styleable.View_descriptionText)
+        _imageDrawable = ta.getDrawable(R.styleable.View_image)
         ta.recycle()
     }
 
-    fun setLine1Text(text: CharSequence?) {
-        line1Text = text
-        line1.text = text
-    }
-
-    fun setLine2Text(text: CharSequence?) {
-        line2Text = text
-        line2.text = text
-    }
+    var titleText: CharSequence?
+        get() = _titleText
+        set(value) {
+            _titleText = value
+            title.text = value
+        }
 
 }

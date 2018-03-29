@@ -9,8 +9,8 @@ import android.view.Menu
 import android.view.MenuItem
 import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.managers.RegionManager.RegionHandle
 import com.garpr.android.misc.Heartbeat
-import com.garpr.android.misc.RegionManager.RegionHandle
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
@@ -21,18 +21,18 @@ import javax.inject.Inject
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     @Inject
-    protected lateinit var mGeneralPreferenceStore: GeneralPreferenceStore
+    protected lateinit var generalPreferenceStore: GeneralPreferenceStore
 
     @Inject
-    protected lateinit var mTimber: Timber
+    protected lateinit var timber: Timber
 
-    protected val mToolbar: Toolbar? by bindOptionalView(R.id.toolbar)
+    protected val toolbar: Toolbar? by bindOptionalView(R.id.toolbar)
 
 
     companion object {
         private const val TAG = "BaseActivity"
         private val CNAME = BaseActivity::class.java.canonicalName
-        internal val EXTRA_REGION = CNAME + ".Region"
+        internal val EXTRA_REGION = "$CNAME.Region"
     }
 
     protected abstract val activityName: String
@@ -60,16 +60,16 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     override fun onCreate(savedInstanceState: Bundle?) {
         App.get().appComponent.inject(this)
 
-        mGeneralPreferenceStore.nightMode.get()?.let {
+        generalPreferenceStore.nightMode.get()?.let {
             delegate.setLocalNightMode(it.themeValue)
         } ?: throw RuntimeException("nightMode is null")
 
         super.onCreate(savedInstanceState)
-        mTimber.d(TAG, "$activityName created")
+        timber.d(TAG, "$activityName created")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        (mToolbar as? MenuToolbar)?.onCreateOptionsMenu(menuInflater, menu)
+        (toolbar as? MenuToolbar)?.onCreateOptionsMenu(menuInflater, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -81,7 +81,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
             }
         }
 
-        if ((mToolbar as? MenuToolbar)?.onOptionsItemSelected(item) == true) {
+        if ((toolbar as? MenuToolbar)?.onOptionsItemSelected(item) == true) {
             return true
         }
 
@@ -89,17 +89,14 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        (mToolbar as? MenuToolbar)?.refreshMenu()
+        (toolbar as? MenuToolbar)?.refresh()
         return super.onPrepareOptionsMenu(menu)
     }
 
     protected open fun onViewsBound() {
         // ButterKnife was once right here
 
-        mToolbar?.let {
-            setSupportActionBar(it)
-        }
-
+        toolbar?.let { setSupportActionBar(it) }
         supportActionBar?.setDisplayHomeAsUpEnabled(showUpNavigation)
     }
 

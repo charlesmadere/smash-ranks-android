@@ -4,47 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:clipChildren="false"
     android:layout_height="@dimen/wins_losses_height"
-    android:layout_marginTop="@dimen/root_padding"
-    android:layout_width="match_parent"
-    android:paddingEnd="@dimen/root_padding"
-    android:paddingStart="@dimen/root_padding">
-
-    <com.garpr.android.views.WinsLossesColumnView
-        android:id="@+id/playerColumnView"
-        android:layout_alignParentStart="true"
-        app:playerOrOpponent="player"
-        style="@style/WinsLossesColumnView">
-
-        <TextView
-            tools:text="8"
-            style="@style/WinsLossesCount" />
-
-        <TextView
-            tools:text="PewPewU"
-            style="@style/WinsLossesPlayerName" />
-
-    </com.garpr.android.views.WinsLossesColumnView>
-
-    <com.garpr.android.views.WinsLossesColumnView
-        android:id="@+id/opponentColumnView"
-        android:layout_alignParentEnd="true"
-        app:playerOrOpponent="opponent"
-        style="@style/WinsLossesColumnView">
-
-        <TextView
-            tools:text="5"
-            style="@style/WinsLossesCount" />
-
-        <TextView
-            tools:text="Shroomed"
-            style="@style/WinsLossesPlayerName" />
-
-    </com.garpr.android.views.WinsLossesColumnView>
+    android:layout_width="match_parent">
 
     <com.garpr.android.views.WinsLossesGraphView
         android:id="@+id/winsLossesGraphView"
-        android:layout_centerInParent="true"
         android:layout_height="@dimen/wins_losses_graph_size"
-        android:layout_width="@dimen/wins_losses_graph_size" />
+        android:layout_width="@dimen/wins_losses_graph_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPlayerWinCount"
+        app:layout_constraintBottom_toTopOf="@+id/tvPlayerName"
+        app:layout_constraintEnd_toStartOf="@id/winsLossesGraphView"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="8"
+        style="@style/WinsLossesCount" />
+
+    <TextView
+        android:id="@id/tvPlayerName"
+        app:layout_constraintEnd_toStartOf="@id/winsLossesGraphView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPlayerWinCount"
+        tools:text="PewPewU"
+        style="@style/WinsLossesPlayerName" />
+
+    <TextView
+        android:id="@+id/tvOpponentWinCount"
+        app:layout_constraintBottom_toTopOf="@+id/tvOpponentName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/winsLossesGraphView"
+        tools:text="5"
+        style="@style/WinsLossesCount" />
+
+    <TextView
+        android:id="@id/tvOpponentName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/winsLossesGraphView"
+        app:layout_constraintTop_toBottomOf="@id/tvOpponentWinCount"
+        tools:text="Shroomed"
+        style="@style/WinsLossesPlayerName" />
 
 </com.garpr.android.views.WinsLossesView>

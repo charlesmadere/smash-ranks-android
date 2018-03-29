@@ -41,15 +41,12 @@ abstract class AbsPlayer(
         }
 
         val JSON_SERIALIZER = JsonSerializer<AbsPlayer> { src, typeOfSrc, context ->
-            if (src == null) {
-                return@JsonSerializer null
-            }
-
-            when (src.kind) {
-                Kind.FAVORITE -> return@JsonSerializer context.serialize(src, FavoritePlayer::class.java)
-                Kind.FULL -> return@JsonSerializer context.serialize(src, FullPlayer::class.java)
-                Kind.LITE -> return@JsonSerializer context.serialize(src, LitePlayer::class.java)
-                Kind.RANKED -> return@JsonSerializer context.serialize(src, RankedPlayer::class.java)
+            when (src?.kind) {
+                Kind.FAVORITE -> context.serialize(src, FavoritePlayer::class.java)
+                Kind.FULL -> context.serialize(src, FullPlayer::class.java)
+                Kind.LITE -> context.serialize(src, LitePlayer::class.java)
+                Kind.RANKED -> context.serialize(src, RankedPlayer::class.java)
+                else -> null
             }
         }
     }

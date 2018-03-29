@@ -35,28 +35,15 @@ object ListUtils {
         return list
     }
 
-    fun createPlayerMatchesList(context: Context, regionManager: RegionManager,
-            fullPlayer: FullPlayer, bundle: MatchesBundle?): MutableList<Any>? {
-        val region = regionManager.getRegion(context)
-        val rating = fullPlayer.ratings?.get(region.id)
+    fun createPlayerMatchesList(context: Context, fullPlayer: FullPlayer,
+            bundle: MatchesBundle?): MutableList<Any>? {
+        val newList = mutableListOf<Any>()
+        newList.add(fullPlayer)
+
         val matches = bundle?.matches
 
-        if (rating == null && (matches == null || matches.isEmpty())) {
-            return null
-        }
-
-        val newList = mutableListOf<Any>()
-
-        if (rating != null) {
-            newList.add(rating)
-        }
-
         if (matches == null || matches.isEmpty()) {
-            if (newList.isEmpty()) {
-                return null
-            } else {
-                newList.add(context.getString(R.string.no_matches))
-            }
+            newList.add(context.getString(R.string.no_matches))
         } else {
             newList.addAll(createSortedTournamentAndMatchList(matches, object : MatchListItemCreator {
                 override fun createMatch(match: Match): Any {
@@ -149,7 +136,7 @@ object ListUtils {
         }
 
         var addedCharSequence = false
-        var addedRating = false
+        var addedFullPlayer = false
         var addedWinsLosses = false
 
         for (i in list.indices) {
@@ -160,9 +147,9 @@ object ListUtils {
                     addedCharSequence = true
                     newList.add(objectI)
                 }
-            } else if (objectI is Rating) {
-                if (!addedRating) {
-                    addedRating = true
+            } else if (objectI is FullPlayer) {
+                if (!addedFullPlayer) {
+                    addedFullPlayer = true
                     newList.add(objectI)
                 }
             } else if (objectI is WinsLosses) {
@@ -230,14 +217,14 @@ object ListUtils {
         }
 
         val trimmedQuery = query.trim().toLowerCase()
-        var addedRating = false
+        var addedFullPlayer = false
 
         for (i in list.indices) {
             val objectI = list[i]
 
-            if (objectI is Rating) {
-                if (!addedRating) {
-                    addedRating = true
+            if (objectI is FullPlayer) {
+                if (!addedFullPlayer) {
+                    addedFullPlayer = true
                     newList.add(objectI)
                 }
             } else if (objectI is AbsTournament) {

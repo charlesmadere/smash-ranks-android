@@ -1,10 +1,14 @@
 package com.garpr.android.misc
 
+import android.graphics.drawable.Drawable
+import android.support.annotation.ColorInt
+import android.support.v4.graphics.drawable.DrawableCompat
 import java.text.DecimalFormat
+import java.text.NumberFormat
 
 object MiscUtils {
 
-    private val DECIMAL_FORMAT = DecimalFormat("#.###")
+    private val DECIMAL_FORMAT: NumberFormat = DecimalFormat("#.###")
 
 
     init {
@@ -27,6 +31,16 @@ object MiscUtils {
         }
 
         return result
+    }
+
+    fun tintDrawable(drawable: Drawable?, @ColorInt color: Int): Drawable? {
+        return if (drawable == null) {
+            null
+        } else {
+            val wrapper = DrawableCompat.wrap(drawable.mutate())
+            DrawableCompat.setTint(wrapper, color)
+            wrapper
+        }
     }
 
     fun truncateFloat(value: Float): String {

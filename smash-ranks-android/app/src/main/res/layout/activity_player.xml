@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar_player" />
+    <com.garpr.android.views.toolbars.PlayerToolbar
+        app:startWithTransparentTextColors="true"
+        style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout
         style="@style/RefreshLayout">
@@ -20,11 +21,11 @@
                 style="@style/RecyclerView.WithSections" />
 
             <com.garpr.android.views.NoContentLinearLayout
-                app:line1Text="@string/no_player_data"
+                app:titleText="@string/no_player_data"
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
-                app:line1Text="@string/error_loading_player"
+                app:titleText="@string/error_loading_player"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>

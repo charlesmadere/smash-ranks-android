@@ -1,35 +1,25 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.SetRegionActivity
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
 
-class RegionPreferenceView : SimplePreferenceView, RegionManager.OnRegionChangeListener,
+class RegionPreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SimplePreferenceView(context, attrs), RegionManager.OnRegionChangeListener,
         View.OnClickListener {
 
     @Inject
     protected lateinit var regionManager: RegionManager
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

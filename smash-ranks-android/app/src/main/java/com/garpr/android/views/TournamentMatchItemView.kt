@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -15,16 +14,15 @@ import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.FullTournament
 import kotterknife.bindView
 import javax.inject.Inject
 
 class TournamentMatchItemView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<FullTournament.Match>,
+        attrs: AttributeSet? = null
+) : IdentityConstraintLayout(context, attrs), BaseAdapterView<FullTournament.Match>,
         View.OnClickListener {
 
     @ColorInt
@@ -48,7 +46,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
 
         loserName.clear()
         winnerName.clear()
-        refreshIdentity()
+        refresh()
     }
 
     private var match: FullTournament.Match? = null
@@ -71,7 +69,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
                 winnerName.setTextColor(winColor)
             }
 
-            refreshIdentity()
+            refresh()
         }
 
     override fun onClick(v: View) {
@@ -83,10 +81,10 @@ class TournamentMatchItemView @JvmOverloads constructor(
                 .setItems(items, { dialog, which ->
                     when (which) {
                         0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.winnerId, match.winnerName, regionManager.getRegion(context)))
+                                match.winnerId, regionManager.getRegion(context)))
 
                         1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.loserId, match.loserName, regionManager.getRegion(context)))
+                                match.loserId, regionManager.getRegion(context)))
 
                         2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
                                 match, regionManager.getRegion(context)))
@@ -112,7 +110,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
         setOnClickListener(this)
     }
 
-    override fun refreshIdentity() {
+    override fun refresh() {
         val match = this.match
 
         if (match != null && identityManager.isPlayer(match.winnerId)) {

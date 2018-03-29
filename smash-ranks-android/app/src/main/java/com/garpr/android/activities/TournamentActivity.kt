@@ -3,25 +3,26 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
-import android.view.MenuItem
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.adapters.TournamentPagerAdapter
-import com.garpr.android.extensions.closeKeyboard
+import com.garpr.android.adapters.TournamentAdapter
+import com.garpr.android.extensions.smoothScrollToTop
 import com.garpr.android.extensions.subtitle
-import com.garpr.android.misc.RegionManager
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ShareUtils
+import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.*
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
+import com.garpr.android.views.TournamentInfoItemView
+import com.garpr.android.views.TournamentTabsView
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.garpr.android.views.toolbars.TournamentToolbar
 import kotterknife.bindView
@@ -29,58 +30,47 @@ import javax.inject.Inject
 
 class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchable,
         SearchQueryHandle, SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener,
-        TournamentToolbar.DataProvider {
+        TournamentTabsView.Listeners {
 
-    private var mFullTournament: FullTournament? = null
-    private lateinit var mTournamentId: String
-    private lateinit var mAdapter: TournamentPagerAdapter
-
-    @Inject
-    protected lateinit var mRegionManager: RegionManager
+    private var fullTournament: FullTournament? = null
+    private lateinit var tournamentId: String
+    private lateinit var adapter: TournamentAdapter
+    private var _tournamentMode: TournamentMode = TournamentMode.MATCHES
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mShareUtils: ShareUtils
+    protected lateinit var serverApi: ServerApi
 
-    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mTabLayout: TabLayout by bindView(R.id.tabLayout)
-    private val mTournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
-    private val mEmpty: View by bindView(R.id.empty)
-    private val mViewPager: ViewPager by bindView(R.id.viewPager)
+    @Inject
+    protected lateinit var threadUtils: ThreadUtils
+
+    private val error: ErrorContentLinearLayout by bindView(R.id.error)
+    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val tournamentTabsView: TournamentTabsView by bindView(R.id.topTournamentTabsView)
+    private val tournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
 
 
     companion object {
         private const val TAG = "TournamentActivity"
         private val CNAME = TournamentActivity::class.java.canonicalName
-        private val EXTRA_TOURNAMENT_DATE = CNAME + ".TournamentDate"
-        private val EXTRA_TOURNAMENT_ID = CNAME + ".TournamentId"
-        private val EXTRA_TOURNAMENT_NAME = CNAME + ".TournamentName"
+        private val EXTRA_TOURNAMENT_ID = "$CNAME.TournamentId"
+        private const val KEY_TOURNAMENT_MODE = "TournamentMode"
 
         fun getLaunchIntent(context: Context, tournament: AbsTournament,
                 region: Region? = null): Intent {
-            return getLaunchIntent(context, tournament.id, tournament.name, tournament.date, region)
+            return getLaunchIntent(context, tournament.id, region)
         }
 
         fun getLaunchIntent(context: Context, match: Match, region: Region? = null): Intent {
-            return getLaunchIntent(context, match.tournament.id, match.tournament.name,
-                    match.tournament.date, region)
+            return getLaunchIntent(context, match.tournament.id, region)
         }
 
-        fun getLaunchIntent(context: Context, tournamentId: String, tournamentName: String?,
-                tournamentDate: SimpleDate?, region: Region? = null): Intent {
+        fun getLaunchIntent(context: Context, tournamentId: String, region: Region? = null): Intent {
             val intent = Intent(context, TournamentActivity::class.java)
                     .putExtra(EXTRA_TOURNAMENT_ID, tournamentId)
-
-            if (tournamentName?.isNotBlank() == true) {
-                intent.putExtra(EXTRA_TOURNAMENT_NAME, tournamentName)
-            }
-
-            if (tournamentDate != null) {
-                intent.putExtra(EXTRA_TOURNAMENT_DATE, tournamentDate)
-            }
 
             if (region != null) {
                 intent.putExtra(EXTRA_REGION, region)
@@ -92,167 +82,241 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     override val activityName = TAG
 
+    private fun checkNameAndDateViewScrollStates() {
+        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
+
+        if (view == null) {
+            tournamentToolbar.fadeInTitleAndSubtitle()
+            return
+        }
+
+        val dateVerticalPositionInWindow = view.dateVerticalPositionInWindow
+        val toolbarVerticalPositionInWindow = tournamentToolbar.verticalPositionInWindow +
+                tournamentToolbar.height
+
+        if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
+            tournamentToolbar.fadeInTitleAndSubtitle()
+        } else {
+            tournamentToolbar.fadeOutTitleAndSubtitle()
+        }
+    }
+
+    private fun checkTournamentTabViewsScrollStates() {
+        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
+
+        if (view == null) {
+            tournamentTabsView.animateIn()
+            return
+        }
+
+        val tabsVerticalPositionInWindow = view.tabsVerticalPositionInWindow
+        val toolbarVerticalPositionInWindow = tournamentToolbar.verticalPositionInWindow +
+                tournamentToolbar.height
+
+        if (tabsVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
+            tournamentTabsView.animateIn()
+        } else {
+            tournamentTabsView.animateOut()
+        }
+    }
+
     override fun failure(errorCode: Int) {
-        mFullTournament = null
+        fullTournament = null
         showError(errorCode)
     }
 
     private fun fetchFullTournament() {
-        mRefreshLayout.isRefreshing = true
-        mServerApi.getTournament(mRegionManager.getRegion(this), mTournamentId, ApiCall(this))
+        refreshLayout.isRefreshing = true
+        serverApi.getTournament(regionManager.getRegion(this), tournamentId,
+                ApiCall(this))
     }
-
-    override val fullTournament: FullTournament?
-        get() = mFullTournament
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_tournament)
 
-        mTournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)
+        tournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)
+        _tournamentMode = savedInstanceState?.getParcelable(KEY_TOURNAMENT_MODE) ?: tournamentMode
 
-        prepareMenuAndTitles()
+        setTitleAndSubtitle()
         fetchFullTournament()
     }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            R.id.miShare -> {
-                val fullTournament = mFullTournament ?: throw RuntimeException()
-                mShareUtils.shareTournament(this, fullTournament)
-                true
-            }
-
-            R.id.miViewTournamentPage -> {
-                val fullTournament = mFullTournament ?: throw RuntimeException()
-                mShareUtils.openUrl(this, fullTournament.url)
-                true
-            }
-
-             else -> {
-                 super.onOptionsItemSelected(item)
-             }
-        }
 
     override fun onRefresh() {
         fetchFullTournament()
     }
 
+    private val onScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            checkNameAndDateViewScrollStates()
+            checkTournamentTabViewsScrollStates()
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            checkNameAndDateViewScrollStates()
+            checkTournamentTabViewsScrollStates()
+        }
+    }
+
+    override fun onTournamentModeClick(v: TournamentTabsView, tournamentMode: TournamentMode) {
+        if (this.tournamentMode == tournamentMode) {
+            recyclerView.smoothScrollToTop()
+            return
+        }
+
+        _tournamentMode = tournamentMode
+        invalidateOptionsMenu()
+
+        val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
+        adapter.set(tournamentMode, tournament)
+        tournamentTabsView.refresh()
+        tournamentToolbar.closeSearchLayout()
+    }
+
     override fun onViewsBound() {
         super.onViewsBound()
 
-        mRefreshLayout.setOnRefreshListener(this)
-        mViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
-        mTabLayout.setupWithViewPager(mViewPager)
-        mTabLayout.addOnTabSelectedListener(mOnTabSelectedListener)
-        mViewPager.addOnPageChangeListener(mOnPageChangeListener)
+        refreshLayout.setOnRefreshListener(this)
+        recyclerView.addItemDecoration(DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL))
+        recyclerView.setHasFixedSize(true)
+        recyclerView.addOnScrollListener(onScrollListener)
+
+        adapter = TournamentAdapter(this)
+        recyclerView.adapter = adapter
     }
 
-    private fun prepareMenuAndTitles() {
-        if (title.isNullOrBlank()) {
-            var title: String? = null
-            val fullTournament = mFullTournament
-
-            if (fullTournament != null) {
-                title = fullTournament.name
-            } else if (intent.hasExtra(EXTRA_TOURNAMENT_NAME)) {
-                title = intent.getStringExtra(EXTRA_TOURNAMENT_NAME)
-            }
-
-            if (title != null) {
-                this.title = title
-            }
-        }
-
-        if (subtitle.isNullOrBlank()) {
-            var subtitle: SimpleDate? = null
-            val fullTournament = mFullTournament
-
-            if (fullTournament != null) {
-                subtitle = fullTournament.date
-            } else if (intent.hasExtra(EXTRA_TOURNAMENT_DATE)) {
-                subtitle = intent.getParcelableExtra(EXTRA_TOURNAMENT_DATE)
-            }
-
-            if (subtitle != null) {
-                this.subtitle = subtitle.longForm
-            }
-        }
-
-        invalidateOptionsMenu()
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(KEY_TOURNAMENT_MODE, tournamentMode)
     }
 
-    override fun search(query: String?) = mAdapter.search(query)
+    override fun search(query: String?) {
+        when (tournamentMode) {
+            TournamentMode.MATCHES -> {
+                searchTournamentMatches(query, fullTournament?.matches)
+            }
+
+            TournamentMode.PLAYERS -> {
+                searchTournamentPlayers(query, fullTournament?.players)
+            }
+        }
+    }
 
     override val searchQuery: CharSequence?
-        get() = mTournamentToolbar.searchQuery
+        get() = tournamentToolbar.searchQuery
 
-    private fun showEmpty() {
-        mError.visibility = View.GONE
-        mViewPager.visibility = View.GONE
-        mEmpty.visibility = View.VISIBLE
-        prepareMenuAndTitles()
-        mRefreshLayout.isRefreshing = false
+    private fun searchTournamentMatches(query: String?, matches: List<FullTournament.Match>?) {
+        val tournament = fullTournament
+
+        if (tournament == null || matches == null || matches.isEmpty()) {
+            return
+        }
+
+        threadUtils.run(object : ThreadUtils.Task {
+            private var list: List<FullTournament.Match>? = null
+
+            override fun onBackground() {
+                if (isAlive && TextUtils.equals(query, searchQuery) &&
+                        tournamentMode == TournamentMode.MATCHES) {
+                    list = ListUtils.searchTournamentMatchesList(query, matches)
+                }
+            }
+
+            override fun onUi() {
+                if (isAlive && TextUtils.equals(query, searchQuery) &&
+                        tournamentMode == TournamentMode.MATCHES) {
+                    adapter.setSearchedMatchesList(tournament, list)
+                }
+            }
+        })
     }
 
-    private fun showError(errorCode: Int) {
-        mEmpty.visibility = View.GONE
-        mViewPager.visibility = View.GONE
-        mError.setVisibility(View.VISIBLE, errorCode)
-        prepareMenuAndTitles()
-        mRefreshLayout.isRefreshing = false
+    private fun searchTournamentPlayers(query: String?, players: List<AbsPlayer>?) {
+        val tournament = fullTournament
+
+        if (tournament == null || players == null || players.isEmpty()) {
+            return
+        }
+
+        threadUtils.run(object : ThreadUtils.Task {
+            private var list: List<AbsPlayer>? = null
+
+            override fun onBackground() {
+                if (isAlive && TextUtils.equals(query, searchQuery) &&
+                        tournamentMode == TournamentMode.PLAYERS) {
+                    list = ListUtils.searchPlayerList(query, players)
+                }
+            }
+
+            override fun onUi() {
+                if (isAlive && TextUtils.equals(query, searchQuery) &&
+                        tournamentMode == TournamentMode.PLAYERS) {
+                    adapter.setSearchedPlayersList(tournament, list)
+                }
+            }
+        })
+    }
+
+    private fun setTitleAndSubtitle() {
+        if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
+            return
+        }
+
+        val tournament = fullTournament ?: return
+        title = tournament.name
+
+        subtitle = regionManager.getRegion(this).displayName
+    }
+
+    private fun showError(errorCode: Int = Constants.ERROR_CODE_UNKNOWN) {
+        recyclerView.visibility = View.GONE
+        error.setVisibility(View.VISIBLE, errorCode)
+        invalidateOptionsMenu()
+        refreshLayout.isRefreshing = false
     }
 
     private fun showFullTournament() {
-        val fullTournament = mFullTournament ?: throw RuntimeException()
-        mAdapter = TournamentPagerAdapter(this, fullTournament)
-        mViewPager.adapter = mAdapter
+        val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
+        adapter.set(tournamentMode, tournament)
 
-        mEmpty.visibility = View.GONE
-        mError.visibility = View.GONE
-        mViewPager.visibility = View.VISIBLE
-        prepareMenuAndTitles()
-        mRefreshLayout.isRefreshing = false
-        mRefreshLayout.isEnabled = false
+        error.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+
+        setTitleAndSubtitle()
+        invalidateOptionsMenu()
+
+        refreshLayout.isRefreshing = false
+        refreshLayout.isEnabled = false
     }
 
     override val showSearchMenuItem: Boolean
-        get() = mFullTournament != null
+        get() = when (tournamentMode) {
+                    TournamentMode.MATCHES -> {
+                        fullTournament?.matches?.isNotEmpty() == true
+                    }
+
+                    TournamentMode.PLAYERS -> {
+                        fullTournament?.players?.isNotEmpty() == true
+                    }
+                }
 
     override val showUpNavigation = true
 
     override fun success(`object`: FullTournament?) {
-        mFullTournament = `object`
+        fullTournament = `object`
 
-        if (`object`?.matches?.isNotEmpty() == true || `object`?.players?.isNotEmpty() == true) {
-            showFullTournament()
+        if (`object` == null) {
+            showError()
         } else {
-            showEmpty()
+            showFullTournament()
         }
     }
 
-    private val mOnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            closeKeyboard()
-        }
-    }
-
-    private val mOnTabSelectedListener = object : TabLayout.OnTabSelectedListener {
-        override fun onTabReselected(tab: TabLayout.Tab?) {
-            if (tab != null) {
-                mAdapter.onTabReselected(tab.position)
-            }
-        }
-
-        override fun onTabSelected(tab: TabLayout.Tab?) {
-            // intentionally empty
-        }
-
-        override fun onTabUnselected(tab: TabLayout.Tab?) {
-            // intentionally empty
-        }
-    }
+    override val tournamentMode: TournamentMode
+        get() = _tournamentMode
 
 }

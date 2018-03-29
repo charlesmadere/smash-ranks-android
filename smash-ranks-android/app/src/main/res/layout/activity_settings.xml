@@ -22,17 +22,17 @@
 
             <com.garpr.android.views.RegionPreferenceView
                 android:id="@+id/regionPreferenceView"
-                app:simpleIcon="@drawable/ic_location_on_white_24dp"
+                app:icon="@drawable/ic_location_on_white_24dp"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.ThemePreferenceView
                 android:id="@+id/themePreferenceView"
-                app:simpleIcon="@drawable/ic_format_paint_white_24dp"
+                app:icon="@drawable/ic_format_paint_white_24dp"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.IdentityPreferenceView
                 android:id="@+id/identityPreferenceView"
-                app:simpleIcon="@drawable/ic_face_white_24dp"
+                app:icon="@drawable/ic_face_white_24dp"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.DeleteFavoritePlayersPreferenceView
@@ -104,26 +104,26 @@
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvCharlesTwitter"
-                app:simpleDescriptionText="@string/charles_twitter_url"
-                app:simpleTitleText="@string/app_by_charles_madere"
+                app:descriptionText="@string/charles_twitter_url"
+                app:titleText="@string/app_by_charles_madere"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvGarTwitter"
-                app:simpleDescriptionText="@string/gar_twitter_url"
-                app:simpleTitleText="@string/website_by_ivan_van"
+                app:descriptionText="@string/gar_twitter_url"
+                app:titleText="@string/website_by_ivan_van"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvGitHub"
-                app:simpleDescriptionText="@string/contribute_your_changes"
-                app:simpleTitleText="@string/open_source_on_github"
+                app:descriptionText="@string/contribute_your_changes"
+                app:titleText="@string/open_source_on_github"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvLogViewer"
-                app:simpleDescriptionText="@string/view_logs_description"
-                app:simpleTitleText="@string/view_logs"
+                app:descriptionText="@string/view_logs_description"
+                app:titleText="@string/view_logs"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.BuildInfoPreferenceView

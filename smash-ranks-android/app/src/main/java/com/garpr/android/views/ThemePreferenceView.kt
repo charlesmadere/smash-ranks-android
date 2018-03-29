@@ -1,11 +1,7 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
@@ -18,7 +14,10 @@ import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.Preference
 import javax.inject.Inject
 
-class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListener,
+class ThemePreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
         Preference.OnPreferenceChangeListener<NightMode>, View.OnClickListener {
 
     @Inject
@@ -31,15 +30,6 @@ class ThemePreferenceView : SimplePreferenceView, DialogInterface.OnClickListene
     companion object {
         private const val TAG = "ThemePreferenceView"
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

@@ -64,8 +64,8 @@ public class TestAppModule extends BaseAppModule {
 
     @Provides
     @Singleton
-    DeviceUtils providesDeviceUtils() {
-        return new TestDeviceUtilsImpl();
+    DeviceUtils providesDeviceUtils(final Application application) {
+        return new TestDeviceUtilsImpl(application);
     }
 
     @Provides

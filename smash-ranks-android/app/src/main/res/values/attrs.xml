@@ -11,37 +11,28 @@
             <enum name="switch_compat" value="1" />
         </attr>
         <attr name="disabledDescriptionText" format="string" />
-        <attr name="enabledDescriptionText" format="string" />
-        <attr name="titleText" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="NoContentLinearLayout">
-        <attr name="imageSrc" format="reference" />
-        <attr name="line1Text" format="string" />
-        <attr name="line2Text" format="string" />
+    <declare-styleable name="MenuToolbar">
+        <attr name="startWithTransparentTextColors" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="RefreshLayout">
-        <attr name="scrollingChild" format="reference" />
+        <attr name="scrollingChildId" format="reference" />
         <attr name="spinnerBackground" format="color" />
         <attr name="spinnerColors" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="SimplePreferenceView">
-        <attr name="simpleDescriptionText" format="string" />
-        <attr name="simpleIcon" format="reference" />
-        <attr name="simpleTitleText" format="string" />
+    <declare-styleable name="TournamentTabsView">
+        <attr name="indicatorLineColor" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="TintedImageView">
-        <attr name="tintColor" format="color" />
-    </declare-styleable>
-
-    <declare-styleable name="WinsLossesColumnView">
-        <attr name="playerOrOpponent" format="enum">
-            <enum name="player" value="0" />
-            <enum name="opponent" value="1" />
-        </attr>
+    <declare-styleable name="View">
+        <attr name="descriptionText" format="string" />
+        <attr name="drawableTintColor" format="color" />
+        <attr name="icon" format="reference" />
+        <attr name="image" format="reference" />
+        <attr name="titleText" format="string" />
     </declare-styleable>
 
 </resources>

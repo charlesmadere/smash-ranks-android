@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -9,17 +8,16 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.misc.FavoritePlayersManager
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.FavoritePlayer
 import kotterknife.bindView
 import javax.inject.Inject
 
 class FavoritePlayerItemView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-): IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<FavoritePlayer>,
+        attrs: AttributeSet? = null
+): IdentityConstraintLayout(context, attrs), BaseAdapterView<FavoritePlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
     @Inject
@@ -68,7 +66,7 @@ class FavoritePlayerItemView @JvmOverloads constructor(
         identity = content
         name.text = content.name
         region.text = content.region.displayName
-        refreshIdentity()
+        refresh()
     }
 
 }

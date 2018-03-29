@@ -14,7 +14,7 @@ import javax.inject.Inject
 class PersistentIntegerPreferenceTest : BaseTest() {
 
     @Inject
-    lateinit protected var keyValueStore: KeyValueStore
+    protected lateinit var keyValueStore: KeyValueStore
 
 
     @Before
@@ -28,25 +28,25 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     @Throws(Exception::class)
     fun testAddListener() {
         val preference = PersistentIntegerPreference("integer", null, keyValueStore)
-        val array = arrayOfNulls<Int>(1)
+        var value: Int? = null
 
         val listener = object : Preference.OnPreferenceChangeListener<Int> {
             override fun onPreferenceChange(preference: Preference<Int>) {
-                array[0] = preference.get()
+                value = preference.get()
             }
         }
 
         preference.addListener(listener)
-        assertEquals(null, array[0])
+        assertEquals(null, value)
 
         preference.set(10)
-        assertEquals(10, array[0])
+        assertEquals(10, value)
 
         preference.set(-100, false)
-        assertNotEquals(-100, array[0])
+        assertNotEquals(-100, value)
 
         preference.set(20)
-        assertEquals(20, array[0])
+        assertEquals(20, value)
     }
 
     @Test
@@ -140,26 +140,26 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     @Throws(Exception::class)
     fun testRemoveListener() {
         val preference = PersistentIntegerPreference("integer", null, keyValueStore)
-        val array = arrayOfNulls<Int>(1)
+        var value: Int? = null
 
         val listener = object : Preference.OnPreferenceChangeListener<Int> {
             override fun onPreferenceChange(preference: Preference<Int>) {
-                array[0] = preference.get()
+                value = preference.get()
             }
         }
 
         preference.addListener(listener)
 
         preference.set(10)
-        assertEquals(10, array[0])
+        assertEquals(10, value)
 
         preference.set(20)
-        assertEquals(20, array[0])
+        assertEquals(20, value)
 
         preference.removeListener(listener)
 
         preference.set(100)
-        assertNotEquals(100, array[0])
+        assertNotEquals(100, value)
     }
 
     @Test

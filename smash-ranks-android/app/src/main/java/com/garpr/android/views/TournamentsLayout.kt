@@ -12,9 +12,9 @@ import android.view.ViewGroup
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentsAdapter
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.AbsTournament
 import com.garpr.android.models.TournamentsBundle

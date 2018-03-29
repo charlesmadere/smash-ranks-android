@@ -21,7 +21,7 @@ open class RefreshLayout @JvmOverloads constructor(
 ) : SwipeRefreshLayout(context, attrs), Heartbeat, ListLayout {
 
     @IdRes
-    private var scrollingChildId: Int? = null
+    private var scrollingChildId: Int = View.NO_ID
 
 
     init {
@@ -41,9 +41,9 @@ open class RefreshLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        scrollingChildId?.let {
-            scrollingChild = findViewById(it) ?: throw NullPointerException(
-                    "unable to find scrolling child")
+        if (scrollingChildId != View.NO_ID) {
+            scrollingChild = findViewById(scrollingChildId) ?: throw NullPointerException(
+                    "unable to find scrolling child (${resources.getResourceName(scrollingChildId)})")
         }
 
         setProgressBackgroundColorSchemeResource(R.color.card_background)
@@ -59,8 +59,8 @@ open class RefreshLayout @JvmOverloads constructor(
                 R.array.spinner_colors)
         setColorSchemeColors(*resources.getIntArray(spinnerColorsResId))
 
-        if (ta.hasValue(R.styleable.RefreshLayout_scrollingChild)) {
-            scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChild, 0)
+        if (ta.hasValue(R.styleable.RefreshLayout_scrollingChildId)) {
+            scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChildId, View.NO_ID)
         }
 
         ta.recycle()

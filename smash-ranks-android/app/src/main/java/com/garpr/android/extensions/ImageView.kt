@@ -4,8 +4,8 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.widget.ImageView
+import com.garpr.android.misc.MiscUtils
 
 fun ImageView.clear() {
     setImageDrawable(null)
@@ -16,13 +16,7 @@ fun ImageView.setTintedImageColor(@ColorInt color: Int) {
 }
 
 fun ImageView.setTintedImageDrawable(drawable: Drawable?, @ColorInt color: Int) {
-    setImageDrawable(if (drawable == null) {
-        null
-    } else {
-        val wrapper = DrawableCompat.wrap(drawable.mutate())
-        DrawableCompat.setTint(wrapper, color)
-        wrapper
-    })
+    setImageDrawable(MiscUtils.tintDrawable(drawable, color))
 }
 
 fun ImageView.setTintedImageResource(@DrawableRes drawable: Int, @ColorInt color: Int) {

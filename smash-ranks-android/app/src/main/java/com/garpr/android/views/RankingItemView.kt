@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -9,7 +8,11 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.misc.*
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.MiscUtils
+import com.garpr.android.misc.PreviousRankUtils
+import com.garpr.android.misc.Timber
 import com.garpr.android.models.RankedPlayer
 import kotterknife.bindOptionalView
 import kotterknife.bindView
@@ -18,9 +21,8 @@ import javax.inject.Inject
 
 class RankingItemView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
-) : IdentityConstraintLayout(context, attrs, defStyleAttr), BaseAdapterView<RankedPlayer>,
+        attrs: AttributeSet? = null
+) : IdentityConstraintLayout(context, attrs), BaseAdapterView<RankedPlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
@@ -83,7 +85,7 @@ class RankingItemView @JvmOverloads constructor(
         name.text = content.name
         rating.text = MiscUtils.truncateFloat(content.rating)
 
-        refreshIdentity()
+        refresh()
     }
 
 }

@@ -1,12 +1,8 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Parcelable
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
@@ -20,34 +16,26 @@ import com.garpr.android.extensions.setTintedImageDrawable
 import com.garpr.android.misc.Refreshable
 import kotterknife.bindView
 
-open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
+open class SimplePreferenceView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LifecycleConstraintLayout(context, attrs), Refreshable {
 
     private var _descriptionText: CharSequence? = null
     private var _titleText: CharSequence? = null
     private var _iconDrawable: Drawable? = null
 
-    private val icon: ImageView by bindView(R.id.icon)
+    private val icon: ImageView by bindView(R.id.checkable)
     private val description: TextView by bindView(R.id.description)
     private val title: TextView by bindView(R.id.title)
 
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        parseAttributes(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) {
-        parseAttributes(attrs)
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    init {
         parseAttributes(attrs)
     }
 
     var descriptionText: CharSequence?
-        get() = description.text.toString()
+        get() = _descriptionText
         set(value) {
             _descriptionText = value
             description.text = value
@@ -87,10 +75,10 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.SimplePreferenceView)
-        _iconDrawable = ta.getDrawable(R.styleable.SimplePreferenceView_simpleIcon)
-        _descriptionText = ta.getText(R.styleable.SimplePreferenceView_simpleDescriptionText)
-        _titleText = ta.getText(R.styleable.SimplePreferenceView_simpleTitleText)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        _descriptionText = ta.getText(R.styleable.View_descriptionText)
+        _iconDrawable = ta.getDrawable(R.styleable.View_icon)
+        _titleText = ta.getText(R.styleable.View_titleText)
         ta.recycle()
     }
 
@@ -105,7 +93,7 @@ open class SimplePreferenceView : LifecycleFrameLayout, Refreshable {
     }
 
     var titleText: CharSequence?
-        get() = title.text.toString()
+        get() = _titleText
         set(value) {
             _titleText = value
             title.text = value

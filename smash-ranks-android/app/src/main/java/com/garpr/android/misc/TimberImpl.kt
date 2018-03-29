@@ -23,10 +23,6 @@ class TimberImpl(
         _entries.clear()
     }
 
-    @Synchronized override fun d(tag: String, msg: String) {
-        d(tag, msg, null)
-    }
-
     @Synchronized override fun d(tag: String, msg: String, tr: Throwable?) {
         addEntry(Timber.DebugEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))
         crashlyticsWrapper.log(Log.DEBUG, tag, msg)
@@ -34,10 +30,6 @@ class TimberImpl(
         if (tr != null) {
             crashlyticsWrapper.logException(tr)
         }
-    }
-
-    @Synchronized override fun e(tag: String, msg: String) {
-        e(tag, msg, null)
     }
 
     @Synchronized override fun e(tag: String, msg: String, tr: Throwable?) {
@@ -59,10 +51,6 @@ class TimberImpl(
 
             return list
         }
-
-    @Synchronized override fun w(tag: String, msg: String) {
-        w(tag, msg, null)
-    }
 
     @Synchronized override fun w(tag: String, msg: String, tr: Throwable?) {
         addEntry(Timber.WarnEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))

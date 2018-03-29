@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.views.PlayerProfileItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/root_padding_half"
+    android:paddingEnd="@dimen/root_padding"
+    android:paddingStart="@dimen/root_padding"
+    android:paddingTop="@dimen/root_padding_half">
+
+    <TextView
+        android:ellipsize="end"
+        android:gravity="bottom"
+        android:id="@+id/tvName"
+        android:layout_height="64dp"
+        android:layout_width="match_parent"
+        android:textColor="?android:attr/textColorPrimary"
+        app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
+        app:autoSizeMinTextSize="@dimen/text_size_xlarge"
+        app:autoSizeTextType="uniform"
+        tools:text="Charlezard"
+        style="@style/MediumOrBoldText" />
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvAliases"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="2"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone"
+        tools:text="Aliases: Charles, Charliehorse"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvRegion"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size_small"
+        tools:text="Norcal" />
+
+    <Space
+        android:layout_height="@dimen/root_padding"
+        android:layout_width="match_parent" />
+
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        android:visibility="gone"
+        tools:text="Rating: 39.101"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvUnadjustedRating"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone"
+        tools:text="Unadjusted: 45.679 (+/- 2.193)"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_favorite_white_24dp"
+            android:id="@+id/tvFavoriteOrUnfavorite"
+            android:layout_marginEnd="@dimen/root_padding_half"
+            android:text="@string/favorite"
+            style="@style/TextButton" />
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_face_white_24dp"
+            android:id="@+id/tvViewYourselfVsThisOpponent"
+            android:layout_marginEnd="@dimen/root_padding_half"
+            android:text="@string/compare"
+            android:visibility="gone"
+            tools:visibility="visible"
+            style="@style/TextButton" />
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_share_white_24dp"
+            android:id="@+id/tvShare"
+            android:text="@string/share"
+            style="@style/TextButton" />
+
+    </LinearLayout>
+
+</com.garpr.android.views.PlayerProfileItemView>

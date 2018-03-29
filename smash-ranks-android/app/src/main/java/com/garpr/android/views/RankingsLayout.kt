@@ -13,7 +13,11 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.RankingsAdapter
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.*
+import com.garpr.android.managers.NotificationsManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.ListUtils
+import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.RankedPlayer
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiCall

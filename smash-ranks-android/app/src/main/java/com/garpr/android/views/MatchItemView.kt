@@ -16,8 +16,8 @@ import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.optActivity
-import com.garpr.android.misc.FavoritePlayersManager
-import com.garpr.android.misc.RegionManager
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Match
 import com.garpr.android.models.MatchResult
 import kotterknife.bindView
@@ -52,7 +52,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
         super.clear()
 
         name.clear()
-        refreshIdentity()
+        refresh()
     }
 
     override fun identityIsSomeoneElse() {
@@ -83,7 +83,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
                 MatchResult.WIN -> name.setTextColor(ContextCompat.getColor(context, R.color.win))
             }
 
-            refreshIdentity()
+            refresh()
         }
 
     override fun onClick(v: View) {
@@ -95,7 +95,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
         } else {
             val opponent = match.opponent
             context.startActivity(PlayerActivity.getLaunchIntent(context, opponent.id,
-                    opponent.name, regionManager.getRegion(context)))
+                    regionManager.getRegion(context)))
         }
     }
 

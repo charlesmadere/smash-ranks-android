@@ -13,6 +13,7 @@ import com.garpr.android.activities.SetRegionActivity;
 import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.activities.TournamentsActivity;
+import com.garpr.android.adapters.TournamentAdapter;
 import com.garpr.android.sync.RankingsPollingJobService;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.FavoritePlayerItemView;
@@ -24,6 +25,7 @@ import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.PlayerItemView;
+import com.garpr.android.views.PlayerProfileItemView;
 import com.garpr.android.views.PlayersLayout;
 import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.RankingItemView;
@@ -36,13 +38,13 @@ import com.garpr.android.views.TestNotificationView;
 import com.garpr.android.views.ThemePreferenceView;
 import com.garpr.android.views.TintedImageView;
 import com.garpr.android.views.TournamentDividerView;
+import com.garpr.android.views.TournamentInfoItemView;
 import com.garpr.android.views.TournamentItemView;
 import com.garpr.android.views.TournamentMatchItemView;
 import com.garpr.android.views.TournamentsLayout;
-import com.garpr.android.views.WinsLossesColumnView;
 import com.garpr.android.views.toolbars.HomeToolbar;
 import com.garpr.android.views.toolbars.PlayerToolbar;
-import com.garpr.android.views.toolbars.TournamentToolbar;
+import com.garpr.android.views.toolbars.ToolbarReflectionHelper;
 
 import javax.inject.Singleton;
 
@@ -68,13 +70,16 @@ public interface AppComponent {
     void inject(TournamentActivity activity);
     void inject(TournamentsActivity activity);
 
+    // adapters
+    void inject(TournamentAdapter adapter);
+
     // sync
     void inject(RankingsPollingJobService sync);
 
     // toolbars
     void inject(HomeToolbar toolbar);
     void inject(PlayerToolbar toolbar);
-    void inject(TournamentToolbar toolbar);
+    void inject(ToolbarReflectionHelper helper);
 
     // views
     void inject(DeleteFavoritePlayersPreferenceView view);
@@ -87,6 +92,7 @@ public interface AppComponent {
     void inject(LastPollPreferenceView view);
     void inject(MatchItemView view);
     void inject(PlayerItemView view);
+    void inject(PlayerProfileItemView view);
     void inject(PlayersLayout view);
     void inject(PollFrequencyPreferenceView view);
     void inject(RankingItemView view);
@@ -99,9 +105,9 @@ public interface AppComponent {
     void inject(ThemePreferenceView view);
     void inject(TintedImageView view);
     void inject(TournamentDividerView view);
+    void inject(TournamentInfoItemView view);
     void inject(TournamentItemView view);
     void inject(TournamentMatchItemView view);
     void inject(TournamentsLayout view);
-    void inject(WinsLossesColumnView view);
 
 }

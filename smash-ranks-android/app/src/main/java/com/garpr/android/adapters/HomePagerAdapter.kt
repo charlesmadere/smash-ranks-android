@@ -15,9 +15,9 @@ import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.TournamentsLayout
 import java.lang.ref.WeakReference
 
-class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
+class HomePagerAdapter : PagerAdapter(), Refreshable {
 
-    private val pages = SparseArrayCompat<WeakReference<View>>(count)
+    private val pages = SparseArrayCompat<WeakReference<View?>?>(count)
 
 
     companion object {
@@ -33,23 +33,12 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
 
     override fun getCount() = 3
 
-    val rankingsBundle: RankingsBundle?
-        get() {
-            val view = pages[POSITION_RANKINGS]?.get()
-
-            return if ((view as? RankingsLayout)?.isAlive == true) {
-                view.rankingsBundle
-            } else {
-                null
-            }
-        }
-
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view: View = when (position) {
             POSITION_FAVORITE_PLAYERS -> FavoritePlayersLayout.inflate(container)
             POSITION_RANKINGS -> RankingsLayout.inflate(container)
             POSITION_TOURNAMENTS -> TournamentsLayout.inflate(container)
-            else -> throw RuntimeException("illegal position: " + position)
+            else -> throw RuntimeException("illegal position: $position")
         }
 
         container.addView(view)
@@ -63,29 +52,37 @@ class HomePagerAdapter : PagerAdapter(), Refreshable, Searchable {
     }
 
     fun onNavigationItemReselected(position: Int) {
-        val view = pages[position].get()
+        val view = pages[position]?.get()
 
         if ((view as? Heartbeat)?.isAlive == true) {
             (view as? ListLayout)?.smoothScrollToTop()
         }
     }
 
+    val rankingsBundle: RankingsBundle?
+        get() {
+            val view = pages[POSITION_RANKINGS]?.get()
+            return if ((view as? RankingsLayout)?.isAlive == true) view.rankingsBundle else null
+        }
+
     override fun refresh() {
         for (i in 0 until pages.size()) {
-            val view = pages[i].get()
-
-            if ((view as? Heartbeat)?.isAlive == true) {
-                (view as? Refreshable)?.refresh()
+            pages[i]?.get()?.let {
+                if ((it as? Heartbeat)?.isAlive == true) {
+                    (it as? Refreshable)?.refresh()
+                }
             }
         }
     }
 
-    override fun search(query: String?) {
-        for (i in 0 until pages.size()) {
-            val view = pages[i].get()
+    fun search(page: Int, query: String?) {
+        if (page < 0 || page >= count) {
+            throw IllegalArgumentException("illegal page: $page")
+        }
 
-            if ((view as? Heartbeat)?.isAlive == true) {
-                (view as? Searchable)?.search(query)
+        pages[page]?.get()?.let {
+            if ((it as? Heartbeat)?.isAlive == true) {
+                (it as? Searchable)?.search(query)
             }
         }
     }

@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--suppress XmlUnusedNamespaceDeclaration -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    tools:parentTag="com.garpr.android.views.SimplePreferenceView"
+    tools:style="@style/PreferenceView">
 
     <com.garpr.android.views.TintedImageView
         tools:src="@drawable/ic_date_range_white_24dp"
-        style="@style/PreferenceViewIcon" />
+        style="@style/PreferenceViewCheckable" />
 
     <TextView
         tools:text="@string/must_be_charging"
         style="@style/PreferenceViewTitle" />
 
     <TextView
-        tools:text="Description Text"
+        tools:text="@string/rankings_polling_description"
         style="@style/PreferenceViewDescription" />
 
-</RelativeLayout>
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
+
+</merge>

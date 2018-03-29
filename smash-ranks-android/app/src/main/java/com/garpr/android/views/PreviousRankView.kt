@@ -1,7 +1,6 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
@@ -14,9 +13,8 @@ import com.garpr.android.misc.PreviousRankUtils
 
 class PreviousRankView @JvmOverloads constructor(
         context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defAttrRes: Int = 0
-) : AppCompatImageView(context, attrs, defAttrRes), BaseAdapterView<PreviousRankUtils.Info?> {
+        attrs: AttributeSet? = null
+) : AppCompatImageView(context, attrs), BaseAdapterView<PreviousRankUtils.Info?> {
 
     override fun onFinishInflate() {
         super.onFinishInflate()

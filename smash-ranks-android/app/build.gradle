@@ -5,6 +5,7 @@ buildscript {
     }
 
     dependencies {
+        //noinspection GradleDynamicVersion
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
@@ -30,8 +31,8 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 10313
-        versionName "1.3.13"
+        versionCode 10400
+        versionName "1.4.0"
     }
 
     buildTypes {
@@ -53,7 +54,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
 
     // Android Support Library
@@ -92,7 +93,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // Fabric
-    implementation("com.crashlytics.sdk.android:crashlytics:2.8.0@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics:2.9.1@aar") {
         transitive = true
     }
 }

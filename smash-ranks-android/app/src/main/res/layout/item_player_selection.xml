@@ -17,7 +17,7 @@
         android:textSize="@dimen/text_size_large"
         tools:text="Charlezard" />
 
-    <android.support.v4.widget.Space
+    <Space
         android:layout_height="1dp"
         android:layout_width="@dimen/root_padding" />
 

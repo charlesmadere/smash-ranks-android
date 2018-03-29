@@ -57,13 +57,10 @@ abstract class AbsRegion(
         }
 
         val JSON_SERIALIZER = JsonSerializer<AbsRegion> { src, typeOfSrc, context ->
-            if (src == null) {
-                return@JsonSerializer null
-            }
-
-            when (src.kind) {
+            when (src?.kind) {
                 Kind.FULL -> context.serialize(src, Region::class.java)
                 Kind.LITE -> context.serialize(src, LitePlayer::class.java)
+                else -> null
             }
         }
     }

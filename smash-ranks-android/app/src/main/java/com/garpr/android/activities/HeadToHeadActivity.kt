@@ -12,8 +12,8 @@ import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
 import com.garpr.android.extensions.subtitle
+import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.RegionManager
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
@@ -26,37 +26,37 @@ import javax.inject.Inject
 class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private var mList: List<Any>? = null
-    private var mHeadToHead: HeadToHead? = null
-    private lateinit var mAdapter: HeadToHeadAdapter
-    private var mMatchResult: MatchResult? = null
-    private lateinit var mOpponentId: String
-    private var mOpponentName: String? = null
-    private lateinit var mPlayerId: String
-    private var mPlayerName: String? = null
+    private var list: List<Any>? = null
+    private var headToHead: HeadToHead? = null
+    private lateinit var adapter: HeadToHeadAdapter
+    private var matchResult: MatchResult? = null
+    private lateinit var opponentId: String
+    private var opponentName: String? = null
+    private lateinit var playerId: String
+    private var playerName: String? = null
 
     @Inject
-    protected lateinit var mRegionManager: RegionManager
+    protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var mServerApi: ServerApi
+    protected lateinit var serverApi: ServerApi
 
     @Inject
-    protected lateinit var mThreadUtils: ThreadUtils
+    protected lateinit var threadUtils: ThreadUtils
 
-    private val mError: ErrorContentLinearLayout by bindView(R.id.error)
-    private val mRecyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val mRefreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val mEmpty: View by bindView(R.id.empty)
+    private val error: ErrorContentLinearLayout by bindView(R.id.error)
+    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
+    private val empty: View by bindView(R.id.empty)
 
 
     companion object {
         private const val TAG = "HeadToHeadActivity"
         private val CNAME = HeadToHeadActivity::class.java.canonicalName
-        private val EXTRA_PLAYER_ID = CNAME + ".PlayerId"
-        private val EXTRA_PLAYER_NAME = CNAME + ".PlayerName"
-        private val EXTRA_OPPONENT_ID = CNAME + ".OpponentId"
-        private val EXTRA_OPPONENT_NAME = CNAME + ".OpponentName"
+        private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
+        private val EXTRA_PLAYER_NAME = "$CNAME.PlayerName"
+        private val EXTRA_OPPONENT_ID = "$CNAME.OpponentId"
+        private val EXTRA_OPPONENT_NAME = "$CNAME.OpponentName"
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, opponent: AbsPlayer,
                 region: Region? = null): Intent {
@@ -110,43 +110,43 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override val activityName = TAG
 
     override fun failure(errorCode: Int) {
-        mHeadToHead = null
-        mList = null
-        mMatchResult = null
+        headToHead = null
+        list = null
+        matchResult = null
         showError(errorCode)
     }
 
     private fun fetchHeadToHead() {
-        mRefreshLayout.isRefreshing = true
-        mServerApi.getHeadToHead(mRegionManager.getRegion(this), mPlayerId, mOpponentId,
+        refreshLayout.isRefreshing = true
+        serverApi.getHeadToHead(regionManager.getRegion(this), playerId, opponentId,
                 ApiCall(this))
     }
 
     private fun filter(matchResult: MatchResult?) {
-        mMatchResult = matchResult
-        val list = mList
+        this.matchResult = matchResult
+        val list = this.list
 
         if (list == null || list.isEmpty()) {
             return
         }
 
-        mThreadUtils.run(object : ThreadUtils.Task {
-            private var mList: List<Any>? = null
+        threadUtils.run(object : ThreadUtils.Task {
+            private var list: List<Any>? = null
 
             override fun onBackground() {
-                if (!isAlive || mMatchResult != matchResult) {
+                if (!isAlive || matchResult != this@HeadToHeadActivity.matchResult) {
                     return
                 }
 
-                mList = ListUtils.filterPlayerMatchesList(matchResult, list)
+                this.list = ListUtils.filterPlayerMatchesList(matchResult, list)
             }
 
             override fun onUi() {
-                if (!isAlive || mMatchResult != matchResult) {
+                if (!isAlive || matchResult != this@HeadToHeadActivity.matchResult) {
                     return
                 }
 
-                mAdapter.set(mList)
+                adapter.set(this.list)
                 invalidateOptionsMenu()
             }
         })
@@ -156,14 +156,14 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         super.onCreate(savedInstanceState)
         App.get().appComponent.inject(this)
         setContentView(R.layout.activity_head_to_head)
-        subtitle = mRegionManager.getRegion(this).displayName
+        subtitle = regionManager.getRegion(this).displayName
 
-        mOpponentId = intent.getStringExtra(EXTRA_OPPONENT_ID)
-        mPlayerId = intent.getStringExtra(EXTRA_PLAYER_ID)
+        opponentId = intent.getStringExtra(EXTRA_OPPONENT_ID)
+        playerId = intent.getStringExtra(EXTRA_PLAYER_ID)
 
         if (intent.hasExtra(EXTRA_OPPONENT_NAME) && intent.hasExtra(EXTRA_PLAYER_NAME)) {
-            mOpponentName = intent.getStringExtra(EXTRA_OPPONENT_NAME)
-            mPlayerName = intent.getStringExtra(EXTRA_PLAYER_NAME)
+            opponentName = intent.getStringExtra(EXTRA_OPPONENT_NAME)
+            playerName = intent.getStringExtra(EXTRA_PLAYER_NAME)
         }
 
         fetchHeadToHead()
@@ -172,17 +172,17 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_head_to_head, menu)
 
-        if (mHeadToHead != null) {
+        if (headToHead != null) {
             menu.findItem(R.id.miFilter).isVisible = true
-            menu.findItem(R.id.miShowAll).isVisible = mMatchResult != null
-            menu.findItem(R.id.miFilterToLosses).isVisible = mMatchResult != MatchResult.LOSE
-            menu.findItem(R.id.miFilterToWins).isVisible = mMatchResult != MatchResult.WIN
+            menu.findItem(R.id.miShowAll).isVisible = matchResult != null
+            menu.findItem(R.id.miFilterToLosses).isVisible = matchResult != MatchResult.LOSE
+            menu.findItem(R.id.miFilterToWins).isVisible = matchResult != MatchResult.WIN
         }
 
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) =
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             R.id.miFilterToLosses -> {
                 filter(MatchResult.LOSE)
@@ -211,20 +211,20 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override fun onViewsBound() {
         super.onViewsBound()
 
-        mRefreshLayout.setOnRefreshListener(this)
-        mRecyclerView.setHasFixedSize(true)
-        mAdapter = HeadToHeadAdapter(this)
-        mRecyclerView.adapter = mAdapter
+        refreshLayout.setOnRefreshListener(this)
+        recyclerView.setHasFixedSize(true)
+        adapter = HeadToHeadAdapter(this)
+        recyclerView.adapter = adapter
     }
 
     private fun prepareMenuAndSubtitle() {
-        mHeadToHead?.let {
-            if (mOpponentName.isNullOrBlank()) {
-                mOpponentName = it.opponent.name
+        headToHead?.let {
+            if (opponentName.isNullOrBlank()) {
+                opponentName = it.opponent.name
             }
 
-            if (mPlayerName.isNullOrBlank()) {
-                mPlayerName = it.player.name
+            if (playerName.isNullOrBlank()) {
+                playerName = it.player.name
             }
         }
 
@@ -232,38 +232,38 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     }
 
     private fun showData() {
-        mList = ListUtils.createHeadToHeadList(this, mHeadToHead)
-        mAdapter.set(mList)
+        list = ListUtils.createHeadToHeadList(this, headToHead)
+        adapter.set(list)
 
-        if (mAdapter.isEmpty) {
-            mError.visibility = View.GONE
-            mRecyclerView.visibility = View.GONE
-            mEmpty.visibility = View.VISIBLE
+        if (adapter.isEmpty) {
+            error.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+            empty.visibility = View.VISIBLE
         } else {
-            mEmpty.visibility = View.GONE
-            mError.visibility = View.GONE
-            mRecyclerView.visibility = View.VISIBLE
+            empty.visibility = View.GONE
+            error.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
 
-        mRefreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = false
         prepareMenuAndSubtitle()
     }
 
     private fun showError(errorCode: Int) {
-        mAdapter.clear()
-        mEmpty.visibility = View.GONE
-        mRecyclerView.visibility = View.GONE
-        mError.setVisibility(View.VISIBLE, errorCode)
+        adapter.clear()
+        empty.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        error.setVisibility(View.VISIBLE, errorCode)
         prepareMenuAndSubtitle()
-        mRefreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = false
     }
 
     override val showUpNavigation = true
 
     override fun success(`object`: HeadToHead?) {
-        mHeadToHead = `object`
-        mList = null
-        mMatchResult = null
+        headToHead = `object`
+        list = null
+        matchResult = null
         showData()
     }
 

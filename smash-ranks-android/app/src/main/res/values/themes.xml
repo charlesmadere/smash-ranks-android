@@ -2,7 +2,9 @@
 <resources>
 
     <style name="AlertDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
-        <item name="colorAccent">@color/purple_light</item>
+        <item name="colorAccent">@color/blue</item>
+        <item name="colorPrimary">@color/gray</item>
+        <item name="colorPrimaryDark">@color/gray_dark</item>
     </style>
 
     <style name="AppTheme" parent="AppThemeBase">
@@ -15,7 +17,7 @@
         <item name="timberWarn">@color/warn</item>
 
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
-        <item name="colorAccent">@color/purple_light</item>
+        <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
         <item name="android:windowBackground">@color/window_background</item>
@@ -26,7 +28,9 @@
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-
+        <item name="colorAccent">@color/blue</item>
+        <item name="colorPrimary">@color/gray</item>
+        <item name="colorPrimaryDark">@color/gray_dark</item>
     </style>
 
 </resources>

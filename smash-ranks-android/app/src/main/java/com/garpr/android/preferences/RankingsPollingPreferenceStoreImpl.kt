@@ -9,10 +9,8 @@ import com.google.gson.Gson
 
 class RankingsPollingPreferenceStoreImpl(
         gson: Gson,
-        keyValueStore: KeyValueStore
-) : BasePreferenceStore(
-        keyValueStore
-), RankingsPollingPreferenceStore {
+        override val keyValueStore: KeyValueStore
+) : RankingsPollingPreferenceStore {
 
     override val chargingRequired by lazy { PersistentBooleanPreference("CHARGING_REQUIRED",
             false, keyValueStore) }

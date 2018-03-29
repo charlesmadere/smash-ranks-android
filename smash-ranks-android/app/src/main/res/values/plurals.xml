@@ -6,6 +6,11 @@
         <item quantity="other">%1$s days</item>
     </plurals>
 
+    <plurals name="x_entrants">
+        <item quantity="one">%1$s entrant</item>
+        <item quantity="other">%1$s entrants</item>
+    </plurals>
+
     <plurals name="x_favorites">
         <item quantity="one">%1$s favorite</item>
         <item quantity="other">%1$s favorites</item>

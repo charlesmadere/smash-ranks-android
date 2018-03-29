@@ -36,7 +36,8 @@ abstract class BaseAdapter<T>(
         val item = items[position]
 
         @Suppress("UNCHECKED_CAST")
-        val view = holder.itemView as BaseAdapterView<T>
+        val view = holder.itemView as? BaseAdapterView<T> ?: throw ClassCastException(
+                "itemView is an unknown type: ${holder.itemView}")
 
         view.setContent(item)
     }
@@ -49,7 +50,7 @@ abstract class BaseAdapter<T>(
     open fun set(items: List<T>?) {
         this.items.clear()
 
-        if (items != null && items.isNotEmpty()) {
+        if (items?.isNotEmpty() == true) {
             this.items.addAll(items)
         }
 
