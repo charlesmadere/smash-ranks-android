@@ -1,21 +1,21 @@
 package com.garpr.android.preferences
 
 import com.garpr.android.preferences.Preference.OnPreferenceChangeListener
-import java.lang.ref.WeakReference
+import com.garpr.android.wrappers.WeakReferenceWrapper
 
 abstract class BasePreference<T>(
         override val key: String,
         override val defaultValue: T?
 ) : Preference<T> {
 
-    private val listeners = mutableSetOf<WeakReference<OnPreferenceChangeListener<T>>>()
+    private val listeners = mutableSetOf<WeakReferenceWrapper<OnPreferenceChangeListener<T>>>()
 
 
     override fun addListener(listener: OnPreferenceChangeListener<T>) {
         cleanListeners()
 
         synchronized (listeners) {
-            listeners.add(WeakReference(listener))
+            listeners.add(WeakReferenceWrapper(listener))
         }
     }
 
@@ -36,7 +36,7 @@ abstract class BasePreference<T>(
     protected fun notifyListeners() {
         cleanListeners()
 
-        synchronized(listeners) {
+        synchronized (listeners) {
             val iterator = listeners.iterator()
 
             while (iterator.hasNext()) {
