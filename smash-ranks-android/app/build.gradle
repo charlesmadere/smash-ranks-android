@@ -10,6 +10,7 @@ buildscript {
     }
 }
 
+// Android
 apply plugin: 'com.android.application'
 
 // Kotlin
@@ -58,6 +59,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     // Android Support Library
+    // https://developer.android.com/topic/libraries/support-library/index.html
     implementation "com.android.support:appcompat-v7:$appcompat_version"
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
     implementation "com.android.support:design:$appcompat_version"
@@ -65,17 +67,21 @@ dependencies {
     implementation "com.android.support:support-v4:$appcompat_version"
 
     // Firebase JobDispatcher
+    // https://github.com/firebase/firebase-jobdispatcher-android
     implementation "com.firebase:firebase-jobdispatcher:$firebase_jobdispatcher_version"
 
     // Google's Dagger
+    // https://github.com/google/dagger
     implementation "com.google.dagger:dagger:$dagger_version"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
     // Google's GSON
+    // https://github.com/google/gson
     implementation "com.google.code.gson:gson:$gson_version"
 
     // Google Play Services
+    // https://developers.google.com/android/guides/overview
     implementation "com.google.android.gms:play-services-base:$google_play_services_version"
 
     // Jake Wharton's KotterKnife
@@ -83,16 +89,20 @@ dependencies {
     // https://github.com/JakeWharton/kotterknife
 
     // Kotlin
+    // https://kotlinlang.org/docs/reference/using-gradle.html
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     // Robolectric
+    // https://github.com/robolectric/robolectric
     testImplementation "org.robolectric:robolectric:$robolectric_version"
 
     // Square's Retrofit
+    // https://github.com/square/retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // Fabric
+    // https://fabric.io/kits/android/crashlytics/update
     implementation("com.crashlytics.sdk.android:crashlytics:2.9.1@aar") {
         transitive = true
     }
