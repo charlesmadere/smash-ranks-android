@@ -64,6 +64,7 @@ class SettingsActivity : BaseActivity() {
     private val garTwitter: SimplePreferenceView by bindView(R.id.spvGarTwitter)
     private val gitHub: SimplePreferenceView by bindView(R.id.spvGitHub)
     private val logViewer: SimplePreferenceView by bindView(R.id.spvLogViewer)
+    private val tsuaiiTwitter: SimplePreferenceView by bindView(R.id.spvTsuaiiTwitter)
     private val googlePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
     private val themePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
 
@@ -176,12 +177,16 @@ class SettingsActivity : BaseActivity() {
             shareUtils.openUrl(this, Constants.CHARLES_TWITTER_URL)
         }
 
+        gitHub.setOnClickListener {
+            shareUtils.openUrl(this, Constants.GITHUB_URL)
+        }
+
         garTwitter.setOnClickListener {
             shareUtils.openUrl(this, Constants.GAR_TWITTER_URL)
         }
 
-        gitHub.setOnClickListener {
-            shareUtils.openUrl(this, Constants.GITHUB_URL)
+        tsuaiiTwitter.setOnClickListener {
+            shareUtils.openUrl(this, Constants.TSUAII_TWITTER_URL)
         }
 
         logViewer.setOnClickListener {

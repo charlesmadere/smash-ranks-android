@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <com.garpr.android.views.NavigationBarSpace
+        android:id="@+id/navigationBarSpace"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.garpr.android.views.SplashCardView
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding"
+        android:layout_width="@dimen/splash_card_width"
+        app:cardCornerRadius="@dimen/splash_card_corner_radius"
+        app:cardElevation="@dimen/splash_card_start_elevation"
+        app:layout_constraintBottom_toTopOf="@id/navigationBarSpace"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/root_padding_half"
+                android:layout_marginEnd="@dimen/root_padding"
+                android:layout_marginStart="@dimen/root_padding"
+                android:layout_marginTop="@dimen/root_padding_half"
+                android:layout_width="wrap_content"
+                android:text="@string/welcome_to_gar_pr" />
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/spvCustomizeRegion"
+                app:descriptionText="@string/customize_region_description"
+                app:icon="@drawable/ic_chevron_right_white_24dp"
+                app:titleText="@string/customize_region"
+                style="@style/PreferenceView" />
+
+            <View
+                android:background="?android:attr/listDivider"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/spvCustomizeIdentity"
+                app:descriptionText="@string/customize_identity_description"
+                app:icon="@drawable/ic_chevron_right_white_24dp"
+                app:titleText="@string/customize_identity"
+                style="@style/PreferenceView" />
+
+            <View
+                android:background="?android:attr/listDivider"
+                android:layout_height="1dp"
+                android:layout_width="match_parent" />
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/spvStartUsingTheApp"
+                app:descriptionText="@string/start_using_the_app_description"
+                app:icon="@drawable/ic_exit_to_app_white_24dp"
+                app:titleText="@string/start_using_the_app"
+                style="@style/PreferenceView" />
+
+        </LinearLayout>
+
+    </com.garpr.android.views.SplashCardView>
+
+</android.support.constraint.ConstraintLayout>

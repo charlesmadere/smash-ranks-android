@@ -16,6 +16,17 @@ data class Avatar(
         val CREATOR = createParcel { Avatar(it.readString(), it.readString(), it.readString()) }
     }
 
+    val mediumButFallbackToLargeThenSmall: String?
+        get() = if (medium?.isNotBlank() == true) {
+                    medium
+                } else if (large?.isNotBlank() == true) {
+                    large
+                } else if (small?.isNotBlank() == true) {
+                    small
+                } else {
+                    null
+                }
+
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

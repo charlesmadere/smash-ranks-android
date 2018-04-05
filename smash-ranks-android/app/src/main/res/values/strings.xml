@@ -4,8 +4,6 @@
     <string name="activity_requirements">Activity requirements</string>
     <string name="x_activity_requirements">%1$s Activity Requirements</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
-    <string name="aliases">Aliases</string>
-    <string name="aliases_x">Aliases: %1$s</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
@@ -18,6 +16,10 @@
     <string name="clear">Clear</string>
     <string name="compare">Compare</string>
     <string name="contribute_your_changes">Contribute your changes!</string>
+    <string name="customize_identity">Customize identity</string>
+    <string name="customize_identity_description">None currently selected</string>
+    <string name="customize_region">Customize region</string>
+    <string name="customize_region_description">The default is Norcal (GAR PR)</string>
     <string name="daily">Daily</string>
     <string name="day">Day</string>
     <string name="debug_only">Debug only</string>
@@ -110,9 +112,12 @@
     <string name="share_rankings">Share rankings</string>
     <string name="share_tournaments">Share tournaments</string>
     <string name="share_x">Share %1$s</string>
+    <string name="sheik_artwork_by_tsuaii">Sheik artwork by tsuaii</string>
     <string name="show">Show</string>
     <string name="show_all">Show all</string>
     <string name="show_test_notification">Show test notification</string>
+    <string name="start_using_the_app">Start using the app</string>
+    <string name="start_using_the_app_description">You can change your region and identity at any time in Settings</string>
     <string name="swipe_to_refresh_to_check_again">Swipe down to refresh to check again</string>
     <string name="swipe_to_refresh_to_try_again">Swipe down to refresh to try again</string>
     <string name="system">System</string>
@@ -124,6 +129,7 @@
     <string name="this_tournament_has_no_players">This tournament has no players</string>
     <string name="tournaments">Tournaments</string>
     <string name="x_tournaments">%1$s Tournaments</string>
+    <string name="tsuaii_twitter_url">twitter.com/tsuaii</string>
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
     <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
@@ -139,6 +145,7 @@
     <string name="view_yourself">View yourself</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
+    <string name="welcome_to_gar_pr">Welcome to GAR PR!</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>
     <string name="yes">Yes</string>
     <string name="youve_selected_a_region_but_havent_saved">You\'ve selected a region but haven\'t saved. Are you sure you still want to close this screen?</string>

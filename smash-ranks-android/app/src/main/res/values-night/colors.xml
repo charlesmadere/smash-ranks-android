@@ -8,6 +8,9 @@
     <color name="fast_scroll_track">#22FFFFFF</color>
     <color name="lose">#F0BEC5</color>
     <color name="lose_background">#44F0BEC5</color>
+    <color name="overlay">#44000000</color>
+    <color name="placeholder_gradient_end">#666666</color>
+    <color name="placeholder_gradient_start">#444444</color>
     <color name="warn">#FFBBBB</color>
     <color name="win">#C6E8B5</color>
     <color name="win_background">#44C6E8B5</color>

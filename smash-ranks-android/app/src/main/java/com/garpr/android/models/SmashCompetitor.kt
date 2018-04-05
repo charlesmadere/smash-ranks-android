@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 
 data class SmashCompetitor(
         @SerializedName("avatar") val avatar: Avatar? = null,
-        @SerializedName("mains") val mains: List<SmashCharacter>? = null,
+        @SerializedName("mains") val mains: List<SmashCharacter?>? = null,
         @SerializedName("websites") val websites: Map<String, String>? = null,
         @SerializedName("id") val id: String,
         @SerializedName("name") val name: String,
@@ -22,6 +22,27 @@ data class SmashCompetitor(
                 it.createTypedArrayList(SmashCharacter.CREATOR), it.readStringMap(), it.readString(),
                 it.readString(), it.readString()) }
     }
+
+    val filteredMains: Array<SmashCharacter>?
+        get() {
+            if (mains == null || mains.isEmpty()) {
+                return null
+            }
+
+            val filteredMains = mutableSetOf<SmashCharacter>()
+
+            for (main in mains) {
+                if (main != null) {
+                    filteredMains.add(main)
+                }
+            }
+
+            return if (filteredMains.isEmpty()) {
+                null
+            } else {
+                filteredMains.toTypedArray()
+            }
+        }
 
     override fun describeContents() = 0
 

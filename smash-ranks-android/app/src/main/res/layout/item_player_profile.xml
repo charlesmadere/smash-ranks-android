@@ -10,10 +10,26 @@
     android:paddingStart="@dimen/root_padding"
     android:paddingTop="@dimen/root_padding_half">
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdvAvatar"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="@dimen/avatar_size"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_width="@dimen/avatar_size"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:actualImageScaleType="centerCrop"
+        app:failureImage="@drawable/image_placeholder"
+        app:failureImageScaleType="centerCrop"
+        app:placeholderImage="@drawable/image_placeholder"
+        app:placeholderImageScaleType="centerCrop"
+        app:roundAsCircle="true"
+        tools:visibility="visible" />
+
     <TextView
         android:ellipsize="end"
         android:gravity="bottom"
-        android:id="@+id/tvName"
+        android:id="@+id/tvTag"
         android:layout_height="64dp"
         android:layout_width="match_parent"
         android:textColor="?android:attr/textColorPrimary"
@@ -63,6 +79,28 @@
         android:textSize="@dimen/text_size_small"
         android:visibility="gone"
         tools:text="Unadjusted: 45.679 (+/- 2.193)"
+        tools:visibility="visible" />
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvName"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        android:textColor="?android:attr/textColorPrimary"
+        android:visibility="gone"
+        tools:text="Charles Madere"
+        tools:visibility="visible" />
+
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/tvMains"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="2"
+        android:textColor="?android:attr/textColorPrimary"
+        android:visibility="gone"
+        tools:text="Mains: Sheik, Fox"
         tools:visibility="visible" />
 
     <LinearLayout

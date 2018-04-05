@@ -23,6 +23,14 @@
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
+    <style name="SplashThemeBase" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/bg_splash_theme</item>
+    </style>
+
+    <style name="SplashTheme" parent="SplashThemeBase">
+
+    </style>
+
     <style name="TabLayoutTheme" parent="ToolbarTheme">
         <item name="colorAccent">@color/white</item>
     </style>

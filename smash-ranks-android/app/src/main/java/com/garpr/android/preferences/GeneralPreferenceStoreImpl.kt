@@ -3,6 +3,7 @@ package com.garpr.android.preferences
 import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.NightMode
 import com.garpr.android.models.Region
+import com.garpr.android.preferences.persistent.PersistentBooleanPreference
 import com.garpr.android.preferences.persistent.PersistentGsonPreference
 import com.garpr.android.preferences.persistent.PersistentIntegerPreference
 import com.google.gson.Gson
@@ -15,6 +16,9 @@ class GeneralPreferenceStoreImpl(
 
     override val currentRegion by lazy { PersistentGsonPreference<Region>("CURRENT_REGION",
             defaultRegion, keyValueStore, Region::class.java, gson) }
+
+    override val hajimeteKimasu by lazy { PersistentBooleanPreference("HAJIMETE_KIMASU",
+            true, keyValueStore) }
 
     override val identity by lazy { PersistentGsonPreference<FavoritePlayer>("IDENTITY",
             null, keyValueStore, FavoritePlayer::class.java, gson) }

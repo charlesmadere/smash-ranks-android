@@ -9,8 +9,13 @@ interface PlayerProfileManager {
             val isAddToFavoritesVisible: Boolean = false,
             val isViewYourselfVsThisOpponentVisible: Boolean = false,
             val aliases: CharSequence? = null,
+            val mains: CharSequence? = null,
+            val name: CharSequence? = null,
             val rating: CharSequence? = null,
-            val unadjustedRating: CharSequence? = null
+            val unadjustedRating: CharSequence? = null,
+            val avatar: String? = null,
+            val twitch: String? = null,
+            val twitter: String? = null
     )
 
     fun getPresentation(player: FullPlayer, region: AbsRegion): Presentation

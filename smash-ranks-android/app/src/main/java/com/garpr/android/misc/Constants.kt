@@ -16,10 +16,9 @@ object Constants {
     // Miscellaneous
     const val ERROR_CODE_BAD_REQUEST = 400
     const val ERROR_CODE_UNKNOWN = Integer.MAX_VALUE
-    const val CHARLES_TWITTER_URL = "https://twitter.com/charlesmadere"
-    const val GAR_TWITTER_URL = "https://twitter.com/garsh0p"
-    const val GITHUB_URL = "https://github.com/charlesmadere/smash-ranks-android"
     const val PLAIN_TEXT = "text/plain"
+    const val TWITCH = "twitch"
+    const val TWITTER = "twitter"
 
     // NOT GAR PR Paths
     const val NOT_GAR_PR_API_PORT = 3001
@@ -27,5 +26,11 @@ object Constants {
 
     // Smash Roster Paths
     const val SMASH_ROSTER_BASE_PATH = "https://raw.githubusercontent.com/charlesmadere/smash-ranks-android-players/"
+
+    // URLs
+    const val CHARLES_TWITTER_URL = "https://twitter.com/charlesmadere"
+    const val GAR_TWITTER_URL = "https://twitter.com/garsh0p"
+    const val GITHUB_URL = "https://github.com/charlesmadere/smash-ranks-android"
+    const val TSUAII_TWITTER_URL = "https://twitter.com/tsuaii"
 
 }

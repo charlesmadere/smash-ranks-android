@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="avatar_size">80dp</dimen>
     <dimen name="bottom_navigation_view_height">56dp</dimen>
     <dimen name="divider_height">3dp</dimen>
     <dimen name="divider_item_height">32dp</dimen>
@@ -8,6 +9,7 @@
     <dimen name="elevation_half">2dp</dimen>
     <dimen name="elevation_quarter">1dp</dimen>
     <dimen name="list_item_height">48dp</dimen>
+    <dimen name="navigation_bar_height">48dp</dimen>
     <dimen name="previous_rank_view_size">18dp</dimen>
     <dimen name="root_padding">16dp</dimen>
     <dimen name="root_padding_double">32dp</dimen>
@@ -16,6 +18,10 @@
     <dimen name="root_padding_half">8dp</dimen>
     <dimen name="root_padding_quadruple">64dp</dimen>
     <dimen name="root_padding_triple">48dp</dimen>
+    <dimen name="splash_card_corner_radius">8dp</dimen>
+    <dimen name="splash_card_end_elevation">8dp</dimen>
+    <dimen name="splash_card_start_elevation">2dp</dimen>
+    <dimen name="splash_card_width">288dp</dimen>
     <dimen name="tab_height">56dp</dimen>
     <dimen name="text_size_normal">14sp</dimen>
     <dimen name="text_size_small">12sp</dimen>

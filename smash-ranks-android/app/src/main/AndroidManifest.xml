@@ -45,10 +45,6 @@
             android:launchMode="singleTop"
             android:name=".activities.HomeActivity"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -75,27 +71,28 @@
         <activity
             android:label="@string/set_identity"
             android:launchMode="singleTop"
-            android:name=".activities.SetIdentityActivity"
-            android:parentActivityName=".activities.SettingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SettingsActivity" />
-        </activity>
+            android:name=".activities.SetIdentityActivity" />
 
         <activity
             android:label="@string/set_region"
             android:launchMode="singleTop"
-            android:name=".activities.SetRegionActivity"
-            android:parentActivityName=".activities.SettingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SettingsActivity" />
-        </activity>
+            android:name=".activities.SetRegionActivity" />
 
         <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:name=".activities.SettingsActivity" />
+
+        <activity
+            android:label="@string/gar_pr"
+            android:launchMode="singleTop"
+            android:name=".activities.SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:label=""

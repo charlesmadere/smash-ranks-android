@@ -58,9 +58,13 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         const val POSITION_TOURNAMENTS = 1
         const val POSITION_FAVORITE_PLAYERS = 2
 
-        fun getLaunchIntent(context: Context, initialPosition: Int? = null): Intent {
-            val intent = Intent.makeRestartActivityTask(
-                    Intent(context, HomeActivity::class.java).component)
+        fun getLaunchIntent(context: Context, initialPosition: Int? = null,
+                restartActivityTask: Boolean = false): Intent {
+            var intent = Intent(context, HomeActivity::class.java)
+
+            if (restartActivityTask) {
+                intent = Intent.makeRestartActivityTask(intent.component)
+            }
 
             if (initialPosition != null) {
                 intent.putExtra(EXTRA_INITIAL_POSITION, initialPosition)

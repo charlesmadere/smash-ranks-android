@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <integer name="splash_card_animation_delay">275</integer>
+    <integer name="splash_card_animation_duration">1500</integer>
     <integer name="win_losses_animation">1000</integer>
 
 </resources>

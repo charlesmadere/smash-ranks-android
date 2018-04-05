@@ -8,6 +8,8 @@ interface GeneralPreferenceStore : PreferenceStore {
 
     val currentRegion: Preference<Region>
 
+    val hajimeteKimasu: Preference<Boolean>
+
     val identity: Preference<FavoritePlayer>
 
     val lastVersion: Preference<Int>

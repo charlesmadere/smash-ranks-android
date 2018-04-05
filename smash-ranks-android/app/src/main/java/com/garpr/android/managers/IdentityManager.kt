@@ -1,6 +1,7 @@
 package com.garpr.android.managers
 
 import com.garpr.android.models.AbsPlayer
+import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.Region
 
 interface IdentityManager {
@@ -11,7 +12,7 @@ interface IdentityManager {
 
     fun addListener(listener: OnIdentityChangeListener)
 
-    val identity: AbsPlayer?
+    val identity: FavoritePlayer?
 
     val hasIdentity: Boolean
 

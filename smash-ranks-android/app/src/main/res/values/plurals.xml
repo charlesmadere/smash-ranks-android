@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <plurals name="aliases_x">
+        <item quantity="one">Alias: %1$s</item>
+        <item quantity="other">Aliases: %1$s</item>
+    </plurals>
+
+    <plurals name="mains_x">
+        <item quantity="one">Main: %1$s</item>
+        <item quantity="other">Mains: %1$s</item>
+    </plurals>
+
     <plurals name="x_days">
         <item quantity="one">%1$s day</item>
         <item quantity="other">%1$s days</item>

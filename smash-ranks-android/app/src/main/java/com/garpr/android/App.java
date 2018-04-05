@@ -8,6 +8,7 @@ import com.garpr.android.dagger.AppComponent;
 import com.garpr.android.dagger.AppModule;
 import com.garpr.android.dagger.DaggerAppComponent;
 import com.garpr.android.managers.AppUpgradeManager;
+import com.garpr.android.managers.ImageLibraryManager;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
@@ -36,6 +37,9 @@ public class App extends Application {
 
     @Inject
     GeneralPreferenceStore mGeneralPreferenceStore;
+
+    @Inject
+    ImageLibraryManager mImageLibraryManager;
 
     @Inject
     Timber mTimber;
@@ -75,13 +79,19 @@ public class App extends Application {
         mCrashlyticsWrapper.setBool("low_ram_device", mDeviceUtils.getHasLowRam());
     }
 
+    private void initializeImageLibrary() {
+        mImageLibraryManager.initialize();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
 
+        // the following order is important
         initializeAppComponent();
         initializeCrashlytics();
+        initializeImageLibrary();
 
         mTimber.d(TAG, "App created", null);
 

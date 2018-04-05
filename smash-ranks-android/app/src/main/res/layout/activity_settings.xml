@@ -109,15 +109,21 @@
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/spvGitHub"
+                app:descriptionText="@string/contribute_your_changes"
+                app:titleText="@string/open_source_on_github"
+                style="@style/PreferenceView" />
+
+            <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvGarTwitter"
                 app:descriptionText="@string/gar_twitter_url"
                 app:titleText="@string/website_by_ivan_van"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
-                android:id="@+id/spvGitHub"
-                app:descriptionText="@string/contribute_your_changes"
-                app:titleText="@string/open_source_on_github"
+                android:id="@+id/spvTsuaiiTwitter"
+                app:descriptionText="@string/tsuaii_twitter_url"
+                app:titleText="@string/sheik_artwork_by_tsuaii"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView

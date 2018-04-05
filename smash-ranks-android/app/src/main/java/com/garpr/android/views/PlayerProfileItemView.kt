@@ -9,6 +9,7 @@ import android.support.v4.widget.TextViewCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
@@ -44,12 +45,15 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     @Inject
     protected lateinit var shareUtils: ShareUtils
 
+    private val avatar: SimpleDraweeView by bindView(R.id.sdvAvatar)
     private val aliases: TextView by bindView(R.id.tvAliases)
     private val favoriteOrUnfavorite: TintedTextView by bindView(R.id.tvFavoriteOrUnfavorite)
+    private val mains: TextView by bindView(R.id.tvMains)
     private val name: TextView by bindView(R.id.tvName)
     private val rating: TextView by bindView(R.id.tvRating)
     private val region: TextView by bindView(R.id.tvRegion)
     private val share: TextView by bindView(R.id.tvShare)
+    private val tag: TextView by bindView(R.id.tvTag)
     private val unadjustedRating: TextView by bindView(R.id.tvUnadjustedRating)
     private val viewYourselfVsThisOpponent: TextView by bindView(R.id.tvViewYourselfVsThisOpponent)
 
@@ -134,10 +138,17 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
 
     override fun refresh() {
         val player = fullPlayer ?: return
-        name.text = player.name
-
         val region = regionManager.getRegion(context)
         val presentation = playerProfileManager.getPresentation(player, region)
+
+        if (presentation.avatar?.isNotBlank() == true) {
+            avatar.setImageURI(presentation.avatar)
+            avatar.visibility = View.VISIBLE
+        } else {
+            avatar.visibility = View.GONE
+        }
+
+        tag.text = player.name
 
         if (presentation.aliases.isNullOrBlank()) {
             aliases.visibility = View.GONE
@@ -157,6 +168,20 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
 
             unadjustedRating.text = presentation.unadjustedRating
             unadjustedRating.visibility = View.VISIBLE
+        }
+
+        if (presentation.name.isNullOrBlank()) {
+            name.visibility = View.GONE
+        } else {
+            name.text = presentation.name
+            name.visibility = View.VISIBLE
+        }
+
+        if (presentation.mains.isNullOrBlank()) {
+            mains.visibility = View.GONE
+        } else {
+            mains.text = presentation.mains
+            mains.visibility = View.VISIBLE
         }
 
         if (presentation.isAddToFavoritesVisible) {

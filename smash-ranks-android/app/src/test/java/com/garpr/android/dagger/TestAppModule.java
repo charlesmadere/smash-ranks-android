@@ -3,6 +3,7 @@ package com.garpr.android.dagger;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.garpr.android.managers.ImageLibraryManager;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.TestDeviceUtilsImpl;
@@ -64,13 +65,24 @@ public class TestAppModule extends BaseAppModule {
 
     @Provides
     @Singleton
-    DeviceUtils providesDeviceUtils(final Application application) {
+    DeviceUtils providesDeviceUtils(@NonNull final Application application) {
         return new TestDeviceUtilsImpl(application);
     }
 
     @Provides
     @Singleton
-    KeyValueStore providesKeyValueStore(final Application application) {
+    ImageLibraryManager providesImageLibraryManager() {
+        return new ImageLibraryManager() {
+            @Override
+            public void initialize() {
+                // intentionally empty
+            }
+        };
+    }
+
+    @Provides
+    @Singleton
+    KeyValueStore providesKeyValueStore(@NonNull final Application application) {
         return new KeyValueStoreImpl(application, "TEST");
     }
 
