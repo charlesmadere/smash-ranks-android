@@ -3,6 +3,7 @@ package com.garpr.android.views
 import android.content.Context
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatDelegate
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.App
@@ -57,6 +58,7 @@ class ThemePreferenceView @JvmOverloads constructor(
             generalPreferenceStore.nightMode.set(selected)
             refresh()
 
+            AppCompatDelegate.setDefaultNightMode(selected.themeValue)
             context.startActivity(HomeActivity.getLaunchIntent(context))
         })
     }
