@@ -2,7 +2,9 @@ package com.garpr.android.models
 
 import com.garpr.android.BaseTest
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -169,6 +171,11 @@ class SmashCharacterTest : BaseTest() {
     }
 
     @Test
+    fun testEmptyString() {
+        assertNull(gson.fromJson("", SmashCharacter::class.java))
+    }
+
+    @Test
     fun testFalco() {
         assertEquals(JSON_FALCO, gson.toJson(SmashCharacter.FALCO))
         assertEquals(SmashCharacter.FALCO, gson.fromJson(JSON_FALCO, SmashCharacter::class.java))
@@ -316,6 +323,16 @@ class SmashCharacterTest : BaseTest() {
     fun testNess() {
         assertEquals(JSON_NESS, gson.toJson(SmashCharacter.NESS))
         assertEquals(SmashCharacter.NESS, gson.fromJson(JSON_NESS, SmashCharacter::class.java))
+    }
+
+    @Test
+    fun testNullJsonElement() {
+        assertNull(gson.fromJson(null as JsonElement?, SmashCharacter::class.java))
+    }
+
+    @Test
+    fun testNullString() {
+        assertNull(gson.fromJson(null as String?, SmashCharacter::class.java))
     }
 
     @Test
