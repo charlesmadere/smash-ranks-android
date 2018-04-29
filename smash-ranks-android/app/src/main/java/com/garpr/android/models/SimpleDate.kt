@@ -73,7 +73,7 @@ data class SimpleDate(
         return other is SimpleDate && date == other.date
     }
 
-    val fullForm: CharSequence = DateFormat.getDateInstance(DateFormat.FULL).format(date)
+    val fullForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.FULL).format(date) }
 
     fun getRelativeDateTimeText(context: Context): CharSequence {
         return DateUtils.getRelativeDateTimeString(context, date.time, DateUtils.DAY_IN_MILLIS,
@@ -86,9 +86,9 @@ data class SimpleDate(
 
     override fun hashCode() = date.hashCode()
 
-    val mediumForm: CharSequence = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date)
+    val mediumForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.MEDIUM).format(date) }
 
-    val shortForm: CharSequence = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
+    val shortForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.SHORT).format(date) }
 
     override fun toString() = date.toString()
 
