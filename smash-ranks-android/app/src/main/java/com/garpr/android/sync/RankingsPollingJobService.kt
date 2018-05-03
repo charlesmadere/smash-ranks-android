@@ -46,7 +46,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
         val pollStatus = this.pollStatus
 
         if (pollStatus != null) {
-            this.pollStatus = pollStatus.copy(oldRankingsDate = pollStatus.oldRankingsDate,
+            this.pollStatus = pollStatus.copy(oldRankingsId = pollStatus.oldRankingsId,
                     proceed = pollStatus.proceed, retry = true)
         }
 

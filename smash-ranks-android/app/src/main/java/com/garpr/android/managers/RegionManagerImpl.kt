@@ -83,7 +83,7 @@ class RegionManagerImpl(
         timber.d(TAG, "old region is \"${generalPreferenceStore.currentRegion.get()}\", "
                 + "new region is \"$region\"")
         rankingsPollingPreferenceStore.lastPoll.delete()
-        rankingsPollingPreferenceStore.rankingsDate.delete()
+        rankingsPollingPreferenceStore.rankingsId.delete()
         generalPreferenceStore.currentRegion.set(region)
         notifyListeners()
     }

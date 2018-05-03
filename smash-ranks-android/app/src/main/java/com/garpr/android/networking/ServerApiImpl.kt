@@ -122,7 +122,7 @@ class ServerApiImpl(
                     listener.failure(response.code())
                 } else {
                     if (region == regionManager.getRegion()) {
-                        rankingsPollingPreferenceStore.rankingsDate.set(body.time)
+                        rankingsPollingPreferenceStore.rankingsId.set(body.id)
                     }
 
                     listener.success(body)

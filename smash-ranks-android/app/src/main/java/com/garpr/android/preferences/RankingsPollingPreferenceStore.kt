@@ -15,7 +15,7 @@ interface RankingsPollingPreferenceStore : PreferenceStore {
 
     val pollFrequency: Preference<PollFrequency>
 
-    val rankingsDate: Preference<SimpleDate>
+    val rankingsId: Preference<String>
 
     val ringtone: Preference<Uri>
 

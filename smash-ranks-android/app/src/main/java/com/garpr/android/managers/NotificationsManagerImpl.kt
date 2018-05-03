@@ -90,18 +90,9 @@ class NotificationsManagerImpl(
             builder.setSound(it)
         }
 
-        val rankingsDate = rankingsPollingPreferenceStore.rankingsDate.get()?.let {
-            builder.setShowWhen(true)
-                    .setWhen(it.date.time)
-            it
-        } ?: "null"
-
-        val time = SimpleDate()
-
         timber.d(TAG, "Showing rankings updated notification! Debug info: " +
                 "regionDisplayName = $regionDisplayName, " +
-                "rankingsDate = $rankingsDate, " +
-                "time = $time")
+                "time = ${SimpleDate()}")
 
         show(RANKINGS_ID, builder)
     }

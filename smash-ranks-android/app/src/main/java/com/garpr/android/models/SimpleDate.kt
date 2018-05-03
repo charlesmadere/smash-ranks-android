@@ -19,17 +19,7 @@ data class SimpleDate(
 ) : Parcelable {
 
     companion object {
-        private val FORMATS: Array<SimpleDateFormat>
-
-        init {
-            val timeZone = TimeZone.getTimeZone("Etc/UCT")
-
-            FORMATS = arrayOf(
-                    SimpleDateFormat("MM/dd/yy", Locale.US).also {
-                        it.timeZone = timeZone
-                    }
-            )
-        }
+        private val FORMATS = arrayOf(SimpleDateFormat("MM/dd/yy", Locale.US))
 
         @JvmField
         val CREATOR = createParcel { SimpleDate(Date(it.readLong())) }

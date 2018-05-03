@@ -4,6 +4,7 @@ import com.garpr.android.models.PollFrequency
 import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.persistent.PersistentBooleanPreference
 import com.garpr.android.preferences.persistent.PersistentGsonPreference
+import com.garpr.android.preferences.persistent.PersistentStringPreference
 import com.garpr.android.preferences.persistent.PersistentUriPreference
 import com.google.gson.Gson
 
@@ -24,8 +25,8 @@ class RankingsPollingPreferenceStoreImpl(
     override val pollFrequency by lazy { PersistentGsonPreference("POLL_FREQUENCY",
             PollFrequency.DAILY, keyValueStore, PollFrequency::class.java, gson) }
 
-    override val rankingsDate by lazy { PersistentGsonPreference<SimpleDate>("RANKINGS_DATE",
-            null, keyValueStore, SimpleDate::class.java, gson) }
+    override val rankingsId by lazy { PersistentStringPreference("RANKINGS_ID",
+            null, keyValueStore) }
 
     override val ringtone by lazy { PersistentUriPreference("RINGTONE", null,
             keyValueStore) }
