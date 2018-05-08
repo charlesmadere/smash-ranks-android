@@ -3,7 +3,6 @@ package com.garpr.android.dagger;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.garpr.android.managers.ImageLibraryManager;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.TestDeviceUtilsImpl;
@@ -11,6 +10,7 @@ import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
+import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -71,8 +71,8 @@ public class TestAppModule extends BaseAppModule {
 
     @Provides
     @Singleton
-    ImageLibraryManager providesImageLibraryManager() {
-        return new ImageLibraryManager() {
+    ImageLibraryWrapper providesImageLibraryWrapper() {
+        return new ImageLibraryWrapper() {
             @Override
             public void initialize() {
                 // intentionally empty

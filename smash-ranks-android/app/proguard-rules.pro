@@ -21,6 +21,19 @@
 -keep class com.garpr.android.models.** { *; }
 
 
+######################
+## bumptech's Glide ##
+######################
+# Glide specific rules #
+# https://github.com/bumptech/glide
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+
+
 ############
 ## Fabric ##
 ############
@@ -41,6 +54,9 @@
 #######################
 ## Facebook's Fresco ##
 #######################
+# Fresco v0.8.1 ProGuard rules.
+# https://github.com/facebook/fresco
+
 -keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
 
 # Do not strip any method/class that is annotated with @DoNotStrip

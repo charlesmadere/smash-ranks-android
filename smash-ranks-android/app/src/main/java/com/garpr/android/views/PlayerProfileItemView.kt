@@ -8,6 +8,7 @@ import android.support.annotation.StyleRes
 import android.support.v4.widget.TextViewCompat
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.garpr.android.App
@@ -29,6 +30,8 @@ import javax.inject.Inject
 class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>,
         FavoritePlayersManager.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener, Refreshable {
+
+    private var presentation: PlayerProfileManager.Presentation? = null
 
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
@@ -54,8 +57,13 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     private val region: TextView by bindView(R.id.tvRegion)
     private val share: TextView by bindView(R.id.tvShare)
     private val tag: TextView by bindView(R.id.tvTag)
+    private val otherWebsite: TextView by bindView(R.id.tvOtherWebsite)
+    private val twitch: TextView by bindView(R.id.tvTwitch)
+    private val twitter: TextView by bindView(R.id.tvTwitter)
+    private val youTube: TextView by bindView(R.id.tvYouTube)
     private val unadjustedRating: TextView by bindView(R.id.tvUnadjustedRating)
     private val viewYourselfVsThisOpponent: TextView by bindView(R.id.tvViewYourselfVsThisOpponent)
+    private val websites: ViewGroup by bindView(R.id.vgWebsites)
 
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -108,6 +116,22 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
 
+        twitch.setOnClickListener {
+            presentation?.let { shareUtils.openUrl(context, it.otherWebsite) }
+        }
+
+        twitch.setOnClickListener {
+            presentation?.let { shareUtils.openUrl(context, it.twitch) }
+        }
+
+        youTube.setOnClickListener {
+            presentation?.let { shareUtils.openUrl(context, it.youTube) }
+        }
+
+        otherWebsite.setOnClickListener {
+            presentation?.let { shareUtils.openUrl(context, it.otherWebsite) }
+        }
+
         favoriteOrUnfavorite.setOnClickListener {
             fullPlayer?.let {
                 if (it in favoritePlayersManager) {
@@ -140,15 +164,34 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         val player = fullPlayer ?: return
         val region = regionManager.getRegion(context)
         val presentation = playerProfileManager.getPresentation(player, region)
+        this.presentation = presentation
 
-        if (presentation.avatar?.isNotBlank() == true) {
+        if (presentation.avatar.isNullOrBlank()) {
+            avatar.visibility = View.GONE
+        } else {
             avatar.setImageURI(presentation.avatar)
             avatar.visibility = View.VISIBLE
-        } else {
-            avatar.visibility = View.GONE
         }
 
-        tag.text = player.name
+        tag.text = if (presentation.tag.isNullOrBlank()) {
+            player.name
+        } else {
+            presentation.tag
+        }
+
+        if (presentation.name.isNullOrBlank()) {
+            name.visibility = View.GONE
+        } else {
+            name.text = presentation.name
+            name.visibility = View.VISIBLE
+        }
+
+        if (presentation.mains.isNullOrBlank()) {
+            mains.visibility = View.GONE
+        } else {
+            mains.text = presentation.mains
+            mains.visibility = View.VISIBLE
+        }
 
         if (presentation.aliases.isNullOrBlank()) {
             aliases.visibility = View.GONE
@@ -170,18 +213,37 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
             unadjustedRating.visibility = View.VISIBLE
         }
 
-        if (presentation.name.isNullOrBlank()) {
-            name.visibility = View.GONE
-        } else {
-            name.text = presentation.name
-            name.visibility = View.VISIBLE
-        }
+        if (presentation.twitch?.isNotBlank() == true
+                || presentation.twitter?.isNotBlank() == true
+                || presentation.youTube?.isNotBlank() == true
+                || presentation.otherWebsite?.isNotBlank() == true) {
+            if (presentation.twitch.isNullOrBlank()) {
+                twitch.visibility = View.GONE
+            } else {
+                twitch.visibility = View.VISIBLE
+            }
 
-        if (presentation.mains.isNullOrBlank()) {
-            mains.visibility = View.GONE
+            if (presentation.twitter.isNullOrBlank()) {
+                twitter.visibility = View.GONE
+            } else {
+                twitter.visibility = View.VISIBLE
+            }
+
+            if (presentation.youTube.isNullOrBlank()) {
+                youTube.visibility = View.GONE
+            } else {
+                youTube.visibility = View.VISIBLE
+            }
+
+            if (presentation.otherWebsite.isNullOrBlank()) {
+                otherWebsite.visibility = View.GONE
+            } else {
+                otherWebsite.visibility = View.VISIBLE
+            }
+
+            websites.visibility = View.VISIBLE
         } else {
-            mains.text = presentation.mains
-            mains.visibility = View.VISIBLE
+            websites.visibility = View.GONE
         }
 
         if (presentation.isAddToFavoritesVisible) {

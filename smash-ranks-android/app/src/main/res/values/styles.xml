@@ -257,11 +257,13 @@
     <style name="TextButton" parent="@style/MediumOrBoldText">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:drawablePadding">@dimen/root_padding_eighth</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:maxLines">2</item>
         <item name="android:minHeight">@dimen/list_item_height</item>
         <item name="android:padding">@dimen/root_padding_half</item>
         <item name="android:textAllCaps">true</item>

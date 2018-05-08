@@ -61,7 +61,6 @@
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_open_in_browser_white_24dp"
             android:id="@+id/tvOpenLink"
-            android:layout_marginEnd="@dimen/root_padding_half"
             android:text="@string/open_bracket_link"
             style="@style/TextButton" />
 

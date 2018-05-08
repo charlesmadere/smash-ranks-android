@@ -46,6 +46,20 @@ class SmashRosterStorageTest : BaseTest() {
 
     @Test
     @Throws(Exception::class)
+    fun testDeleteRegion1() {
+        smashRosterStorage.deleteFromStorage(region1)
+        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_CHARLEZARD))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testDeleteRegion2() {
+        smashRosterStorage.deleteFromStorage(region2)
+        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_DJ_NINTENDO))
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun testGetSmashCompetitorWithCharlezard() {
         assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_CHARLEZARD))
         assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_CHARLEZARD))

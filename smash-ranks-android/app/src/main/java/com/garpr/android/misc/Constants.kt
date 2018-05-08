@@ -16,9 +16,11 @@ object Constants {
     // Miscellaneous
     const val ERROR_CODE_BAD_REQUEST = 400
     const val ERROR_CODE_UNKNOWN = Integer.MAX_VALUE
+    const val OTHER = "other"
     const val PLAIN_TEXT = "text/plain"
     const val TWITCH = "twitch"
     const val TWITTER = "twitter"
+    const val YOUTUBE = "youtube"
 
     // NOT GAR PR Paths
     const val NOT_GAR_PR_API_PORT = 3001

@@ -48,7 +48,7 @@ class SplashCardView @JvmOverloads constructor(
 
     companion object {
         private const val ELEVATION_OVERSHOOT_TENSION: Float = 6f
-        private const val SCALE_OVERSHOOT_TENSION: Float = 12f
+        private const val MARGIN_OVERSHOOT_TENSION: Float = 12f
     }
 
     override fun onAttachedToWindow() {
@@ -61,7 +61,7 @@ class SplashCardView @JvmOverloads constructor(
         identityManager.addListener(this)
         regionManager.addListener(this)
 
-        if (!deviceUtils.hasLowRam && !hasAnimated) {
+        if (!hasAnimated && !deviceUtils.hasLowRam) {
             hasAnimated = true
             performAnimation()
         }
@@ -133,10 +133,7 @@ class SplashCardView @JvmOverloads constructor(
                 .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
                 .setStartDelay(resources.getInteger(R.integer.splash_card_animation_delay).toLong())
                 .withStartAction {
-                    if (!deviceUtils.hasLowRam) {
-                        performElevationAnimation()
-                    }
-
+                    performElevationAnimation()
                     performMarginBottomAnimation()
                 }
                 .start()
@@ -168,7 +165,7 @@ class SplashCardView @JvmOverloads constructor(
         }
 
         animator.duration = resources.getInteger(R.integer.splash_card_animation_duration).toLong()
-        animator.interpolator = OvershootInterpolator(SCALE_OVERSHOOT_TENSION)
+        animator.interpolator = OvershootInterpolator(MARGIN_OVERSHOOT_TENSION)
         animator.start()
     }
 

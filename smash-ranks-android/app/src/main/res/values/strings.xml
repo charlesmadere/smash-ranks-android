@@ -8,6 +8,7 @@
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
+    <string name="avatar">Avatar</string>
     <string name="build_x">Build %1$d</string>
     <string name="build_x_debug">Build %1$d (Debug)</string>
     <string name="cancel">Cancel</string>
@@ -83,6 +84,7 @@
     <string name="open_challonge_link">Open Challonge link</string>
     <string name="open_smash_gg_link">Open smash.gg link</string>
     <string name="open_source_on_github">Open source on GitHub</string>
+    <string name="other">Other</string>
     <string name="players">Players</string>
     <string name="please_wait_">Please wait…</string>
     <string name="poll_frequency">Poll frequency</string>
@@ -130,6 +132,8 @@
     <string name="tournaments">Tournaments</string>
     <string name="x_tournaments">%1$s Tournaments</string>
     <string name="tsuaii_twitter_url">twitter.com/tsuaii</string>
+    <string name="twitch">Twitch</string>
+    <string name="twitter">Twitter</string>
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
     <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
@@ -148,6 +152,7 @@
     <string name="welcome_to_gar_pr">Welcome to GAR PR!</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>
     <string name="yes">Yes</string>
+    <string name="youtube">YouTube</string>
     <string name="youve_selected_a_region_but_havent_saved">You\'ve selected a region but haven\'t saved. Are you sure you still want to close this screen?</string>
     <string name="youve_selected_an_identity_but_havent_saved">You\'ve selected an identity but haven\'t saved. Are you sure you still want to close this screen?</string>
     <string name="you_can_add_a_player_to_your_favorites">You can add a player to your favorites when viewing their profile screen, or by long-pressing on their name in player lists.</string>

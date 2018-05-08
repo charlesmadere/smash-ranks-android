@@ -11,62 +11,144 @@
     android:paddingTop="@dimen/root_padding_half">
 
     <com.facebook.drawee.view.SimpleDraweeView
+        android:contentDescription="@string/avatar"
+        android:elevation="@dimen/elevation_half"
         android:id="@+id/sdvAvatar"
         android:layout_gravity="center_horizontal"
         android:layout_height="@dimen/avatar_size"
         android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_width="@dimen/avatar_size"
-        android:scaleType="centerCrop"
+        android:src="@drawable/circular_image_placeholder"
         android:visibility="gone"
         app:actualImageScaleType="centerCrop"
-        app:failureImage="@drawable/image_placeholder"
+        app:failureImage="@drawable/circular_image_placeholder"
         app:failureImageScaleType="centerCrop"
-        app:placeholderImage="@drawable/image_placeholder"
+        app:placeholderImage="@drawable/circular_image_placeholder"
         app:placeholderImageScaleType="centerCrop"
         app:roundAsCircle="true"
+        tools:ignore="UnusedAttribute"
         tools:visibility="visible" />
 
     <TextView
         android:ellipsize="end"
-        android:gravity="bottom"
+        android:gravity="center"
         android:id="@+id/tvTag"
+        android:layout_gravity="center_horizontal"
         android:layout_height="64dp"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
         android:layout_width="match_parent"
         android:textColor="?android:attr/textColorPrimary"
         app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
         app:autoSizeMinTextSize="@dimen/text_size_xlarge"
         app:autoSizeTextType="uniform"
-        tools:text="Charlezard"
+        tools:text="Mang0"
         style="@style/MediumOrBoldText" />
 
     <TextView
         android:ellipsize="end"
+        android:gravity="center"
+        android:id="@+id/tvName"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        android:visibility="gone"
+        tools:text="Joseph Marquez"
+        tools:visibility="visible"
+        style="@style/MediumOrBoldText" />
+
+    <TextView
+        android:ellipsize="end"
+        android:gravity="center"
         android:id="@+id/tvAliases"
+        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:maxLines="2"
-        android:textSize="@dimen/text_size_small"
         android:visibility="gone"
-        tools:text="Aliases: Charles, Charliehorse"
+        tools:text="Alias: The GOAT"
         tools:visibility="visible" />
 
     <TextView
+        android:ellipsize="end"
+        android:gravity="center"
+        android:id="@+id/tvMains"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        android:visibility="gone"
+        tools:text="Mains: Fox, Falco"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/vgWebsites"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/root_padding"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_twitter_24dp"
+            android:id="@+id/tvTwitter"
+            android:text="@string/twitter"
+            android:visibility="gone"
+            tools:visibility="visible"
+            style="@style/TextButton" />
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_twitch_24dp"
+            android:id="@+id/tvTwitch"
+            android:text="@string/twitch"
+            android:visibility="gone"
+            tools:visibility="visible"
+            style="@style/TextButton" />
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_youtube_24dp"
+            android:id="@+id/tvYouTube"
+            android:text="@string/youtube"
+            android:visibility="gone"
+            tools:visibility="visible"
+            style="@style/TextButton" />
+
+        <com.garpr.android.views.TintedTextView
+            android:drawableTop="@drawable/ic_web_24dp"
+            android:id="@+id/tvOtherWebsite"
+            android:text="@string/other"
+            android:visibility="gone"
+            tools:visibility="visible"
+            style="@style/TextButton" />
+
+    </LinearLayout>
+
+    <View
+        android:background="?android:attr/listDivider"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding"
+        android:layout_width="match_parent" />
+
+    <TextView
+        android:ellipsize="end"
         android:id="@+id/tvRegion"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_small"
-        tools:text="Norcal" />
-
-    <Space
-        android:layout_height="@dimen/root_padding"
-        android:layout_width="match_parent" />
+        android:maxLines="2"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="Norcal"
+        style="@style/MediumOrBoldText" />
 
     <TextView
         android:id="@+id/tvRating"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_large"
         android:visibility="gone"
         tools:text="Rating: 39.101"
         tools:visibility="visible" />
@@ -76,31 +158,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_small"
         android:visibility="gone"
         tools:text="Unadjusted: 45.679 (+/- 2.193)"
-        tools:visibility="visible" />
-
-    <TextView
-        android:ellipsize="end"
-        android:id="@+id/tvName"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:maxLines="1"
-        android:textColor="?android:attr/textColorPrimary"
-        android:visibility="gone"
-        tools:text="Charles Madere"
-        tools:visibility="visible" />
-
-    <TextView
-        android:ellipsize="end"
-        android:id="@+id/tvMains"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:maxLines="2"
-        android:textColor="?android:attr/textColorPrimary"
-        android:visibility="gone"
-        tools:text="Mains: Sheik, Fox"
         tools:visibility="visible" />
 
     <LinearLayout
@@ -111,14 +170,12 @@
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_favorite_white_24dp"
             android:id="@+id/tvFavoriteOrUnfavorite"
-            android:layout_marginEnd="@dimen/root_padding_half"
             android:text="@string/favorite"
             style="@style/TextButton" />
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_face_white_24dp"
             android:id="@+id/tvViewYourselfVsThisOpponent"
-            android:layout_marginEnd="@dimen/root_padding_half"
             android:text="@string/compare"
             android:visibility="gone"
             tools:visibility="visible"

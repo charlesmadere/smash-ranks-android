@@ -84,6 +84,16 @@ class PlayerProfileManagerImpl(
             presentation = presentation.copy(twitter = twitter)
         }
 
+        val youTube = competitor.websites?.get(Constants.YOUTUBE)
+        if (youTube?.isNotBlank() == true) {
+            presentation = presentation.copy(youTube = youTube)
+        }
+
+        val otherWebsite = competitor.websites?.get(Constants.OTHER)
+        if (otherWebsite?.isNotBlank() == true) {
+            presentation = presentation.copy(otherWebsite = otherWebsite)
+        }
+
         return presentation
     }
 

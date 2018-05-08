@@ -3,8 +3,6 @@ package com.garpr.android.dagger;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.garpr.android.managers.FacebookFrescoManager;
-import com.garpr.android.managers.ImageLibraryManager;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.CrashlyticsWrapperImpl;
 import com.garpr.android.misc.DeviceUtils;
@@ -13,6 +11,8 @@ import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.models.Region;
+import com.garpr.android.wrappers.FacebookFrescoWrapper;
+import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import javax.inject.Singleton;
 
@@ -40,9 +40,9 @@ public class AppModule extends BaseAppModule {
 
     @Provides
     @Singleton
-    ImageLibraryManager providesImageLibraryManager(final Application application,
+    ImageLibraryWrapper providesImageLibraryWrapper(final Application application,
             final Timber timber) {
-        return new FacebookFrescoManager(application, timber);
+        return new FacebookFrescoWrapper(application, timber);
     }
 
     @Provides
