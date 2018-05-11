@@ -8,8 +8,8 @@ import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.DeviceUtils
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class NavigationBarSpace : View {
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
         }
     }
 

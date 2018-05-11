@@ -8,9 +8,9 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.FavoritePlayersManager
@@ -167,7 +167,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_player)
 
         playerId = intent.getStringExtra(EXTRA_PLAYER_ID)

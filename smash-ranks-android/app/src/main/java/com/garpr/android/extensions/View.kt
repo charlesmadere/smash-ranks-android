@@ -2,6 +2,11 @@ package com.garpr.android.extensions
 
 import android.support.annotation.IdRes
 import android.view.View
+import com.garpr.android.dagger.AppComponent
+import com.garpr.android.misc.DaggerUtils
+
+val View.appComponent: AppComponent
+    get() = DaggerUtils.getAppComponent(context)
 
 fun <T : View> View.findViewByIdFromRoot(@IdRes id: Int): T? {
     return rootView.findViewById(id)

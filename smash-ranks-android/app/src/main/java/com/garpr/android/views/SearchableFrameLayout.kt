@@ -6,7 +6,7 @@ import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.util.AttributeSet
-import com.garpr.android.App
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.SearchQueryHandle
@@ -37,7 +37,7 @@ abstract class SearchableFrameLayout : LifecycleFrameLayout, ListLayout, Searcha
             return
         }
 
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
     }
 
     override val searchQuery: CharSequence?

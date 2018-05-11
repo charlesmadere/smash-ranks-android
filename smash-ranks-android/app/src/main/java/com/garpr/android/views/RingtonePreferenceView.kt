@@ -8,8 +8,8 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.Timber
@@ -89,7 +89,7 @@ class RingtonePreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             rankingsPollingPreferenceStore.ringtone.addListener(this)
         }
 

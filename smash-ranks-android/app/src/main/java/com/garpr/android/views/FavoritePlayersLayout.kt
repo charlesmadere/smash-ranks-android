@@ -12,9 +12,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.FavoritePlayersAdapter
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
@@ -78,7 +78,7 @@ class FavoritePlayersLayout : SearchableFrameLayout,
             return
         }
 
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
 
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))

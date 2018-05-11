@@ -7,9 +7,9 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersAdapter
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
@@ -62,7 +62,7 @@ class PlayersLayout @JvmOverloads constructor(
             return
         }
 
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
 
         setOnRefreshListener(this)
         recyclerView.addItemDecoration(DividerItemDecoration(context,

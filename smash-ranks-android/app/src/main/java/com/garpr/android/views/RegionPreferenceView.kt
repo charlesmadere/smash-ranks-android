@@ -3,9 +3,9 @@ package com.garpr.android.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.SetRegionActivity
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RequestCodes
@@ -53,7 +53,7 @@ class RegionPreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             regionManager.addListener(this)
         }
 

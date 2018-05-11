@@ -2,8 +2,8 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.util.AttributeSet
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
@@ -38,7 +38,7 @@ class LastPollPreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             rankingsPollingPreferenceStore.lastPoll.addListener(this)
         }
 

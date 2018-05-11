@@ -11,8 +11,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.widget.TextView
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.AbsPlayer
@@ -73,7 +73,7 @@ abstract class IdentityFrameLayout : LifecycleFrameLayout,
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             identityManager.addListener(this)
         }
 

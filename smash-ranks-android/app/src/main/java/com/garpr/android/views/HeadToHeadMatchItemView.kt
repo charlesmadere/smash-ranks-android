@@ -7,10 +7,10 @@ import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.managers.RegionManager
@@ -104,7 +104,7 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
         }
 
         exclusionColor = context.getAttrColor(android.R.attr.textColorSecondary)

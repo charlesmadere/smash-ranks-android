@@ -2,7 +2,7 @@ package com.garpr.android.sync
 
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
-import com.garpr.android.App
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.NotificationsManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingsNotificationsUtils
@@ -63,7 +63,7 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
     override fun onCreate() {
         super.onCreate()
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
     }
 
     override fun onStartJob(job: JobParameters): Boolean {

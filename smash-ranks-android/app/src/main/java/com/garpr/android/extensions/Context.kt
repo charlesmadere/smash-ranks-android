@@ -11,9 +11,14 @@ import android.support.annotation.AttrRes
 import android.support.annotation.ColorInt
 import android.support.v4.app.NotificationManagerCompat
 import android.view.inputmethod.InputMethodManager
+import com.garpr.android.dagger.AppComponent
+import com.garpr.android.misc.DaggerUtils
 
 val Context.activityManager: ActivityManager
     get() = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+val Context.appComponent: AppComponent
+    get() = DaggerUtils.getAppComponent(this)
 
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

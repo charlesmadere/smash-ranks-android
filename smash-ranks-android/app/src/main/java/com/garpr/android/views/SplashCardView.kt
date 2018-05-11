@@ -7,10 +7,10 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.animation.OvershootInterpolator
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.SetIdentityActivity
 import com.garpr.android.activities.SetRegionActivity
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
@@ -85,7 +85,7 @@ class SplashCardView @JvmOverloads constructor(
             return
         }
 
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
 
         customizeIdentity.setOnClickListener {
             if (identityManager.hasIdentity) {

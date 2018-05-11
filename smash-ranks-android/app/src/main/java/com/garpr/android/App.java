@@ -1,10 +1,11 @@
 package com.garpr.android;
 
-import android.app.Application;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.garpr.android.dagger.AppComponent;
+import com.garpr.android.dagger.AppComponentHandle;
 import com.garpr.android.dagger.AppModule;
 import com.garpr.android.dagger.DaggerAppComponent;
 import com.garpr.android.managers.AppUpgradeManager;
@@ -18,12 +19,14 @@ import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import javax.inject.Inject;
 
-public class App extends Application {
+public class App extends BaseApp implements AppComponentHandle {
 
     private static final String TAG = "App";
 
+    @Nullable
     private static App sInstance;
 
+    @Nullable
     private AppComponent mAppComponent;
 
     @Inject
@@ -45,8 +48,15 @@ public class App extends Application {
     Timber mTimber;
 
 
-    public static App get() {
-        return sInstance;
+    @NonNull
+    public static App get() throws IllegalStateException {
+        final App instance = sInstance;
+
+        if (instance == null) {
+            throw new IllegalStateException("sInstance is null");
+        }
+
+        return instance;
     }
 
     private void applyNightMode() {
@@ -56,7 +66,8 @@ public class App extends Application {
     }
 
     @NonNull
-    public AppComponent getAppComponent() {
+    @Override
+    public AppComponent getAppComponent() throws IllegalStateException {
         final AppComponent appComponent = mAppComponent;
 
         if (appComponent == null) {
@@ -67,11 +78,12 @@ public class App extends Application {
     }
 
     private void initializeAppComponent() {
-        mAppComponent = DaggerAppComponent.builder()
+        final AppComponent appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this, Constants.INSTANCE.getDefaultRegion()))
                 .build();
 
-        mAppComponent.inject(this);
+        appComponent.inject(this);
+        mAppComponent = appComponent;
     }
 
     private void initializeCrashlytics() {
@@ -84,7 +96,7 @@ public class App extends Application {
         super.onCreate();
         sInstance = this;
 
-        // The order of the following lines is important
+        // The order of the following lines is important!
 
         initializeAppComponent();
         initializeCrashlytics();

@@ -2,8 +2,8 @@ package com.garpr.android.adapters
 
 import android.content.Context
 import android.support.annotation.LayoutRes
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.TournamentAdapterManager
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FullTournament
@@ -17,7 +17,7 @@ class TournamentAdapter(context: Context) : BaseAdapter<Any>(context) {
 
 
     init {
-        App.get().appComponent.inject(this)
+        context.appComponent.inject(this)
         setHasStableIds(true)
     }
 

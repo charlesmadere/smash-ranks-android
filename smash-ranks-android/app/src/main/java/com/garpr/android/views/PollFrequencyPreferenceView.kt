@@ -5,8 +5,8 @@ import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
@@ -73,7 +73,7 @@ class PollFrequencyPreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             rankingsPollingPreferenceStore.pollFrequency.addListener(this)
         }
 

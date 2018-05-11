@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.RegionManager.RegionHandle
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Timber
@@ -58,7 +58,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
 
         generalPreferenceStore.nightMode.get()?.let {
             delegate.setLocalNightMode(it.themeValue)

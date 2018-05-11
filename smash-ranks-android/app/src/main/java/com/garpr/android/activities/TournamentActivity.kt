@@ -8,9 +8,9 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.smoothScrollToTop
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.extensions.verticalPositionInWindow
@@ -133,7 +133,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_tournament)
 
         tournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)

@@ -3,8 +3,7 @@ package com.garpr.android.managers
 import com.garpr.android.BaseTest
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.models.*
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -63,16 +62,37 @@ class PlayerProfileManagerTest : BaseTest() {
         private val SMASH_ROSTER_1 = SmashRoster(
                 mapOf(
                         FULL_PLAYER_1.id to SmashCompetitor(
+                                mains = listOf(
+                                        SmashCharacter.SHEIK,
+                                        SmashCharacter.FOX
+                                ),
+                                websites = mapOf(
+                                        "twitch" to "https://www.twitch.tv/imyt",
+                                        "twitter" to "https://twitter.com/OnlyImyt"
+                                ),
                                 id = FULL_PLAYER_1.id,
                                 name = "Declan Doyle",
                                 tag = FULL_PLAYER_1.name
+                        ),
+
+                        FULL_PLAYER_2.id to SmashCompetitor(
+                                mains = listOf(
+                                        SmashCharacter.SHEIK
+                                ),
+                                websites = mapOf(
+                                        "other" to "http://charlesmadere.com",
+                                        "twitch" to "https://www.twitch.tv/imyt",
+                                        "twitter" to "https://twitter.com/OnlyImyt"
+                                ),
+                                id = FULL_PLAYER_2.id,
+                                name = "Charles Madere",
+                                tag = FULL_PLAYER_2.name
                         )
                 )
         )
     }
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
@@ -90,25 +110,47 @@ class PlayerProfileManagerTest : BaseTest() {
     }
 
     @Test
-    fun testFullPlayer2() {
-        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_2, REGION_2)
-        assertTrue(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertFalse(presentation.aliases.isNullOrBlank())
-        assertTrue(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertTrue(presentation.unadjustedRating.isNullOrBlank())
-    }
-
-    @Test
-    fun testFullPlayer2WithSmashCompetitor() {
+    fun testFullPlayer1WithSmashCompetitor() {
         smashRosterStorage.writeToStorage(REGION_1, SMASH_ROSTER_1)
         val presentation = playerProfileManager.getPresentation(FULL_PLAYER_1, REGION_1)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
         assertFalse(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.mains.isNullOrBlank())
+        assertFalse(presentation.name.isNullOrBlank())
+        assertTrue(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertTrue(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertEquals(presentation.twitch, "https://www.twitch.tv/imyt")
+        assertEquals(presentation.twitter, "https://twitter.com/OnlyImyt")
+        assertTrue(presentation.youTube.isNullOrBlank())
+    }
+
+    @Test
+    fun testFullPlayer2WithSmashCompetitor() {
+        smashRosterStorage.writeToStorage(REGION_1, SMASH_ROSTER_1)
+        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_2, REGION_1)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertFalse(presentation.aliases.isNullOrBlank())
         assertTrue(presentation.mains.isNullOrBlank())
         assertFalse(presentation.name.isNullOrBlank())
+        assertTrue(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertTrue(presentation.unadjustedRating.isNullOrBlank())
+        assertEquals(presentation.otherWebsite, "http://charlesmadere.com/")
+        assertEquals(presentation.twitch, "https://www.twitch.tv/chillinwithcharles")
+        assertEquals(presentation.twitter, "https://twitter.com/charlesmadere")
+        assertTrue(presentation.youTube.isNullOrBlank())
+    }
+
+    @Test
+    fun testFullPlayer2() {
+        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_2, REGION_2)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertFalse(presentation.aliases.isNullOrBlank())
         assertTrue(presentation.rating.isNullOrBlank())
         assertFalse(presentation.tag.isBlank())
         assertTrue(presentation.unadjustedRating.isNullOrBlank())

@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
@@ -67,7 +67,7 @@ class PlayerToolbar @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             favoritePlayersManager.addListener(this)
             identityManager.addListener(this)
         }

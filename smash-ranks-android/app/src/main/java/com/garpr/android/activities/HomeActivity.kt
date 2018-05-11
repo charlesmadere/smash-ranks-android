@@ -7,9 +7,9 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.view.MenuItem
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
@@ -92,7 +92,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_home)
         setInitialPosition(savedInstanceState)
         rankingsPollingSyncManager.enableOrDisable()

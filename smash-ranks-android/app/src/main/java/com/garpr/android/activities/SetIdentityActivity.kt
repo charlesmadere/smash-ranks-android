@@ -13,9 +13,9 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersSelectionAdapter
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
@@ -131,7 +131,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_set_identity)
         subtitle = regionManager.getRegion(this).displayName
 

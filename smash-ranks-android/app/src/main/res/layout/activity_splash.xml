@@ -19,7 +19,7 @@
         app:cardCornerRadius="@dimen/splash_card_corner_radius"
         app:cardElevation="@dimen/splash_card_start_elevation"
         app:layout_constraintBottom_toTopOf="@id/navigationBarSpace"
-        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout

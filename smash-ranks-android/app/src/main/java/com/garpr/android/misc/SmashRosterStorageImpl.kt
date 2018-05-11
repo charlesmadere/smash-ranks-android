@@ -1,7 +1,6 @@
 package com.garpr.android.misc
 
 import com.garpr.android.models.Region
-import com.garpr.android.models.SmashCharacter
 import com.garpr.android.models.SmashCompetitor
 import com.garpr.android.models.SmashRoster
 import com.garpr.android.preferences.KeyValueStoreProvider
@@ -46,7 +45,7 @@ class SmashRosterStorageImpl(
 
         for (entry in smashRoster.competitors) {
             keyValueStoreEditor.putString(entry.key, gson.toJson(entry.value,
-                    SmashCharacter::class.java))
+                    SmashCompetitor::class.java))
         }
 
         keyValueStoreEditor.apply()

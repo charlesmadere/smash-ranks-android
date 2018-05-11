@@ -16,11 +16,14 @@ abstract class BaseAdapter<T>(
     constructor(context: Context) : this(LayoutInflater.from(context))
 
     open fun clear() {
-        if (!items.isEmpty()) {
+        if (!isEmpty) {
             items.clear()
             notifyDataSetChanged()
         }
     }
+
+    val context: Context
+        get() = layoutInflater.context
 
     fun getItem(position: Int) = items[position]
 

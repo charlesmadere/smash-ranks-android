@@ -18,7 +18,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
 
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)

@@ -5,9 +5,9 @@ import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.NotificationsManager
 import javax.inject.Inject
 
@@ -43,7 +43,7 @@ class TestNotificationView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
         }
 
         setOnClickListener(this)

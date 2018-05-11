@@ -8,9 +8,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
@@ -154,7 +154,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_head_to_head)
         subtitle = regionManager.getRegion(this).displayName
 

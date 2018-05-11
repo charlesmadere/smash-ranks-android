@@ -3,8 +3,8 @@ package com.garpr.android.activities
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
-import com.garpr.android.App
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.DeepLinkUtils
 import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
@@ -52,7 +52,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_deep_link)
 
         if (deepLinkUtils.isValidUri(intent)) {

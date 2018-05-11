@@ -11,10 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.facebook.drawee.view.SimpleDraweeView
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.getActivity
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.FavoritePlayersManager
@@ -112,7 +112,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
             return
         }
 
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
 
