@@ -81,8 +81,8 @@ class PlayerProfileManagerTest : BaseTest() {
                                 ),
                                 websites = mapOf(
                                         "other" to "http://charlesmadere.com",
-                                        "twitch" to "https://www.twitch.tv/imyt",
-                                        "twitter" to "https://twitter.com/OnlyImyt"
+                                        "twitch" to "https://www.twitch.tv/chillinwithcharles",
+                                        "twitter" to "https://twitter.com/charlesmadere"
                                 ),
                                 id = FULL_PLAYER_2.id,
                                 name = "Charles Madere",
@@ -115,7 +115,7 @@ class PlayerProfileManagerTest : BaseTest() {
         val presentation = playerProfileManager.getPresentation(FULL_PLAYER_1, REGION_1)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertFalse(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.aliases.isNullOrBlank())
         assertFalse(presentation.mains.isNullOrBlank())
         assertFalse(presentation.name.isNullOrBlank())
         assertTrue(presentation.rating.isNullOrBlank())
@@ -134,12 +134,12 @@ class PlayerProfileManagerTest : BaseTest() {
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
         assertFalse(presentation.aliases.isNullOrBlank())
-        assertTrue(presentation.mains.isNullOrBlank())
+        assertFalse(presentation.mains.isNullOrBlank())
         assertFalse(presentation.name.isNullOrBlank())
-        assertTrue(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
         assertFalse(presentation.tag.isBlank())
-        assertTrue(presentation.unadjustedRating.isNullOrBlank())
-        assertEquals(presentation.otherWebsite, "http://charlesmadere.com/")
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertEquals(presentation.otherWebsite, "http://charlesmadere.com")
         assertEquals(presentation.twitch, "https://www.twitch.tv/chillinwithcharles")
         assertEquals(presentation.twitter, "https://twitter.com/charlesmadere")
         assertTrue(presentation.youTube.isNullOrBlank())

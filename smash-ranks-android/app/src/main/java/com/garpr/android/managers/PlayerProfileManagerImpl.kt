@@ -25,13 +25,6 @@ class PlayerProfileManagerImpl(
                 isViewYourselfVsThisOpponentVisible = identityManager.hasIdentity &&
                         !identityManager.isPlayer(player))
 
-        val uniqueAliases = player.uniqueAliases
-        if (uniqueAliases?.isNotEmpty() == true) {
-            presentation = presentation.copy(aliases = application.resources.getQuantityString(
-                    R.plurals.aliases_x, uniqueAliases.size, TextUtils.join(
-                    application.getText(R.string.delimiter), uniqueAliases)))
-        }
-
         val rating = player.ratings?.get(region.id)
         if (rating != null) {
             presentation = presentation.copy(
@@ -42,6 +35,13 @@ class PlayerProfileManagerImpl(
                             MiscUtils.truncateFloat(rating.sigma)))
         }
 
+        val uniqueAliases = player.uniqueAliases
+        if (uniqueAliases?.isNotEmpty() == true) {
+            presentation = presentation.copy(aliases = application.resources.getQuantityString(
+                    R.plurals.aliases_x, uniqueAliases.size, TextUtils.join(
+                    application.getText(R.string.delimiter), uniqueAliases)))
+        }
+
         val competitor = if (region is Region) {
             smashRosterStorage.getSmashCompetitor(region, player.id)
         } else {
@@ -50,10 +50,13 @@ class PlayerProfileManagerImpl(
 
         @Suppress("FoldInitializerAndIfToElvis")
         if (competitor == null) {
+            presentation = presentation.copy(tag = player.name)
             return presentation
         }
 
-        presentation = presentation.copy(name = competitor.name)
+        presentation = presentation.copy(
+                name = competitor.name,
+                tag = competitor.tag)
 
         val avatar = competitor.avatar?.mediumButFallbackToLargeThenSmall
 
