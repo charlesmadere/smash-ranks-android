@@ -11,36 +11,42 @@ import org.robolectric.RobolectricTestRunner
 class AvatarTest : BaseTest() {
 
     companion object {
-        private val AVATAR_1 = Avatar(null, null, null)
-        private val AVATAR_2 = Avatar("large", "medium", "small")
-        private val AVATAR_3 = Avatar("large", "", "small")
-        private val AVATAR_4 = Avatar(" ", null, "small")
-        private val AVATAR_5 = Avatar("", " ", null)
+        private val AVATAR_1 = Avatar(null, null, null, null)
+        private val AVATAR_2 = Avatar("large", "medium", "other", "small")
+        private val AVATAR_3 = Avatar("large", "", "other", "small")
+        private val AVATAR_4 = Avatar(" ", null, "", "small")
+        private val AVATAR_5 = Avatar("", " ", "other", null)
+        private val AVATAR_6 = Avatar()
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmall1() {
-        assertNull(AVATAR_1.mediumButFallbackToLargeThenSmall)
+    fun testMediumButFallbackToLargeThenSmallThenOther1() {
+        assertNull(AVATAR_1.mediumButFallbackToLargeThenSmallThenOther)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmall2() {
-        assertEquals("medium", AVATAR_2.mediumButFallbackToLargeThenSmall)
+    fun testMediumButFallbackToLargeThenSmallThenOther2() {
+        assertEquals("medium", AVATAR_2.mediumButFallbackToLargeThenSmallThenOther)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmall3() {
-        assertEquals("large", AVATAR_3.mediumButFallbackToLargeThenSmall)
+    fun testMediumButFallbackToLargeThenSmallThenOther3() {
+        assertEquals("large", AVATAR_3.mediumButFallbackToLargeThenSmallThenOther)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmall4() {
-        assertEquals("small", AVATAR_4.mediumButFallbackToLargeThenSmall)
+    fun testMediumButFallbackToLargeThenSmallThenOther4() {
+        assertEquals("small", AVATAR_4.mediumButFallbackToLargeThenSmallThenOther)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmall5() {
-        assertNull(AVATAR_5.mediumButFallbackToLargeThenSmall)
+    fun testMediumButFallbackToLargeThenSmall5ThenOther5() {
+        assertEquals("other", AVATAR_5.mediumButFallbackToLargeThenSmallThenOther)
+    }
+
+    @Test
+    fun testMediumButFallbackToLargeThenSmallThenOther6() {
+        assertNull(AVATAR_6.mediumButFallbackToLargeThenSmallThenOther)
     }
 
 }

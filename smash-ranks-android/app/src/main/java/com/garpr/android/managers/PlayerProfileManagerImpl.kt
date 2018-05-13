@@ -58,7 +58,7 @@ class PlayerProfileManagerImpl(
                 name = competitor.name,
                 tag = competitor.tag)
 
-        val avatar = competitor.avatar?.mediumButFallbackToLargeThenSmall
+        val avatar = competitor.avatar?.mediumButFallbackToLargeThenSmallThenOther
 
         if (avatar?.isNotBlank() == true) {
             presentation = presentation.copy(avatar = avatar)
