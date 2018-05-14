@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.google.gson.JsonDeserializer
-import com.google.gson.JsonSerializer
 import com.google.gson.annotations.SerializedName
 
 data class Avatar(
@@ -29,9 +28,26 @@ data class Avatar(
             }
 
             val jsonObject = json.asJsonObject
-            Avatar(large = jsonObject.get("large").asString,
-                    medium = jsonObject.get("medium").asString,
-                    small = jsonObject.get("small").asString)
+
+            val large = if (jsonObject.has("large")) {
+                jsonObject.get("large").asString
+            } else {
+                null
+            }
+
+            val medium = if (jsonObject.has("medium")) {
+                jsonObject.get("medium").asString
+            } else {
+                null
+            }
+
+            val small = if (jsonObject.has("small")) {
+                jsonObject.get("small").asString
+            } else {
+                null
+            }
+
+            Avatar(large = large, medium = medium, small = small)
         }
     }
 

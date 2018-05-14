@@ -18,6 +18,7 @@ import com.garpr.android.misc.TimberTest;
 import com.garpr.android.models.AbsPlayerTest;
 import com.garpr.android.models.AbsRegionTest;
 import com.garpr.android.models.AbsTournamentTest;
+import com.garpr.android.models.AvatarTest;
 import com.garpr.android.models.MatchTest;
 import com.garpr.android.models.RankingCriteriaTest;
 import com.garpr.android.models.RankingsBundleTest;
@@ -68,6 +69,7 @@ public interface TestAppComponent {
     void inject(AbsPlayerTest test);
     void inject(AbsRegionTest test);
     void inject(AbsTournamentTest test);
+    void inject(AvatarTest test);
     void inject(MatchTest test);
     void inject(RankingCriteriaTest test);
     void inject(RankingsBundleTest test);
