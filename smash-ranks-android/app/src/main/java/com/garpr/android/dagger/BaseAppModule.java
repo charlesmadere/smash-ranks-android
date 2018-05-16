@@ -198,6 +198,7 @@ public abstract class BaseAppModule {
                 .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_SERIALIZER())
                 .registerTypeAdapter(AbsTournament.class, AbsTournament.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(Avatar.class, Avatar.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(Avatar.class, Avatar.Companion.getJSON_SERIALIZER())
                 .registerTypeAdapter(Match.class, Match.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_SERIALIZER())

@@ -39,34 +39,43 @@ class AvatarTest : BaseTest() {
     @Test
     fun testFromJsonAvatar1() {
         val avatar: Avatar = gson.fromJson(JSON_AVATAR_1, Avatar::class.java)
+
         assertNotNull(avatar)
         assertNull(avatar.large)
         assertNull(avatar.medium)
-        assertNotNull(avatar.mediumButFallbackToLargeThenSmallThenOther)
-        assertNotNull(avatar.other)
+        assertNotNull(avatar.original)
         assertNull(avatar.small)
+
+        assertNotNull(avatar.mediumButFallbackToLargeThenOriginalThenSmall)
+        assertEquals(avatar.original, avatar.mediumButFallbackToLargeThenOriginalThenSmall)
     }
 
     @Test
     fun testFromJsonAvatar2() {
         val avatar: Avatar = gson.fromJson(JSON_AVATAR_2, Avatar::class.java)
+
         assertNotNull(avatar)
         assertNull(avatar.large)
         assertNull(avatar.medium)
-        assertNotNull(avatar.mediumButFallbackToLargeThenSmallThenOther)
-        assertNull(avatar.other)
+        assertNull(avatar.original)
         assertNotNull(avatar.small)
+
+        assertNotNull(avatar.mediumButFallbackToLargeThenOriginalThenSmall)
+        assertEquals(avatar.small, avatar.mediumButFallbackToLargeThenOriginalThenSmall)
     }
 
     @Test
     fun testFromJsonAvatar3() {
         val avatar: Avatar = gson.fromJson(JSON_AVATAR_3, Avatar::class.java)
+
         assertNotNull(avatar)
         assertNotNull(avatar.large)
         assertNotNull(avatar.medium)
-        assertNotNull(avatar.mediumButFallbackToLargeThenSmallThenOther)
-        assertNull(avatar.other)
+        assertNull(avatar.original)
         assertNull(avatar.small)
+
+        assertNotNull(avatar.mediumButFallbackToLargeThenOriginalThenSmall)
+        assertEquals(avatar.medium, avatar.mediumButFallbackToLargeThenOriginalThenSmall)
     }
 
     @Test
@@ -85,33 +94,65 @@ class AvatarTest : BaseTest() {
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmallThenOther1() {
-        assertNull(AVATAR_1.mediumButFallbackToLargeThenSmallThenOther)
+    fun testMediumButFallbackToNull1() {
+        assertNull(AVATAR_1.mediumButFallbackToLargeThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmallThenOther2() {
-        assertEquals("medium", AVATAR_2.mediumButFallbackToLargeThenSmallThenOther)
+    fun testMediumButFallbackToNull2() {
+        assertNull(AVATAR_6.mediumButFallbackToLargeThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmallThenOther3() {
-        assertEquals("large", AVATAR_3.mediumButFallbackToLargeThenSmallThenOther)
+    fun testMediumButFallbackToMedium() {
+        assertEquals("medium", AVATAR_2.mediumButFallbackToLargeThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmallThenOther4() {
-        assertEquals("small", AVATAR_4.mediumButFallbackToLargeThenSmallThenOther)
+    fun testMediumButFallbackToLarge() {
+        assertEquals("large", AVATAR_3.mediumButFallbackToLargeThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmall5ThenOther5() {
-        assertEquals("other", AVATAR_5.mediumButFallbackToLargeThenSmallThenOther)
+    fun testMediumButFallbackToSmall() {
+        assertEquals("small", AVATAR_4.mediumButFallbackToLargeThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToLargeThenSmallThenOther6() {
-        assertNull(AVATAR_6.mediumButFallbackToLargeThenSmallThenOther)
+    fun testMediumButFallbackToOriginal() {
+        assertEquals("original", AVATAR_5.mediumButFallbackToLargeThenOriginalThenSmall)
+    }
+
+    @Test
+    fun testToJsonFromAvatar1() {
+        val avatar: Avatar = gson.fromJson(JSON_AVATAR_1, Avatar::class.java)
+        val json = gson.toJson(avatar)
+
+        val avatar2: Avatar = gson.fromJson(json, Avatar::class.java)
+        assertEquals(avatar, avatar2)
+    }
+
+    @Test
+    fun testToJsonFromAvatar2() {
+        val avatar: Avatar = gson.fromJson(JSON_AVATAR_2, Avatar::class.java)
+        val json = gson.toJson(avatar)
+
+        val avatar2: Avatar = gson.fromJson(json, Avatar::class.java)
+        assertEquals(avatar, avatar2)
+    }
+
+    @Test
+    fun testToJsonFromAvatar3() {
+        val avatar: Avatar = gson.fromJson(JSON_AVATAR_3, Avatar::class.java)
+        val json = gson.toJson(avatar)
+
+        val avatar2: Avatar = gson.fromJson(json, Avatar::class.java)
+        assertEquals(avatar, avatar2)
+    }
+
+    @Test
+    fun testToJsonFromNull() {
+        assertNull(gson.toJson(null as Avatar?))
     }
 
 }
