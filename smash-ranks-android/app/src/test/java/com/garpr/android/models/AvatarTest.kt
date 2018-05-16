@@ -19,10 +19,10 @@ class AvatarTest : BaseTest() {
 
     companion object {
         private val AVATAR_1 = Avatar(null, null, null, null)
-        private val AVATAR_2 = Avatar("large", "medium", "other", "small")
-        private val AVATAR_3 = Avatar("large", "", "other", "small")
+        private val AVATAR_2 = Avatar("large", "medium", "original", "small")
+        private val AVATAR_3 = Avatar("large", "", "original", "small")
         private val AVATAR_4 = Avatar(" ", null, "", "small")
-        private val AVATAR_5 = Avatar("", " ", "other", null)
+        private val AVATAR_5 = Avatar("", " ", "original", null)
         private val AVATAR_6 = Avatar()
 
         private const val JSON_AVATAR_1 = "\"adc.jpg\""
@@ -148,11 +148,6 @@ class AvatarTest : BaseTest() {
 
         val avatar2: Avatar = gson.fromJson(json, Avatar::class.java)
         assertEquals(avatar, avatar2)
-    }
-
-    @Test
-    fun testToJsonFromNull() {
-        assertNull(gson.toJson(null as Avatar?))
     }
 
 }
