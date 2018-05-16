@@ -24,12 +24,14 @@ import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.FullPlayer
+import com.garpr.android.sync.SmashRosterSyncManager
 import kotterknife.bindView
 import javax.inject.Inject
 
 class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>,
         FavoritePlayersManager.OnFavoritePlayersChangeListener,
-        IdentityManager.OnIdentityChangeListener, Refreshable {
+        IdentityManager.OnIdentityChangeListener, Refreshable,
+        SmashRosterSyncManager.OnSyncListeners {
 
     private var presentation: PlayerProfileManager.Presentation? = null
 
@@ -47,6 +49,9 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
+
+    @Inject
+    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
     private val avatar: SimpleDraweeView by bindView(R.id.sdvAvatar)
     private val aliases: TextView by bindView(R.id.tvAliases)
@@ -90,6 +95,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
 
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
+        smashRosterSyncManager.addListener(this)
     }
 
     override fun onDetachedFromWindow() {
@@ -97,6 +103,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
 
         favoritePlayersManager.removeListener(this)
         identityManager.removeListener(this)
+        smashRosterSyncManager.removeListener(this)
     }
 
     override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
@@ -160,6 +167,16 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         }
     }
 
+    override fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager) {
+        // intentionally empty
+    }
+
+    override fun onSmashRosterSyncComplete(smashRosterSyncManager: SmashRosterSyncManager) {
+        if (isAlive) {
+            refresh()
+        }
+    }
+
     override fun refresh() {
         val player = fullPlayer ?: return
         val region = regionManager.getRegion(context)
@@ -173,11 +190,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
             avatar.visibility = View.VISIBLE
         }
 
-        tag.text = if (presentation.tag.isNullOrBlank()) {
-            player.name
-        } else {
-            presentation.tag
-        }
+        tag.text = presentation.tag
 
         if (presentation.name.isNullOrBlank()) {
             name.visibility = View.GONE
