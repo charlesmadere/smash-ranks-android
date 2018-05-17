@@ -2,25 +2,37 @@ package com.garpr.android.sync
 
 import android.support.annotation.UiThread
 import android.support.annotation.WorkerThread
+import com.firebase.jobdispatcher.Lifetime
+import com.firebase.jobdispatcher.RetryStrategy
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.Timber
 import com.garpr.android.models.SmashRosterSyncResult
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.sync.SmashRosterSyncManager.OnSyncListeners
+import com.garpr.android.wrappers.FirebaseApiWrapper
+import com.garpr.android.wrappers.GoogleApiWrapper
 import com.garpr.android.wrappers.WeakReferenceWrapper
 
 class SmashRosterSyncManagerImpl(
+        private val firebaseApiWrapper: FirebaseApiWrapper,
+        private val googleApiWrapper: GoogleApiWrapper,
         private val regionManager: RegionManager,
         private val serverApi: ServerApi,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
-        private val threadUtils: ThreadUtils
+        private val threadUtils: ThreadUtils,
+        private val timber: Timber
 ) : SmashRosterSyncManager {
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnSyncListeners>>()
 
+
+    companion object {
+        private const val TAG = "SmashRosterSyncManagerImpl"
+    }
 
     override fun addListener(listener: OnSyncListeners) {
         cleanListeners()
@@ -45,11 +57,27 @@ class SmashRosterSyncManagerImpl(
     }
 
     private fun disable() {
-        // TODO
+        firebaseApiWrapper.jobDispatcher.cancel(TAG)
+        timber.d(TAG, "sync has been disabled")
     }
 
     private fun enable() {
-        // TODO
+        if (googleApiWrapper.isGooglePlayServicesAvailable) {
+            timber.w(TAG, "failed to schedule sync because Google Play Services are unavailable")
+            return
+        }
+
+        val jobDispatcher = firebaseApiWrapper.jobDispatcher
+
+        val jobBuilder = jobDispatcher.newJobBuilder()
+                .setLifetime(Lifetime.FOREVER)
+                .setRecurring(true)
+                .setReplaceCurrent(true)
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                .setService(SmashRosterSyncJobService::class.java)
+                .setTag(TAG)
+
+        timber.d(TAG, "sync has been enabled")
     }
 
     override fun enableOrDisable() {

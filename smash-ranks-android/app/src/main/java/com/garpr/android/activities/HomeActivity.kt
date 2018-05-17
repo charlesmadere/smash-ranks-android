@@ -17,6 +17,7 @@ import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.sync.RankingsPollingSyncManager
+import com.garpr.android.sync.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
@@ -42,6 +43,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
+
+    @Inject
+    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
     private val bottomNavigationView: BottomNavigationView by bindView(R.id.bottomNavigationView)
     private val homeToolbar: HomeToolbar by bindView(R.id.toolbar)
@@ -96,6 +100,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         setContentView(R.layout.activity_home)
         setInitialPosition(savedInstanceState)
         rankingsPollingSyncManager.enableOrDisable()
+        smashRosterSyncManager.enableOrDisable()
         regionManager.addListener(this)
     }
 

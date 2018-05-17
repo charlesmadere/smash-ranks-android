@@ -24,12 +24,12 @@ class RankingsPollingSyncManagerImpl(
 
     private fun disable() {
         firebaseApiWrapper.jobDispatcher.cancel(TAG)
-        timber.d(TAG, "sync has been disabled")
+        timber.d(TAG, "polling has been disabled")
     }
 
     private fun enable() {
         if (!googleApiWrapper.isGooglePlayServicesAvailable) {
-            timber.w(TAG, "failed to schedule sync because Google Play Services are unavailable")
+            timber.w(TAG, "failed to schedule polling because Google Play Services are unavailable")
             return
         }
 
@@ -58,7 +58,7 @@ class RankingsPollingSyncManagerImpl(
                 pollFrequency.timeInSeconds.toInt())
         jobDispatcher.mustSchedule(jobBuilder.build())
 
-        timber.d(TAG, "sync has been enabled")
+        timber.d(TAG, "polling has been enabled")
     }
 
     override fun enableOrDisable() {
