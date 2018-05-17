@@ -4,9 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.google.gson.JsonDeserializer
-import com.google.gson.JsonObject
-import com.google.gson.JsonPrimitive
-import com.google.gson.JsonSerializer
 import com.google.gson.annotations.SerializedName
 
 data class Avatar(
@@ -62,36 +59,6 @@ data class Avatar(
             }
 
             Avatar(large, medium, original, small)
-        }
-
-        val JSON_SERIALIZER = JsonSerializer<Avatar> { src, typeOfSrc, context ->
-            if (src == null || src.large.isNullOrBlank() && src.medium.isNullOrBlank() &&
-                    src.small.isNullOrBlank() && src.original.isNullOrBlank()) {
-                null
-            } else if (src.large.isNullOrBlank() && src.medium.isNullOrBlank() &&
-                    src.small.isNullOrBlank() && src.original?.isNotBlank() == true) {
-                JsonPrimitive(src.original)
-            } else {
-                val jsonObject = JsonObject()
-
-                if (!src.large.isNullOrBlank()) {
-                    jsonObject.addProperty(LARGE, src.large)
-                }
-
-                if (!src.medium.isNullOrBlank()) {
-                    jsonObject.addProperty(MEDIUM, src.medium)
-                }
-
-                if (!src.original.isNullOrBlank()) {
-                    jsonObject.addProperty(ORIGINAL, src.original)
-                }
-
-                if (!src.small.isNullOrBlank()) {
-                    jsonObject.addProperty(SMALL, src.small)
-                }
-
-                jsonObject
-            }
         }
     }
 

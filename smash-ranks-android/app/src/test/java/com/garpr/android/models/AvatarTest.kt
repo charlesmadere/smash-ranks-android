@@ -25,7 +25,7 @@ class AvatarTest : BaseTest() {
         private val AVATAR_5 = Avatar("", " ", "original", null)
         private val AVATAR_6 = Avatar()
 
-        private const val JSON_AVATAR_1 = "\"adc.jpg\""
+        private const val JSON_AVATAR_1 = "\"abc.jpg\""
         private const val JSON_AVATAR_2 = "{\"small\":\"s.jpg\"}"
         private const val JSON_AVATAR_3 = "{\"large\":\"l.jpg\",\"medium\":\"m.jpg\"}"
     }
@@ -125,11 +125,12 @@ class AvatarTest : BaseTest() {
 
     @Test
     fun testToJsonFromAvatar1() {
-        val avatar: Avatar = gson.fromJson(JSON_AVATAR_1, Avatar::class.java)
-        val json = gson.toJson(avatar)
+        val avatar1: Avatar = gson.fromJson(JSON_AVATAR_1, Avatar::class.java)
+        val json = gson.toJson(avatar1)
+        assertEquals("{\"original\":\"abc.jpg\"}", json)
 
         val avatar2: Avatar = gson.fromJson(json, Avatar::class.java)
-        assertEquals(avatar, avatar2)
+        assertEquals(avatar1, avatar2)
     }
 
     @Test
