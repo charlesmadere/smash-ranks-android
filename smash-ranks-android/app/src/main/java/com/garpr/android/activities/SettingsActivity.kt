@@ -65,6 +65,7 @@ class SettingsActivity : BaseActivity() {
     private val gitHub: SimplePreferenceView by bindView(R.id.spvGitHub)
     private val logViewer: SimplePreferenceView by bindView(R.id.spvLogViewer)
     private val tsuaiiTwitter: SimplePreferenceView by bindView(R.id.spvTsuaiiTwitter)
+    private val smashRosterPreferenceView: SmashRosterSyncPreferenceView by bindView(R.id.smashRosterPreferenceView)
     private val googlePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
     private val themePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
 
@@ -208,6 +209,8 @@ class SettingsActivity : BaseActivity() {
         mustBeCharging.refresh()
         lastPoll.refresh()
 
+        smashRosterPreferenceView.refresh()
+
         if (googleApiWrapper.isGooglePlayServicesAvailable) {
             googlePlayServicesError.visibility = View.GONE
             useRankingsPolling.isEnabled = true
@@ -218,12 +221,14 @@ class SettingsActivity : BaseActivity() {
                 vibrate.isEnabled = true
                 mustBeOnWifi.isEnabled = true
                 mustBeCharging.isEnabled = true
+                smashRosterPreferenceView.isEnabled = true
             } else {
                 pollFrequency.isEnabled = false
                 ringtonePreferenceView.isEnabled = false
                 vibrate.isEnabled = false
                 mustBeOnWifi.isEnabled = false
                 mustBeCharging.isEnabled = false
+                smashRosterPreferenceView.isEnabled = false
             }
         } else {
             googlePlayServicesError.visibility = View.VISIBLE
@@ -233,6 +238,7 @@ class SettingsActivity : BaseActivity() {
             vibrate.isEnabled = false
             mustBeOnWifi.isEnabled = false
             mustBeCharging.isEnabled = false
+            smashRosterPreferenceView.isEnabled = false
         }
     }
 

@@ -99,6 +99,17 @@
                 layout="@layout/divider" />
 
             <TextView
+                android:text="@string/smash_roster"
+                style="@style/SettingsCardTitle" />
+
+            <com.garpr.android.views.SmashRosterSyncPreferenceView
+                android:id="@+id/smashRosterPreferenceView"
+                style="@style/PreferenceView" />
+
+            <include
+                layout="@layout/divider" />
+
+            <TextView
                 android:text="@string/miscellaneous"
                 style="@style/SettingsCardTitle" />
 

@@ -35,6 +35,7 @@ import com.garpr.android.views.RegionPreferenceView;
 import com.garpr.android.views.RingtonePreferenceView;
 import com.garpr.android.views.SearchableFrameLayout;
 import com.garpr.android.views.SearchableRefreshLayout;
+import com.garpr.android.views.SmashRosterSyncPreferenceView;
 import com.garpr.android.views.SplashCardView;
 import com.garpr.android.views.TestNotificationView;
 import com.garpr.android.views.ThemePreferenceView;
@@ -104,6 +105,7 @@ public interface AppComponent {
     void inject(RingtonePreferenceView view);
     void inject(SearchableFrameLayout view);
     void inject(SearchableRefreshLayout view);
+    void inject(SmashRosterSyncPreferenceView view);
     void inject(SplashCardView view);
     void inject(TestNotificationView view);
     void inject(ThemePreferenceView view);
