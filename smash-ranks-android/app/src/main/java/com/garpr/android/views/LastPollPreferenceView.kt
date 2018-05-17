@@ -46,10 +46,10 @@ class LastPollPreferenceView @JvmOverloads constructor(
         titleText = resources.getText(R.string.last_poll)
 
         if (isInEditMode) {
-            return
+            descriptionText = resources.getText(R.string.poll_has_yet_to_occur)
+        } else {
+            refresh()
         }
-
-        refresh()
     }
 
     override fun onPreferenceChange(preference: Preference<SimpleDate>) {
