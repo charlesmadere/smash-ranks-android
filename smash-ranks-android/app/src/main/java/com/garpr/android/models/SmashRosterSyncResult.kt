@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName
 
 data class SmashRosterSyncResult(
         @SerializedName("success") val success: Boolean,
-        @SerializedName("httpCode") val httpCode: Int?,
+        @SerializedName("httpCode") val httpCode: Int? = null,
         @SerializedName("date") val date: SimpleDate,
-        @SerializedName("message") val message: String?
+        @SerializedName("message") val message: String? = null
 ) : Parcelable {
 
     companion object {
