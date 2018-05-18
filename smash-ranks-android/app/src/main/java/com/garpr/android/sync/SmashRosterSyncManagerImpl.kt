@@ -2,12 +2,15 @@ package com.garpr.android.sync
 
 import android.support.annotation.UiThread
 import android.support.annotation.WorkerThread
+import com.firebase.jobdispatcher.Constraint
 import com.firebase.jobdispatcher.Lifetime
 import com.firebase.jobdispatcher.RetryStrategy
+import com.firebase.jobdispatcher.Trigger
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
+import com.garpr.android.models.PollFrequency
 import com.garpr.android.models.SmashRosterSyncResult
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
@@ -15,6 +18,7 @@ import com.garpr.android.sync.SmashRosterSyncManager.OnSyncListeners
 import com.garpr.android.wrappers.FirebaseApiWrapper
 import com.garpr.android.wrappers.GoogleApiWrapper
 import com.garpr.android.wrappers.WeakReferenceWrapper
+import java.util.concurrent.TimeUnit
 
 class SmashRosterSyncManagerImpl(
         private val firebaseApiWrapper: FirebaseApiWrapper,
@@ -70,13 +74,18 @@ class SmashRosterSyncManagerImpl(
         val jobDispatcher = firebaseApiWrapper.jobDispatcher
 
         val jobBuilder = jobDispatcher.newJobBuilder()
+                .addConstraint(Constraint.DEVICE_CHARGING)
+                .addConstraint(Constraint.ON_UNMETERED_NETWORK)
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setReplaceCurrent(true)
                 .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
                 .setService(SmashRosterSyncJobService::class.java)
                 .setTag(TAG)
+                .setTrigger(Trigger.executionWindow(TimeUnit.MINUTES.toSeconds(5).toInt(),
+                        PollFrequency.EVERY_3_DAYS.timeInSeconds.toInt()))
 
+        jobDispatcher.mustSchedule(jobBuilder.build())
         timber.d(TAG, "sync has been enabled")
     }
 
