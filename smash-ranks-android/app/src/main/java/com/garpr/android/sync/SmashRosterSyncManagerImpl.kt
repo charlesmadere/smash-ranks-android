@@ -66,7 +66,7 @@ class SmashRosterSyncManagerImpl(
     }
 
     private fun enable() {
-        if (googleApiWrapper.isGooglePlayServicesAvailable) {
+        if (!googleApiWrapper.isGooglePlayServicesAvailable) {
             timber.w(TAG, "failed to schedule sync because Google Play Services are unavailable")
             return
         }
