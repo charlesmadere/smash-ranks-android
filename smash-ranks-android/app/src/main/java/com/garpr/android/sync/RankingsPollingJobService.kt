@@ -68,7 +68,6 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
 
     override fun onStartJob(job: JobParameters): Boolean {
         timber.d(TAG, "starting job...")
-
         jobParameters = job
 
         val pollStatus = rankingsNotificationsUtils.getPollStatus()
@@ -83,8 +82,8 @@ class RankingsPollingJobService : JobService(), ApiListener<RankingsBundle> {
     }
 
     override fun onStopJob(job: JobParameters): Boolean {
-        _isAlive = false
         timber.d(TAG, "stopping job... retry: ${pollStatus?.retry}")
+        _isAlive = false
         return pollStatus?.retry == true
     }
 
