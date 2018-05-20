@@ -381,11 +381,16 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    SmashRosterSyncManager providesSmashRosterSyncManager(final RegionManager regionManager,
-            final ServerApi serverApi, final SmashRosterPreferenceStore smashRosterPreferenceStore,
-            final SmashRosterStorage smashRosterStorage, final ThreadUtils threadUtils) {
-        return new SmashRosterSyncManagerImpl(regionManager, serverApi, smashRosterPreferenceStore,
-                smashRosterStorage, threadUtils);
+    SmashRosterSyncManager providesSmashRosterSyncManager(final FirebaseApiWrapper firebaseApiWrapper,
+            final GoogleApiWrapper googleApiWrapper,
+            final RegionManager regionManager,
+            final ServerApi serverApi,
+            final SmashRosterPreferenceStore smashRosterPreferenceStore,
+            final SmashRosterStorage smashRosterStorage,
+            final ThreadUtils threadUtils,
+            final Timber timber) {
+        return new SmashRosterSyncManagerImpl(firebaseApiWrapper, googleApiWrapper, regionManager, serverApi,
+                smashRosterPreferenceStore, smashRosterStorage, threadUtils, timber);
     }
 
     @Provides
