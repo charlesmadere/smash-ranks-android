@@ -190,8 +190,7 @@ class ServerApiImpl(
 
     override fun getTournaments(region: Region, listener: ApiListener<TournamentsBundle>) {
         getGarPrApi(region).getTournaments(region.id).enqueue(object : Callback<TournamentsBundle> {
-            override fun onResponse(call: Call<TournamentsBundle>,
-                    response: Response<TournamentsBundle>) {
+            override fun onResponse(call: Call<TournamentsBundle>, response: Response<TournamentsBundle>) {
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
