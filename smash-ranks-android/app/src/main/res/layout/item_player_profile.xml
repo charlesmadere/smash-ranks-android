@@ -174,7 +174,7 @@
             style="@style/TextButton" />
 
         <com.garpr.android.views.TintedTextView
-            android:drawableTop="@drawable/ic_face_white_24dp"
+            android:drawableTop="@drawable/ic_muscle_24dp"
             android:id="@+id/tvViewYourselfVsThisOpponent"
             android:text="@string/compare"
             android:visibility="gone"
