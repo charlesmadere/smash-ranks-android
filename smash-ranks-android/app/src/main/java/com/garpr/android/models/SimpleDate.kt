@@ -19,7 +19,11 @@ data class SimpleDate(
 ) : Parcelable {
 
     companion object {
-        private val FORMATS = arrayOf(SimpleDateFormat("MM/dd/yy", Locale.US))
+        private val FORMATS = arrayOf(object : ThreadLocal<SimpleDateFormat>() {
+            override fun initialValue(): SimpleDateFormat {
+                return SimpleDateFormat("MM/dd/yy", Locale.US)
+            }
+        })
 
         @JvmField
         val CREATOR = createParcel { SimpleDate(Date(it.readLong())) }
@@ -43,7 +47,9 @@ data class SimpleDate(
                 return@JsonDeserializer null
             }
 
-            for (format in FORMATS) {
+            for (threadLocal in FORMATS) {
+                val format = threadLocal.get()
+
                 try {
                     return@JsonDeserializer SimpleDate(format.parse(jsonString))
                 } catch (e: ParseException) {
