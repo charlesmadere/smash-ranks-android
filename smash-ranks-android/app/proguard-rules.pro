@@ -163,11 +163,11 @@
 #######################
 ## Square's Retrofit ##
 #######################
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
+# Retain generic type information for use by reflection by converters and adapters.
 -keepattributes Signature
--keepattributes Exceptions
-
--keepclasseswithmembers class * {
+# Retain service method parameters.
+-keepclassmembernames,allowobfuscation interface * {
     @retrofit2.http.* <methods>;
 }
+# Ignore annotation used for build tooling.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
