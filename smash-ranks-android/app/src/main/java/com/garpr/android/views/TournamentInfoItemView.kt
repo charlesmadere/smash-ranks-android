@@ -14,7 +14,7 @@ import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.getActivity
+import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ShareUtils
@@ -73,7 +73,7 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
         }
 
         share.setOnClickListener {
-            tournament?.let { shareUtils.shareTournament(context.getActivity(), it) }
+            tournament?.let { shareUtils.shareTournament(requireActivity(), it) }
         }
     }
 

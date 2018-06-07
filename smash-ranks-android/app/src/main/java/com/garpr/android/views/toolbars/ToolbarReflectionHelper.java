@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 
-import com.garpr.android.misc.DaggerUtils;
+import com.garpr.android.extensions.ViewKt;
 import com.garpr.android.misc.Timber;
 
 import java.lang.reflect.Field;
@@ -32,7 +32,7 @@ public final class ToolbarReflectionHelper {
 
 
     public ToolbarReflectionHelper(@NonNull final Toolbar toolbar) {
-        DaggerUtils.INSTANCE.getAppComponent(toolbar).inject(this);
+        ViewKt.getAppComponent(toolbar).inject(this);
         mToolbar = toolbar;
     }
 

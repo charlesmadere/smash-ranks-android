@@ -10,7 +10,6 @@ import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersAdapter
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable

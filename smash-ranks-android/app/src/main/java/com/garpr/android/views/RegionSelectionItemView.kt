@@ -8,8 +8,8 @@ import android.widget.RadioButton
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.models.Region
 import kotterknife.bindView
 
@@ -35,7 +35,7 @@ class RegionSelectionItemView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        (context.optActivity() as? Listeners)?.onClick(this)
+        (activity as? Listeners)?.onClick(this)
     }
 
     override fun onFinishInflate() {
@@ -52,7 +52,7 @@ class RegionSelectionItemView @JvmOverloads constructor(
                 return
             }
 
-            radioButton.isChecked = value == (context.optActivity() as? Listeners)?.selectedRegion
+            radioButton.isChecked = value == (activity as? Listeners)?.selectedRegion
             displayName.text = value.displayName
             id.text = value.id
         }

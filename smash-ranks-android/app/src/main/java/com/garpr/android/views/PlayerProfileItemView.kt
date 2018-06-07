@@ -15,7 +15,7 @@ import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.getActivity
+import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
@@ -157,7 +157,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         }
 
         share.setOnClickListener {
-            fullPlayer?.let { shareUtils.sharePlayer(context.getActivity(), it) }
+            fullPlayer?.let { shareUtils.sharePlayer(requireActivity(), it) }
         }
     }
 

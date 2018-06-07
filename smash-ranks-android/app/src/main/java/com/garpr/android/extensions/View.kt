@@ -1,20 +1,17 @@
 package com.garpr.android.extensions
 
-import android.support.annotation.IdRes
+import android.app.Activity
 import android.view.View
 import com.garpr.android.dagger.AppComponent
-import com.garpr.android.misc.DaggerUtils
+
+val View.activity: Activity?
+    get() = context.activity
 
 val View.appComponent: AppComponent
-    get() = DaggerUtils.getAppComponent(context)
+    get() = context.appComponent
 
-fun <T : View> View.findViewByIdFromRoot(@IdRes id: Int): T? {
-    return rootView.findViewById(id)
-}
-
-fun <T : View> View.requireViewByIdFromRoot(@IdRes id: Int): T {
-    return findViewByIdFromRoot(id) ?: throw NullPointerException(
-            "can't find view (${resources.getResourceName(id)})")
+fun View.requireActivity(): Activity {
+    return context.requireActivity()
 }
 
 val View.verticalPositionInWindow: Int

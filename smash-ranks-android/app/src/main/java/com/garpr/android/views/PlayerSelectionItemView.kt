@@ -12,8 +12,8 @@ import android.widget.RadioButton
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.models.AbsPlayer
 import kotterknife.bindView
 
@@ -45,13 +45,13 @@ class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.O
                 radioButton.isChecked = false
                 name.clear()
             } else {
-                radioButton.isChecked = (context.optActivity() as? Listeners)?.selectedPlayer == value
+                radioButton.isChecked = (activity as? Listeners)?.selectedPlayer == value
                 name.text = value.name
             }
         }
 
     override fun onClick(v: View) {
-        (context.optActivity() as? Listeners)?.onClick(this)
+        (activity as? Listeners)?.onClick(this)
     }
 
     override fun onFinishInflate() {

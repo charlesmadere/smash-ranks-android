@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.R
 import com.garpr.android.adapters.RankingsAdapter
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.NotificationsManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
@@ -89,7 +89,7 @@ class RankingsLayout @JvmOverloads constructor(
 
     private fun onRankingsBundleFetched() {
         if (isAlive) {
-            (context.optActivity() as? Listener)?.onRankingsBundleFetched(this)
+            (activity as? Listener)?.onRankingsBundleFetched(this)
         }
     }
 

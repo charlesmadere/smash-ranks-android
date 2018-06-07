@@ -7,7 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.garpr.android.R
-import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.activity
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 
@@ -59,7 +59,7 @@ abstract class SearchToolbar @JvmOverloads constructor(
     }
 
     override fun onQueryTextChange(newText: String): Boolean {
-        (context.optActivity() as? Searchable)?.search(newText)
+        (activity as? Searchable)?.search(newText)
         return false
     }
 
@@ -83,7 +83,6 @@ abstract class SearchToolbar @JvmOverloads constructor(
                 }
             }
         } else {
-            val activity = context.optActivity()
             searchMenuItem.isVisible = (activity as? Listener)?.showSearchMenuItem == true
         }
     }

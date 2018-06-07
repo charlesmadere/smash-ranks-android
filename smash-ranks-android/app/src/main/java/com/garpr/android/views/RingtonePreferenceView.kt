@@ -9,8 +9,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
 import com.garpr.android.R
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
@@ -65,7 +65,7 @@ class RingtonePreferenceView @JvmOverloads constructor(
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, it)
         }
 
-        val activity = context.optActivity()
+        val activity = this.activity
 
         try {
             if (activity == null) {

@@ -7,8 +7,8 @@ import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.activities.SetIdentityActivity
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
@@ -46,7 +46,7 @@ class IdentityPreferenceView @JvmOverloads constructor(
                     .setPositiveButton(R.string.yes, this)
                     .show()
         } else {
-            val activity = context.optActivity()
+            val activity = this.activity
 
             if (activity == null) {
                 context.startActivity(SetIdentityActivity.getLaunchIntent(context))

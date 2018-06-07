@@ -12,10 +12,10 @@ import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Match
@@ -88,7 +88,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
 
     override fun onClick(v: View) {
         val match = this.match ?: return
-        val activity = context.optActivity()
+        val activity = this.activity
 
         if (activity is OnClickListener) {
             activity.onClick(this)

@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
 import com.garpr.android.R
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.PlayerToolbarManager
@@ -86,7 +86,7 @@ class PlayerToolbar @JvmOverloads constructor(
             return
         }
 
-        val activity = context.optActivity()
+        val activity = this.activity
         val matchesBundle: MatchesBundle?
         val matchResult: MatchResult?
 

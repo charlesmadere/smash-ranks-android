@@ -12,8 +12,8 @@ import android.view.View
 import android.view.ViewPropertyAnimator
 import android.widget.TextView
 import com.garpr.android.R
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.TournamentMode
@@ -93,7 +93,7 @@ class TournamentTabsView @JvmOverloads constructor(
         get() = alpha == 1f && visibility == View.VISIBLE
 
     private val listeners: Listeners?
-        get() = context.optActivity() as? Listeners
+        get() = activity as? Listeners
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

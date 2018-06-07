@@ -2,8 +2,8 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.util.AttributeSet
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
@@ -29,6 +29,6 @@ abstract class SearchableRefreshLayout @JvmOverloads constructor(
     }
 
     override val searchQuery: CharSequence?
-        get() = (context.optActivity() as? SearchQueryHandle)?.searchQuery
+        get() = (activity as? SearchQueryHandle)?.searchQuery
 
 }
