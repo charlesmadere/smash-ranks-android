@@ -2,7 +2,7 @@
 
 buildscript {
     ext.appcompat_version = '27.1.1'
-    ext.constraint_layout_version = '1.1.0'
+    ext.constraint_layout_version = '1.1.1'
     ext.dagger_version = '2.16'
     ext.firebase_jobdispatcher_version = '0.8.5'
     ext.facebook_fresco_version = '1.9.0'
