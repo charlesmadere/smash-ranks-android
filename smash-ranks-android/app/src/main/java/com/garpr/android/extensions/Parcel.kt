@@ -214,34 +214,6 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
     writeBundle(bundle)
 }
 
-fun Parcel.readSmashCompetitorMap(): Map<String, SmashCompetitor>? {
-    val bundle = readBundle(SmashCompetitor::class.java.classLoader) ?: return null
-    val map = mutableMapOf<String, SmashCompetitor>()
-
-    for (key in bundle.keySet()) {
-        map[key] = bundle.getParcelable(key)
-    }
-
-    return map
-}
-
-fun Parcel.writeSmashCompetitorMap(map: Map<String, SmashCompetitor>?) {
-    val size = map?.size ?: 0
-
-    if (size == 0) {
-        writeBundle(null)
-        return
-    }
-
-    val bundle = Bundle(size)
-
-    for ((key, value) in map!!) {
-        bundle.putParcelable(key, value)
-    }
-
-    writeBundle(bundle)
-}
-
 fun Parcel.readStringMap(): Map<String, String>? {
     val bundle = readBundle(String::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, String>()

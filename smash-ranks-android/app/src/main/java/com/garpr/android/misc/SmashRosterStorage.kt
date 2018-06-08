@@ -5,7 +5,6 @@ import android.support.annotation.WorkerThread
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import com.garpr.android.models.SmashCompetitor
-import com.garpr.android.models.SmashRoster
 
 interface SmashRosterStorage {
 
@@ -19,6 +18,6 @@ interface SmashRosterStorage {
     fun getSmashCompetitor(region: Region, playerId: String?): SmashCompetitor?
 
     @WorkerThread
-    fun writeToStorage(endpoint: Endpoint, smashRoster: SmashRoster?)
+    fun writeToStorage(endpoint: Endpoint, smashRoster: Map<String, SmashCompetitor>?)
 
 }

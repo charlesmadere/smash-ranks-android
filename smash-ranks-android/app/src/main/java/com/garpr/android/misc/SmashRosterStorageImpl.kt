@@ -3,7 +3,6 @@ package com.garpr.android.misc
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import com.garpr.android.models.SmashCompetitor
-import com.garpr.android.models.SmashRoster
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.google.gson.Gson
 
@@ -39,8 +38,8 @@ class SmashRosterStorageImpl(
         return getSmashCompetitor(region.endpoint, playerId)
     }
 
-    override fun writeToStorage(endpoint: Endpoint, smashRoster: SmashRoster?) {
-        if (smashRoster?.competitors == null || smashRoster.competitors.isEmpty()) {
+    override fun writeToStorage(endpoint: Endpoint, smashRoster: Map<String, SmashCompetitor>?) {
+        if (smashRoster == null || smashRoster.isEmpty()) {
             deleteFromStorage(endpoint)
             return
         }
@@ -48,7 +47,7 @@ class SmashRosterStorageImpl(
         val keyValueStoreEditor = getKeyValueStore(endpoint).batchEdit()
         keyValueStoreEditor.clear()
 
-        for (entry in smashRoster.competitors) {
+        for (entry in smashRoster) {
             keyValueStoreEditor.putString(entry.key, gson.toJson(entry.value,
                     SmashCompetitor::class.java))
         }

@@ -160,7 +160,7 @@ class ServerApiImpl(
         }
     }
 
-    override fun getSmashRoster(endpoint: Endpoint): SmashRoster? {
+    override fun getSmashRoster(endpoint: Endpoint): Map<String, SmashCompetitor>? {
         val response = when (endpoint) {
             Endpoint.GAR_PR -> {
                 smashRosterApi.getGarPrJson().execute()
