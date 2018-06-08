@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersAdapter
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
@@ -78,7 +79,7 @@ class PlayersLayout @JvmOverloads constructor(
             return
         }
 
-        (context.optActivity() as? Listener)?.onPlayersBundleFetched(this)
+        (context.activity as? Listener)?.onPlayersBundleFetched(this)
     }
 
     override fun onRefresh() {
