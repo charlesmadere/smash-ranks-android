@@ -82,7 +82,7 @@ class SmashRosterSyncManagerImpl(
                 .setService(SmashRosterSyncJobService::class.java)
                 .setTag(TAG)
                 .setTrigger(Trigger.executionWindow(TimeUnit.MINUTES.toSeconds(5).toInt(),
-                        PollFrequency.WEEKLY.timeInSeconds.toInt()))
+                        PollFrequency.EVERY_5_DAYS.timeInSeconds.toInt()))
 
         jobDispatcher.mustSchedule(jobBuilder.build())
         timber.d(TAG, "sync has been enabled")
