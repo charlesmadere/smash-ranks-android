@@ -1,5 +1,6 @@
 package com.garpr.android.networking
 
+import android.support.annotation.WorkerThread
 import com.garpr.android.models.*
 
 interface ServerApi {
@@ -11,8 +12,7 @@ interface ServerApi {
 
     fun getPlayer(region: Region, playerId: String, listener: ApiListener<FullPlayer>)
 
-    fun getPlayerMatches(region: Region, playerId: String,
-            listener: ApiListener<PlayerMatchesBundle>)
+    fun getPlayerMatches(region: Region, playerId: String, listener: ApiListener<PlayerMatchesBundle>)
 
     fun getPlayers(region: Region, listener: ApiListener<PlayersBundle>)
 
@@ -20,7 +20,8 @@ interface ServerApi {
 
     fun getRegions(endpoint: Endpoint? = null, listener: ApiListener<RegionsBundle>)
 
-    fun getSmashRoster(region: Region, listener: ApiListener<SmashRoster>)
+    @WorkerThread
+    fun getSmashRoster(endpoint: Endpoint): SmashRoster?
 
     fun getTournament(region: Region, tournamentId: String, listener: ApiListener<FullTournament>)
 

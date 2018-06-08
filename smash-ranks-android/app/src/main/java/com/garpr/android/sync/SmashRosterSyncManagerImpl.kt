@@ -6,10 +6,10 @@ import com.firebase.jobdispatcher.Constraint
 import com.firebase.jobdispatcher.Lifetime
 import com.firebase.jobdispatcher.RetryStrategy
 import com.firebase.jobdispatcher.Trigger
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
+import com.garpr.android.models.Endpoint
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.models.SmashRosterSyncResult
 import com.garpr.android.networking.ServerApi
@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit
 class SmashRosterSyncManagerImpl(
         private val firebaseApiWrapper: FirebaseApiWrapper,
         private val googleApiWrapper: GoogleApiWrapper,
-        private val regionManager: RegionManager,
         private val serverApi: ServerApi,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
@@ -132,7 +131,11 @@ class SmashRosterSyncManagerImpl(
 
     @WorkerThread
     private fun performSync() {
-        // TODO
+        val garPrRoster = serverApi.getSmashRoster(Endpoint.GAR_PR)
+        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, garPrRoster)
+
+        val notGarPrRoster = serverApi.getSmashRoster(Endpoint.NOT_GAR_PR)
+        smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, notGarPrRoster)
     }
 
     override fun removeListener(listener: OnSyncListeners) {

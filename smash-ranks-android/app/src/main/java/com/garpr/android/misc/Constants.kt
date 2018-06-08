@@ -27,7 +27,7 @@ object Constants {
     const val NOT_GAR_PR_BASE_PATH = "https://www.notgarpr.com"
 
     // Smash Roster Paths
-    const val SMASH_ROSTER_BASE_PATH = "https://raw.githubusercontent.com/charlesmadere/smash-ranks-android-players/"
+    const val SMASH_ROSTER_BASE_PATH = "https://s3-us-west-1.amazonaws.com/smash-ranks-android-players/"
 
     // URLs
     const val CHARLES_TWITTER_URL = "https://twitter.com/charlesmadere"
