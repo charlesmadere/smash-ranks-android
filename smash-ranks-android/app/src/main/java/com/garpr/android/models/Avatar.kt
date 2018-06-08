@@ -62,11 +62,11 @@ data class Avatar(
         }
     }
 
-    val mediumButFallbackToLargeThenOriginalThenSmall: String?
-        get() = if (medium?.isNotBlank() == true) {
-                    medium
-                } else if (large?.isNotBlank() == true) {
+    val largeButFallbackToMediumThenOriginalThenSmall: String?
+        get() = if (large?.isNotBlank() == true) {
                     large
+                } else if (medium?.isNotBlank() == true) {
+                    medium
                 } else if (original?.isNotBlank() == true) {
                     original
                 } else if (small?.isNotBlank() == true) {

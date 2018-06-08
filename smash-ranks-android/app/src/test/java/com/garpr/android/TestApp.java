@@ -32,7 +32,7 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
     private void initializeAppComponent() {
         mTestAppComponent = DaggerTestAppComponent.builder()
                 .testAppModule(new TestAppModule(RuntimeEnvironment.application,
-                        Constants.INSTANCE.getDefaultRegion()))
+                        Constants.INSTANCE.getDefaultRegion(), Constants.SMASH_ROSTER_BASE_PATH))
                 .build();
     }
 

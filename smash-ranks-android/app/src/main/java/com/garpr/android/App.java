@@ -79,7 +79,8 @@ public class App extends BaseApp implements AppComponentHandle {
 
     private void initializeAppComponent() {
         final AppComponent appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this, Constants.INSTANCE.getDefaultRegion()))
+                .appModule(new AppModule(this, Constants.INSTANCE.getDefaultRegion(),
+                        Constants.SMASH_ROSTER_BASE_PATH))
                 .build();
 
         appComponent.inject(this);

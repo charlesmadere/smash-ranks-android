@@ -17,10 +17,7 @@ import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.managers.FavoritePlayersManager
-import com.garpr.android.managers.IdentityManager
-import com.garpr.android.managers.PlayerProfileManager
-import com.garpr.android.managers.RegionManager
+import com.garpr.android.managers.*
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.FullPlayer

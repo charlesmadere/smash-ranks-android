@@ -16,6 +16,7 @@ class PlayerProfileManagerImpl(
         val favoritePlayersManager: FavoritePlayersManager,
         val identityManager: IdentityManager,
         val regionManager: RegionManager,
+        val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper,
         val smashRosterStorage: SmashRosterStorage
 ) : PlayerProfileManager {
 
@@ -58,7 +59,8 @@ class PlayerProfileManagerImpl(
                 name = competitor.name,
                 tag = competitor.tag)
 
-        val avatar = competitor.avatar?.mediumButFallbackToLargeThenOriginalThenSmall
+        val avatar = smashRosterAvatarUrlHelper.getAvatarUrl(
+            competitor.avatar?.largeButFallbackToMediumThenOriginalThenSmall)
 
         if (avatar?.isNotBlank() == true) {
             presentation = presentation.copy(avatar = avatar)

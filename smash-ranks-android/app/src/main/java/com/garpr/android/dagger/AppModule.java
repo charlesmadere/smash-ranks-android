@@ -22,8 +22,9 @@ import dagger.Provides;
 @Module
 public class AppModule extends BaseAppModule {
 
-    public AppModule(@NonNull final Application application, @NonNull final Region defaultRegion) {
-        super(application, defaultRegion);
+    public AppModule(@NonNull final Application application, @NonNull final Region defaultRegion,
+            @NonNull final String smashRosterBasePath) {
+        super(application, defaultRegion, smashRosterBasePath);
     }
 
     @NonNull
