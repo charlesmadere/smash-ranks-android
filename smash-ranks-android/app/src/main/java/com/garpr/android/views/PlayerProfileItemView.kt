@@ -123,8 +123,8 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
 
-        twitch.setOnClickListener {
-            presentation?.let { shareUtils.openUrl(context, it.otherWebsite) }
+        twitter.setOnClickListener {
+            presentation?.let { shareUtils.openUrl(context, it.twitter) }
         }
 
         twitch.setOnClickListener {
