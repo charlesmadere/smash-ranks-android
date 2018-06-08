@@ -27,6 +27,7 @@ public class TestAppModule extends BaseAppModule {
         super(application, defaultRegion);
     }
 
+    @NonNull
     @Provides
     @Singleton
     CrashlyticsWrapper providesCrashlyticsWrapper() {
@@ -63,12 +64,14 @@ public class TestAppModule extends BaseAppModule {
         };
     }
 
+    @NonNull
     @Provides
     @Singleton
     DeviceUtils providesDeviceUtils(@NonNull final Application application) {
         return new TestDeviceUtilsImpl(application);
     }
 
+    @NonNull
     @Provides
     @Singleton
     ImageLibraryWrapper providesImageLibraryWrapper() {
@@ -80,12 +83,14 @@ public class TestAppModule extends BaseAppModule {
         };
     }
 
+    @NonNull
     @Provides
     @Singleton
     KeyValueStore providesKeyValueStore(@NonNull final Application application) {
         return new KeyValueStoreImpl(application, "TEST");
     }
 
+    @NonNull
     @Provides
     @Singleton
     ThreadUtils providesThreadUtils() {

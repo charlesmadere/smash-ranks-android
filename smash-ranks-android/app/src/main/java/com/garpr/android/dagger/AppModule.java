@@ -26,18 +26,21 @@ public class AppModule extends BaseAppModule {
         super(application, defaultRegion);
     }
 
+    @NonNull
     @Provides
     @Singleton
     CrashlyticsWrapper providesCrashlyticsWrapper(final Application application) {
         return new CrashlyticsWrapperImpl(application);
     }
 
+    @NonNull
     @Provides
     @Singleton
     DeviceUtils providesDeviceUtils(final Application application) {
         return new DeviceUtilsImpl(application);
     }
 
+    @NonNull
     @Provides
     @Singleton
     ImageLibraryWrapper providesImageLibraryWrapper(final Application application,
@@ -45,6 +48,7 @@ public class AppModule extends BaseAppModule {
         return new FacebookFrescoWrapper(application, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     ThreadUtils providesThreadUtils(final DeviceUtils deviceUtils) {

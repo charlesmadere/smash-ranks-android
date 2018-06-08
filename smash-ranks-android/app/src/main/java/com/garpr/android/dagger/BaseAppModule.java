@@ -101,12 +101,14 @@ public abstract class BaseAppModule {
         mDefaultRegion = defaultRegion;
     }
 
+    @NonNull
     @Provides
     @Singleton
     Application providesApplication() {
         return mApplication;
     }
 
+    @NonNull
     @Provides
     @Singleton
     AppUpgradeManager providesAppUpgradeManager(final FavoritePlayersManager favoritePlayersManager,
@@ -114,21 +116,24 @@ public abstract class BaseAppModule {
         return new AppUpgradeManagerImpl(favoritePlayersManager, generalPreferenceStore, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     DeepLinkUtils providesDeepLinkUtils(final RegionManager regionManager, final Timber timber) {
         return new DeepLinkUtilsImpl(regionManager, timber);
     }
 
+    @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE)
+    @NonNull
     @Provides
     @Singleton
-    @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE)
     KeyValueStore providesFavoritePlayersKeyValueStore(
             final KeyValueStoreProvider keyValueStoreProvider) {
         return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.FavoritePlayers");
     }
 
+    @NonNull
     @Provides
     @Singleton
     FavoritePlayersManager providesFavoritePlayersManager(final Gson gson,
@@ -137,28 +142,31 @@ public abstract class BaseAppModule {
         return new FavoritePlayersManagerImpl(gson, keyValueStore, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     FirebaseApiWrapper providesFirebaseApiWrapper() {
         return new FirebaseApiWrapperImpl(mApplication);
     }
 
+    @NonNull
     @Provides
     @Singleton
     FullTournamentUtils providesFullTournamentUtils(final ThreadUtils threadUtils) {
         return new FullTournamentUtilsImpl(threadUtils);
     }
 
+    @Named(GAR_PR_API)
+    @NonNull
     @Provides
     @Singleton
-    @Named(GAR_PR_API)
     GarPrApi providesGarPrApi(@Named(GAR_PR_RETROFIT) final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
 
+    @Named(GAR_PR_RETROFIT)
     @Provides
     @Singleton
-    @Named(GAR_PR_RETROFIT)
     Retrofit providesGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
         return new Retrofit.Builder()
                 .addConverterFactory(gsonConverterFactory)
@@ -166,9 +174,9 @@ public abstract class BaseAppModule {
                 .build();
     }
 
+    @Named(GENERAL_KEY_VALUE_STORE)
     @Provides
     @Singleton
-    @Named(GENERAL_KEY_VALUE_STORE)
     KeyValueStore providesGeneralKeyValueStore(final KeyValueStoreProvider keyValueStoreProvider) {
         return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.General");
@@ -230,16 +238,18 @@ public abstract class BaseAppModule {
         return new KeyValueStoreProviderImpl(mApplication);
     }
 
+    @Named(NOT_GAR_PR_API)
+    @NonNull
     @Provides
     @Singleton
-    @Named(NOT_GAR_PR_API)
     GarPrApi providesNotGarPrApi(@Named(NOT_GAR_PR_RETROFIT) final Retrofit retrofit) {
         return retrofit.create(GarPrApi.class);
     }
 
+    @Named(NOT_GAR_PR_RETROFIT)
+    @NonNull
     @Provides
     @Singleton
-    @Named(NOT_GAR_PR_RETROFIT)
     Retrofit providesNotGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
         return new Retrofit.Builder()
                 .addConverterFactory(gsonConverterFactory)
@@ -247,6 +257,7 @@ public abstract class BaseAppModule {
                 .build();
     }
 
+    @NonNull
     @Provides
     @Singleton
     NotificationsManager providesNotificationManager(
@@ -256,6 +267,7 @@ public abstract class BaseAppModule {
                 regionManager, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     PlayerProfileManager providesPlayerProfileViewManager(
@@ -266,18 +278,21 @@ public abstract class BaseAppModule {
                 regionManager, smashRosterStorage);
     }
 
+    @NonNull
     @Provides
     @Singleton
     PlayerToolbarManager providesPlayerToolbarManager() {
         return new PlayerToolbarManagerImpl();
     }
 
+    @NonNull
     @Provides
     @Singleton
     PreviousRankUtils providesPreviousRankUtils() {
         return new PreviousRankUtilsImpl();
     }
 
+    @NonNull
     @Provides
     @Singleton
     RankingsNotificationsUtils providesRankingNotificationsUtils(final DeviceUtils deviceUtils,
@@ -287,15 +302,17 @@ public abstract class BaseAppModule {
                 timber);
     }
 
+    @Named(RANKINGS_POLLING_KEY_VALUE_STORE)
+    @NonNull
     @Provides
     @Singleton
-    @Named(RANKINGS_POLLING_KEY_VALUE_STORE)
     KeyValueStore providesRankingsPollingKeyValueStore(
             final KeyValueStoreProvider keyValueStoreProvider) {
         return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.RankingsPolling");
     }
 
+    @NonNull
     @Provides
     @Singleton
     RankingsPollingPreferenceStore providesRankingsPollingPreferenceStore(final Gson gson,
@@ -303,6 +320,7 @@ public abstract class BaseAppModule {
         return new RankingsPollingPreferenceStoreImpl(gson, keyValueStore);
     }
 
+    @NonNull
     @Provides
     @Singleton
     RankingsPollingSyncManager providesRankingsPollingSyncManager(
@@ -313,6 +331,7 @@ public abstract class BaseAppModule {
                 rankingsPollingPreferenceStore, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore,
@@ -320,6 +339,7 @@ public abstract class BaseAppModule {
         return new RegionManagerImpl(generalPreferenceStore, rankingsPollingPreferenceStore, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     ServerApi providesServerApi(final FullTournamentUtils fullTournamentUtils,
@@ -333,30 +353,34 @@ public abstract class BaseAppModule {
                 rankingsPollingPreferenceStore, regionManager, smashRosterApi, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
         return new ShareUtilsImpl(regionManager, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     SmashRosterApi providesSmashRosterApi(@Named(SMASH_ROSTER_RETROFIT) final Retrofit retrofit) {
         return retrofit.create(SmashRosterApi.class);
     }
 
+    @Named(SMASH_ROSTER_KEY_VALUE_STORE)
+    @NonNull
     @Provides
     @Singleton
-    @Named(SMASH_ROSTER_KEY_VALUE_STORE)
     KeyValueStore providesSmashRosterKeyValueStore(
             final KeyValueStoreProvider keyValueStoreProvider) {
         return keyValueStoreProvider.getKeyValueStore(mApplication.getPackageName() +
                 ".Preferences.v2.SmashRoster");
     }
 
+    @Named(SMASH_ROSTER_RETROFIT)
+    @NonNull
     @Provides
     @Singleton
-    @Named(SMASH_ROSTER_RETROFIT)
     Retrofit providesSmashRosterRetrofit(final GsonConverterFactory gsonConverterFactory) {
         return new Retrofit.Builder()
                 .addConverterFactory(gsonConverterFactory)
@@ -364,6 +388,7 @@ public abstract class BaseAppModule {
                 .build();
     }
 
+    @NonNull
     @Provides
     @Singleton
     SmashRosterPreferenceStore providesSmashRosterPreferenceStore(final Gson gson,
@@ -371,6 +396,7 @@ public abstract class BaseAppModule {
         return new SmashRosterPreferenceStoreImpl(gson, keyValueStore);
     }
 
+    @NonNull
     @Provides
     @Singleton
     SmashRosterStorage providesSmashRosterStorage(final Gson gson,
@@ -379,26 +405,28 @@ public abstract class BaseAppModule {
                 mApplication.getPackageName(), timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     SmashRosterSyncManager providesSmashRosterSyncManager(final FirebaseApiWrapper firebaseApiWrapper,
             final GoogleApiWrapper googleApiWrapper,
-            final RegionManager regionManager,
             final ServerApi serverApi,
             final SmashRosterPreferenceStore smashRosterPreferenceStore,
             final SmashRosterStorage smashRosterStorage,
             final ThreadUtils threadUtils,
             final Timber timber) {
-        return new SmashRosterSyncManagerImpl(firebaseApiWrapper, googleApiWrapper, regionManager, serverApi,
+        return new SmashRosterSyncManagerImpl(firebaseApiWrapper, googleApiWrapper, serverApi,
                 smashRosterPreferenceStore, smashRosterStorage, threadUtils, timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     Timber providesTimber(final DeviceUtils deviceUtils, final CrashlyticsWrapper crashlyticsWrapper) {
         return new TimberImpl(deviceUtils.getHasLowRam(), crashlyticsWrapper);
     }
 
+    @NonNull
     @Provides
     @Singleton
     TournamentAdapterManager providesTournamentAdapterManager() {
