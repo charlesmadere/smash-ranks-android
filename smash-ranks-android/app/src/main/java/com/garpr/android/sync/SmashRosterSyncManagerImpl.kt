@@ -131,11 +131,44 @@ class SmashRosterSyncManagerImpl(
 
     @WorkerThread
     private fun performSync() {
-        val garPrRoster = serverApi.getSmashRoster(Endpoint.GAR_PR)
-        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, garPrRoster)
+        val garPrRosterResponse = serverApi.getSmashRoster(Endpoint.GAR_PR)
+        val notGarPrRosterResponse = serverApi.getSmashRoster(Endpoint.NOT_GAR_PR)
 
-        val notGarPrRoster = serverApi.getSmashRoster(Endpoint.NOT_GAR_PR)
-        smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, notGarPrRoster)
+        val garPrRoster = if (garPrRosterResponse.isSuccessful) {
+            garPrRosterResponse.body
+        } else {
+            null
+        }
+
+        val notGarPrRoster = if (notGarPrRosterResponse.isSuccessful) {
+            notGarPrRosterResponse.body
+        } else {
+            null
+        }
+
+        val smashRosterSyncResult: SmashRosterSyncResult
+
+        if (garPrRoster == null || notGarPrRoster == null) {
+            smashRosterStorage.deleteFromStorage(Endpoint.GAR_PR)
+            smashRosterStorage.deleteFromStorage(Endpoint.NOT_GAR_PR)
+
+            smashRosterSyncResult = SmashRosterSyncResult(
+                    success = false,
+                    httpCode = garPrRosterResponse.code,
+                    message = garPrRosterResponse.message
+            )
+        } else {
+            smashRosterStorage.writeToStorage(Endpoint.GAR_PR, garPrRoster)
+            smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, notGarPrRoster)
+
+            smashRosterSyncResult = SmashRosterSyncResult(
+                    success = true,
+                    httpCode = garPrRosterResponse.code,
+                    message = garPrRosterResponse.message
+            )
+        }
+
+        smashRosterPreferenceStore.syncResult.set(smashRosterSyncResult)
     }
 
     override fun removeListener(listener: OnSyncListeners) {

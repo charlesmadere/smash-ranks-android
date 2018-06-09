@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="avatar_size">80dp</dimen>
+    <dimen name="avatar_size">112dp</dimen>
     <dimen name="bottom_navigation_view_height">56dp</dimen>
     <dimen name="divider_height">3dp</dimen>
     <dimen name="divider_item_height">32dp</dimen>

@@ -221,14 +221,12 @@ class SettingsActivity : BaseActivity() {
                 vibrate.isEnabled = true
                 mustBeOnWifi.isEnabled = true
                 mustBeCharging.isEnabled = true
-                smashRosterPreferenceView.isEnabled = true
             } else {
                 pollFrequency.isEnabled = false
                 ringtonePreferenceView.isEnabled = false
                 vibrate.isEnabled = false
                 mustBeOnWifi.isEnabled = false
                 mustBeCharging.isEnabled = false
-                smashRosterPreferenceView.isEnabled = false
             }
         } else {
             googlePlayServicesError.visibility = View.VISIBLE
@@ -238,7 +236,6 @@ class SettingsActivity : BaseActivity() {
             vibrate.isEnabled = false
             mustBeOnWifi.isEnabled = false
             mustBeCharging.isEnabled = false
-            smashRosterPreferenceView.isEnabled = false
         }
     }
 

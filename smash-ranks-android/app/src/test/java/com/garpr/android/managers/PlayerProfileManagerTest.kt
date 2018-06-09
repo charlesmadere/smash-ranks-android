@@ -59,35 +59,33 @@ class PlayerProfileManagerTest : BaseTest() {
                 null, null, "Atlanta",
                 "atlanta", Endpoint.NOT_GAR_PR)
 
-        private val SMASH_ROSTER_1 = SmashRoster(
-                mapOf(
-                        FULL_PLAYER_1.id to SmashCompetitor(
-                                mains = listOf(
-                                        SmashCharacter.SHEIK,
-                                        SmashCharacter.FOX
-                                ),
-                                websites = mapOf(
-                                        "twitch" to "https://www.twitch.tv/imyt",
-                                        "twitter" to "https://twitter.com/OnlyImyt"
-                                ),
-                                id = FULL_PLAYER_1.id,
-                                name = "Declan Doyle",
-                                tag = FULL_PLAYER_1.name
+        private val SMASH_ROSTER_1: Map<String, SmashCompetitor> = mapOf(
+                FULL_PLAYER_1.id to SmashCompetitor(
+                        mains = listOf(
+                                SmashCharacter.SHEIK,
+                                SmashCharacter.FOX
                         ),
+                        websites = mapOf(
+                                "twitch" to "https://www.twitch.tv/imyt",
+                                "twitter" to "https://twitter.com/OnlyImyt"
+                        ),
+                        id = FULL_PLAYER_1.id,
+                        name = "Declan Doyle",
+                        tag = FULL_PLAYER_1.name
+                ),
 
-                        FULL_PLAYER_2.id to SmashCompetitor(
-                                mains = listOf(
-                                        SmashCharacter.SHEIK
-                                ),
-                                websites = mapOf(
-                                        "other" to "http://charlesmadere.com",
-                                        "twitch" to "https://www.twitch.tv/chillinwithcharles",
-                                        "twitter" to "https://twitter.com/charlesmadere"
-                                ),
-                                id = FULL_PLAYER_2.id,
-                                name = "Charles Madere",
-                                tag = FULL_PLAYER_2.name
-                        )
+                FULL_PLAYER_2.id to SmashCompetitor(
+                        mains = listOf(
+                                SmashCharacter.SHEIK
+                        ),
+                        websites = mapOf(
+                                "other" to "http://charlesmadere.com",
+                                "twitch" to "https://www.twitch.tv/chillinwithcharles",
+                                "twitter" to "https://twitter.com/charlesmadere"
+                        ),
+                        id = FULL_PLAYER_2.id,
+                        name = "Charles Madere",
+                        tag = FULL_PLAYER_2.name
                 )
         )
     }
@@ -111,7 +109,7 @@ class PlayerProfileManagerTest : BaseTest() {
 
     @Test
     fun testFullPlayer1WithSmashCompetitor() {
-        smashRosterStorage.writeToStorage(REGION_1, SMASH_ROSTER_1)
+        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, SMASH_ROSTER_1)
         val presentation = playerProfileManager.getPresentation(FULL_PLAYER_1, REGION_1)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
@@ -129,7 +127,7 @@ class PlayerProfileManagerTest : BaseTest() {
 
     @Test
     fun testFullPlayer2WithSmashCompetitor() {
-        smashRosterStorage.writeToStorage(REGION_1, SMASH_ROSTER_1)
+        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, SMASH_ROSTER_1)
         val presentation = playerProfileManager.getPresentation(FULL_PLAYER_2, REGION_1)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)

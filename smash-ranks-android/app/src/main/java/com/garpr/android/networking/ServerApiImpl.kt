@@ -160,7 +160,7 @@ class ServerApiImpl(
         }
     }
 
-    override fun getSmashRoster(endpoint: Endpoint): Map<String, SmashCompetitor>? {
+    override fun getSmashRoster(endpoint: Endpoint): ServerResponse<Map<String, SmashCompetitor>> {
         val response = when (endpoint) {
             Endpoint.GAR_PR -> {
                 smashRosterApi.getGarPrJson().execute()
@@ -171,13 +171,8 @@ class ServerApiImpl(
             }
         }
 
-        val body = if (response.isSuccessful) response.body() else null
-
-        if (body == null) {
-            timber.e(TAG, "getSmashRoster ($endpoint) failed (code ${response.code()})")
-        }
-
-        return body
+        return ServerResponse(if (response.isSuccessful) response.body() else null,
+                response.isSuccessful, response.code(), response.message())
     }
 
     override fun getTournament(region: Region, tournamentId: String,

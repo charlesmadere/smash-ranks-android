@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.TextViewCompat
 import android.util.AttributeSet
 import android.view.View
@@ -15,9 +16,14 @@ import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.managers.*
+import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.managers.IdentityManager
+import com.garpr.android.managers.PlayerProfileManager
+import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.FullPlayer
@@ -120,6 +126,14 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
 
+        avatar.hierarchy.apply {
+            val placeholderImage = MiscUtils.tintDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.controller_placeholder),
+                    context.getAttrColor(android.R.attr.textColorSecondary))
+            setPlaceholderImage(placeholderImage)
+            setFailureImage(placeholderImage)
+        }
+
         twitter.setOnClickListener {
             presentation?.let { shareUtils.openUrl(context, it.twitter) }
         }
@@ -183,7 +197,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         if (presentation.avatar.isNullOrBlank()) {
             avatar.visibility = View.GONE
         } else {
-            avatar.setImageURI(presentation.avatar)
+//            avatar.setImageURI(presentation.avatar)
             avatar.visibility = View.VISIBLE
         }
 

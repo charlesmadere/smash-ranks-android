@@ -1,6 +1,18 @@
 package com.garpr.android.sync
 
 import com.garpr.android.BaseTest
+import com.garpr.android.misc.SmashRosterStorage
+import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.Timber
+import com.garpr.android.models.Endpoint
+import com.garpr.android.models.ServerResponse
+import com.garpr.android.models.SmashCompetitor
+import com.garpr.android.networking.AbsServerApi
+import com.garpr.android.preferences.SmashRosterPreferenceStore
+import com.garpr.android.wrappers.FirebaseApiWrapper
+import com.garpr.android.wrappers.GoogleApiWrapper
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -12,13 +24,47 @@ import javax.inject.Inject
 class SmashRosterSyncManagerTest : BaseTest() {
 
     @Inject
-    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
+    protected lateinit var firebaseApiWrapper: FirebaseApiWrapper
 
+    @Inject
+    protected lateinit var googleApiWrapper: GoogleApiWrapper
+
+    @Inject
+    protected lateinit var gson: Gson
+
+    @Inject
+    protected lateinit var smashRosterPreferenceStore: SmashRosterPreferenceStore
+
+    @Inject
+    protected lateinit var smashRosterStorage: SmashRosterStorage
+
+    @Inject
+    protected lateinit var threadUtils: ThreadUtils
+
+    @Inject
+    protected lateinit var timber: Timber
+
+    private lateinit var serverApiOverride: ServerApiOverride
+    private lateinit var smashRosterSyncManager: SmashRosterSyncManager
+
+
+    companion object {
+        private const val JSON_GAR_PR_SMASH_ROSTER = "{\"5888542ad2994e3bbfa52de4\":{\"name\":\"Leon Zhou\",\"tag\":\"ycz6\",\"mains\":[\"sam\"],\"websites\":{\"twitter\":\"https://twitter.com/ycz6\"},\"id\":\"5888542ad2994e3bbfa52de4\"},\"587a951dd2994e15c7dea9fe\":{\"name\":\"Charles Madere\",\"tag\":\"Charlezard\",\"mains\":[\"shk\"],\"websites\":{\"twitch\":\"https://www.twitch.tv/chillinwithcharles\",\"twitter\":\"https://twitter.com/charlesmadere\",\"other\":\"https://github.com/charlesmadere\"},\"avatar\":{\"original\":\"avatars/587a951dd2994e15c7dea9fe/original.jpg\",\"small\":\"avatars/587a951dd2994e15c7dea9fe/small.jpg\",\"medium\":\"avatars/587a951dd2994e15c7dea9fe/medium.jpg\",\"large\":\"avatars/587a951dd2994e15c7dea9fe/large.jpg\"},\"id\":\"587a951dd2994e15c7dea9fe\"},\"588999c5d2994e713ad63c6f\":{\"name\":\"Vincent Chan\",\"tag\":\"Pimp Jong Illest\",\"mains\":[\"fox\",\"ics\",\"dnk\"],\"websites\":{\"twitch\":\"https://www.twitch.tv/commonyoshii\",\"twitter\":\"https://twitter.com/Pimp_Jong_Illst\",\"youtube\":\"https://www.youtube.com/watch?v=-iDtR1yKJM0\",\"other\":\"https://www.youtube.com/watch?v=oX-hCzATFDQ\"},\"avatar\":{\"original\":\"avatars/588999c5d2994e713ad63c6f/original.jpg\",\"small\":\"avatars/588999c5d2994e713ad63c6f/small.jpg\",\"medium\":\"avatars/588999c5d2994e713ad63c6f/medium.jpg\",\"large\":\"avatars/588999c5d2994e713ad63c6f/large.jpg\"},\"id\":\"588999c5d2994e713ad63c6f\"},\"5877eb55d2994e15c7dea98b\":{\"name\":\"Declan Doyle\",\"tag\":\"Imyt\",\"mains\":[\"shk\",\"fox\",\"doc\"],\"websites\":{\"twitch\":\"https://www.twitch.tv/imyt\",\"twitter\":\"https://twitter.com/OnlyImyt\"},\"avatar\":{\"original\":\"avatars/5877eb55d2994e15c7dea98b/original.jpg\",\"small\":\"avatars/5877eb55d2994e15c7dea98b/small.jpg\",\"medium\":\"avatars/5877eb55d2994e15c7dea98b/medium.jpg\"},\"id\":\"5877eb55d2994e15c7dea98b\"},\"588999c5d2994e713ad63b35\":{\"name\":\"Scott\",\"tag\":\"dimsum\",\"mains\":[\"fox\",\"ics\"],\"avatar\":{\"original\":\"avatars/588999c5d2994e713ad63b35/original.jpg\",\"small\":\"avatars/588999c5d2994e713ad63b35/small.jpg\",\"medium\":\"avatars/588999c5d2994e713ad63b35/medium.jpg\",\"large\":\"avatars/588999c5d2994e713ad63b35/large.jpg\"},\"id\":\"588999c5d2994e713ad63b35\"}}"
+        private const val JSON_NOT_GAR_PR_SMASH_ROSTER = "{\"5778339fe592575dfd89bd0e\":{\"name\":\"Rishi Fishi\",\"tag\":\"Rishi\",\"mains\":[\"mrt\"],\"websites\":{\"twitch\":\"https://www.twitch.tv/smashg0d\",\"twitter\":\"https://twitter.com/SmashG0D\"},\"id\":\"5778339fe592575dfd89bd0e\"}}"
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+
+        serverApiOverride = ServerApiOverride(gson)
+        serverApiOverride.jsonGarPrSmashRoster = JSON_GAR_PR_SMASH_ROSTER
+        serverApiOverride.jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
+
+        smashRosterSyncManager = SmashRosterSyncManagerImpl(firebaseApiWrapper, googleApiWrapper,
+                serverApiOverride, smashRosterPreferenceStore, smashRosterStorage, threadUtils,
+                timber)
     }
 
     @Test
@@ -123,6 +169,41 @@ class SmashRosterSyncManagerTest : BaseTest() {
     @Test
     fun testSyncResult() {
         assertNull(smashRosterSyncManager.syncResult)
+        smashRosterSyncManager.sync()
+        assertNotNull(smashRosterSyncManager.syncResult)
+    }
+
+    private class ServerApiOverride(
+            private val gson: Gson
+    ) : AbsServerApi() {
+        var jsonGarPrSmashRoster: String? = null
+        var jsonNotGarPrSmashRoster: String? = null
+
+        override fun getSmashRoster(endpoint: Endpoint): ServerResponse<Map<String, SmashCompetitor>> {
+            val body: Map<String, SmashCompetitor>?
+
+            when (endpoint) {
+                Endpoint.GAR_PR -> {
+                    body = if (jsonGarPrSmashRoster?.isNotBlank() == true) {
+                        gson.fromJson(jsonGarPrSmashRoster,
+                                object : TypeToken<Map<String, SmashCompetitor>>() {}.type)
+                    } else {
+                        null
+                    }
+                }
+
+                Endpoint.NOT_GAR_PR -> {
+                    body = if (jsonNotGarPrSmashRoster?.isNotBlank() == true) {
+                        gson.fromJson(jsonNotGarPrSmashRoster,
+                                object : TypeToken<Map<String, SmashCompetitor>>(){}.type)
+                    } else {
+                        null
+                    }
+                }
+            }
+
+            return ServerResponse(body, body != null, 200)
+        }
     }
 
 }

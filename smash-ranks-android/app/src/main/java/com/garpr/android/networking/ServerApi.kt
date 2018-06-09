@@ -21,7 +21,7 @@ interface ServerApi {
     fun getRegions(endpoint: Endpoint? = null, listener: ApiListener<RegionsBundle>)
 
     @WorkerThread
-    fun getSmashRoster(endpoint: Endpoint): Map<String, SmashCompetitor>?
+    fun getSmashRoster(endpoint: Endpoint): ServerResponse<Map<String, SmashCompetitor>>
 
     fun getTournament(region: Region, tournamentId: String, listener: ApiListener<FullTournament>)
 

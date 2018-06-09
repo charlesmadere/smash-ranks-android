@@ -20,7 +20,7 @@ class AvatarTest : BaseTest() {
     companion object {
         private val AVATAR_1 = Avatar(null, null, null, null)
         private val AVATAR_2 = Avatar("large", "medium", "original", "small")
-        private val AVATAR_3 = Avatar("large", "", "original", "small")
+        private val AVATAR_3 = Avatar(null, "medium", "original", "small")
         private val AVATAR_4 = Avatar(" ", null, "", "small")
         private val AVATAR_5 = Avatar("", " ", "original", null)
         private val AVATAR_6 = Avatar()
@@ -46,8 +46,8 @@ class AvatarTest : BaseTest() {
         assertNotNull(avatar.original)
         assertNull(avatar.small)
 
-        assertNotNull(avatar.mediumButFallbackToLargeThenOriginalThenSmall)
-        assertEquals(avatar.original, avatar.mediumButFallbackToLargeThenOriginalThenSmall)
+        assertNotNull(avatar.largeButFallbackToMediumThenOriginalThenSmall)
+        assertEquals(avatar.original, avatar.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test
@@ -60,8 +60,8 @@ class AvatarTest : BaseTest() {
         assertNull(avatar.original)
         assertNotNull(avatar.small)
 
-        assertNotNull(avatar.mediumButFallbackToLargeThenOriginalThenSmall)
-        assertEquals(avatar.small, avatar.mediumButFallbackToLargeThenOriginalThenSmall)
+        assertNotNull(avatar.largeButFallbackToMediumThenOriginalThenSmall)
+        assertEquals(avatar.small, avatar.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test
@@ -74,8 +74,8 @@ class AvatarTest : BaseTest() {
         assertNull(avatar.original)
         assertNull(avatar.small)
 
-        assertNotNull(avatar.mediumButFallbackToLargeThenOriginalThenSmall)
-        assertEquals(avatar.medium, avatar.mediumButFallbackToLargeThenOriginalThenSmall)
+        assertNotNull(avatar.largeButFallbackToMediumThenOriginalThenSmall)
+        assertEquals(avatar.large, avatar.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test
@@ -95,32 +95,32 @@ class AvatarTest : BaseTest() {
 
     @Test
     fun testMediumButFallbackToNull1() {
-        assertNull(AVATAR_1.mediumButFallbackToLargeThenOriginalThenSmall)
+        assertNull(AVATAR_1.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test
     fun testMediumButFallbackToNull2() {
-        assertNull(AVATAR_6.mediumButFallbackToLargeThenOriginalThenSmall)
+        assertNull(AVATAR_6.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToMedium() {
-        assertEquals("medium", AVATAR_2.mediumButFallbackToLargeThenOriginalThenSmall)
+    fun testLargeButFallbackToLarge() {
+        assertEquals("large", AVATAR_2.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToLarge() {
-        assertEquals("large", AVATAR_3.mediumButFallbackToLargeThenOriginalThenSmall)
+    fun testLargeButFallbackToMedium() {
+        assertEquals("medium", AVATAR_3.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToSmall() {
-        assertEquals("small", AVATAR_4.mediumButFallbackToLargeThenOriginalThenSmall)
+    fun testLargeButFallbackToSmall() {
+        assertEquals("small", AVATAR_4.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test
-    fun testMediumButFallbackToOriginal() {
-        assertEquals("original", AVATAR_5.mediumButFallbackToLargeThenOriginalThenSmall)
+    fun testLargeButFallbackToOriginal() {
+        assertEquals("original", AVATAR_5.largeButFallbackToMediumThenOriginalThenSmall)
     }
 
     @Test

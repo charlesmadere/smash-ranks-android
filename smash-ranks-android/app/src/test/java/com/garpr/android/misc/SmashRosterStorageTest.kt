@@ -1,8 +1,11 @@
 package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.Region
+import com.garpr.android.models.Endpoint
+import com.garpr.android.models.SmashCompetitor
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
@@ -19,8 +22,8 @@ class SmashRosterStorageTest : BaseTest() {
     @Inject
     protected lateinit var smashRosterStorage: SmashRosterStorage
 
-    protected lateinit var region1: Region
-    protected lateinit var region2: Region
+    private lateinit var garPrSmashRoster: Map<String, SmashCompetitor>
+    private lateinit var notGarPrSmashRoster: Map<String, SmashCompetitor>
 
 
     companion object {
@@ -29,9 +32,10 @@ class SmashRosterStorageTest : BaseTest() {
         private const val PLAYER_ID_HAX = "53c64dba8ab65f6e6651f7bc"
         private const val PLAYER_ID_IMYT = "5877eb55d2994e15c7dea98b"
         private const val PLAYER_ID_PEWPEWU = "588852e8d2994e3bbfa52da7"
+        private const val PLAYER_ID_RISHI = "5778339fe592575dfd89bd0e"
 
-        private const val REGION_1 = "{\"display_name\":\"Norcal\",\"endpoint\":\"gar_pr\",\"id\":\"norcal\"}"
-        private const val REGION_2 = "{\"display_name\":\"New York City\",\"endpoint\":\"not_gar_pr\",\"id\":\"nyc\"}"
+        private const val JSON_GAR_PR_SMASH_ROSTER = "{\"5888542ad2994e3bbfa52de4\":{\"name\":\"Leon Zhou\",\"tag\":\"ycz6\",\"mains\":[\"sam\"],\"websites\":{\"twitter\":\"https://twitter.com/ycz6\"},\"id\":\"5888542ad2994e3bbfa52de4\"},\"587a951dd2994e15c7dea9fe\":{\"name\":\"Charles Madere\",\"tag\":\"Charlezard\",\"mains\":[\"shk\"],\"websites\":{\"twitch\":\"https://www.twitch.tv/chillinwithcharles\",\"twitter\":\"https://twitter.com/charlesmadere\",\"other\":\"https://github.com/charlesmadere\"},\"avatar\":{\"original\":\"avatars/587a951dd2994e15c7dea9fe/original.jpg\",\"small\":\"avatars/587a951dd2994e15c7dea9fe/small.jpg\",\"medium\":\"avatars/587a951dd2994e15c7dea9fe/medium.jpg\",\"large\":\"avatars/587a951dd2994e15c7dea9fe/large.jpg\"},\"id\":\"587a951dd2994e15c7dea9fe\"},\"588999c5d2994e713ad63c6f\":{\"name\":\"Vincent Chan\",\"tag\":\"Pimp Jong Illest\",\"mains\":[\"fox\",\"ics\",\"dnk\"],\"websites\":{\"twitch\":\"https://www.twitch.tv/commonyoshii\",\"twitter\":\"https://twitter.com/Pimp_Jong_Illst\",\"youtube\":\"https://www.youtube.com/watch?v=-iDtR1yKJM0\",\"other\":\"https://www.youtube.com/watch?v=oX-hCzATFDQ\"},\"avatar\":{\"original\":\"avatars/588999c5d2994e713ad63c6f/original.jpg\",\"small\":\"avatars/588999c5d2994e713ad63c6f/small.jpg\",\"medium\":\"avatars/588999c5d2994e713ad63c6f/medium.jpg\",\"large\":\"avatars/588999c5d2994e713ad63c6f/large.jpg\"},\"id\":\"588999c5d2994e713ad63c6f\"},\"5877eb55d2994e15c7dea98b\":{\"name\":\"Declan Doyle\",\"tag\":\"Imyt\",\"mains\":[\"shk\",\"fox\",\"doc\"],\"websites\":{\"twitch\":\"https://www.twitch.tv/imyt\",\"twitter\":\"https://twitter.com/OnlyImyt\"},\"avatar\":{\"original\":\"avatars/5877eb55d2994e15c7dea98b/original.jpg\",\"small\":\"avatars/5877eb55d2994e15c7dea98b/small.jpg\",\"medium\":\"avatars/5877eb55d2994e15c7dea98b/medium.jpg\"},\"id\":\"5877eb55d2994e15c7dea98b\"},\"588999c5d2994e713ad63b35\":{\"name\":\"Scott\",\"tag\":\"dimsum\",\"mains\":[\"fox\",\"ics\"],\"avatar\":{\"original\":\"avatars/588999c5d2994e713ad63b35/original.jpg\",\"small\":\"avatars/588999c5d2994e713ad63b35/small.jpg\",\"medium\":\"avatars/588999c5d2994e713ad63b35/medium.jpg\",\"large\":\"avatars/588999c5d2994e713ad63b35/large.jpg\"},\"id\":\"588999c5d2994e713ad63b35\"}}"
+        private const val JSON_NOT_GAR_PR_SMASH_ROSTER = "{\"5778339fe592575dfd89bd0e\":{\"name\":\"Rishi Fishi\",\"tag\":\"Rishi\",\"mains\":[\"mrt\"],\"websites\":{\"twitch\":\"https://www.twitch.tv/smashg0d\",\"twitter\":\"https://twitter.com/SmashG0D\"},\"id\":\"5778339fe592575dfd89bd0e\"}}"
     }
 
     @Before
@@ -39,78 +43,149 @@ class SmashRosterStorageTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        region1 = gson.fromJson(REGION_1, Region::class.java)
-        region2 = gson.fromJson(REGION_2, Region::class.java)
+        garPrSmashRoster = gson.fromJson(JSON_GAR_PR_SMASH_ROSTER,
+                object : TypeToken<Map<String, SmashCompetitor>>(){}.type)
+        notGarPrSmashRoster = gson.fromJson(JSON_NOT_GAR_PR_SMASH_ROSTER,
+                object : TypeToken<Map<String, SmashCompetitor>>(){}.type)
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testDeleteRegion1() {
-        smashRosterStorage.deleteFromStorage(region1)
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_CHARLEZARD))
+    fun testDeleteFromStorageWithGarPr() {
+        smashRosterStorage.deleteFromStorage(Endpoint.GAR_PR)
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testDeleteRegion2() {
-        smashRosterStorage.deleteFromStorage(region2)
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_DJ_NINTENDO))
+    fun testDeleteFromStorageWithNotGarPr() {
+        smashRosterStorage.deleteFromStorage(Endpoint.NOT_GAR_PR)
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_DJ_NINTENDO))
     }
 
     @Test
-    @Throws(Exception::class)
+    fun testGetSmashCharacterWithBlankString() {
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, " "))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, " "))
+    }
+
+    @Test
     fun testGetSmashCompetitorWithCharlezard() {
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_CHARLEZARD))
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_CHARLEZARD))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetSmashCharacterWithDjNintendo() {
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_DJ_NINTENDO))
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_DJ_NINTENDO))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_DJ_NINTENDO))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_DJ_NINTENDO))
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testGetSmashCharacterWithEmptyPlayerId() {
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, ""))
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, ""))
+    fun testGetSmashCharacterWithEmptyString() {
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, ""))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, ""))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetSmashCharacterWithHax() {
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_HAX))
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_HAX))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_HAX))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_HAX))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetSmashCharacterWithImyt() {
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_IMYT))
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_IMYT))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetSmashCharacterWithNullPlayerId() {
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, null))
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, null))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, null))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, null))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetSmashCharacterWithPewPewU() {
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, PLAYER_ID_PEWPEWU))
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, PLAYER_ID_PEWPEWU))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_PEWPEWU))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_PEWPEWU))
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testGetSmashCharacterWithWhitespacePlayerId() {
-        assertNull(smashRosterStorage.getSmashCompetitor(region1, " "))
-        assertNull(smashRosterStorage.getSmashCompetitor(region2, " "))
+    fun testGetSmashCharacterWithRishi() {
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_RISHI))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_RISHI))
+    }
+
+    @Test
+    fun testWriteToStorageWithEmpty() {
+        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, emptyMap())
+        smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, emptyMap())
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_CHARLEZARD))
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_IMYT))
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_RISHI))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_RISHI))
+    }
+
+    @Test
+    fun testWriteToStorageWithGarPrRoster() {
+        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, garPrSmashRoster)
+
+        assertNotNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_CHARLEZARD))
+
+        assertNotNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_IMYT))
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_RISHI))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_RISHI))
+    }
+
+    @Test
+    fun testWriteToStorageWithNotGarPrRoster() {
+        smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, notGarPrSmashRoster)
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_CHARLEZARD))
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_IMYT))
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_RISHI))
+        assertNotNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_RISHI))
+    }
+
+    @Test
+    fun testWriteToStorageWithGarPrRosterAndNotGarPrRoster() {
+        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, garPrSmashRoster)
+        smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, notGarPrSmashRoster)
+
+        assertNotNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_CHARLEZARD))
+
+        assertNotNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_IMYT))
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_RISHI))
+        assertNotNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_RISHI))
+    }
+
+    @Test
+    fun testWriteToStorageWithNull() {
+        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, null)
+        smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, null)
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_CHARLEZARD))
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_IMYT))
+
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_RISHI))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_RISHI))
     }
 
 }

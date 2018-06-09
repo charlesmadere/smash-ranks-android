@@ -35,7 +35,7 @@ abstract class AbsServerApi : ServerApi {
         throw RuntimeException()
     }
 
-    override fun getSmashRoster(region: Region, listener: ApiListener<SmashRoster>) {
+    override fun getSmashRoster(endpoint: Endpoint): ServerResponse<Map<String, SmashCompetitor>> {
         throw RuntimeException()
     }
 
