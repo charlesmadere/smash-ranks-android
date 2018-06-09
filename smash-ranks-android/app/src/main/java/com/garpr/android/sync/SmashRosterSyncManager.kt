@@ -15,6 +15,8 @@ interface SmashRosterSyncManager {
 
     var isEnabled: Boolean
 
+    val isSyncing: Boolean
+
     fun removeListener(listener: OnSyncListeners)
 
     fun sync()

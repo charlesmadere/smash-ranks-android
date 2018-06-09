@@ -30,6 +30,7 @@ class SmashRosterSyncManagerImpl(
         private val timber: Timber
 ) : SmashRosterSyncManager {
 
+    private var _isSyncing = false
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnSyncListeners>>()
 
 
@@ -102,6 +103,9 @@ class SmashRosterSyncManagerImpl(
             smashRosterPreferenceStore.enabled.set(value)
             enableOrDisable()
         }
+
+    override val isSyncing: Boolean
+        get() = _isSyncing
 
     @UiThread
     private fun notifyListenersOfOnSyncBegin() {
@@ -176,6 +180,12 @@ class SmashRosterSyncManagerImpl(
     }
 
     override fun sync() {
+        if (isSyncing) {
+            return
+        }
+
+        _isSyncing = true
+
         threadUtils.runOnUi(Runnable {
             notifyListenersOfOnSyncBegin()
 
@@ -183,6 +193,7 @@ class SmashRosterSyncManagerImpl(
                 performSync()
 
                 threadUtils.runOnUi(Runnable {
+                    _isSyncing = false
                     notifyListenersOfOnSyncComplete()
                 })
             })

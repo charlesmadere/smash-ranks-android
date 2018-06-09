@@ -30,7 +30,9 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        smashRosterSyncManager.sync()
+        if (!smashRosterSyncManager.isSyncing) {
+            smashRosterSyncManager.sync()
+        }
     }
 
     override fun onDetachedFromWindow() {
@@ -59,7 +61,7 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
 
     override fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager) {
         if (isAlive) {
-            descriptionText = resources.getText(R.string.syncing_now_)
+            refresh()
         }
     }
 
@@ -71,6 +73,11 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
 
     override fun refresh() {
         super.refresh()
+
+        if (smashRosterSyncManager.isSyncing) {
+            descriptionText = resources.getText(R.string.syncing_now_)
+            return
+        }
 
         val syncResult = smashRosterSyncManager.syncResult
 
