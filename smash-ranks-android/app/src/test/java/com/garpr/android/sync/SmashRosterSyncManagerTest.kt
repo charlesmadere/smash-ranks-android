@@ -167,10 +167,37 @@ class SmashRosterSyncManagerTest : BaseTest() {
     }
 
     @Test
+    fun testSync() {
+        serverApiOverride.jsonGarPrSmashRoster = JSON_GAR_PR_SMASH_ROSTER
+        serverApiOverride.jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
+        smashRosterSyncManager.sync()
+
+        assertNotNull(smashRosterSyncManager.syncResult)
+        assertTrue(smashRosterSyncManager.syncResult?.success == true)
+
+        serverApiOverride.jsonGarPrSmashRoster = null
+        smashRosterSyncManager.sync()
+
+        assertNotNull(smashRosterSyncManager.syncResult)
+        assertTrue(smashRosterSyncManager.syncResult?.success == false)
+
+        serverApiOverride.jsonNotGarPrSmashRoster = null
+        smashRosterSyncManager.sync()
+
+        assertNotNull(smashRosterSyncManager.syncResult)
+        assertTrue(smashRosterSyncManager.syncResult?.success == false)
+
+        serverApiOverride.jsonGarPrSmashRoster = JSON_GAR_PR_SMASH_ROSTER
+        serverApiOverride.jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
+        smashRosterSyncManager.sync()
+
+        assertNotNull(smashRosterSyncManager.syncResult)
+        assertTrue(smashRosterSyncManager.syncResult?.success == true)
+    }
+
+    @Test
     fun testSyncResult() {
         assertNull(smashRosterSyncManager.syncResult)
-        smashRosterSyncManager.sync()
-        assertNotNull(smashRosterSyncManager.syncResult)
     }
 
     private class ServerApiOverride(
@@ -186,7 +213,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
                 Endpoint.GAR_PR -> {
                     body = if (jsonGarPrSmashRoster?.isNotBlank() == true) {
                         gson.fromJson(jsonGarPrSmashRoster,
-                                object : TypeToken<Map<String, SmashCompetitor>>() {}.type)
+                                object : TypeToken<Map<String, SmashCompetitor>>(){}.type)
                     } else {
                         null
                     }
