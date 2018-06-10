@@ -156,6 +156,11 @@ class SmashRosterSyncManagerTest : BaseTest() {
     }
 
     @Test
+    fun testInitialSyncResult() {
+        assertNull(smashRosterSyncManager.syncResult)
+    }
+
+    @Test
     fun testIsEnabled() {
         assertTrue(smashRosterSyncManager.isEnabled)
 
@@ -193,11 +198,6 @@ class SmashRosterSyncManagerTest : BaseTest() {
 
         assertNotNull(smashRosterSyncManager.syncResult)
         assertTrue(smashRosterSyncManager.syncResult?.success == true)
-    }
-
-    @Test
-    fun testSyncResult() {
-        assertNull(smashRosterSyncManager.syncResult)
     }
 
     private class ServerApiOverride(
