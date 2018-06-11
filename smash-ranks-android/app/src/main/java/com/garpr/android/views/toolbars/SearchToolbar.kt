@@ -11,7 +11,7 @@ import com.garpr.android.extensions.activity
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 
-abstract class SearchToolbar @JvmOverloads constructor(
+open class SearchToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : MenuToolbar(context, attrs), MenuItem.OnActionExpandListener, SearchQueryHandle,

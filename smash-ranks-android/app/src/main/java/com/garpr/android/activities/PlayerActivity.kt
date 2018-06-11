@@ -56,7 +56,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     protected lateinit var threadUtils: ThreadUtils
 
     private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val playerToolbar: PlayerToolbar by bindView(R.id.toolbar)
+    private val searchToolbar: SearchToolbar by bindView(R.id.toolbar)
     private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
     private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
     private val empty: View by bindView(R.id.empty)
@@ -95,18 +95,18 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         val view = recyclerView.getChildAt(0) as? PlayerProfileItemView
 
         if (view == null) {
-            playerToolbar.fadeInTitleAndSubtitle()
+            searchToolbar.fadeInTitleAndSubtitle()
             return
         }
 
         val dateVerticalPositionInWindow = view.regionVerticalPositionInWindow
-        val toolbarVerticalPositionInWindow = playerToolbar.verticalPositionInWindow +
-                playerToolbar.height
+        val toolbarVerticalPositionInWindow = searchToolbar.verticalPositionInWindow +
+                searchToolbar.height
 
         if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            playerToolbar.fadeInTitleAndSubtitle()
+            searchToolbar.fadeInTitleAndSubtitle()
         } else {
-            playerToolbar.fadeOutTitleAndSubtitle()
+            searchToolbar.fadeOutTitleAndSubtitle()
         }
     }
 

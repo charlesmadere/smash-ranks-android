@@ -136,11 +136,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         fetchHeadToHead()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_head_to_head, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onRefresh() {
         fetchHeadToHead()
     }
