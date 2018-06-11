@@ -86,11 +86,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             return
         }
 
-        if (viewPager.currentItem != POSITION_RANKINGS) {
-            viewPager.setCurrentItem(POSITION_RANKINGS, false)
-            return
-        }
-
         super.onBackPressed()
     }
 

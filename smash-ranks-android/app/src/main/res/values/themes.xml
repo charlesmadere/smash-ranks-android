@@ -31,10 +31,6 @@
 
     </style>
 
-    <style name="TabLayoutTheme" parent="ToolbarTheme">
-        <item name="colorAccent">@color/white</item>
-    </style>
-
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>

@@ -1,6 +1,5 @@
 package com.garpr.android.managers
 
-import com.garpr.android.models.MatchResult
 import com.garpr.android.models.MatchesBundle
 
 interface PlayerToolbarManager {
@@ -12,6 +11,6 @@ interface PlayerToolbarManager {
             val isFilterWinsVisible: Boolean = false
     )
 
-    fun getPresentation(matchesBundle: MatchesBundle?, matchResult: MatchResult?): Presentation
+    fun getPresentation(matchesBundle: MatchesBundle?): Presentation
 
 }

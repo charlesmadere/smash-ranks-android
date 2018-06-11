@@ -32,7 +32,6 @@ class PlayerToolbar @JvmOverloads constructor(
 
     interface DataProvider {
         val matchesBundle: MatchesBundle?
-        val matchResult: MatchResult?
     }
 
     override fun onAttachedToWindow() {
@@ -88,17 +87,14 @@ class PlayerToolbar @JvmOverloads constructor(
 
         val activity = this.activity
         val matchesBundle: MatchesBundle?
-        val matchResult: MatchResult?
 
         if (activity is DataProvider) {
             matchesBundle = activity.matchesBundle
-            matchResult = activity.matchResult
         } else {
             matchesBundle = null
-            matchResult = null
         }
 
-        val presentation = playerToolbarManager.getPresentation(matchesBundle, matchResult)
+        val presentation = playerToolbarManager.getPresentation(matchesBundle)
         menu.findItem(R.id.miFilter).isVisible = presentation.isFilterVisible
         menu.findItem(R.id.miShowAll).isVisible = presentation.isFilterAllVisible
         menu.findItem(R.id.miFilterToLosses).isVisible = presentation.isFilterLossesVisible

@@ -123,68 +123,6 @@ object ListUtils {
         }
     }
 
-    fun filterPlayerMatchesList(result: MatchResult?, list: List<Any>?): MutableList<Any>? {
-        if (list == null || list.isEmpty()) {
-            return null
-        }
-
-        val newList = mutableListOf<Any>()
-
-        if (result == null) {
-            newList.addAll(list)
-            return newList
-        }
-
-        var addedCharSequence = false
-        var addedFullPlayer = false
-        var addedWinsLosses = false
-
-        for (i in list.indices) {
-            val objectI = list[i]
-
-            if (objectI is CharSequence) {
-                if (!addedCharSequence) {
-                    addedCharSequence = true
-                    newList.add(objectI)
-                }
-            } else if (objectI is FullPlayer) {
-                if (!addedFullPlayer) {
-                    addedFullPlayer = true
-                    newList.add(objectI)
-                }
-            } else if (objectI is WinsLosses) {
-                if (!addedWinsLosses) {
-                    addedWinsLosses = true
-                    newList.add(objectI)
-                }
-            } else if (objectI is AbsTournament) {
-                var addedTournament = false
-                var j = i + 1
-
-                while (j < list.size) {
-                    val objectJ = list[j]
-
-                    if (objectJ is AbsMatch) {
-                        if (objectJ.result == result) {
-                            if (!addedTournament) {
-                                addedTournament = true
-                                newList.add(objectI)
-                            }
-
-                            newList.add(objectJ)
-                        }
-
-                        ++j
-                    } else {
-                        j = list.size
-                    }
-                }
-            }
-        }
-
-        return newList
-    }
-
     fun searchPlayerList(query: String?, list: List<AbsPlayer>?) =
         if (list == null || list.isEmpty()) {
             null

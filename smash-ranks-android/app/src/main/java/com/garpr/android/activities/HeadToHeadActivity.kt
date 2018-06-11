@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
@@ -29,7 +28,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private var list: List<Any>? = null
     private var headToHead: HeadToHead? = null
     private lateinit var adapter: HeadToHeadAdapter
-    private var matchResult: MatchResult? = null
     private lateinit var opponentId: String
     private var opponentName: String? = null
     private lateinit var playerId: String
@@ -112,7 +110,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override fun failure(errorCode: Int) {
         headToHead = null
         list = null
-        matchResult = null
         showError(errorCode)
     }
 
@@ -120,36 +117,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         refreshLayout.isRefreshing = true
         serverApi.getHeadToHead(regionManager.getRegion(this), playerId, opponentId,
                 ApiCall(this))
-    }
-
-    private fun filter(matchResult: MatchResult?) {
-        this.matchResult = matchResult
-        val list = this.list
-
-        if (list == null || list.isEmpty()) {
-            return
-        }
-
-        threadUtils.run(object : ThreadUtils.Task {
-            private var list: List<Any>? = null
-
-            override fun onBackground() {
-                if (!isAlive || matchResult != this@HeadToHeadActivity.matchResult) {
-                    return
-                }
-
-                this.list = ListUtils.filterPlayerMatchesList(matchResult, list)
-            }
-
-            override fun onUi() {
-                if (!isAlive || matchResult != this@HeadToHeadActivity.matchResult) {
-                    return
-                }
-
-                adapter.set(this.list)
-                invalidateOptionsMenu()
-            }
-        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -171,38 +138,8 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_head_to_head, menu)
-
-        if (headToHead != null) {
-            menu.findItem(R.id.miFilter).isVisible = true
-            menu.findItem(R.id.miShowAll).isVisible = matchResult != null
-            menu.findItem(R.id.miFilterToLosses).isVisible = matchResult != MatchResult.LOSE
-            menu.findItem(R.id.miFilterToWins).isVisible = matchResult != MatchResult.WIN
-        }
-
         return super.onCreateOptionsMenu(menu)
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.miFilterToLosses -> {
-                filter(MatchResult.LOSE)
-                true
-            }
-
-            R.id.miFilterToWins -> {
-                filter(MatchResult.WIN)
-                true
-            }
-
-            R.id.miShowAll -> {
-                filter(null)
-                true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
 
     override fun onRefresh() {
         fetchHeadToHead()
@@ -263,7 +200,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     override fun success(`object`: HeadToHead?) {
         headToHead = `object`
         list = null
-        matchResult = null
         showData()
     }
 

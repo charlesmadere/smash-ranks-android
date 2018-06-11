@@ -44,9 +44,6 @@
     <string name="every_8_hours">Every 8 hours</string>
     <string name="favorite">Favorite</string>
     <string name="favorite_players">Favorite Players</string>
-    <string name="filter">Filter</string>
-    <string name="filter_to_losses">Filter to losses</string>
-    <string name="filter_to_wins">Filter to wins</string>
     <string name="gar_pr" translatable="false">GAR PR</string>
     <string name="gar_twitter_url" translatable="false">twitter.com/garsh0p</string>
     <string name="google_play_services_error_cant_be_resolved">Sorry, but your Google Play Services error (%1$d) can\'t be resolved.</string>
@@ -117,7 +114,6 @@
     <string name="share_x">Share %1$s</string>
     <string name="sheik_artwork_by_tsuaii">Sheik artwork by tsuaii</string>
     <string name="show">Show</string>
-    <string name="show_all">Show all</string>
     <string name="show_test_notification">Show test notification</string>
     <string name="smash_roster">Smash roster</string>
     <string name="smash_roster_sync_status">Smash roster sync status</string>

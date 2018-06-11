@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
-import android.view.MenuItem
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
@@ -37,7 +36,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private var list: List<Any>? = null
-    private var _matchResult: MatchResult? = null
     private lateinit var adapter: PlayerAdapter
     private var playerMatchesBundle: PlayerMatchesBundle? = null
     private lateinit var playerId: String
@@ -115,7 +113,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     override fun failure(errorCode: Int) {
         playerMatchesBundle = null
         list = null
-        _matchResult = null
         showError(errorCode)
     }
 
@@ -123,36 +120,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         refreshLayout.isRefreshing = true
         serverApi.getPlayerMatches(regionManager.getRegion(this), playerId,
                 ApiCall(this))
-    }
-
-    private fun filter(matchResult: MatchResult?) {
-        _matchResult = matchResult
-        val list = this.list
-
-        if (list == null || list.isEmpty()) {
-            return
-        }
-
-        threadUtils.run(object : ThreadUtils.Task {
-            private var list: List<Any>? = null
-
-            override fun onBackground() {
-                if (!isAlive || matchResult != _matchResult) {
-                    return
-                }
-
-                this.list = ListUtils.filterPlayerMatchesList(matchResult, list)
-            }
-
-            override fun onUi() {
-                if (!isAlive || matchResult != _matchResult) {
-                    return
-                }
-
-                adapter.set(this.list)
-                invalidateOptionsMenu()
-            }
-        })
     }
 
     override val matchesBundle: MatchesBundle?
@@ -175,28 +142,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         setTitleAndSubtitle()
         fetchPlayerMatchesBundle()
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.miFilterToLosses -> {
-                filter(MatchResult.LOSE)
-                true
-            }
-
-            R.id.miFilterToWins -> {
-                filter(MatchResult.WIN)
-                true
-            }
-
-            R.id.miShowAll -> {
-                filter(null)
-                true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
 
     override fun onRefresh() {
         fetchPlayerMatchesBundle()
@@ -224,9 +169,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         adapter = PlayerAdapter(this)
         recyclerView.adapter = adapter
     }
-
-    override val matchResult: MatchResult?
-        get() = _matchResult
 
     override fun search(query: String?) {
         val list = this.list
@@ -307,7 +249,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     override fun success(`object`: PlayerMatchesBundle?) {
         playerMatchesBundle = `object`
         list = null
-        _matchResult = null
         showData()
     }
 
