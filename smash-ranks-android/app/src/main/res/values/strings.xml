@@ -120,7 +120,7 @@
     <string name="show_all">Show all</string>
     <string name="show_test_notification">Show test notification</string>
     <string name="smash_roster">Smash roster</string>
-    <string name="smash_roster_storage">Smash roster storage</string>
+    <string name="smash_roster_sync_status">Smash roster sync status</string>
     <string name="start_using_the_app">Start using the app</string>
     <string name="start_using_the_app_description">You can change your region and identity at any time in Settings</string>
     <string name="swipe_to_refresh_to_check_again">Swipe down to refresh to check again</string>

@@ -50,7 +50,7 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
         }
 
         setOnClickListener(this)
-        titleText = resources.getText(R.string.smash_roster_storage)
+        titleText = resources.getText(R.string.smash_roster_sync_status)
 
         if (isInEditMode) {
             descriptionText = resources.getText(R.string.sync_has_yet_to_occur)
