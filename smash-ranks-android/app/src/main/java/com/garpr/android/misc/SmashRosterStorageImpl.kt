@@ -53,7 +53,7 @@ class SmashRosterStorageImpl(
         }
 
         keyValueStoreEditor.apply()
-        timber.d(TAG, "wrote $endpoint to storage")
+        timber.d(TAG, "wrote ${smashRoster.size} $endpoint competitor(s) to storage")
     }
 
 }
