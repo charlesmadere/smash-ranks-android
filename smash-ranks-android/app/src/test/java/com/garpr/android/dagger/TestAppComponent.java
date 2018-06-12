@@ -5,7 +5,6 @@ import com.garpr.android.managers.FavoritePlayersManagerTest;
 import com.garpr.android.managers.HomeToolbarManagerTest;
 import com.garpr.android.managers.IdentityManagerTest;
 import com.garpr.android.managers.PlayerProfileManagerTest;
-import com.garpr.android.managers.PlayerToolbarManagerTest;
 import com.garpr.android.managers.RegionManagerTest;
 import com.garpr.android.managers.SmashRosterAvatarUrlHelperTest;
 import com.garpr.android.managers.TournamentAdapterManagerTest;
@@ -53,7 +52,6 @@ public interface TestAppComponent {
     void inject(HomeToolbarManagerTest test);
     void inject(IdentityManagerTest test);
     void inject(PlayerProfileManagerTest test);
-    void inject(PlayerToolbarManagerTest test);
     void inject(RegionManagerTest test);
     void inject(SmashRosterAvatarUrlHelperTest test);
     void inject(TournamentAdapterManagerTest test);

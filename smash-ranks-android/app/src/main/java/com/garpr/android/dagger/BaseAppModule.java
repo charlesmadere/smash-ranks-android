@@ -2,14 +2,63 @@ package com.garpr.android.dagger;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import com.garpr.android.managers.*;
-import com.garpr.android.misc.*;
-import com.garpr.android.models.*;
+
+import com.garpr.android.managers.AppUpgradeManager;
+import com.garpr.android.managers.AppUpgradeManagerImpl;
+import com.garpr.android.managers.FavoritePlayersManager;
+import com.garpr.android.managers.FavoritePlayersManagerImpl;
+import com.garpr.android.managers.HomeToolbarManager;
+import com.garpr.android.managers.HomeToolbarManagerImpl;
+import com.garpr.android.managers.IdentityManager;
+import com.garpr.android.managers.IdentityManagerImpl;
+import com.garpr.android.managers.NotificationsManager;
+import com.garpr.android.managers.NotificationsManagerImpl;
+import com.garpr.android.managers.PlayerProfileManager;
+import com.garpr.android.managers.PlayerProfileManagerImpl;
+import com.garpr.android.managers.RegionManager;
+import com.garpr.android.managers.RegionManagerImpl;
+import com.garpr.android.managers.SmashRosterAvatarUrlHelper;
+import com.garpr.android.managers.SmashRosterAvatarUrlHelperImpl;
+import com.garpr.android.managers.TournamentAdapterManager;
+import com.garpr.android.managers.TournamentAdapterManagerImpl;
+import com.garpr.android.misc.Constants;
+import com.garpr.android.misc.CrashlyticsWrapper;
+import com.garpr.android.misc.DeepLinkUtils;
+import com.garpr.android.misc.DeepLinkUtilsImpl;
+import com.garpr.android.misc.DeviceUtils;
+import com.garpr.android.misc.FullTournamentUtils;
+import com.garpr.android.misc.FullTournamentUtilsImpl;
+import com.garpr.android.misc.PreviousRankUtils;
+import com.garpr.android.misc.PreviousRankUtilsImpl;
+import com.garpr.android.misc.RankingsNotificationsUtils;
+import com.garpr.android.misc.RankingsNotificationsUtilsImpl;
+import com.garpr.android.misc.ShareUtils;
+import com.garpr.android.misc.ShareUtilsImpl;
+import com.garpr.android.misc.SmashRosterStorage;
+import com.garpr.android.misc.SmashRosterStorageImpl;
+import com.garpr.android.misc.ThreadUtils;
+import com.garpr.android.misc.Timber;
+import com.garpr.android.misc.TimberImpl;
+import com.garpr.android.models.AbsPlayer;
+import com.garpr.android.models.AbsRegion;
+import com.garpr.android.models.AbsTournament;
+import com.garpr.android.models.Avatar;
+import com.garpr.android.models.Match;
+import com.garpr.android.models.Region;
+import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.networking.ServerApiImpl;
 import com.garpr.android.networking.SmashRosterApi;
-import com.garpr.android.preferences.*;
+import com.garpr.android.preferences.GeneralPreferenceStore;
+import com.garpr.android.preferences.GeneralPreferenceStoreImpl;
+import com.garpr.android.preferences.KeyValueStore;
+import com.garpr.android.preferences.KeyValueStoreProvider;
+import com.garpr.android.preferences.KeyValueStoreProviderImpl;
+import com.garpr.android.preferences.RankingsPollingPreferenceStore;
+import com.garpr.android.preferences.RankingsPollingPreferenceStoreImpl;
+import com.garpr.android.preferences.SmashRosterPreferenceStore;
+import com.garpr.android.preferences.SmashRosterPreferenceStoreImpl;
 import com.garpr.android.sync.RankingsPollingSyncManager;
 import com.garpr.android.sync.RankingsPollingSyncManagerImpl;
 import com.garpr.android.sync.SmashRosterSyncManager;
@@ -20,13 +69,14 @@ import com.garpr.android.wrappers.GoogleApiWrapper;
 import com.garpr.android.wrappers.GoogleApiWrapperImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 @Module
 public abstract class BaseAppModule {
@@ -234,13 +284,6 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    PlayerToolbarManager providesPlayerToolbarManager() {
-        return new PlayerToolbarManagerImpl();
-    }
-
-    @NonNull
-    @Provides
-    @Singleton
     PreviousRankUtils providesPreviousRankUtils() {
         return new PreviousRankUtilsImpl();
     }
@@ -344,7 +387,7 @@ public abstract class BaseAppModule {
     Retrofit providesSmashRosterRetrofit(final GsonConverterFactory gsonConverterFactory) {
         return new Retrofit.Builder()
                 .addConverterFactory(gsonConverterFactory)
-                .baseUrl(Constants.SMASH_ROSTER_BASE_PATH)
+                .baseUrl(mSmashRosterBasePath)
                 .build();
     }
 

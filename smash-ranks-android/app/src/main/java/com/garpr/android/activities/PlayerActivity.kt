@@ -19,21 +19,23 @@ import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.*
+import com.garpr.android.models.AbsPlayer
+import com.garpr.android.models.FavoritePlayer
+import com.garpr.android.models.PlayerMatchesBundle
+import com.garpr.android.models.Region
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.MatchItemView
 import com.garpr.android.views.PlayerProfileItemView
-import com.garpr.android.views.toolbars.PlayerToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import kotterknife.bindView
 import javax.inject.Inject
 
 class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
-        MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
-        SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
+        MatchItemView.OnClickListener, Searchable, SearchQueryHandle, SearchToolbar.Listener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private var list: List<Any>? = null
     private lateinit var adapter: PlayerAdapter
@@ -122,9 +124,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 ApiCall(this))
     }
 
-    override val matchesBundle: MatchesBundle?
-        get() = playerMatchesBundle?.matchesBundle
-
     override fun onClick(v: MatchItemView) {
         val player = playerMatchesBundle?.fullPlayer ?: return
         val match = v.match ?: return
@@ -195,7 +194,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override val searchQuery: CharSequence?
-        get() = playerToolbar.searchQuery
+        get() = searchToolbar.searchQuery
 
     private fun setTitleAndSubtitle() {
         if (title.isNotBlank() && subtitle?.isNotBlank() == true) {

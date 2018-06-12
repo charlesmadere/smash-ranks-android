@@ -35,6 +35,10 @@ open class SearchToolbar @JvmOverloads constructor(
         get() = searchMenuItem?.isActionViewExpanded == true
 
     override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
+        if (menu.size() == 0) {
+            inflater.inflate(R.menu.toolbar_search, menu)
+        }
+
         val searchMenuItem = menu.findItem(R.id.miSearch) ?: throw NullPointerException(
                 "searchMenuItem is null")
         searchMenuItem.setOnActionExpandListener(this)
