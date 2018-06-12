@@ -172,6 +172,30 @@ class SmashRosterSyncManagerTest : BaseTest() {
     }
 
     @Test
+    fun testIsSyncing() {
+        assertFalse(smashRosterSyncManager.isSyncing)
+        var didSync = false
+
+        val listener = object : SmashRosterSyncManager.OnSyncListeners {
+            override fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager) {
+                didSync = smashRosterSyncManager.isSyncing
+            }
+
+            override fun onSmashRosterSyncComplete(smashRosterSyncManager: SmashRosterSyncManager) {
+                // intentionally empty
+            }
+        }
+
+        smashRosterSyncManager.addListener(listener)
+        assertFalse(didSync)
+        assertFalse(smashRosterSyncManager.isSyncing)
+
+        smashRosterSyncManager.sync()
+        assertTrue(didSync)
+        assertFalse(smashRosterSyncManager.isSyncing)
+    }
+
+    @Test
     fun testSync() {
         serverApiOverride.jsonGarPrSmashRoster = JSON_GAR_PR_SMASH_ROSTER
         serverApiOverride.jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
