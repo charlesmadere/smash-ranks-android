@@ -180,7 +180,7 @@ class SmashRosterSyncManagerImpl(
     }
 
     override fun sync() {
-        synchronized(_isSyncing) {
+        synchronized (_isSyncing) {
             if (_isSyncing) {
                 return
             } else {
@@ -194,11 +194,11 @@ class SmashRosterSyncManagerImpl(
             threadUtils.runOnBackground(Runnable {
                 performSync()
 
-                threadUtils.runOnUi(Runnable {
-                    synchronized(_isSyncing) {
-                        _isSyncing = false
-                    }
+                synchronized (_isSyncing) {
+                    _isSyncing = false
+                }
 
+                threadUtils.runOnUi(Runnable {
                     notifyListenersOfOnSyncComplete()
                 })
             })
