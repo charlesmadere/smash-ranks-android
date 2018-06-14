@@ -102,6 +102,10 @@
                 android:text="@string/smash_roster"
                 style="@style/SettingsCardTitle" />
 
+            <TextView
+                android:text="@string/smash_roster_polling_description"
+                style="@style/SettingsCardDescription" />
+
             <com.garpr.android.views.SmashRosterSyncPreferenceView
                 android:id="@+id/smashRosterPreferenceView"
                 style="@style/PreferenceView" />
