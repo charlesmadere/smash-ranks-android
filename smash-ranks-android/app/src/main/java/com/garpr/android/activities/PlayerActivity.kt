@@ -1,24 +1,21 @@
 package com.garpr.android.activities
 
+import android.animation.AnimatorSet
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.graphics.Palette
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
-import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.subtitle
-import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.extensions.*
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.*
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.PlayerMatchesBundle
@@ -33,7 +30,7 @@ import com.garpr.android.views.toolbars.SearchToolbar
 import kotterknife.bindView
 import javax.inject.Inject
 
-class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
+class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorListener,
         MatchItemView.OnClickListener, Searchable, SearchQueryHandle, SearchToolbar.Listener,
         SwipeRefreshLayout.OnRefreshListener {
 
@@ -140,6 +137,32 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
         setTitleAndSubtitle()
         fetchPlayerMatchesBundle()
+    }
+
+    override fun onPaletteBuilt(palette: Palette?) {
+        if (!isAlive) {
+            return
+        }
+
+        val toolbarBackgroundFallback = getAttrColor(R.attr.colorPrimary)
+        val statusBarBackgroundFallback = getAttrColor(R.attr.colorPrimaryDark)
+
+        val toolbarBackground = palette?.getDarkVibrantColor(toolbarBackgroundFallback)
+                ?: toolbarBackgroundFallback
+        val statusBarBackground = palette?.getDarkMutedColor(statusBarBackgroundFallback)
+                ?: statusBarBackgroundFallback
+
+        val toolbarAnimator = AnimationUtils.createArgbValueAnimator(
+                toolbar?.background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
+
+        val statusBarAnimator = AnimationUtils.createArgbValueAnimator(
+                window.statusBarColorCompat ?: statusBarBackgroundFallback, statusBarBackground)
+
+        val animatorSet = AnimatorSet()
+        animatorSet.duration = resources.getInteger(R.integer.color_animation_duration).toLong()
+        animatorSet.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
+        animatorSet.playTogether(toolbarAnimator, statusBarAnimator)
+        animatorSet.start()
     }
 
     override fun onRefresh() {
