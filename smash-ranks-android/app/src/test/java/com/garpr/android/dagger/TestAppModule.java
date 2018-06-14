@@ -3,13 +3,19 @@ package com.garpr.android.dagger;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.garpr.android.misc.*;
+import com.garpr.android.misc.CrashlyticsWrapper;
+import com.garpr.android.misc.DeviceUtils;
+import com.garpr.android.misc.TestDeviceUtilsImpl;
+import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Singleton;
 
@@ -92,6 +98,14 @@ public class TestAppModule extends BaseAppModule {
     @Singleton
     ThreadUtils providesThreadUtils() {
         return new ThreadUtils() {
+            private final ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+
+            @NotNull
+            @Override
+            public ExecutorService getExecutorService() {
+                return mExecutorService;
+            }
+
             @Override
             public void run(@NotNull final Task task) {
                 task.onBackground();

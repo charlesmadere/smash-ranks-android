@@ -10,11 +10,10 @@ class ThreadUtilsImpl(
         isLowRamDevice: Boolean
 ) : ThreadUtils {
 
-    private val mExecutorService: ExecutorService = Executors.newFixedThreadPool(
+    override val executorService: ExecutorService = Executors.newFixedThreadPool(
             if (isLowRamDevice) 2 else 3)
 
-    private val mMainHandler: Handler = Handler(Looper.getMainLooper())
-
+    private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     override fun run(task: ThreadUtils.Task) {
         runOnBackground(Runnable {
@@ -27,11 +26,11 @@ class ThreadUtilsImpl(
     }
 
     override fun runOnBackground(task: Runnable) {
-        mExecutorService.submit(task)
+        executorService.submit(task)
     }
 
     override fun runOnUi(task: Runnable) {
-        mMainHandler.post(task)
+        mainHandler.post(task)
     }
 
 }
