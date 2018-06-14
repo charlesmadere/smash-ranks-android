@@ -27,7 +27,7 @@ object AnimationUtils {
     }
 
     // evaluators
-    val ARGB_EVALUATOR by lazy { ArgbEvaluator() }
+    private val ARGB_EVALUATOR by lazy { ArgbEvaluator() }
 
     // interpolators
     val ACCELERATE_DECELERATE_INTERPOLATOR by lazy { AccelerateDecelerateInterpolator() }
