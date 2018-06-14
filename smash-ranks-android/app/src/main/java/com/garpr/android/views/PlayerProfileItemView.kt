@@ -197,7 +197,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         if (presentation.avatar.isNullOrBlank()) {
             avatar.visibility = View.GONE
         } else {
-//            avatar.setImageURI(presentation.avatar)
+            avatar.setImageURI(presentation.avatar)
             avatar.visibility = View.VISIBLE
         }
 
