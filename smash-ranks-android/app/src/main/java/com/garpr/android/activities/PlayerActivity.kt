@@ -154,9 +154,15 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
 
         val toolbarAnimator = AnimationUtils.createArgbValueAnimator(
                 toolbar?.background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
+        toolbarAnimator.addUpdateListener {
+            toolbar?.setBackgroundColor(it.animatedValue as Int)
+        }
 
         val statusBarAnimator = AnimationUtils.createArgbValueAnimator(
                 window.statusBarColorCompat ?: statusBarBackgroundFallback, statusBarBackground)
+        statusBarAnimator.addUpdateListener {
+            window.statusBarColorCompat = it.animatedValue as Int
+        }
 
         val animatorSet = AnimatorSet()
         animatorSet.duration = resources.getInteger(R.integer.color_animation_duration).toLong()
