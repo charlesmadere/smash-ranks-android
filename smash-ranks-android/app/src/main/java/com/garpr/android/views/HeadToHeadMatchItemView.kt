@@ -85,7 +85,7 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
         val items = arrayOf(match.player.name, match.opponent.name)
 
         AlertDialog.Builder(context)
-                .setItems(items, { dialog, which ->
+                .setItems(items) { dialog, which ->
                     when (which) {
                         0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
                                 match.player, regionManager.getRegion(context)))
@@ -95,7 +95,7 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
 
                         else -> throw RuntimeException("illegal which: $which")
                     }
-                })
+                }
                 .setTitle(R.string.view)
                 .show()
     }
