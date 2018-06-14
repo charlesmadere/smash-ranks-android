@@ -38,6 +38,7 @@ class SmashCharacterTest : BaseTest() {
         private const val JSON_GRENINJA = "\"grn\""
         private const val JSON_ICE_CLIMBERS = "\"ics\""
         private const val JSON_IKE = "\"ike\""
+        private const val JSON_INKLING = "\"ink\""
         private const val JSON_JIGGLYPUFF = "\"puf\""
         private const val JSON_KIRBY = "\"kby\""
         private const val JSON_KING_DEDEDE = "\"ddd\""
@@ -64,6 +65,7 @@ class SmashCharacterTest : BaseTest() {
         private const val JSON_PIKACHU = "\"pik\""
         private const val JSON_PIT = "\"pit\""
         private const val JSON_POKEMON_TRAINER = "\"pkt\""
+        private const val JSON_RIDLEY = "\"rid\""
         private const val JSON_ROB = "\"rob\""
         private const val JSON_ROBIN = "\"rbn\""
         private const val JSON_ROSALINA = "\"ros\""
@@ -209,6 +211,12 @@ class SmashCharacterTest : BaseTest() {
     fun testIke() {
         assertEquals(JSON_IKE, gson.toJson(SmashCharacter.IKE))
         assertEquals(SmashCharacter.IKE, gson.fromJson(JSON_IKE, SmashCharacter::class.java))
+    }
+
+    @Test
+    fun testInkling() {
+        assertEquals(JSON_INKLING, gson.toJson(SmashCharacter.INKLING))
+        assertEquals(SmashCharacter.INKLING, gson.fromJson(JSON_INKLING, SmashCharacter::class.java))
     }
 
     @Test
@@ -375,6 +383,12 @@ class SmashCharacterTest : BaseTest() {
     fun testPokemonTrainer() {
         assertEquals(JSON_POKEMON_TRAINER, gson.toJson(SmashCharacter.POKEMON_TRAINER))
         assertEquals(SmashCharacter.POKEMON_TRAINER, gson.fromJson(JSON_POKEMON_TRAINER, SmashCharacter::class.java))
+    }
+
+    @Test
+    fun testRidley() {
+        assertEquals(JSON_RIDLEY, gson.toJson(SmashCharacter.RIDLEY))
+        assertEquals(SmashCharacter.RIDLEY, gson.fromJson(JSON_RIDLEY, SmashCharacter::class.java))
     }
 
     @Test

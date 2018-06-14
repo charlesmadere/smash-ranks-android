@@ -68,6 +68,9 @@ enum class SmashCharacter(
     @SerializedName("ike")
     IKE(R.string.ike),
 
+    @SerializedName("ink")
+    INKLING(R.string.inkling),
+
     @SerializedName("ivy")
     IVYSAUR(R.string.ivysaur),
 
@@ -148,6 +151,9 @@ enum class SmashCharacter(
 
     @SerializedName("pkt")
     POKEMON_TRAINER(R.string.pokemon_trainer),
+
+    @SerializedName("rid")
+    RIDLEY(R.string.ridley),
 
     @SerializedName("rob")
     ROB(R.string.rob),
