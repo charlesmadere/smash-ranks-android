@@ -26,6 +26,7 @@ import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.NavigationBarSpace;
+import com.garpr.android.views.PaletteSimpleDraweeView;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.PlayerProfileItemView;
 import com.garpr.android.views.PlayersLayout;
@@ -95,6 +96,7 @@ public interface AppComponent {
     void inject(LastPollPreferenceView view);
     void inject(MatchItemView view);
     void inject(NavigationBarSpace view);
+    void inject(PaletteSimpleDraweeView view);
     void inject(PlayerItemView view);
     void inject(PlayerProfileItemView view);
     void inject(PlayersLayout view);

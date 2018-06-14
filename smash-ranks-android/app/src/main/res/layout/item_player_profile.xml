@@ -10,7 +10,7 @@
     android:paddingStart="@dimen/root_padding"
     android:paddingTop="@dimen/root_padding_half">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <com.garpr.android.views.PaletteSimpleDraweeView
         android:contentDescription="@string/avatar"
         android:elevation="@dimen/elevation_half"
         android:id="@+id/sdvAvatar"
