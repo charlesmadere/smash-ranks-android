@@ -60,8 +60,8 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
     }
 
     override fun setImageURI(uriString: String?) {
-        val uri = if (uriString.isNullOrBlank() && !deviceUtils.hasLowRam &&
-                context.activity is ColorListener) null else Uri.parse(uriString)
+        val uri = if (uriString?.isNotBlank() == true && !deviceUtils.hasLowRam &&
+                context.activity is ColorListener) Uri.parse(uriString) else null
 
         if (uri == null) {
             super.setImageURI(uriString)
