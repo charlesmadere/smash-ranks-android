@@ -2,20 +2,27 @@ package com.garpr.android.views.toolbars
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
+import android.support.annotation.ColorInt
 import android.support.v4.view.ViewCompat
+import android.support.v7.graphics.Palette
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.util.SparseBooleanArray
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.Window
 import com.garpr.android.R
+import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.statusBarColorCompat
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Refreshable
 
 abstract class MenuToolbar @JvmOverloads constructor(
@@ -65,6 +72,42 @@ abstract class MenuToolbar @JvmOverloads constructor(
 
     init {
         parseAttributes(attrs)
+    }
+
+    fun animateBackgroundToPalette(window: Window, palette: Palette?) {
+        val toolbarBackgroundFallback = context.getAttrColor(R.attr.colorPrimary)
+        val statusBarBackgroundFallback = context.getAttrColor(R.attr.colorPrimaryDark)
+
+        @ColorInt val toolbarBackground: Int
+        @ColorInt val statusBarBackground: Int
+
+        val swatch = palette?.darkVibrantSwatch ?: palette?.darkMutedSwatch
+
+        if (swatch == null) {
+            toolbarBackground = toolbarBackgroundFallback
+            statusBarBackground = statusBarBackgroundFallback
+        } else {
+            toolbarBackground = swatch.rgb
+            statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground, 0.8f)
+        }
+
+        val toolbarAnimator = AnimationUtils.createArgbValueAnimator(
+                background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
+        toolbarAnimator.addUpdateListener {
+            setBackgroundColor(it.animatedValue as Int)
+        }
+
+        val statusBarAnimator = AnimationUtils.createArgbValueAnimator(
+                window.statusBarColorCompat ?: statusBarBackgroundFallback, statusBarBackground)
+        statusBarAnimator.addUpdateListener {
+            window.statusBarColorCompat = it.animatedValue as Int
+        }
+
+        val animatorSet = AnimatorSet()
+        animatorSet.duration = resources.getInteger(R.integer.color_animation_duration).toLong()
+        animatorSet.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
+        animatorSet.playTogether(toolbarAnimator, statusBarAnimator)
+        animatorSet.start()
     }
 
     private fun createSparseMenuItemsArray() {

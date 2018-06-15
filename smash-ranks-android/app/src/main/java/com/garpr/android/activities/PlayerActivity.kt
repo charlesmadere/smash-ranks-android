@@ -1,6 +1,5 @@
 package com.garpr.android.activities
 
-import android.animation.AnimatorSet
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +10,9 @@ import android.text.TextUtils
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
-import com.garpr.android.extensions.*
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.subtitle
+import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
@@ -140,35 +141,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     }
 
     override fun onPaletteBuilt(palette: Palette?) {
-        if (!isAlive) {
-            return
+        if (isAlive) {
+            searchToolbar.animateBackgroundToPalette(window, palette)
         }
-
-        val toolbarBackgroundFallback = getAttrColor(R.attr.colorPrimary)
-        val statusBarBackgroundFallback = getAttrColor(R.attr.colorPrimaryDark)
-
-        val toolbarBackground = palette?.getDarkVibrantColor(toolbarBackgroundFallback)
-                ?: toolbarBackgroundFallback
-        val statusBarBackground = palette?.getDarkMutedColor(statusBarBackgroundFallback)
-                ?: statusBarBackgroundFallback
-
-        val toolbarAnimator = AnimationUtils.createArgbValueAnimator(
-                toolbar?.background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
-        toolbarAnimator.addUpdateListener {
-            toolbar?.setBackgroundColor(it.animatedValue as Int)
-        }
-
-        val statusBarAnimator = AnimationUtils.createArgbValueAnimator(
-                window.statusBarColorCompat ?: statusBarBackgroundFallback, statusBarBackground)
-        statusBarAnimator.addUpdateListener {
-            window.statusBarColorCompat = it.animatedValue as Int
-        }
-
-        val animatorSet = AnimatorSet()
-        animatorSet.duration = resources.getInteger(R.integer.color_animation_duration).toLong()
-        animatorSet.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
-        animatorSet.playTogether(toolbarAnimator, statusBarAnimator)
-        animatorSet.start()
     }
 
     override fun onRefresh() {
