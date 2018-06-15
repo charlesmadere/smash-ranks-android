@@ -7,22 +7,20 @@ import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.TextViewCompat
+import android.support.v7.graphics.Palette
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.facebook.drawee.view.SimpleDraweeView
 import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.extensions.requireActivity
-import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.extensions.*
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.PlayerProfileManager
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
@@ -31,7 +29,7 @@ import com.garpr.android.sync.SmashRosterSyncManager
 import kotterknife.bindView
 import javax.inject.Inject
 
-class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>,
+class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>, ColorListener,
         FavoritePlayersManager.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener, Refreshable,
         SmashRosterSyncManager.OnSyncListeners {
@@ -56,7 +54,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
-    private val avatar: SimpleDraweeView by bindView(R.id.sdvAvatar)
+    private val avatar: PaletteSimpleDraweeView by bindView(R.id.psdvAvatar)
     private val aliases: TextView by bindView(R.id.tvAliases)
     private val favoriteOrUnfavorite: TintedTextView by bindView(R.id.tvFavoriteOrUnfavorite)
     private val mains: TextView by bindView(R.id.tvMains)
@@ -88,6 +86,16 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
             field = value
             refresh()
         }
+
+    private fun applyPaletteToView(palette: Palette?, view: View?) {
+        if (view is ColorListener) {
+            view.onPaletteBuilt(palette)
+        } else if (view is ViewGroup) {
+            repeat(view.childCount) {
+                applyPaletteToView(palette, view.getChildAt(it))
+            }
+        }
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -126,6 +134,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
 
+        avatar.colorListener = this
         avatar.hierarchy.apply {
             val placeholderImage = MiscUtils.tintDrawable(ContextCompat.getDrawable(context,
                     R.drawable.controller_placeholder),
@@ -175,6 +184,14 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     override fun onIdentityChange(identityManager: IdentityManager) {
         if (isAlive) {
             refresh()
+        }
+    }
+
+    override fun onPaletteBuilt(palette: Palette?) {
+        (context.activity as? ColorListener)?.onPaletteBuilt(palette)
+
+        repeat(childCount) {
+            applyPaletteToView(palette, getChildAt(it))
         }
     }
 

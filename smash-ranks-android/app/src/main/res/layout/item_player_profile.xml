@@ -13,7 +13,7 @@
     <com.garpr.android.views.PaletteSimpleDraweeView
         android:contentDescription="@string/avatar"
         android:elevation="@dimen/elevation_half"
-        android:id="@+id/sdvAvatar"
+        android:id="@+id/psdvAvatar"
         android:layout_gravity="center_horizontal"
         android:layout_height="@dimen/avatar_size"
         android:layout_marginBottom="@dimen/root_padding_half"
