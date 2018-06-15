@@ -24,6 +24,8 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SimpleDraweeView(context, attrs) {
 
+    var colorListener: ColorListener? = null
+
     @Inject
     protected lateinit var deviceUtils: DeviceUtils
 
@@ -34,7 +36,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
     private val bitmapSubscriber = object : BaseBitmapDataSubscriber() {
         override fun onFailureImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
             threadUtils.runOnUi(Runnable {
-                (context.activity as? ColorListener)?.onPaletteBuilt(null)
+                notifyListener(null)
             })
         }
 
@@ -46,9 +48,14 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
             }
 
             threadUtils.runOnUi(Runnable {
-                (context.activity as? ColorListener)?.onPaletteBuilt(palette)
+                notifyListener(palette)
             })
         }
+    }
+
+    private fun notifyListener(palette: Palette?) {
+        colorListener?.onPaletteBuilt(palette) ?:
+                (context.activity as? ColorListener)?.onPaletteBuilt(palette)
     }
 
     override fun onFinishInflate() {
@@ -65,6 +72,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
 
         if (uri == null) {
             super.setImageURI(uriString)
+            notifyListener(null)
             return
         }
 
