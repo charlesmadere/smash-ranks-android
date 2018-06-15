@@ -2,16 +2,18 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.support.annotation.ColorInt
+import android.support.v7.graphics.Palette
 import android.util.AttributeSet
 import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.setTintedImageColor
+import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 
 class TintedImageView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleImageView(context, attrs), Refreshable {
+) : LifecycleImageView(context, attrs), ColorListener, Refreshable {
 
     @ColorInt
     private var drawableTintColor: Int = 0
@@ -24,6 +26,10 @@ class TintedImageView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
         refresh()
+    }
+
+    override fun onPaletteBuilt(palette: Palette?) {
+        setTintedImageColor(palette?.mutedSwatch?.rgb ?: drawableTintColor)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
