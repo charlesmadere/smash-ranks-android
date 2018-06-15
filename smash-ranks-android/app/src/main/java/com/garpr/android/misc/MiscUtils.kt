@@ -2,6 +2,7 @@ package com.garpr.android.misc
 
 import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
+import android.support.v4.graphics.ColorUtils
 import android.support.v4.graphics.drawable.DrawableCompat
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -13,6 +14,14 @@ object MiscUtils {
 
     init {
         DECIMAL_FORMAT.minimumFractionDigits = 3
+    }
+
+    @ColorInt
+    fun brightenOrDarkenColor(@ColorInt color: Int, factor: Float): Int {
+        val array = FloatArray(3)
+        ColorUtils.colorToHSL(color, array)
+        array[2] = array[2] * factor
+        return ColorUtils.HSLToColor(array)
     }
 
     fun hashCode(vararg objects: Any?): Int {
