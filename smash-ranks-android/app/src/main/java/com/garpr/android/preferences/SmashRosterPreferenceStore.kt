@@ -6,6 +6,8 @@ interface SmashRosterPreferenceStore : PreferenceStore {
 
     val enabled: Preference<Boolean>
 
+    val hajimeteSync: Preference<Boolean>
+
     val syncResult: Preference<SmashRosterSyncResult>
 
 }

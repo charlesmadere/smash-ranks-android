@@ -87,6 +87,12 @@ class SmashRosterSyncManagerImpl(
 
         jobDispatcher.mustSchedule(jobBuilder.build())
         timber.d(TAG, "sync has been enabled")
+
+        if (smashRosterPreferenceStore.hajimeteSync.get() == true) {
+            smashRosterPreferenceStore.hajimeteSync.set(false)
+            timber.d(TAG, "hajimete sync")
+            sync()
+        }
     }
 
     override fun enableOrDisable() {
@@ -187,6 +193,8 @@ class SmashRosterSyncManagerImpl(
                 _isSyncing = true
             }
         }
+
+        timber.d(TAG, "syncing now...")
 
         threadUtils.runOnUi(Runnable {
             notifyListenersOfOnSyncBegin()

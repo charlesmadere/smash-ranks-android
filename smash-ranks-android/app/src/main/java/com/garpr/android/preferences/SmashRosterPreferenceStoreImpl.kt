@@ -13,6 +13,9 @@ class SmashRosterPreferenceStoreImpl(
     override val enabled by lazy { PersistentBooleanPreference("ENABLED", true,
             keyValueStore) }
 
+    override val hajimeteSync by lazy { PersistentBooleanPreference("HAJIMETE_SYNC", true,
+        keyValueStore) }
+
     override val syncResult by lazy { PersistentGsonPreference<SmashRosterSyncResult>("SYNC_RESULT",
             null, keyValueStore, SmashRosterSyncResult::class.java, gson) }
 
