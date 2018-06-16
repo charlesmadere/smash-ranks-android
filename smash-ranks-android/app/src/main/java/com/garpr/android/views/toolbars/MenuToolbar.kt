@@ -34,7 +34,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
     private val sparseMenuItemsArray = SparseBooleanArray()
 
 
-    // begin Animation Variables
+    // begin animation Variables
     private val animationDuration: Long by lazy {
         resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
     }
@@ -56,6 +56,12 @@ abstract class MenuToolbar @JvmOverloads constructor(
     private var outTitleAnimation: ValueAnimator? = null
     private var outSubtitleAnimation: ValueAnimator? = null
 
+    private val backgroundAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
+        ValueAnimator.AnimatorUpdateListener {
+            setBackgroundColor(it.animatedValue as Int)
+        }
+    }
+
     private val titleAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
         ValueAnimator.AnimatorUpdateListener {
             setTitleTextColor(it.animatedValue as Int)
@@ -67,8 +73,11 @@ abstract class MenuToolbar @JvmOverloads constructor(
             setSubtitleTextColor(it.animatedValue as Int)
         }
     }
-    // end Animation Variables
+    // end animation Variables
 
+    companion object {
+        private const val STATUS_BAR_DARKEN_FACTOR = 0.8f
+    }
 
     init {
         parseAttributes(attrs)
@@ -88,14 +97,12 @@ abstract class MenuToolbar @JvmOverloads constructor(
             statusBarBackground = statusBarBackgroundFallback
         } else {
             toolbarBackground = swatch.rgb
-            statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground, 0.8f)
+            statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground, STATUS_BAR_DARKEN_FACTOR)
         }
 
         val toolbarAnimator = AnimationUtils.createArgbValueAnimator(
                 background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
-        toolbarAnimator.addUpdateListener {
-            setBackgroundColor(it.animatedValue as Int)
-        }
+        toolbarAnimator.addUpdateListener(backgroundAnimatorUpdateListener)
 
         val statusBarAnimator = AnimationUtils.createArgbValueAnimator(
                 window.statusBarColorCompat ?: statusBarBackgroundFallback, statusBarBackground)
