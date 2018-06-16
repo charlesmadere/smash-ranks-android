@@ -69,6 +69,7 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     private val youTube: TextView by bindView(R.id.tvYouTube)
     private val unadjustedRating: TextView by bindView(R.id.tvUnadjustedRating)
     private val viewYourselfVsThisOpponent: TextView by bindView(R.id.tvViewYourselfVsThisOpponent)
+    private val websitesDivider: View by bindView(R.id.websitesDivider)
     private val websites: ViewGroup by bindView(R.id.vgWebsites)
 
 
@@ -283,8 +284,10 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
             }
 
             websites.visibility = View.VISIBLE
+            websitesDivider.visibility = View.VISIBLE
         } else {
             websites.visibility = View.GONE
+            websitesDivider.visibility = View.GONE
         }
 
         if (presentation.isAddToFavoritesVisible) {

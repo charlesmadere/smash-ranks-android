@@ -130,15 +130,18 @@
 
     <View
         android:background="?android:attr/listDivider"
+        android:id="@+id/websitesDivider"
         android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/root_padding"
         android:layout_marginTop="@dimen/root_padding"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <TextView
         android:ellipsize="end"
         android:id="@+id/tvRegion"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:maxLines="2"
         android:textColor="?android:attr/textColorPrimary"
