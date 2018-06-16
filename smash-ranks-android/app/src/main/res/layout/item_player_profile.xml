@@ -31,6 +31,7 @@
 
     <TextView
         android:ellipsize="end"
+        android:fontFamily="@font/nunito_semibold"
         android:gravity="center"
         android:id="@+id/tvTag"
         android:layout_gravity="center_horizontal"
@@ -43,8 +44,7 @@
         app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
         app:autoSizeMinTextSize="@dimen/text_size_xlarge"
         app:autoSizeTextType="uniform"
-        tools:text="Mang0"
-        style="@style/MediumOrBoldText" />
+        tools:text="Mang0" />
 
     <TextView
         android:ellipsize="end"

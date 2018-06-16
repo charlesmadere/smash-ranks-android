@@ -8,7 +8,8 @@
 
     <TextView
         android:ellipsize="end"
-        android:gravity="bottom"
+        android:fontFamily="@font/nunito_semibold"
+        android:gravity="center_vertical"
         android:id="@+id/tvName"
         android:layout_height="128dp"
         android:layout_marginEnd="@dimen/root_padding"
@@ -18,8 +19,7 @@
         app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
         app:autoSizeMinTextSize="@dimen/text_size_xlarge"
         app:autoSizeTextType="uniform"
-        tools:text="Melee @ the Made #32"
-        style="@style/MediumOrBoldText" />
+        tools:text="Melee @ the Made #32" />
 
     <TextView
         android:id="@+id/tvRegion"
