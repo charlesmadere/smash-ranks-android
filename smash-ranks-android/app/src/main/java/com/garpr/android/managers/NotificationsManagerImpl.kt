@@ -74,7 +74,8 @@ class NotificationsManagerImpl(
         val builder = impl.createBuilder(application)
 
         builder.setContentIntent(PendingIntent.getActivity(application, 0,
-                HomeActivity.getLaunchIntent(application), PendingIntent.FLAG_UPDATE_CURRENT))
+                HomeActivity.getLaunchIntent(context = application, restartActivityTask = true),
+                PendingIntent.FLAG_UPDATE_CURRENT))
 
         val regionDisplayName = regionManager.getRegion().displayName
         builder.setContentText(application.getString(R.string.x_rankings_have_been_updated,

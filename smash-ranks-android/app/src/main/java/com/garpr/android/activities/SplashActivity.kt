@@ -31,7 +31,7 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
         timber.d(TAG, "starting HomeActivity...")
 
         generalPreferenceStore.hajimeteKimasu.set(false)
-        startActivity(HomeActivity.getLaunchIntent(context = this, restartActivityTask = false))
+        startActivity(HomeActivity.getLaunchIntent(this))
         finish()
     }
 

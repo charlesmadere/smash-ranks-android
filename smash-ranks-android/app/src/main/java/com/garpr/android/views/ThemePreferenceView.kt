@@ -59,7 +59,7 @@ class ThemePreferenceView @JvmOverloads constructor(
             refresh()
 
             AppCompatDelegate.setDefaultNightMode(selected.themeValue)
-            context.startActivity(HomeActivity.getLaunchIntent(context))
+            context.startActivity(HomeActivity.getLaunchIntent(context = context, restartActivityTask = true))
         })
     }
 
