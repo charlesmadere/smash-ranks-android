@@ -89,7 +89,6 @@ class SmashRosterSyncManagerImpl(
         timber.d(TAG, "sync has been enabled")
 
         if (smashRosterPreferenceStore.hajimeteSync.get() == true) {
-            smashRosterPreferenceStore.hajimeteSync.set(false)
             timber.d(TAG, "hajimete sync")
             sync()
         }
@@ -194,6 +193,7 @@ class SmashRosterSyncManagerImpl(
             }
         }
 
+        smashRosterPreferenceStore.hajimeteSync.set(false)
         timber.d(TAG, "syncing now...")
 
         threadUtils.runOnUi(Runnable {
