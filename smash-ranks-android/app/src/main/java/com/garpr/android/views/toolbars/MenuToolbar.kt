@@ -76,7 +76,9 @@ abstract class MenuToolbar @JvmOverloads constructor(
     // end animation Variables
 
     companion object {
+        private const val LIGHTNESS_LIMIT = 0.4f
         private const val STATUS_BAR_DARKEN_FACTOR = 0.8f
+        private const val TOO_LIGHT_DARKEN_FACTOR = 0.75f
     }
 
     init {
@@ -87,16 +89,17 @@ abstract class MenuToolbar @JvmOverloads constructor(
         val toolbarBackgroundFallback = context.getAttrColor(R.attr.colorPrimary)
         val statusBarBackgroundFallback = context.getAttrColor(R.attr.colorPrimaryDark)
 
+        val swatch = palette?.darkVibrantSwatch ?: palette?.darkMutedSwatch
+
         @ColorInt val toolbarBackground: Int
         @ColorInt val statusBarBackground: Int
-
-        val swatch = palette?.darkVibrantSwatch ?: palette?.darkMutedSwatch
 
         if (swatch == null) {
             toolbarBackground = toolbarBackgroundFallback
             statusBarBackground = statusBarBackgroundFallback
         } else {
-            toolbarBackground = swatch.rgb
+            toolbarBackground = MiscUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb, TOO_LIGHT_DARKEN_FACTOR,
+                LIGHTNESS_LIMIT)
             statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground, STATUS_BAR_DARKEN_FACTOR)
         }
 

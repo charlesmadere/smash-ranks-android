@@ -24,6 +24,15 @@ object MiscUtils {
         return ColorUtils.HSLToColor(hsl)
     }
 
+    @ColorInt
+    fun brightenOrDarkenColorIfLightnessIs(@ColorInt color: Int, factor: Float, lightness: Float): Int {
+        return if (isColorLightness(color, lightness)) {
+            brightenOrDarkenColor(color, factor)
+        } else {
+            color
+        }
+    }
+
     fun hashCode(vararg objects: Any?): Int {
         if (objects.isEmpty()) {
             return 0
@@ -42,10 +51,10 @@ object MiscUtils {
         return result
     }
 
-    fun isColorCloserToWhite(@ColorInt color: Int): Boolean {
+    fun isColorLightness(@ColorInt color: Int, lightness: Float): Boolean {
         val hsl = FloatArray(3)
         ColorUtils.colorToHSL(color, hsl)
-        return hsl[2] >= 0.5f
+        return hsl[2] >= lightness
     }
 
     fun tintDrawable(drawable: Drawable?, @ColorInt color: Int): Drawable? {

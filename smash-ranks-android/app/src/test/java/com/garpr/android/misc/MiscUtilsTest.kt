@@ -11,6 +11,18 @@ import org.robolectric.RobolectricTestRunner
 class MiscUtilsTest : BaseTest() {
 
     @Test
+    fun testBrightenOrDarkenColorIfLightnessIsWithBlack() {
+        val color = MiscUtils.brightenOrDarkenColorIfLightnessIs(Color.BLACK, 0f, 0f)
+        assertEquals(Color.BLACK, color)
+    }
+
+    @Test
+    fun testBrightenOrDarkenColorIfLightnessIsWithWhite() {
+        val color = MiscUtils.brightenOrDarkenColorIfLightnessIs(Color.WHITE, 0f, 0f)
+        assertEquals(Color.BLACK, color)
+    }
+
+    @Test
     fun testHashCodeDouble() {
         val double: Double = Math.PI
         assertEquals(double.hashCode(), MiscUtils.hashCode(double))
@@ -29,23 +41,27 @@ class MiscUtilsTest : BaseTest() {
     }
 
     @Test
-    fun testIsColorCloserToWhiteWithBlack() {
-        assertFalse(MiscUtils.isColorCloserToWhite(Color.BLACK))
+    fun testIsColorLightnessWithBlack() {
+        assertTrue(MiscUtils.isColorLightness(Color.BLACK, 0f))
+        assertFalse(MiscUtils.isColorLightness(Color.BLACK, 1f))
     }
 
     @Test
-    fun testIsColorCloserToWhiteWithDarkGray() {
-        assertFalse(MiscUtils.isColorCloserToWhite(Color.DKGRAY))
+    fun testIsColorLightnessWithDarkGray() {
+        assertTrue(MiscUtils.isColorLightness(Color.DKGRAY, 0f))
+        assertFalse(MiscUtils.isColorLightness(Color.DKGRAY, 1f))
     }
 
     @Test
-    fun testIsColorCloserToWhiteWithLightGray() {
-        assertTrue(MiscUtils.isColorCloserToWhite(Color.LTGRAY))
+    fun testIsColorLightnessWithLightGray() {
+        assertTrue(MiscUtils.isColorLightness(Color.LTGRAY, 0f))
+        assertFalse(MiscUtils.isColorLightness(Color.LTGRAY, 1f))
     }
 
     @Test
-    fun testIsColorCloserToWhiteWithWhite() {
-        assertTrue(MiscUtils.isColorCloserToWhite(Color.WHITE))
+    fun testIsColorLightnessWithWhite() {
+        assertTrue(MiscUtils.isColorLightness(Color.WHITE, 0f))
+        assertTrue(MiscUtils.isColorLightness(Color.WHITE, 1f))
     }
 
     @Test
