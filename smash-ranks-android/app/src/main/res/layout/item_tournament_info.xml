@@ -24,12 +24,12 @@
     <TextView
         android:id="@+id/tvRegion"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/root_padding"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_small"
-        tools:text="@string/norcal" />
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="@string/norcal"
+        style="@style/MediumOrBoldText" />
 
     <TextView
         android:id="@+id/tvDate"
@@ -37,7 +37,6 @@
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
-        android:textColor="?android:attr/textColorPrimary"
         tools:text="November 28, 1989" />
 
     <TextView
@@ -47,7 +46,6 @@
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/text_size_small"
         tools:text="1,024 entrants" />
 
     <LinearLayout
