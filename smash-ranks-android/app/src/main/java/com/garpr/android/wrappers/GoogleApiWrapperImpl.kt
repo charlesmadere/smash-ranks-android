@@ -39,10 +39,10 @@ class GoogleApiWrapperImpl(
             timber.w(TAG, "Error occurred when retrieving Google Play Services package info", e)
         }
 
-        val versionCode = if (pi == null) "n/a" else pi.versionCode.toString()
+        val versionCode = pi?.versionCode?.toString() ?: "n/a"
         crashlyticsWrapper.setString("gms_version_code", versionCode)
 
-        val versionName = if (pi == null) "n/a" else pi.versionName
+        val versionName = pi?.versionName ?: "n/a"
         crashlyticsWrapper.setString("gms_version_name", versionName)
     }
 
