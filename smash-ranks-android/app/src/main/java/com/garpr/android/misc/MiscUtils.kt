@@ -18,10 +18,10 @@ object MiscUtils {
 
     @ColorInt
     fun brightenOrDarkenColor(@ColorInt color: Int, factor: Float): Int {
-        val array = FloatArray(3)
-        ColorUtils.colorToHSL(color, array)
-        array[2] = array[2] * factor
-        return ColorUtils.HSLToColor(array)
+        val hsl = FloatArray(3)
+        ColorUtils.colorToHSL(color, hsl)
+        hsl[2] = hsl[2] * factor
+        return ColorUtils.HSLToColor(hsl)
     }
 
     fun hashCode(vararg objects: Any?): Int {
