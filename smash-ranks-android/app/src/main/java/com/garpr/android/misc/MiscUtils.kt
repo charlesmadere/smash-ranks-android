@@ -42,6 +42,12 @@ object MiscUtils {
         return result
     }
 
+    fun isColorCloserToWhite(@ColorInt color: Int): Boolean {
+        val hsl = FloatArray(3)
+        ColorUtils.colorToHSL(color, hsl)
+        return hsl[2] >= 0.5f
+    }
+
     fun tintDrawable(drawable: Drawable?, @ColorInt color: Int): Drawable? {
         return if (drawable == null) {
             null
