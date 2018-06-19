@@ -15,7 +15,7 @@
     <string name="cancel_all">Cancel all</string>
     <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
-    <string name="ick_to_open_form">Click to open form</string>
+    <string name="click_to_open_form">Click to open form</string>
     <string name="compare">Compare</string>
     <string name="contribute_your_changes">Contribute your changes!</string>
     <string name="customize_identity">Customize identity</string>

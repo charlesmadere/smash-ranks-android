@@ -111,7 +111,11 @@
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
-                />
+                android:id="@+id/smashRosterFormLink"
+                app:descriptionText="@string/click_to_open_form"
+                app:icon="@drawable/ic_list_numbered_white_24"
+                app:titleText="@string/submit_your_own_profile_to_the_roster"
+                style="@style/PreferenceView" />
 
             <include
                 layout="@layout/divider" />

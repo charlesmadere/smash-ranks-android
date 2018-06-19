@@ -28,6 +28,7 @@ object Constants {
 
     // Smash Roster Paths
     const val SMASH_ROSTER_BASE_PATH = "https://s3-us-west-1.amazonaws.com/smash-ranks-android-players/"
+    const val SMASH_ROSTER_FORM_URL = "https://goo.gl/forms/UrNp2PVF1iQdPfFD3"
 
     // URLs
     const val CHARLES_TWITTER_URL = "https://twitter.com/charlesmadere"
