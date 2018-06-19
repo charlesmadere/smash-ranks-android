@@ -110,6 +110,9 @@
                 android:id="@+id/smashRosterPreferenceView"
                 style="@style/PreferenceView" />
 
+            <com.garpr.android.views.SimplePreferenceView
+                />
+
             <include
                 layout="@layout/divider" />
 

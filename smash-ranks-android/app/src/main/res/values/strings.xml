@@ -15,6 +15,7 @@
     <string name="cancel_all">Cancel all</string>
     <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
+    <string name="ick_to_open_form">Click to open form</string>
     <string name="compare">Compare</string>
     <string name="contribute_your_changes">Contribute your changes!</string>
     <string name="customize_identity">Customize identity</string>
@@ -120,6 +121,7 @@
     <string name="smash_roster_sync_status">Smash roster sync status</string>
     <string name="start_using_the_app">Start using the app</string>
     <string name="start_using_the_app_description">You can change your region and identity at any time in Settings</string>
+    <string name="submit_your_own_profile_to_the_roster">Submit your own profile to the roster!</string>
     <string name="swipe_to_refresh_to_check_again">Swipe down to refresh to check again</string>
     <string name="swipe_to_refresh_to_try_again">Swipe down to refresh to try again</string>
     <string name="syncing_now_">Syncing now…</string>

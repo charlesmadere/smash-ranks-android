@@ -65,6 +65,7 @@ class SettingsActivity : BaseActivity() {
     private val gitHub: SimplePreferenceView by bindView(R.id.spvGitHub)
     private val logViewer: SimplePreferenceView by bindView(R.id.spvLogViewer)
     private val tsuaiiTwitter: SimplePreferenceView by bindView(R.id.spvTsuaiiTwitter)
+    private val smashRosterFormLink: SimplePreferenceView by bindView(R.id.smashRosterFormLink)
     private val smashRosterPreferenceView: SmashRosterSyncPreferenceView by bindView(R.id.smashRosterPreferenceView)
     private val googlePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
     private val themePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
@@ -172,6 +173,10 @@ class SettingsActivity : BaseActivity() {
 
         googlePlayServicesError.setOnClickListener {
             attemptToResolveGooglePlayServicesError()
+        }
+
+        smashRosterFormLink.setOnClickListener {
+            shareUtils.openUrl(this, Constants.SMASH_ROSTER_FORM_URL)
         }
 
         charlesTwitter.setOnClickListener {
