@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.StyleRes
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.TextViewCompat
 import android.support.v7.graphics.Palette
 import android.util.AttributeSet
@@ -15,13 +14,15 @@ import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.extensions.*
+import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.requireActivity
+import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.PlayerProfileManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ColorListener
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.FullPlayer
@@ -136,13 +137,6 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
         identityManager.addListener(this)
 
         avatar.colorListener = this
-        avatar.hierarchy.apply {
-            val placeholderImage = MiscUtils.tintDrawable(ContextCompat.getDrawable(context,
-                    R.drawable.controller_placeholder),
-                    context.getAttrColor(android.R.attr.textColorSecondary))
-            setPlaceholderImage(placeholderImage)
-            setFailureImage(placeholderImage)
-        }
 
         twitter.setOnClickListener {
             presentation?.let { shareUtils.openUrl(context, it.twitter) }
