@@ -22,6 +22,9 @@
     <color name="win_background">#225DA33A</color>
     <color name="white">#FFFFFF</color>
 
+    <!-- only here for sub-v21 compat reasons -->
+    <color name="toolbar_default_text_color">#B3FFFFFF</color>
+
     <array name="spinner_colors">
         <item>@color/blue</item>
         <item>@color/red</item>
