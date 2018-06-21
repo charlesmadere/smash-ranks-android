@@ -27,40 +27,73 @@ class PlayerProfileManagerTest : BaseTest() {
 
 
     companion object {
-        private val FULL_PLAYER_1 = FullPlayer("1", "Imyt", null,
-                null, null)
-
-        private val FULL_PLAYER_2 = FullPlayer("2", "Charlezard", listOf("charles"),
-                null, mapOf(
+        private val CHARLEZARD = FullPlayer(
+                id = "2",
+                name = "Charlezard",
+                aliases = listOf("charles"),
+                ratings = mapOf(
                         "norcal" to Rating(10f, 2f)
-        ))
+                )
+        )
 
-        private val FULL_PLAYER_3 = FullPlayer("3", "Hax", listOf("hax$"),
-                null, mapOf(
-                    "norcal" to Rating(20f, 1.5f),
-                    "nyc" to Rating(25f, 1f)
-        ))
+        private val GAR = FullPlayer(
+                id = "4",
+                name = "gaR",
+                aliases = listOf(),
+                ratings = mapOf(
+                        "norcal" to Rating(20f, 1.5f),
+                        "googlemtv" to Rating(25f, 1f)
+                )
+        )
 
-        private val FULL_PLAYER_4 = FullPlayer("4", "gaR", listOf(),
-                null, mapOf(
-                    "norcal" to Rating(20f, 1.5f),
-                    "googlemtv" to Rating(25f, 1f)
-        ))
+        private val HAX = FullPlayer(
+                id = "3",
+                name = "Hax",
+                aliases = listOf("hax$"),
+                ratings = mapOf(
+                        "norcal" to Rating(20f, 1.5f),
+                        "nyc" to Rating(25f, 1f)
+                )
+        )
 
-        private val REGION_1 = Region(null, null,
-                null, null, "Norcal",
-                "norcal", Endpoint.GAR_PR)
+        private val IMYT = FullPlayer(
+                id = "1",
+                name = "Imyt"
+        )
 
-        private val REGION_2 = Region(null, null,
-                null, null, "New York City",
-                "nyc", Endpoint.NOT_GAR_PR)
+        private val JAREBAIR = FullPlayer(
+                id = "5",
+                name = "jarebair"
+        )
 
-        private val REGION_3 = Region(null, null,
-                null, null, "Atlanta",
-                "atlanta", Endpoint.NOT_GAR_PR)
+        private val ATLANTA = Region(null, null,
+                null, null,
+                "Atlanta", "atlanta", Endpoint.NOT_GAR_PR)
 
-        private val SMASH_ROSTER_1: Map<String, SmashCompetitor> = mapOf(
-                FULL_PLAYER_1.id to SmashCompetitor(
+        private val NORCAL = Region(null, null,
+                null, null,
+                "Norcal", "norcal", Endpoint.GAR_PR)
+
+        private val NYC = Region(null, null,
+                null, null,
+                "New York City", "nyc", Endpoint.NOT_GAR_PR)
+
+        private val GAR_PR_ROSTER: Map<String, SmashCompetitor> = mapOf(
+                CHARLEZARD.id to SmashCompetitor(
+                        mains = listOf(
+                                SmashCharacter.SHEIK
+                        ),
+                        websites = mapOf(
+                                "other" to "https://github.com/charlesmadere",
+                                "twitch" to "https://www.twitch.tv/chillinwithcharles",
+                                "twitter" to "https://twitter.com/charlesmadere"
+                        ),
+                        id = CHARLEZARD.id,
+                        name = "Charles Madere",
+                        tag = CHARLEZARD.name
+                ),
+
+                IMYT.id to SmashCompetitor(
                         mains = listOf(
                                 SmashCharacter.SHEIK,
                                 SmashCharacter.FOX
@@ -69,23 +102,43 @@ class PlayerProfileManagerTest : BaseTest() {
                                 "twitch" to "https://www.twitch.tv/imyt",
                                 "twitter" to "https://twitter.com/OnlyImyt"
                         ),
-                        id = FULL_PLAYER_1.id,
+                        id = IMYT.id,
                         name = "Declan Doyle",
-                        tag = FULL_PLAYER_1.name
+                        tag = IMYT.name
                 ),
 
-                FULL_PLAYER_2.id to SmashCompetitor(
+                JAREBAIR.id to SmashCompetitor(
+                        avatar = Avatar(
+                                original = "original.jpg"
+                        ),
                         mains = listOf(
-                                SmashCharacter.SHEIK
+                                SmashCharacter.FALCO,
+                                SmashCharacter.FOX
+                        ),
+                        id = JAREBAIR.id,
+                        name = "Jared",
+                        tag = JAREBAIR.name,
+                        websites = mapOf(
+                                "other" to "https://theyetee.com/collections/prozd",
+                                "twitch" to "https://www.twitch.tv/prozd",
+                                "twitter" to "https://twitter.com/prozdkp",
+                                "youtube" to "https://www.youtube.com/user/ProZD"
+                        )
+                )
+        )
+
+        private val NOT_GAR_PR_ROSTER: Map<String, SmashCompetitor> = mapOf(
+                HAX.id to SmashCompetitor(
+                        mains = listOf(
+                                SmashCharacter.FOX
                         ),
                         websites = mapOf(
-                                "other" to "http://charlesmadere.com",
-                                "twitch" to "https://www.twitch.tv/chillinwithcharles",
-                                "twitter" to "https://twitter.com/charlesmadere"
+                                "twitter" to "https://twitter.com/ssbmhax",
+                                "youtube" to "https://www.youtube.com/channel/UCVJOIYcecIVO96ktK0qDKhQ"
                         ),
-                        id = FULL_PLAYER_2.id,
-                        name = "Charles Madere",
-                        tag = FULL_PLAYER_2.name
+                        id = HAX.id,
+                        name = "Aziz Al-Yami",
+                        tag = HAX.name
                 )
         )
     }
@@ -94,41 +147,155 @@ class PlayerProfileManagerTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+
+        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, GAR_PR_ROSTER)
+        smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, NOT_GAR_PR_ROSTER)
     }
 
     @Test
-    fun testFullPlayer1() {
-        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_1, REGION_1)
+    fun testCharlezardWithRoster() {
+        val presentation = playerProfileManager.getPresentation(CHARLEZARD, NORCAL)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
-        assertTrue(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertTrue(presentation.unadjustedRating.isNullOrBlank())
-    }
-
-    @Test
-    fun testFullPlayer1WithSmashCompetitor() {
-        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, SMASH_ROSTER_1)
-        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_1, REGION_1)
-        assertTrue(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.aliases.isNullOrBlank())
         assertFalse(presentation.mains.isNullOrBlank())
         assertFalse(presentation.name.isNullOrBlank())
-        assertTrue(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
         assertFalse(presentation.tag.isBlank())
-        assertTrue(presentation.unadjustedRating.isNullOrBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertEquals("https://github.com/charlesmadere", presentation.otherWebsite)
+        assertEquals("https://www.twitch.tv/chillinwithcharles", presentation.twitch)
+        assertEquals("https://twitter.com/charlesmadere", presentation.twitter)
+        assertTrue(presentation.youTube.isNullOrBlank())
+    }
+
+    @Test
+    fun testCharlezardWithoutRoster() {
+        smashRosterStorage.deleteFromStorage(Endpoint.GAR_PR)
+
+        val presentation = playerProfileManager.getPresentation(CHARLEZARD, NORCAL)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertFalse(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
         assertTrue(presentation.otherWebsite.isNullOrBlank())
-        assertEquals(presentation.twitch, "https://www.twitch.tv/imyt")
-        assertEquals(presentation.twitter, "https://twitter.com/OnlyImyt")
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
         assertTrue(presentation.youTube.isNullOrBlank())
     }
 
     @Test
-    fun testFullPlayer2WithSmashCompetitor() {
-        smashRosterStorage.writeToStorage(Endpoint.GAR_PR, SMASH_ROSTER_1)
-        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_2, REGION_1)
+    fun testGar() {
+        var presentation = playerProfileManager.getPresentation(GAR, NORCAL)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+
+        favoritePlayersManager.addPlayer(GAR, NORCAL)
+
+        presentation = playerProfileManager.getPresentation(GAR, NORCAL)
+        assertFalse(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+
+        favoritePlayersManager.removePlayer(GAR)
+
+        presentation = playerProfileManager.getPresentation(GAR, NORCAL)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+
+        identityManager.setIdentity(GAR, NORCAL)
+
+        presentation = playerProfileManager.getPresentation(GAR, NORCAL)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+
+        favoritePlayersManager.addPlayer(GAR, NORCAL)
+
+        presentation = playerProfileManager.getPresentation(GAR, NORCAL)
+        assertFalse(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+
+        identityManager.setIdentity(CHARLEZARD, NORCAL)
+
+        presentation = playerProfileManager.getPresentation(GAR, NORCAL)
+        assertFalse(presentation.isAddToFavoritesVisible)
+        assertTrue(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+    }
+
+    @Test
+    fun testHaxWithRoster() {
+        var presentation = playerProfileManager.getPresentation(HAX, NYC)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
         assertFalse(presentation.aliases.isNullOrBlank())
@@ -137,99 +304,97 @@ class PlayerProfileManagerTest : BaseTest() {
         assertFalse(presentation.rating.isNullOrBlank())
         assertFalse(presentation.tag.isBlank())
         assertFalse(presentation.unadjustedRating.isNullOrBlank())
-        assertEquals(presentation.otherWebsite, "http://charlesmadere.com")
-        assertEquals(presentation.twitch, "https://www.twitch.tv/chillinwithcharles")
-        assertEquals(presentation.twitter, "https://twitter.com/charlesmadere")
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertEquals("https://twitter.com/ssbmhax", presentation.twitter)
+        assertEquals("https://www.youtube.com/channel/UCVJOIYcecIVO96ktK0qDKhQ", presentation.youTube)
+
+        presentation = playerProfileManager.getPresentation(HAX, NORCAL)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertFalse(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
+        assertFalse(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
+        assertTrue(presentation.youTube.isNullOrBlank())
+
+        presentation = playerProfileManager.getPresentation(HAX, ATLANTA)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertFalse(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.mains.isNullOrBlank())
+        assertFalse(presentation.name.isNullOrBlank())
+        assertTrue(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertTrue(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertEquals("https://twitter.com/ssbmhax", presentation.twitter)
+        assertEquals("https://www.youtube.com/channel/UCVJOIYcecIVO96ktK0qDKhQ", presentation.youTube)
+    }
+
+    @Test
+    fun testImytWithRoster() {
+        val presentation = playerProfileManager.getPresentation(IMYT, NORCAL)
+        assertTrue(presentation.isAddToFavoritesVisible)
+        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.mains.isNullOrBlank())
+        assertFalse(presentation.name.isNullOrBlank())
+        assertTrue(presentation.rating.isNullOrBlank())
+        assertFalse(presentation.tag.isBlank())
+        assertTrue(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertEquals("https://www.twitch.tv/imyt", presentation.twitch)
+        assertEquals("https://twitter.com/OnlyImyt", presentation.twitter)
         assertTrue(presentation.youTube.isNullOrBlank())
     }
 
     @Test
-    fun testFullPlayer2() {
-        val presentation = playerProfileManager.getPresentation(FULL_PLAYER_2, REGION_2)
+    fun testImytWithoutRoster() {
+        smashRosterStorage.deleteFromStorage(Endpoint.GAR_PR)
+
+        val presentation = playerProfileManager.getPresentation(IMYT, NORCAL)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertFalse(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.mains.isNullOrBlank())
+        assertTrue(presentation.name.isNullOrBlank())
         assertTrue(presentation.rating.isNullOrBlank())
         assertFalse(presentation.tag.isBlank())
         assertTrue(presentation.unadjustedRating.isNullOrBlank())
+        assertTrue(presentation.avatar.isNullOrBlank())
+        assertTrue(presentation.otherWebsite.isNullOrBlank())
+        assertTrue(presentation.twitch.isNullOrBlank())
+        assertTrue(presentation.twitter.isNullOrBlank())
+        assertTrue(presentation.youTube.isNullOrBlank())
     }
 
     @Test
-    fun testFullPlayer3() {
-        var presentation = playerProfileManager.getPresentation(FULL_PLAYER_3, REGION_2)
+    fun testJaredWithRoster() {
+        val presentation = playerProfileManager.getPresentation(JAREBAIR, NORCAL)
         assertTrue(presentation.isAddToFavoritesVisible)
         assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertFalse(presentation.aliases.isNullOrBlank())
-        assertFalse(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertFalse(presentation.unadjustedRating.isNullOrBlank())
-
-        presentation = playerProfileManager.getPresentation(FULL_PLAYER_3, REGION_1)
-        assertTrue(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertFalse(presentation.aliases.isNullOrBlank())
-        assertFalse(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertFalse(presentation.unadjustedRating.isNullOrBlank())
-
-        presentation = playerProfileManager.getPresentation(FULL_PLAYER_3, REGION_3)
-        assertTrue(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertFalse(presentation.aliases.isNullOrBlank())
+        assertTrue(presentation.aliases.isNullOrBlank())
+        assertFalse(presentation.mains.isNullOrBlank())
+        assertFalse(presentation.name.isNullOrBlank())
         assertTrue(presentation.rating.isNullOrBlank())
         assertFalse(presentation.tag.isBlank())
         assertTrue(presentation.unadjustedRating.isNullOrBlank())
-    }
-
-    @Test
-    fun testFullPlayer4() {
-        var presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
-        assertTrue(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
-        assertFalse(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertFalse(presentation.unadjustedRating.isNullOrBlank())
-
-        favoritePlayersManager.addPlayer(FULL_PLAYER_4, REGION_1)
-
-        presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
-        assertFalse(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
-        assertFalse(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertFalse(presentation.unadjustedRating.isNullOrBlank())
-
-        favoritePlayersManager.removePlayer(FULL_PLAYER_4)
-
-        presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
-        assertTrue(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
-        assertFalse(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertFalse(presentation.unadjustedRating.isNullOrBlank())
-
-        identityManager.setIdentity(FULL_PLAYER_4, REGION_1)
-
-        presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
-        assertTrue(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
-        assertFalse(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertFalse(presentation.unadjustedRating.isNullOrBlank())
-
-        favoritePlayersManager.addPlayer(FULL_PLAYER_4, REGION_1)
-
-        presentation = playerProfileManager.getPresentation(FULL_PLAYER_4, REGION_1)
-        assertFalse(presentation.isAddToFavoritesVisible)
-        assertFalse(presentation.isViewYourselfVsThisOpponentVisible)
-        assertTrue(presentation.aliases.isNullOrBlank())
-        assertFalse(presentation.rating.isNullOrBlank())
-        assertFalse(presentation.tag.isBlank())
-        assertFalse(presentation.unadjustedRating.isNullOrBlank())
+        assertFalse(presentation.avatar.isNullOrBlank())
+        assertEquals("https://theyetee.com/collections/prozd", presentation.otherWebsite)
+        assertEquals("https://www.twitch.tv/prozd", presentation.twitch)
+        assertEquals("https://twitter.com/prozdkp", presentation.twitter)
+        assertEquals("https://www.youtube.com/user/ProZD", presentation.youTube)
     }
 
 }
