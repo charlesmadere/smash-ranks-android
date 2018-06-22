@@ -117,5 +117,5 @@ dependencies {
     }
 
     // Annoying fix for compile error: "error cannot access nullable"
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation "com.google.code.findbugs:jsr305:3.0.2"
 }
