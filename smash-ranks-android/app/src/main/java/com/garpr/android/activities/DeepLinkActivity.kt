@@ -32,7 +32,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
         val intentStack = deepLinkUtils.buildIntentStack(this, intent, region)
 
         if (intentStack == null || intentStack.isEmpty()) {
-            startActivity(HomeActivity.getLaunchIntent(this))
+            startActivity(HomeActivity.getLaunchIntent(context = this))
         } else {
             ContextCompat.startActivities(this, intentStack.toTypedArray())
         }
@@ -42,7 +42,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     private fun error() {
         Toast.makeText(this, R.string.error_loading_deep_link_data, Toast.LENGTH_LONG).show()
-        startActivity(HomeActivity.getLaunchIntent(this))
+        startActivity(HomeActivity.getLaunchIntent(context = this))
         supportFinishAfterTransition()
     }
 
