@@ -76,7 +76,7 @@ class DeepLinkUtilsImpl(
             return null
         }
 
-        val splits = path.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val splits = path.split("/")
 
         if (splits.isEmpty()) {
             timber.d(TAG, "Deep link's path split is empty")
@@ -125,8 +125,8 @@ class DeepLinkUtilsImpl(
     }
 
     private fun buildPlayersIntentStack(context: Context, intentStack: MutableList<Intent>,
-            region: Region, sameRegion: Boolean, splits: Array<String>) {
         intentStack.add(HomeActivity.getLaunchIntent(context))
+            region: Region, sameRegion: Boolean, splits: List<String>) {
 
         if (sameRegion) {
             intentStack.add(PlayersActivity.getLaunchIntent(context))
@@ -160,7 +160,7 @@ class DeepLinkUtilsImpl(
     }
 
     private fun buildTournamentsIntentStack(context: Context, intentStack: MutableList<Intent>,
-            region: Region, sameRegion: Boolean, splits: Array<String>) {
+            region: Region, sameRegion: Boolean, splits: List<String>) {
         if (sameRegion) {
             intentStack.add(HomeActivity.getLaunchIntent(context = context,
                 initialPosition = HomeActivity.POSITION_TOURNAMENTS))
