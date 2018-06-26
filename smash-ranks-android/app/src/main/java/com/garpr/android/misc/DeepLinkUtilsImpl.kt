@@ -99,17 +99,14 @@ class DeepLinkUtilsImpl(
         val intentStack = mutableListOf<Intent>()
         val page = splits[1]
 
-        when {
-            PLAYERS.equals(page, ignoreCase = true) -> {
-                buildPlayersIntentStack(context, intentStack, region, sameRegion, splits)
-            }
-            RANKINGS.equals(page, ignoreCase = true) -> {
-                buildRankingsIntentStack(context, intentStack, region, sameRegion)
-            }
-            TOURNAMENTS.equals(page, ignoreCase = true) -> {
-                buildTournamentsIntentStack(context, intentStack, region, sameRegion, splits)
-            }
-            else -> timber.w(TAG, "Unknown page \"$page\"")
+        if (PLAYERS.equals(page, ignoreCase = true)) {
+            buildPlayersIntentStack(context, intentStack, region, sameRegion, splits)
+        } else if (RANKINGS.equals(page, ignoreCase = true)) {
+            buildRankingsIntentStack(context, intentStack, region, sameRegion)
+        } else if (TOURNAMENTS.equals(page, ignoreCase = true)) {
+            buildTournamentsIntentStack(context, intentStack, region, sameRegion, splits)
+        } else {
+            timber.w(TAG, "Unknown page \"$page\"")
         }
 
         return intentStack
