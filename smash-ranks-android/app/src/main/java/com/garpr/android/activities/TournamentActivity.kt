@@ -10,10 +10,7 @@ import android.text.TextUtils
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
-import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.smoothScrollToTop
-import com.garpr.android.extensions.subtitle
-import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.extensions.*
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.*
 import com.garpr.android.models.*
@@ -136,7 +133,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         appComponent.inject(this)
         setContentView(R.layout.activity_tournament)
 
-        tournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)
+        tournamentId = intent.requireStringExtra(EXTRA_TOURNAMENT_ID)
         _tournamentMode = savedInstanceState?.getParcelable(KEY_TOURNAMENT_MODE) ?: tournamentMode
 
         setTitleAndSubtitle()

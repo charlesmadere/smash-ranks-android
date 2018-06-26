@@ -11,6 +11,7 @@ import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.FavoritePlayersManager
@@ -134,7 +135,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         appComponent.inject(this)
         setContentView(R.layout.activity_player)
 
-        playerId = intent.getStringExtra(EXTRA_PLAYER_ID)
+        playerId = intent.requireStringExtra(EXTRA_PLAYER_ID)
 
         setTitleAndSubtitle()
         fetchPlayerMatchesBundle()

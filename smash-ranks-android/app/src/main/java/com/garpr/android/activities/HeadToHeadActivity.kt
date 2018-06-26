@@ -9,6 +9,7 @@ import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
@@ -124,8 +125,8 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         setContentView(R.layout.activity_head_to_head)
         subtitle = regionManager.getRegion(this).displayName
 
-        opponentId = intent.getStringExtra(EXTRA_OPPONENT_ID)
-        playerId = intent.getStringExtra(EXTRA_PLAYER_ID)
+        opponentId = intent.requireStringExtra(EXTRA_OPPONENT_ID)
+        playerId = intent.requireStringExtra(EXTRA_PLAYER_ID)
 
         if (intent.hasExtra(EXTRA_OPPONENT_NAME) && intent.hasExtra(EXTRA_PLAYER_NAME)) {
             opponentName = intent.getStringExtra(EXTRA_OPPONENT_NAME)
