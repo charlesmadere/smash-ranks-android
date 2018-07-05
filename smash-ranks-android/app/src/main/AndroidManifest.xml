@@ -12,6 +12,7 @@
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/launcher"
+        android:isGame="false"
         android:label="@string/gar_pr"
         android:name=".App"
         android:resizeableActivity="true"
