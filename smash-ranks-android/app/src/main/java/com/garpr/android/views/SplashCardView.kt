@@ -10,8 +10,8 @@ import android.view.animation.OvershootInterpolator
 import com.garpr.android.R
 import com.garpr.android.activities.SetIdentityActivity
 import com.garpr.android.activities.SetRegionActivity
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.requireActivity
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.AnimationUtils
@@ -100,7 +100,7 @@ class SplashCardView @JvmOverloads constructor(
         }
 
         startUsingTheApp.setOnClickListener {
-            (requireActivity() as? Listener)?.onStartUsingTheAppClick(this)
+            (activity as? Listener)?.onStartUsingTheAppClick(this)
         }
 
         identityManager.addListener(this)
