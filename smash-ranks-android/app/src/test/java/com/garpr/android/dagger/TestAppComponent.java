@@ -7,6 +7,7 @@ import com.garpr.android.managers.IdentityManagerTest;
 import com.garpr.android.managers.PlayerProfileManagerTest;
 import com.garpr.android.managers.RegionManagerTest;
 import com.garpr.android.managers.SmashRosterAvatarUrlHelperTest;
+import com.garpr.android.managers.SplashScreenManagerTest;
 import com.garpr.android.managers.TournamentAdapterManagerTest;
 import com.garpr.android.misc.DeepLinkUtilsTest;
 import com.garpr.android.misc.FullTournamentUtilsTest;
@@ -54,6 +55,7 @@ public interface TestAppComponent {
     void inject(PlayerProfileManagerTest test);
     void inject(RegionManagerTest test);
     void inject(SmashRosterAvatarUrlHelperTest test);
+    void inject(SplashScreenManagerTest test);
     void inject(TournamentAdapterManagerTest test);
 
     // misc

@@ -2,9 +2,16 @@ package com.garpr.android.activities
 
 import android.os.Bundle
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.managers.SplashScreenManager
 import com.garpr.android.views.SplashCardView
+import javax.inject.Inject
 
 class SplashActivity : BaseActivity(), SplashCardView.Listener {
+
+    @Inject
+    protected lateinit var splashScreenManager: SplashScreenManager
+
 
     companion object {
         private const val TAG = "SplashActivity"
@@ -14,8 +21,9 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appComponent.inject(this)
 
-        if (generalPreferenceStore.hajimeteKimasu.get() == true) {
+        if (splashScreenManager.showSplashScreen) {
             timber.d(TAG, "showing $TAG...")
             setContentView(R.layout.activity_splash)
         } else {
@@ -31,7 +39,7 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
     private fun startHomeActivity() {
         timber.d(TAG, "starting ${HomeActivity.TAG}...")
 
-        generalPreferenceStore.hajimeteKimasu.set(false)
+        splashScreenManager.setSplashScreenComplete()
         startActivity(HomeActivity.getLaunchIntent(context = this))
         finish()
     }

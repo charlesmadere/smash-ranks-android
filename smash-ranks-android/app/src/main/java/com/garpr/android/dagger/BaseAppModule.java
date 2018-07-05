@@ -19,6 +19,8 @@ import com.garpr.android.managers.RegionManager;
 import com.garpr.android.managers.RegionManagerImpl;
 import com.garpr.android.managers.SmashRosterAvatarUrlHelper;
 import com.garpr.android.managers.SmashRosterAvatarUrlHelperImpl;
+import com.garpr.android.managers.SplashScreenManager;
+import com.garpr.android.managers.SplashScreenManagerImpl;
 import com.garpr.android.managers.TournamentAdapterManager;
 import com.garpr.android.managers.TournamentAdapterManagerImpl;
 import com.garpr.android.misc.Constants;
@@ -420,6 +422,13 @@ public abstract class BaseAppModule {
             final Timber timber) {
         return new SmashRosterSyncManagerImpl(firebaseApiWrapper, googleApiWrapper, serverApi,
                 smashRosterPreferenceStore, smashRosterStorage, threadUtils, timber);
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    SplashScreenManager providesSplashScreenManager(final GeneralPreferenceStore generalPreferenceStore) {
+        return new SplashScreenManagerImpl(generalPreferenceStore);
     }
 
     @NonNull
