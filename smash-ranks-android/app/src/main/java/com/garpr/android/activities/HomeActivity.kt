@@ -53,7 +53,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
 
     companion object {
-        private const val TAG = "HomeActivity"
+        const val TAG = "HomeActivity"
         private val CNAME = HomeActivity::class.java.canonicalName
         private val EXTRA_INITIAL_POSITION = "$CNAME.InitialPosition"
         private const val KEY_CURRENT_POSITION = "CurrentPosition"

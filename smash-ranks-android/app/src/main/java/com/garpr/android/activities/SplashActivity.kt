@@ -16,9 +16,10 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
         super.onCreate(savedInstanceState)
 
         if (generalPreferenceStore.hajimeteKimasu.get() == true) {
-            timber.d(TAG, "showing SplashActivity...")
+            timber.d(TAG, "showing $TAG...")
             setContentView(R.layout.activity_splash)
         } else {
+            timber.d(TAG, "skipping $TAG...")
             startHomeActivity()
         }
     }
@@ -28,7 +29,7 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
     }
 
     private fun startHomeActivity() {
-        timber.d(TAG, "starting HomeActivity...")
+        timber.d(TAG, "starting ${HomeActivity.TAG}...")
 
         generalPreferenceStore.hajimeteKimasu.set(false)
         startActivity(HomeActivity.getLaunchIntent(context = this))
