@@ -222,8 +222,10 @@
     </style>
 
     <style name="SettingsCardDescription.Warn">
+        <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:textColor">@color/warn</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="SettingsCardTitle">

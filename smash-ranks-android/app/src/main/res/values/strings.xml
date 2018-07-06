@@ -118,6 +118,7 @@
     <string name="show_test_notification">Show test notification</string>
     <string name="smash_roster">Smash roster</string>
     <string name="smash_roster_polling_description">This feature will periodically download the latest version of the Smash roster. But if you\'d like to update now, just click below.</string>
+    <string name="smash_roster_sync_requires_google_play_services">Smash roster sync requires Google Play Services in order to function. Click here to try to resolve the issues with your Google Play Services installation.</string>
     <string name="smash_roster_sync_status">Smash roster sync status</string>
     <string name="start_using_the_app">Start using the app</string>
     <string name="start_using_the_app_description">You can change your region and identity at any time in Settings</string>

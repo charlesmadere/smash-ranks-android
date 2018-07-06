@@ -67,7 +67,8 @@ class SettingsActivity : BaseActivity() {
     private val tsuaiiTwitter: SimplePreferenceView by bindView(R.id.spvTsuaiiTwitter)
     private val smashRosterFormLink: SimplePreferenceView by bindView(R.id.smashRosterFormLink)
     private val smashRosterPreferenceView: SmashRosterSyncPreferenceView by bindView(R.id.smashRosterPreferenceView)
-    private val googlePlayServicesError: TextView by bindView(R.id.tvGooglePlayServicesError)
+    private val rankingsPollingGooglePlayServicesError: TextView by bindView(R.id.tvRankingsPollingGooglePlayServicesError)
+    private val smashRosterGooglePlayServicesError: TextView by bindView(R.id.tvSmashRosterGooglePlayServicesError)
     private val themePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
 
 
@@ -171,7 +172,11 @@ class SettingsActivity : BaseActivity() {
         mustBeOnWifi.preference = rankingsPollingPreferenceStore.wifiRequired
         mustBeCharging.preference = rankingsPollingPreferenceStore.chargingRequired
 
-        googlePlayServicesError.setOnClickListener {
+        rankingsPollingGooglePlayServicesError.setOnClickListener {
+            attemptToResolveGooglePlayServicesError()
+        }
+
+        smashRosterGooglePlayServicesError.setOnClickListener {
             attemptToResolveGooglePlayServicesError()
         }
 
@@ -217,7 +222,8 @@ class SettingsActivity : BaseActivity() {
         smashRosterPreferenceView.refresh()
 
         if (googleApiWrapper.isGooglePlayServicesAvailable) {
-            googlePlayServicesError.visibility = View.GONE
+            rankingsPollingGooglePlayServicesError.visibility = View.GONE
+            smashRosterGooglePlayServicesError.visibility = View.GONE
             useRankingsPolling.isEnabled = true
 
             if (rankingsPollingPreferenceStore.enabled.get() == true) {
@@ -234,7 +240,8 @@ class SettingsActivity : BaseActivity() {
                 mustBeCharging.isEnabled = false
             }
         } else {
-            googlePlayServicesError.visibility = View.VISIBLE
+            rankingsPollingGooglePlayServicesError.visibility = View.VISIBLE
+            smashRosterGooglePlayServicesError.visibility = View.VISIBLE
             useRankingsPolling.isEnabled = false
             pollFrequency.isEnabled = false
             ringtonePreferenceView.isEnabled = false

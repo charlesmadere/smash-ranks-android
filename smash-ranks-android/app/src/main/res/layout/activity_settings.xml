@@ -51,10 +51,8 @@
                 style="@style/SettingsCardDescription" />
 
             <TextView
-                android:background="?attr/selectableItemBackground"
-                android:id="@+id/tvGooglePlayServicesError"
+                android:id="@+id/tvRankingsPollingGooglePlayServicesError"
                 android:text="@string/rankings_polling_requires_google_play_services"
-                android:visibility="gone"
                 tools:visibility="visible"
                 style="@style/SettingsCardDescription.Warn" />
 
@@ -105,6 +103,12 @@
             <TextView
                 android:text="@string/smash_roster_polling_description"
                 style="@style/SettingsCardDescription" />
+
+            <TextView
+                android:id="@+id/tvSmashRosterGooglePlayServicesError"
+                android:text="@string/smash_roster_sync_requires_google_play_services"
+                tools:visibility="visible"
+                style="@style/SettingsCardDescription.Warn" />
 
             <com.garpr.android.views.SmashRosterSyncPreferenceView
                 android:id="@+id/smashRosterPreferenceView"
