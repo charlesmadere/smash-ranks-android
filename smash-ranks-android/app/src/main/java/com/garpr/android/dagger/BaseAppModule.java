@@ -44,7 +44,6 @@ import com.garpr.android.misc.TimberImpl;
 import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsRegion;
 import com.garpr.android.models.AbsTournament;
-import com.garpr.android.models.Avatar;
 import com.garpr.android.models.Match;
 import com.garpr.android.models.Region;
 import com.garpr.android.models.SimpleDate;
@@ -209,7 +208,6 @@ public abstract class BaseAppModule {
                 .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_SERIALIZER())
                 .registerTypeAdapter(AbsTournament.class, AbsTournament.Companion.getJSON_DESERIALIZER())
-                .registerTypeAdapter(Avatar.class, Avatar.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(Match.class, Match.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_SERIALIZER())

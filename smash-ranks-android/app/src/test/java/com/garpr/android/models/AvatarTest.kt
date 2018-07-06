@@ -25,7 +25,7 @@ class AvatarTest : BaseTest() {
         private val AVATAR_5 = Avatar("", " ", "original", null)
         private val AVATAR_6 = Avatar()
 
-        private const val JSON_AVATAR_1 = "\"abc.jpg\""
+        private const val JSON_AVATAR_1 = "{\"original\":\"abc.jpg\"}"
         private const val JSON_AVATAR_2 = "{\"small\":\"s.jpg\"}"
         private const val JSON_AVATAR_3 = "{\"large\":\"l.jpg\",\"medium\":\"m.jpg\"}"
     }

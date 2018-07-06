@@ -3,7 +3,6 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
 
 data class Avatar(
@@ -22,44 +21,6 @@ data class Avatar(
         @JvmField
         val CREATOR = createParcel { Avatar(it.readString(), it.readString(), it.readString(),
                 it.readString()) }
-
-        val JSON_DESERIALIZER = JsonDeserializer<Avatar> { json, typeOfT, context ->
-            if (json == null || json.isJsonNull) {
-                return@JsonDeserializer null
-            }
-
-            if (json.isJsonPrimitive) {
-                return@JsonDeserializer Avatar(original = json.asString)
-            }
-
-            val jsonObject = json.asJsonObject
-
-            val large = if (jsonObject.has(LARGE)) {
-                jsonObject.get(LARGE).asString
-            } else {
-                null
-            }
-
-            val medium = if (jsonObject.has(MEDIUM)) {
-                jsonObject.get(MEDIUM).asString
-            } else {
-                null
-            }
-
-            val original = if (jsonObject.has(ORIGINAL)) {
-                jsonObject.get(ORIGINAL).asString
-            } else {
-                null
-            }
-
-            val small = if (jsonObject.has(SMALL)) {
-                jsonObject.get(SMALL).asString
-            } else {
-                null
-            }
-
-            Avatar(large, medium, original, small)
-        }
     }
 
     val largeButFallbackToMediumThenOriginalThenSmall: String?
