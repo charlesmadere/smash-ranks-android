@@ -50,7 +50,6 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:theme="@style/ToolbarTheme"
-            app:indicatorLineColor="@color/white"
             tools:ignore="UnusedAttribute" />
 
     </LinearLayout>
