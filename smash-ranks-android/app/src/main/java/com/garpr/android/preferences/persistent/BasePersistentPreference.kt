@@ -12,12 +12,9 @@ abstract class BasePersistentPreference<T>(
         defaultValue
 ) {
 
-    override fun delete(notifyListeners: Boolean) {
+    override fun delete() {
         keyValueStore.remove(key)
-
-        if (notifyListeners) {
-            notifyListeners()
-        }
+        notifyListeners()
     }
 
     override val exists: Boolean

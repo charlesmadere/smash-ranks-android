@@ -21,12 +21,9 @@ class PersistentBooleanPreference(
         }
     }
 
-    override fun performSet(newValue: Boolean, notifyListeners: Boolean) {
+    override fun performSet(newValue: Boolean) {
         keyValueStore.setBoolean(key, newValue)
-
-        if (notifyListeners) {
-            notifyListeners()
-        }
+        notifyListeners()
     }
 
 }

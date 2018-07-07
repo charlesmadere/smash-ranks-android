@@ -18,7 +18,6 @@ class PersistentGsonPreference<T>(
 
     private val backingPreference = PersistentStringPreference(key, null, keyValueStore)
 
-
     override val exists: Boolean
         get() = backingPreference.exists || defaultValue != null
 
@@ -30,8 +29,8 @@ class PersistentGsonPreference<T>(
         }
     }
 
-    override fun performSet(newValue: T, notifyListeners: Boolean) {
-        backingPreference.set(gson.toJson(newValue, type), notifyListeners)
+    override fun performSet(newValue: T) {
+        backingPreference.set(gson.toJson(newValue, type))
     }
 
 }

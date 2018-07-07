@@ -21,12 +21,9 @@ class PersistentStringPreference(
         }
     }
 
-    override fun performSet(newValue: String, notifyListeners: Boolean) {
+    override fun performSet(newValue: String) {
         keyValueStore.setString(key, newValue)
-
-        if (notifyListeners) {
-            notifyListeners()
-        }
+        notifyListeners()
     }
 
 }
