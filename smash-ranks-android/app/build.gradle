@@ -16,6 +16,7 @@ apply plugin: 'com.android.application'
 // Kotlin
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 // Fabric
 apply plugin: 'io.fabric'
@@ -82,8 +83,8 @@ dependencies {
     // Google's Dagger
     // https://github.com/google/dagger
     implementation "com.google.dagger:dagger:$dagger_version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
-    testAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kaptTest "com.google.dagger:dagger-compiler:$dagger_version"
 
     // Google's GSON
     // https://github.com/google/gson
