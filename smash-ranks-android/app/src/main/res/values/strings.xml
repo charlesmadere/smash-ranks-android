@@ -99,7 +99,7 @@
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
     <string name="region_endpoint_format">%1$s (%2$s)</string>
-    <string name="region_mismatch_error">A region and / or GAR PR server endpoint mismatch error may have occurred. This is not a resolvable error, sorry!</string>
+    <string name="region_mismatch_error">A region or GAR PR server endpoint mismatch error may have occurred. This is not a resolvable error, sorry!</string>
     <string name="region_saved_">Region saved!</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>
     <string name="ringtone">Ringtone</string>
