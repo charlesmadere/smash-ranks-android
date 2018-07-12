@@ -54,6 +54,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     protected lateinit var serverApi: ServerApi
 
     @Inject
+    protected lateinit var smashRosterStorage: SmashRosterStorage
+
+    @Inject
     protected lateinit var threadUtils: ThreadUtils
 
     private val error: ErrorContentLinearLayout by bindView(R.id.error)
@@ -206,10 +209,16 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
             return
         }
 
-        val bundle = playerMatchesBundle ?: return
-        title = bundle.fullPlayer.name
+        val region = regionManager.getRegion(this)
+        val smashCompetitor = smashRosterStorage.getSmashCompetitor(region, playerId)
+        val title = smashCompetitor?.tag ?: playerMatchesBundle?.fullPlayer?.name
 
-        subtitle = regionManager.getRegion(this).displayName
+        if (title.isNullOrBlank()) {
+            return
+        }
+
+        this.title = title
+        subtitle = region.displayName
     }
 
     private fun showData() {
