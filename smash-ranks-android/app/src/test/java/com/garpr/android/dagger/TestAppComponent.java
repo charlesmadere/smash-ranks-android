@@ -1,5 +1,6 @@
 package com.garpr.android.dagger;
 
+import com.garpr.android.activities.TournamentsActivityTest;
 import com.garpr.android.managers.AppUpgradeManagerTest;
 import com.garpr.android.managers.FavoritePlayersManagerTest;
 import com.garpr.android.managers.HomeToolbarManagerTest;
@@ -46,6 +47,9 @@ import dagger.Component;
 @Singleton
 @Component(modules = { TestAppModule.class })
 public interface TestAppComponent {
+
+    // activities
+    void inject(TournamentsActivityTest test);
 
     // managers
     void inject(AppUpgradeManagerTest test);
