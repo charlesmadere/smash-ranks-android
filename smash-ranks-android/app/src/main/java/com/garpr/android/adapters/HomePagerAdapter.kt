@@ -5,17 +5,15 @@ import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.activities.HomeActivity
-import com.garpr.android.misc.Heartbeat
-import com.garpr.android.misc.ListLayout
-import com.garpr.android.misc.Refreshable
-import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.*
+import com.garpr.android.models.RankingCriteria
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.views.FavoritePlayersLayout
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.TournamentsLayout
 import java.lang.ref.WeakReference
 
-class HomePagerAdapter : PagerAdapter(), Refreshable {
+class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable {
 
     private val pages = SparseArrayCompat<WeakReference<View?>?>(count)
 
@@ -64,6 +62,9 @@ class HomePagerAdapter : PagerAdapter(), Refreshable {
             val view = pages[POSITION_RANKINGS]?.get()
             return if ((view as? RankingsLayout)?.isAlive == true) view.rankingsBundle else null
         }
+
+    override val rankingCriteria: RankingCriteria?
+        get() = rankingsBundle?.rankingCriteria
 
     override fun refresh() {
         for (i in 0 until pages.size()) {

@@ -13,9 +13,11 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ShareUtils
+import com.garpr.android.models.RankingCriteria
 import com.garpr.android.sync.RankingsPollingSyncManager
 import com.garpr.android.sync.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
@@ -26,9 +28,9 @@ import java.text.NumberFormat
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
-        BottomNavigationView.OnNavigationItemSelectedListener, RankingsLayout.Listener,
-        RegionManager.OnRegionChangeListener, Searchable, SearchQueryHandle,
-        SearchToolbar.Listener {
+        BottomNavigationView.OnNavigationItemSelectedListener, RankingCriteriaHandle,
+        RankingsLayout.Listener, RegionManager.OnRegionChangeListener, Searchable,
+        SearchQueryHandle, SearchToolbar.Listener {
 
     private lateinit var adapter: HomePagerAdapter
 
@@ -201,6 +203,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         invalidateOptionsMenu()
     }
+
+    override val rankingCriteria: RankingCriteria?
+        get() = adapter.rankingCriteria
 
     override fun search(query: String?) {
         adapter.search(viewPager.currentItem, query)

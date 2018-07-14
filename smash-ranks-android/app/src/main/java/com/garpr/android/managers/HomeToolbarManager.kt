@@ -1,6 +1,6 @@
 package com.garpr.android.managers
 
-import android.content.Context
+import com.garpr.android.models.RankingCriteria
 
 interface HomeToolbarManager {
 
@@ -9,6 +9,6 @@ interface HomeToolbarManager {
             val isViewYourselfVisible: Boolean = false
     )
 
-    fun getPresentation(context: Context): Presentation
+    fun getPresentation(rankingCriteria: RankingCriteria?): Presentation
 
 }

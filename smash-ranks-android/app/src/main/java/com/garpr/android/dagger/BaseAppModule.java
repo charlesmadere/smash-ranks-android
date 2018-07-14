@@ -222,9 +222,8 @@ public abstract class BaseAppModule {
 
     @Provides
     @Singleton
-    HomeToolbarManager providesHomeToolbarManager(final IdentityManager identityManager,
-            final RegionManager regionManager) {
-        return new HomeToolbarManagerImpl(identityManager, regionManager);
+    HomeToolbarManager providesHomeToolbarManager(final IdentityManager identityManager) {
+        return new HomeToolbarManagerImpl(identityManager);
     }
 
     @Provides

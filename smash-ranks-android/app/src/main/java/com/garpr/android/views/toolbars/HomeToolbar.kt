@@ -5,10 +5,12 @@ import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
 import com.garpr.android.R
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.HomeToolbarManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.RankingCriteriaHandle
 import javax.inject.Inject
 
 class HomeToolbar @JvmOverloads constructor(
@@ -72,7 +74,8 @@ class HomeToolbar @JvmOverloads constructor(
             return
         }
 
-        val presentation = homeToolbarManager.getPresentation(context)
+        val presentation = homeToolbarManager.getPresentation(
+                (activity as? RankingCriteriaHandle)?.rankingCriteria)
         menu.findItem(R.id.miActivityRequirements).isVisible = presentation.isActivityRequirementsVisible
         menu.findItem(R.id.miViewYourself).isVisible = presentation.isViewYourselfVisible
     }
