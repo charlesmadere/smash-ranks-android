@@ -149,19 +149,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         recyclerView.adapter = adapter
     }
 
-    private fun prepareMenuAndSubtitle() {
-        headToHead?.let {
-            if (opponentName.isNullOrBlank()) {
-                opponentName = it.opponent.name
-            }
-
-            if (playerName.isNullOrBlank()) {
-                playerName = it.player.name
-            }
-        }
-
-        invalidateOptionsMenu()
-    }
 
     private fun showData() {
         list = ListUtils.createHeadToHeadList(this, headToHead)
@@ -178,7 +165,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         }
 
         refreshLayout.isRefreshing = false
-        prepareMenuAndSubtitle()
+        invalidateOptionsMenu()
     }
 
     private fun showError(errorCode: Int) {
@@ -186,7 +173,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         empty.visibility = View.GONE
         recyclerView.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
-        prepareMenuAndSubtitle()
+        invalidateOptionsMenu()
         refreshLayout.isRefreshing = false
     }
 
