@@ -41,9 +41,6 @@ class PersistentLongPreferenceTest : BaseTest() {
         preference.set(11L)
         assertEquals(11L, value)
 
-        preference.set(-9815L, false)
-        assertNotEquals(-9851L, value)
-
         preference.set(21L)
         assertEquals(21L, value)
     }

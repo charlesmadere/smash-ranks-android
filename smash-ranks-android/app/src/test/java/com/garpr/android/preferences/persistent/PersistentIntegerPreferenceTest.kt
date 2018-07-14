@@ -41,9 +41,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
         preference.set(10)
         assertEquals(10, value)
 
-        preference.set(-100, false)
-        assertNotEquals(-100, value)
-
         preference.set(20)
         assertEquals(20, value)
     }
