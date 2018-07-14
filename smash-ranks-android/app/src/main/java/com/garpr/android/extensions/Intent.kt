@@ -17,8 +17,8 @@ fun Intent?.requireStringExtra(name: String): String {
     }
 
     if (!hasExtra(name)) {
-        throw RuntimeException("Intent does not have String extra \"$name\"")
+        throw RuntimeException("Intent does not have String extra: \"$name\"")
     }
 
-    return getStringExtra(name) ?: throw NullPointerException("Intent String extra \"$name\" is null")
+    return getStringExtra(name) ?: throw NullPointerException("Intent String extra is null: \"$name\"")
 }
