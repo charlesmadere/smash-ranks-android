@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
@@ -33,13 +34,8 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
         private const val TAG = "PlayersActivity"
 
         fun getLaunchIntent(context: Context, region: Region? = null): Intent {
-            val intent = Intent(context, PlayersActivity::class.java)
-
-            if (region != null) {
-                intent.putExtra(EXTRA_REGION, region)
-            }
-
-            return intent
+            return Intent(context, PlayersActivity::class.java)
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 

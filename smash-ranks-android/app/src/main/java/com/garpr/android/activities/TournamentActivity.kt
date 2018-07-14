@@ -30,7 +30,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         TournamentTabsView.Listeners {
 
     private var fullTournament: FullTournament? = null
-    private lateinit var tournamentId: String
     private lateinit var adapter: TournamentAdapter
     private var _tournamentMode: TournamentMode = TournamentMode.MATCHES
 
@@ -66,14 +65,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         }
 
         fun getLaunchIntent(context: Context, tournamentId: String, region: Region? = null): Intent {
-            val intent = Intent(context, TournamentActivity::class.java)
+            return Intent(context, TournamentActivity::class.java)
                     .putExtra(EXTRA_TOURNAMENT_ID, tournamentId)
-
-            if (region != null) {
-                intent.putExtra(EXTRA_REGION, region)
-            }
-
-            return intent
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 
@@ -133,7 +127,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         appComponent.inject(this)
         setContentView(R.layout.activity_tournament)
 
-        tournamentId = intent.requireStringExtra(EXTRA_TOURNAMENT_ID)
         _tournamentMode = savedInstanceState?.getParcelable(KEY_TOURNAMENT_MODE) ?: tournamentMode
 
         setTitleAndSubtitle()
@@ -312,6 +305,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
             showFullTournament()
         }
     }
+
+    private val tournamentId: String by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
 
     override val tournamentMode: TournamentMode
         get() = _tournamentMode

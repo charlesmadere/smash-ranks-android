@@ -9,6 +9,7 @@ import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
@@ -28,10 +29,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private var list: List<Any>? = null
     private var headToHead: HeadToHead? = null
     private lateinit var adapter: HeadToHeadAdapter
-    private lateinit var opponentId: String
-    private var opponentName: String? = null
-    private lateinit var playerId: String
-    private var playerName: String? = null
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -52,9 +49,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         private const val TAG = "HeadToHeadActivity"
         private val CNAME = HeadToHeadActivity::class.java.canonicalName
         private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
-        private val EXTRA_PLAYER_NAME = "$CNAME.PlayerName"
         private val EXTRA_OPPONENT_ID = "$CNAME.OpponentId"
-        private val EXTRA_OPPONENT_NAME = "$CNAME.OpponentName"
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, opponent: AbsPlayer,
                 region: Region? = null): Intent {
@@ -64,8 +59,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
                 regionCopy = player.region
             }
 
-            return getLaunchIntent(context, player.id, player.name, opponent.id, opponent.name,
-                    regionCopy)
+            return getLaunchIntent(context, player.id, opponent.id, regionCopy)
         }
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, match: Match,
@@ -76,32 +70,20 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
                 regionCopy = player.region
             }
 
-            return getLaunchIntent(context, player.id, player.name, match.opponent.id,
-                    match.opponent.name, regionCopy)
+            return getLaunchIntent(context, player.id, match.opponent.id, regionCopy)
         }
 
         fun getLaunchIntent(context: Context, match: FullTournament.Match,
                 region: Region? = null): Intent {
-            return getLaunchIntent(context, match.winnerId, match.winnerName, match.loserId,
-                    match.loserName, region)
+            return getLaunchIntent(context, match.winnerId, match.loserId, region)
         }
 
-        fun getLaunchIntent(context: Context, playerId: String, playerName: String?,
-                opponentId: String, opponentName: String?, region: Region? = null): Intent {
-            val intent = Intent(context, HeadToHeadActivity::class.java)
+        fun getLaunchIntent(context: Context, playerId: String, opponentId: String,
+                region: Region? = null): Intent {
+            return Intent(context, HeadToHeadActivity::class.java)
                     .putExtra(EXTRA_PLAYER_ID, playerId)
                     .putExtra(EXTRA_OPPONENT_ID, opponentId)
-
-            if (playerName?.isNotBlank() == true && opponentName?.isNotBlank() == true) {
-                intent.putExtra(EXTRA_PLAYER_NAME, playerName)
-                intent.putExtra(EXTRA_OPPONENT_NAME, opponentName)
-            }
-
-            if (region != null) {
-                intent.putExtra(EXTRA_REGION, region)
-            }
-
-            return intent
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 
@@ -125,16 +107,10 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         setContentView(R.layout.activity_head_to_head)
         subtitle = regionManager.getRegion(this).displayName
 
-        opponentId = intent.requireStringExtra(EXTRA_OPPONENT_ID)
-        playerId = intent.requireStringExtra(EXTRA_PLAYER_ID)
-
-        if (intent.hasExtra(EXTRA_OPPONENT_NAME) && intent.hasExtra(EXTRA_PLAYER_NAME)) {
-            opponentName = intent.getStringExtra(EXTRA_OPPONENT_NAME)
-            playerName = intent.getStringExtra(EXTRA_PLAYER_NAME)
-        }
-
         fetchHeadToHead()
     }
+
+    private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
 
     override fun onRefresh() {
         fetchHeadToHead()
@@ -149,6 +125,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         recyclerView.adapter = adapter
     }
 
+    private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     private fun showData() {
         list = ListUtils.createHeadToHeadList(this, headToHead)

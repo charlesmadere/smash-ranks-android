@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Region
@@ -20,13 +21,8 @@ class TournamentsActivity : BaseActivity() {
         private const val TAG = "TournamentsActivity"
 
         fun getLaunchIntent(context: Context, region: Region? = null): Intent {
-            val intent = Intent(context, TournamentsActivity::class.java)
-
-            if (region != null) {
-                intent.putExtra(EXTRA_REGION, region)
-            }
-
-            return intent
+            return Intent(context, TournamentsActivity::class.java)
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 

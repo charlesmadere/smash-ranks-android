@@ -10,10 +10,7 @@ import android.text.TextUtils
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
-import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.requireStringExtra
-import com.garpr.android.extensions.subtitle
-import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.extensions.*
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
@@ -39,7 +36,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     private var list: List<Any>? = null
     private lateinit var adapter: PlayerAdapter
     private var playerMatchesBundle: PlayerMatchesBundle? = null
-    private lateinit var playerId: String
 
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
@@ -82,14 +78,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         }
 
         fun getLaunchIntent(context: Context, playerId: String, region: Region? = null): Intent {
-            val intent = Intent(context, PlayerActivity::class.java)
+            return Intent(context, PlayerActivity::class.java)
                     .putExtra(EXTRA_PLAYER_ID, playerId)
-
-            if (region != null) {
-                intent.putExtra(EXTRA_REGION, region)
-            }
-
-            return intent
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 
@@ -138,8 +129,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         appComponent.inject(this)
         setContentView(R.layout.activity_player)
 
-        playerId = intent.requireStringExtra(EXTRA_PLAYER_ID)
-
         setTitleAndSubtitle()
         fetchPlayerMatchesBundle()
     }
@@ -176,6 +165,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         adapter = PlayerAdapter(this)
         recyclerView.adapter = adapter
     }
+
+    private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     override fun search(query: String?) {
         val list = this.list

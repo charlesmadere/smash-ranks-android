@@ -1,6 +1,15 @@
 package com.garpr.android.extensions
 
 import android.content.Intent
+import android.os.Parcelable
+
+fun Intent.putOptionalExtra(name: String, value: Parcelable?): Intent {
+    if (value != null) {
+        putExtra(name, value)
+    }
+
+    return this
+}
 
 fun Intent?.requireStringExtra(name: String): String {
     if (this == null) {
