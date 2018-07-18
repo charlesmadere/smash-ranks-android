@@ -2,7 +2,6 @@ package com.garpr.android.activities
 
 import android.app.Application
 import com.garpr.android.BaseTest
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import org.junit.Assert.*
@@ -17,9 +16,6 @@ class TournamentsActivityTest : BaseTest() {
 
     @Inject
     protected lateinit var application: Application
-
-    @Inject
-    protected lateinit var regionManager: RegionManager
 
 
     companion object {
@@ -49,16 +45,5 @@ class TournamentsActivityTest : BaseTest() {
         assertTrue(intent.hasExtra(BaseActivity.EXTRA_REGION))
         assertEquals(GOOGLEMTV, intent.getParcelableExtra(BaseActivity.EXTRA_REGION))
     }
-
-// TODO
-//    @Test
-//    fun testGetRegion() {
-//        val intent = TournamentsActivity.getLaunchIntent(application, GOOGLEMTV)
-//        val activity = Robolectric.buildActivity(TournamentsActivity::class.java, intent)
-//                .setup()
-//                .get()
-//
-//        assertEquals(GOOGLEMTV, regionManager.getRegion(activity))
-//    }
 
 }
