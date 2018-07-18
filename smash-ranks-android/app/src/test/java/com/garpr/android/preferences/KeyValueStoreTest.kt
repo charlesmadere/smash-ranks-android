@@ -54,62 +54,62 @@ class KeyValueStoreTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun testBatchEditPutAndApplyWithInteger() {
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putInteger("Integer", 100)
                 .apply()
 
-        assertTrue(keyValueStore.contains("Integer"))
+        assertTrue("Integer" in keyValueStore)
     }
 
     @Test
     @Throws(Exception::class)
     fun testBatchEditPutAndApplyWithString() {
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putString("String", "Hello, World")
                 .apply()
 
-        assertTrue(keyValueStore.contains("String"))
+        assertTrue("String" in keyValueStore)
     }
 
     @Test
     @Throws(Exception::class)
     fun testBatchEditPutAndApplyAndClear() {
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putString("String", "Hello, World")
                 .apply()
 
-        assertTrue(keyValueStore.contains("String"))
+        assertTrue("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putInteger("Integer", 1000)
                 .apply()
 
-        assertTrue(keyValueStore.contains("String"))
-        assertTrue(keyValueStore.contains("Integer"))
+        assertTrue("String" in keyValueStore)
+        assertTrue("Integer" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .clear()
                 .apply()
 
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
         assertEquals(0, keyValueStore.all?.size ?: 0)
     }
 
     @Test
     @Throws(Exception::class)
     fun testBatchEditPutWithoutApply() {
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putString("String", "Hello, World")
 
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
     }
 
     @Test
@@ -234,20 +234,20 @@ class KeyValueStoreTest : BaseTest() {
     @Throws(Exception::class)
     fun testRemove() {
         keyValueStore.remove("boolean")
-        assertFalse(keyValueStore.contains("boolean"))
+        assertFalse("boolean" in keyValueStore)
     }
 
     @Test
     @Throws(Exception::class)
     fun testRemoveAndSet() {
         keyValueStore.remove("long")
-        assertFalse(keyValueStore.contains("long"))
+        assertFalse("long" in keyValueStore)
 
         keyValueStore.setLong("long", 100)
-        assertTrue(keyValueStore.contains("long"))
+        assertTrue("long" in keyValueStore)
 
         keyValueStore.remove("long")
-        assertFalse(keyValueStore.contains("long"))
+        assertFalse("long" in keyValueStore)
     }
 
 }
