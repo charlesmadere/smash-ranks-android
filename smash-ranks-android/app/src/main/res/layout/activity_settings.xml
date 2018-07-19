@@ -125,7 +125,7 @@
                 layout="@layout/divider" />
 
             <TextView
-                android:text="@string/miscellaneous"
+                android:text="@string/credits"
                 style="@style/SettingsCardTitle" />
 
             <com.garpr.android.views.SimplePreferenceView
@@ -151,6 +151,9 @@
                 app:descriptionText="@string/tsuaii_twitter_url"
                 app:titleText="@string/sheik_artwork_by_tsuaii"
                 style="@style/PreferenceView" />
+
+            <include
+                layout="@layout/divider" />
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvLogViewer"
