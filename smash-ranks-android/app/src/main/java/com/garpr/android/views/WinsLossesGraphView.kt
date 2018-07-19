@@ -14,6 +14,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import com.garpr.android.R
+import com.garpr.android.extensions.getLong
 import com.garpr.android.models.WinsLosses
 
 class WinsLossesGraphView : View {
@@ -102,7 +103,7 @@ class WinsLossesGraphView : View {
         animate()
                 .scaleX(1f)
                 .scaleY(1f)
-                .setDuration(resources.getInteger(R.integer.win_losses_animation).toLong())
+                .setDuration(resources.getLong(R.integer.win_losses_animation))
                 .setInterpolator(OvershootInterpolator(OVERSHOOT_TENSION))
                 .start()
     }

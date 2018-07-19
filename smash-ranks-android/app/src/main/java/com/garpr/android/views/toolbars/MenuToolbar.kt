@@ -19,6 +19,7 @@ import android.view.Window
 import com.garpr.android.R
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.getLong
 import com.garpr.android.extensions.statusBarColorCompat
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
@@ -36,7 +37,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
 
     // begin animation Variables
     private val animationDuration: Long by lazy {
-        resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        resources.getLong(android.R.integer.config_shortAnimTime)
     }
 
     private val textColorPrimary: Int by lazy {
@@ -114,7 +115,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
         }
 
         val animatorSet = AnimatorSet()
-        animatorSet.duration = resources.getInteger(R.integer.color_animation_duration).toLong()
+        animatorSet.duration = resources.getLong(R.integer.color_animation_duration)
         animatorSet.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
         animatorSet.playTogether(toolbarAnimator, statusBarAnimator)
         animatorSet.start()

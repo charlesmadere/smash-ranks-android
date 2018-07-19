@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.extensions.getLong
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.models.LitePlayer
 import com.garpr.android.models.WinsLosses
@@ -41,7 +42,7 @@ class WinsLossesView @JvmOverloads constructor(
 
         animate()
                 .alpha(1f)
-                .setDuration(resources.getInteger(R.integer.win_losses_animation).toLong())
+                .setDuration(resources.getLong(R.integer.win_losses_animation))
                 .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
                 .start()
     }

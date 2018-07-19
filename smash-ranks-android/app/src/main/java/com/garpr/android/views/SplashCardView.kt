@@ -12,6 +12,7 @@ import com.garpr.android.activities.SetIdentityActivity
 import com.garpr.android.activities.SetRegionActivity
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.getLong
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.AnimationUtils
@@ -129,9 +130,9 @@ class SplashCardView @JvmOverloads constructor(
                 .alpha(1f)
                 .scaleX(1f)
                 .scaleY(1f)
-                .setDuration(resources.getInteger(R.integer.splash_card_animation_duration).toLong())
+                .setDuration(resources.getLong(R.integer.splash_card_animation_duration))
                 .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
-                .setStartDelay(resources.getInteger(R.integer.splash_card_animation_delay).toLong())
+                .setStartDelay(resources.getLong(R.integer.splash_card_animation_delay))
                 .withStartAction {
                     performElevationAnimation()
                     performMarginBottomAnimation()
@@ -147,7 +148,7 @@ class SplashCardView @JvmOverloads constructor(
             cardElevation = it.animatedValue as Float
         }
 
-        animator.duration = resources.getInteger(R.integer.splash_card_animation_duration).toLong()
+        animator.duration = resources.getLong(R.integer.splash_card_animation_duration)
         animator.interpolator = OvershootInterpolator(ELEVATION_OVERSHOOT_TENSION)
         animator.start()
     }
@@ -164,7 +165,7 @@ class SplashCardView @JvmOverloads constructor(
             this.layoutParams = layoutParams
         }
 
-        animator.duration = resources.getInteger(R.integer.splash_card_animation_duration).toLong()
+        animator.duration = resources.getLong(R.integer.splash_card_animation_duration)
         animator.interpolator = OvershootInterpolator(MARGIN_OVERSHOOT_TENSION)
         animator.start()
     }

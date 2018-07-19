@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.getLong
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.TournamentMode
@@ -31,7 +32,7 @@ class TournamentTabsView @JvmOverloads constructor(
 
 
     private val animationDuration: Long by lazy {
-        resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        resources.getLong(android.R.integer.config_shortAnimTime)
     }
 
     @ColorInt
