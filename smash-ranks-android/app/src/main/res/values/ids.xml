@@ -6,6 +6,7 @@
     <item name="description" type="id" />
     <item name="empty" type="id" />
     <item name="error" type="id" />
+    <item name="fastScroller" type="id" />
     <item name="icon" type="id" />
     <item name="image" type="id" />
     <item name="recyclerView" type="id" />

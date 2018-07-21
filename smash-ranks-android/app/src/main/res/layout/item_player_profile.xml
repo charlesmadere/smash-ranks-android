@@ -48,6 +48,7 @@
 
     <TextView
         android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:id="@+id/tvName"
         android:layout_gravity="center_horizontal"
@@ -58,8 +59,7 @@
         android:textSize="@dimen/text_size_large"
         android:visibility="gone"
         tools:text="Joseph Marquez"
-        tools:visibility="visible"
-        style="@style/MediumOrBoldText" />
+        tools:visibility="visible" />
 
     <TextView
         android:ellipsize="end"
@@ -139,14 +139,14 @@
 
     <TextView
         android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
         android:id="@+id/tvRegion"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:maxLines="2"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="Norcal"
-        style="@style/MediumOrBoldText" />
+        tools:text="Norcal" />
 
     <TextView
         android:id="@+id/tvRating"

@@ -31,7 +31,7 @@ android {
     buildToolsVersion "27.0.3"
 
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 20000
         versionName "2.0.0"
@@ -101,6 +101,10 @@ dependencies {
     // Kotlin
     // https://kotlinlang.org/docs/reference/using-gradle.html
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Reddit's Indicator Fast Scroll
+    // https://github.com/reddit/IndicatorFastScroll
+    implementation "com.reddit:indicator-fast-scroll:$indicator_fast_scroll_version"
 
     // Robolectric
     // https://github.com/robolectric/robolectric

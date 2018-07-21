@@ -8,6 +8,7 @@ buildscript {
     ext.firebase_jobdispatcher_version = '0.8.5'
     ext.google_play_services_version = '15.0.1'
     ext.gson_version = '2.8.5'
+    ext.indicator_fast_scroll_version = '1.0.1'
     ext.kotlin_version = '1.2.51'
     ext.retrofit_version = '2.4.0'
     ext.robolectric_version = '3.8'
