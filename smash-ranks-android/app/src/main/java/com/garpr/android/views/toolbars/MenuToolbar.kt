@@ -20,6 +20,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
+import com.garpr.android.extensions.statusBarColorCompat
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.MiscUtils
@@ -98,19 +99,19 @@ abstract class MenuToolbar @JvmOverloads constructor(
             toolbarBackground = toolbarBackgroundFallback
             statusBarBackground = statusBarBackgroundFallback
         } else {
-            toolbarBackground = MiscUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb,
-                    TOO_LIGHT_DARKEN_FACTOR, LIGHTNESS_LIMIT)
-            statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground,
-                    STATUS_BAR_DARKEN_FACTOR)
+            toolbarBackground = MiscUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb, TOO_LIGHT_DARKEN_FACTOR,
+                LIGHTNESS_LIMIT)
+            statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground, STATUS_BAR_DARKEN_FACTOR)
         }
 
-        val toolbarAnimator = ValueAnimator.ofArgb(
+        val toolbarAnimator = AnimationUtils.createArgbValueAnimator(
                 background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
         toolbarAnimator.addUpdateListener(backgroundAnimatorUpdateListener)
 
-        val statusBarAnimator = ValueAnimator.ofArgb(window.statusBarColor, statusBarBackground)
+        val statusBarAnimator = AnimationUtils.createArgbValueAnimator(
+                window.statusBarColorCompat ?: statusBarBackgroundFallback, statusBarBackground)
         statusBarAnimator.addUpdateListener {
-            window.statusBarColor = it.animatedValue as Int
+            window.statusBarColorCompat = it.animatedValue as Int
         }
 
         val animatorSet = AnimatorSet()
@@ -137,8 +138,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
         outSubtitleAnimation?.cancel()
         outSubtitleAnimation = null
 
-        val titleAnimation = ValueAnimator.ofArgb(toolbarReflectionHelper.titleTextColor,
-                textColorPrimary)
+        val titleAnimation = AnimationUtils.createArgbValueAnimator(
+                toolbarReflectionHelper.titleTextColor, textColorPrimary)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
         titleAnimation.duration = animationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
@@ -149,8 +150,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = ValueAnimator.ofArgb(toolbarReflectionHelper.subtitleTextColor,
-                textColorSecondary)
+        val subtitleAnimation = AnimationUtils.createArgbValueAnimator(
+                toolbarReflectionHelper.subtitleTextColor, textColorSecondary)
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
         subtitleAnimation.duration = titleAnimation.duration
         subtitleAnimation.interpolator = titleAnimation.interpolator
@@ -178,8 +179,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
         inSubtitleAnimation?.cancel()
         inSubtitleAnimation = null
 
-        val titleAnimation = ValueAnimator.ofArgb(toolbarReflectionHelper.titleTextColor,
-                Color.TRANSPARENT)
+        val titleAnimation = AnimationUtils.createArgbValueAnimator(
+                toolbarReflectionHelper.titleTextColor, Color.TRANSPARENT)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
         titleAnimation.duration = animationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
@@ -190,8 +191,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = ValueAnimator.ofArgb(toolbarReflectionHelper.subtitleTextColor,
-                Color.TRANSPARENT)
+        val subtitleAnimation = AnimationUtils.createArgbValueAnimator(
+                toolbarReflectionHelper.subtitleTextColor, Color.TRANSPARENT)
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
         subtitleAnimation.duration = titleAnimation.duration
         subtitleAnimation.interpolator = titleAnimation.interpolator

@@ -67,12 +67,6 @@
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
-    <style name="FastScroller">
-        <item name="android:id">@id/fastScroller</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">@dimen/fast_scroller_width</item>
-    </style>
-
     <style name="ListItem">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center_vertical</item>
@@ -89,6 +83,10 @@
         <item name="android:background">@color/card_background</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="MediumOrBoldText">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="NoContentLinearLayout">
@@ -225,8 +223,8 @@
 
     <style name="SettingsCardDescription.Warn">
         <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/warn</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:visibility">gone</item>
     </style>
 
@@ -243,11 +241,10 @@
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
-    <style name="TextButton">
+    <style name="TextButton" parent="@style/MediumOrBoldText">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:drawablePadding">@dimen/root_padding_eighth</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>

@@ -13,7 +13,11 @@ open class DeviceUtilsImpl(
 ) : DeviceUtils {
 
     override val hasLowRam: Boolean
-        get() = ActivityManagerCompat.isLowRamDevice(application.activityManager)
+        get() = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                    true
+                } else {
+                    ActivityManagerCompat.isLowRamDevice(application.activityManager)
+                }
 
     override val hasNavigationBar: Boolean
         get() {
@@ -60,9 +64,13 @@ open class DeviceUtilsImpl(
 
     override val supportsTranslucentNavigationBar: Boolean
         get() {
-            val resId = application.resources.getIdentifier("config_enableTranslucentDecor",
-                    "bool", "android")
-            return resId != 0 && application.resources.getBoolean(resId)
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                val resId = application.resources.getIdentifier(
+                        "config_enableTranslucentDecor", "bool", "android")
+                resId != 0 && application.resources.getBoolean(resId)
+            } else {
+                false
+            }
         }
 
 }

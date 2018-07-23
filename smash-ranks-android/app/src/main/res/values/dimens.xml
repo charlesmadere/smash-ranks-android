@@ -8,7 +8,6 @@
     <dimen name="elevation">4dp</dimen>
     <dimen name="elevation_half">2dp</dimen>
     <dimen name="elevation_quarter">1dp</dimen>
-    <dimen name="fast_scroller_width">32dp</dimen>
     <dimen name="list_item_height">48dp</dimen>
     <dimen name="navigation_bar_height">48dp</dimen>
     <dimen name="previous_rank_view_size">18dp</dimen>

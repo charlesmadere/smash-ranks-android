@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.views.PlayersLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/playersLayout"
     style="@style/RefreshLayout">
 
@@ -11,15 +10,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:visibility="gone"
-            tools:listitem="@layout/item_player"
-            tools:visibility="visible"
             style="@style/RecyclerView" />
-
-        <com.reddit.indicatorfastscroll.FastScrollerView
-            android:layout_gravity="end"
-            android:visibility="gone"
-            tools:visibility="visible"
-            style="@style/FastScroller" />
 
         <com.garpr.android.views.NoContentLinearLayout
             app:titleText="@string/no_players"

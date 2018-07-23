@@ -20,8 +20,6 @@ import com.garpr.android.models.PlayersBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.reddit.indicatorfastscroll.FastScrollItemIndicator
-import com.reddit.indicatorfastscroll.FastScrollerView
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -40,7 +38,6 @@ class PlayersLayout @JvmOverloads constructor(
     protected lateinit var serverApi: ServerApi
 
     private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val fastScrollerView: FastScrollerView by bindView(R.id.fastScroller)
     private val empty: View by bindView(R.id.empty)
 
 
@@ -73,11 +70,6 @@ class PlayersLayout @JvmOverloads constructor(
         recyclerView.setHasFixedSize(true)
         adapter = PlayersAdapter(context)
         recyclerView.adapter = adapter
-
-        fastScrollerView.setupWithRecyclerView(recyclerView, { position ->
-            val name = adapter.getItem(position).name
-            FastScrollItemIndicator.Text(name.substring(0, 1).toUpperCase())
-        })
 
         fetchPlayersBundle()
     }
