@@ -31,7 +31,7 @@ class NotificationsManagerImpl(
                     .setCategory(NotificationCompat.CATEGORY_SOCIAL)
                     .setContentTitle(context.getString(R.string.gar_pr))
                     .setPriority(NotificationCompat.PRIORITY_LOW)
-                    .setSmallIcon(R.drawable.notification)
+                    .setSmallIcon(R.drawable.ic_controller_white_24dp)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         }
     }
