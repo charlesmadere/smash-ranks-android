@@ -1,12 +1,8 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
@@ -18,23 +14,16 @@ import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.AbsPlayer
 import javax.inject.Inject
 
-abstract class IdentityFrameLayout : LifecycleFrameLayout,
-        IdentityManager.OnIdentityChangeListener, Refreshable {
+abstract class IdentityFrameLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LifecycleFrameLayout(context, attrs), IdentityManager.OnIdentityChangeListener, Refreshable {
 
     private var originalBackground: Drawable? = null
 
     @Inject
     protected lateinit var identityManager: IdentityManager
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     protected open fun clear() {
         identity = null

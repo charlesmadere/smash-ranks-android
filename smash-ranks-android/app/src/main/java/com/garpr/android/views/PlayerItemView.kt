@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -18,7 +14,10 @@ import com.garpr.android.models.AbsPlayer
 import kotterknife.bindView
 import javax.inject.Inject
 
-class PlayerItemView : IdentityFrameLayout, BaseAdapterView<AbsPlayer>, View.OnClickListener,
+class PlayerItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : IdentityFrameLayout(context, attrs), BaseAdapterView<AbsPlayer>, View.OnClickListener,
         View.OnLongClickListener {
 
     @Inject
@@ -29,15 +28,6 @@ class PlayerItemView : IdentityFrameLayout, BaseAdapterView<AbsPlayer>, View.OnC
 
     private val name: TextView by bindView(R.id.tvName)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()

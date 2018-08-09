@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -23,8 +19,11 @@ import com.garpr.android.models.AbsPlayer
 import kotterknife.bindView
 import javax.inject.Inject
 
-class FavoritePlayersLayout : SearchableFrameLayout,
-        FavoritePlayersManager.OnFavoritePlayersChangeListener, Refreshable {
+class FavoritePlayersLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SearchableFrameLayout(context, attrs), FavoritePlayersManager.OnFavoritePlayersChangeListener,
+        Refreshable {
 
     private lateinit var adapter: FavoritePlayersAdapter
 
@@ -38,15 +37,6 @@ class FavoritePlayersLayout : SearchableFrameLayout,
         fun inflate(parent: ViewGroup): FavoritePlayersLayout = LayoutInflater.from(parent.context)
                 .inflate(R.layout.layout_favorite_players, parent, false) as FavoritePlayersLayout
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

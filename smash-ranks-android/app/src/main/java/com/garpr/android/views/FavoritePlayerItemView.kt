@@ -17,7 +17,7 @@ import javax.inject.Inject
 class FavoritePlayerItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-): IdentityConstraintLayout(context, attrs), BaseAdapterView<FavoritePlayer>,
+) : IdentityConstraintLayout(context, attrs), BaseAdapterView<FavoritePlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
     @Inject

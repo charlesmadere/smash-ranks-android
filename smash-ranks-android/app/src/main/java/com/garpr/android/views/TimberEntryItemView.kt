@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.util.SparseIntArray
 import android.widget.LinearLayout
@@ -16,21 +12,15 @@ import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.misc.Timber
 import kotterknife.bindView
 
-class TimberEntryItemView : LinearLayout, BaseAdapterView<Timber.Entry> {
+class TimberEntryItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LinearLayout(context, attrs), BaseAdapterView<Timber.Entry> {
 
     private val colors = SparseIntArray()
     private val stackTrace: TextView by bindView(R.id.tvStackTrace)
     private val tagAndMessage: TextView by bindView(R.id.tvTagAndMessage)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun setContent(content: Timber.Entry) {
         tagAndMessage.text = resources.getString(R.string.tag_and_message, content.tag,

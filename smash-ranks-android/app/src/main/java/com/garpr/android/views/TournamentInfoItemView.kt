@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +20,10 @@ import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
+class TournamentInfoItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LinearLayout(context, attrs), BaseAdapterView<FullTournament> {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
@@ -48,15 +47,6 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
                 parent.context).inflate(R.layout.item_tournament_info, parent,
                 false) as TournamentInfoItemView
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-                @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     val dateVerticalPositionInWindow: Int
         get() = date.verticalPositionInWindow

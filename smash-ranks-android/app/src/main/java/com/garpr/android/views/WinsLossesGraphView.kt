@@ -1,14 +1,10 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import android.os.Build
-import android.support.annotation.AttrRes
 import android.support.annotation.ColorRes
-import android.support.annotation.StyleableRes
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
@@ -17,7 +13,10 @@ import com.garpr.android.R
 import com.garpr.android.extensions.getLong
 import com.garpr.android.models.WinsLosses
 
-class WinsLossesGraphView : View {
+class WinsLossesGraphView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : View(context, attrs) {
 
     private lateinit var playerPalette: GraphPalette
     private lateinit var opponentPalette: GraphPalette
@@ -28,15 +27,6 @@ class WinsLossesGraphView : View {
     companion object {
         private const val OVERSHOOT_TENSION: Float = 3.8f
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleableRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private fun calculateRects() {
         val winsLosses = this.winsLosses

@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
@@ -23,7 +19,10 @@ import com.garpr.android.models.MatchResult
 import kotterknife.bindView
 import javax.inject.Inject
 
-class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickListener,
+class MatchItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : IdentityFrameLayout(context, attrs), BaseAdapterView<Match>, View.OnClickListener,
         View.OnLongClickListener {
 
     @Inject
@@ -38,15 +37,6 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
     interface OnClickListener {
         fun onClick(v: MatchItemView)
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun clear() {
         super.clear()
