@@ -54,7 +54,6 @@
     <string name="head_to_head_swipe_to_refresh_to_check_again">Swipe down to refresh to check again. This probably means that these two competitors have never played in tournament before.</string>
     <string name="identity">Identity</string>
     <string name="identity_region_format">%1$s (%2$s)</string>
-    <string name="info">Info</string>
     <string name="identity_saved_">Identity saved!</string>
     <string name="last_poll">Last poll</string>
     <string name="last_sync_x">Last sync: %1$s</string>
@@ -76,7 +75,6 @@
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
     <string name="no_regions">No regions</string>
-    <string name="no_tournament_data">No tournament data</string>
     <string name="no_tournaments">No tournaments</string>
     <string name="ok">OK</string>
     <string name="open_bracket_link">Open bracket link</string>
@@ -174,9 +172,11 @@
     <string name="captain_falcon">Captain Falcon</string>
     <string name="captain_olimar">Captain Olimar</string>
     <string name="charizard">Charizard</string>
+    <string name="chrom">Chrom</string>
     <string name="cloud">Cloud</string>
     <string name="corrin">Corrin</string>
     <string name="dark_pit">Dark Pit</string>
+    <string name="dark_samus">Dark Samus</string>
     <string name="diddy_kong">Diddy Kong</string>
     <string name="donkey_kong">Donkey Kong</string>
     <string name="dr_mario">Dr. Mario</string>
@@ -191,6 +191,7 @@
     <string name="ivysaur">Ivysaur</string>
     <string name="jigglypuff">Jigglypuff</string>
     <string name="king_dedede">King Dedede</string>
+    <string name="king_k_rool">King K. Rool</string>
     <string name="kirby">Kirby</string>
     <string name="link">Link</string>
     <string name="little_mac">Little Mac</string>
@@ -215,6 +216,7 @@
     <string name="pit">Pit</string>
     <string name="pokemon_trainer">Pokémon Trainer</string>
     <string name="ness">Ness</string>
+    <string name="ricter">Ricter</string>
     <string name="ridley">Ridley</string>
     <string name="rob">R.O.B.</string>
     <string name="robin">Robin</string>
@@ -224,6 +226,7 @@
     <string name="samus">Samus</string>
     <string name="sheik">Sheik</string>
     <string name="shulk">Shulk</string>
+    <string name="simon">Simon</string>
     <string name="snake">Snake</string>
     <string name="sonic">Sonic</string>
     <string name="squirtle">Squirtle</string>

@@ -29,6 +29,9 @@ enum class SmashCharacter(
     @SerializedName("chr")
     CHARIZARD(R.string.charizard),
 
+    @SerializedName("chm")
+    CHROM(R.string.chrom),
+
     @SerializedName("cld")
     CLOUD(R.string.cloud),
 
@@ -37,6 +40,9 @@ enum class SmashCharacter(
 
     @SerializedName("dpt")
     DARK_PIT(R.string.dark_pit),
+
+    @SerializedName("dks")
+    DARK_SAMUS(R.string.dark_samus),
 
     @SerializedName("ddy")
     DIDDY_KONG(R.string.diddy_kong),
@@ -79,6 +85,9 @@ enum class SmashCharacter(
 
     @SerializedName("ddd")
     KING_DEDEDE(R.string.king_dedede),
+
+    @SerializedName("kkr")
+    KING_K_ROOL(R.string.king_k_rool),
 
     @SerializedName("kby")
     KIRBY(R.string.kirby),
@@ -152,6 +161,9 @@ enum class SmashCharacter(
     @SerializedName("pkt")
     POKEMON_TRAINER(R.string.pokemon_trainer),
 
+    @SerializedName("ric")
+    RICTER(R.string.ricter),
+
     @SerializedName("rid")
     RIDLEY(R.string.ridley),
 
@@ -178,6 +190,9 @@ enum class SmashCharacter(
 
     @SerializedName("slk")
     SHULK(R.string.shulk),
+
+    @SerializedName("smn")
+    SIMON(R.string.simon),
 
     @SerializedName("snk")
     SNAKE(R.string.snake),
