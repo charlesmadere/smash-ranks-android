@@ -1,5 +1,6 @@
 package com.garpr.android.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
@@ -75,6 +76,7 @@ open class SimplePreferenceView @JvmOverloads constructor(
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
+        @SuppressLint("CustomViewStyleable")
         val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
         _descriptionText = ta.getText(R.styleable.View_descriptionText)
         _iconDrawable = ta.getDrawable(R.styleable.View_icon)

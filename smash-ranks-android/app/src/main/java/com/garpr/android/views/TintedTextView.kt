@@ -1,5 +1,6 @@
 package com.garpr.android.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.annotation.ColorInt
 import android.support.v7.graphics.Palette
@@ -16,11 +17,15 @@ class TintedTextView @JvmOverloads constructor(
 ) : LifecycleTextView(context, attrs), ColorListener, Refreshable {
 
     @ColorInt
-    private var drawableTintColor: Int = 0
+    private val drawableTintColor: Int
 
 
     init {
-        parseAttributes(attrs)
+        @SuppressLint("CustomViewStyleable")
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        drawableTintColor = ta.getColor(R.styleable.View_drawableTintColor,
+                context.getAttrColor(android.R.attr.textColorSecondary))
+        ta.recycle()
     }
 
     override fun onFinishInflate() {
@@ -30,13 +35,6 @@ class TintedTextView @JvmOverloads constructor(
 
     override fun onPaletteBuilt(palette: Palette?) {
         setTintedDrawableColor(palette?.mutedSwatch?.rgb ?: drawableTintColor)
-    }
-
-    private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
-        drawableTintColor = ta.getColor(R.styleable.View_drawableTintColor,
-                context.getAttrColor(android.R.attr.textColorSecondary))
-        ta.recycle()
     }
 
     override fun refresh() {

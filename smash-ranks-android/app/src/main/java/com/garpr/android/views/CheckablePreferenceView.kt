@@ -1,5 +1,6 @@
 package com.garpr.android.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcelable
 import android.support.constraint.ConstraintLayout
@@ -110,6 +111,7 @@ class CheckablePreferenceView @JvmOverloads constructor(
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
+        @SuppressLint("CustomViewStyleable")
         var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
         enabledDescriptionText = ta.getText(R.styleable.View_descriptionText)
         titleText = ta.getText(R.styleable.View_titleText)

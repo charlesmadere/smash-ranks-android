@@ -11,12 +11,12 @@ class NonSwipeableViewPager @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
 
-    override fun onInterceptTouchEvent(ev: MotionEvent) = false
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean = false
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(ev: MotionEvent) = false
+    override fun onTouchEvent(ev: MotionEvent): Boolean = false
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun performClick() = false
+    override fun performClick(): Boolean = false
 
 }
