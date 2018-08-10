@@ -13,8 +13,7 @@ import javax.inject.Inject
 abstract class SearchableFrameLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleFrameLayout(context, attrs), ListLayout, Searchable,
-        SearchQueryHandle {
+) : LifecycleFrameLayout(context, attrs), ListLayout, Searchable, SearchQueryHandle {
 
     @Inject
     protected lateinit var threadUtils: ThreadUtils
