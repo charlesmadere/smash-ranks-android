@@ -2,7 +2,6 @@ package com.garpr.android.views
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
@@ -30,13 +29,12 @@ class TournamentTabsView @JvmOverloads constructor(
         val tournamentMode: TournamentMode
     }
 
-
     private val animationDuration: Long by lazy {
         resources.getLong(android.R.integer.config_shortAnimTime)
     }
 
     @ColorInt
-    private var indicatorLineColor: Int = Color.TRANSPARENT
+    private val indicatorLineColor: Int
 
     private var inAnimation: ViewPropertyAnimator? = null
     private var outAnimation: ViewPropertyAnimator? = null
@@ -47,7 +45,10 @@ class TournamentTabsView @JvmOverloads constructor(
 
 
     init {
-        parseAttributes(attrs)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsView)
+        indicatorLineColor = ta.getColor(R.styleable.TournamentTabsView_indicatorLineColor,
+                context.getAttrColor(R.attr.colorAccent))
+        ta.recycle()
     }
 
     fun animateIn() {
@@ -126,13 +127,6 @@ class TournamentTabsView @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         return if (canBeTouched) super.onTouchEvent(event) else false
-    }
-
-    private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsView)
-        indicatorLineColor = ta.getColor(R.styleable.TournamentTabsView_indicatorLineColor,
-                context.getAttrColor(R.attr.colorAccent))
-        ta.recycle()
     }
 
     override fun refresh() {

@@ -22,10 +22,10 @@ class CheckablePreferenceView @JvmOverloads constructor(
 ) : LifecycleConstraintLayout(context, attrs), Preference.OnPreferenceChangeListener<Boolean>,
         Refreshable, View.OnClickListener {
 
-    private var disabledDescriptionText: CharSequence? = null
-    private var enabledDescriptionText: CharSequence? = null
-    private var titleText: CharSequence? = null
-    private var checkableType: Int = 0
+    private val disabledDescriptionText: CharSequence?
+    private val enabledDescriptionText: CharSequence?
+    private val titleText: CharSequence?
+    private val checkableType: Int
 
     private val checkable: CompoundButton by bindView(R.id.checkable)
     private val description: TextView by bindView(R.id.description)
@@ -38,7 +38,16 @@ class CheckablePreferenceView @JvmOverloads constructor(
     }
 
     init {
-        parseAttributes(attrs)
+        @SuppressLint("CustomViewStyleable")
+        var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        enabledDescriptionText = ta.getText(R.styleable.View_descriptionText)
+        titleText = ta.getText(R.styleable.View_titleText)
+        ta.recycle()
+
+        ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
+        checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType, CHECKABLE_TYPE_CHECKBOX)
+        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
+        ta.recycle()
     }
 
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>) {
@@ -108,19 +117,6 @@ class CheckablePreferenceView @JvmOverloads constructor(
         if (isAlive) {
             refresh()
         }
-    }
-
-    private fun parseAttributes(attrs: AttributeSet?) {
-        @SuppressLint("CustomViewStyleable")
-        var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
-        enabledDescriptionText = ta.getText(R.styleable.View_descriptionText)
-        titleText = ta.getText(R.styleable.View_titleText)
-        ta.recycle()
-
-        ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
-        checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType, CHECKABLE_TYPE_CHECKBOX)
-        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
-        ta.recycle()
     }
 
     var preference: Preference<Boolean>? = null

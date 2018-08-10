@@ -22,9 +22,9 @@ open class SimplePreferenceView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : LifecycleConstraintLayout(context, attrs), Refreshable {
 
-    private var _descriptionText: CharSequence? = null
-    private var _titleText: CharSequence? = null
-    private var _iconDrawable: Drawable? = null
+    private val _descriptionText: CharSequence?
+    private val _titleText: CharSequence?
+    private val _iconDrawable: Drawable?
 
     private val icon: ImageView by bindView(R.id.checkable)
     private val description: TextView by bindView(R.id.description)
@@ -32,13 +32,17 @@ open class SimplePreferenceView @JvmOverloads constructor(
 
 
     init {
-        parseAttributes(attrs)
+        @SuppressLint("CustomViewStyleable")
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        _descriptionText = ta.getText(R.styleable.View_descriptionText)
+        _iconDrawable = ta.getDrawable(R.styleable.View_icon)
+        _titleText = ta.getText(R.styleable.View_titleText)
+        ta.recycle()
     }
 
     var descriptionText: CharSequence?
-        get() = _descriptionText
+        get() = description.text
         set(value) {
-            _descriptionText = value
             description.text = value
         }
 
@@ -53,8 +57,6 @@ open class SimplePreferenceView @JvmOverloads constructor(
     var iconDrawable: Drawable?
         get() = icon.drawable
         set(value) {
-            _iconDrawable = value
-
             if (value == null) {
                 icon.clear()
                 icon.visibility = View.GONE
@@ -75,15 +77,6 @@ open class SimplePreferenceView @JvmOverloads constructor(
         titleText = _titleText
     }
 
-    private fun parseAttributes(attrs: AttributeSet?) {
-        @SuppressLint("CustomViewStyleable")
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
-        _descriptionText = ta.getText(R.styleable.View_descriptionText)
-        _iconDrawable = ta.getDrawable(R.styleable.View_icon)
-        _titleText = ta.getText(R.styleable.View_titleText)
-        ta.recycle()
-    }
-
     override fun refresh() {
         // intentionally empty, children can override
     }
@@ -95,9 +88,8 @@ open class SimplePreferenceView @JvmOverloads constructor(
     }
 
     var titleText: CharSequence?
-        get() = _titleText
+        get() = title.text
         set(value) {
-            _titleText = value
             title.text = value
         }
 
