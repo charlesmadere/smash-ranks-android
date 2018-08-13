@@ -1,10 +1,6 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.support.v4.widget.TextViewCompat
 import android.support.v7.graphics.Palette
 import android.util.AttributeSet
@@ -30,7 +26,10 @@ import com.garpr.android.sync.SmashRosterSyncManager
 import kotterknife.bindView
 import javax.inject.Inject
 
-class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>, ColorListener,
+class PlayerProfileItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LifecycleLinearLayout(context, attrs), BaseAdapterView<FullPlayer>, ColorListener,
         FavoritePlayersManager.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener, Refreshable,
         SmashRosterSyncManager.OnSyncListeners {
@@ -73,15 +72,6 @@ class PlayerProfileItemView : LifecycleLinearLayout, BaseAdapterView<FullPlayer>
     private val websitesDivider: View by bindView(R.id.websitesDivider)
     private val websites: ViewGroup by bindView(R.id.vgWebsites)
 
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private var fullPlayer: FullPlayer? = null
         set(value) {
