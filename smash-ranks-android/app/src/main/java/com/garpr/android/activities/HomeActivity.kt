@@ -169,6 +169,13 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             }
         }
 
+    private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            updateSelectedBottomNavigationItem()
+        }
+    }
+
     override fun onRankingsBundleFetched(layout: RankingsLayout) {
         prepareMenuAndTitleAndSubtitle(layout)
     }
@@ -283,13 +290,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
         bottomNavigationView.menu.findItem(itemId).isChecked = true
-    }
-
-    private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            updateSelectedBottomNavigationItem()
-        }
     }
 
 }
