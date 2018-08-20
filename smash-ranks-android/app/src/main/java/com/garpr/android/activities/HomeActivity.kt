@@ -10,6 +10,7 @@ import android.view.MenuItem
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
@@ -67,13 +68,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         fun getLaunchIntent(context: Context, initialPosition: Int? = null,
                 restartActivityTask: Boolean = false): Intent {
             var intent = Intent(context, HomeActivity::class.java)
+                    .putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
 
             if (restartActivityTask) {
                 intent = Intent.makeRestartActivityTask(intent.component)
-            }
-
-            if (initialPosition != null) {
-                intent.putExtra(EXTRA_INITIAL_POSITION, initialPosition)
             }
 
             return intent
