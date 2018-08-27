@@ -113,7 +113,7 @@ dependencies {
 
     // Fabric
     // https://fabric.io/kits/android/crashlytics/update
-    implementation("com.crashlytics.sdk.android:crashlytics:2.9.4@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics:2.9.5@aar") {
         transitive = true
     }
 
