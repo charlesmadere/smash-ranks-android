@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.support.v7.graphics.Palette
 import android.util.AttributeSet
+import android.view.View
 import com.facebook.common.references.CloseableReference
 import com.facebook.datasource.DataSource
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -17,6 +18,7 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.ThreadUtils
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class PaletteSimpleDraweeView @JvmOverloads constructor(
@@ -25,6 +27,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
 ) : SimpleDraweeView(context, attrs) {
 
     var colorListener: ColorListener? = null
+    private val selfReference: WeakReference<View> by lazy { WeakReference<View>(this) }
 
     @Inject
     protected lateinit var deviceUtils: DeviceUtils
@@ -85,7 +88,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
                 .build()
 
         Fresco.getImagePipeline()
-                .fetchDecodedImage(imageRequest, context)
+                .fetchDecodedImage(imageRequest, selfReference)
                 .subscribe(bitmapSubscriber, threadUtils.executorService)
 
         controller = draweeController
