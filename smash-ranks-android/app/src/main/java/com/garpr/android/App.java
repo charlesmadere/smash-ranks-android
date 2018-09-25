@@ -1,9 +1,5 @@
 package com.garpr.android;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatDelegate;
-
 import com.garpr.android.dagger.AppComponent;
 import com.garpr.android.dagger.AppComponentHandle;
 import com.garpr.android.dagger.AppModule;
@@ -18,6 +14,10 @@ import com.garpr.android.preferences.GeneralPreferenceStore;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class App extends BaseApp implements AppComponentHandle {
 

@@ -2,8 +2,8 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.StringRes
-import android.support.v7.app.AppCompatDelegate
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
 
 import com.garpr.android.R
 import com.garpr.android.extensions.createParcel

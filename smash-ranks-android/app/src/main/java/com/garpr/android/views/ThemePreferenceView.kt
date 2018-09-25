@@ -2,10 +2,10 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatDelegate
 import android.util.AttributeSet
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import com.garpr.android.R
 import com.garpr.android.activities.HomeActivity
 import com.garpr.android.extensions.appComponent

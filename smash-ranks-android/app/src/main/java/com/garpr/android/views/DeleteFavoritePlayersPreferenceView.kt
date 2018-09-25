@@ -2,9 +2,9 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager

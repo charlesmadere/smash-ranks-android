@@ -3,9 +3,9 @@ package com.garpr.android.misc
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.os.Build
-import android.support.annotation.ColorInt
-import android.support.annotation.RequiresApi
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 
 object AnimationUtils {
 

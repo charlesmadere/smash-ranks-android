@@ -2,7 +2,7 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.garpr.android.R
 import com.garpr.android.extensions.createParcel
 import com.google.gson.annotations.SerializedName

@@ -1,7 +1,7 @@
 package com.garpr.android.extensions
 
-import android.support.annotation.StringRes
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 
 fun AppCompatActivity.subtitle(@StringRes subtitle: Int) {
     supportActionBar?.setSubtitle(subtitle)

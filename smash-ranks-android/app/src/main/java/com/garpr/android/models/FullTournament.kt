@@ -2,7 +2,11 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.*
+import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.readAbsPlayerList
+import com.garpr.android.extensions.readBoolean
+import com.garpr.android.extensions.writeAbsPlayerList
+import com.garpr.android.extensions.writeBoolean
 import com.google.gson.annotations.SerializedName
 
 class FullTournament(

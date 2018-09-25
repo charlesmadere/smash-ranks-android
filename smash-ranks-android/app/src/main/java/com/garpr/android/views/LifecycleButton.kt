@@ -1,9 +1,9 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.AppCompatButton
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.view.ViewCompat
 import com.garpr.android.misc.Heartbeat
 
 open class LifecycleButton @JvmOverloads constructor(

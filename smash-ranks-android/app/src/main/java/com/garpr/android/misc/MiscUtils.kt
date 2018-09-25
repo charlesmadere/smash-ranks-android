@@ -1,9 +1,9 @@
 package com.garpr.android.misc
 
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorInt
-import android.support.v4.graphics.ColorUtils
-import android.support.v4.graphics.drawable.DrawableCompat
+import androidx.annotation.ColorInt
+import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.drawable.DrawableCompat
 import java.text.DecimalFormat
 import java.text.NumberFormat
 

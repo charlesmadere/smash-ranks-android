@@ -1,11 +1,11 @@
 package com.garpr.android.views.toolbars
 
 import android.content.Context
-import android.support.v7.widget.SearchView
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.misc.SearchQueryHandle

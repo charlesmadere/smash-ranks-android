@@ -1,10 +1,14 @@
 package com.garpr.android.managers
 
-import android.app.*
+import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
-import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import com.garpr.android.R
 import com.garpr.android.activities.HomeActivity
 import com.garpr.android.extensions.notificationManager

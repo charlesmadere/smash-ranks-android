@@ -3,7 +3,7 @@ package com.garpr.android.misc
 import android.app.Application
 import android.content.res.Configuration
 import android.os.Build
-import android.support.v4.app.ActivityManagerCompat
+import androidx.core.app.ActivityManagerCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.activityManager
 import com.garpr.android.extensions.connectivityManager

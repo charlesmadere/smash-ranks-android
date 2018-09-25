@@ -1,8 +1,8 @@
 package com.garpr.android.extensions
 
 import android.os.Build
-import android.support.v4.content.ContextCompat
 import android.view.Window
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 
 var Window.statusBarColorCompat: Int?

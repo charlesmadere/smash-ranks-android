@@ -1,7 +1,6 @@
 package com.garpr.android.dagger;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.CrashlyticsWrapperImpl;
@@ -16,6 +15,7 @@ import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 

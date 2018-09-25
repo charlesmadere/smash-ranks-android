@@ -2,9 +2,9 @@ package com.garpr.android.views
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.annotation.ColorInt
-import android.support.v7.graphics.Palette
 import android.util.AttributeSet
+import androidx.annotation.ColorInt
+import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.setTintedDrawableColor

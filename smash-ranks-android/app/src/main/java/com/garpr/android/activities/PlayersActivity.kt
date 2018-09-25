@@ -3,9 +3,9 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra

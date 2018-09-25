@@ -3,13 +3,13 @@ package com.garpr.android.views
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.annotation.AttrRes
+import androidx.annotation.StyleRes
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.activity

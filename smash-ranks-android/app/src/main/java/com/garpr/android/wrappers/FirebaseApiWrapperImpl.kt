@@ -8,6 +8,8 @@ class FirebaseApiWrapperImpl(
         private val application: Application
 ) : FirebaseApiWrapper {
 
-    override val jobDispatcher: FirebaseJobDispatcher by lazy { FirebaseJobDispatcher(GooglePlayDriver(application)) }
+    override val jobDispatcher: FirebaseJobDispatcher by lazy {
+        FirebaseJobDispatcher(GooglePlayDriver(application))
+    }
 
 }

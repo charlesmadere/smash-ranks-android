@@ -3,10 +3,10 @@ package com.garpr.android.views
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.DialogInterface
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.animation.OvershootInterpolator
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.SetIdentityActivity
 import com.garpr.android.activities.SetRegionActivity

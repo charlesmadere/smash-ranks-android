@@ -4,11 +4,11 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import android.support.annotation.ColorRes
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.getLong
 import com.garpr.android.models.WinsLosses

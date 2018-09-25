@@ -1,12 +1,12 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.v4.widget.TextViewCompat
-import android.support.v7.graphics.Palette
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.widget.TextViewCompat
+import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView

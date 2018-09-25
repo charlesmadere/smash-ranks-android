@@ -1,7 +1,7 @@
 package com.garpr.android.misc
 
-import android.support.annotation.UiThread
-import android.support.annotation.WorkerThread
+import androidx.annotation.UiThread
+import androidx.annotation.WorkerThread
 import java.util.concurrent.ExecutorService
 
 interface ThreadUtils {

@@ -1,7 +1,7 @@
 package com.garpr.android.sync
 
-import android.support.annotation.UiThread
-import android.support.annotation.WorkerThread
+import androidx.annotation.UiThread
+import androidx.annotation.WorkerThread
 import com.firebase.jobdispatcher.Constraint
 import com.firebase.jobdispatcher.Lifetime
 import com.firebase.jobdispatcher.RetryStrategy

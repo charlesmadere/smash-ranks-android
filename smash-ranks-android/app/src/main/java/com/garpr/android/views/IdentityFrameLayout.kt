@@ -3,10 +3,10 @@ package com.garpr.android.views
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.IdentityManager

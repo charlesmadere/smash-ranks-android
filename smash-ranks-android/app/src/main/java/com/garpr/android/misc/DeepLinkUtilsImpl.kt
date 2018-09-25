@@ -3,7 +3,12 @@ package com.garpr.android.misc
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.garpr.android.activities.*
+import com.garpr.android.activities.HomeActivity
+import com.garpr.android.activities.PlayerActivity
+import com.garpr.android.activities.PlayersActivity
+import com.garpr.android.activities.RankingsActivity
+import com.garpr.android.activities.TournamentActivity
+import com.garpr.android.activities.TournamentsActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region

@@ -1,6 +1,6 @@
 package com.garpr.android;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.garpr.android.dagger.TestAppComponent;
 import com.garpr.android.dagger.TestAppComponentHandle;

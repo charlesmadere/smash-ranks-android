@@ -1,11 +1,15 @@
 package com.garpr.android.adapters
 
-import android.support.v4.util.SparseArrayCompat
-import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
+import androidx.collection.SparseArrayCompat
+import androidx.viewpager.widget.PagerAdapter
 import com.garpr.android.activities.HomeActivity
-import com.garpr.android.misc.*
+import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.ListLayout
+import com.garpr.android.misc.RankingCriteriaHandle
+import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.Searchable
 import com.garpr.android.models.RankingCriteria
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.views.FavoritePlayersLayout

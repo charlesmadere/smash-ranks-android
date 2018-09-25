@@ -3,9 +3,9 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
 import com.garpr.android.extensions.appComponent
@@ -15,7 +15,12 @@ import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.*
+import com.garpr.android.models.AbsPlayer
+import com.garpr.android.models.FavoritePlayer
+import com.garpr.android.models.FullTournament
+import com.garpr.android.models.HeadToHead
+import com.garpr.android.models.Match
+import com.garpr.android.models.Region
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi

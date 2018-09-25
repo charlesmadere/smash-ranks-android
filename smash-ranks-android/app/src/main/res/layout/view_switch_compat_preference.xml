@@ -5,7 +5,7 @@
     tools:parentTag="com.garpr.android.views.CheckablePreferenceView"
     tools:style="@style/PreferenceView">
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         style="@style/PreferenceViewCheckable" />
 
     <TextView

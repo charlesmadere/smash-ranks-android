@@ -1,10 +1,10 @@
 package com.garpr.android.adapters
 
 import android.content.Context
-import android.support.annotation.LayoutRes
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseAdapter<T>(
         private val layoutInflater: LayoutInflater

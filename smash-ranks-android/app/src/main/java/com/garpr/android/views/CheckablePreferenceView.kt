@@ -3,13 +3,13 @@ package com.garpr.android.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcelable
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.misc.Refreshable

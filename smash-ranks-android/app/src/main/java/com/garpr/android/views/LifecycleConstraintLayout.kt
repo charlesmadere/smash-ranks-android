@@ -1,9 +1,9 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
 import com.garpr.android.misc.Heartbeat
 
 open class LifecycleConstraintLayout @JvmOverloads constructor(

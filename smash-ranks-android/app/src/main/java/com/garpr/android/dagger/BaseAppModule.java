@@ -1,7 +1,6 @@
 package com.garpr.android.dagger;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 
 import com.garpr.android.managers.AppUpgradeManager;
 import com.garpr.android.managers.AppUpgradeManagerImpl;
@@ -74,6 +73,7 @@ import com.google.gson.GsonBuilder;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;

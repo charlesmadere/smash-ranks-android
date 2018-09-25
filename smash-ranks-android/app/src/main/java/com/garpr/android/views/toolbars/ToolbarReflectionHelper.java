@@ -1,16 +1,16 @@
 package com.garpr.android.views.toolbars;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
-
 import com.garpr.android.extensions.ViewKt;
 import com.garpr.android.misc.Timber;
 
 import java.lang.reflect.Field;
 
 import javax.inject.Inject;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 public final class ToolbarReflectionHelper {
 

@@ -1,7 +1,7 @@
 package com.garpr.android.misc
 
-import android.support.annotation.AnyThread
-import android.support.annotation.WorkerThread
+import androidx.annotation.AnyThread
+import androidx.annotation.WorkerThread
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import com.garpr.android.models.SmashCompetitor

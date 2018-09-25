@@ -7,9 +7,9 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
 import android.net.ConnectivityManager
-import android.support.annotation.AttrRes
-import android.support.annotation.ColorInt
-import android.support.v4.app.NotificationManagerCompat
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.core.app.NotificationManagerCompat
 import com.garpr.android.dagger.AppComponent
 import com.garpr.android.dagger.AppComponentHandle
 

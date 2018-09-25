@@ -2,14 +2,14 @@ package com.garpr.android.views
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.annotation.ColorInt
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewPropertyAnimator
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.getAttrColor

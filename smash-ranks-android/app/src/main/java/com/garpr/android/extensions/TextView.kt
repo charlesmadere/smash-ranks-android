@@ -1,8 +1,8 @@
 package com.garpr.android.extensions
 
-import android.support.annotation.ColorInt
-import android.support.v4.widget.TextViewCompat
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.core.widget.TextViewCompat
 import com.garpr.android.misc.MiscUtils
 
 fun TextView.clear() {

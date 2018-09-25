@@ -1,12 +1,12 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.ColorInt
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView

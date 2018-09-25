@@ -3,9 +3,9 @@ package com.garpr.android.views
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.support.v7.graphics.Palette
 import android.util.AttributeSet
 import android.view.View
+import androidx.palette.graphics.Palette
 import com.facebook.common.references.CloseableReference
 import com.facebook.datasource.DataSource
 import com.facebook.drawee.backends.pipeline.Fresco

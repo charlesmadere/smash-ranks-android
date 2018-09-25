@@ -1,8 +1,8 @@
 package com.garpr.android.activities
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.DeepLinkUtils

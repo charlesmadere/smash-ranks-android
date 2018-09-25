@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.DialogInterface.OnCancelListener
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-
 import com.garpr.android.R
 import com.garpr.android.misc.CrashlyticsWrapper
 import com.garpr.android.misc.Timber

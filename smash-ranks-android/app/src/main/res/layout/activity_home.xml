@@ -12,7 +12,7 @@
         android:layout_weight="1"
         style="@style/ViewPager" />
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         style="@style/BottomNavigationView" />
 
 </LinearLayout>

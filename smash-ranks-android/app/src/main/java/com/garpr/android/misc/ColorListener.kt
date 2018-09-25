@@ -1,6 +1,6 @@
 package com.garpr.android.misc
 
-import android.support.v7.graphics.Palette
+import androidx.palette.graphics.Palette
 
 interface ColorListener {
 

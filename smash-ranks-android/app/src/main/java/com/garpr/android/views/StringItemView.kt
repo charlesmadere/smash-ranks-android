@@ -1,8 +1,8 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatTextView
 import com.garpr.android.adapters.BaseAdapterView
 
 class StringItemView @JvmOverloads constructor(

@@ -3,10 +3,9 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AlertDialog
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
 import com.garpr.android.extensions.appComponent
@@ -24,6 +23,7 @@ import com.garpr.android.sync.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotterknife.bindView
 import java.text.NumberFormat
 import javax.inject.Inject

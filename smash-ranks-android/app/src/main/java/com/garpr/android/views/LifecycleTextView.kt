@@ -1,9 +1,9 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.ViewCompat
 import com.garpr.android.misc.Heartbeat
 
 open class LifecycleTextView @JvmOverloads constructor(
