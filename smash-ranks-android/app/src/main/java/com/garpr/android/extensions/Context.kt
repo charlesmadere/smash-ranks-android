@@ -10,6 +10,7 @@ import android.net.ConnectivityManager
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.FragmentActivity
 import com.garpr.android.dagger.AppComponent
 import com.garpr.android.dagger.AppComponentHandle
 
@@ -93,4 +94,8 @@ val Context.notificationManagerCompat: NotificationManagerCompat
 
 fun Context.requireActivity(): Activity {
     return activity ?: throw NullPointerException("Context ($this) is not attached to an Activity")
+}
+
+fun Context.requireFragmentActivity(): FragmentActivity {
+    return requireActivity() as? FragmentActivity ?: throw RuntimeException("Context ($this) is not attached to a FragmentActivity")
 }
