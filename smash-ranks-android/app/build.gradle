@@ -92,7 +92,7 @@ dependencies {
 
     // Google Play Services
     // https://developers.google.com/android/guides/overview
-    implementation "com.google.android.gms:play-services-base:15.0.1"
+    implementation "com.google.android.gms:play-services-base:16.0.1"
 
     // Jake Wharton's KotterKnife
     // this is currently just a standalone file that was copy & pasted into our source code
