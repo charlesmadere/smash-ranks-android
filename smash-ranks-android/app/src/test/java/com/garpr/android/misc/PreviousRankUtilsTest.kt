@@ -20,10 +20,10 @@ class PreviousRankUtilsTest : BaseTest() {
     private lateinit var unchanged: RankedPlayer
 
     @Inject
-    protected lateinit var mGson: Gson
+    protected lateinit var gson: Gson
 
     @Inject
-    protected lateinit var mPreviousRankUtils: PreviousRankUtils
+    protected lateinit var previousRankUtils: PreviousRankUtils
 
 
     companion object {
@@ -38,40 +38,40 @@ class PreviousRankUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        decreased = mGson.fromJson(JSON_RANKING_DECREASED, RankedPlayer::class.java)
-        increased = mGson.fromJson(JSON_RANKING_INCREASED, RankedPlayer::class.java)
-        nullRank = mGson.fromJson(JSON_RANKING_NULL, RankedPlayer::class.java)
-        unchanged = mGson.fromJson(JSON_RANKING_UNCHANGED, RankedPlayer::class.java)
+        decreased = gson.fromJson(JSON_RANKING_DECREASED, RankedPlayer::class.java)
+        increased = gson.fromJson(JSON_RANKING_INCREASED, RankedPlayer::class.java)
+        nullRank = gson.fromJson(JSON_RANKING_NULL, RankedPlayer::class.java)
+        unchanged = gson.fromJson(JSON_RANKING_UNCHANGED, RankedPlayer::class.java)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithDecreasedRanking() {
-        assertEquals(PreviousRankUtils.Info.DECREASE, mPreviousRankUtils.getRankInfo(decreased))
+        assertEquals(PreviousRankUtils.Info.DECREASE, previousRankUtils.getRankInfo(decreased))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithIncreasedRanking() {
-        assertEquals(PreviousRankUtils.Info.INCREASE, mPreviousRankUtils.getRankInfo(increased))
+        assertEquals(PreviousRankUtils.Info.INCREASE, previousRankUtils.getRankInfo(increased))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithNull() {
-        assertNull(mPreviousRankUtils.getRankInfo(null))
+        assertNull(previousRankUtils.getRankInfo(null))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithNullRanking() {
-        assertNull(mPreviousRankUtils.getRankInfo(nullRank))
+        assertNull(previousRankUtils.getRankInfo(nullRank))
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetRankInfoWithUnchangedRanking() {
-        assertNull(mPreviousRankUtils.getRankInfo(unchanged))
+        assertNull(previousRankUtils.getRankInfo(unchanged))
     }
 
 }
