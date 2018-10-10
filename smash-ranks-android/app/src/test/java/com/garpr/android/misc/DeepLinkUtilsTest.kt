@@ -108,7 +108,6 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetRegion() {
         assertNull(deepLinkUtils.getRegion(null as Intent?, null))
         assertNull(deepLinkUtils.getRegion(null as String?, null))
@@ -149,73 +148,61 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testEmptyStringBuildIntentStack() {
         assertNull(deepLinkUtils.buildIntentStack(application, "", GOOGLE_MTV))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testEmptyStringIsValidUri() {
         assertFalse(deepLinkUtils.isValidUri(""))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullIntentBuildIntentStack() {
         assertNull(deepLinkUtils.buildIntentStack(application, null as Intent?, GEORGIA))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullIntentGetEndpoint() {
         assertNull(deepLinkUtils.getEndpoint(null as Intent?))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullIntentIsValidUri() {
         assertFalse(deepLinkUtils.isValidUri(null as Intent?))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullStringBuildIntentStack() {
         assertNull(deepLinkUtils.buildIntentStack(application, null as String?, NORCAL))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullStringGetEndpoint() {
         assertNull(deepLinkUtils.getEndpoint(null as String?))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullStringIsValidUri() {
         assertFalse(deepLinkUtils.isValidUri(null as String?))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullUriBuildIntentStack() {
         assertNull(deepLinkUtils.buildIntentStack(application, null as Uri?, NYC))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullUriGetEndpoint() {
         assertNull(deepLinkUtils.getEndpoint(null as Uri?))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullUriIsValidUri() {
         assertFalse(deepLinkUtils.isValidUri(null as Uri?))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayerGingerBuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application, PLAYER_GINGER, CHICAGO)
         assertNotNull(intentStack)
@@ -223,21 +210,18 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayerGingerGetEndpoint() {
         assertEquals(Endpoint.NOT_GAR_PR, deepLinkUtils.getEndpoint(PLAYER_GINGER))
         assertEquals(Endpoint.NOT_GAR_PR, deepLinkUtils.getEndpoint(Uri.parse(PLAYER_GINGER)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayerGingerIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(PLAYER_GINGER))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYER_GINGER)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayerSfatBuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application, PLAYER_SFAT, NORCAL)
         assertNotNull(intentStack)
@@ -245,14 +229,12 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayerSfatIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(PLAYER_SFAT))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYER_SFAT)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayerSwedishDelightBuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application, PLAYER_SWEDISH_DELIGHT, NYC)
         assertNotNull(intentStack)
@@ -260,21 +242,18 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayerSwedishDelightIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(PLAYER_SWEDISH_DELIGHT))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYER_SWEDISH_DELIGHT)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayersGeorgiaIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(PLAYERS_GEORGIA))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYERS_GEORGIA)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayersNorcalBuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application, PLAYERS_NORCAL, NORCAL)
         assertNotNull(intentStack)
@@ -282,21 +261,18 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayersNorcalGetEndpoint() {
         assertEquals(Endpoint.GAR_PR, deepLinkUtils.getEndpoint(PLAYERS_NORCAL))
         assertEquals(Endpoint.GAR_PR, deepLinkUtils.getEndpoint(Uri.parse(PLAYERS_NORCAL)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPlayersNorcalIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(PLAYERS_NORCAL))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(PLAYERS_NORCAL)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRankingsGoogleMtvBuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application, RANKINGS_GOOGLEMTV, GOOGLE_MTV)
         assertNotNull(intentStack)
@@ -304,21 +280,18 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRankingsGoogleMtvIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(RANKINGS_GOOGLEMTV))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(RANKINGS_GOOGLEMTV)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRankingsLongIslandIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(RANKINGS_LONG_ISLAND))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(RANKINGS_LONG_ISLAND)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRankingsNorcalBuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application, RANKINGS_NORCAL, NORCAL)
         assertNotNull(intentStack)
@@ -326,21 +299,18 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRankingsNorcalGetEndpoint() {
         assertEquals(Endpoint.GAR_PR, deepLinkUtils.getEndpoint(RANKINGS_NORCAL))
         assertEquals(Endpoint.GAR_PR, deepLinkUtils.getEndpoint(Uri.parse(RANKINGS_NORCAL)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRankingsNorcalIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(RANKINGS_NORCAL))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(RANKINGS_NORCAL)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testTournamentApolloIiiBuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application, TOURNAMENT_APOLLO_III, NYC)
         assertNotNull(intentStack)
@@ -348,21 +318,18 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testTournamentApolloIiiIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(TOURNAMENT_APOLLO_III))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(TOURNAMENT_APOLLO_III)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testTournamentNorcalValidated2IsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(TOURNAMENT_NORCAL_VALIDATED_2))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(TOURNAMENT_NORCAL_VALIDATED_2)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testTournamentNorcalValidated2BuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application,
                 TOURNAMENT_NORCAL_VALIDATED_2, NORCAL)
@@ -371,14 +338,12 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testTournamentsNorcalIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(TOURNAMENTS_NORCAL))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(TOURNAMENTS_NORCAL)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testTournamentsNycBuildIntentStack() {
         val intentStack = deepLinkUtils.buildIntentStack(application, TOURNAMENTS_NYC, NYC)
         assertNotNull(intentStack)
@@ -386,33 +351,28 @@ class DeepLinkUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testTournamentsNycGetEndpoint() {
         assertEquals(Endpoint.NOT_GAR_PR, deepLinkUtils.getEndpoint(TOURNAMENTS_NYC))
         assertEquals(Endpoint.NOT_GAR_PR, deepLinkUtils.getEndpoint(Uri.parse(TOURNAMENTS_NYC)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testTournamentsNycIsValidUri() {
         assertTrue(deepLinkUtils.isValidUri(TOURNAMENTS_NYC))
         assertTrue(deepLinkUtils.isValidUri(Uri.parse(TOURNAMENTS_NYC)))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testWhitespaceStringBuildIntentStack() {
         assertNull(deepLinkUtils.buildIntentStack(application, " ", GEORGIA))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testWhitespaceStringGetEndpoint() {
         assertNull(deepLinkUtils.getEndpoint(" "))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testWhitespaceStringIsValidUri() {
         assertFalse(deepLinkUtils.isValidUri(" "))
     }
