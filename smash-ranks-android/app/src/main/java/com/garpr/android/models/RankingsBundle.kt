@@ -35,7 +35,9 @@ data class RankingsBundle(
     override fun hashCode() = id.hashCode()
 
     fun hasPreviousRank(): Boolean {
-        return rankings?.firstOrNull() != null
+        return rankings?.asSequence()
+                ?.filter { it.previousRank != null }
+                ?.firstOrNull() != null
     }
 
     override fun describeContents() = 0
