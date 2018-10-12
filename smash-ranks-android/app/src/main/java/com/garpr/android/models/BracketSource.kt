@@ -26,14 +26,14 @@ enum class BracketSource(
                 return null
             }
 
-            val uri = Uri.parse(url)
+            val host = Uri.parse(url)?.host
 
-            if (uri.host.isNullOrBlank()) {
+            if (host == null || host.isBlank()) {
                 return null
             }
 
             values().forEach {
-                if (uri.host.endsWith(it.host, true)) {
+                if (host.endsWith(it.host, true)) {
                     return it
                 }
             }
