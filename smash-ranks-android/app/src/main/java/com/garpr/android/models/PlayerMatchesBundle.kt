@@ -3,6 +3,7 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.requireParcelable
 
 import com.google.gson.annotations.SerializedName
 
@@ -13,9 +14,11 @@ data class PlayerMatchesBundle(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { PlayerMatchesBundle(
-                it.readParcelable(FullPlayer::class.java.classLoader),
-                it.readParcelable(MatchesBundle::class.java.classLoader))
+        val CREATOR = createParcel {
+            PlayerMatchesBundle(
+                it.requireParcelable(FullPlayer::class.java.classLoader),
+                it.readParcelable(MatchesBundle::class.java.classLoader)
+            )
         }
     }
 

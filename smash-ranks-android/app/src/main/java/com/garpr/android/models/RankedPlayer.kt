@@ -3,7 +3,8 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readOptionalInteger
+import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeInteger
 import com.google.gson.annotations.SerializedName
 
@@ -19,9 +20,16 @@ class RankedPlayer(
 ), Parcelable {
 
     companion object {
-        val CREATOR = createParcel { RankedPlayer(it.readString(), it.readString(), it.readFloat(),
-                it.readInt(), it.readOptionalInteger()) }
         @JvmField
+        val CREATOR = createParcel {
+            RankedPlayer(
+                    it.requireString(),
+                    it.requireString(),
+                    it.readFloat(),
+                    it.readInt(),
+                    it.readInteger()
+            )
+        }
     }
 
     override val kind: Kind

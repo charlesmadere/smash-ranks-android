@@ -16,8 +16,14 @@ data class WinsLosses(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { WinsLosses(it.readAbsPlayer(), it.readInt(),
-                it.readAbsPlayer(), it.readInt()) }
+        val CREATOR = createParcel {
+            WinsLosses(
+                    it.readAbsPlayer(),
+                    it.readInt(),
+                    it.readAbsPlayer(),
+                    it.readInt()
+            )
+        }
     }
 
     val winLossPercentages: FloatArray

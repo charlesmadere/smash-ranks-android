@@ -1,15 +1,15 @@
 package com.garpr.android;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.garpr.android.dagger.DaggerTestAppComponent;
 import com.garpr.android.dagger.TestAppComponent;
 import com.garpr.android.dagger.TestAppComponentHandle;
 import com.garpr.android.dagger.TestAppModule;
 import com.garpr.android.misc.Constants;
 
+import org.jetbrains.annotations.NotNull;
 import org.robolectric.RuntimeEnvironment;
+
+import androidx.annotation.Nullable;
 
 public class TestApp extends BaseApp implements TestAppComponentHandle {
 
@@ -17,7 +17,7 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
     private TestAppComponent mTestAppComponent;
 
 
-    @NonNull
+    @NotNull
     @Override
     public TestAppComponent getTestAppComponent() {
         final TestAppComponent testAppComponent = mTestAppComponent;

@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.format.DateUtils
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.require
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonParseException
 import com.google.gson.JsonPrimitive
@@ -48,7 +49,7 @@ data class SimpleDate(
             }
 
             for (threadLocal in FORMATS) {
-                val format = threadLocal.get()
+                val format = threadLocal.require()
 
                 try {
                     return@JsonDeserializer SimpleDate(format.parse(jsonString))

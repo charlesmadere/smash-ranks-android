@@ -1,10 +1,9 @@
 package com.garpr.android;
 
-import androidx.annotation.NonNull;
-
 import com.garpr.android.dagger.TestAppComponent;
 import com.garpr.android.dagger.TestAppComponentHandle;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -15,7 +14,7 @@ import org.robolectric.annotation.Config;
 @RunWith(RobolectricTestRunner.class)
 public abstract class BaseTest implements TestAppComponentHandle {
 
-    @NonNull
+    @NotNull
     @Override
     public TestAppComponent getTestAppComponent() {
         return ((TestAppComponentHandle) RuntimeEnvironment.application).getTestAppComponent();

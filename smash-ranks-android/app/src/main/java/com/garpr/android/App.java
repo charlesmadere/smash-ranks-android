@@ -13,6 +13,8 @@ import com.garpr.android.models.NightMode;
 import com.garpr.android.preferences.GeneralPreferenceStore;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
@@ -65,7 +67,7 @@ public class App extends BaseApp implements AppComponentHandle {
                 NightMode.SYSTEM.getThemeValue());
     }
 
-    @NonNull
+    @NotNull
     @Override
     public AppComponent getAppComponent() throws IllegalStateException {
         final AppComponent appComponent = mAppComponent;

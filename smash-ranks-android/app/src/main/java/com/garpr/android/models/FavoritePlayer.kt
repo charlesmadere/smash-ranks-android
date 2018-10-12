@@ -3,6 +3,8 @@ package com.garpr.android.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.requireParcelable
+import com.garpr.android.extensions.requireString
 import com.google.gson.annotations.SerializedName
 
 class FavoritePlayer(
@@ -16,8 +18,13 @@ class FavoritePlayer(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { FavoritePlayer(it.readString(), it.readString(),
-                it.readParcelable(Region::class.java.classLoader)) }
+        val CREATOR = createParcel {
+            FavoritePlayer(
+                    it.requireString(),
+                    it.requireString(),
+                    it.requireParcelable(Region::class.java.classLoader)
+            )
+        }
     }
 
     override val kind

@@ -19,8 +19,14 @@ data class Avatar(
         private const val SMALL = "small"
 
         @JvmField
-        val CREATOR = createParcel { Avatar(it.readString(), it.readString(), it.readString(),
-                it.readString()) }
+        val CREATOR = createParcel {
+            Avatar(
+                    it.readString(),
+                    it.readString(),
+                    it.readString(),
+                    it.readString()
+            )
+        }
     }
 
     val largeButFallbackToMediumThenOriginalThenSmall: String?

@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readStringMap
+import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeStringMap
 import com.google.gson.annotations.SerializedName
 
@@ -18,9 +19,16 @@ data class SmashCompetitor(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { SmashCompetitor(it.readParcelable(Avatar::class.java.classLoader),
-                it.createTypedArrayList(SmashCharacter.CREATOR), it.readStringMap(), it.readString(),
-                it.readString(), it.readString()) }
+        val CREATOR = createParcel {
+            SmashCompetitor(
+                    it.readParcelable(Avatar::class.java.classLoader),
+                    it.createTypedArrayList(SmashCharacter.CREATOR),
+                    it.readStringMap(),
+                    it.requireString(),
+                    it.requireString(),
+                    it.requireString()
+            )
+        }
     }
 
     val filteredMains: Array<SmashCharacter>?

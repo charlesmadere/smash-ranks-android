@@ -2,11 +2,7 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsPlayerList
-import com.garpr.android.extensions.readBoolean
-import com.garpr.android.extensions.writeAbsPlayerList
-import com.garpr.android.extensions.writeBoolean
+import com.garpr.android.extensions.*
 import com.google.gson.annotations.SerializedName
 
 class FullTournament(
@@ -27,11 +23,18 @@ class FullTournament(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { FullTournament(it.createStringArrayList(),
-                it.readParcelable(SimpleDate::class.java.classLoader), it.readString(),
-                it.readString(), it.readAbsPlayerList(),
-                it.createTypedArrayList(FullTournament.Match.CREATOR), it.readString(),
-                it.readString()) }
+        val CREATOR = createParcel {
+            FullTournament(
+                    it.createStringArrayList(),
+                    it.requireParcelable(SimpleDate::class.java.classLoader),
+                    it.requireString(),
+                    it.requireString(),
+                    it.readAbsPlayerList(),
+                    it.createTypedArrayList(FullTournament.Match.CREATOR),
+                    it.readString(),
+                    it.readString()
+            )
+        }
     }
 
     override val kind
@@ -56,8 +59,16 @@ class FullTournament(
     ) : Parcelable {
         companion object {
             @JvmField
-            val CREATOR = createParcel { Match(it.readBoolean(), it.readString(), it.readString(),
-                    it.readString(), it.readString(), it.readString()) }
+            val CREATOR = createParcel {
+                Match(
+                        it.requireBoolean(),
+                        it.requireString(),
+                        it.requireString(),
+                        it.requireString(),
+                        it.requireString(),
+                        it.requireString()
+                )
+            }
         }
 
         override fun equals(other: Any?): Boolean {

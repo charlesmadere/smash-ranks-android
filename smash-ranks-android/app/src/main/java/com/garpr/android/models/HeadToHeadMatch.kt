@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readAbsPlayer
+import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
 import com.garpr.android.misc.MiscUtils
 import com.google.gson.annotations.SerializedName
@@ -18,8 +19,13 @@ class HeadToHeadMatch(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { HeadToHeadMatch(it.readParcelable(MatchResult::class.java.classLoader),
-                it.readAbsPlayer(), it.readAbsPlayer()) }
+        val CREATOR = createParcel {
+            HeadToHeadMatch(
+                    it.requireParcelable(MatchResult::class.java.classLoader),
+                    it.readAbsPlayer(),
+                    it.readAbsPlayer()
+            )
+        }
     }
 
     override fun equals(other: Any?): Boolean {

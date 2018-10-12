@@ -3,18 +3,7 @@ package com.garpr.android.extensions
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.AbsRegion
-import com.garpr.android.models.AbsTournament
-import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.LitePlayer
-import com.garpr.android.models.LiteRegion
-import com.garpr.android.models.LiteTournament
-import com.garpr.android.models.RankedPlayer
-import com.garpr.android.models.Rating
-import com.garpr.android.models.Region
+import com.garpr.android.models.*
 
 inline fun <reified T : Parcelable> createParcel(
         crossinline createFromParcel: (Parcel) -> T?) = object : Parcelable.Creator<T> {
@@ -177,11 +166,11 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
     }
 }
 
-fun Parcel.readBoolean(): Boolean {
-    return readOptionalBoolean() ?: throw NullPointerException()
+fun Parcel.requireBoolean(): Boolean {
+    return readBoolean() ?: throw NullPointerException()
 }
 
-fun Parcel.readOptionalBoolean(): Boolean? {
+fun Parcel.readBoolean(): Boolean? {
     return readValue(Boolean::class.java.classLoader) as Boolean?
 }
 
@@ -189,7 +178,7 @@ fun Parcel.writeBoolean(boolean: Boolean?) {
     writeValue(boolean)
 }
 
-fun Parcel.readOptionalInteger(): Int? {
+fun Parcel.readInteger(): Int? {
     return readValue(Integer::class.java.classLoader) as Int?
 }
 
@@ -197,12 +186,20 @@ fun Parcel.writeInteger(integer: Int?) {
     writeValue(integer)
 }
 
+fun <T : Parcelable> Parcel.requireParcelable(loader: ClassLoader?): T {
+    if (loader == null) {
+        throw NullPointerException("ClassLoader is null")
+    }
+
+    return readParcelable(loader) ?: throw NullPointerException()
+}
+
 fun Parcel.readRatingsMap(): Map<String, Rating>? {
     val bundle = readBundle(Rating::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, Rating>()
 
     for (key in bundle.keySet()) {
-        map[key] = bundle.getParcelable(key)
+        map[key] = bundle.requireParcelable(key)
     }
 
     return map
@@ -225,12 +222,16 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
     writeBundle(bundle)
 }
 
+fun Parcel.requireString(): String {
+    return readString() ?: throw NullPointerException()
+}
+
 fun Parcel.readStringMap(): Map<String, String>? {
     val bundle = readBundle(String::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, String>()
 
     for (key in bundle.keySet()) {
-        map[key] = bundle.getString(key)
+        map[key] = bundle.requireString(key)
     }
 
     return map

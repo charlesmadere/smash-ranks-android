@@ -230,6 +230,7 @@ class DeepLinkUtilsImpl(
         }
 
         return regions
+                .asSequence()
                 .filterIsInstance<Region>()
                 .firstOrNull { trimmedUri.startsWith(it.endpoint.getWebPath(it.id)) }
     }

@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readRatingsMap
+import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeRatingsMap
 import com.google.gson.annotations.SerializedName
 
@@ -20,8 +21,15 @@ class FullPlayer(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { FullPlayer(it.readString(), it.readString(),
-                it.createStringArrayList(), it.createStringArrayList(), it.readRatingsMap()) }
+        val CREATOR = createParcel {
+            FullPlayer(
+                    it.requireString(),
+                    it.requireString(),
+                    it.createStringArrayList(),
+                    it.createStringArrayList(),
+                    it.readRatingsMap()
+            )
+        }
     }
 
     override val kind

@@ -17,8 +17,14 @@ data class HeadToHead(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { HeadToHead(it.readAbsPlayer(), it.readAbsPlayer(),
-                it.readInt(), it.readInt(), it.createTypedArrayList(Match.CREATOR))
+        val CREATOR = createParcel {
+            HeadToHead(
+                    it.readAbsPlayer(),
+                    it.readAbsPlayer(),
+                    it.readInt(),
+                    it.readInt(),
+                    it.createTypedArrayList(Match.CREATOR)
+            )
         }
     }
 

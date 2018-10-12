@@ -2,9 +2,7 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsRegion
-import com.garpr.android.extensions.writeAbsRegion
+import com.garpr.android.extensions.*
 import com.google.gson.annotations.SerializedName
 
 data class RankingsBundle(
@@ -18,10 +16,16 @@ data class RankingsBundle(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { RankingsBundle(it.createTypedArrayList(RankedPlayer.CREATOR),
-                it.createStringArrayList(), it.readAbsRegion(),
-                it.readParcelable(SimpleDate::class.java.classLoader), it.readString(),
-                it.readString()) }
+        val CREATOR = createParcel {
+            RankingsBundle(
+                    it.createTypedArrayList(RankedPlayer.CREATOR),
+                    it.createStringArrayList(),
+                    it.readAbsRegion(),
+                    it.requireParcelable(SimpleDate::class.java.classLoader),
+                    it.requireString(),
+                    it.requireString()
+            )
+        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -31,10 +35,7 @@ data class RankingsBundle(
     override fun hashCode() = id.hashCode()
 
     fun hasPreviousRank(): Boolean {
-        rankings?.filter { it.previousRank != null }
-                ?.forEach { return true }
-
-        return false
+        return rankings?.firstOrNull() != null
     }
 
     override fun describeContents() = 0
