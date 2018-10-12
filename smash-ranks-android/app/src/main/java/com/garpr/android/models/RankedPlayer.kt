@@ -21,6 +21,7 @@ class RankedPlayer(
     companion object {
         val CREATOR = createParcel { RankedPlayer(it.readString(), it.readString(), it.readFloat(),
                 it.readInt(), it.readOptionalInteger()) }
+        @JvmField
     }
 
     override val kind: Kind
