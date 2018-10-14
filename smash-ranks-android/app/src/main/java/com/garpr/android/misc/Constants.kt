@@ -8,9 +8,11 @@ object Constants {
     // Defaults
     val DefaultRegion = Region(displayName = "Norcal", id = "norcal", endpoint = Endpoint.GAR_PR)
 
-    // GAR PR Paths
+    // GAR PR and Not GAR PR Paths
     const val GAR_PR_API_PORT = 3001
     const val GAR_PR_BASE_PATH = "https://www.garpr.com"
+    const val NOT_GAR_PR_API_PORT = 3001
+    const val NOT_GAR_PR_BASE_PATH = "https://www.notgarpr.com"
 
     // Miscellaneous
     const val ERROR_CODE_BAD_REQUEST = 400
@@ -20,10 +22,6 @@ object Constants {
     const val TWITCH = "twitch"
     const val TWITTER = "twitter"
     const val YOUTUBE = "youtube"
-
-    // NOT GAR PR Paths
-    const val NOT_GAR_PR_API_PORT = 3001
-    const val NOT_GAR_PR_BASE_PATH = "https://www.notgarpr.com"
 
     // Smash Roster Paths
     const val SMASH_ROSTER_BASE_PATH = "https://s3-us-west-1.amazonaws.com/smash-ranks-android-players/"
