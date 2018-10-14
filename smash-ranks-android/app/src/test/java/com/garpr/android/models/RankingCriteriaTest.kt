@@ -38,19 +38,16 @@ class RankingCriteriaTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testIsActiveRankingCriteria1() {
         assertFalse(rankingCriteria1.isActive)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testIsActiveRankingCriteria2() {
         assertTrue(rankingCriteria2.isActive)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testIsActiveRankingCriteria3() {
         assertTrue(rankingCriteria3.isActive)
     }

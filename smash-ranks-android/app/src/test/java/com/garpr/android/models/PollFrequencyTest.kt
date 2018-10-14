@@ -10,7 +10,6 @@ import org.robolectric.RobolectricTestRunner
 class PollFrequencyTest : BaseTest() {
 
     @Test
-    @Throws(Exception::class)
     fun testTimeInSeconds() {
         assertEquals(28800L, PollFrequency.EVERY_8_HOURS.timeInSeconds)
         assertEquals(86400L, PollFrequency.DAILY.timeInSeconds)

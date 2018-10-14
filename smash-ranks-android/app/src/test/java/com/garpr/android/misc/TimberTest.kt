@@ -27,7 +27,6 @@ class TimberTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testClearEntries() {
         timber.clearEntries()
 
@@ -41,14 +40,12 @@ class TimberTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetEntries() {
         val entries = timber.entries
         assertTrue(entries.isEmpty())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetEntriesWithOne() {
         timber.d(TAG, "one")
         val entries = timber.entries
@@ -56,7 +53,6 @@ class TimberTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetEntriesWithTwo() {
         timber.d(TAG, "one")
         timber.w(TAG, "two")
@@ -65,7 +61,6 @@ class TimberTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetEntriesWithThree() {
         timber.d(TAG, "one")
         timber.w(TAG, "two")

@@ -32,7 +32,6 @@ class RegionsBundleTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testComparatorAlphabeticalOrder() {
         val regions = regionsBundle.regions ?: throw NullPointerException()
         Collections.sort(regions, AbsRegion.ALPHABETICAL_ORDER)

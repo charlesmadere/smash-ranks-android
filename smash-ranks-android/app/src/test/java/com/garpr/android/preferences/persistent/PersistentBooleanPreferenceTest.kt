@@ -23,7 +23,6 @@ class PersistentBooleanPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNonNullGetDefaultValue() {
         val preference = PersistentBooleanPreference("boolean",false, keyValueStore)
         assertEquals(preference.defaultValue, java.lang.Boolean.FALSE)
@@ -33,7 +32,6 @@ class PersistentBooleanPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullGetDefaultValue() {
         val preference = PersistentBooleanPreference("boolean", null, keyValueStore)
         assertNull(preference.defaultValue)
