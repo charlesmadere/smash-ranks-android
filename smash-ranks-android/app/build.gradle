@@ -70,7 +70,7 @@ dependencies {
 
     // Facebook's Fresco
     // https://github.com/facebook/fresco
-    implementation "com.facebook.fresco:fresco:1.10.0"
+    implementation "com.facebook.fresco:fresco:1.11.0"
 
     // Firebase JobDispatcher
     // https://github.com/firebase/firebase-jobdispatcher-android
