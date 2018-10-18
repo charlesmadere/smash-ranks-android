@@ -1,7 +1,6 @@
 package com.garpr.android.dagger;
 
 import android.app.Application;
-import androidx.annotation.NonNull;
 
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
@@ -19,6 +18,7 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 
@@ -41,27 +41,27 @@ public class TestAppModule extends BaseAppModule {
             }
 
             @Override
-            public void log(final int priority, @NonNull final String tag, @NonNull final String msg) {
+            public void log(final int priority, @NotNull final String tag, @NotNull final String msg) {
                 // intentionally empty
             }
 
             @Override
-            public void logException(@NonNull final Throwable tr) {
+            public void logException(@NotNull final Throwable tr) {
                 // intentionally empty
             }
 
             @Override
-            public void setBool(@NonNull final String key, final boolean value) {
+            public void setBool(@NotNull final String key, final boolean value) {
                 // intentionally empty
             }
 
             @Override
-            public void setInt(@NonNull final String key, final int value) {
+            public void setInt(@NotNull final String key, final int value) {
                 // intentionally empty
             }
 
             @Override
-            public void setString(@NonNull final String key, @NonNull final String value) {
+            public void setString(@NotNull final String key, @NotNull final String value) {
                 // intentionally empty
             }
         };
