@@ -1,15 +1,11 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
-import androidx.annotation.AttrRes
-import androidx.annotation.StyleRes
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.activity
@@ -17,7 +13,10 @@ import com.garpr.android.extensions.clear
 import com.garpr.android.models.AbsPlayer
 import kotterknife.bindView
 
-class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.OnClickListener {
+class PlayerSelectionItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LinearLayout(context, attrs), BaseAdapterView<AbsPlayer>, View.OnClickListener {
 
     private val radioButton: RadioButton by bindView(R.id.radioButton)
     private val name: TextView by bindView(R.id.tvName)
@@ -27,15 +26,6 @@ class PlayerSelectionItemView : LinearLayout, BaseAdapterView<AbsPlayer>, View.O
         fun onClick(v: PlayerSelectionItemView)
         val selectedPlayer: AbsPlayer?
     }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     var player: AbsPlayer? = null
         set(value) {
