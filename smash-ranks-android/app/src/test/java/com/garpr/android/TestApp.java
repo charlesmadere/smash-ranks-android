@@ -7,9 +7,8 @@ import com.garpr.android.dagger.TestAppModule;
 import com.garpr.android.misc.Constants;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.robolectric.RuntimeEnvironment;
-
-import androidx.annotation.Nullable;
 
 public class TestApp extends BaseApp implements TestAppComponentHandle {
 
