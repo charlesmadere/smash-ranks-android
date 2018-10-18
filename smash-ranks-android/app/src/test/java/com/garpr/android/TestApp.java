@@ -22,7 +22,7 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
         final TestAppComponent testAppComponent = mTestAppComponent;
 
         if (testAppComponent == null) {
-            throw new IllegalArgumentException("mTestAppComponent is null");
+            throw new IllegalStateException("mTestAppComponent is null");
         }
 
         return testAppComponent;
