@@ -19,7 +19,7 @@ class TournamentsActivityTest : BaseTest() {
 
 
     companion object {
-        private val GOOGLEMTV = Region(
+        private val GOOGLE_MTV = Region(
                 displayName = "Google MTV",
                 id = "googlemtv",
                 endpoint = Endpoint.GAR_PR
@@ -41,9 +41,9 @@ class TournamentsActivityTest : BaseTest() {
 
     @Test
     fun testGetLaunchIntentWithRegion() {
-        val intent = TournamentsActivity.getLaunchIntent(application, GOOGLEMTV)
+        val intent = TournamentsActivity.getLaunchIntent(application, GOOGLE_MTV)
         assertTrue(intent.hasExtra(BaseActivity.EXTRA_REGION))
-        assertEquals(GOOGLEMTV, intent.getParcelableExtra(BaseActivity.EXTRA_REGION))
+        assertEquals(GOOGLE_MTV, intent.getParcelableExtra(BaseActivity.EXTRA_REGION))
     }
 
 }
