@@ -2,14 +2,8 @@ package com.garpr.android.adapters
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.collection.SparseArrayCompat
 import androidx.viewpager.widget.PagerAdapter
-import com.garpr.android.activities.HomeActivity
-import com.garpr.android.misc.Heartbeat
-import com.garpr.android.misc.ListLayout
-import com.garpr.android.misc.RankingCriteriaHandle
-import com.garpr.android.misc.Refreshable
-import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.*
 import com.garpr.android.models.RankingCriteria
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.views.FavoritePlayersLayout
@@ -19,32 +13,26 @@ import java.lang.ref.WeakReference
 
 class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable {
 
-    private val pages = SparseArrayCompat<WeakReference<View?>?>(count)
+    private val pages = mutableMapOf<HomeTab, WeakReference<View?>?>()
 
-
-    companion object {
-        private const val POSITION_FAVORITE_PLAYERS = HomeActivity.POSITION_FAVORITE_PLAYERS
-        private const val POSITION_RANKINGS = HomeActivity.POSITION_RANKINGS
-        private const val POSITION_TOURNAMENTS = HomeActivity.POSITION_TOURNAMENTS
-    }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
-        pages.removeAt(position)
+        pages.remove(HomeTab.from(position))
     }
 
-    override fun getCount() = 3
+    override fun getCount() = HomeTab.values().size
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val view: View = when (position) {
-            POSITION_FAVORITE_PLAYERS -> FavoritePlayersLayout.inflate(container)
-            POSITION_RANKINGS -> RankingsLayout.inflate(container)
-            POSITION_TOURNAMENTS -> TournamentsLayout.inflate(container)
-            else -> throw RuntimeException("illegal position: $position")
+        val homeTab = HomeTab.from(position)
+        val view: View = when (homeTab) {
+            HomeTab.RANKINGS -> RankingsLayout.inflate(container)
+            HomeTab.TOURNAMENTS -> TournamentsLayout.inflate(container)
+            HomeTab.FAVORITE_PLAYERS -> FavoritePlayersLayout.inflate(container)
         }
 
         container.addView(view)
-        pages.put(position, WeakReference(view))
+        pages[homeTab] = WeakReference(view)
 
         return view
     }
@@ -53,8 +41,8 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable {
         return view === `object`
     }
 
-    fun onNavigationItemReselected(position: Int) {
-        val view = pages[position]?.get()
+    fun onNavigationItemReselected(homeTab: HomeTab) {
+        val view = pages[homeTab]?.get()
 
         if ((view as? Heartbeat)?.isAlive == true) {
             (view as? ListLayout)?.smoothScrollToTop()
@@ -63,7 +51,7 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable {
 
     val rankingsBundle: RankingsBundle?
         get() {
-            val view = pages[POSITION_RANKINGS]?.get()
+            val view = pages[HomeTab.RANKINGS]?.get()
             return if ((view as? RankingsLayout)?.isAlive == true) view.rankingsBundle else null
         }
 
@@ -71,21 +59,15 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable {
         get() = rankingsBundle?.rankingCriteria
 
     override fun refresh() {
-        for (i in 0 until pages.size()) {
-            pages[i]?.get()?.let {
-                if ((it as? Heartbeat)?.isAlive == true) {
-                    (it as? Refreshable)?.refresh()
-                }
+        pages.forEach {
+            if ((it.value as? Heartbeat)?.isAlive == true) {
+                (it.value as? Refreshable)?.refresh()
             }
         }
     }
 
-    fun search(page: Int, query: String?) {
-        if (page < 0 || page >= count) {
-            throw IllegalArgumentException("illegal page: $page")
-        }
-
-        pages[page]?.get()?.let {
+    fun search(homeTab: HomeTab, query: String?) {
+        pages[homeTab]?.get()?.let {
             if ((it as? Heartbeat)?.isAlive == true) {
                 (it as? Searchable)?.search(query)
             }

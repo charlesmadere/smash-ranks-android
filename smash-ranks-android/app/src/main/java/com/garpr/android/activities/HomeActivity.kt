@@ -9,14 +9,12 @@ import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.currentItemAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.RankingCriteriaHandle
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ShareUtils
+import com.garpr.android.misc.*
 import com.garpr.android.models.RankingCriteria
 import com.garpr.android.sync.RankingsPollingSyncManager
 import com.garpr.android.sync.SmashRosterSyncManager
@@ -61,11 +59,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         private val EXTRA_INITIAL_POSITION = "$CNAME.InitialPosition"
         private const val KEY_CURRENT_POSITION = "CurrentPosition"
 
-        const val POSITION_RANKINGS = 0
-        const val POSITION_TOURNAMENTS = 1
-        const val POSITION_FAVORITE_PLAYERS = 2
-
-        fun getLaunchIntent(context: Context, initialPosition: Int? = null,
+        fun getLaunchIntent(context: Context, initialPosition: HomeTab? = null,
                 restartActivityTask: Boolean = false): Intent {
             var intent = Intent(context, HomeActivity::class.java)
                     .putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
@@ -86,8 +80,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             return
         }
 
-        if (viewPager.currentItem != POSITION_RANKINGS) {
-            viewPager.setCurrentItem(POSITION_RANKINGS, false)
+        if (viewPager.currentItemAsHomeTab != HomeTab.RANKINGS) {
+            viewPager.currentItemAsHomeTab = HomeTab.RANKINGS
             return
         }
 
@@ -110,26 +104,26 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
-        val position = when (item.itemId) {
-            R.id.actionFavoritePlayers -> POSITION_FAVORITE_PLAYERS
-            R.id.actionRankings -> POSITION_RANKINGS
-            R.id.actionTournaments -> POSITION_TOURNAMENTS
+        val homeTab = when (item.itemId) {
+            R.id.actionFavoritePlayers -> HomeTab.FAVORITE_PLAYERS
+            R.id.actionRankings -> HomeTab.RANKINGS
+            R.id.actionTournaments -> HomeTab.TOURNAMENTS
             else -> throw RuntimeException("unknown item: ${item.title}")
         }
 
-        adapter.onNavigationItemReselected(position)
+        adapter.onNavigationItemReselected(homeTab)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val position = when (item.itemId) {
-            R.id.actionFavoritePlayers -> POSITION_FAVORITE_PLAYERS
-            R.id.actionRankings -> POSITION_RANKINGS
-            R.id.actionTournaments -> POSITION_TOURNAMENTS
+        val homeTab = when (item.itemId) {
+            R.id.actionFavoritePlayers -> HomeTab.FAVORITE_PLAYERS
+            R.id.actionRankings -> HomeTab.RANKINGS
+            R.id.actionTournaments -> HomeTab.TOURNAMENTS
             else -> throw RuntimeException("unknown item: ${item.title}")
         }
 
         homeToolbar.closeSearchLayout()
-        viewPager.setCurrentItem(position, false)
+        viewPager.currentItemAsHomeTab = homeTab
 
         return true
     }
@@ -187,7 +181,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(KEY_CURRENT_POSITION, viewPager.currentItem)
+        outState.putParcelable(KEY_CURRENT_POSITION, viewPager.currentItemAsHomeTab)
     }
 
     override fun onViewsBound() {
@@ -218,25 +212,25 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         get() = adapter.rankingCriteria
 
     override fun search(query: String?) {
-        adapter.search(viewPager.currentItem, query)
+        adapter.search(viewPager.currentItemAsHomeTab, query)
     }
 
     override val searchQuery: CharSequence?
         get() = homeToolbar.searchQuery
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {
-        var initialPosition = -1
+        var initialPosition: HomeTab? = null
 
         if (savedInstanceState != null && !savedInstanceState.isEmpty) {
-            initialPosition = savedInstanceState.getInt(KEY_CURRENT_POSITION, -1)
+            initialPosition = savedInstanceState.getParcelable(KEY_CURRENT_POSITION)
         }
 
-        if (initialPosition == -1) {
-            intent?.let { initialPosition = it.getIntExtra(EXTRA_INITIAL_POSITION, -1) }
+        if (initialPosition == null) {
+            initialPosition = intent?.getParcelableExtra(EXTRA_INITIAL_POSITION)
         }
 
-        if (initialPosition != -1) {
-            viewPager.currentItem = initialPosition
+        if (initialPosition != null) {
+            viewPager.currentItemAsHomeTab = initialPosition
         }
     }
 
@@ -269,8 +263,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         val numberFormat = NumberFormat.getIntegerInstance()
         val tournaments = resources.getQuantityString(R.plurals.x_tournaments,
                 rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended))
-        val days = resources.getQuantityString(R.plurals.x_days,
-                rankingActivityDayLimit, numberFormat.format(rankingActivityDayLimit))
+        val days = resources.getQuantityString(R.plurals.x_days, rankingActivityDayLimit,
+                numberFormat.format(rankingActivityDayLimit))
 
         AlertDialog.Builder(this)
                 .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
@@ -282,11 +276,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         get() = subtitle?.isNotBlank() == true
 
     private fun updateSelectedBottomNavigationItem() {
-        val itemId = when (viewPager.currentItem) {
-            POSITION_FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
-            POSITION_RANKINGS -> R.id.actionRankings
-            POSITION_TOURNAMENTS -> R.id.actionTournaments
-            else -> throw RuntimeException("unknown current item: ${viewPager.currentItem}")
+        val itemId = when (viewPager.currentItemAsHomeTab) {
+            HomeTab.RANKINGS -> R.id.actionRankings
+            HomeTab.TOURNAMENTS -> R.id.actionTournaments
+            HomeTab.FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
         }
 
         bottomNavigationView.menu.findItem(itemId).isChecked = true
