@@ -1,5 +1,7 @@
 package com.garpr.android;
 
+import android.app.Application;
+
 import com.garpr.android.dagger.DaggerTestAppComponent;
 import com.garpr.android.dagger.TestAppComponent;
 import com.garpr.android.dagger.TestAppComponentHandle;
@@ -8,7 +10,8 @@ import com.garpr.android.misc.Constants;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.robolectric.RuntimeEnvironment;
+
+import androidx.test.core.app.ApplicationProvider;
 
 public class TestApp extends BaseApp implements TestAppComponentHandle {
 
@@ -29,9 +32,11 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
     }
 
     private void initializeAppComponent() {
+        final Application application = ApplicationProvider.getApplicationContext();
         mTestAppComponent = DaggerTestAppComponent.builder()
-                .testAppModule(new TestAppModule(RuntimeEnvironment.application,
-                        Constants.INSTANCE.getDefaultRegion(), Constants.SMASH_ROSTER_BASE_PATH))
+                .testAppModule(new TestAppModule(application,
+                        Constants.INSTANCE.getDefaultRegion(),
+                        Constants.SMASH_ROSTER_BASE_PATH))
                 .build();
     }
 
