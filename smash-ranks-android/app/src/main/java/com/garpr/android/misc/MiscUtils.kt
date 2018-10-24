@@ -45,7 +45,7 @@ object MiscUtils {
         var result = 1
 
         for (element in objects) {
-            result = 31 * result + if (element == null) 0 else element.hashCode()
+            result = 31 * result + (element?.hashCode() ?: 0)
         }
 
         return result
