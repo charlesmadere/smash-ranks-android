@@ -13,10 +13,6 @@ enum class HomeTab : Parcelable {
     companion object {
         @JvmField
         val CREATOR = createParcel { values()[it.readInt()] }
-
-        fun from(index: Int): HomeTab {
-            return values()[index]
-        }
     }
 
     override fun describeContents(): Int = 0
