@@ -16,18 +16,16 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable {
     private val pages = mutableMapOf<HomeTab, WeakReference<View?>?>()
 
 
-    companion object {
-        private fun homeTab(position: Int): HomeTab {
-            return HomeTab.values()[position]
-        }
-    }
-
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
         pages.remove(homeTab(position))
     }
 
     override fun getCount() = HomeTab.values().size
+
+    private fun homeTab(position: Int): HomeTab {
+        return HomeTab.values()[position]
+    }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val homeTab = homeTab(position)
