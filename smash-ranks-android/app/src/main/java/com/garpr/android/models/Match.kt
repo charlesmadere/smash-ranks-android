@@ -2,11 +2,7 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsPlayer
-import com.garpr.android.extensions.readAbsTournament
-import com.garpr.android.extensions.writeAbsPlayer
-import com.garpr.android.extensions.writeAbsTournament
+import com.garpr.android.extensions.*
 import com.garpr.android.misc.MiscUtils
 import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName

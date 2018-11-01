@@ -15,7 +15,7 @@ class KeyValueStoreImpl(
         get() {
             val map = sharedPreferences.all
 
-            return if (map == null || map.isEmpty()) {
+            return if (map.isNullOrEmpty()) {
                 null
             } else {
                 Collections.unmodifiableMap(map)

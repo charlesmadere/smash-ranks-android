@@ -10,24 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
-import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.extensions.requireStringExtra
-import com.garpr.android.extensions.smoothScrollToTop
-import com.garpr.android.extensions.subtitle
-import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.extensions.*
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.Constants
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.AbsTournament
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.Match
-import com.garpr.android.models.Region
-import com.garpr.android.models.TournamentMode
+import com.garpr.android.misc.*
+import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
@@ -216,7 +202,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private fun searchTournamentMatches(query: String?, matches: List<FullTournament.Match>?) {
         val tournament = fullTournament
 
-        if (tournament == null || matches == null || matches.isEmpty()) {
+        if (tournament == null || matches.isNullOrEmpty()) {
             return
         }
 
@@ -242,7 +228,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private fun searchTournamentPlayers(query: String?, players: List<AbsPlayer>?) {
         val tournament = fullTournament
 
-        if (tournament == null || players == null || players.isEmpty()) {
+        if (tournament == null || players.isNullOrEmpty()) {
             return
         }
 

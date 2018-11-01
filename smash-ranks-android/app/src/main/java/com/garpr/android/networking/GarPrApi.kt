@@ -1,13 +1,6 @@
 package com.garpr.android.networking
 
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.HeadToHead
-import com.garpr.android.models.MatchesBundle
-import com.garpr.android.models.PlayersBundle
-import com.garpr.android.models.RankingsBundle
-import com.garpr.android.models.RegionsBundle
-import com.garpr.android.models.TournamentsBundle
+import com.garpr.android.models.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

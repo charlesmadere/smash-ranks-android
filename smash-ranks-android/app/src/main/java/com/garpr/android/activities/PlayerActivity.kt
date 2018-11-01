@@ -10,20 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
-import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.extensions.requireStringExtra
-import com.garpr.android.extensions.subtitle
-import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.extensions.*
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.ColorListener
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.SearchQueryHandle
-import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.SmashRosterStorage
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.*
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.PlayerMatchesBundle
@@ -65,8 +56,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     protected lateinit var threadUtils: ThreadUtils
 
     private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val searchToolbar: SearchToolbar by bindView(R.id.toolbar)
     private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
+    private val searchToolbar: SearchToolbar by bindView(R.id.toolbar)
     private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
     private val empty: View by bindView(R.id.empty)
 
@@ -180,7 +171,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     override fun search(query: String?) {
         val list = this.list
 
-        if (list == null || list.isEmpty()) {
+        if (list.isNullOrEmpty()) {
             return
         }
 
@@ -229,7 +220,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
 
         error.visibility = View.GONE
 
-        if (list == null || list.isEmpty()) {
+        if (list.isNullOrEmpty()) {
             adapter.clear()
             recyclerView.visibility = View.GONE
             empty.visibility = View.VISIBLE

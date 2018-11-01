@@ -37,7 +37,7 @@ class FullPlayer(
 
     val uniqueAliases: Array<String>?
         get() {
-            if (aliases == null || aliases.isEmpty()) {
+            if (aliases.isNullOrEmpty()) {
                 return null
             }
 

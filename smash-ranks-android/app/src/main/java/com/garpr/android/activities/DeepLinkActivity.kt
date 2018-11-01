@@ -31,7 +31,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
     private fun deepLink(region: Region) {
         val intentStack = deepLinkUtils.buildIntentStack(this, intent, region)
 
-        if (intentStack == null || intentStack.isEmpty()) {
+        if (intentStack.isNullOrEmpty()) {
             startActivity(HomeActivity.getLaunchIntent(context = this))
         } else {
             ContextCompat.startActivities(this, intentStack.toTypedArray())

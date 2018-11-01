@@ -45,7 +45,7 @@ class FavoritePlayersManagerTest : BaseTest() {
     @Throws(Exception::class)
     fun testAbsPlayers() {
         var absPlayers = favoritePlayersManager.absPlayers
-        assertTrue(absPlayers == null || absPlayers.isEmpty())
+        assertTrue(absPlayers.isNullOrEmpty())
 
         favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
         favoritePlayersManager.addPlayer(player1, regionManager.getRegion())
@@ -78,7 +78,7 @@ class FavoritePlayersManagerTest : BaseTest() {
         assertEquals(player1, players?.get(0))
 
         favoritePlayersManager.removePlayer(player1)
-        assertTrue(players == null || players?.isEmpty() == true)
+        assertTrue(players.isNullOrEmpty())
     }
 
     @Test

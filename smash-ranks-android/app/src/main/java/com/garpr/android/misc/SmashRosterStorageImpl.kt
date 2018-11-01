@@ -26,7 +26,7 @@ class SmashRosterStorageImpl(
             "$packageName.SmashRosterStorage.$endpoint")
 
     override fun getSmashCompetitor(endpoint: Endpoint, playerId: String?): SmashCompetitor? {
-        if (playerId == null || playerId.isBlank()) {
+        if (playerId.isNullOrBlank()) {
             return null
         }
 
@@ -39,7 +39,7 @@ class SmashRosterStorageImpl(
     }
 
     override fun writeToStorage(endpoint: Endpoint, smashRoster: Map<String, SmashCompetitor>?) {
-        if (smashRoster == null || smashRoster.isEmpty()) {
+        if (smashRoster.isNullOrEmpty()) {
             deleteFromStorage(endpoint)
             return
         }

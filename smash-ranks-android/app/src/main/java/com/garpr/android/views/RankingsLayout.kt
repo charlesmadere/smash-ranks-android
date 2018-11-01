@@ -110,7 +110,7 @@ class RankingsLayout @JvmOverloads constructor(
     override fun search(query: String?) {
         val rankings = rankingsBundle?.rankings
 
-        if (rankings == null || rankings.isEmpty()) {
+        if (rankings.isNullOrEmpty()) {
             return
         }
 

@@ -33,17 +33,12 @@ data class SmashCompetitor(
 
     val filteredMains: Array<SmashCharacter>?
         get() {
-            if (mains == null || mains.isEmpty()) {
+            if (mains.isNullOrEmpty()) {
                 return null
             }
 
-            val filteredMains = mutableSetOf<SmashCharacter>()
-
-            for (main in mains) {
-                if (main != null) {
-                    filteredMains.add(main)
-                }
-            }
+            val filteredMains = mains.filterNotNull()
+                    .distinct()
 
             return if (filteredMains.isEmpty()) {
                 null

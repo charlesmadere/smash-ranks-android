@@ -89,7 +89,7 @@ class TournamentsLayout @JvmOverloads constructor(
     override fun search(query: String?) {
         val tournaments = tournamentsBundle?.tournaments
 
-        if (tournaments == null || tournaments.isEmpty()) {
+        if (tournaments.isNullOrEmpty()) {
             return
         }
 

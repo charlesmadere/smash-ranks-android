@@ -233,7 +233,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     private fun search(query: String?) {
         val players = playersBundle?.players
 
-        if (players == null || players.isEmpty()) {
+        if (players.isNullOrEmpty()) {
             return
         }
 

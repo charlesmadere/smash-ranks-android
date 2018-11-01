@@ -28,7 +28,7 @@ enum class BracketSource(
 
             val host = Uri.parse(url)?.host
 
-            if (host == null || host.isBlank()) {
+            if (host.isNullOrBlank()) {
                 return null
             }
 

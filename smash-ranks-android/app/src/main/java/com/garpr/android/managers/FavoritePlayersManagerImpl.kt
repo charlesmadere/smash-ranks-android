@@ -30,7 +30,7 @@ class FavoritePlayersManagerImpl(
         get() {
             val players = this.players
 
-            if (players == null || players.isEmpty()) {
+            if (players.isNullOrEmpty()) {
                 return null
             }
 
@@ -90,10 +90,7 @@ class FavoritePlayersManagerImpl(
     }
 
     override val isEmpty: Boolean
-        get() {
-            val all = keyValueStore.all
-            return all == null || all.isEmpty()
-        }
+        get() = keyValueStore.all.isNullOrEmpty()
 
     private fun notifyListeners() {
         cleanListeners()
@@ -111,7 +108,7 @@ class FavoritePlayersManagerImpl(
         get() {
             val all = keyValueStore.all
 
-            if (all == null || all.isEmpty()) {
+            if (all.isNullOrEmpty()) {
                 return null
             }
 
