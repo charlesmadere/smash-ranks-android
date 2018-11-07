@@ -74,6 +74,9 @@ enum class SmashCharacter(
     @SerializedName("ike")
     IKE(R.string.ike),
 
+    @SerializedName("inc")
+    INCINEROAR(R.string.incineroar),
+
     @SerializedName("ink")
     INKLING(R.string.inkling),
 
@@ -82,6 +85,9 @@ enum class SmashCharacter(
 
     @SerializedName("puf")
     JIGGLYPUFF(R.string.jigglypuff),
+
+    @SerializedName("ken")
+    KEN(R.string.ken),
 
     @SerializedName("ddd")
     KING_DEDEDE(R.string.king_dedede),
@@ -154,6 +160,9 @@ enum class SmashCharacter(
 
     @SerializedName("pik")
     PIKACHU(R.string.pikachu),
+
+    @SerializedName("pir")
+    PIRANHA_PLANT(R.string.piranha_plant),
 
     @SerializedName("pit")
     PIT(R.string.pit),

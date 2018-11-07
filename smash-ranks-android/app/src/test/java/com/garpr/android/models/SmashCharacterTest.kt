@@ -40,9 +40,11 @@ class SmashCharacterTest : BaseTest() {
         private const val JSON_GRENINJA = "\"grn\""
         private const val JSON_ICE_CLIMBERS = "\"ics\""
         private const val JSON_IKE = "\"ike\""
+        private const val JSON_INCINEROAR = "\"inc\""
         private const val JSON_INKLING = "\"ink\""
         private const val JSON_IVYSAUR = "\"ivy\""
         private const val JSON_JIGGLYPUFF = "\"puf\""
+        private const val JSON_KEN = "\"ken\""
         private const val JSON_KIRBY = "\"kby\""
         private const val JSON_KING_DEDEDE = "\"ddd\""
         private const val JSON_KING_K_ROOL = "\"kkr\""
@@ -67,6 +69,7 @@ class SmashCharacterTest : BaseTest() {
         private const val JSON_PEACH = "\"pch\""
         private const val JSON_PICHU = "\"pic\""
         private const val JSON_PIKACHU = "\"pik\""
+        private const val JSON_PIRANHA_PLANT = "\"pir\""
         private const val JSON_PIT = "\"pit\""
         private const val JSON_POKEMON_TRAINER = "\"pkt\""
         private const val JSON_RICTER = "\"ric\""
@@ -232,6 +235,12 @@ class SmashCharacterTest : BaseTest() {
     }
 
     @Test
+    fun testIncineroar() {
+        assertEquals(JSON_INCINEROAR, gson.toJson(SmashCharacter.INCINEROAR))
+        assertEquals(SmashCharacter.INCINEROAR, gson.fromJson(JSON_INCINEROAR, SmashCharacter::class.java))
+    }
+
+    @Test
     fun testInkling() {
         assertEquals(JSON_INKLING, gson.toJson(SmashCharacter.INKLING))
         assertEquals(SmashCharacter.INKLING, gson.fromJson(JSON_INKLING, SmashCharacter::class.java))
@@ -247,6 +256,12 @@ class SmashCharacterTest : BaseTest() {
     fun testJigglypuff() {
         assertEquals(JSON_JIGGLYPUFF, gson.toJson(SmashCharacter.JIGGLYPUFF))
         assertEquals(SmashCharacter.JIGGLYPUFF, gson.fromJson(JSON_JIGGLYPUFF, SmashCharacter::class.java))
+    }
+
+    @Test
+    fun testKen() {
+        assertEquals(JSON_KEN, gson.toJson(SmashCharacter.KEN))
+        assertEquals(SmashCharacter.KEN, gson.fromJson(JSON_KEN, SmashCharacter::class.java))
     }
 
     @Test
@@ -401,6 +416,12 @@ class SmashCharacterTest : BaseTest() {
     fun testPikachu() {
         assertEquals(JSON_PIKACHU, gson.toJson(SmashCharacter.PIKACHU))
         assertEquals(SmashCharacter.PIKACHU, gson.fromJson(JSON_PIKACHU, SmashCharacter::class.java))
+    }
+
+    @Test
+    fun testPiranhaPlant() {
+        assertEquals(JSON_PIRANHA_PLANT, gson.toJson(SmashCharacter.PIRANHA_PLANT))
+        assertEquals(SmashCharacter.PIRANHA_PLANT, gson.fromJson(JSON_PIRANHA_PLANT, SmashCharacter::class.java))
     }
 
     @Test
