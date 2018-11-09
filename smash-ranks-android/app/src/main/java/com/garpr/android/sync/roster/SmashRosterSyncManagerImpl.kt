@@ -61,8 +61,7 @@ class SmashRosterSyncManagerImpl(
     }
 
     private fun disable() {
-        firebaseApiWrapper.jobDispatcher.cancel(
-                TAG)
+        firebaseApiWrapper.jobDispatcher.cancel(TAG)
         timber.d(TAG, "sync has been disabled")
     }
 
