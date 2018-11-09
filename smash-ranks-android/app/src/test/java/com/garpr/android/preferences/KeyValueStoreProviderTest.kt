@@ -4,8 +4,11 @@ import com.garpr.android.BaseTest
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import javax.inject.Inject
 
+@RunWith(RobolectricTestRunner::class)
 class KeyValueStoreProviderTest : BaseTest() {
 
     @Inject
@@ -23,7 +26,6 @@ class KeyValueStoreProviderTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetKeyValueStore() {
         assertNotNull(keyValueStoreProvider.getKeyValueStore(TAG))
     }
