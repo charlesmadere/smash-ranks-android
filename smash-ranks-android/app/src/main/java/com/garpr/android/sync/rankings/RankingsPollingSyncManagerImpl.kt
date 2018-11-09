@@ -23,8 +23,7 @@ class RankingsPollingSyncManagerImpl(
     }
 
     private fun disable() {
-        firebaseApiWrapper.jobDispatcher.cancel(
-                TAG)
+        firebaseApiWrapper.jobDispatcher.cancel(TAG)
         timber.d(TAG, "polling has been disabled")
     }
 
