@@ -1,4 +1,4 @@
-package com.garpr.android.sync
+package com.garpr.android.sync.roster
 
 import com.garpr.android.models.SmashRosterSyncResult
 

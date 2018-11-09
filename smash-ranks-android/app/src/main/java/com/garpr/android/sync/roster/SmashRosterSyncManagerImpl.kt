@@ -1,4 +1,4 @@
-package com.garpr.android.sync
+package com.garpr.android.sync.roster
 
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
@@ -14,7 +14,7 @@ import com.garpr.android.models.PollFrequency
 import com.garpr.android.models.SmashRosterSyncResult
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
-import com.garpr.android.sync.SmashRosterSyncManager.OnSyncListeners
+import com.garpr.android.sync.roster.SmashRosterSyncManager.OnSyncListeners
 import com.garpr.android.wrappers.FirebaseApiWrapper
 import com.garpr.android.wrappers.GoogleApiWrapper
 import com.garpr.android.wrappers.WeakReferenceWrapper
@@ -61,7 +61,8 @@ class SmashRosterSyncManagerImpl(
     }
 
     private fun disable() {
-        firebaseApiWrapper.jobDispatcher.cancel(TAG)
+        firebaseApiWrapper.jobDispatcher.cancel(
+                TAG)
         timber.d(TAG, "sync has been disabled")
     }
 

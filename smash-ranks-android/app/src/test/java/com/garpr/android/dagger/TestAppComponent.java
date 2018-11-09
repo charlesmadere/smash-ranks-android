@@ -37,8 +37,8 @@ import com.garpr.android.preferences.persistent.PersistentIntegerPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentLongPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentUriPreferenceTest;
-import com.garpr.android.sync.RankingsPollingSyncManagerTest;
-import com.garpr.android.sync.SmashRosterSyncManagerTest;
+import com.garpr.android.sync.rankings.RankingsPollingSyncManagerTest;
+import com.garpr.android.sync.roster.SmashRosterSyncManagerTest;
 
 import javax.inject.Singleton;
 

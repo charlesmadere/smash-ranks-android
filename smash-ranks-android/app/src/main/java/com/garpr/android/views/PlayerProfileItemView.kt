@@ -22,7 +22,7 @@ import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.FullPlayer
-import com.garpr.android.sync.SmashRosterSyncManager
+import com.garpr.android.sync.roster.SmashRosterSyncManager
 import kotterknife.bindView
 import javax.inject.Inject
 

@@ -16,8 +16,8 @@ import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.*
 import com.garpr.android.models.RankingCriteria
-import com.garpr.android.sync.RankingsPollingSyncManager
-import com.garpr.android.sync.SmashRosterSyncManager
+import com.garpr.android.sync.rankings.RankingsPollingSyncManager
+import com.garpr.android.sync.roster.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar

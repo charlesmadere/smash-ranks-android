@@ -1,6 +1,7 @@
-package com.garpr.android.sync
+package com.garpr.android.sync.rankings
 
 import com.garpr.android.BaseTest
+import com.garpr.android.sync.rankings.RankingsPollingSyncManager
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before

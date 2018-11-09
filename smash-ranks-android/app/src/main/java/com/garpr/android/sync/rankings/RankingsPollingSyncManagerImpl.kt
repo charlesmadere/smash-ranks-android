@@ -1,4 +1,4 @@
-package com.garpr.android.sync
+package com.garpr.android.sync.rankings
 
 import com.firebase.jobdispatcher.Constraint
 import com.firebase.jobdispatcher.Lifetime
@@ -23,7 +23,8 @@ class RankingsPollingSyncManagerImpl(
     }
 
     private fun disable() {
-        firebaseApiWrapper.jobDispatcher.cancel(TAG)
+        firebaseApiWrapper.jobDispatcher.cancel(
+                TAG)
         timber.d(TAG, "polling has been disabled")
     }
 

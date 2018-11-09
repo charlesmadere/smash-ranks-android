@@ -113,7 +113,7 @@
 
         <service
             android:exported="false"
-            android:name=".sync.RankingsPollingJobService">
+            android:name=".sync.rankings.RankingsPollingJobService">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
@@ -121,7 +121,7 @@
 
         <service
             android:exported="false"
-            android:name=".sync.SmashRosterSyncJobService">
+            android:name=".sync.roster.SmashRosterSyncJobService">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>

@@ -1,4 +1,4 @@
-package com.garpr.android.sync
+package com.garpr.android.sync.roster
 
 import com.garpr.android.BaseTest
 import com.garpr.android.misc.SmashRosterStorage
@@ -58,7 +58,8 @@ class SmashRosterSyncManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        serverApiOverride = ServerApiOverride(gson)
+        serverApiOverride = ServerApiOverride(
+                gson)
         serverApiOverride.jsonGarPrSmashRoster = JSON_GAR_PR_SMASH_ROSTER
         serverApiOverride.jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
 

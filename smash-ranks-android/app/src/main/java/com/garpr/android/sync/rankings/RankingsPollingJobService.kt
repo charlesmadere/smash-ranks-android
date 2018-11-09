@@ -1,4 +1,4 @@
-package com.garpr.android.sync
+package com.garpr.android.sync.rankings
 
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
