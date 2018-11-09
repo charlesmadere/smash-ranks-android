@@ -8,6 +8,8 @@ interface ThreadUtils {
 
     val executorService: ExecutorService
 
+    val isUiThread: Boolean
+
     fun run(task: Task)
 
     fun runOnBackground(task: Runnable)

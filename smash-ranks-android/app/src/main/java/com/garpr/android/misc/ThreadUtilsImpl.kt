@@ -13,6 +13,9 @@ class ThreadUtilsImpl(
     override val executorService: ExecutorService = Executors.newFixedThreadPool(
             if (isLowRamDevice) 2 else 3)
 
+    override val isUiThread: Boolean
+        get() = Looper.myLooper() == Looper.getMainLooper()
+
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     override fun run(task: ThreadUtils.Task) {

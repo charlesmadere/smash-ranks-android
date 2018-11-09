@@ -1,5 +1,6 @@
 package com.garpr.android.sync.roster
 
+import android.annotation.SuppressLint
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import com.firebase.jobdispatcher.Constraint
@@ -180,10 +181,45 @@ class SmashRosterSyncManagerImpl(
         smashRosterPreferenceStore.syncResult.set(smashRosterSyncResult)
     }
 
+    @UiThread
+    private fun performSyncFromUiThread() {
+        notifyListenersOfOnSyncBegin()
+
+        threadUtils.runOnBackground(Runnable {
+            performSync()
+
+            synchronized (_isSyncing) {
+                _isSyncing = false
+            }
+
+            threadUtils.runOnUi(Runnable {
+                notifyListenersOfOnSyncComplete()
+            })
+        })
+    }
+
+    @WorkerThread
+    private fun performSyncFromWorkerThread() {
+        threadUtils.runOnUi(Runnable {
+            notifyListenersOfOnSyncBegin()
+        })
+
+        performSync()
+
+        synchronized (_isSyncing) {
+            _isSyncing = false
+        }
+
+        threadUtils.runOnUi(Runnable {
+            notifyListenersOfOnSyncComplete()
+        })
+    }
+
     override fun removeListener(listener: OnSyncListeners) {
         cleanListeners(listener)
     }
 
+    @SuppressLint("WrongThread")
     override fun sync() {
         synchronized (_isSyncing) {
             if (_isSyncing) {
@@ -196,21 +232,11 @@ class SmashRosterSyncManagerImpl(
         smashRosterPreferenceStore.hajimeteSync.set(false)
         timber.d(TAG, "syncing now...")
 
-        threadUtils.runOnUi(Runnable {
-            notifyListenersOfOnSyncBegin()
-
-            threadUtils.runOnBackground(Runnable {
-                performSync()
-
-                synchronized (_isSyncing) {
-                    _isSyncing = false
-                }
-
-                threadUtils.runOnUi(Runnable {
-                    notifyListenersOfOnSyncComplete()
-                })
-            })
-        })
+        if (threadUtils.isUiThread) {
+            performSyncFromUiThread()
+        } else {
+            performSyncFromWorkerThread()
+        }
     }
 
     override val syncResult: SmashRosterSyncResult?
