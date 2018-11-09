@@ -16,6 +16,7 @@ import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.activities.TournamentsActivity;
 import com.garpr.android.adapters.TournamentAdapter;
 import com.garpr.android.sync.rankings.RankingsPollingJobService;
+import com.garpr.android.sync.rankings.RankingsPollingWorker;
 import com.garpr.android.sync.roster.SmashRosterSyncJobService;
 import com.garpr.android.sync.roster.SmashRosterWorker;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
@@ -82,6 +83,7 @@ public interface AppComponent {
 
     // sync
     void inject(RankingsPollingJobService sync);
+    void inject(RankingsPollingWorker worker);
     void inject(SmashRosterSyncJobService sync);
     void inject(SmashRosterWorker worker);
 

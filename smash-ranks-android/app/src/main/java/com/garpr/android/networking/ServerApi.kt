@@ -1,5 +1,6 @@
 package com.garpr.android.networking
 
+import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
 import com.garpr.android.models.*
 
@@ -16,6 +17,7 @@ interface ServerApi {
 
     fun getPlayers(region: Region, listener: ApiListener<PlayersBundle>)
 
+    @AnyThread
     fun getRankings(region: Region, listener: ApiListener<RankingsBundle>)
 
     fun getRegions(endpoint: Endpoint? = null, listener: ApiListener<RegionsBundle>)
