@@ -10,7 +10,7 @@ import javax.inject.Inject
 class SmashRosterWorker(
         context: Context,
         workerParams: WorkerParameters
-) : Worker(context, workerParams), SmashRosterSyncManager.OnSyncListeners {
+) : Worker(context, workerParams) {
 
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
@@ -28,20 +28,18 @@ class SmashRosterWorker(
     }
 
     override fun doWork(): Result {
-        timber.d(TAG, "starting work...")
+        timber.d(TAG, "work starting...")
 
-        smashRosterSyncManager.addListener(this)
         smashRosterSyncManager.sync()
 
-        return Result.SUCCESS
-    }
+        val syncResult = smashRosterSyncManager.syncResult
+        timber.d(TAG, "work complete, result: $syncResult")
 
-    override fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager) {
-        timber.d(TAG, "sync beginning")
-    }
-
-    override fun onSmashRosterSyncComplete(smashRosterSyncManager: SmashRosterSyncManager) {
-        timber.d(TAG, "sync complete... result: ${smashRosterSyncManager.syncResult}")
+        return if (syncResult?.success == true) {
+            Result.SUCCESS
+        } else {
+            Result.RETRY
+        }
     }
 
 }
