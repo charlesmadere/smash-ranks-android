@@ -35,7 +35,7 @@ class RankingsNotificationsUtilsImpl(
         val oldRankingsId = rankingsPollingPreferenceStore.rankingsId.get()
 
         if (oldRankingsId == null) {
-            timber.d(TAG, "will not sync, the user does not have a rankings date")
+            timber.d(TAG, "will not sync, the user does not have a rankings ID")
             return PollStatus(null, false, false)
         }
 
