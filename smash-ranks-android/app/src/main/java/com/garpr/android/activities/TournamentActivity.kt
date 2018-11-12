@@ -137,6 +137,11 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         fetchFullTournament()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(KEY_TOURNAMENT_MODE, tournamentMode)
+    }
+
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -177,11 +182,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
         adapter = TournamentAdapter(this)
         recyclerView.adapter = adapter
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_TOURNAMENT_MODE, tournamentMode)
     }
 
     override fun search(query: String?) {
