@@ -7,7 +7,6 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.NotificationsManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingsNotificationsUtils
-import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiListener
