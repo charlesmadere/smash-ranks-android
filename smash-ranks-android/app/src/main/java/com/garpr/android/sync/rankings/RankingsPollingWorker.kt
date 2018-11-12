@@ -91,7 +91,7 @@ class RankingsPollingWorker(
             }
 
             else -> {
-                timber.w(TAG, "NotificationInfo is unknown ($info), not changing any notifications")
+                timber.e(TAG, "NotificationInfo is unknown ($info), not changing any notifications")
                 Result.RETRY
             }
         }
