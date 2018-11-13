@@ -33,11 +33,13 @@ class SmashRosterWorker(
         smashRosterSyncManager.sync()
 
         val syncResult = smashRosterSyncManager.syncResult
-        timber.d(TAG, "work complete, result: $syncResult")
+        timber.d(TAG, "work complete")
 
         return if (syncResult?.success == true) {
+            timber.d(TAG, "work was successful: $syncResult")
             Result.SUCCESS
         } else {
+            timber.d(TAG, "work wasn't successful, will retry: $syncResult")
             Result.RETRY
         }
     }
