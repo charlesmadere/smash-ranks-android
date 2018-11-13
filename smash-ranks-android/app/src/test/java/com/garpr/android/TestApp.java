@@ -12,8 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import androidx.test.core.app.ApplicationProvider;
-import androidx.work.Configuration;
-import androidx.work.WorkManager;
 
 public class TestApp extends BaseApp implements TestAppComponentHandle {
 
