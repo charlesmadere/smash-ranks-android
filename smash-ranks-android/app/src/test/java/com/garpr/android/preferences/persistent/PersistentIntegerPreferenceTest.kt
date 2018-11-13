@@ -3,7 +3,11 @@ package com.garpr.android.preferences.persistent
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.Preference
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

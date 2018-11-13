@@ -1,6 +1,18 @@
 package com.garpr.android.networking
 
-import com.garpr.android.models.*
+import com.garpr.android.models.Endpoint
+import com.garpr.android.models.FullPlayer
+import com.garpr.android.models.FullTournament
+import com.garpr.android.models.HeadToHead
+import com.garpr.android.models.MatchesBundle
+import com.garpr.android.models.PlayerMatchesBundle
+import com.garpr.android.models.PlayersBundle
+import com.garpr.android.models.RankingsBundle
+import com.garpr.android.models.Region
+import com.garpr.android.models.RegionsBundle
+import com.garpr.android.models.ServerResponse
+import com.garpr.android.models.SmashCompetitor
+import com.garpr.android.models.TournamentsBundle
 
 abstract class AbsServerApi : ServerApi {
 

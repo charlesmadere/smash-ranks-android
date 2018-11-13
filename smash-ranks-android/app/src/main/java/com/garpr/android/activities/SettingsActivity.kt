@@ -18,7 +18,16 @@ import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.rankings.RankingsPollingManager
-import com.garpr.android.views.*
+import com.garpr.android.views.CheckablePreferenceView
+import com.garpr.android.views.DeleteFavoritePlayersPreferenceView
+import com.garpr.android.views.IdentityPreferenceView
+import com.garpr.android.views.LastPollPreferenceView
+import com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView
+import com.garpr.android.views.RegionPreferenceView
+import com.garpr.android.views.RingtonePreferenceView
+import com.garpr.android.views.SimplePreferenceView
+import com.garpr.android.views.SmashRosterSyncPreferenceView
+import com.garpr.android.views.ThemePreferenceView
 import kotterknife.bindView
 import javax.inject.Inject
 

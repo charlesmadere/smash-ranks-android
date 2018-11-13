@@ -6,7 +6,7 @@ import com.garpr.android.extensions.createParcel
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonSerializer
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Comparator
 
 abstract class AbsPlayer(
         @SerializedName("id") val id: String,

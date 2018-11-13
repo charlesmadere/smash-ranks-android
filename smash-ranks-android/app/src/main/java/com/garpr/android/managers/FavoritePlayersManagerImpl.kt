@@ -11,7 +11,7 @@ import com.garpr.android.models.Region
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.wrappers.WeakReferenceWrapper
 import com.google.gson.Gson
-import java.util.*
+import java.util.Collections
 
 class FavoritePlayersManagerImpl(
         private val gson: Gson,

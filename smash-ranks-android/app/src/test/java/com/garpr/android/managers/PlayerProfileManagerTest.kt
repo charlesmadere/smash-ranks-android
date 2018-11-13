@@ -2,8 +2,16 @@ package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
 import com.garpr.android.misc.SmashRosterStorage
-import com.garpr.android.models.*
-import org.junit.Assert.*
+import com.garpr.android.models.Avatar
+import com.garpr.android.models.Endpoint
+import com.garpr.android.models.FullPlayer
+import com.garpr.android.models.Rating
+import com.garpr.android.models.Region
+import com.garpr.android.models.SmashCharacter
+import com.garpr.android.models.SmashCompetitor
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

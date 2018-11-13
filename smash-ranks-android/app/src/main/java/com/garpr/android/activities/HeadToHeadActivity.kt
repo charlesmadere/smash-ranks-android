@@ -15,7 +15,12 @@ import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.*
+import com.garpr.android.models.AbsPlayer
+import com.garpr.android.models.FavoritePlayer
+import com.garpr.android.models.FullTournament
+import com.garpr.android.models.HeadToHead
+import com.garpr.android.models.Match
+import com.garpr.android.models.Region
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi

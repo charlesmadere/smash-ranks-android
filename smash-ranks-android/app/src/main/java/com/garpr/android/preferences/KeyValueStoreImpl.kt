@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.garpr.android.preferences.KeyValueStore.BatchEditor
-import java.util.*
+import java.util.Collections
 
 class KeyValueStoreImpl(
         private val application: Application,

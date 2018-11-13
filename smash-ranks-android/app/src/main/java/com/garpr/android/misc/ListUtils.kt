@@ -2,8 +2,24 @@ package com.garpr.android.misc
 
 import android.content.Context
 import com.garpr.android.R
-import com.garpr.android.models.*
-import java.util.*
+import com.garpr.android.models.AbsPlayer
+import com.garpr.android.models.AbsRegion
+import com.garpr.android.models.AbsTournament
+import com.garpr.android.models.Endpoint
+import com.garpr.android.models.FullPlayer
+import com.garpr.android.models.FullTournament
+import com.garpr.android.models.HeadToHead
+import com.garpr.android.models.HeadToHeadMatch
+import com.garpr.android.models.LiteRegion
+import com.garpr.android.models.LiteTournament
+import com.garpr.android.models.Match
+import com.garpr.android.models.MatchesBundle
+import com.garpr.android.models.RankedPlayer
+import com.garpr.android.models.Region
+import com.garpr.android.models.RegionsBundle
+import com.garpr.android.models.TournamentsBundle
+import com.garpr.android.models.WinsLosses
+import java.util.Collections
 
 object ListUtils {
 

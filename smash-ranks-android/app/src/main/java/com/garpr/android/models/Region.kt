@@ -2,7 +2,11 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.*
+import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.readBoolean
+import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.requireParcelable
+import com.garpr.android.extensions.requireString
 import com.google.gson.annotations.SerializedName
 
 class Region(

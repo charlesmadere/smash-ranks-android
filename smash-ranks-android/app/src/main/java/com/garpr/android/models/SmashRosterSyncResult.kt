@@ -2,7 +2,12 @@ package com.garpr.android.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.extensions.*
+import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.requireBoolean
+import com.garpr.android.extensions.requireParcelable
+import com.garpr.android.extensions.writeBoolean
+import com.garpr.android.extensions.writeInteger
 import com.google.gson.annotations.SerializedName
 
 data class SmashRosterSyncResult(

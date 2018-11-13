@@ -3,7 +3,9 @@ package com.garpr.android.models
 import com.garpr.android.BaseTest
 import com.google.gson.Gson
 import com.google.gson.JsonElement
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

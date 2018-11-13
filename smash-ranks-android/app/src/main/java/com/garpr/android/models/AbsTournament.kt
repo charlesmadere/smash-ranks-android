@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Comparator
 
 abstract class AbsTournament(
         @SerializedName("regions") val regions: List<String>? = null,

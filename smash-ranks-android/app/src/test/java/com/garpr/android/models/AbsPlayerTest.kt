@@ -2,12 +2,16 @@ package com.garpr.android.models
 
 import com.garpr.android.BaseTest
 import com.google.gson.Gson
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import java.util.*
+import java.util.Collections
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)

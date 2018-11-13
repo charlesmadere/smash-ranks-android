@@ -7,7 +7,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import java.util.*
+import java.util.Collections
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)

@@ -5,7 +5,7 @@ import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.Endpoint
 import com.garpr.android.models.Region
 import com.garpr.android.models.RegionsBundle
-import java.util.*
+import java.util.Collections
 
 class RegionsBundleApiCall(
         private val listener: ApiListener<RegionsBundle>,

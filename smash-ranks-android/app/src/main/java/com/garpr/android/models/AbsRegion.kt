@@ -8,7 +8,7 @@ import com.garpr.android.extensions.writeInteger
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonSerializer
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Comparator
 
 abstract class AbsRegion(
         @SerializedName("activeTF") val activeTf: Boolean? = null,
