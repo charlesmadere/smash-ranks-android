@@ -145,11 +145,6 @@ public class TestAppModule extends BaseAppModule {
             public void enqueue(@NotNull final WorkRequest workRequest) {
                 // intentionally empty
             }
-
-            @Override
-            public void initialize() {
-                // intentionally empty
-            }
         };
     }
 

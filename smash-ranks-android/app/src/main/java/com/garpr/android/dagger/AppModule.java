@@ -61,9 +61,8 @@ public class AppModule extends BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    WorkManagerWrapper providesWorkManagerWrapper(final Application application,
-            final Timber timber) {
-        return new WorkManagerWrapperImpl(application, timber);
+    WorkManagerWrapper providesWorkManagerWrapper() {
+        return new WorkManagerWrapperImpl();
     }
 
 }

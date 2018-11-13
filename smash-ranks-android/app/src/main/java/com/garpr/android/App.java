@@ -116,7 +116,6 @@ public class App extends BaseApp implements AppComponentHandle {
         applyNightMode();
 
         mImageLibraryWrapper.initialize();
-        mWorkManagerWrapper.initialize();
         mAppUpgradeManager.upgradeApp();
     }
 

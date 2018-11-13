@@ -8,6 +8,4 @@ interface WorkManagerWrapper {
 
     fun enqueue(workRequest: WorkRequest)
 
-    fun initialize()
-
 }
