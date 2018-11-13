@@ -63,6 +63,7 @@ import com.garpr.android.sync.rankings.RankingsPollingManager;
 import com.garpr.android.sync.rankings.RankingsPollingManagerImpl;
 import com.garpr.android.sync.roster.SmashRosterSyncManager;
 import com.garpr.android.sync.roster.SmashRosterSyncManagerImpl;
+import com.garpr.android.wrappers.WorkManagerWrapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -302,8 +303,9 @@ public abstract class BaseAppModule {
     @Singleton
     RankingsPollingManager providesRankingsPollingSyncManager(
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final Timber timber) {
-        return new RankingsPollingManagerImpl(rankingsPollingPreferenceStore, timber);
+            final Timber timber, final WorkManagerWrapper workManagerWrapper) {
+        return new RankingsPollingManagerImpl(rankingsPollingPreferenceStore, timber,
+                workManagerWrapper);
     }
 
     @NonNull
@@ -395,9 +397,10 @@ public abstract class BaseAppModule {
             final SmashRosterPreferenceStore smashRosterPreferenceStore,
             final SmashRosterStorage smashRosterStorage,
             final ThreadUtils threadUtils,
-            final Timber timber) {
+            final Timber timber,
+            final WorkManagerWrapper workManagerWrapper) {
         return new SmashRosterSyncManagerImpl(serverApi, smashRosterPreferenceStore,
-                smashRosterStorage, threadUtils, timber);
+                smashRosterStorage, threadUtils, timber, workManagerWrapper);
     }
 
     @NonNull

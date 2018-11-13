@@ -44,16 +44,10 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
                 .build();
     }
 
-    private void initializeWorkManager() {
-        WorkManager.initialize(ApplicationProvider.getApplicationContext(),
-                new Configuration.Builder().build());
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
         initializeAppComponent();
-        initializeWorkManager();
     }
 
 }

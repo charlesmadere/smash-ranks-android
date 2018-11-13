@@ -12,6 +12,8 @@ import com.garpr.android.misc.Timber;
 import com.garpr.android.models.Region;
 import com.garpr.android.wrappers.FacebookFrescoWrapper;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
+import com.garpr.android.wrappers.WorkManagerWrapper;
+import com.garpr.android.wrappers.WorkManagerWrapperImpl;
 
 import javax.inject.Singleton;
 
@@ -54,6 +56,14 @@ public class AppModule extends BaseAppModule {
     @Singleton
     ThreadUtils providesThreadUtils(final DeviceUtils deviceUtils) {
         return new ThreadUtilsImpl(deviceUtils.getHasLowRam());
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    WorkManagerWrapper providesWorkManagerWrapper(final Application application,
+            final Timber timber) {
+        return new WorkManagerWrapperImpl(application, timber);
     }
 
 }

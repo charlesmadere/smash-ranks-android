@@ -10,6 +10,7 @@ import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
+import com.garpr.android.wrappers.WorkManagerWrapper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.Executors;
 import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
+import androidx.work.WorkRequest;
 import dagger.Module;
 import dagger.Provides;
 
@@ -125,6 +127,28 @@ public class TestAppModule extends BaseAppModule {
             @Override
             public void runOnUi(@NotNull final Runnable task) {
                 task.run();
+            }
+        };
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    WorkManagerWrapper providesWorkManagerWrapper() {
+        return new WorkManagerWrapper() {
+            @Override
+            public void cancelAllWorkByTag(@NotNull final String tag) {
+                // intentionally empty
+            }
+
+            @Override
+            public void enqueue(@NotNull final WorkRequest workRequest) {
+                // intentionally empty
+            }
+
+            @Override
+            public void initialize() {
+                // intentionally empty
             }
         };
     }

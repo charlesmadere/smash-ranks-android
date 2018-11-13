@@ -3,15 +3,16 @@ package com.garpr.android.sync.rankings
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.wrappers.WorkManagerWrapper
 import java.util.concurrent.TimeUnit
 
 class RankingsPollingManagerImpl(
         private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-        private val timber: Timber
+        private val timber: Timber,
+        private val workManagerWrapper: WorkManagerWrapper
 ) : RankingsPollingManager {
 
     companion object {
@@ -20,7 +21,7 @@ class RankingsPollingManagerImpl(
 
     private fun disable() {
         timber.d(TAG, "disabling polling...")
-        workManager.cancelAllWorkByTag(TAG)
+        workManagerWrapper.cancelAllWorkByTag(TAG)
         timber.d(TAG, "polling has been disabled")
     }
 
@@ -46,7 +47,7 @@ class RankingsPollingManagerImpl(
         .setConstraints(constraints.build())
         .build()
 
-        workManager.enqueue(periodicRequest)
+        workManagerWrapper.enqueue(periodicRequest)
         timber.d(TAG, "polling has been enabled")
     }
 
@@ -85,8 +86,5 @@ class RankingsPollingManagerImpl(
             rankingsPollingPreferenceStore.pollFrequency.set(value)
             enableOrDisable()
         }
-
-    private val workManager: WorkManager
-        get() = WorkManager.getInstance()
 
 }

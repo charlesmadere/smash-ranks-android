@@ -9,6 +9,7 @@ import com.garpr.android.models.ServerResponse
 import com.garpr.android.models.SmashCompetitor
 import com.garpr.android.networking.AbsServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
+import com.garpr.android.wrappers.WorkManagerWrapper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.junit.Assert.*
@@ -36,6 +37,9 @@ class SmashRosterSyncManagerTest : BaseTest() {
     @Inject
     protected lateinit var timber: Timber
 
+    @Inject
+    protected lateinit var workManagerWrapper: WorkManagerWrapper
+
     private lateinit var serverApiOverride: ServerApiOverride
     private lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
@@ -55,7 +59,8 @@ class SmashRosterSyncManagerTest : BaseTest() {
         serverApiOverride.jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
 
         smashRosterSyncManager = SmashRosterSyncManagerImpl(serverApiOverride,
-                smashRosterPreferenceStore, smashRosterStorage, threadUtils, timber)
+                smashRosterPreferenceStore, smashRosterStorage, threadUtils, timber,
+                workManagerWrapper)
     }
 
     @Test

@@ -6,7 +6,6 @@ import androidx.annotation.WorkerThread
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -17,6 +16,7 @@ import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.sync.roster.SmashRosterSyncManager.OnSyncListeners
 import com.garpr.android.wrappers.WeakReferenceWrapper
+import com.garpr.android.wrappers.WorkManagerWrapper
 import java.util.concurrent.TimeUnit
 
 class SmashRosterSyncManagerImpl(
@@ -24,7 +24,8 @@ class SmashRosterSyncManagerImpl(
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
         private val threadUtils: ThreadUtils,
-        private val timber: Timber
+        private val timber: Timber,
+        private val workManagerWrapper: WorkManagerWrapper
 ) : SmashRosterSyncManager {
 
     private var _isSyncing = false
@@ -59,7 +60,7 @@ class SmashRosterSyncManagerImpl(
 
     private fun disable() {
         timber.d(TAG, "disabling syncing...")
-        workManager.cancelAllWorkByTag(TAG)
+        workManagerWrapper.cancelAllWorkByTag(TAG)
         timber.d(TAG, "sync has been disabled")
     }
 
@@ -81,7 +82,7 @@ class SmashRosterSyncManagerImpl(
         .setConstraints(constraints)
         .build()
 
-        workManager.enqueue(periodicRequest)
+        workManagerWrapper.enqueue(periodicRequest)
         timber.d(TAG, "sync has been enabled")
 
         if (hajimeteSync) {
@@ -241,8 +242,5 @@ class SmashRosterSyncManagerImpl(
 
     override val syncResult: SmashRosterSyncResult?
         get() = smashRosterPreferenceStore.syncResult.get()
-
-    private val workManager: WorkManager
-        get() = WorkManager.getInstance()
 
 }
