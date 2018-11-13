@@ -10,11 +10,16 @@ import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.currentItemAsHomeTab
+import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.*
+import com.garpr.android.misc.HomeTab
+import com.garpr.android.misc.RankingCriteriaHandle
+import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.RankingCriteria
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
@@ -104,27 +109,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
-        val homeTab = when (item.itemId) {
-            R.id.actionFavoritePlayers -> HomeTab.FAVORITE_PLAYERS
-            R.id.actionRankings -> HomeTab.RANKINGS
-            R.id.actionTournaments -> HomeTab.TOURNAMENTS
-            else -> throw RuntimeException("unknown item: ${item.title}")
-        }
-
-        adapter.onNavigationItemReselected(homeTab)
+        adapter.onNavigationItemReselected(item.itemIdAsHomeTab)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val homeTab = when (item.itemId) {
-            R.id.actionFavoritePlayers -> HomeTab.FAVORITE_PLAYERS
-            R.id.actionRankings -> HomeTab.RANKINGS
-            R.id.actionTournaments -> HomeTab.TOURNAMENTS
-            else -> throw RuntimeException("unknown item: ${item.title}")
-        }
-
         homeToolbar.closeSearchLayout()
-        viewPager.currentItemAsHomeTab = homeTab
-
+        viewPager.currentItemAsHomeTab = item.itemIdAsHomeTab
         return true
     }
 
