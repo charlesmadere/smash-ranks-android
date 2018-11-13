@@ -2,14 +2,10 @@ package com.garpr.android.activities
 
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager
@@ -21,9 +17,8 @@ import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.sync.rankings.RankingsPollingSyncManager
+import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.views.*
-import com.garpr.android.wrappers.GoogleApiWrapper
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -33,16 +28,13 @@ class SettingsActivity : BaseActivity() {
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
     @Inject
-    protected lateinit var googleApiWrapper: GoogleApiWrapper
-
-    @Inject
     protected lateinit var identityManager: IdentityManager
 
     @Inject
-    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
+    protected lateinit var rankingsPollingManager: RankingsPollingManager
 
     @Inject
-    protected lateinit var rankingsPollingSyncManager: RankingsPollingSyncManager
+    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -57,7 +49,7 @@ class SettingsActivity : BaseActivity() {
     private val deleteFavoritePlayersPreferenceView: DeleteFavoritePlayersPreferenceView by bindView(R.id.deleteFavoritePlayersPreferenceView)
     private val identityPreferenceView: IdentityPreferenceView by bindView(R.id.identityPreferenceView)
     private val lastPoll: LastPollPreferenceView by bindView(R.id.lastPollPreferenceView)
-    private val pollFrequency: PollFrequencyPreferenceView by bindView(R.id.pollFrequencyPreferenceView)
+    private val rankingsPollingPollFrequency: RankingsPollingPollFrequencyPreferenceView by bindView(R.id.pollFrequencyPreferenceView)
     private val regionPreferenceView: RegionPreferenceView by bindView(R.id.regionPreferenceView)
     private val ringtonePreferenceView: RingtonePreferenceView by bindView(R.id.ringtonePreferenceView)
     private val charlesTwitter: SimplePreferenceView by bindView(R.id.spvCharlesTwitter)
@@ -67,8 +59,6 @@ class SettingsActivity : BaseActivity() {
     private val tsuaiiTwitter: SimplePreferenceView by bindView(R.id.spvTsuaiiTwitter)
     private val smashRosterFormLink: SimplePreferenceView by bindView(R.id.smashRosterFormLink)
     private val smashRosterPreferenceView: SmashRosterSyncPreferenceView by bindView(R.id.smashRosterPreferenceView)
-    private val rankingsPollingGooglePlayServicesError: TextView by bindView(R.id.tvRankingsPollingGooglePlayServicesError)
-    private val smashRosterGooglePlayServicesError: TextView by bindView(R.id.tvSmashRosterGooglePlayServicesError)
     private val themePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
 
 
@@ -79,29 +69,6 @@ class SettingsActivity : BaseActivity() {
     }
 
     override val activityName = TAG
-
-    private fun attemptToResolveGooglePlayServicesError() {
-        val connectionStatus = googleApiWrapper.googlePlayServicesConnectionStatus
-
-        if (googleApiWrapper.isConnectionStatusSuccess(connectionStatus)) {
-            Toast.makeText(this, R.string.google_play_services_error_has_been_resolved,
-                    Toast.LENGTH_LONG).show()
-            refresh()
-            return
-        }
-
-        if (googleApiWrapper.showPlayServicesResolutionDialog(this, connectionStatus,
-                googleApiWrapperOnCancelListener)) {
-            return
-        }
-
-        AlertDialog.Builder(this)
-                .setMessage(getString(R.string.google_play_services_error_cant_be_resolved,
-                        connectionStatus))
-                .setNeutralButton(R.string.ok, null)
-                .setOnDismissListener { refresh() }
-                .show()
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -172,14 +139,6 @@ class SettingsActivity : BaseActivity() {
         mustBeOnWifi.preference = rankingsPollingPreferenceStore.wifiRequired
         mustBeCharging.preference = rankingsPollingPreferenceStore.chargingRequired
 
-        rankingsPollingGooglePlayServicesError.setOnClickListener {
-            attemptToResolveGooglePlayServicesError()
-        }
-
-        smashRosterGooglePlayServicesError.setOnClickListener {
-            attemptToResolveGooglePlayServicesError()
-        }
-
         smashRosterFormLink.setOnClickListener {
             shareUtils.openUrl(this, Constants.SMASH_ROSTER_FORM_URL)
         }
@@ -212,7 +171,7 @@ class SettingsActivity : BaseActivity() {
         deleteFavoritePlayersPreferenceView.refresh()
 
         useRankingsPolling.refresh()
-        pollFrequency.refresh()
+        rankingsPollingPollFrequency.refresh()
         ringtonePreferenceView.refresh()
         vibrate.refresh()
         mustBeOnWifi.refresh()
@@ -220,40 +179,9 @@ class SettingsActivity : BaseActivity() {
         lastPoll.refresh()
 
         smashRosterPreferenceView.refresh()
-
-        if (googleApiWrapper.isGooglePlayServicesAvailable) {
-            rankingsPollingGooglePlayServicesError.visibility = View.GONE
-            smashRosterGooglePlayServicesError.visibility = View.GONE
-            useRankingsPolling.isEnabled = true
-
-            if (rankingsPollingPreferenceStore.enabled.get() == true) {
-                pollFrequency.isEnabled = true
-                ringtonePreferenceView.isEnabled = true
-                vibrate.isEnabled = true
-                mustBeOnWifi.isEnabled = true
-                mustBeCharging.isEnabled = true
-            } else {
-                pollFrequency.isEnabled = false
-                ringtonePreferenceView.isEnabled = false
-                vibrate.isEnabled = false
-                mustBeOnWifi.isEnabled = false
-                mustBeCharging.isEnabled = false
-            }
-        } else {
-            rankingsPollingGooglePlayServicesError.visibility = View.VISIBLE
-            smashRosterGooglePlayServicesError.visibility = View.VISIBLE
-            useRankingsPolling.isEnabled = false
-            pollFrequency.isEnabled = false
-            ringtonePreferenceView.isEnabled = false
-            vibrate.isEnabled = false
-            mustBeOnWifi.isEnabled = false
-            mustBeCharging.isEnabled = false
-        }
     }
 
     override val showUpNavigation = true
-
-    private val googleApiWrapperOnCancelListener = DialogInterface.OnCancelListener { refresh() }
 
     private val onFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
         override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
@@ -269,21 +197,21 @@ class SettingsActivity : BaseActivity() {
 
     private val onChargingRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
         override fun onPreferenceChange(preference: Preference<Boolean>) {
-            rankingsPollingSyncManager.enableOrDisable()
+            rankingsPollingManager.enableOrDisable()
             refresh()
         }
     }
 
     private val onPollFrequencyChange = object : Preference.OnPreferenceChangeListener<PollFrequency> {
         override fun onPreferenceChange(preference: Preference<PollFrequency>) {
-            rankingsPollingSyncManager.enableOrDisable()
+            rankingsPollingManager.enableOrDisable()
             refresh()
         }
     }
 
     private val onRankingsPollingEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
         override fun onPreferenceChange(preference: Preference<Boolean>) {
-            rankingsPollingSyncManager.enableOrDisable()
+            rankingsPollingManager.enableOrDisable()
             refresh()
         }
     }
@@ -302,7 +230,7 @@ class SettingsActivity : BaseActivity() {
 
     private val onWifiRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
         override fun onPreferenceChange(preference: Preference<Boolean>) {
-            rankingsPollingSyncManager.enableOrDisable()
+            rankingsPollingManager.enableOrDisable()
             refresh()
         }
     }

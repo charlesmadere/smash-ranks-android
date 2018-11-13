@@ -16,7 +16,7 @@ import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.*
 import com.garpr.android.models.RankingCriteria
-import com.garpr.android.sync.rankings.RankingsPollingSyncManager
+import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     protected lateinit var identityManager: IdentityManager
 
     @Inject
-    protected lateinit var rankingsPollingSyncManager: RankingsPollingSyncManager
+    protected lateinit var rankingsPollingManager: RankingsPollingManager
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -93,7 +93,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         appComponent.inject(this)
         setContentView(R.layout.activity_home)
         setInitialPosition(savedInstanceState)
-        rankingsPollingSyncManager.enableOrDisable()
+        rankingsPollingManager.enableOrDisable()
         smashRosterSyncManager.enableOrDisable()
         regionManager.addListener(this)
     }

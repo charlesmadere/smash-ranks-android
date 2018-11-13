@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
 
 public class TestApp extends BaseApp implements TestAppComponentHandle {
 
@@ -34,16 +36,24 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
     private void initializeAppComponent() {
         final Application application = ApplicationProvider.getApplicationContext();
         mTestAppComponent = DaggerTestAppComponent.builder()
-                .testAppModule(new TestAppModule(application,
+                .testAppModule(new TestAppModule(
+                        application,
                         Constants.INSTANCE.getDefaultRegion(),
-                        Constants.SMASH_ROSTER_BASE_PATH))
+                        Constants.SMASH_ROSTER_BASE_PATH)
+                )
                 .build();
+    }
+
+    private void initializeWorkManager() {
+        WorkManager.initialize(ApplicationProvider.getApplicationContext(),
+                new Configuration.Builder().build());
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         initializeAppComponent();
+        initializeWorkManager();
     }
 
 }

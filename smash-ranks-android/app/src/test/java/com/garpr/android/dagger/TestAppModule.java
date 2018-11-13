@@ -107,6 +107,11 @@ public class TestAppModule extends BaseAppModule {
             }
 
             @Override
+            public boolean isUiThread() {
+                return false;
+            }
+
+            @Override
             public void run(@NotNull final Task task) {
                 task.onBackground();
                 task.onUi();

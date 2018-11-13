@@ -7,7 +7,7 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.Timber
 import javax.inject.Inject
 
-class SmashRosterWorker(
+class SmashRosterSyncWorker(
         context: Context,
         workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
@@ -20,7 +20,7 @@ class SmashRosterWorker(
 
 
     companion object {
-        private const val TAG = "SmashRosterWorker"
+        private const val TAG = "SmashRosterSyncWorker"
     }
 
     init {

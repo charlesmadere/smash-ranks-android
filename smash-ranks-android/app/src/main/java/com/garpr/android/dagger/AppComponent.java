@@ -15,10 +15,8 @@ import com.garpr.android.activities.SplashActivity;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.activities.TournamentsActivity;
 import com.garpr.android.adapters.TournamentAdapter;
-import com.garpr.android.sync.rankings.RankingsPollingJobService;
 import com.garpr.android.sync.rankings.RankingsPollingWorker;
-import com.garpr.android.sync.roster.SmashRosterSyncJobService;
-import com.garpr.android.sync.roster.SmashRosterWorker;
+import com.garpr.android.sync.roster.SmashRosterSyncWorker;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.FavoritePlayerItemView;
 import com.garpr.android.views.FavoritePlayersLayout;
@@ -33,9 +31,9 @@ import com.garpr.android.views.PaletteSimpleDraweeView;
 import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.PlayerProfileItemView;
 import com.garpr.android.views.PlayersLayout;
-import com.garpr.android.views.PollFrequencyPreferenceView;
 import com.garpr.android.views.RankingItemView;
 import com.garpr.android.views.RankingsLayout;
+import com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView;
 import com.garpr.android.views.RegionPreferenceView;
 import com.garpr.android.views.RingtonePreferenceView;
 import com.garpr.android.views.SearchableFrameLayout;
@@ -82,10 +80,8 @@ public interface AppComponent {
     void inject(TournamentAdapter adapter);
 
     // sync
-    void inject(RankingsPollingJobService sync);
     void inject(RankingsPollingWorker worker);
-    void inject(SmashRosterSyncJobService sync);
-    void inject(SmashRosterWorker worker);
+    void inject(SmashRosterSyncWorker worker);
 
     // toolbars
     void inject(HomeToolbar toolbar);
@@ -106,7 +102,7 @@ public interface AppComponent {
     void inject(PlayerItemView view);
     void inject(PlayerProfileItemView view);
     void inject(PlayersLayout view);
-    void inject(PollFrequencyPreferenceView view);
+    void inject(RankingsPollingPollFrequencyPreferenceView view);
     void inject(RankingItemView view);
     void inject(RankingsLayout view);
     void inject(RegionPreferenceView view);

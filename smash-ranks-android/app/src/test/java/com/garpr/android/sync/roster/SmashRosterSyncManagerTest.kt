@@ -9,8 +9,6 @@ import com.garpr.android.models.ServerResponse
 import com.garpr.android.models.SmashCompetitor
 import com.garpr.android.networking.AbsServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
-import com.garpr.android.wrappers.FirebaseApiWrapper
-import com.garpr.android.wrappers.GoogleApiWrapper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.junit.Assert.*
@@ -22,12 +20,6 @@ import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SmashRosterSyncManagerTest : BaseTest() {
-
-    @Inject
-    protected lateinit var firebaseApiWrapper: FirebaseApiWrapper
-
-    @Inject
-    protected lateinit var googleApiWrapper: GoogleApiWrapper
 
     @Inject
     protected lateinit var gson: Gson
@@ -58,14 +50,12 @@ class SmashRosterSyncManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        serverApiOverride = ServerApiOverride(
-                gson)
+        serverApiOverride = ServerApiOverride(gson)
         serverApiOverride.jsonGarPrSmashRoster = JSON_GAR_PR_SMASH_ROSTER
         serverApiOverride.jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
 
-        smashRosterSyncManager = SmashRosterSyncManagerImpl(firebaseApiWrapper, googleApiWrapper,
-                serverApiOverride, smashRosterPreferenceStore, smashRosterStorage, threadUtils,
-                timber)
+        smashRosterSyncManager = SmashRosterSyncManagerImpl(serverApiOverride,
+                smashRosterPreferenceStore, smashRosterStorage, threadUtils, timber)
     }
 
     @Test

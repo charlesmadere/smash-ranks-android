@@ -3,10 +3,10 @@ package com.garpr.android.sync.roster
 import android.annotation.SuppressLint
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
-import com.firebase.jobdispatcher.Constraint
-import com.firebase.jobdispatcher.Lifetime
-import com.firebase.jobdispatcher.RetryStrategy
-import com.firebase.jobdispatcher.Trigger
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -16,14 +16,10 @@ import com.garpr.android.models.SmashRosterSyncResult
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.sync.roster.SmashRosterSyncManager.OnSyncListeners
-import com.garpr.android.wrappers.FirebaseApiWrapper
-import com.garpr.android.wrappers.GoogleApiWrapper
 import com.garpr.android.wrappers.WeakReferenceWrapper
 import java.util.concurrent.TimeUnit
 
 class SmashRosterSyncManagerImpl(
-        private val firebaseApiWrapper: FirebaseApiWrapper,
-        private val googleApiWrapper: GoogleApiWrapper,
         private val serverApi: ServerApi,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
@@ -62,34 +58,33 @@ class SmashRosterSyncManagerImpl(
     }
 
     private fun disable() {
-        firebaseApiWrapper.jobDispatcher.cancel(TAG)
+        timber.d(TAG, "disabling syncing...")
+        workManager.cancelAllWorkByTag(TAG)
         timber.d(TAG, "sync has been disabled")
     }
 
     private fun enable() {
-        if (!googleApiWrapper.isGooglePlayServicesAvailable) {
-            timber.w(TAG, "failed to schedule sync because Google Play Services are unavailable")
-            return
-        }
+        timber.d(TAG, "enabling syncing...")
 
-        val jobDispatcher = firebaseApiWrapper.jobDispatcher
+        val constraints = Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                .setRequiresCharging(true)
+                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .build()
 
-        val jobBuilder = jobDispatcher.newJobBuilder()
-                .addConstraint(Constraint.DEVICE_CHARGING)
-                .addConstraint(Constraint.ON_UNMETERED_NETWORK)
-                .setLifetime(Lifetime.FOREVER)
-                .setRecurring(true)
-                .setReplaceCurrent(true)
-                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
-                .setService(SmashRosterSyncJobService::class.java)
-                .setTag(TAG)
-                .setTrigger(Trigger.executionWindow(TimeUnit.MINUTES.toSeconds(5).toInt(),
-                        PollFrequency.EVERY_5_DAYS.timeInSeconds.toInt()))
+        val periodicRequest = PeriodicWorkRequest.Builder(
+                SmashRosterSyncWorker::class.java,
+                pollFrequency.timeInSeconds,
+                TimeUnit.SECONDS
+        )
+        .addTag(TAG)
+        .setConstraints(constraints)
+        .build()
 
-        jobDispatcher.mustSchedule(jobBuilder.build())
+        workManager.enqueue(periodicRequest)
         timber.d(TAG, "sync has been enabled")
 
-        if (smashRosterPreferenceStore.hajimeteSync.get() == true) {
+        if (hajimeteSync) {
             timber.d(TAG, "hajimete sync")
             sync()
         }
@@ -102,6 +97,9 @@ class SmashRosterSyncManagerImpl(
             disable()
         }
     }
+
+    private val hajimeteSync: Boolean
+        get() = smashRosterPreferenceStore.hajimeteSync.get() == true
 
     override var isEnabled: Boolean
         get() = smashRosterPreferenceStore.enabled.get() == true
@@ -215,6 +213,8 @@ class SmashRosterSyncManagerImpl(
         })
     }
 
+    private val pollFrequency: PollFrequency = PollFrequency.EVERY_5_DAYS
+
     override fun removeListener(listener: OnSyncListeners) {
         cleanListeners(listener)
     }
@@ -241,5 +241,8 @@ class SmashRosterSyncManagerImpl(
 
     override val syncResult: SmashRosterSyncResult?
         get() = smashRosterPreferenceStore.syncResult.get()
+
+    private val workManager: WorkManager
+        get() = WorkManager.getInstance()
 
 }

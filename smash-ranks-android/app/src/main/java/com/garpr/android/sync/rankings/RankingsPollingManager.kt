@@ -1,6 +1,8 @@
 package com.garpr.android.sync.rankings
 
-interface RankingsPollingSyncManager {
+import com.garpr.android.models.PollFrequency
+
+interface RankingsPollingManager {
 
     fun enableOrDisable()
 
@@ -9,5 +11,7 @@ interface RankingsPollingSyncManager {
     var isEnabled: Boolean
 
     var isWifiRequired: Boolean
+
+    var pollFrequency: PollFrequency
 
 }

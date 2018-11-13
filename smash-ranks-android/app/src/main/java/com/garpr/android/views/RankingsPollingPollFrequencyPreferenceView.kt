@@ -10,13 +10,17 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.sync.rankings.RankingsPollingManager
 import javax.inject.Inject
 
-class PollFrequencyPreferenceView @JvmOverloads constructor(
+class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
         Preference.OnPreferenceChangeListener<PollFrequency>, View.OnClickListener {
+
+    @Inject
+    protected lateinit var rankingsPollingManager: RankingsPollingManager
 
     @Inject
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
@@ -36,14 +40,14 @@ class PollFrequencyPreferenceView @JvmOverloads constructor(
     override fun onClick(dialog: DialogInterface, which: Int) {
         dialog.dismiss()
 
-        val current = rankingsPollingPreferenceStore.pollFrequency.get()
+        val current = rankingsPollingManager.pollFrequency
         val selected = PollFrequency.values()[which]
 
         if (current == selected) {
             return
         }
 
-        rankingsPollingPreferenceStore.pollFrequency.set(selected)
+        rankingsPollingManager.pollFrequency = selected
         refresh()
     }
 
@@ -54,11 +58,10 @@ class PollFrequencyPreferenceView @JvmOverloads constructor(
             items[i] = resources.getText(PollFrequency.values()[i].textResId)
         }
 
-        val current = rankingsPollingPreferenceStore.pollFrequency.get()
-        val checkedItem = current?.ordinal ?: -1
+        val pollFrequency = rankingsPollingManager.pollFrequency
 
         AlertDialog.Builder(context)
-                .setSingleChoiceItems(items, checkedItem, this)
+                .setSingleChoiceItems(items, pollFrequency.ordinal, this)
                 .setTitle(R.string.poll_frequency)
                 .show()
     }
@@ -96,8 +99,8 @@ class PollFrequencyPreferenceView @JvmOverloads constructor(
     override fun refresh() {
         super.refresh()
 
-        val pollFrequency = rankingsPollingPreferenceStore.pollFrequency.get()
-        descriptionText = resources.getText(pollFrequency?.textResId ?: R.string.not_yet_set)
+        val pollFrequency = rankingsPollingManager.pollFrequency
+        descriptionText = resources.getText(pollFrequency.textResId)
     }
 
 }

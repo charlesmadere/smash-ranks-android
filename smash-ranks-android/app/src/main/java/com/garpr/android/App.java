@@ -20,6 +20,8 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
 
 public class App extends BaseApp implements AppComponentHandle {
 
@@ -81,8 +83,11 @@ public class App extends BaseApp implements AppComponentHandle {
 
     private void initializeAppComponent() {
         final AppComponent appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this, Constants.INSTANCE.getDefaultRegion(),
-                        Constants.SMASH_ROSTER_BASE_PATH))
+                .appModule(new AppModule(
+                        this,
+                        Constants.INSTANCE.getDefaultRegion(),
+                        Constants.SMASH_ROSTER_BASE_PATH)
+                )
                 .build();
 
         appComponent.inject(this);
@@ -94,6 +99,10 @@ public class App extends BaseApp implements AppComponentHandle {
         mCrashlyticsWrapper.setBool("low_ram_device", mDeviceUtils.getHasLowRam());
     }
 
+    private void initializeWorkManager() {
+        WorkManager.initialize(this, new Configuration.Builder().build());
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -103,6 +112,7 @@ public class App extends BaseApp implements AppComponentHandle {
 
         initializeAppComponent();
         initializeCrashlytics();
+        initializeWorkManager();
 
         mTimber.d(TAG, "App created", null);
 

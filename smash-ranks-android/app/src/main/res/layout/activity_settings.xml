@@ -50,19 +50,13 @@
                 android:text="@string/rankings_polling_description"
                 style="@style/SettingsCardDescription" />
 
-            <TextView
-                android:id="@+id/tvRankingsPollingGooglePlayServicesError"
-                android:text="@string/rankings_polling_requires_google_play_services"
-                tools:visibility="visible"
-                style="@style/SettingsCardDescription.Warn" />
-
             <com.garpr.android.views.CheckablePreferenceView
                 android:id="@+id/cpvUseRankingsPolling"
                 app:checkableType="switch_compat"
                 app:titleText="@string/use_rankings_polling"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.PollFrequencyPreferenceView
+            <com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView
                 android:id="@+id/pollFrequencyPreferenceView"
                 style="@style/PreferenceView" />
 
@@ -103,12 +97,6 @@
             <TextView
                 android:text="@string/smash_roster_polling_description"
                 style="@style/SettingsCardDescription" />
-
-            <TextView
-                android:id="@+id/tvSmashRosterGooglePlayServicesError"
-                android:text="@string/smash_roster_sync_requires_google_play_services"
-                tools:visibility="visible"
-                style="@style/SettingsCardDescription.Warn" />
 
             <com.garpr.android.views.SmashRosterSyncPreferenceView
                 android:id="@+id/smashRosterPreferenceView"

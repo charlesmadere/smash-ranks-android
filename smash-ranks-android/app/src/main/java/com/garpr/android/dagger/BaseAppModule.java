@@ -59,14 +59,10 @@ import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.preferences.RankingsPollingPreferenceStoreImpl;
 import com.garpr.android.preferences.SmashRosterPreferenceStore;
 import com.garpr.android.preferences.SmashRosterPreferenceStoreImpl;
-import com.garpr.android.sync.rankings.RankingsPollingSyncManager;
-import com.garpr.android.sync.rankings.RankingsPollingSyncManagerImpl;
+import com.garpr.android.sync.rankings.RankingsPollingManager;
+import com.garpr.android.sync.rankings.RankingsPollingManagerImpl;
 import com.garpr.android.sync.roster.SmashRosterSyncManager;
 import com.garpr.android.sync.roster.SmashRosterSyncManagerImpl;
-import com.garpr.android.wrappers.FirebaseApiWrapper;
-import com.garpr.android.wrappers.FirebaseApiWrapperImpl;
-import com.garpr.android.wrappers.GoogleApiWrapper;
-import com.garpr.android.wrappers.GoogleApiWrapperImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -148,13 +144,6 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    FirebaseApiWrapper providesFirebaseApiWrapper() {
-        return new FirebaseApiWrapperImpl(mApplication);
-    }
-
-    @NonNull
-    @Provides
-    @Singleton
     FullTournamentUtils providesFullTournamentUtils(final ThreadUtils threadUtils) {
         return new FullTournamentUtilsImpl(threadUtils);
     }
@@ -190,13 +179,6 @@ public abstract class BaseAppModule {
     GeneralPreferenceStore providesGeneralPreferenceStore(final Gson gson,
             @Named(GENERAL_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
         return new GeneralPreferenceStoreImpl(gson, keyValueStore, mDefaultRegion);
-    }
-
-    @Provides
-    @Singleton
-    GoogleApiWrapper providesGoogleApiWrapper(final CrashlyticsWrapper crashlyticsWrapper,
-            final Timber timber) {
-        return new GoogleApiWrapperImpl(mApplication, crashlyticsWrapper, timber);
     }
 
     @Provides
@@ -318,12 +300,10 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    RankingsPollingSyncManager providesRankingsPollingSyncManager(
-            final FirebaseApiWrapper firebaseApiWrapper, final GoogleApiWrapper googleApiWrapper,
+    RankingsPollingManager providesRankingsPollingSyncManager(
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
             final Timber timber) {
-        return new RankingsPollingSyncManagerImpl(firebaseApiWrapper, googleApiWrapper,
-                rankingsPollingPreferenceStore, timber);
+        return new RankingsPollingManagerImpl(rankingsPollingPreferenceStore, timber);
     }
 
     @NonNull
@@ -343,9 +323,10 @@ public abstract class BaseAppModule {
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
             final RegionManager regionManager,
             final SmashRosterApi smashRosterApi,
+            final ThreadUtils threadUtils,
             final Timber timber) {
         return new ServerApiImpl(fullTournamentUtils, garPrApi, notGarPrApi,
-                rankingsPollingPreferenceStore, regionManager, smashRosterApi, timber);
+                rankingsPollingPreferenceStore, regionManager, smashRosterApi, threadUtils, timber);
     }
 
     @NonNull
@@ -410,15 +391,13 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    SmashRosterSyncManager providesSmashRosterSyncManager(final FirebaseApiWrapper firebaseApiWrapper,
-            final GoogleApiWrapper googleApiWrapper,
-            final ServerApi serverApi,
+    SmashRosterSyncManager providesSmashRosterSyncManager(final ServerApi serverApi,
             final SmashRosterPreferenceStore smashRosterPreferenceStore,
             final SmashRosterStorage smashRosterStorage,
             final ThreadUtils threadUtils,
             final Timber timber) {
-        return new SmashRosterSyncManagerImpl(firebaseApiWrapper, googleApiWrapper, serverApi,
-                smashRosterPreferenceStore, smashRosterStorage, threadUtils, timber);
+        return new SmashRosterSyncManagerImpl(serverApi, smashRosterPreferenceStore,
+                smashRosterStorage, threadUtils, timber);
     }
 
     @NonNull
