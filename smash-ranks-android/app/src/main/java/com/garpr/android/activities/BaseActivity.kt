@@ -94,8 +94,6 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     protected open fun onViewsBound() {
-        // ButterKnife was once right here
-
         toolbar?.let { setSupportActionBar(it) }
         supportActionBar?.setDisplayHomeAsUpEnabled(showUpNavigation)
     }
