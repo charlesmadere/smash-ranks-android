@@ -1,9 +1,7 @@
 package com.garpr.android.misc
 
-import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.drawable.DrawableCompat
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -55,16 +53,6 @@ object MiscUtils {
         val hsl = FloatArray(3)
         ColorUtils.colorToHSL(color, hsl)
         return hsl[2] >= lightness
-    }
-
-    fun tintDrawable(drawable: Drawable?, @ColorInt color: Int): Drawable? {
-        return if (drawable == null) {
-            null
-        } else {
-            val wrapper = DrawableCompat.wrap(drawable.mutate())
-            DrawableCompat.setTint(wrapper, color)
-            wrapper
-        }
     }
 
     fun truncateFloat(value: Float): String {
