@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <com.garpr.android.views.NavigationBarSpace
-        android:id="@+id/navigationBarSpace"
+    <com.garpr.android.views.BottomWindowInsetsView
+        android:id="@+id/bottomWindowInsetsView"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +18,7 @@
         android:layout_width="@dimen/splash_card_width"
         app:cardCornerRadius="@dimen/splash_card_corner_radius"
         app:cardElevation="@dimen/splash_card_start_elevation"
-        app:layout_constraintBottom_toTopOf="@id/navigationBarSpace"
+        app:layout_constraintBottom_toTopOf="@id/bottomWindowInsetsView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
