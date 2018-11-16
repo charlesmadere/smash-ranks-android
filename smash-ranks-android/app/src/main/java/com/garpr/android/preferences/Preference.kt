@@ -22,6 +22,4 @@ interface Preference<T> {
 
     fun set(newValue: T?)
 
-    fun set(preference: Preference<T>)
-
 }

@@ -59,8 +59,4 @@ abstract class BasePreference<T>(
         }
     }
 
-    override fun set(preference: Preference<T>) {
-        set(preference.get())
-    }
-
 }
