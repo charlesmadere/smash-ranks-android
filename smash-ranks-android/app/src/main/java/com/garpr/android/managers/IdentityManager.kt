@@ -12,9 +12,9 @@ interface IdentityManager {
 
     fun addListener(listener: OnIdentityChangeListener)
 
-    val identity: FavoritePlayer?
-
     val hasIdentity: Boolean
+
+    val identity: FavoritePlayer?
 
     fun isPlayer(player: AbsPlayer?): Boolean
 
