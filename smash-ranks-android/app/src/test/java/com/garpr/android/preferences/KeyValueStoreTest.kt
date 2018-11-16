@@ -218,6 +218,21 @@ class KeyValueStoreTest : BaseTest() {
     }
 
     @Test
+    fun testGetString() {
+        assertNull(keyValueStore.getString("hello", null))
+        assertEquals("world", keyValueStore.getString("hello", "world"))
+    }
+
+    @Test
+    fun testGetAndSetString() {
+        assertNull(keyValueStore.getString("string", null))
+
+        keyValueStore.setString("string", "moose")
+        assertEquals("moose", keyValueStore.getString("string", null))
+        assertNull(keyValueStore.getString("moose", null))
+    }
+
+    @Test
     fun testRemove() {
         keyValueStore.remove("boolean")
         assertFalse("boolean" in keyValueStore)
