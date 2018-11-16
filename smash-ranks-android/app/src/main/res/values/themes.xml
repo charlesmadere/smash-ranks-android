@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AlertDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+    <style name="AlertDialogThemeDayNight" parent="Theme.MaterialComponents.Light.Dialog.Alert" />
+
+    <style name="AlertDialogTheme" parent="AlertDialogThemeDayNight">
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
     </style>
 
-    <style name="AppTheme" parent="AppThemeBase">
+    <style name="AppTheme" parent="AppThemeBase" />
 
-    </style>
+    <style name="AppThemeDayNight" parent="Theme.MaterialComponents.Light.NoActionBar" />
 
-    <style name="AppThemeBase" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppThemeBase" parent="AppThemeDayNight">
         <item name="timberDebug">@color/debug</item>
         <item name="timberError">@color/error</item>
         <item name="timberWarn">@color/warn</item>
@@ -27,11 +29,9 @@
         <item name="android:windowBackground">@drawable/bg_splash_theme</item>
     </style>
 
-    <style name="SplashTheme" parent="SplashThemeBase">
+    <style name="SplashTheme" parent="SplashThemeBase" />
 
-    </style>
-
-    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
