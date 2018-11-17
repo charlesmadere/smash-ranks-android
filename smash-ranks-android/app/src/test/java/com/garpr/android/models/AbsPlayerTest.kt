@@ -125,7 +125,7 @@ class AbsPlayerTest : BaseTest() {
         assertEquals(AbsPlayer.Kind.FULL, fullPlayer1.kind)
 
         val fullPlayer = fullPlayer1 as FullPlayer
-        assertTrue(fullPlayer.aliases == null || fullPlayer.aliases?.isEmpty() == true)
+        assertTrue(fullPlayer.aliases.isNullOrEmpty())
         assertTrue(fullPlayer.ratings?.isNotEmpty() == true)
         assertTrue(fullPlayer.regions?.isNotEmpty() == true)
     }

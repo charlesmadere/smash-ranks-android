@@ -32,7 +32,7 @@ object MiscUtils {
     }
 
     fun hashCode(vararg objects: Any?): Int {
-        if (objects.isEmpty()) {
+        if (objects.isNullOrEmpty()) {
             return 0
         }
 

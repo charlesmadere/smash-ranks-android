@@ -212,10 +212,10 @@ class FavoritePlayersManagerTest : BaseTest() {
     @Throws(Exception::class)
     fun testPlayers() {
         var players = favoritePlayersManager.players
-        assertTrue(players == null || players.isEmpty())
+        assertTrue(players.isNullOrEmpty())
 
         var absPlayers = favoritePlayersManager.absPlayers
-        assertTrue(absPlayers == null || absPlayers.isEmpty())
+        assertTrue(absPlayers.isNullOrEmpty())
 
         favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
         players = favoritePlayersManager.players
@@ -255,10 +255,10 @@ class FavoritePlayersManagerTest : BaseTest() {
 
         favoritePlayersManager.removePlayer(player2)
         players = favoritePlayersManager.players
-        assertTrue(players == null || players.isEmpty())
+        assertTrue(players.isNullOrEmpty())
 
         absPlayers = favoritePlayersManager.absPlayers
-        assertTrue(absPlayers == null || absPlayers.isEmpty())
+        assertTrue(absPlayers.isNullOrEmpty())
     }
 
     @Test
@@ -296,7 +296,7 @@ class FavoritePlayersManagerTest : BaseTest() {
         favoritePlayersManager.removePlayer(player1)
         favoritePlayersManager.removePlayer(player2)
         var players = favoritePlayersManager.players
-        assertTrue(players == null || players.isEmpty())
+        assertTrue(players.isNullOrEmpty())
         assertTrue(favoritePlayersManager.isEmpty)
 
         favoritePlayersManager.addPlayer(player2, regionManager.getRegion())
@@ -304,7 +304,7 @@ class FavoritePlayersManagerTest : BaseTest() {
         favoritePlayersManager.removePlayer(player2.id)
         favoritePlayersManager.removePlayer(player1.id)
         players = favoritePlayersManager.players
-        assertTrue(players == null || players.isEmpty())
+        assertTrue(players.isNullOrEmpty())
     }
 
     @Test

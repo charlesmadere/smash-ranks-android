@@ -46,7 +46,6 @@ class FullTournamentUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPrepareNull() {
         var ft: FullTournament? = null
 
@@ -61,7 +60,6 @@ class FullTournamentUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPrepareFullTournament1() {
         var ft: FullTournament? = null
 
@@ -82,7 +80,6 @@ class FullTournamentUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPrepareFullTournament2() {
         var ft: FullTournament? = null
 
@@ -104,7 +101,6 @@ class FullTournamentUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testPrepareFullTournament3() {
         var ft: FullTournament? = null
 
@@ -117,7 +113,7 @@ class FullTournamentUtilsTest : BaseTest() {
         fullTournamentUtils.prepareFullTournament(fullTournament3, callback)
         assertNotNull(ft)
         assertEquals(fullTournament3, ft)
-        assertTrue(ft?.players == null || ft?.players?.isEmpty() == true)
+        assertTrue(ft?.players.isNullOrEmpty())
     }
 
 }

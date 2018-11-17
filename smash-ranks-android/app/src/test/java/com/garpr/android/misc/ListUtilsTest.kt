@@ -390,7 +390,7 @@ class ListUtilsTest : BaseTest() {
     @Throws(Exception::class)
     fun testSearchPlayerListWithZebra() {
         val players = ListUtils.searchPlayerList("Zebra", playersBundle.players)
-        assertTrue(players == null || players.isEmpty())
+        assertTrue(players.isNullOrEmpty())
     }
 
     @Test

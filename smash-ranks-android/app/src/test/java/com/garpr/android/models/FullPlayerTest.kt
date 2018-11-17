@@ -25,45 +25,39 @@ class FullPlayerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUniqueAliasesWithFullPlayer1() {
         val uniqueAliases = FULL_PLAYER_1.uniqueAliases
         assertTrue(uniqueAliases != null && uniqueAliases.size == 1)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUniqueAliasesWithFullPlayer2() {
         val uniqueAliases = FULL_PLAYER_2.uniqueAliases
-        assertTrue(uniqueAliases == null || uniqueAliases.isEmpty())
+        assertTrue(uniqueAliases.isNullOrEmpty())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUniqueAliasesWithFullPlayer3() {
         val uniqueAliases = FULL_PLAYER_3.uniqueAliases
         assertTrue(uniqueAliases != null && uniqueAliases.size == 3)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUniqueAliasesWithFullPlayer4() {
         val uniqueAliases = FULL_PLAYER_4.uniqueAliases
-        assertTrue(uniqueAliases == null || uniqueAliases.isEmpty())
+        assertTrue(uniqueAliases.isNullOrEmpty())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUniqueAliasesWithFullPlayer5() {
         val uniqueAliases = FULL_PLAYER_5.uniqueAliases
-        assertTrue(uniqueAliases == null || uniqueAliases.isEmpty())
+        assertTrue(uniqueAliases.isNullOrEmpty())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUniqueAliasesWithFullPlayer6() {
         val uniqueAliases = FULL_PLAYER_6.uniqueAliases
-        assertTrue(uniqueAliases == null || uniqueAliases.isEmpty())
+        assertTrue(uniqueAliases.isNullOrEmpty())
     }
 
 }
