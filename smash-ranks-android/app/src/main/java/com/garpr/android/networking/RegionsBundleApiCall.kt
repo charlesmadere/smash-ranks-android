@@ -35,11 +35,11 @@ class RegionsBundleApiCall(
         val regionsSet = mutableSetOf<AbsRegion>()
 
         garPrRegions?.regions?.let {
-            it.mapTo(regionsSet) { Region(it, Endpoint.GAR_PR) }
+            it.mapTo(regionsSet) { region -> Region(region, Endpoint.GAR_PR) }
         }
 
         notGarPrRegions?.regions?.let {
-            it.mapTo(regionsSet) { Region(it, Endpoint.NOT_GAR_PR) }
+            it.mapTo(regionsSet) { region -> Region(region, Endpoint.NOT_GAR_PR) }
         }
 
         if (regionsSet.isEmpty()) {
