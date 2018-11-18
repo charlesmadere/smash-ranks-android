@@ -57,8 +57,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
     }
 
     private fun notifyListener(palette: Palette?) {
-        colorListener?.onPaletteBuilt(palette) ?:
-                (context.activity as? ColorListener)?.onPaletteBuilt(palette)
+        colorListener?.onPaletteBuilt(palette) ?: (activity as? ColorListener)?.onPaletteBuilt(palette)
     }
 
     override fun onFinishInflate() {
@@ -71,7 +70,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
 
     override fun setImageURI(uriString: String?) {
         val uri = if (uriString?.isNotBlank() == true && !deviceUtils.hasLowRam &&
-                context.activity is ColorListener) Uri.parse(uriString) else null
+                activity is ColorListener) Uri.parse(uriString) else null
 
         if (uri == null) {
             super.setImageURI(uriString)
