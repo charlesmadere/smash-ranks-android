@@ -80,14 +80,14 @@ class TournamentMatchItemView @JvmOverloads constructor(
         AlertDialog.Builder(context)
                 .setItems(items) { dialog, which ->
                     when (which) {
-                        0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,match.winnerId,
-                                    regionManager.getRegion(context)))
+                        0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
+                                match.winnerId, regionManager.getRegion(context)))
 
-                        1 -> context.startActivity(PlayerActivity.getLaunchIntent(context, match.loserId,
-                                regionManager.getRegion(context)))
+                        1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
+                                match.loserId, regionManager.getRegion(context)))
 
-                        2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context, match,
-                                regionManager.getRegion(context)))
+                        2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
+                                match, regionManager.getRegion(context)))
 
                         else -> throw RuntimeException("illegal which: $which")
                     }
