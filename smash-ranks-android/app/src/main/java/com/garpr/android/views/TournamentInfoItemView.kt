@@ -59,11 +59,11 @@ class TournamentInfoItemView @JvmOverloads constructor(
         }
 
         openLink.setOnClickListener {
-            tournament?.let { shareUtils.openUrl(context, it.url) }
+            tournament?.let { t -> shareUtils.openUrl(context, t.url) }
         }
 
         share.setOnClickListener {
-            tournament?.let { shareUtils.shareTournament(requireActivity(), it) }
+            tournament?.let { t -> shareUtils.shareTournament(requireActivity(), t) }
         }
     }
 

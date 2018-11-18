@@ -129,27 +129,27 @@ class PlayerProfileItemView @JvmOverloads constructor(
         avatar.colorListener = this
 
         twitter.setOnClickListener {
-            presentation?.let { shareUtils.openUrl(context, it.twitter) }
+            presentation?.let { p -> shareUtils.openUrl(context, p.twitter) }
         }
 
         twitch.setOnClickListener {
-            presentation?.let { shareUtils.openUrl(context, it.twitch) }
+            presentation?.let { p -> shareUtils.openUrl(context, p.twitch) }
         }
 
         youTube.setOnClickListener {
-            presentation?.let { shareUtils.openUrl(context, it.youTube) }
+            presentation?.let { p -> shareUtils.openUrl(context, p.youTube) }
         }
 
         otherWebsite.setOnClickListener {
-            presentation?.let { shareUtils.openUrl(context, it.otherWebsite) }
+            presentation?.let { p -> shareUtils.openUrl(context, p.otherWebsite) }
         }
 
         favoriteOrUnfavorite.setOnClickListener {
-            fullPlayer?.let {
-                if (it in favoritePlayersManager) {
-                    favoritePlayersManager.removePlayer(it)
+            fullPlayer?.let { p ->
+                if (p in favoritePlayersManager) {
+                    favoritePlayersManager.removePlayer(p)
                 } else {
-                    favoritePlayersManager.addPlayer(it, regionManager.getRegion(context))
+                    favoritePlayersManager.addPlayer(p, regionManager.getRegion(context))
                 }
             }
         }
@@ -162,7 +162,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
 
         share.setOnClickListener {
-            fullPlayer?.let { shareUtils.sharePlayer(requireActivity(), it) }
+            fullPlayer?.let { p -> shareUtils.sharePlayer(requireActivity(), p) }
         }
     }
 
