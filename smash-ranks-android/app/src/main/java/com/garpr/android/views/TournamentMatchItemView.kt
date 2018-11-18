@@ -92,7 +92,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
                         else -> throw RuntimeException("illegal which: $which")
                     }
                 }
-            .setTitle(R.string.view)
+                .setTitle(R.string.view)
                 .show()
     }
 
