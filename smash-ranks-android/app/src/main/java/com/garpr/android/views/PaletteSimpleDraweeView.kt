@@ -27,7 +27,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
 ) : SimpleDraweeView(context, attrs) {
 
     var colorListener: ColorListener? = null
-    private val selfReference: WeakReference<View> by lazy { WeakReference<View>(this) }
+    private val selfReference by lazy { WeakReference<View>(this) }
 
     @Inject
     protected lateinit var deviceUtils: DeviceUtils
