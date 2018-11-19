@@ -3,5 +3,6 @@
 
     <style name="AlertDialogThemeDayNight" parent="Theme.MaterialComponents.Dialog.Alert" />
     <style name="AppThemeDayNight" parent="Theme.MaterialComponents.NoActionBar" />
+    <style name="BottomSheetDialogThemeDayNight" parent="Theme.MaterialComponents.BottomSheetDialog" />
 
 </resources>

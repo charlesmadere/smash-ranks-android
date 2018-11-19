@@ -1,8 +1,10 @@
 package com.garpr.android.managers
 
+import android.app.Dialog
 import android.content.Context
-import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
+import com.garpr.android.dialogs.BasicBottomSheetDialog
+import com.garpr.android.dialogs.BasicBottomSheetDialog.Button
 import com.garpr.android.managers.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.AbsPlayer
@@ -141,22 +143,23 @@ class FavoritePlayersManagerImpl(
             return false
         }
 
-        val builder = AlertDialog.Builder(context)
-                .setNegativeButton(R.string.cancel, null)
-
-        if (player in this) {
-            builder.setMessage(context.getString(R.string.remove_x_from_favorites, player.name))
-                    .setPositiveButton(R.string.yes) { dialog, which ->
+        val dialog: Dialog = if (player in this) {
+            BasicBottomSheetDialog(context = context,
+                    message = context.getString(R.string.remove_x_from_favorites, player.name),
+                    positiveButton = Button(context.getText(R.string.yes)) {
                         removePlayer(player)
-                    }
+                    },
+                    negativeButton = Button(context.getText(R.string.cancel)))
         } else {
-            builder.setMessage(context.getString(R.string.add_x_to_favorites, player.name))
-                    .setPositiveButton(R.string.yes) { dialog, which ->
+            BasicBottomSheetDialog(context = context,
+                    message = context.getString(R.string.add_x_to_favorites, player.name),
+                    positiveButton = Button(context.getText(R.string.yes)) {
                         addPlayer(player, region)
-                    }
+                    },
+                    negativeButton = Button(context.getText(R.string.cancel)))
         }
 
-        builder.show()
+        dialog.show()
         return true
     }
 

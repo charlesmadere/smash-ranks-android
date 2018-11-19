@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:paddingBottom="@dimen/root_padding_half"
+        android:paddingEnd="@dimen/root_padding"
+        android:paddingStart="@dimen/root_padding"
+        android:paddingTop="@dimen/root_padding_half"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_xlarge"
+        android:visibility="gone"
+        tools:text="@string/gar_pr"
+        tools:visibility="visible"
+        style="@style/MediumOrBoldText" />
+
+    <TextView
+        android:id="@+id/dialogMessage"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:paddingBottom="@dimen/root_padding"
+        android:paddingEnd="@dimen/root_padding"
+        android:paddingStart="@dimen/root_padding"
+        android:paddingTop="@dimen/root_padding"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Add Behemoth87 to favorites?" />
+
+    <TextView
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:id="@+id/dialogPositiveButton"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/list_item_height"
+        android:paddingBottom="@dimen/root_padding_half"
+        android:paddingEnd="@dimen/root_padding"
+        android:paddingStart="@dimen/root_padding"
+        android:paddingTop="@dimen/root_padding_half"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        android:visibility="gone"
+        tools:text="@string/yes"
+        tools:visibility="visible" />
+
+    <TextView
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:id="@+id/dialogNegativeButton"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/list_item_height"
+        android:paddingBottom="@dimen/root_padding_half"
+        android:paddingEnd="@dimen/root_padding"
+        android:paddingStart="@dimen/root_padding"
+        android:paddingTop="@dimen/root_padding_half"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        android:visibility="gone"
+        tools:text="@string/cancel"
+        tools:visibility="visible" />
+
+</LinearLayout>
