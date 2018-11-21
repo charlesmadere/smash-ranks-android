@@ -3,6 +3,7 @@ package com.garpr.android.views
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.DialogInterface
+import android.os.Build
 import android.util.AttributeSet
 import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AlertDialog
@@ -64,7 +65,12 @@ class SplashCardView @JvmOverloads constructor(
 
         if (!hasAnimated && !deviceUtils.hasLowRam) {
             hasAnimated = true
-            performAnimation()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                performFullAnimation()
+            } else {
+                performLiteAnimation()
+            }
         }
     }
 
@@ -121,7 +127,7 @@ class SplashCardView @JvmOverloads constructor(
         }
     }
 
-    private fun performAnimation() {
+    private fun performFullAnimation() {
         alpha = 0f
         scaleX = 0.6f
         scaleY = 0.6f
@@ -151,6 +157,17 @@ class SplashCardView @JvmOverloads constructor(
         animator.duration = resources.getLong(R.integer.splash_card_animation_duration)
         animator.interpolator = OvershootInterpolator(ELEVATION_OVERSHOOT_TENSION)
         animator.start()
+    }
+
+    private fun performLiteAnimation() {
+        alpha = 0f
+
+        animate()
+                .alpha(1f)
+                .setDuration(resources.getLong(R.integer.splash_card_animation_duration))
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .setStartDelay(resources.getLong(R.integer.splash_card_animation_delay))
+                .start()
     }
 
     private fun performMarginBottomAnimation() {
