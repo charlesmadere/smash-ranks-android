@@ -23,19 +23,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
+            android:divider="?android:attr/listDivider"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:fontFamily="@font/nunito_semibold"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/root_padding_half"
-                android:layout_marginEnd="@dimen/root_padding"
-                android:layout_marginStart="@dimen/root_padding"
-                android:layout_marginTop="@dimen/root_padding_half"
-                android:layout_width="wrap_content"
-                android:text="@string/welcome_to_gar_pr" />
+            android:orientation="vertical"
+            android:showDividers="middle">
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvCustomizeRegion"
@@ -44,22 +36,12 @@
                 app:titleText="@string/customize_region"
                 style="@style/PreferenceView" />
 
-            <View
-                android:background="?android:attr/listDivider"
-                android:layout_height="1dp"
-                android:layout_width="match_parent" />
-
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvCustomizeIdentity"
                 app:descriptionText="@string/customize_identity_description"
                 app:icon="@drawable/ic_chevron_right_white_24dp"
                 app:titleText="@string/customize_identity"
                 style="@style/PreferenceView" />
-
-            <View
-                android:background="?android:attr/listDivider"
-                android:layout_height="1dp"
-                android:layout_width="match_parent" />
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/spvStartUsingTheApp"

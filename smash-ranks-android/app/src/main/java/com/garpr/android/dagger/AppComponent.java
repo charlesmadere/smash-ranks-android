@@ -17,6 +17,7 @@ import com.garpr.android.activities.TournamentsActivity;
 import com.garpr.android.adapters.TournamentAdapter;
 import com.garpr.android.sync.rankings.RankingsPollingWorker;
 import com.garpr.android.sync.roster.SmashRosterSyncWorker;
+import com.garpr.android.views.BottomWindowInsetsView;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.FavoritePlayerItemView;
 import com.garpr.android.views.FavoritePlayersLayout;
@@ -87,6 +88,7 @@ public interface AppComponent {
     void inject(ToolbarReflectionHelper helper);
 
     // views
+    void inject(BottomWindowInsetsView view);
     void inject(DeleteFavoritePlayersPreferenceView view);
     void inject(FavoritePlayerItemView view);
     void inject(FavoritePlayersLayout view);
