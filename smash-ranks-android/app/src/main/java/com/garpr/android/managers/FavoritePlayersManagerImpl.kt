@@ -1,10 +1,9 @@
 package com.garpr.android.managers
 
-import android.app.Dialog
 import android.content.Context
 import com.garpr.android.R
-import com.garpr.android.dialogs.BasicBottomSheetDialog
-import com.garpr.android.dialogs.BasicBottomSheetDialog.Button
+import com.garpr.android.dialogs.BasicBottomSheetDialogFragment
+import com.garpr.android.extensions.requireFragmentActivity
 import com.garpr.android.managers.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.AbsPlayer
@@ -12,6 +11,7 @@ import com.garpr.android.models.FavoritePlayer
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.wrappers.WeakReferenceWrapper
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import java.util.Collections
 
@@ -26,6 +26,7 @@ class FavoritePlayersManagerImpl(
 
     companion object {
         private const val TAG = "FavoritePlayersManagerImpl"
+        private const val DIALOG_TAG = "AddOrRemovePlayerDialogFragment"
     }
 
     override val absPlayers: List<AbsPlayer>?
@@ -143,23 +144,31 @@ class FavoritePlayersManagerImpl(
             return false
         }
 
-        val dialog: Dialog = if (player in this) {
-            BasicBottomSheetDialog(context = context,
+        val fragment: BottomSheetDialogFragment = if (player in this) {
+            BasicBottomSheetDialogFragment.create(
                     message = context.getString(R.string.remove_x_from_favorites, player.name),
-                    positiveButton = Button(context.getText(R.string.yes)) {
-                        removePlayer(player)
-                    },
-                    negativeButton = Button(context.getText(R.string.cancel)))
+                    positiveButton = context.getText(R.string.yes),
+                    negativeButton = context.getText(R.string.cancel)
+            ).apply {
+                positiveButtonClickListener = {
+                    removePlayer(player)
+                }
+            }
         } else {
-            BasicBottomSheetDialog(context = context,
+            BasicBottomSheetDialogFragment.create(
                     message = context.getString(R.string.add_x_to_favorites, player.name),
-                    positiveButton = Button(context.getText(R.string.yes)) {
-                        addPlayer(player, region)
-                    },
-                    negativeButton = Button(context.getText(R.string.cancel)))
+                    positiveButton = context.getText(R.string.yes),
+                    negativeButton = context.getText(R.string.cancel)
+            ).apply {
+                positiveButtonClickListener = {
+                    addPlayer(player, region)
+                }
+            }
         }
 
-        dialog.show()
+        val activity = context.requireFragmentActivity()
+        fragment.show(activity.supportFragmentManager, DIALOG_TAG)
+
         return true
     }
 

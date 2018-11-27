@@ -65,4 +65,8 @@
         tools:text="@string/cancel"
         tools:visibility="visible" />
 
+    <Space
+        android:layout_height="@dimen/root_padding"
+        android:layout_width="match_parent" />
+
 </LinearLayout>

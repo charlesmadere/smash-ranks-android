@@ -68,6 +68,9 @@ val Context.appComponent: AppComponent
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+val Context.fragmentActivity: FragmentActivity?
+    get() = activity as? FragmentActivity
+
 @ColorInt
 @Throws(Resources.NotFoundException::class)
 fun Context.getAttrColor(@AttrRes attrResId: Int): Int {
@@ -97,5 +100,5 @@ fun Context.requireActivity(): Activity {
 }
 
 fun Context.requireFragmentActivity(): FragmentActivity {
-    return requireActivity() as? FragmentActivity ?: throw RuntimeException("Context ($this) is not attached to a FragmentActivity")
+    return fragmentActivity ?: throw RuntimeException("Context ($this) is not attached to a FragmentActivity")
 }
