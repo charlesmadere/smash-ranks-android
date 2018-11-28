@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
+import com.garpr.android.extensions.compoundDrawablesRelativeCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.setTintedDrawableColor
 import com.garpr.android.misc.ColorListener
@@ -39,6 +42,14 @@ class TintedTextView @JvmOverloads constructor(
 
     override fun refresh() {
         setTintedDrawableColor(drawableTintColor)
+    }
+
+    fun setEndCompoundDrawableRelativeWithIntrinsicBounds(@DrawableRes drawableResId: Int) {
+        val drawables = compoundDrawablesRelativeCompat
+        drawables[2] = ContextCompat.getDrawable(context, drawableResId)
+        compoundDrawablesRelativeCompat = drawables
+
+        refresh()
     }
 
 }

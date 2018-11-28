@@ -1,26 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dialogTitle"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:paddingBottom="@dimen/root_padding_half"
-        android:paddingEnd="@dimen/root_padding"
-        android:paddingStart="@dimen/root_padding"
-        android:paddingTop="@dimen/root_padding_half"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_xlarge"
-        android:visibility="gone"
-        tools:text="@string/gar_pr"
-        tools:visibility="visible"
-        style="@style/MediumOrBoldText" />
-
-    <TextView
+        android:fontFamily="@font/nunito_semibold"
         android:id="@+id/dialogMessage"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -28,13 +15,14 @@
         android:paddingEnd="@dimen/root_padding"
         android:paddingStart="@dimen/root_padding"
         android:paddingTop="@dimen/root_padding"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_large"
         tools:text="Add Behemoth87 to favorites?" />
 
-    <TextView
+    <com.garpr.android.views.TintedTextView
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
-        android:id="@+id/dialogPositiveButton"
+        android:id="@+id/dialogPositiveText"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="@dimen/list_item_height"
@@ -42,16 +30,16 @@
         android:paddingEnd="@dimen/root_padding"
         android:paddingStart="@dimen/root_padding"
         android:paddingTop="@dimen/root_padding_half"
-        android:textColor="?android:attr/textColorPrimary"
+        android:text="@string/yes"
+        android:textColor="?attr/colorAccent"
         android:textSize="@dimen/text_size_large"
-        android:visibility="gone"
-        tools:text="@string/yes"
-        tools:visibility="visible" />
+        app:drawableTintColor="?attr/colorAccent"
+        tools:drawableEnd="@drawable/ic_add_circle_white_24" />
 
     <TextView
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
-        android:id="@+id/dialogNegativeButton"
+        android:id="@+id/dialogNegativeText"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="@dimen/list_item_height"
@@ -59,11 +47,9 @@
         android:paddingEnd="@dimen/root_padding"
         android:paddingStart="@dimen/root_padding"
         android:paddingTop="@dimen/root_padding_half"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_large"
-        android:visibility="gone"
-        tools:text="@string/cancel"
-        tools:visibility="visible" />
+        android:text="@string/cancel"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_large" />
 
     <Space
         android:layout_height="@dimen/root_padding"
