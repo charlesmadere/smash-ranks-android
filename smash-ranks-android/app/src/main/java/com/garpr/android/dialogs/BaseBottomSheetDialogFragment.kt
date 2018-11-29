@@ -1,4 +1,4 @@
-package com.garpr.android.fragments.dialogs
+package com.garpr.android.dialogs
 
 import com.garpr.android.R
 import com.garpr.android.misc.Heartbeat

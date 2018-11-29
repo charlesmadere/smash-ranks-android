@@ -15,7 +15,7 @@ import com.garpr.android.activities.SplashActivity;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.activities.TournamentsActivity;
 import com.garpr.android.adapters.TournamentAdapter;
-import com.garpr.android.fragments.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
+import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.sync.rankings.RankingsPollingWorker;
 import com.garpr.android.sync.roster.SmashRosterSyncWorker;
 import com.garpr.android.views.BottomWindowInsetsView;

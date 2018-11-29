@@ -1,4 +1,4 @@
-package com.garpr.android.fragments.dialogs
+package com.garpr.android.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
