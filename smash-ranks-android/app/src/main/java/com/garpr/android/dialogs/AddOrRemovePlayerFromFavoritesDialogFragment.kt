@@ -23,6 +23,7 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
 
 
     companion object {
+        const val TAG = "AddOrRemovePlayerFromFavoritesDialogFragment"
         private const val KEY_PLAYER = "Player"
 
         fun create(player: FavoritePlayer): AddOrRemovePlayerFromFavoritesDialogFragment {

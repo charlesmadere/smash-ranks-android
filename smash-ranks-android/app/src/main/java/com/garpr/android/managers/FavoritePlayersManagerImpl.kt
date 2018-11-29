@@ -24,7 +24,6 @@ class FavoritePlayersManagerImpl(
 
     companion object {
         private const val TAG = "FavoritePlayersManagerImpl"
-        private const val DIALOG_TAG = "AddOrRemovePlayerFromFavoritesDialogFragment"
     }
 
     override val absPlayers: List<AbsPlayer>?
@@ -142,10 +141,10 @@ class FavoritePlayersManagerImpl(
             return false
         }
 
-        val activity = context.requireFragmentActivity()
         val favoritePlayer = FavoritePlayer(player.id, player.name, region)
         val dialog = AddOrRemovePlayerFromFavoritesDialogFragment.create(favoritePlayer)
-        dialog.show(activity.supportFragmentManager, DIALOG_TAG)
+        dialog.show(context.requireFragmentActivity().supportFragmentManager,
+                AddOrRemovePlayerFromFavoritesDialogFragment.TAG)
 
         return true
     }

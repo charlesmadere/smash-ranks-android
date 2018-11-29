@@ -5,14 +5,14 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.dialogs.HeadToHeadDialogFragment
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.requireFragmentActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.HeadToHeadMatch
 import com.garpr.android.models.LitePlayer
@@ -82,22 +82,10 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
 
     override fun onClick(v: View) {
         val match = this.match ?: return
-        val items = arrayOf(match.player.name, match.opponent.name)
 
-        AlertDialog.Builder(context)
-                .setItems(items) { dialog, which ->
-                    when (which) {
-                        0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.player, regionManager.getRegion(context)))
-
-                        1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.opponent, regionManager.getRegion(context)))
-
-                        else -> throw RuntimeException("illegal which: $which")
-                    }
-                }
-                .setTitle(R.string.view)
-                .show()
+        val dialog = HeadToHeadDialogFragment.create(match)
+        dialog.show(context.requireFragmentActivity().supportFragmentManager,
+                HeadToHeadDialogFragment.TAG)
     }
 
     override fun onFinishInflate() {
