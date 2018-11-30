@@ -84,7 +84,7 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
         val match = this.match ?: return
 
         val dialog = HeadToHeadDialogFragment.create(match)
-        dialog.show(context.requireFragmentActivity().supportFragmentManager,
+        dialog.show(requireFragmentActivity().supportFragmentManager,
                 HeadToHeadDialogFragment.TAG)
     }
 

@@ -5,15 +5,14 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.activities.HeadToHeadActivity
-import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.dialogs.TournamentMatchDialogFragment
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.requireFragmentActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.FullTournament
 import kotterknife.bindView
@@ -74,26 +73,10 @@ class TournamentMatchItemView @JvmOverloads constructor(
 
     override fun onClick(v: View) {
         val match = this.match ?: return
-        val items = arrayOf(match.winnerName, match.loserName,
-                resources.getText(R.string.head_to_head))
 
-        AlertDialog.Builder(context)
-                .setItems(items) { dialog, which ->
-                    when (which) {
-                        0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.winnerId, regionManager.getRegion(context)))
-
-                        1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.loserId, regionManager.getRegion(context)))
-
-                        2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
-                                match, regionManager.getRegion(context)))
-
-                        else -> throw RuntimeException("illegal which: $which")
-                    }
-                }
-                .setTitle(R.string.view)
-                .show()
+        val dialog = TournamentMatchDialogFragment.create(match)
+        dialog.show(requireFragmentActivity().supportFragmentManager,
+                TournamentMatchDialogFragment.TAG)
     }
 
     override fun onFinishInflate() {
