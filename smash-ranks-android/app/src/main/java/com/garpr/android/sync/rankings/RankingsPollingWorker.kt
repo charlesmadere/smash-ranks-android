@@ -12,6 +12,7 @@ import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import javax.inject.Inject
+import androidx.work.Result as WorkerResult
 
 class RankingsPollingWorker(
         context: Context,
@@ -42,7 +43,7 @@ class RankingsPollingWorker(
         context.appComponent.inject(this)
     }
 
-    override fun doWork(): Result {
+    override fun doWork(): WorkerResult {
         timber.d(TAG, "work starting...")
 
         val pollStatus = rankingsNotificationsUtils.getPollStatus()
@@ -50,10 +51,10 @@ class RankingsPollingWorker(
         if (!pollStatus.proceed) {
             return if (pollStatus.retry) {
                 timber.d(TAG, "won't proceed with work, will retry")
-                Result.RETRY
+                WorkerResult.retry()
             } else {
                 timber.d(TAG, "won't proceed with work, won't retry")
-                Result.SUCCESS
+                WorkerResult.success()
             }
         }
 
@@ -79,23 +80,23 @@ class RankingsPollingWorker(
             RankingsNotificationsUtils.NotificationInfo.CANCEL -> {
                 timber.d(TAG, "canceling notifications ($info)")
                 notificationsManager.cancelAll()
-                Result.SUCCESS
+                WorkerResult.success()
             }
 
             RankingsNotificationsUtils.NotificationInfo.NO_CHANGE -> {
                 timber.d(TAG, "not changing any notifications ($info)")
-                Result.SUCCESS
+                WorkerResult.success()
             }
 
             RankingsNotificationsUtils.NotificationInfo.SHOW -> {
                 timber.d(TAG, "showing rankings updated notification ($info)")
                 notificationsManager.rankingsUpdated()
-                Result.SUCCESS
+                WorkerResult.success()
             }
 
             else -> {
                 timber.e(TAG, "NotificationInfo is unknown ($info), not changing any notifications")
-                Result.RETRY
+                WorkerResult.retry()
             }
         }
     }

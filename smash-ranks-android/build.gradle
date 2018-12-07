@@ -4,7 +4,6 @@ buildscript {
     ext.dagger_version = '2.19'
     ext.kotlin_version = '1.3.11'
     ext.retrofit_version = '2.5.0'
-    ext.work_manager_version = '1.0.0-alpha11'
 
     repositories {
         google()
