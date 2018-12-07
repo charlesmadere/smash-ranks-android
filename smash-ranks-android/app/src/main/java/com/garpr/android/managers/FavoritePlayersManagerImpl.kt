@@ -54,7 +54,7 @@ class FavoritePlayersManagerImpl(
             return
         }
 
-        timber.d(TAG, "Adding favorite (there are currently $size favorite(s))")
+        timber.d(TAG, "Adding favorite (there are currently $size)")
 
         val favoritePlayer = FavoritePlayer(player.id, player.name, region)
         val playerJson = gson.toJson(favoritePlayer, FavoritePlayer::class.java)
@@ -77,6 +77,7 @@ class FavoritePlayersManagerImpl(
     }
 
     override fun clear() {
+        timber.d(TAG, "Clearing favorites (there are currently $size)")
         keyValueStore.clear()
         notifyListeners()
     }
@@ -132,6 +133,7 @@ class FavoritePlayersManagerImpl(
     }
 
     override fun removePlayer(playerId: String) {
+        timber.d(TAG, "Removing favorite (there are currently $size)")
         keyValueStore.remove(playerId)
         notifyListeners()
     }
