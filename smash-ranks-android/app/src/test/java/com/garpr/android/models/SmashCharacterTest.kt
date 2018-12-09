@@ -44,6 +44,7 @@ class SmashCharacterTest : BaseTest() {
         private const val JSON_INKLING = "\"ink\""
         private const val JSON_IVYSAUR = "\"ivy\""
         private const val JSON_JIGGLYPUFF = "\"puf\""
+        private const val JSON_JOKER = "\"jok\""
         private const val JSON_KEN = "\"ken\""
         private const val JSON_KIRBY = "\"kby\""
         private const val JSON_KING_DEDEDE = "\"ddd\""
@@ -256,6 +257,12 @@ class SmashCharacterTest : BaseTest() {
     fun testJigglypuff() {
         assertEquals(JSON_JIGGLYPUFF, gson.toJson(SmashCharacter.JIGGLYPUFF))
         assertEquals(SmashCharacter.JIGGLYPUFF, gson.fromJson(JSON_JIGGLYPUFF, SmashCharacter::class.java))
+    }
+
+    @Test
+    fun testJoker() {
+        assertEquals(JSON_JOKER, gson.toJson(SmashCharacter.JOKER))
+        assertEquals(SmashCharacter.JOKER, gson.fromJson(JSON_JOKER, SmashCharacter::class.java))
     }
 
     @Test

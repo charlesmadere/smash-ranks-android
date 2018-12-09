@@ -86,6 +86,9 @@ enum class SmashCharacter(
     @SerializedName("puf")
     JIGGLYPUFF(R.string.jigglypuff),
 
+    @SerializedName("jok")
+    JOKER(R.string.joker),
+
     @SerializedName("ken")
     KEN(R.string.ken),
 
