@@ -12,7 +12,6 @@ import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import javax.inject.Inject
-import androidx.work.Result as WorkerResult
 
 class RankingsPollingWorker(
         context: Context,
@@ -43,7 +42,7 @@ class RankingsPollingWorker(
         context.appComponent.inject(this)
     }
 
-    override fun doWork(): WorkerResult {
+    override fun doWork(): Result {
         timber.d(TAG, "work starting...")
 
         val pollStatus = rankingsNotificationsUtils.getPollStatus()
@@ -51,10 +50,10 @@ class RankingsPollingWorker(
         if (!pollStatus.proceed) {
             return if (pollStatus.retry) {
                 timber.d(TAG, "won't proceed with work, will retry")
-                WorkerResult.retry()
+                Result.retry()
             } else {
                 timber.d(TAG, "won't proceed with work, won't retry")
-                WorkerResult.success()
+                Result.success()
             }
         }
 
@@ -80,23 +79,23 @@ class RankingsPollingWorker(
             RankingsNotificationsUtils.NotificationInfo.CANCEL -> {
                 timber.d(TAG, "canceling notifications ($info)")
                 notificationsManager.cancelAll()
-                WorkerResult.success()
+                Result.success()
             }
 
             RankingsNotificationsUtils.NotificationInfo.NO_CHANGE -> {
                 timber.d(TAG, "not changing any notifications ($info)")
-                WorkerResult.success()
+                Result.success()
             }
 
             RankingsNotificationsUtils.NotificationInfo.SHOW -> {
                 timber.d(TAG, "showing rankings updated notification ($info)")
                 notificationsManager.rankingsUpdated()
-                WorkerResult.success()
+                Result.success()
             }
 
             else -> {
                 timber.e(TAG, "NotificationInfo is unknown ($info), not changing any notifications")
-                WorkerResult.retry()
+                Result.retry()
             }
         }
     }

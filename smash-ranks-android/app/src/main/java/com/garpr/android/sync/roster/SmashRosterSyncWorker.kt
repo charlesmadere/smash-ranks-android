@@ -6,7 +6,6 @@ import androidx.work.WorkerParameters
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.Timber
 import javax.inject.Inject
-import androidx.work.Result as WorkerResult
 
 class SmashRosterSyncWorker(
         context: Context,
@@ -28,9 +27,8 @@ class SmashRosterSyncWorker(
         context.appComponent.inject(this)
     }
 
-    override fun doWork(): WorkerResult {
+    override fun doWork(): Result {
         timber.d(TAG, "work starting...")
-
         smashRosterSyncManager.sync()
 
         val syncResult = smashRosterSyncManager.syncResult
@@ -38,10 +36,10 @@ class SmashRosterSyncWorker(
 
         return if (syncResult?.success == true) {
             timber.d(TAG, "work was successful: $syncResult")
-            WorkerResult.success()
+            Result.success()
         } else {
             timber.d(TAG, "work wasn't successful, will retry: $syncResult")
-            WorkerResult.retry()
+            Result.retry()
         }
     }
 

@@ -71,7 +71,7 @@ dependencies {
     // Android Architecture Components
     // WorkManager
     // https://developer.android.com/topic/libraries/architecture/workmanager/
-    implementation "android.arch.work:work-runtime:1.0.0-alpha12"
+    implementation "android.arch.work:work-runtime:1.0.0-alpha13"
 
     // Facebook's Fresco
     // https://github.com/facebook/fresco
