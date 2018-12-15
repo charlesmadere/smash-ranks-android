@@ -125,7 +125,7 @@ class WinsLossesGraphView @JvmOverloads constructor(
 
             strokePaint.color = ContextCompat.getColor(context, strokeColorResId)
             strokePaint.isAntiAlias = true
-            strokePaint.strokeWidth = context.resources.getDimension(R.dimen.root_padding_eighth)
+            strokePaint.strokeWidth = resources.getDimension(R.dimen.root_padding_eighth)
             strokePaint.style = Paint.Style.STROKE
         }
     }
