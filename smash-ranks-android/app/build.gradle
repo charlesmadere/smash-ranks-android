@@ -91,10 +91,6 @@ dependencies {
     // https://material.io/develop/android/
     implementation "com.google.android.material:material:1.0.0"
 
-    // Jake Wharton's KotterKnife
-    // this is currently just a standalone file that was copy & pasted into our source code
-    // https://github.com/JakeWharton/kotterknife
-
     // Kotlin
     // https://kotlinlang.org/docs/reference/using-gradle.html
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
