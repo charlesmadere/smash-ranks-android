@@ -2,9 +2,6 @@ package com.garpr.android.views.toolbars
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Menu
-import android.view.MenuInflater
-import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.HomeToolbarManager
@@ -40,11 +37,6 @@ class HomeToolbar @JvmOverloads constructor(
         regionManager.addListener(this)
     }
 
-    override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
-        inflater.inflate(R.menu.toolbar_home, menu)
-        super.onCreateOptionsMenu(inflater, menu)
-    }
-
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
@@ -64,27 +56,36 @@ class HomeToolbar @JvmOverloads constructor(
 
     override fun onIdentityChange(identityManager: IdentityManager) {
         if (isAlive) {
-            postRefresh()
+            closeSearchField()
+            refresh()
         }
-    }
-
-    override fun onRefreshMenu() {
-        super.onRefreshMenu()
-
-        if (isSearchLayoutExpanded) {
-            return
-        }
-
-        val presentation = homeToolbarManager.getPresentation(
-                (activity as? RankingCriteriaHandle)?.rankingCriteria)
-        menu.findItem(R.id.miActivityRequirements).isVisible = presentation.isActivityRequirementsVisible
-        menu.findItem(R.id.miViewYourself).isVisible = presentation.isViewYourselfVisible
     }
 
     override fun onRegionChange(regionManager: RegionManager) {
         if (isAlive) {
-            closeSearchLayout()
-            postRefresh()
+            closeSearchField()
+            refresh()
+        }
+    }
+
+    override fun refresh() {
+        super.refresh()
+
+        val presentation = homeToolbarManager.getPresentation(
+                (activity as? RankingCriteriaHandle)?.rankingCriteria)
+
+        TODO()
+
+        if (presentation.isActivityRequirementsVisible) {
+
+        } else {
+
+        }
+
+        if (presentation.isViewYourselfVisible) {
+
+        } else {
+
         }
     }
 

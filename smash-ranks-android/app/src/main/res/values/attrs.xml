@@ -13,8 +13,10 @@
         <attr name="disabledDescriptionText" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="MenuToolbar">
-        <attr name="startWithTransparentTextColors" format="boolean" />
+    <declare-styleable name="GarToolbar">
+        <attr name="toolbarShowUpNavigation" format="boolean" />
+        <attr name="toolbarSubtitleTextColor" format="color" />
+        <attr name="toolbarTitleTextColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="RefreshLayout">
