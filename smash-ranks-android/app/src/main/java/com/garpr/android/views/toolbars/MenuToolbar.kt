@@ -7,13 +7,9 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.SparseBooleanArray
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.Window
+import android.widget.LinearLayout
 import androidx.annotation.ColorInt
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
@@ -29,13 +25,12 @@ import com.garpr.android.misc.Refreshable
 abstract class MenuToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : Toolbar(context, attrs), Heartbeat, Refreshable {
+) : LinearLayout(context, attrs), Heartbeat, Refreshable {
 
     private var startWithTransparentTextColors: Boolean = false
-    private val sparseMenuItemsArray = SparseBooleanArray()
 
 
-    // begin animation Variables
+    // begin animation variables
     private val animationDuration: Long by lazy {
         resources.getLong(android.R.integer.config_shortAnimTime)
     }
@@ -46,10 +41,6 @@ abstract class MenuToolbar @JvmOverloads constructor(
 
     private val textColorSecondary: Int by lazy {
         context.getAttrColor(android.R.attr.textColorSecondary)
-    }
-
-    private val toolbarReflectionHelper: ToolbarReflectionHelper by lazy {
-        ToolbarReflectionHelper(this)
     }
 
     private var inTitleAnimation: ValueAnimator? = null
@@ -74,7 +65,7 @@ abstract class MenuToolbar @JvmOverloads constructor(
             setSubtitleTextColor(it.animatedValue as Int)
         }
     }
-    // end animation Variables
+    // end animation variables
 
     companion object {
         private const val LIGHTNESS_LIMIT = 0.4f
@@ -99,9 +90,10 @@ abstract class MenuToolbar @JvmOverloads constructor(
             toolbarBackground = toolbarBackgroundFallback
             statusBarBackground = statusBarBackgroundFallback
         } else {
-            toolbarBackground = MiscUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb, TOO_LIGHT_DARKEN_FACTOR,
-                LIGHTNESS_LIMIT)
-            statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground, STATUS_BAR_DARKEN_FACTOR)
+            toolbarBackground = MiscUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb,
+                    TOO_LIGHT_DARKEN_FACTOR, LIGHTNESS_LIMIT)
+            statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground,
+                    STATUS_BAR_DARKEN_FACTOR)
         }
 
         val toolbarAnimator = AnimationUtils.createArgbValueAnimator(
@@ -213,9 +205,6 @@ abstract class MenuToolbar @JvmOverloads constructor(
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)
 
-    protected var isMenuCreated: Boolean = false
-        private set
-
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
@@ -224,23 +213,6 @@ abstract class MenuToolbar @JvmOverloads constructor(
         }
 
         refresh()
-    }
-
-    open fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
-        createSparseMenuItemsArray()
-        isMenuCreated = true
-    }
-
-    open fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // intentionally empty, children can override
-        return false
-    }
-
-    protected open fun onRefreshMenu() {
-        for (i in 0 until menu.size()) {
-            val menuItem = menu.getItem(i)
-            menuItem.isVisible = sparseMenuItemsArray.get(menuItem.itemId)
-        }
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
@@ -255,22 +227,8 @@ abstract class MenuToolbar @JvmOverloads constructor(
         ta.recycle()
     }
 
-    protected fun postRefresh() {
-        if (isAlive) {
-            post(refreshRunnable)
-        }
-    }
-
-    final override fun refresh() {
-        if (isMenuCreated) {
-            onRefreshMenu()
-        }
-    }
-
-    private val refreshRunnable = Runnable {
-        if (isAlive) {
-            refresh()
-        }
+    override fun refresh() {
+        // intentionally empty, children can override
     }
 
     override fun setTitle(title: CharSequence?) {
