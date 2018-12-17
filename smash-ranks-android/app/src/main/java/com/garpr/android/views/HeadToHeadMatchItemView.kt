@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
@@ -17,7 +16,7 @@ import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.HeadToHeadMatch
 import com.garpr.android.models.LitePlayer
 import com.garpr.android.models.MatchResult
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_head_to_head_match.view.*
 import javax.inject.Inject
 
 class HeadToHeadMatchItemView @JvmOverloads constructor(
@@ -38,16 +37,11 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
-    private val opponentName: TextView by bindView(R.id.tvOpponentName)
-    private val playerName: TextView by bindView(R.id.tvPlayerName)
-
 
     override fun clear() {
-        super.clear()
-
         playerName.clear()
         opponentName.clear()
-        refresh()
+        super.clear()
     }
 
     private var match: HeadToHeadMatch? = null

@@ -20,20 +20,19 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
 ) : LifecycleConstraintLayout(context, attrs), IdentityManager.OnIdentityChangeListener,
         Refreshable {
 
-    private var originalBackground: Drawable? = null
-
     @Inject
     protected lateinit var identityManager: IdentityManager
+
+    private var originalBackground: Drawable? = null
+    protected var identity: AbsPlayer? = null
+    protected var identityId: String? = null
 
 
     protected open fun clear() {
         identity = null
         identityId = null
+        refresh()
     }
-
-    protected var identity: AbsPlayer? = null
-
-    protected var identityId: String? = null
 
     protected open fun identityIsSomeoneElse() {
         ViewCompat.setBackground(this, originalBackground)

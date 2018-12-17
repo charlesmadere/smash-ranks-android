@@ -31,12 +31,10 @@ import com.garpr.android.models.TournamentMode
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.TournamentInfoItemView
 import com.garpr.android.views.TournamentTabsView
 import com.garpr.android.views.toolbars.SearchToolbar
-import com.garpr.android.views.toolbars.TournamentToolbar
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_tournament.*
 import javax.inject.Inject
 
 class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchable,
@@ -55,12 +53,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     @Inject
     protected lateinit var threadUtils: ThreadUtils
-
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val tournamentTabsView: TournamentTabsView by bindView(R.id.topTournamentTabsView)
-    private val tournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
 
 
     companion object {
@@ -91,18 +83,17 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
 
         if (view == null) {
-            tournamentToolbar.fadeInTitleAndSubtitle()
+            toolbar.fadeInTitleAndSubtitle()
             return
         }
 
         val dateVerticalPositionInWindow = view.dateVerticalPositionInWindow
-        val toolbarVerticalPositionInWindow = tournamentToolbar.verticalPositionInWindow +
-                tournamentToolbar.height
+        val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow + toolbar.height
 
         if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            tournamentToolbar.fadeInTitleAndSubtitle()
+            toolbar.fadeInTitleAndSubtitle()
         } else {
-            tournamentToolbar.fadeOutTitleAndSubtitle()
+            toolbar.fadeOutTitleAndSubtitle()
         }
     }
 
@@ -115,8 +106,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         }
 
         val tabsVerticalPositionInWindow = view.tabsVerticalPositionInWindow
-        val toolbarVerticalPositionInWindow = tournamentToolbar.verticalPositionInWindow +
-                tournamentToolbar.height
+        val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow + toolbar.height
 
         if (tabsVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
             tournamentTabsView.animateIn()
@@ -182,7 +172,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
         adapter.set(tournamentMode, tournament)
         tournamentTabsView.refresh()
-        tournamentToolbar.closeSearchLayout()
+        toolbar.closeSearchLayout()
     }
 
     override fun onViewsBound() {
@@ -211,7 +201,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     }
 
     override val searchQuery: CharSequence?
-        get() = tournamentToolbar.searchQuery
+        get() = toolbar.searchQuery
 
     private fun searchTournamentMatches(query: String?, matches: List<FullTournament.Match>?) {
         val tournament = fullTournament
@@ -307,8 +297,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
                         fullTournament?.players?.isNotEmpty() == true
                     }
                 }
-
-    override val showUpNavigation = true
 
     override fun success(`object`: FullTournament?) {
         fullTournament = `object`

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.appComponent
@@ -16,7 +15,7 @@ import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.BracketSource
 import com.garpr.android.models.FullTournament
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_tournament_info.view.*
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -32,14 +31,6 @@ class TournamentInfoItemView @JvmOverloads constructor(
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
-
-    private val date: TextView by bindView(R.id.tvDate)
-    private val entrantsCount: TextView by bindView(R.id.tvEntrantsCount)
-    private val name: TextView by bindView(R.id.tvName)
-    private val openLink: TextView by bindView(R.id.tvOpenLink)
-    private val region: TextView by bindView(R.id.tvRegion)
-    private val share: TextView by bindView(R.id.tvShare)
-    private val tournamentTabsView: TournamentTabsView by bindView(R.id.tournamentTabsView)
 
 
     companion object {

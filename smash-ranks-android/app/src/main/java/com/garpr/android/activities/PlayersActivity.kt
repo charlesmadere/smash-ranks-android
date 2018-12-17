@@ -16,7 +16,7 @@ import com.garpr.android.misc.Searchable
 import com.garpr.android.models.Region
 import com.garpr.android.views.PlayersLayout
 import com.garpr.android.views.toolbars.SearchToolbar
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.layout_players.*
 import javax.inject.Inject
 
 class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, PlayersLayout.Listener,
@@ -26,8 +26,6 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
 
     @Inject
     protected lateinit var regionManager: RegionManager
-
-    private val playersLayout: PlayersLayout by bindView(R.id.playersLayout)
 
 
     companion object {
@@ -90,7 +88,5 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
 
     override val showSearchMenuItem: Boolean
         get() = playersLayout.playersBundle?.players?.isNotEmpty() == true
-
-    override val showUpNavigation = true
 
 }

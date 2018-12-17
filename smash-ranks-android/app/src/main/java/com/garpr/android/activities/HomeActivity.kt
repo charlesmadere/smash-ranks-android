@@ -24,10 +24,9 @@ import com.garpr.android.models.RankingCriteria
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
-import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_home.*
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -52,10 +51,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
-
-    private val bottomNavigationView: BottomNavigationView by bindView(R.id.bottomNavigationView)
-    private val homeToolbar: HomeToolbar by bindView(R.id.toolbar)
-    private val viewPager: ViewPager by bindView(R.id.viewPager)
 
 
     companion object {
@@ -202,7 +197,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         get() = adapter.rankingCriteria
 
     override fun search(query: String?) {
-        adapter.search(viewPager.currentItemAsHomeTab, query)
+        adapter.search(query)
     }
 
     override val searchQuery: CharSequence?

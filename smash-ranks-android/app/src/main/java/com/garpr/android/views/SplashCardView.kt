@@ -19,7 +19,7 @@ import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Refreshable
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_splash.view.*
 import javax.inject.Inject
 
 class SplashCardView @JvmOverloads constructor(
@@ -29,10 +29,6 @@ class SplashCardView @JvmOverloads constructor(
         IdentityManager.OnIdentityChangeListener, Refreshable, RegionManager.OnRegionChangeListener {
 
     private var hasAnimated: Boolean = false
-
-    private val customizeIdentity: SimplePreferenceView by bindView(R.id.spvCustomizeIdentity)
-    private val customizeRegion: SimplePreferenceView by bindView(R.id.spvCustomizeRegion)
-    private val startUsingTheApp: SimplePreferenceView by bindView(R.id.spvStartUsingTheApp)
 
     @Inject
     protected lateinit var deviceUtils: DeviceUtils
@@ -127,6 +123,19 @@ class SplashCardView @JvmOverloads constructor(
         }
     }
 
+    private fun performElevationAnimation() {
+        val animator = ValueAnimator.ofFloat(cardElevation,
+                resources.getDimension(R.dimen.splash_card_end_elevation))
+
+        animator.addUpdateListener {
+            cardElevation = it.animatedValue as Float
+        }
+
+        animator.duration = resources.getLong(R.integer.splash_card_animation_duration)
+        animator.interpolator = OvershootInterpolator(ELEVATION_OVERSHOOT_TENSION)
+        animator.start()
+    }
+
     private fun performFullAnimation() {
         alpha = 0f
         scaleX = 0.6f
@@ -144,19 +153,6 @@ class SplashCardView @JvmOverloads constructor(
                     performMarginBottomAnimation()
                 }
                 .start()
-    }
-
-    private fun performElevationAnimation() {
-        val animator = ValueAnimator.ofFloat(cardElevation,
-                resources.getDimension(R.dimen.splash_card_end_elevation))
-
-        animator.addUpdateListener {
-            cardElevation = it.animatedValue as Float
-        }
-
-        animator.duration = resources.getLong(R.integer.splash_card_animation_duration)
-        animator.interpolator = OvershootInterpolator(ELEVATION_OVERSHOOT_TENSION)
-        animator.start()
     }
 
     private fun performLiteAnimation() {

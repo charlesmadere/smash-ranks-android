@@ -6,14 +6,17 @@
     tools:style="@style/PreferenceView">
 
     <com.garpr.android.views.TintedImageView
+        android:id="@+id/icon"
         tools:src="@drawable/ic_date_range_white_24dp"
         style="@style/PreferenceViewCheckable" />
 
     <TextView
+        android:id="@+id/title"
         tools:text="@string/must_be_charging"
         style="@style/PreferenceViewTitle" />
 
     <TextView
+        android:id="@+id/description"
         tools:text="@string/rankings_polling_description"
         style="@style/PreferenceViewDescription" />
 

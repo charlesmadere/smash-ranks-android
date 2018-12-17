@@ -8,14 +8,12 @@ import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.setTintedImageDrawable
 import com.garpr.android.misc.Refreshable
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.view_simple_preference.view.*
 
 open class SimplePreferenceView @JvmOverloads constructor(
         context: Context,
@@ -25,10 +23,6 @@ open class SimplePreferenceView @JvmOverloads constructor(
     private val _descriptionText: CharSequence?
     private val _titleText: CharSequence?
     private val _iconDrawable: Drawable?
-
-    private val icon: ImageView by bindView(R.id.checkable)
-    private val description: TextView by bindView(R.id.description)
-    private val title: TextView by bindView(R.id.title)
 
 
     init {

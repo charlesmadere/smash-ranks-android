@@ -18,17 +18,7 @@ import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.rankings.RankingsPollingManager
-import com.garpr.android.views.CheckablePreferenceView
-import com.garpr.android.views.DeleteFavoritePlayersPreferenceView
-import com.garpr.android.views.IdentityPreferenceView
-import com.garpr.android.views.LastPollPreferenceView
-import com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView
-import com.garpr.android.views.RegionPreferenceView
-import com.garpr.android.views.RingtonePreferenceView
-import com.garpr.android.views.SimplePreferenceView
-import com.garpr.android.views.SmashRosterSyncPreferenceView
-import com.garpr.android.views.ThemePreferenceView
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 
 class SettingsActivity : BaseActivity() {
@@ -50,25 +40,6 @@ class SettingsActivity : BaseActivity() {
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
-
-    private val mustBeCharging: CheckablePreferenceView by bindView(R.id.cpvMustBeCharging)
-    private val mustBeOnWifi: CheckablePreferenceView by bindView(R.id.cpvMustBeOnWifi)
-    private val useRankingsPolling: CheckablePreferenceView by bindView(R.id.cpvUseRankingsPolling)
-    private val vibrate: CheckablePreferenceView by bindView(R.id.cpvVibrate)
-    private val deleteFavoritePlayersPreferenceView: DeleteFavoritePlayersPreferenceView by bindView(R.id.deleteFavoritePlayersPreferenceView)
-    private val identityPreferenceView: IdentityPreferenceView by bindView(R.id.identityPreferenceView)
-    private val lastPoll: LastPollPreferenceView by bindView(R.id.lastPollPreferenceView)
-    private val rankingsPollingPollFrequency: RankingsPollingPollFrequencyPreferenceView by bindView(R.id.pollFrequencyPreferenceView)
-    private val regionPreferenceView: RegionPreferenceView by bindView(R.id.regionPreferenceView)
-    private val ringtonePreferenceView: RingtonePreferenceView by bindView(R.id.ringtonePreferenceView)
-    private val charlesTwitter: SimplePreferenceView by bindView(R.id.spvCharlesTwitter)
-    private val garTwitter: SimplePreferenceView by bindView(R.id.spvGarTwitter)
-    private val gitHub: SimplePreferenceView by bindView(R.id.spvGitHub)
-    private val logViewer: SimplePreferenceView by bindView(R.id.spvLogViewer)
-    private val tsuaiiTwitter: SimplePreferenceView by bindView(R.id.spvTsuaiiTwitter)
-    private val smashRosterFormLink: SimplePreferenceView by bindView(R.id.smashRosterFormLink)
-    private val smashRosterPreferenceView: SmashRosterSyncPreferenceView by bindView(R.id.smashRosterPreferenceView)
-    private val themePreferenceView: ThemePreferenceView by bindView(R.id.themePreferenceView)
 
 
     companion object {
@@ -96,7 +67,7 @@ class SettingsActivity : BaseActivity() {
             }
 
             RequestCodes.CHANGE_RINGTONE.value -> {
-                ringtonePreferenceView.onActivityResult(data)
+                ringtonePreference.onActivityResult(data)
             }
         }
 
@@ -144,9 +115,9 @@ class SettingsActivity : BaseActivity() {
         rankingsPollingPreferenceStore.wifiRequired.addListener(onWifiRequiredChange)
 
         useRankingsPolling.preference = rankingsPollingPreferenceStore.enabled
-        vibrate.preference = rankingsPollingPreferenceStore.vibrationEnabled
-        mustBeOnWifi.preference = rankingsPollingPreferenceStore.wifiRequired
-        mustBeCharging.preference = rankingsPollingPreferenceStore.chargingRequired
+        vibratePreference.preference = rankingsPollingPreferenceStore.vibrationEnabled
+        mustBeOnWifiPreference.preference = rankingsPollingPreferenceStore.wifiRequired
+        mustBeChargingPreference.preference = rankingsPollingPreferenceStore.chargingRequired
 
         smashRosterFormLink.setOnClickListener {
             shareUtils.openUrl(this, Constants.SMASH_ROSTER_FORM_URL)
@@ -174,23 +145,21 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        regionPreferenceView.refresh()
-        themePreferenceView.refresh()
-        identityPreferenceView.refresh()
-        deleteFavoritePlayersPreferenceView.refresh()
+        regionPreference.refresh()
+        themePreference.refresh()
+        identityPreference.refresh()
+        deleteFavoritePlayersPreference.refresh()
 
         useRankingsPolling.refresh()
-        rankingsPollingPollFrequency.refresh()
-        ringtonePreferenceView.refresh()
-        vibrate.refresh()
-        mustBeOnWifi.refresh()
-        mustBeCharging.refresh()
-        lastPoll.refresh()
+        rankingsPollingFrequencyPreference.refresh()
+        ringtonePreference.refresh()
+        vibratePreference.refresh()
+        mustBeOnWifiPreference.refresh()
+        mustBeChargingPreference.refresh()
+        lastPollPreference.refresh()
 
-        smashRosterPreferenceView.refresh()
+        smashRosterPreference.refresh()
     }
-
-    override val showUpNavigation = true
 
     private val onFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
         override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {

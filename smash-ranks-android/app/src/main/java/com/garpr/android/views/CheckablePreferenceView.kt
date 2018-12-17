@@ -7,14 +7,12 @@ import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.view_checkbox_preference.view.*
 
 class CheckablePreferenceView @JvmOverloads constructor(
         context: Context,
@@ -26,10 +24,6 @@ class CheckablePreferenceView @JvmOverloads constructor(
     private val enabledDescriptionText: CharSequence?
     private val titleText: CharSequence?
     private val checkableType: Int
-
-    private val checkable: CompoundButton by bindView(R.id.checkable)
-    private val description: TextView by bindView(R.id.description)
-    private val title: TextView by bindView(R.id.title)
 
 
     companion object {

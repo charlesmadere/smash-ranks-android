@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
@@ -16,7 +15,7 @@ import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Match
 import com.garpr.android.models.MatchResult
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_match.view.*
 import javax.inject.Inject
 
 class MatchItemView @JvmOverloads constructor(
@@ -31,18 +30,14 @@ class MatchItemView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
-    private val name: TextView by bindView(R.id.tvName)
-
 
     interface OnClickListener {
         fun onClick(v: MatchItemView)
     }
 
     override fun clear() {
-        super.clear()
-
         name.clear()
-        refresh()
+        super.clear()
     }
 
     override fun identityIsSomeoneElse() {

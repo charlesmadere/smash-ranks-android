@@ -13,6 +13,7 @@
             android:layout_width="match_parent" />
 
         <com.garpr.android.views.RefreshLayout
+            android:id="@id/refreshLayout"
             style="@style/RefreshLayout">
 
             <FrameLayout
@@ -20,10 +21,12 @@
                 android:layout_width="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:visibility="gone"
                     style="@style/RecyclerView" />
 
                 <com.garpr.android.views.ErrorContentLinearLayout
+                    android:id="@+id/error"
                     app:titleText="@string/error_loading_tournament"
                     style="@style/NoContentLinearLayout.Error" />
 
@@ -39,6 +42,7 @@
         android:orientation="vertical">
 
         <com.garpr.android.views.toolbars.TournamentToolbar
+            android:id="@+id/toolbar"
             app:startWithTransparentTextColors="true"
             style="@style/Toolbar" />
 
@@ -46,7 +50,7 @@
             android:alpha="0"
             android:background="?attr/colorPrimary"
             android:elevation="@dimen/elevation"
-            android:id="@+id/topTournamentTabsView"
+            android:id="@+id/tournamentTabsView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:theme="@style/ToolbarTheme"

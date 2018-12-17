@@ -5,10 +5,10 @@ import com.garpr.android.extensions.smoothScrollToTop
 
 interface ListLayout {
 
-    val recyclerView: RecyclerView?
+    fun getRecyclerView(): RecyclerView?
 
     fun smoothScrollToTop() {
-        recyclerView?.smoothScrollToTop()
+        getRecyclerView()?.smoothScrollToTop()
     }
 
 }

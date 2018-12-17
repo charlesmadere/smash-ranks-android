@@ -6,10 +6,12 @@
     android:layout_width="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:visibility="gone"
         style="@style/RecyclerView" />
 
     <com.garpr.android.views.NoContentLinearLayout
+        android:id="@+id/empty"
         app:descriptionText="@string/you_can_add_a_player_to_your_favorites"
         app:titleText="@string/no_favorite_players"
         style="@style/NoContentLinearLayout.Empty" />

@@ -7,7 +7,6 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.garpr.android.R
 import com.garpr.android.adapters.PlayersAdapter
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
@@ -20,7 +19,7 @@ import com.garpr.android.models.PlayersBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.layout_players.view.*
 import javax.inject.Inject
 
 class PlayersLayout @JvmOverloads constructor(
@@ -29,16 +28,16 @@ class PlayersLayout @JvmOverloads constructor(
 ) : SearchableRefreshLayout(context, attrs), ApiListener<PlayersBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var adapter: PlayersAdapter
-
     @Inject
     protected lateinit var regionManager: RegionManager
 
     @Inject
     protected lateinit var serverApi: ServerApi
 
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val empty: View by bindView(R.id.empty)
+    private lateinit var adapter: PlayersAdapter
+
+    var playersBundle: PlayersBundle? = null
+        private set
 
 
     interface Listener {
@@ -53,6 +52,10 @@ class PlayersLayout @JvmOverloads constructor(
     private fun fetchPlayersBundle() {
         isRefreshing = true
         serverApi.getPlayers(regionManager.getRegion(context), ApiCall(this))
+    }
+
+    override fun getRecyclerView(): RecyclerView? {
+        return recyclerView
     }
 
     override fun onFinishInflate() {
@@ -85,11 +88,6 @@ class PlayersLayout @JvmOverloads constructor(
     override fun onRefresh() {
         fetchPlayersBundle()
     }
-
-    var playersBundle: PlayersBundle? = null
-        private set
-
-    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
         fetchPlayersBundle()

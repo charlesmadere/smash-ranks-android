@@ -7,20 +7,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.TimberEntriesAdapter
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_log_viewer.*
 
 class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: TimberEntriesAdapter
-
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val empty: View by bindView(R.id.empty)
-
 
     companion object {
         private const val TAG = "LogViewerActivity"
@@ -85,7 +79,5 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         adapter = TimberEntriesAdapter(this)
         recyclerView.adapter = adapter
     }
-
-    override val showUpNavigation = true
 
 }

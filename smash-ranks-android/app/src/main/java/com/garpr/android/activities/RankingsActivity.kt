@@ -35,6 +35,4 @@ class RankingsActivity : BaseActivity() {
         subtitle = regionManager.getRegion(this).displayName
     }
 
-    override val showUpNavigation = true
-
 }

@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.RegionsSelectionAdapter
@@ -22,7 +21,7 @@ import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.RegionSelectionItemView
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_set_region.*
 import javax.inject.Inject
 
 class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
@@ -38,11 +37,6 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
     @Inject
     protected lateinit var serverApi: ServerApi
-
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val empty: View by bindView(R.id.empty)
-    private val error: View by bindView(R.id.error)
 
 
     companion object {
@@ -196,8 +190,6 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         refreshLayout.isEnabled = false
         refreshMenu()
     }
-
-    override val showUpNavigation = true
 
     override fun success(`object`: RegionsBundle?) {
         regionsBundle = `object`

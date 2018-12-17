@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.HeadToHeadAdapter
@@ -24,8 +23,7 @@ import com.garpr.android.models.Region
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorContentLinearLayout
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_head_to_head.*
 import javax.inject.Inject
 
 class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
@@ -43,11 +41,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     @Inject
     protected lateinit var threadUtils: ThreadUtils
-
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val empty: View by bindView(R.id.empty)
 
 
     companion object {
@@ -158,8 +151,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         invalidateOptionsMenu()
         refreshLayout.isRefreshing = false
     }
-
-    override val showUpNavigation = true
 
     override fun success(`object`: HeadToHead?) {
         headToHead = `object`

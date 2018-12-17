@@ -23,6 +23,8 @@ open class RefreshLayout @JvmOverloads constructor(
     @IdRes
     private var scrollingChildId: Int = View.NO_ID
 
+    var scrollingChild: View? = null
+
 
     init {
         parseAttributes(attrs)
@@ -33,6 +35,10 @@ open class RefreshLayout @JvmOverloads constructor(
      */
     override fun canChildScrollUp(): Boolean {
         return scrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
+    }
+
+    override fun getRecyclerView(): RecyclerView? {
+        return scrollingChild as? RecyclerView
     }
 
     override val isAlive: Boolean
@@ -65,10 +71,5 @@ open class RefreshLayout @JvmOverloads constructor(
 
         ta.recycle()
     }
-
-    override val recyclerView: RecyclerView?
-        get() = scrollingChild as? RecyclerView
-
-    var scrollingChild: View? = null
 
 }

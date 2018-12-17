@@ -47,6 +47,7 @@ class HomeToolbar @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         identityManager.removeListener(this)
         regionManager.removeListener(this)
     }

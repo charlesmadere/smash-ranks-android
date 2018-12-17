@@ -6,15 +6,18 @@
     style="@style/NoContentLinearLayout">
 
     <ImageView
+        android:id="@+id/image"
         tools:ignore="ContentDescription"
         tools:src="@mipmap/launcher"
         style="@style/NoContentLinearLayoutBody.Image" />
 
     <TextView
+        android:id="@+id/title"
         tools:text="@string/error_loading_players"
         style="@style/NoContentLinearLayoutBody.Line1" />
 
     <TextView
+        android:id="@+id/description"
         tools:text="@string/swipe_to_refresh_to_try_again"
         style="@style/NoContentLinearLayoutBody.Line2" />
 

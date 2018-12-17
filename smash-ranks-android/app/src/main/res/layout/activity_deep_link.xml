@@ -8,11 +8,8 @@
     <ProgressBar
         android:layout_gravity="center"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_double"
         android:layout_width="wrap_content" />
-
-    <Space
-        android:layout_height="@dimen/root_padding_double"
-        android:layout_width="match_parent" />
 
     <TextView
         android:text="@string/loading_deep_link_"

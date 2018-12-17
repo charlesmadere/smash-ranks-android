@@ -23,7 +23,7 @@ import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.layout_rankings.view.*
 import javax.inject.Inject
 
 class RankingsLayout @JvmOverloads constructor(
@@ -31,8 +31,6 @@ class RankingsLayout @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SearchableRefreshLayout(context, attrs), ApiListener<RankingsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
-
-    private lateinit var adapter: RankingsAdapter
 
     @Inject
     protected lateinit var notificationsManager: NotificationsManager
@@ -43,8 +41,10 @@ class RankingsLayout @JvmOverloads constructor(
     @Inject
     protected lateinit var serverApi: ServerApi
 
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val empty: View by bindView(R.id.empty)
+    private lateinit var adapter: RankingsAdapter
+
+    var rankingsBundle: RankingsBundle? = null
+        private set
 
 
     interface Listener {
@@ -66,6 +66,10 @@ class RankingsLayout @JvmOverloads constructor(
     private fun fetchRankingsBundle() {
         isRefreshing = true
         serverApi.getRankings(regionManager.getRegion(context), ApiCall(this))
+    }
+
+    override fun getRecyclerView(): RecyclerView? {
+        return recyclerView
     }
 
     override fun onFinishInflate() {
@@ -96,11 +100,6 @@ class RankingsLayout @JvmOverloads constructor(
     override fun onRefresh() {
         fetchRankingsBundle()
     }
-
-    var rankingsBundle: RankingsBundle? = null
-        private set
-
-    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
         notificationsManager.cancelAll()

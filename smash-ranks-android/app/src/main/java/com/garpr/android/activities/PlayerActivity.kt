@@ -31,11 +31,10 @@ import com.garpr.android.models.Region
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.MatchItemView
 import com.garpr.android.views.PlayerProfileItemView
 import com.garpr.android.views.toolbars.SearchToolbar
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_player.*
 import javax.inject.Inject
 
 class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorListener,
@@ -63,12 +62,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
 
     @Inject
     protected lateinit var threadUtils: ThreadUtils
-
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val searchToolbar: SearchToolbar by bindView(R.id.toolbar)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val empty: View by bindView(R.id.empty)
 
 
     companion object {
@@ -99,18 +92,18 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         val view = recyclerView.getChildAt(0) as? PlayerProfileItemView
 
         if (view == null) {
-            searchToolbar.fadeInTitleAndSubtitle()
+            toolbar.fadeInTitleAndSubtitle()
             return
         }
 
         val dateVerticalPositionInWindow = view.regionVerticalPositionInWindow
-        val toolbarVerticalPositionInWindow = searchToolbar.verticalPositionInWindow +
-                searchToolbar.height
+        val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow +
+                toolbar.height
 
         if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            searchToolbar.fadeInTitleAndSubtitle()
+            toolbar.fadeInTitleAndSubtitle()
         } else {
-            searchToolbar.fadeOutTitleAndSubtitle()
+            toolbar.fadeOutTitleAndSubtitle()
         }
     }
 
@@ -144,7 +137,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
 
     override fun onPaletteBuilt(palette: Palette?) {
         if (isAlive) {
-            searchToolbar.animateBackgroundToPalette(window, palette)
+            toolbar.animateBackgroundToPalette(window, palette)
         }
     }
 
@@ -202,7 +195,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     }
 
     override val searchQuery: CharSequence?
-        get() = searchToolbar.searchQuery
+        get() = toolbar.searchQuery
 
     private fun setTitleAndSubtitle() {
         if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
@@ -256,8 +249,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
 
     override val showSearchMenuItem: Boolean
         get() = playerMatchesBundle?.matchesBundle?.matches?.isNotEmpty() == true
-
-    override val showUpNavigation = true
 
     override fun success(`object`: PlayerMatchesBundle?) {
         playerMatchesBundle = `object`

@@ -6,21 +6,15 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.no_content_linear_layout_body.view.*
 
 open class NoContentLinearLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
-
-    private val image: ImageView by bindView(R.id.image)
-    private val description: TextView by bindView(R.id.description)
-    private val title: TextView by bindView(R.id.title)
 
     var descriptionText: CharSequence?
         get() = description.text

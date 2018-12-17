@@ -6,7 +6,7 @@
 
     <TextView
         android:ellipsize="end"
-        android:id="@+id/tvDisplayName"
+        android:id="@+id/displayName"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_marginStart="@dimen/root_padding"
@@ -22,7 +22,7 @@
 
     <TextView
         android:ellipsize="end"
-        android:id="@+id/tvId"
+        android:id="@+id/regionId"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_width="0dp"
@@ -30,9 +30,9 @@
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="@dimen/text_size_small"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/tvDisplayName"
-        app:layout_constraintStart_toStartOf="@id/tvDisplayName"
-        app:layout_constraintTop_toBottomOf="@id/tvDisplayName"
+        app:layout_constraintEnd_toEndOf="@id/displayName"
+        app:layout_constraintStart_toStartOf="@id/displayName"
+        app:layout_constraintTop_toBottomOf="@id/displayName"
         tools:text="googlemtv" />
 
     <RadioButton

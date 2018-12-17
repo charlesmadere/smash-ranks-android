@@ -5,18 +5,18 @@
     tools:parentTag="com.garpr.android.views.TournamentTabsView">
 
     <TextView
-        android:id="@+id/tvMatchesTab"
+        android:id="@+id/matchesTab"
         android:text="@string/matches"
-        app:layout_constraintEnd_toStartOf="@+id/tvPlayersTab"
+        app:layout_constraintEnd_toStartOf="@+id/playersTab"
         app:layout_constraintStart_toStartOf="parent"
         style="@style/TextViewTab" />
 
     <TextView
-        android:id="@id/tvPlayersTab"
+        android:id="@+id/playersTab"
         android:text="@string/players"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvMatchesTab"
-        app:layout_constraintTop_toTopOf="@id/tvMatchesTab"
+        app:layout_constraintStart_toEndOf="@+id/matchesTab"
+        app:layout_constraintTop_toTopOf="@+id/matchesTab"
         style="@style/TextViewTab" />
 
     <View
@@ -26,8 +26,8 @@
         android:layout_width="0dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/tvMatchesTab"
-        app:layout_constraintStart_toStartOf="@id/tvMatchesTab"
+        app:layout_constraintEnd_toEndOf="@+id/matchesTab"
+        app:layout_constraintStart_toStartOf="@+id/matchesTab"
         tools:visibility="visible" />
 
 </merge>

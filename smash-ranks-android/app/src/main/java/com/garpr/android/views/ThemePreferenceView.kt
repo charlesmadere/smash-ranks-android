@@ -27,7 +27,6 @@ class ThemePreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var timber: Timber
 
-
     companion object {
         private const val TAG = "ThemePreferenceView"
     }
@@ -53,14 +52,19 @@ class ThemePreferenceView @JvmOverloads constructor(
             return
         }
 
-        showRestartDialog(DialogInterface.OnDismissListener {
-            timber.d(TAG, "theme was \"$current\", is now \"$selected\"")
-            generalPreferenceStore.nightMode.set(selected)
-            refresh()
+        AlertDialog.Builder(context)
+                .setMessage(R.string.the_app_will_now_restart)
+                .setNeutralButton(R.string.ok, null)
+                .setOnDismissListener {
+                    timber.d(TAG, "theme was \"$current\", is now \"$selected\"")
+                    generalPreferenceStore.nightMode.set(selected)
+                    refresh()
 
-            AppCompatDelegate.setDefaultNightMode(selected.themeValue)
-            context.startActivity(HomeActivity.getLaunchIntent(context = context, restartActivityTask = true))
-        })
+                    AppCompatDelegate.setDefaultNightMode(selected.themeValue)
+                    context.startActivity(HomeActivity.getLaunchIntent(context = context,
+                            restartActivityTask = true))
+                }
+                .show()
     }
 
     override fun onClick(v: View) {
@@ -114,14 +118,6 @@ class ThemePreferenceView @JvmOverloads constructor(
 
         val nightMode = generalPreferenceStore.nightMode.get()
         descriptionText = resources.getText(nightMode?.textResId ?: R.string.not_yet_set)
-    }
-
-    private fun showRestartDialog(onDismissListener: DialogInterface.OnDismissListener) {
-        AlertDialog.Builder(context)
-                .setMessage(R.string.the_app_will_now_restart)
-                .setNeutralButton(R.string.ok, null)
-                .setOnDismissListener(onDismissListener)
-                .show()
     }
 
 }

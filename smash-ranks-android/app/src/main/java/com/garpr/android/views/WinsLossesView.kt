@@ -2,7 +2,6 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
@@ -10,7 +9,7 @@ import com.garpr.android.extensions.getLong
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.models.LitePlayer
 import com.garpr.android.models.WinsLosses
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_wins_losses.view.*
 import java.text.NumberFormat
 
 class WinsLossesView @JvmOverloads constructor(
@@ -20,12 +19,6 @@ class WinsLossesView @JvmOverloads constructor(
 
     private var hasAnimated = false
     private val numberFormat = NumberFormat.getIntegerInstance()
-
-    private val opponentName: TextView by bindView(R.id.tvOpponentName)
-    private val opponentWins: TextView by bindView(R.id.tvOpponentWinCount)
-    private val playerName: TextView by bindView(R.id.tvPlayerName)
-    private val playerWins: TextView by bindView(R.id.tvPlayerWinCount)
-    private val winsLossesGraphView: WinsLossesGraphView by bindView(R.id.winsLossesGraphView)
 
 
     override fun onFinishInflate() {
@@ -58,7 +51,7 @@ class WinsLossesView @JvmOverloads constructor(
         opponentName.text = content.opponent.name
         opponentWins.text = numberFormat.format(content.opponentWins)
 
-        winsLossesGraphView.setWinsLosses(content, hasAnimated)
+        winsLossesGraph.setWinsLosses(content, hasAnimated)
 
         if (hasAnimated) {
             alpha = 1f

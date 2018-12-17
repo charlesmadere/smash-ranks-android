@@ -3,15 +3,13 @@ package com.garpr.android.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
-import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.AbsPlayer
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_player.view.*
 import javax.inject.Inject
 
 class PlayerItemView @JvmOverloads constructor(
@@ -25,8 +23,6 @@ class PlayerItemView @JvmOverloads constructor(
 
     @Inject
     protected lateinit var regionManager: RegionManager
-
-    private val name: TextView by bindView(R.id.tvName)
 
 
     override fun identityIsSomeoneElse() {

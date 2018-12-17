@@ -9,6 +9,7 @@
         layout="@layout/toolbar" />
 
     <com.garpr.android.views.RefreshLayout
+        android:id="@+id/refreshLayout"
         style="@style/RefreshLayout">
 
         <FrameLayout
@@ -16,14 +17,17 @@
             android:layout_width="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:visibility="gone"
                 style="@style/RecyclerView" />
 
             <com.garpr.android.views.NoContentLinearLayout
+                android:id="@+id/empty"
                 app:titleText="@string/no_players"
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout
+                android:id="@+id/error"
                 app:titleText="@string/error_loading_players"
                 style="@style/NoContentLinearLayout.Error" />
 

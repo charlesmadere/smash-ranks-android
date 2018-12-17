@@ -16,7 +16,7 @@ import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.AbsPlayer
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.layout_favorite_players.view.*
 import javax.inject.Inject
 
 class FavoritePlayersLayout @JvmOverloads constructor(
@@ -30,12 +30,14 @@ class FavoritePlayersLayout @JvmOverloads constructor(
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
-    private val empty: View by bindView(R.id.empty)
-
 
     companion object {
         fun inflate(parent: ViewGroup): FavoritePlayersLayout = LayoutInflater.from(parent.context)
                 .inflate(R.layout.layout_favorite_players, parent, false) as FavoritePlayersLayout
+    }
+
+    override fun getRecyclerView(): RecyclerView? {
+        return recyclerView
     }
 
     override fun onAttachedToWindow() {
@@ -79,8 +81,6 @@ class FavoritePlayersLayout @JvmOverloads constructor(
 
         refresh()
     }
-
-    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
         if (favoritePlayersManager.isEmpty) {

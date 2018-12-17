@@ -13,7 +13,7 @@
     <com.garpr.android.views.PaletteSimpleDraweeView
         android:contentDescription="@string/avatar"
         android:elevation="@dimen/elevation_half"
-        android:id="@+id/psdvAvatar"
+        android:id="@+id/avatar"
         android:layout_gravity="center_horizontal"
         android:layout_height="@dimen/avatar_size"
         android:layout_marginBottom="@dimen/root_padding_half"
@@ -33,7 +33,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/nunito_bold"
         android:gravity="center"
-        android:id="@+id/tvTag"
+        android:id="@+id/playerTag"
         android:layout_height="64dp"
         android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_marginEnd="@dimen/root_padding"
@@ -49,7 +49,7 @@
     <TextView
         android:ellipsize="end"
         android:gravity="center"
-        android:id="@+id/tvName"
+        android:id="@+id/name"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
     <TextView
         android:ellipsize="end"
         android:gravity="center"
-        android:id="@+id/tvAliases"
+        android:id="@+id/aliases"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
     <TextView
         android:ellipsize="end"
         android:gravity="center"
-        android:id="@+id/tvMains"
+        android:id="@+id/mains"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
         tools:visibility="visible" />
 
     <LinearLayout
-        android:id="@+id/vgWebsites"
+        android:id="@+id/websites"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/root_padding"
         android:layout_width="match_parent"
@@ -96,7 +96,7 @@
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_twitter_24dp"
-            android:id="@+id/tvTwitter"
+            android:id="@+id/twitter"
             android:text="@string/twitter"
             android:visibility="gone"
             tools:visibility="visible"
@@ -104,7 +104,7 @@
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_twitch_24dp"
-            android:id="@+id/tvTwitch"
+            android:id="@+id/twitch"
             android:text="@string/twitch"
             android:visibility="gone"
             tools:visibility="visible"
@@ -112,7 +112,7 @@
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_youtube_24dp"
-            android:id="@+id/tvYouTube"
+            android:id="@+id/youTube"
             android:text="@string/youtube"
             android:visibility="gone"
             tools:visibility="visible"
@@ -120,7 +120,7 @@
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_web_24dp"
-            android:id="@+id/tvOtherWebsite"
+            android:id="@+id/otherWebsite"
             android:text="@string/other"
             android:visibility="gone"
             tools:visibility="visible"
@@ -139,7 +139,7 @@
 
     <TextView
         android:ellipsize="end"
-        android:id="@+id/tvRegion"
+        android:id="@+id/region"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/root_padding"
         android:layout_width="wrap_content"
@@ -149,7 +149,7 @@
         style="@style/MediumOrBoldText" />
 
     <TextView
-        android:id="@+id/tvRating"
+        android:id="@+id/rating"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:visibility="gone"
@@ -157,7 +157,7 @@
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/tvUnadjustedRating"
+        android:id="@+id/unadjustedRating"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding"
         android:layout_width="wrap_content"
@@ -172,13 +172,13 @@
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_favorite_white_24dp"
-            android:id="@+id/tvFavoriteOrUnfavorite"
+            android:id="@+id/favoriteOrUnfavorite"
             android:text="@string/favorite"
             style="@style/TextButton" />
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_crossed_swords_white_24dp"
-            android:id="@+id/tvViewYourselfVsThisOpponent"
+            android:id="@+id/viewYourselfVsThisOpponent"
             android:text="@string/compare"
             android:visibility="gone"
             tools:visibility="visible"
@@ -186,7 +186,7 @@
 
         <com.garpr.android.views.TintedTextView
             android:drawableTop="@drawable/ic_share_white_24dp"
-            android:id="@+id/tvShare"
+            android:id="@+id/share"
             android:text="@string/share"
             style="@style/TextButton" />
 

@@ -3,7 +3,6 @@
 
     <style name="BottomNavigationView">
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:id">@id/bottomNavigationView</item>
         <item name="android:layout_height">@dimen/bottom_navigation_view_height</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:theme">@style/ToolbarTheme</item>
@@ -133,12 +132,10 @@
     </style>
 
     <style name="NoContentLinearLayout.Empty">
-        <item name="android:id">@id/empty</item>
         <item name="descriptionText">@string/swipe_to_refresh_to_check_again</item>
     </style>
 
     <style name="NoContentLinearLayout.Error">
-        <item name="android:id">@id/error</item>
         <item name="descriptionText">@string/swipe_to_refresh_to_try_again</item>
     </style>
 
@@ -150,7 +147,6 @@
 
     <style name="NoContentLinearLayoutBody.Image">
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:id">@id/image</item>
         <item name="android:importantForAccessibility">no</item>
         <item name="android:layout_marginBottom">@dimen/root_padding_double</item>
         <item name="android:layout_marginEnd">@dimen/root_padding_double</item>
@@ -161,14 +157,12 @@
 
     <style name="NoContentLinearLayoutBody.Line1">
         <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:id">@id/title</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="NoContentLinearLayoutBody.Line2">
-        <item name="android:id">@id/description</item>
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
@@ -181,7 +175,6 @@
     <style name="PreferenceViewCheckable">
         <item name="android:background">@null</item>
         <item name="android:clickable">false</item>
-        <item name="android:id">@id/checkable</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/root_padding_half</item>
         <item name="android:layout_marginEnd">@dimen/root_padding</item>
@@ -193,7 +186,6 @@
     </style>
 
     <style name="PreferenceViewDescription">
-        <item name="android:id">@id/description</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/root_padding_half</item>
         <item name="android:layout_marginEnd">@dimen/root_padding_half</item>
@@ -201,13 +193,10 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintEnd_toStartOf">@id/checkable</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
-        <item name="layout_constraintTop_toBottomOf">@id/title</item>
     </style>
 
     <style name="PreferenceViewTitle">
-        <item name="android:id">@id/title</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginEnd">@dimen/root_padding_half</item>
         <item name="android:layout_marginStart">@dimen/root_padding</item>
@@ -215,13 +204,11 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="layout_constraintEnd_toStartOf">@id/checkable</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
     <style name="RecyclerView">
-        <item name="android:id">@id/recyclerView</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:overScrollMode">never</item>
@@ -239,10 +226,8 @@
     </style>
 
     <style name="RefreshLayout">
-        <item name="android:id">@id/refreshLayout</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="scrollingChildId">@id/recyclerView</item>
     </style>
 
     <style name="SettingsCardDescription">
@@ -298,16 +283,9 @@
     <style name="Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
-        <item name="android:id">@id/toolbar</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:theme">@style/ToolbarTheme</item>
-    </style>
-
-    <style name="ViewPager">
-        <item name="android:id">@id/viewPager</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">match_parent</item>
     </style>
 
     <style name="WinsLossesCount">

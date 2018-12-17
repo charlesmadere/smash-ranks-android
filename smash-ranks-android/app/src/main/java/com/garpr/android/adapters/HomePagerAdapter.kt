@@ -16,7 +16,7 @@ import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.TournamentsLayout
 import java.lang.ref.WeakReference
 
-class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable {
+class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable, Searchable {
 
     private val pages = mutableMapOf<HomeTab, WeakReference<View?>?>()
 
@@ -75,10 +75,10 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable {
         }
     }
 
-    fun search(homeTab: HomeTab, query: String?) {
-        pages[homeTab]?.get()?.let {
-            if ((it as? Heartbeat)?.isAlive == true) {
-                (it as? Searchable)?.search(query)
+    override fun search(query: String?) {
+        pages.forEach {
+            if ((it.value as? Heartbeat)?.isAlive == true) {
+                (it.value as? Searchable)?.search(query)
             }
         }
     }

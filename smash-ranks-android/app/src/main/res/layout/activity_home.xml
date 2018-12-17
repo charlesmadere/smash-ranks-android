@@ -5,14 +5,17 @@
     android:orientation="vertical">
 
     <com.garpr.android.views.toolbars.HomeToolbar
+        android:id="@+id/homeToolbar"
         style="@style/Toolbar" />
 
     <com.garpr.android.views.NonSwipeableViewPager
+        android:id="@+id/viewPager"
         android:layout_height="0dp"
         android:layout_weight="1"
-        style="@style/ViewPager" />
+        android:layout_width="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         style="@style/BottomNavigationView" />
 
 </LinearLayout>

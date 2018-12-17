@@ -12,7 +12,6 @@ import com.garpr.android.misc.Timber;
 import com.garpr.android.models.NightMode;
 import com.garpr.android.preferences.GeneralPreferenceStore;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
-import com.garpr.android.wrappers.WorkManagerWrapper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,9 +48,6 @@ public class App extends BaseApp implements AppComponentHandle {
 
     @Inject
     Timber mTimber;
-
-    @Inject
-    WorkManagerWrapper mWorkManagerWrapper;
 
 
     @NonNull

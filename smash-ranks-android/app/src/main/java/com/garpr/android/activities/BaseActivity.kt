@@ -1,21 +1,16 @@
 package com.garpr.android.activities
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.TaskStackBuilder
-import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.RegionManager.RegionHandle
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
-import com.garpr.android.views.toolbars.MenuToolbar
-import kotterknife.bindOptionalView
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
@@ -25,8 +20,6 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     @Inject
     protected lateinit var timber: Timber
-
-    protected val toolbar: Toolbar? by bindOptionalView(R.id.toolbar)
 
 
     companion object {
@@ -68,42 +61,27 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         timber.d(TAG, "$activityName created")
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        (toolbar as? MenuToolbar)?.onCreateOptionsMenu(menuInflater, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             android.R.id.home -> {
                 navigateUp()
-                return true
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        if ((toolbar as? MenuToolbar)?.onOptionsItemSelected(item) == true) {
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        (toolbar as? MenuToolbar)?.refresh()
-        return super.onPrepareOptionsMenu(menu)
     }
 
     protected open fun onViewsBound() {
-        toolbar?.let { setSupportActionBar(it) }
-        supportActionBar?.setDisplayHomeAsUpEnabled(showUpNavigation)
+        // intentionally empty, children can override
     }
 
     override fun setContentView(@LayoutRes layoutResID: Int) {
         super.setContentView(layoutResID)
         onViewsBound()
     }
-
-    protected open val showUpNavigation = false
 
     override fun toString() = activityName
 

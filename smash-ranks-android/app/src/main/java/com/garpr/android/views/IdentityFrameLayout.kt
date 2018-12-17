@@ -28,6 +28,7 @@ abstract class IdentityFrameLayout @JvmOverloads constructor(
     protected open fun clear() {
         identity = null
         identityId = null
+        refresh()
     }
 
     protected var identity: AbsPlayer? = null

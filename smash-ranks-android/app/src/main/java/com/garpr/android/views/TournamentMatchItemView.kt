@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
@@ -15,7 +14,7 @@ import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.requireFragmentActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.FullTournament
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_tournament_match.view.*
 import javax.inject.Inject
 
 class TournamentMatchItemView @JvmOverloads constructor(
@@ -36,16 +35,11 @@ class TournamentMatchItemView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
-    private val loserName: TextView by bindView(R.id.tvLoserName)
-    private val winnerName: TextView by bindView(R.id.tvWinnerName)
-
 
     override fun clear() {
-        super.clear()
-
         loserName.clear()
         winnerName.clear()
-        refresh()
+        super.clear()
     }
 
     private var match: FullTournament.Match? = null

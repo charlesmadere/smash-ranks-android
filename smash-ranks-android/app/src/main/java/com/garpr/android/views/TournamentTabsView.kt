@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewPropertyAnimator
-import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
@@ -17,7 +16,7 @@ import com.garpr.android.extensions.getLong
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.TournamentMode
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.view_tournament_tabs.view.*
 
 class TournamentTabsView @JvmOverloads constructor(
         context: Context,
@@ -38,10 +37,6 @@ class TournamentTabsView @JvmOverloads constructor(
 
     private var inAnimation: ViewPropertyAnimator? = null
     private var outAnimation: ViewPropertyAnimator? = null
-
-    private val matchesTab: TextView by bindView(R.id.tvMatchesTab)
-    private val playersTab: TextView by bindView(R.id.tvPlayersTab)
-    private val indicatorLine: View by bindView(R.id.indicatorLine)
 
 
     init {

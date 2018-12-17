@@ -40,8 +40,7 @@ data class RankingsBundle(
 
     fun hasPreviousRank(): Boolean {
         return rankings?.asSequence()
-                ?.filter { it.previousRank != null }
-                ?.firstOrNull() != null
+                ?.firstOrNull { it.previousRank != null } != null
     }
 
     override fun describeContents() = 0

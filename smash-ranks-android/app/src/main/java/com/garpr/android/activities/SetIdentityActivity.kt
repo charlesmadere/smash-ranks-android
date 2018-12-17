@@ -11,7 +11,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersSelectionAdapter
@@ -28,7 +27,7 @@ import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.PlayerSelectionItemView
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_set_identity.*
 import javax.inject.Inject
 
 class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
@@ -53,11 +52,6 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     @Inject
     protected lateinit var threadUtils: ThreadUtils
-
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val empty: View by bindView(R.id.empty)
-    private val error: View by bindView(R.id.error)
 
 
     companion object {
@@ -291,8 +285,6 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         refreshLayout.isEnabled = false
         refreshMenu()
     }
-
-    override val showUpNavigation = true
 
     override fun success(`object`: PlayersBundle?) {
         _selectedPlayer = null

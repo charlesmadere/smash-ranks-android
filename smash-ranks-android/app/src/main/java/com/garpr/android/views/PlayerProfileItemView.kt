@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
@@ -23,7 +22,7 @@ import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.models.FullPlayer
 import com.garpr.android.sync.roster.SmashRosterSyncManager
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_player_profile.view.*
 import javax.inject.Inject
 
 class PlayerProfileItemView @JvmOverloads constructor(
@@ -53,24 +52,6 @@ class PlayerProfileItemView @JvmOverloads constructor(
 
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
-
-    private val avatar: PaletteSimpleDraweeView by bindView(R.id.psdvAvatar)
-    private val aliases: TextView by bindView(R.id.tvAliases)
-    private val favoriteOrUnfavorite: TintedTextView by bindView(R.id.tvFavoriteOrUnfavorite)
-    private val mains: TextView by bindView(R.id.tvMains)
-    private val name: TextView by bindView(R.id.tvName)
-    private val rating: TextView by bindView(R.id.tvRating)
-    private val region: TextView by bindView(R.id.tvRegion)
-    private val share: TextView by bindView(R.id.tvShare)
-    private val tag: TextView by bindView(R.id.tvTag)
-    private val otherWebsite: TextView by bindView(R.id.tvOtherWebsite)
-    private val twitch: TextView by bindView(R.id.tvTwitch)
-    private val twitter: TextView by bindView(R.id.tvTwitter)
-    private val youTube: TextView by bindView(R.id.tvYouTube)
-    private val unadjustedRating: TextView by bindView(R.id.tvUnadjustedRating)
-    private val viewYourselfVsThisOpponent: TextView by bindView(R.id.tvViewYourselfVsThisOpponent)
-    private val websitesDivider: View by bindView(R.id.websitesDivider)
-    private val websites: ViewGroup by bindView(R.id.vgWebsites)
 
 
     private var fullPlayer: FullPlayer? = null
@@ -203,7 +184,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
             avatar.visibility = View.VISIBLE
         }
 
-        tag.text = presentation.tag
+        playerTag.text = presentation.tag
 
         if (presentation.name.isNullOrBlank()) {
             name.visibility = View.GONE

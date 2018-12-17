@@ -21,7 +21,7 @@ import com.garpr.android.models.TournamentsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.layout_tournaments.view.*
 import javax.inject.Inject
 
 class TournamentsLayout @JvmOverloads constructor(
@@ -38,9 +38,6 @@ class TournamentsLayout @JvmOverloads constructor(
     @Inject
     protected lateinit var serverApi: ServerApi
 
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val empty: View by bindView(R.id.empty)
-
 
     companion object {
         fun inflate(parent: ViewGroup): TournamentsLayout = LayoutInflater.from(parent.context)
@@ -55,6 +52,10 @@ class TournamentsLayout @JvmOverloads constructor(
     private fun fetchTournamentsBundle() {
         isRefreshing = true
         serverApi.getTournaments(regionManager.getRegion(context), ApiCall(this))
+    }
+
+    override fun getRecyclerView(): RecyclerView? {
+        return recyclerView
     }
 
     override fun onFinishInflate() {
@@ -79,8 +80,6 @@ class TournamentsLayout @JvmOverloads constructor(
     override fun onRefresh() {
         fetchTournamentsBundle()
     }
-
-    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
         fetchTournamentsBundle()
