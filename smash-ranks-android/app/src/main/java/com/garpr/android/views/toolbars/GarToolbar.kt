@@ -7,6 +7,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.Window
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
@@ -95,6 +96,8 @@ open class GarToolbar @JvmOverloads constructor(
     }
 
     init {
+        LayoutInflater.from(context).inflate(R.layout.gar_toolbar, this)
+
         val ta = context.obtainStyledAttributes(attrs, R.styleable.GarToolbar)
 
         TODO()
