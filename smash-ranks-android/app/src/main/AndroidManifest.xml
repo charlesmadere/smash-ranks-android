@@ -45,8 +45,7 @@
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
             android:name=".activities.HomeActivity"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:label="@string/log_viewer"
