@@ -9,13 +9,13 @@ import androidx.appcompat.widget.SearchView
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.models.Region
 import com.garpr.android.views.PlayersLayout
 import com.garpr.android.views.toolbars.SearchToolbar
+import kotlinx.android.synthetic.main.activity_players.*
 import kotlinx.android.synthetic.main.layout_players.*
 import javax.inject.Inject
 
@@ -43,7 +43,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_players)
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -51,7 +51,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
 
         val searchMenuItem = menu.findItem(R.id.miSearch) ?: throw RuntimeException(
                 "searchMenuItem is null")
-        searchMenuItem.isVisible = showSearchMenuItem
+        searchMenuItem.isVisible = showSearchIcon
         searchMenuItem.setOnActionExpandListener(this)
 
         val searchView = searchMenuItem.actionView as SearchView
@@ -86,7 +86,7 @@ class PlayersActivity : BaseActivity(), MenuItem.OnActionExpandListener, Players
     override val searchQuery: CharSequence?
         get() = searchView?.query
 
-    override val showSearchMenuItem: Boolean
+    override val showSearchIcon: Boolean
         get() = playersLayout.playersBundle?.players?.isNotEmpty() == true
 
 }

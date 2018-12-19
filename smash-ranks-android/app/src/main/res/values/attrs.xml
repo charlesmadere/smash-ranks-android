@@ -14,8 +14,10 @@
     </declare-styleable>
 
     <declare-styleable name="GarToolbar">
-        <attr name="toolbarShowUpNavigation" format="boolean" />
+        <attr name="showUpNavigation" format="boolean" />
+        <attr name="toolbarSubtitleText" format="string" />
         <attr name="toolbarSubtitleTextColor" format="color" />
+        <attr name="toolbarTitleText" format="string" />
         <attr name="toolbarTitleTextColor" format="color" />
     </declare-styleable>
 

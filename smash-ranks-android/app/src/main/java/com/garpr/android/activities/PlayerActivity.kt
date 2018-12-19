@@ -13,7 +13,6 @@ import com.garpr.android.adapters.PlayerAdapter
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
@@ -137,7 +136,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
 
     override fun onPaletteBuilt(palette: Palette?) {
         if (isAlive) {
-            toolbar.animateBackgroundToPalette(window, palette)
+            toolbar.animateToPaletteColors(window, palette)
         }
     }
 
@@ -198,7 +197,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         get() = toolbar.searchQuery
 
     private fun setTitleAndSubtitle() {
-        if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
+        if (toolbar.hasTitleText && toolbar.hasSubtitleText) {
             return
         }
 
@@ -210,8 +209,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
             return
         }
 
-        this.title = title
-        subtitle = region.displayName
+        toolbar.titleText = title
+        toolbar.subtitleText = region.displayName
     }
 
     private fun showData() {
@@ -247,7 +246,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         invalidateOptionsMenu()
     }
 
-    override val showSearchMenuItem: Boolean
+    override val showSearchIcon: Boolean
         get() = playerMatchesBundle?.matchesBundle?.matches?.isNotEmpty() == true
 
     override fun success(`object`: PlayerMatchesBundle?) {

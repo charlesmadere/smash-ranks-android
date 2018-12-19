@@ -14,7 +14,6 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.smoothScrollToTop
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Constants
@@ -172,7 +171,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
         adapter.set(tournamentMode, tournament)
         tournamentTabsView.refresh()
-        toolbar.closeSearchLayout()
+        toolbar.closeSearchField()
     }
 
     override fun onViewsBound() {
@@ -256,14 +255,13 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     }
 
     private fun setTitleAndSubtitle() {
-        if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
+        if (toolbar.hasTitleText && toolbar.hasSubtitleText) {
             return
         }
 
         val tournament = fullTournament ?: return
-        title = tournament.name
-
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.titleText = tournament.name
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
     }
 
     private fun showError(errorCode: Int = Constants.ERROR_CODE_UNKNOWN) {
@@ -287,7 +285,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         refreshLayout.isEnabled = false
     }
 
-    override val showSearchMenuItem: Boolean
+    override val showSearchIcon: Boolean
         get() = when (tournamentMode) {
                     TournamentMode.MATCHES -> {
                         fullTournament?.matches?.isNotEmpty() == true

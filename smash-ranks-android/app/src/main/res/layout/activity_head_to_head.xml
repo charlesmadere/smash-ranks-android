@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
+    <com.garpr.android.views.toolbars.GarToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar" />
+
     <include
         layout="@layout/toolbar" />
 

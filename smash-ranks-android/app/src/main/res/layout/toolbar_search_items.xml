@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <EditText
+        android:hint="@string/search_"
+        android:imeOptions="actionSearch"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:maxLines="1"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute"
+        tools:visibility="visible" />
+
+    <ImageButton
+        android:contentDescription="@string/search"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_search_white_24dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</merge>

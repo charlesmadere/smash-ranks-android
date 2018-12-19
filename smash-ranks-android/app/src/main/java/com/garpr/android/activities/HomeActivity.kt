@@ -12,7 +12,6 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.currentItemAsHomeTab
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.HomeTab
@@ -75,8 +74,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override val activityName = TAG
 
     override fun onBackPressed() {
-        if (homeToolbar.isSearchLayoutExpanded) {
-            homeToolbar.closeSearchLayout()
+        if (toolbar.isSearchFieldExpanded) {
+            toolbar.closeSearchField()
             return
         }
 
@@ -108,7 +107,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        homeToolbar.closeSearchLayout()
+        toolbar.closeSearchField()
         viewPager.currentItemAsHomeTab = item.itemIdAsHomeTab
         return true
     }
@@ -184,9 +183,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     private fun prepareMenuAndTitleAndSubtitle(layout: RankingsLayout?) {
         val region = regionManager.getRegion(this)
-        title = region.displayName
+        toolbar.titleText = region.displayName
 
-        subtitle = layout?.rankingsBundle?.let {
+        toolbar.subtitleText = layout?.rankingsBundle?.let {
             getString(R.string.updated_x, it.time.shortForm)
         } ?: getString(region.endpoint.title)
 
@@ -201,7 +200,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override val searchQuery: CharSequence?
-        get() = homeToolbar.searchQuery
+        get() = toolbar.searchQuery
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {
         var initialPosition: HomeTab? = null
@@ -257,8 +256,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
                 .show()
     }
 
-    override val showSearchMenuItem: Boolean
-        get() = subtitle?.isNotBlank() == true
+    override val showSearchIcon: Boolean
+        get() = toolbar.hasSubtitleText
 
     private fun updateSelectedBottomNavigationItem() {
         val itemId = when (viewPager.currentItemAsHomeTab) {

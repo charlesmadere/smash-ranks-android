@@ -3,8 +3,12 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
-    <include
-        layout="@layout/toolbar" />
+
+    <com.garpr.android.views.toolbars.GarToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar" />
+
     <include
         layout="@layout/layout_tournaments" />
+
 </LinearLayout>

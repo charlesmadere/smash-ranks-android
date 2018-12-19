@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.views.toolbars.GarToolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Toolbar">
 
     <ImageButton
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/back"
-        android:id="@+id/back"
+        android:id="@+id/upNavigationButton"
         android:layout_height="match_parent"
         android:layout_width="wrap_content"
         android:paddingEnd="@dimen/root_padding"
@@ -34,7 +34,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/nunito_bold"
             android:gravity="center_vertical"
-            android:id="@+id/title"
+            android:id="@+id/titleView"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:maxLines="1"
@@ -46,7 +46,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/nunito_semibold"
             android:gravity="center_vertical"
-            android:id="@+id/subtitle"
+            android:id="@+id/subtitleView"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:maxLines="1"
@@ -59,7 +59,7 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/menuExpansion"
+        android:id="@+id/menuExpansionContainer"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_width="0dp"
@@ -69,7 +69,7 @@
     <ImageButton
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/more"
-        android:id="@+id/overflow"
+        android:id="@+id/overflowButton"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
@@ -79,4 +79,4 @@
         android:src="@drawable/ic_overflow_white_24dp"
         tools:visibility="visible" />
 
-</LinearLayout>
+</com.garpr.android.views.toolbars.GarToolbar>

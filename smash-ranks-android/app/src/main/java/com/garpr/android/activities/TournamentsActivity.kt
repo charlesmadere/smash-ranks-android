@@ -6,9 +6,9 @@ import android.os.Bundle
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Region
+import kotlinx.android.synthetic.main.activity_tournaments.*
 import javax.inject.Inject
 
 class TournamentsActivity : BaseActivity() {
@@ -32,7 +32,7 @@ class TournamentsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_tournaments)
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
     }
 
 }

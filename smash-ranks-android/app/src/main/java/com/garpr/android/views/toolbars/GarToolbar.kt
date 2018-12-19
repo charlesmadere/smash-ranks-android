@@ -7,13 +7,12 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
-import com.garpr.android.R
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
@@ -22,6 +21,11 @@ import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Refreshable
+import kotlinx.android.synthetic.main.gar_toolbar.view.*
+
+private const val LIGHTNESS_LIMIT = 0.4f
+private const val STATUS_BAR_DARKEN_FACTOR = 0.8f
+private const val TOO_LIGHT_DARKEN_FACTOR = 0.75f
 
 open class GarToolbar @JvmOverloads constructor(
         context: Context,
@@ -65,47 +69,48 @@ open class GarToolbar @JvmOverloads constructor(
     }
     // end animation variables
 
-    var title: CharSequence = resources.getText(R.string.gar_pr)
+    var showUpNavigation: Boolean = true
         set(value) {
             field = value
-            TODO()
+            upNavigationButton.visibility = if (value) View.VISIBLE else View.GONE
         }
 
-    var titleTextColor: Int = context.getAttrColor(android.R.attr.textColorPrimary)
+    var subtitleText: CharSequence? = null
         set(value) {
             field = value
-            TODO()
+            subtitleView.text = value
+            subtitleView.visibility = if (value.isNullOrBlank()) View.GONE else View.VISIBLE
         }
 
-    var subtitle: CharSequence = ""
+    var subtitleTextColor: Int = textColorSecondary
         set(value) {
             field = value
-            TODO()
+            subtitleView.setTextColor(value)
         }
 
-    var subtitleTextColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
+    var titleText: CharSequence? = resources.getText(R.string.gar_pr)
         set(value) {
             field = value
-            TODO()
+            titleView.text = value
+            titleView.visibility = if (value.isNullOrBlank()) View.GONE else View.VISIBLE
         }
 
-    companion object {
-        private const val LIGHTNESS_LIMIT = 0.4f
-        private const val STATUS_BAR_DARKEN_FACTOR = 0.8f
-        private const val TOO_LIGHT_DARKEN_FACTOR = 0.75f
-    }
+    var titleTextColor: Int = textColorPrimary
+        set(value) {
+            field = value
+            titleView.setTextColor(value)
+        }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.gar_toolbar, this)
-
         val ta = context.obtainStyledAttributes(attrs, R.styleable.GarToolbar)
-
-        TODO()
-
+        subtitleText = ta.getText(R.styleable.toolbarSubtitleText)
+        subtitleTextColor = ta.getColor(R.styleable.toolbarSubtitleTextColor, subtitleTextColor)
+        titleText = ta.getText(R.styleable.toolbarTitleText)
+        titleTextColor = ta.getColor(R.styleable.toolbarTitleTextColor, titleTextColor)
         ta.recycle()
     }
 
-    fun animateBackgroundToPalette(window: Window, palette: Palette?) {
+    fun animateToPaletteColors(window: Window, palette: Palette?) {
         val toolbarBackgroundFallback = context.getAttrColor(R.attr.colorPrimary)
         val statusBarBackgroundFallback = context.getAttrColor(R.attr.colorPrimaryDark)
 
@@ -222,6 +227,12 @@ open class GarToolbar @JvmOverloads constructor(
         titleAnimation.start()
         subtitleAnimation.start()
     }
+
+    val hasSubtitleText: Boolean
+        get() = subtitleText?.isNotBlank() == true
+
+    val hasTitleText: Boolean
+        get() = titleText?.isNotBlank() == true
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)
