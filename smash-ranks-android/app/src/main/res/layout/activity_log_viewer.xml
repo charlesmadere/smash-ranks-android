@@ -5,8 +5,11 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar" />
+    <com.garpr.android.views.toolbars.GarToolbar
+        android:id="@+id/toolbar"
+        app:showUpNavigation="true"
+        app:toolbarTitleText="@string/log_viewer"
+        style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout
         android:id="@+id/refreshLayout"

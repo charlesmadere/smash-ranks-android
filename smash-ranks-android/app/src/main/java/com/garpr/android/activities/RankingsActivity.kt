@@ -9,6 +9,7 @@ import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Region
+import kotlinx.android.synthetic.main.activity_rankings.*
 import javax.inject.Inject
 
 class RankingsActivity : BaseActivity() {
@@ -32,7 +33,7 @@ class RankingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_rankings)
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
     }
 
 }

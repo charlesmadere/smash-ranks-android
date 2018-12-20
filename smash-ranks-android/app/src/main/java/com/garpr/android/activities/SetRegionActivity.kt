@@ -12,7 +12,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.RegionsSelectionAdapter
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.models.Region
@@ -103,7 +102,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_set_region)
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
 
         fetchRegionsBundle()
     }

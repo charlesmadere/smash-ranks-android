@@ -15,7 +15,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayersSelectionAdapter
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
@@ -127,7 +126,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_set_identity)
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
 
         fetchPlayersBundle()
     }
