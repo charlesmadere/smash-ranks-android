@@ -3,6 +3,7 @@ package com.garpr.android.extensions
 import android.app.Activity
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.garpr.android.activities.BaseActivity
 import com.garpr.android.dagger.AppComponent
 
 val View.activity: Activity?
@@ -10,6 +11,9 @@ val View.activity: Activity?
 
 val View.appComponent: AppComponent
     get() = context.appComponent
+
+val View.baseActivity: BaseActivity?
+    get() = context.baseActivity
 
 fun View.requireActivity(): Activity {
     return context.requireActivity()
