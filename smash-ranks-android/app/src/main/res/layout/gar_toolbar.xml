@@ -58,11 +58,12 @@
 
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/menuExpansionContainer"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_width="0dp"
+        android:orientation="horizontal"
         android:visibility="gone"
         tools:visibility="visible" />
 
