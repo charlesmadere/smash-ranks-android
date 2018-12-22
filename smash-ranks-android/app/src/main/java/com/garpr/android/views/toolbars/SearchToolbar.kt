@@ -41,7 +41,7 @@ open class SearchToolbar @JvmOverloads constructor(
 
     override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            (activity as? Searchable)?.search(v.text?.toString())
+            (activity as? Searchable)?.search(searchQuery?.toString())
         }
 
         return false
