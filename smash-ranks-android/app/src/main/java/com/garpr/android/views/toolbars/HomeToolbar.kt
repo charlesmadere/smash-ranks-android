@@ -26,6 +26,14 @@ class HomeToolbar @JvmOverloads constructor(
     protected lateinit var regionManager: RegionManager
 
 
+    interface Listeners {
+        fun onActivityRequirementsClick(v: HomeToolbar)
+        fun onSettingsClick(v: HomeToolbar)
+        fun onShareClick(v: HomeToolbar)
+        fun onViewAllPlayersClick(v: HomeToolbar)
+        fun onViewYourselfClick(v: HomeToolbar)
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 

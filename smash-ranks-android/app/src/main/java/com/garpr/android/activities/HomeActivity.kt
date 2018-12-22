@@ -23,6 +23,7 @@ import com.garpr.android.models.RankingCriteria
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
+import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
@@ -30,9 +31,9 @@ import java.text.NumberFormat
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
-        BottomNavigationView.OnNavigationItemSelectedListener, RankingCriteriaHandle,
-        RankingsLayout.Listener, RegionManager.OnRegionChangeListener, Searchable,
-        SearchQueryHandle, SearchToolbar.Listener {
+        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners,
+        RankingCriteriaHandle, RankingsLayout.Listener, RegionManager.OnRegionChangeListener,
+        Searchable, SearchQueryHandle, SearchToolbar.Listener {
 
     private lateinit var adapter: HomePagerAdapter
 
@@ -73,6 +74,27 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override val activityName = TAG
 
+    override fun onActivityRequirementsClick(v: HomeToolbar) {
+        val rankingCriteria = adapter.rankingsBundle?.rankingCriteria ?: return
+        val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
+        val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
+
+        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
+            throw RuntimeException("Region (${rankingCriteria.displayName}) is missing necessary data")
+        }
+
+        val numberFormat = NumberFormat.getIntegerInstance()
+        val tournaments = resources.getQuantityString(R.plurals.x_tournaments,
+                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended))
+        val days = resources.getQuantityString(R.plurals.x_days, rankingActivityDayLimit,
+                numberFormat.format(rankingActivityDayLimit))
+
+        AlertDialog.Builder(this)
+                .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
+                .setTitle(getString(R.string.x_activity_requirements, rankingCriteria.displayName))
+                .show()
+    }
+
     override fun onBackPressed() {
         if (toolbar.isSearchFieldExpanded) {
             toolbar.closeSearchField()
@@ -112,41 +134,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.miActivityRequirements -> {
-                showActivityRequirements()
-                true
-            }
-
-            R.id.miSettings -> {
-                startActivity(SettingsActivity.getLaunchIntent(this))
-                true
-            }
-
-            R.id.miShare -> {
-                share()
-                true
-            }
-
-            R.id.miViewAllPlayers -> {
-                startActivity(PlayersActivity.getLaunchIntent(this))
-                true
-            }
-
-            R.id.miViewYourself -> {
-                identityManager.identity?.let {
-                    startActivity(PlayerActivity.getLaunchIntent(this, it,
-                            regionManager.getRegion(this)))
-                } ?: throw NullPointerException("identity is null")
-                true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
-
     private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
@@ -168,6 +155,31 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         outState.putParcelable(KEY_CURRENT_POSITION, viewPager.currentItemAsHomeTab)
     }
 
+    override fun onSettingsClick(v: HomeToolbar) {
+        startActivity(SettingsActivity.getLaunchIntent(this))
+    }
+
+    override fun onShareClick(v: HomeToolbar) {
+        val region = regionManager.getRegion(this).displayName
+        val items = arrayOf(getString(R.string.x_rankings, region),
+                getString(R.string.x_tournaments, region))
+
+        AlertDialog.Builder(this)
+                .setItems(items) { dialog, which ->
+                    when (which) {
+                        0 -> shareUtils.shareRankings(this)
+                        1 -> shareUtils.shareTournaments(this)
+                        else -> throw RuntimeException("illegal which: $which")
+                    }
+                }
+                .setTitle(R.string.share)
+                .show()
+    }
+
+    override fun onViewAllPlayersClick(v: HomeToolbar) {
+        startActivity(PlayersActivity.getLaunchIntent(this))
+    }
+
     override fun onViewsBound() {
         super.onViewsBound()
 
@@ -179,6 +191,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         adapter = HomePagerAdapter()
         viewPager.adapter = adapter
+    }
+
+    override fun onViewYourselfClick(v: HomeToolbar) {
+        val identity = identityManager.identity ?: throw NullPointerException("identity is null")
+        startActivity(PlayerActivity.getLaunchIntent(this, identity,
+                regionManager.getRegion(this)))
     }
 
     private fun prepareMenuAndTitleAndSubtitle(layout: RankingsLayout?) {
@@ -216,44 +234,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         if (initialPosition != null) {
             viewPager.currentItemAsHomeTab = initialPosition
         }
-    }
-
-    private fun share() {
-        val region = regionManager.getRegion(this).displayName
-        val items = arrayOf(getString(R.string.x_rankings, region),
-                getString(R.string.x_tournaments, region))
-
-        AlertDialog.Builder(this)
-                .setItems(items) { dialog, which ->
-                    when (which) {
-                        0 -> shareUtils.shareRankings(this)
-                        1 -> shareUtils.shareTournaments(this)
-                        else -> throw RuntimeException("illegal which: $which")
-                    }
-                }
-                .setTitle(R.string.share)
-                .show()
-    }
-
-    private fun showActivityRequirements() {
-        val rankingCriteria = adapter.rankingsBundle?.rankingCriteria ?: return
-        val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
-        val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
-
-        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw RuntimeException("Region (${rankingCriteria.displayName}) is missing necessary data")
-        }
-
-        val numberFormat = NumberFormat.getIntegerInstance()
-        val tournaments = resources.getQuantityString(R.plurals.x_tournaments,
-                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended))
-        val days = resources.getQuantityString(R.plurals.x_days, rankingActivityDayLimit,
-                numberFormat.format(rankingActivityDayLimit))
-
-        AlertDialog.Builder(this)
-                .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
-                .setTitle(getString(R.string.x_activity_requirements, rankingCriteria.displayName))
-                .show()
     }
 
     override val showSearchIcon: Boolean

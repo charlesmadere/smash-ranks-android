@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
+import com.garpr.android.R
 import com.garpr.android.extensions.baseActivity
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
@@ -104,11 +105,11 @@ open class GarToolbar @JvmOverloads constructor(
 
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.GarToolbar)
-        showUpNavigation = ta.getBoolean(R.styleable.showUpNavigation, showUpNavigation)
-        subtitleText = ta.getText(R.styleable.toolbarSubtitleText)
-        subtitleTextColor = ta.getColor(R.styleable.toolbarSubtitleTextColor, subtitleTextColor)
-        titleText = ta.getText(R.styleable.toolbarTitleText)
-        titleTextColor = ta.getColor(R.styleable.toolbarTitleTextColor, titleTextColor)
+        showUpNavigation = ta.getBoolean(R.styleable.GarToolbar_showUpNavigation, showUpNavigation)
+        subtitleText = ta.getText(R.styleable.GarToolbar_toolbarSubtitleText)
+        subtitleTextColor = ta.getColor(R.styleable.GarToolbar_toolbarSubtitleTextColor, subtitleTextColor)
+        titleText = ta.getText(R.styleable.GarToolbar_toolbarTitleText)
+        titleTextColor = ta.getColor(R.styleable.GarToolbar_toolbarTitleTextColor, titleTextColor)
         ta.recycle()
 
         upNavigationButton.setOnClickListener {

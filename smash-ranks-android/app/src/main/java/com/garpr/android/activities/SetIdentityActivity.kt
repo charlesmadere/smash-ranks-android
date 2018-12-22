@@ -5,11 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
@@ -19,6 +16,7 @@ import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.models.AbsPlayer
 import com.garpr.android.models.PlayersBundle
@@ -26,19 +24,18 @@ import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.PlayerSelectionItemView
+import com.garpr.android.views.toolbars.SearchToolbar
+import com.garpr.android.views.toolbars.SetIdentityToolbar
 import kotlinx.android.synthetic.main.activity_set_identity.*
 import javax.inject.Inject
 
 class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
-        MenuItem.OnActionExpandListener, PlayerSelectionItemView.Listeners, SearchQueryHandle,
-        SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+        PlayerSelectionItemView.Listeners, Searchable, SearchQueryHandle, SearchToolbar.Listener,
+        SetIdentityToolbar.Listeners, SwipeRefreshLayout.OnRefreshListener {
 
     private var _selectedPlayer: AbsPlayer? = null
-    private var saveMenuItem: MenuItem? = null
-    private var searchMenuItem: MenuItem? = null
     private var playersBundle: PlayersBundle? = null
     private lateinit var adapter: PlayersSelectionAdapter
-    private var searchView: SearchView? = null
 
     @Inject
     protected lateinit var identityManager: IdentityManager
@@ -60,6 +57,9 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override val activityName = TAG
+
+    override val enableSaveIcon: Boolean
+        get() = showSaveIcon && _selectedPlayer != null
 
     override fun failure(errorCode: Int) {
         _selectedPlayer = null
@@ -93,11 +93,9 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
             return
         }
 
-        searchMenuItem?.let {
-            if (it.isActionViewExpanded) {
-                it.collapseActionView()
-                return
-            }
+        if (toolbar.isSearchFieldExpanded) {
+            toolbar.closeSearchField()
+            return
         }
 
         AlertDialog.Builder(this)
@@ -118,7 +116,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
             player
         }
 
-        refreshMenu()
+        toolbar.refresh()
         adapter.notifyDataSetChanged()
     }
 
@@ -131,56 +129,15 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         fetchPlayersBundle()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_set_identity, menu)
-
-        val searchMenuItem = menu.findItem(R.id.miSearch) ?: throw RuntimeException(
-                "searchMenuItem is null")
-        searchMenuItem.setOnActionExpandListener(this)
-        this.searchMenuItem = searchMenuItem
-
-        val searchView = searchMenuItem.actionView as SearchView
-        searchView.queryHint = getText(R.string.search_)
-        searchView.setOnQueryTextListener(this)
-        this.searchView = searchView
-
-        saveMenuItem = menu.findItem(R.id.miSave)
-        refreshMenu()
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-        search(null)
-        return true
-    }
-
-    override fun onMenuItemActionExpand(item: MenuItem) = true
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.miSave -> {
-                save()
-                true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
-
-    override fun onQueryTextChange(newText: String): Boolean {
-        search(newText)
-        return false
-    }
-
-    override fun onQueryTextSubmit(query: String): Boolean {
-        search(query)
-        return false
-    }
-
     override fun onRefresh() {
         fetchPlayersBundle()
+    }
+
+    override fun onSaveClick(v: SetIdentityToolbar) {
+        val selectedPlayer = _selectedPlayer ?: throw NullPointerException("_selectedPlayer is null")
+        identityManager.setIdentity(selectedPlayer, regionManager.getRegion(this))
+        setResult(Activity.RESULT_OK)
+        supportFinishAfterTransition()
     }
 
     override fun onViewsBound() {
@@ -194,36 +151,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         recyclerView.adapter = adapter
     }
 
-    private fun refreshMenu() {
-        val saveMenuItem = this.saveMenuItem
-        val searchMenuItem = this.searchMenuItem
-        val searchView = this.searchView
-
-        if (saveMenuItem == null || searchMenuItem == null || searchView == null) {
-            return
-        }
-
-        if (refreshLayout.isRefreshing || adapter.isEmpty || empty.visibility == View.VISIBLE
-                || error.visibility == View.VISIBLE) {
-            saveMenuItem.isEnabled = false
-            saveMenuItem.isVisible = false
-            searchMenuItem.collapseActionView()
-            searchMenuItem.isVisible = false
-        } else {
-            saveMenuItem.isEnabled = _selectedPlayer != null
-            saveMenuItem.isVisible = true
-            searchMenuItem.isVisible = true
-        }
-    }
-
-    private fun save() {
-        val selectedPlayer = _selectedPlayer ?: throw NullPointerException("_selectedPlayer is null")
-        identityManager.setIdentity(selectedPlayer, regionManager.getRegion(this))
-        setResult(Activity.RESULT_OK)
-        supportFinishAfterTransition()
-    }
-
-    private fun search(query: String?) {
+    override fun search(query: String?) {
         val players = playersBundle?.players
 
         if (players.isNullOrEmpty()) {
@@ -252,7 +180,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override val searchQuery: CharSequence?
-        get() = searchView?.query
+        get() = toolbar.searchQuery
 
     override val selectedPlayer: AbsPlayer?
         get() = _selectedPlayer ?: identityManager.identity
@@ -263,7 +191,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         error.visibility = View.GONE
         empty.visibility = View.VISIBLE
         refreshLayout.isRefreshing = false
-        refreshMenu()
+        toolbar.refresh()
     }
 
     private fun showError() {
@@ -272,7 +200,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         empty.visibility = View.GONE
         error.visibility = View.VISIBLE
         refreshLayout.isRefreshing = false
-        refreshMenu()
+        toolbar.refresh()
     }
 
     private fun showPlayersBundle() {
@@ -282,8 +210,15 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         recyclerView.visibility = View.VISIBLE
         refreshLayout.isRefreshing = false
         refreshLayout.isEnabled = false
-        refreshMenu()
+        toolbar.refresh()
     }
+
+    override val showSaveIcon: Boolean
+        get() = !refreshLayout.isRefreshing && !adapter.isEmpty && empty.visibility != View.VISIBLE
+                && error.visibility != View.VISIBLE && recyclerView.visibility == View.VISIBLE
+
+    override val showSearchIcon: Boolean
+        get() = showSaveIcon
 
     override fun success(`object`: PlayersBundle?) {
         _selectedPlayer = null

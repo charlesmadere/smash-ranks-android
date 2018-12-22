@@ -51,6 +51,7 @@ open class SearchToolbar @JvmOverloads constructor(
 
     override fun refresh() {
         super.refresh()
+        closeSearchField()
 
         if ((activity as? Listener)?.showSearchIcon == true) {
 

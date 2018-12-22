@@ -3,18 +3,19 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.TimberEntriesAdapter
+import com.garpr.android.views.toolbars.LogViewerToolbar
 import kotlinx.android.synthetic.main.activity_log_viewer.*
 
-class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
+class LogViewerActivity : BaseActivity(), LogViewerToolbar.Listeners,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: TimberEntriesAdapter
+
 
     companion object {
         private const val TAG = "LogViewerActivity"
@@ -23,6 +24,9 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override val activityName = TAG
+
+    override val enableClearButton: Boolean
+        get() = !adapter.isEmpty
 
     private fun fetchTimberEntries() {
         refreshLayout.isRefreshing = true
@@ -40,30 +44,16 @@ class LogViewerActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         refreshLayout.isRefreshing = false
     }
 
+    override fun onClearClick(v: LogViewerToolbar) {
+        timber.clearEntries()
+        fetchTimberEntries()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_viewer)
         fetchTimberEntries()
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_log_viewer, menu)
-        menu.findItem(R.id.miClearLog).isEnabled = !adapter.isEmpty
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.miClearLog -> {
-                timber.clearEntries()
-                fetchTimberEntries()
-                true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
 
     override fun onRefresh() {
         fetchTimberEntries()
