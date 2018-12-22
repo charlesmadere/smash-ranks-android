@@ -11,13 +11,15 @@ import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
-import com.garpr.android.extensions.baseActivity
+import com.garpr.android.activities.BaseActivity
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
+import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.statusBarColorCompat
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
@@ -113,7 +115,7 @@ open class GarToolbar @JvmOverloads constructor(
         ta.recycle()
 
         upNavigationButton.setOnClickListener {
-            baseActivity?.navigateUp()
+            upNavigate()
         }
     }
 
@@ -256,6 +258,24 @@ open class GarToolbar @JvmOverloads constructor(
 
     override fun refresh() {
         // intentionally empty, children can override
+    }
+
+    protected open fun upNavigate() {
+        val a = requireActivity()
+
+        when (a) {
+            is BaseActivity -> {
+                a.navigateUp()
+            }
+
+            is AppCompatActivity -> {
+                a.supportFinishAfterTransition()
+            }
+
+            else -> {
+                a.finish()
+            }
+        }
     }
 
 }
