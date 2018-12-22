@@ -77,6 +77,7 @@
         android:paddingStart="@dimen/root_padding_quarter"
         android:scaleType="centerInside"
         android:src="@drawable/ic_overflow_white_24dp"
+        android:visibility="gone"
         tools:visibility="visible" />
 
 </merge>

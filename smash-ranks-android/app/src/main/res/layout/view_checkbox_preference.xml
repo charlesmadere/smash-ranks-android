@@ -2,6 +2,7 @@
 <!--suppress XmlUnusedNamespaceDeclaration -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:parentTag="com.garpr.android.views.CheckablePreferenceView"
     tools:style="@style/PreferenceView">
 
@@ -11,11 +12,14 @@
 
     <TextView
         android:id="@+id/title"
+        app:layout_constraintEnd_toStartOf="@id/checkable"
         tools:text="@string/must_be_charging"
         style="@style/PreferenceViewTitle" />
 
     <TextView
         android:id="@+id/description"
+        app:layout_constraintEnd_toStartOf="@id/checkable"
+        app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="@string/rankings_polling_description"
         style="@style/PreferenceViewDescription" />
 

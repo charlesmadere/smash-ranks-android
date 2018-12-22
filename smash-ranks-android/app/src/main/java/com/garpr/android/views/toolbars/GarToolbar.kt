@@ -104,7 +104,7 @@ open class GarToolbar @JvmOverloads constructor(
         set(value) {
             field = value
             subtitleView.text = value
-            subtitleView.visibility = if (value.isNullOrBlank()) View.GONE else View.VISIBLE
+            refreshTitleContainerVisibility()
         }
 
     var subtitleTextColor: Int = textColorSecondary
@@ -117,7 +117,7 @@ open class GarToolbar @JvmOverloads constructor(
         set(value) {
             field = value
             titleView.text = value
-            titleView.visibility = if (value.isNullOrBlank()) View.GONE else View.VISIBLE
+            refreshTitleContainerVisibility()
         }
 
     var titleTextColor: Int = textColorPrimary
@@ -290,6 +290,12 @@ open class GarToolbar @JvmOverloads constructor(
 
     override fun refresh() {
         // intentionally empty, children can override
+    }
+
+    private fun refreshTitleContainerVisibility() {
+        titleView.visibility = if (hasTitleText) View.VISIBLE else View.GONE
+        subtitleView.visibility = if (hasSubtitleText) View.VISIBLE else View.GONE
+        showTitleContainer = titleView.visibility == View.VISIBLE || subtitleView.visibility == View.VISIBLE
     }
 
     protected open fun showOverflow() {
