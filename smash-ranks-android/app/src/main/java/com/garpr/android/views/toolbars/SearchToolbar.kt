@@ -14,7 +14,7 @@ import com.garpr.android.extensions.activity
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
-import kotlinx.android.synthetic.main.toolbar_search_items.view.*
+import kotlinx.android.synthetic.main.search_toolbar_items.view.*
 
 open class SearchToolbar @JvmOverloads constructor(
         context: Context,
@@ -26,7 +26,7 @@ open class SearchToolbar @JvmOverloads constructor(
     }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.toolbar_search_items, menuExpansionContainer)
+        LayoutInflater.from(context).inflate(R.layout.search_toolbar_items, menuExpansionContainer)
     }
 
     override fun afterTextChanged(s: Editable?) {
