@@ -73,6 +73,12 @@ open class GarToolbar @JvmOverloads constructor(
     }
     // end animation variables
 
+    protected var showTitleContainer: Boolean
+        get() = titleContainer.visibility == View.VISIBLE
+        set(value) {
+            titleContainer.visibility = if (value) View.VISIBLE else View.GONE
+        }
+
     var showUpNavigation: Boolean = false
         set(value) {
             field = value

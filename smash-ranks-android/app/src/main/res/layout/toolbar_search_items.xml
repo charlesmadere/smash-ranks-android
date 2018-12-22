@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:parentTag="android.widget.FrameLayout">
+    android:orientation="horizontal"
+    tools:parentTag="android.widget.LinearLayout">
 
     <EditText
         android:background="@null"
@@ -14,7 +15,9 @@
         android:importantForAutofill="no"
         android:inputType="text"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:maxLines="1"
         android:visibility="gone"
         tools:ignore="UnusedAttribute"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.toolbars.GarToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Toolbar">
+    tools:parentTag="com.garpr.android.views.toolbars.GarToolbar">
 
     <ImageButton
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -40,7 +40,7 @@
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="@dimen/text_size_large"
-            tools:text="@string/gar_pr" />
+            tools:text="@string/rankings" />
 
         <TextView
             android:ellipsize="end"
@@ -71,7 +71,6 @@
         android:contentDescription="@string/more"
         android:id="@+id/overflowButton"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:paddingEnd="@dimen/root_padding_quarter"
         android:paddingStart="@dimen/root_padding_quarter"
@@ -79,4 +78,4 @@
         android:src="@drawable/ic_overflow_white_24dp"
         tools:visibility="visible" />
 
-</com.garpr.android.views.toolbars.GarToolbar>
+</merge>

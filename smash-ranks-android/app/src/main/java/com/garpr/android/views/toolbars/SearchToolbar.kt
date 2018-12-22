@@ -5,12 +5,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
+import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.toolbar_search_items.view.*
 
 open class SearchToolbar @JvmOverloads constructor(
@@ -20,6 +23,10 @@ open class SearchToolbar @JvmOverloads constructor(
 
     interface Listener {
         val showSearchIcon: Boolean
+    }
+
+    init {
+        LayoutInflater.from(context).inflate(R.layout.toolbar_search_items, menuExpansionContainer)
     }
 
     override fun afterTextChanged(s: Editable?) {
@@ -32,7 +39,9 @@ open class SearchToolbar @JvmOverloads constructor(
 
     fun closeSearchField() {
         if (isSearchFieldExpanded) {
-            refresh()
+            searchField.visibility = View.GONE
+            showTitleContainer = true
+            refreshSearchIcon()
         }
     }
 
@@ -47,6 +56,27 @@ open class SearchToolbar @JvmOverloads constructor(
         return false
     }
 
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        searchIcon.setOnClickListener {
+            openSearchField()
+        }
+
+        searchField.addTextChangedListener(this)
+        searchField.setOnEditorActionListener(this)
+    }
+
+    private fun openSearchField() {
+        if (isSearchFieldExpanded) {
+            return
+        }
+
+        showTitleContainer = false
+        searchIcon.visibility = View.GONE
+        searchField.visibility = View.VISIBLE
+    }
+
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         // intentionally empty
     }
@@ -54,7 +84,9 @@ open class SearchToolbar @JvmOverloads constructor(
     override fun refresh() {
         super.refresh()
         closeSearchField()
+    }
 
+    private fun refreshSearchIcon() {
         if ((activity as? Listener)?.showSearchIcon == true) {
             searchIcon.visibility = View.VISIBLE
         } else {
