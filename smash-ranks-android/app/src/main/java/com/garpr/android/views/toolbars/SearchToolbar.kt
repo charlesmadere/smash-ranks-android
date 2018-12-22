@@ -5,11 +5,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.garpr.android.extensions.activity
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
+import kotlinx.android.synthetic.main.toolbar_search_items.view.*
 
 open class SearchToolbar @JvmOverloads constructor(
         context: Context,
@@ -30,12 +32,12 @@ open class SearchToolbar @JvmOverloads constructor(
 
     fun closeSearchField() {
         if (isSearchFieldExpanded) {
-            TODO()
+            refresh()
         }
     }
 
     val isSearchFieldExpanded: Boolean
-        get() = TODO()
+        get() = searchField.visibility == View.VISIBLE
 
     override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -54,14 +56,14 @@ open class SearchToolbar @JvmOverloads constructor(
         closeSearchField()
 
         if ((activity as? Listener)?.showSearchIcon == true) {
-
+            searchIcon.visibility = View.VISIBLE
         } else {
-
+            searchIcon.visibility = View.GONE
         }
     }
 
     override val searchQuery: CharSequence?
-        get() = TODO()
+        get() = searchField.text
 
     override fun upNavigate() {
         if (isSearchFieldExpanded) {
