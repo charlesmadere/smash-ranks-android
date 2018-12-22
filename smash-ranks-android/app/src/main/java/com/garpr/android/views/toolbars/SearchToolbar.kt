@@ -23,7 +23,7 @@ open class SearchToolbar @JvmOverloads constructor(
     }
 
     override fun afterTextChanged(s: Editable?) {
-        (activity as? Searchable)?.search(s?.toString())
+        (activity as? Searchable)?.search(searchQuery?.toString())
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
