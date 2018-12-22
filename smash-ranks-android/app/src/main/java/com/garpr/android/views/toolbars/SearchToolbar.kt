@@ -75,6 +75,7 @@ open class SearchToolbar @JvmOverloads constructor(
         showTitleContainer = false
         searchIcon.visibility = View.GONE
         searchField.visibility = View.VISIBLE
+        searchField.requestFocus()
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
