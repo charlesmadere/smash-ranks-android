@@ -44,6 +44,7 @@ import com.garpr.android.models.AbsPlayer;
 import com.garpr.android.models.AbsRegion;
 import com.garpr.android.models.AbsTournament;
 import com.garpr.android.models.Match;
+import com.garpr.android.models.RankedPlayer;
 import com.garpr.android.models.Region;
 import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
@@ -192,6 +193,7 @@ public abstract class BaseAppModule {
                 .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_SERIALIZER())
                 .registerTypeAdapter(AbsTournament.class, AbsTournament.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(Match.class, Match.Companion.getJSON_DESERIALIZER())
+                .registerTypeAdapter(RankedPlayer.class, RankedPlayer.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_DESERIALIZER())
                 .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_SERIALIZER())
                 .create();

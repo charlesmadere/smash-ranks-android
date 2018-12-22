@@ -6,6 +6,7 @@ import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readInteger
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeInteger
+import com.google.gson.JsonDeserializer
 import com.google.gson.annotations.SerializedName
 
 class RankedPlayer(
@@ -29,6 +30,29 @@ class RankedPlayer(
                     it.readInt(),
                     it.readInteger()
             )
+        }
+
+        val JSON_DESERIALIZER = JsonDeserializer<RankedPlayer> { json, typeOfT, context ->
+            if (json == null || json.isJsonNull) {
+                return@JsonDeserializer null
+            }
+
+            val jsonObject = json.asJsonObject
+
+            val previousRank = if (jsonObject.has("previous_rank")) {
+                val previousRankJson = jsonObject["previous_rank"]
+
+                if (previousRankJson == null || previousRankJson.isJsonNull) {
+                    Int.MIN_VALUE
+                } else {
+                    previousRankJson.asInt
+                }
+            } else {
+                null
+            }
+
+            RankedPlayer(jsonObject["id"].asString, jsonObject["name"].asString,
+                    jsonObject["rating"].asFloat, jsonObject["rank"].asInt, previousRank)
         }
     }
 
