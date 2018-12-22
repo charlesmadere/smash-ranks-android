@@ -3,8 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
@@ -99,23 +97,22 @@ class RankingItemView @JvmOverloads constructor(
             previousRankView.clear()
             previousRankView.visibility = View.GONE
         } else {
-            @DrawableRes val drawableResId: Int
-            @ColorRes val tintResId: Int
-
             when (rankInfo) {
                 PreviousRankUtils.Info.DECREASE -> {
-                    drawableResId = R.drawable.ic_arrow_downward_white_18dp
-                    tintResId = R.color.lose
+                    previousRankView.setTintedImageResource(R.drawable.ic_arrow_downward_white_18dp,
+                            ContextCompat.getColor(context, R.color.lose))
                 }
 
                 PreviousRankUtils.Info.INCREASE -> {
-                    drawableResId = R.drawable.ic_arrow_upward_white_18dp
-                    tintResId = R.color.win
+                    previousRankView.setTintedImageResource(R.drawable.ic_arrow_upward_white_18dp,
+                            ContextCompat.getColor(context, R.color.win))
+                }
+
+                PreviousRankUtils.Info.NO_CHANGE -> {
+                    previousRankView.clear()
                 }
             }
 
-            previousRankView.setTintedImageResource(drawableResId,
-                    ContextCompat.getColor(context, tintResId))
             previousRankView.visibility = View.VISIBLE
         }
 

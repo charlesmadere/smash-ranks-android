@@ -7,7 +7,7 @@ interface PreviousRankUtils {
     fun getRankInfo(rankedPlayer: RankedPlayer?): Info?
 
     enum class Info {
-        DECREASE, INCREASE
+        DECREASE, INCREASE, NO_CHANGE
     }
 
 }
