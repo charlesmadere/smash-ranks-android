@@ -44,6 +44,8 @@
         <com.garpr.android.views.toolbars.SearchToolbar
             android:id="@+id/toolbar"
             app:showUpNavigation="true"
+            app:toolbarSubtitleTextColor="@color/transparent"
+            app:toolbarTitleTextColor="@color/transparent"
             style="@style/Toolbar" />
 
         <com.garpr.android.views.TournamentTabsView
