@@ -64,14 +64,12 @@ class HomeToolbar @JvmOverloads constructor(
 
     override fun onIdentityChange(identityManager: IdentityManager) {
         if (isAlive) {
-            closeSearchField()
             refresh()
         }
     }
 
     override fun onRegionChange(regionManager: RegionManager) {
         if (isAlive) {
-            closeSearchField()
             refresh()
         }
     }
@@ -81,8 +79,6 @@ class HomeToolbar @JvmOverloads constructor(
 
         val presentation = homeToolbarManager.getPresentation(
                 (activity as? RankingCriteriaHandle)?.rankingCriteria)
-
-        TODO()
 
         if (presentation.isActivityRequirementsVisible) {
 

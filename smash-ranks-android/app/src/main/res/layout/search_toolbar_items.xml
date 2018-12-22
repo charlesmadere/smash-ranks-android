@@ -19,9 +19,8 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:maxLines="1"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute"
-        tools:visibility="visible" />
+        android:visibility="invisible"
+        tools:ignore="UnusedAttribute" />
 
     <ImageButton
         android:background="?attr/selectableItemBackgroundBorderless"
