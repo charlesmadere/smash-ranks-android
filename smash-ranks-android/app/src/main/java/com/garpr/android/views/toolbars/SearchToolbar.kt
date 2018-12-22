@@ -63,4 +63,12 @@ open class SearchToolbar @JvmOverloads constructor(
     override val searchQuery: CharSequence?
         get() = TODO()
 
+    override fun upNavigate() {
+        if (isSearchFieldExpanded) {
+            closeSearchField()
+        } else {
+            super.upNavigate()
+        }
+    }
+
 }
