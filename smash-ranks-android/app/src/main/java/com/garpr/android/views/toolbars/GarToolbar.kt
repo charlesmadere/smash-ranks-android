@@ -7,6 +7,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
@@ -126,6 +127,9 @@ open class GarToolbar @JvmOverloads constructor(
         }
 
     init {
+        @Suppress("LeakingThis")
+        LayoutInflater.from(context).inflate(R.layout.gar_toolbar, this)
+
         val ta = context.obtainStyledAttributes(attrs, R.styleable.GarToolbar)
         showUpNavigation = ta.getBoolean(R.styleable.GarToolbar_showUpNavigation, showUpNavigation)
         subtitleText = ta.getText(R.styleable.GarToolbar_toolbarSubtitleText)
