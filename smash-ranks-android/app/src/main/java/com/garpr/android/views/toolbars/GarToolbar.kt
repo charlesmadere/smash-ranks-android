@@ -41,6 +41,14 @@ open class GarToolbar @JvmOverloads constructor(
         resources.getLong(android.R.integer.config_shortAnimTime)
     }
 
+    private val colorPrimary: Int by lazy {
+        context.getAttrColor(R.attr.colorPrimary)
+    }
+
+    private val colorPrimaryDark: Int by lazy {
+        context.getAttrColor(R.attr.colorPrimaryDark)
+    }
+
     private val textColorPrimary: Int by lazy {
         context.getAttrColor(android.R.attr.textColorPrimary)
     }
@@ -122,8 +130,8 @@ open class GarToolbar @JvmOverloads constructor(
     }
 
     fun animateToPaletteColors(window: Window, palette: Palette?) {
-        val toolbarBackgroundFallback = context.getAttrColor(R.attr.colorPrimary)
-        val statusBarBackgroundFallback = context.getAttrColor(R.attr.colorPrimaryDark)
+        val toolbarBackgroundFallback = colorPrimary
+        val statusBarBackgroundFallback = colorPrimaryDark
 
         val swatch = palette?.darkVibrantSwatch ?: palette?.darkMutedSwatch
 
@@ -271,19 +279,19 @@ open class GarToolbar @JvmOverloads constructor(
     }
 
     protected open fun upNavigate() {
-        val a = requireActivity()
+        val activity = requireActivity()
 
-        when (a) {
+        when (activity) {
             is BaseActivity -> {
-                a.navigateUp()
+                activity.navigateUp()
             }
 
             is AppCompatActivity -> {
-                a.supportFinishAfterTransition()
+                activity.supportFinishAfterTransition()
             }
 
             else -> {
-                a.finish()
+                activity.finish()
             }
         }
     }
