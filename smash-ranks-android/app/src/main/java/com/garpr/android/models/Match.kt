@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readAbsPlayer
 import com.garpr.android.extensions.readAbsTournament
+import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
 import com.garpr.android.extensions.writeAbsTournament
 import com.garpr.android.misc.MiscUtils
@@ -22,7 +23,7 @@ class Match(
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { Match(it.readParcelable(MatchResult::class.java.classLoader),
+        val CREATOR = createParcel { Match(it.requireParcelable(MatchResult::class.java.classLoader),
                 it.readAbsPlayer(), it.readAbsTournament()) }
 
         val CHRONOLOGICAL_ORDER = Comparator<Match> { o1, o2 ->
