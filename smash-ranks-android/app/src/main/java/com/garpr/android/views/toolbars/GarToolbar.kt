@@ -119,10 +119,6 @@ open class GarToolbar @JvmOverloads constructor(
         titleText = ta.getText(R.styleable.GarToolbar_toolbarTitleText)
         titleTextColor = ta.getColor(R.styleable.GarToolbar_toolbarTitleTextColor, titleTextColor)
         ta.recycle()
-
-        upNavigationButton.setOnClickListener {
-            upNavigate()
-        }
     }
 
     fun animateToPaletteColors(window: Window, palette: Palette?) {
@@ -260,6 +256,14 @@ open class GarToolbar @JvmOverloads constructor(
         }
 
         refresh()
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        upNavigationButton.setOnClickListener {
+            upNavigate()
+        }
     }
 
     override fun refresh() {
