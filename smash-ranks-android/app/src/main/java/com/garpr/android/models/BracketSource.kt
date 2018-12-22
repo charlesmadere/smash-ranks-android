@@ -32,13 +32,9 @@ enum class BracketSource(
                 return null
             }
 
-            values().forEach {
-                if (host.endsWith(it.host, true)) {
-                    return it
-                }
+            return values().firstOrNull {
+                host.endsWith(it.host, true)
             }
-
-            return null
         }
     }
 
