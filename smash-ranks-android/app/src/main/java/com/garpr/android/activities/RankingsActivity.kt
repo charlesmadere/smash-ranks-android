@@ -6,7 +6,6 @@ import android.os.Bundle
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.models.Region
 import kotlinx.android.synthetic.main.activity_rankings.*
