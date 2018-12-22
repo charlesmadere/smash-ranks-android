@@ -90,7 +90,7 @@ open class GarToolbar @JvmOverloads constructor(
             subtitleView.setTextColor(value)
         }
 
-    var titleText: CharSequence? = resources.getText(R.string.gar_pr)
+    var titleText: CharSequence? = null
         set(value) {
             field = value
             titleView.text = value

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.GarToolbar
+    <com.garpr.android.views.toolbars.LogViewerToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:toolbarTitleText="@string/log_viewer"

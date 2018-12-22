@@ -43,6 +43,7 @@
 
         <com.garpr.android.views.toolbars.SearchToolbar
             android:id="@+id/toolbar"
+            app:showUpNavigation="true"
             style="@style/Toolbar" />
 
         <com.garpr.android.views.TournamentTabsView

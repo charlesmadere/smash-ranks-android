@@ -7,6 +7,8 @@
 
     <com.garpr.android.views.toolbars.GarToolbar
         android:id="@+id/toolbar"
+        app:showUpNavigation="true"
+        app:toolbarTitleText="@string/head_to_head"
         style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout

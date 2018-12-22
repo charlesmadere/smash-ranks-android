@@ -118,6 +118,15 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
                 ApiCall(this))
     }
 
+    override fun onBackPressed() {
+        if (toolbar.isSearchFieldExpanded) {
+            toolbar.closeSearchField()
+            return
+        }
+
+        super.onBackPressed()
+    }
+
     override fun onClick(v: MatchItemView) {
         val player = playerMatchesBundle?.fullPlayer ?: return
         val match = v.match ?: return

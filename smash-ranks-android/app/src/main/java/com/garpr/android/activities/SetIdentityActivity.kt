@@ -88,13 +88,13 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override fun onBackPressed() {
-        if (_selectedPlayer == null) {
-            super.onBackPressed()
+        if (toolbar.isSearchFieldExpanded) {
+            toolbar.closeSearchField()
             return
         }
 
-        if (toolbar.isSearchFieldExpanded) {
-            toolbar.closeSearchField()
+        if (_selectedPlayer == null) {
+            super.onBackPressed()
             return
         }
 
