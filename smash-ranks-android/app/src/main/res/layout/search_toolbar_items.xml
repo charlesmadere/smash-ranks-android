@@ -9,6 +9,7 @@
     <EditText
         android:background="@null"
         android:fontFamily="@font/nunito_regular"
+        android:gravity="center_vertical"
         android:hint="@string/search_"
         android:id="@+id/searchField"
         android:imeOptions="actionSearch"
