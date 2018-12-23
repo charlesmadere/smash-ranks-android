@@ -50,7 +50,9 @@ class PlayersActivity : BaseActivity(), PlayersLayout.Listener, Searchable, Sear
         toolbar.subtitleText = regionManager.getRegion(this).displayName
     }
 
-    override fun onPlayersBundleFetched(layout: PlayersLayout) = invalidateOptionsMenu()
+    override fun onPlayersBundleFetched(layout: PlayersLayout) {
+        toolbar.refresh()
+    }
 
     override fun search(query: String?) {
         playersLayout.search(query)

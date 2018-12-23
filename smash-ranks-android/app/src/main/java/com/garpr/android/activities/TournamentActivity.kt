@@ -166,7 +166,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         }
 
         _tournamentMode = tournamentMode
-        invalidateOptionsMenu()
+        toolbar.refresh()
 
         val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
         adapter.set(tournamentMode, tournament)
@@ -267,7 +267,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private fun showError(errorCode: Int = Constants.ERROR_CODE_UNKNOWN) {
         recyclerView.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
-        invalidateOptionsMenu()
+        toolbar.refresh()
         refreshLayout.isRefreshing = false
     }
 
@@ -279,7 +279,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         recyclerView.visibility = View.VISIBLE
 
         setTitleAndSubtitle()
-        invalidateOptionsMenu()
+        toolbar.refresh()
 
         refreshLayout.isRefreshing = false
         refreshLayout.isEnabled = false

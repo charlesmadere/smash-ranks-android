@@ -207,7 +207,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             getString(R.string.updated_x, it.time.shortForm)
         } ?: getString(region.endpoint.title)
 
-        invalidateOptionsMenu()
+        toolbar.refresh()
     }
 
     override val rankingCriteria: RankingCriteria?

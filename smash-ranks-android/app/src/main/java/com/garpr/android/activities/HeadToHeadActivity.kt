@@ -32,6 +32,8 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private var headToHead: HeadToHead? = null
     private lateinit var adapter: HeadToHeadAdapter
 
+    private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
+
     @Inject
     protected lateinit var regionManager: RegionManager
 
@@ -107,8 +109,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         fetchHeadToHead()
     }
 
-    private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
-
     override fun onRefresh() {
         fetchHeadToHead()
     }
@@ -139,7 +139,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         }
 
         refreshLayout.isRefreshing = false
-        invalidateOptionsMenu()
+        toolbar.refresh()
     }
 
     private fun showError(errorCode: Int) {
@@ -147,8 +147,8 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         empty.visibility = View.GONE
         recyclerView.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
-        invalidateOptionsMenu()
         refreshLayout.isRefreshing = false
+        toolbar.refresh()
     }
 
     override fun success(`object`: HeadToHead?) {

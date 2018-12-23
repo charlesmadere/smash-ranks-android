@@ -241,7 +241,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         }
 
         setTitleAndSubtitle()
-        invalidateOptionsMenu()
+        toolbar.refresh()
 
         refreshLayout.isRefreshing = false
     }
@@ -252,7 +252,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         empty.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
         refreshLayout.isRefreshing = false
-        invalidateOptionsMenu()
+        toolbar.refresh()
     }
 
     override val showSearchIcon: Boolean

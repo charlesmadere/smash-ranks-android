@@ -26,7 +26,7 @@ class LogViewerActivity : BaseActivity(), LogViewerToolbar.Listeners,
     override val activityName = TAG
 
     override val enableClearButton: Boolean
-        get() = !adapter.isEmpty
+        get() = !refreshLayout.isRefreshing && !adapter.isEmpty
 
     private fun fetchTimberEntries() {
         refreshLayout.isRefreshing = true
@@ -40,8 +40,8 @@ class LogViewerActivity : BaseActivity(), LogViewerToolbar.Listeners,
             recyclerView.visibility = View.VISIBLE
         }
 
-        invalidateOptionsMenu()
         refreshLayout.isRefreshing = false
+        toolbar.refresh()
     }
 
     override fun onClearClick(v: LogViewerToolbar) {
