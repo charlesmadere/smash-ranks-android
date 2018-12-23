@@ -39,6 +39,7 @@ open class SearchToolbar @JvmOverloads constructor(
 
     fun closeSearchField() {
         if (isSearchFieldExpanded) {
+            searchField.clearFocus()
             searchField.visibility = View.INVISIBLE
             showTitleContainer = true
             refreshSearchIcon()
