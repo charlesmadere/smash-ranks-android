@@ -21,6 +21,9 @@ open class SearchToolbar @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : GarToolbar(context, attrs), SearchQueryHandle, TextView.OnEditorActionListener, TextWatcher {
 
+    private val wasShowingUpNavigation = showUpNavigation
+
+
     interface Listener {
         val showSearchIcon: Boolean
     }
@@ -42,6 +45,7 @@ open class SearchToolbar @JvmOverloads constructor(
             searchField.clearFocus()
             searchField.visibility = View.INVISIBLE
             showTitleContainer = true
+            showUpNavigation = wasShowingUpNavigation
             refreshSearchIcon()
         }
     }
@@ -75,6 +79,7 @@ open class SearchToolbar @JvmOverloads constructor(
 
         showTitleContainer = false
         searchIcon.visibility = View.GONE
+        showUpNavigation = true
         searchField.visibility = View.VISIBLE
         searchField.requestFocus()
     }
