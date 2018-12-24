@@ -129,7 +129,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        toolbar.closeSearchField()
         viewPager.currentItemAsHomeTab = item.itemIdAsHomeTab
         return true
     }
