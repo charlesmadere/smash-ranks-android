@@ -12,7 +12,6 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentActivity
-import com.garpr.android.activities.BaseActivity
 import com.garpr.android.dagger.AppComponent
 import com.garpr.android.dagger.AppComponentHandle
 
@@ -66,9 +65,6 @@ val Context.appComponent: AppComponent
 
         throw RuntimeException("Context ($this) has no AppComponentHandle")
     }
-
-val Context.baseActivity: BaseActivity?
-    get() = activity as? BaseActivity
 
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
