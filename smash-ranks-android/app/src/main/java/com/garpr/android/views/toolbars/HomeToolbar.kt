@@ -2,12 +2,19 @@ package com.garpr.android.views.toolbars
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.widget.PopupMenu
+import androidx.core.widget.PopupMenuCompat
+import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.HomeToolbarManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingCriteriaHandle
+import kotlinx.android.synthetic.main.gar_toolbar.view.*
+import kotlinx.android.synthetic.main.home_toolbar_items.view.*
 import javax.inject.Inject
 
 class HomeToolbar @JvmOverloads constructor(
@@ -15,6 +22,8 @@ class HomeToolbar @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SearchToolbar(context, attrs), IdentityManager.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
+
+    private val overflowPopupMenu: PopupMenu
 
     @Inject
     protected lateinit var homeToolbarManager: HomeToolbarManager
@@ -32,6 +41,13 @@ class HomeToolbar @JvmOverloads constructor(
         fun onShareClick(v: HomeToolbar)
         fun onViewAllPlayersClick(v: HomeToolbar)
         fun onViewYourselfClick(v: HomeToolbar)
+    }
+
+    init {
+        LayoutInflater.from(context).inflate(R.layout.home_toolbar_items, menuExpansionContainer)
+
+        overflowPopupMenu = PopupMenu(context, overflowButton)
+        overflowButton.setOnTouchListener(PopupMenuCompat.getDragToOpenListener(overflowPopupMenu))
     }
 
     override fun onAttachedToWindow() {
@@ -60,6 +76,10 @@ class HomeToolbar @JvmOverloads constructor(
             identityManager.addListener(this)
             regionManager.addListener(this)
         }
+
+        overflowButton.setOnClickListener {
+            overflowPopupMenu.show()
+        }
     }
 
     override fun onIdentityChange(identityManager: IdentityManager) {
@@ -79,18 +99,51 @@ class HomeToolbar @JvmOverloads constructor(
 
         val presentation = homeToolbarManager.getPresentation(
                 (activity as? RankingCriteriaHandle)?.rankingCriteria)
+        overflowPopupMenu.menu.clear()
+
+        overflowPopupMenu.menu.add(R.string.share)
+                .setOnMenuItemClickListener(shareClickListener)
 
         if (presentation.isActivityRequirementsVisible) {
-
-        } else {
-
+            overflowPopupMenu.menu.add(R.string.activity_requirements)
+                    .setOnMenuItemClickListener(activityRequirementsClickListener)
         }
+
+        overflowPopupMenu.menu.add(R.string.view_all_players)
+                .setOnMenuItemClickListener(viewAllPlayersClickListener)
 
         if (presentation.isViewYourselfVisible) {
-
-        } else {
-
+            overflowPopupMenu.menu.add(R.string.view_yourself)
+                    .setOnMenuItemClickListener(viewYourselfClickListener)
         }
+
+        overflowPopupMenu.menu.add(R.string.settings)
+                .setOnMenuItemClickListener(settingsClickListener)
+    }
+
+    private val activityRequirementsClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners)?.onActivityRequirementsClick(this)
+        true
+    }
+
+    private val shareClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners)?.onShareClick(this)
+        true
+    }
+
+    private val viewAllPlayersClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners)?.onViewAllPlayersClick(this)
+        true
+    }
+
+    private val viewYourselfClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners)?.onViewYourselfClick(this)
+        true
+    }
+
+    private val settingsClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners)?.onSettingsClick(this)
+        true
     }
 
 }

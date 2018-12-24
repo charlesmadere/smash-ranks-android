@@ -53,7 +53,7 @@ open class SearchToolbar @JvmOverloads constructor(
     val isSearchFieldExpanded: Boolean
         get() = searchField.visibility == View.VISIBLE
 
-    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
+    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             (activity as? Searchable)?.search(searchQuery?.toString())
         }
@@ -91,6 +91,7 @@ open class SearchToolbar @JvmOverloads constructor(
     override fun refresh() {
         super.refresh()
         closeSearchField()
+        refreshSearchIcon()
     }
 
     private fun refreshSearchIcon() {

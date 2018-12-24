@@ -82,12 +82,6 @@ open class GarToolbar @JvmOverloads constructor(
     }
     // end animation variables
 
-    protected var showOverflowButton: Boolean
-        get() = overflowButton.visibility == View.VISIBLE
-        set(value) {
-            overflowButton.visibility = if (value) View.VISIBLE else View.GONE
-        }
-
     protected var showTitleContainer: Boolean
         get() = titleContainer.visibility == View.VISIBLE
         set(value) {
@@ -279,10 +273,6 @@ open class GarToolbar @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        overflowButton.setOnClickListener {
-            showOverflow()
-        }
-
         upNavigationButton.setOnClickListener {
             upNavigate()
         }
@@ -296,10 +286,6 @@ open class GarToolbar @JvmOverloads constructor(
         titleView.visibility = if (hasTitleText) View.VISIBLE else View.GONE
         subtitleView.visibility = if (hasSubtitleText) View.VISIBLE else View.GONE
         showTitleContainer = titleView.visibility == View.VISIBLE || subtitleView.visibility == View.VISIBLE
-    }
-
-    protected open fun showOverflow() {
-        // intentionally empty, children can override
     }
 
     protected open fun upNavigate() {
