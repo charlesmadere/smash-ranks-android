@@ -10,9 +10,9 @@ import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.setTintedImageResource
+import com.garpr.android.extensions.truncate
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.PreviousRankUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.models.RankedPlayer
@@ -118,7 +118,7 @@ class RankingItemView @JvmOverloads constructor(
 
         rank.text = numberFormat.format(player.rank)
         name.text = player.name
-        rating.text = MiscUtils.truncateFloat(player.rating)
+        rating.text = player.rating.truncate()
     }
 
     override fun setContent(content: RankedPlayer) {

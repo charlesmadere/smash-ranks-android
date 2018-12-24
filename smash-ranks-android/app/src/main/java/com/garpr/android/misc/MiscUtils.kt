@@ -2,17 +2,8 @@ package com.garpr.android.misc
 
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
-import java.text.DecimalFormat
-import java.text.NumberFormat
 
 object MiscUtils {
-
-    private val DECIMAL_FORMAT: NumberFormat = DecimalFormat("#.###")
-
-
-    init {
-        DECIMAL_FORMAT.minimumFractionDigits = 3
-    }
 
     @ColorInt
     fun brightenOrDarkenColor(@ColorInt color: Int, factor: Float): Int {
@@ -53,10 +44,6 @@ object MiscUtils {
         val hsl = FloatArray(3)
         ColorUtils.colorToHSL(color, hsl)
         return hsl[2] >= lightness
-    }
-
-    fun truncateFloat(value: Float): String {
-        return DECIMAL_FORMAT.format(value.toDouble())
     }
 
 }

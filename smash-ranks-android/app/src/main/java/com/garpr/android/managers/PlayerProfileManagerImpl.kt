@@ -3,9 +3,9 @@ package com.garpr.android.managers
 import android.app.Application
 import android.text.TextUtils
 import com.garpr.android.R
+import com.garpr.android.extensions.truncate
 import com.garpr.android.managers.PlayerProfileManager.Presentation
 import com.garpr.android.misc.Constants
-import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.models.AbsRegion
 import com.garpr.android.models.FullPlayer
@@ -29,11 +29,9 @@ class PlayerProfileManagerImpl(
         val rating = player.ratings?.get(region.id)
         if (rating != null) {
             presentation = presentation.copy(
-                    rating = application.getString(R.string.rating_x,
-                            MiscUtils.truncateFloat(rating.rating)),
+                    rating = application.getString(R.string.rating_x, rating.rating.truncate()),
                     unadjustedRating = application.getString(R.string.unadjusted_x_y,
-                            MiscUtils.truncateFloat(rating.mu),
-                            MiscUtils.truncateFloat(rating.sigma)))
+                            rating.mu.truncate(), rating.sigma.truncate()))
         }
 
         val uniqueAliases = player.uniqueAliases

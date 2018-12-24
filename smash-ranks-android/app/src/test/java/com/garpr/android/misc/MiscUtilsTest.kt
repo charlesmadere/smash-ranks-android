@@ -66,34 +66,4 @@ class MiscUtilsTest : BaseTest() {
         assertTrue(MiscUtils.isColorLightness(Color.WHITE, 1f))
     }
 
-    @Test
-    fun testTruncateFloatImytRanking() {
-        val value = MiscUtils.truncateFloat(31.384343063802955f)
-        assertEquals("31.384", value)
-    }
-
-    @Test
-    fun testTruncateFloatMaxValue() {
-        val value = MiscUtils.truncateFloat(Float.MAX_VALUE)
-        assertEquals("340282346638528860000000000000000000000.000", value)
-    }
-
-    @Test
-    fun testTruncateFloatMinValue() {
-        val value = MiscUtils.truncateFloat(Float.MIN_VALUE)
-        assertEquals("0.000", value)
-    }
-
-    @Test
-    fun testTruncateFloatPi() {
-        val value = MiscUtils.truncateFloat(Math.PI.toFloat())
-        assertEquals("3.142", value)
-    }
-
-    @Test
-    fun testTruncateFloatSfatRanking() {
-        val value = MiscUtils.truncateFloat(41.906930141097256f)
-        assertEquals("41.907", value)
-    }
-
 }
