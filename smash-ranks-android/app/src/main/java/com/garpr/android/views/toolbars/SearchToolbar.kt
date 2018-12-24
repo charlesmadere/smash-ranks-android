@@ -11,6 +11,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.clear
+import com.garpr.android.extensions.hideKeyboard
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
@@ -42,16 +44,21 @@ open class SearchToolbar @JvmOverloads constructor(
 
     fun closeSearchField() {
         if (isSearchFieldExpanded) {
-            searchField.clearFocus()
-            searchField.visibility = View.INVISIBLE
-            showTitleContainer = true
-            showUpNavigation = wasShowingUpNavigation
-            refreshSearchIcon()
+            onCloseSearchField()
         }
     }
 
     val isSearchFieldExpanded: Boolean
         get() = searchField.visibility == View.VISIBLE
+
+    protected open fun onCloseSearchField() {
+        activity?.hideKeyboard()
+        searchField.clear()
+        searchField.visibility = View.INVISIBLE
+        showUpNavigation = wasShowingUpNavigation
+        showTitleContainer = true
+        refreshSearchIcon()
+    }
 
     override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -72,16 +79,18 @@ open class SearchToolbar @JvmOverloads constructor(
         searchField.setOnEditorActionListener(this)
     }
 
-    private fun openSearchField() {
-        if (isSearchFieldExpanded) {
-            return
-        }
-
+    protected open fun onOpenSearchField() {
         showTitleContainer = false
         searchIcon.visibility = View.GONE
         showUpNavigation = true
         searchField.visibility = View.VISIBLE
         searchField.requestFocus()
+    }
+
+    private fun openSearchField() {
+        if (!isSearchFieldExpanded) {
+            onOpenSearchField()
+        }
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

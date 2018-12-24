@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.PopupMenu
 import androidx.core.widget.PopupMenuCompat
 import com.garpr.android.R
@@ -61,6 +62,11 @@ class HomeToolbar @JvmOverloads constructor(
         regionManager.addListener(this)
     }
 
+    override fun onCloseSearchField() {
+        super.onCloseSearchField()
+        overflowButton.visibility = View.VISIBLE
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
@@ -88,6 +94,11 @@ class HomeToolbar @JvmOverloads constructor(
         }
     }
 
+    override fun onOpenSearchField() {
+        super.onOpenSearchField()
+        overflowButton.visibility = View.GONE
+    }
+
     override fun onRegionChange(regionManager: RegionManager) {
         if (isAlive) {
             refresh()
@@ -99,8 +110,8 @@ class HomeToolbar @JvmOverloads constructor(
 
         val presentation = homeToolbarManager.getPresentation(
                 (activity as? RankingCriteriaHandle)?.rankingCriteria)
-        overflowPopupMenu.menu.clear()
 
+        overflowPopupMenu.menu.clear()
         overflowPopupMenu.menu.add(R.string.share)
                 .setOnMenuItemClickListener(shareClickListener)
 
