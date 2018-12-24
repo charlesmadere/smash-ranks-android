@@ -15,6 +15,11 @@ class NumberTest : BaseTest() {
     }
 
     @Test
+    fun testTruncateE() {
+        assertEquals("2.718", Math.E.truncate())
+    }
+
+    @Test
     fun testTruncateDoubleMinValue() {
         assertEquals("0.000", Double.MIN_VALUE.truncate())
     }
