@@ -68,17 +68,21 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable, Sea
         get() = rankingsBundle?.rankingCriteria
 
     override fun refresh() {
-        pages.forEach {
-            if ((it.value as? Heartbeat)?.isAlive == true) {
-                (it.value as? Refreshable)?.refresh()
+        pages.values.forEach {
+            val view = it?.get()
+
+            if ((view as? Heartbeat)?.isAlive == true) {
+                (view as? Refreshable)?.refresh()
             }
         }
     }
 
     override fun search(query: String?) {
-        pages.forEach {
-            if ((it.value as? Heartbeat)?.isAlive == true) {
-                (it.value as? Searchable)?.search(query)
+        pages.values.forEach {
+            val view = it?.get()
+
+            if ((view as? Heartbeat)?.isAlive == true) {
+                (view as? Searchable)?.search(query)
             }
         }
     }
