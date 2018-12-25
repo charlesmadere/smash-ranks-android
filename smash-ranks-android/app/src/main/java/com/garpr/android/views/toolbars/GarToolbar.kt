@@ -9,9 +9,9 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.view.Window
-import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
@@ -35,7 +35,7 @@ private const val TOO_LIGHT_DARKEN_FACTOR = 0.75f
 open class GarToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LinearLayout(context, attrs), Heartbeat, Refreshable {
+) : ConstraintLayout(context, attrs), Heartbeat, Refreshable {
 
     // begin animation variables
     private val animationDuration: Long by lazy {

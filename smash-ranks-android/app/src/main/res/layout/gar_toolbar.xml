@@ -1,33 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="android.widget.LinearLayout">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <ImageButton
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/back"
         android:id="@+id/upNavigationButton"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_width="wrap_content"
         android:paddingEnd="@dimen/root_padding"
         android:paddingStart="@dimen/root_padding"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_arrow_back_white_24dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_white_24dp"
         tools:visibility="visible" />
 
     <Space
-        android:layout_height="match_parent"
-        android:layout_width="@dimen/root_padding" />
+        android:id="@+id/toolbarSpace"
+        android:layout_height="0dp"
+        android:layout_width="@dimen/root_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/upNavigationButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/menuExpansionContainer"
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/titleContainer"
         android:gravity="center_vertical"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginEnd="@dimen/root_padding"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:orientation="vertical"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/menuExpansionContainer"
+        app:layout_constraintStart_toEndOf="@id/toolbarSpace"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
         <TextView
@@ -57,12 +78,5 @@
             tools:visibility="visible" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/menuExpansionContainer"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:orientation="horizontal" />
 
 </merge>
