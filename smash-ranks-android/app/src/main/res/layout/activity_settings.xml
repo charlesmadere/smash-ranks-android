@@ -27,14 +27,14 @@
                 app:icon="@drawable/ic_location_on_white_24dp"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.ThemePreferenceView
-                android:id="@+id/themePreference"
-                app:icon="@drawable/ic_format_paint_white_24dp"
-                style="@style/PreferenceView" />
-
             <com.garpr.android.views.IdentityPreferenceView
                 android:id="@+id/identityPreference"
                 app:icon="@drawable/ic_face_white_24dp"
+                style="@style/PreferenceView" />
+
+            <com.garpr.android.views.ThemePreferenceView
+                android:id="@+id/themePreference"
+                app:icon="@drawable/ic_format_paint_white_24dp"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.DeleteFavoritePlayersPreferenceView

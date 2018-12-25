@@ -27,7 +27,7 @@
     <string name="daily">Daily</string>
     <string name="day">Day</string>
     <string name="debug_only">Debug only</string>
-    <string name="delete_favorite_players">Delete favorite players</string>
+    <string name="delete_all_favorite_players">Delete all favorite players</string>
     <string name="delete_identity">Delete identity</string>
     <string name="delimiter">,\u0020</string>
     <string name="easily_find_yourself_throughout_the_app">Easily find yourself throughout the app</string>

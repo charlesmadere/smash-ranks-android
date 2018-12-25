@@ -67,7 +67,7 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         }
 
         setOnClickListener(this)
-        titleText = resources.getText(R.string.delete_favorite_players)
+        titleText = resources.getText(R.string.delete_all_favorite_players)
 
         if (isInEditMode) {
             descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
