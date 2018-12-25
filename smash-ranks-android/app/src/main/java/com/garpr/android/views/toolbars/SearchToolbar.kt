@@ -6,8 +6,10 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
@@ -54,8 +56,14 @@ open class SearchToolbar @JvmOverloads constructor(
     protected open fun onCloseSearchField() {
         activity?.hideKeyboard()
         searchField.clear()
-        searchField.visibility = View.INVISIBLE
+        searchField.visibility = View.GONE
         showUpNavigation = wasShowingUpNavigation
+
+        menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as ConstraintLayout.LayoutParams).apply {
+            startToEnd = View.NO_ID
+            width = ViewGroup.LayoutParams.WRAP_CONTENT
+        }
+
         showTitleContainer = true
         refreshSearchIcon()
     }
@@ -84,6 +92,12 @@ open class SearchToolbar @JvmOverloads constructor(
         showTitleContainer = false
         searchIcon.visibility = View.GONE
         showUpNavigation = true
+
+        menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as ConstraintLayout.LayoutParams).apply {
+            startToEnd = toolbarSpace.id
+            width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
+        }
+
         searchField.visibility = View.VISIBLE
         searchField.requestFocus()
     }

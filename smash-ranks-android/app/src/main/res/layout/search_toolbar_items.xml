@@ -18,7 +18,7 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:maxLines="1"
-        android:visibility="invisible"
+        android:visibility="gone"
         tools:ignore="UnusedAttribute" />
 
     <ImageButton
