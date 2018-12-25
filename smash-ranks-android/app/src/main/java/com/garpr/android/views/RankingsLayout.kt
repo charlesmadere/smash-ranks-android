@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,6 +12,7 @@ import com.garpr.android.R
 import com.garpr.android.adapters.RankingsAdapter
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.managers.NotificationsManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
@@ -52,8 +52,8 @@ class RankingsLayout @JvmOverloads constructor(
     }
 
     companion object {
-        fun inflate(parent: ViewGroup): RankingsLayout = LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_rankings, parent, false) as RankingsLayout
+        fun inflate(parent: ViewGroup): RankingsLayout = parent.layoutInflater.inflate(
+                R.layout.layout_rankings, parent, false) as RankingsLayout
     }
 
     override fun failure(errorCode: Int) {

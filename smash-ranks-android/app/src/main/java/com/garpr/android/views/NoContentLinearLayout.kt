@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
+import com.garpr.android.extensions.layoutInflater
 import kotlinx.android.synthetic.main.no_content_linear_layout_body.view.*
 
 open class NoContentLinearLayout @JvmOverloads constructor(
@@ -42,8 +42,7 @@ open class NoContentLinearLayout @JvmOverloads constructor(
 
     init {
         @Suppress("LeakingThis")
-        LayoutInflater.from(context).inflate(R.layout.no_content_linear_layout_body, this,
-                true)
+        layoutInflater.inflate(R.layout.no_content_linear_layout_body, this)
 
         @SuppressLint("CustomViewStyleable")
         val ta = context.obtainStyledAttributes(attrs, R.styleable.View)

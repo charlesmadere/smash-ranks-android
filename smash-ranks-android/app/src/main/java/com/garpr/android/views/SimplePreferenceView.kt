@@ -6,11 +6,11 @@ import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
-import android.view.LayoutInflater
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.setTintedImageDrawable
 import com.garpr.android.misc.Refreshable
 import kotlinx.android.synthetic.main.view_simple_preference.view.*
@@ -64,7 +64,7 @@ open class SimplePreferenceView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        LayoutInflater.from(context).inflate(R.layout.view_simple_preference, this)
+        layoutInflater.inflate(R.layout.view_simple_preference, this)
 
         descriptionText = _descriptionText
         iconDrawable = _iconDrawable

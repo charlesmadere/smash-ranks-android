@@ -7,7 +7,6 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
@@ -20,6 +19,7 @@ import com.garpr.android.activities.BaseActivity
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.statusBarColorCompat
 import com.garpr.android.misc.AnimationUtils
@@ -122,7 +122,7 @@ open class GarToolbar @JvmOverloads constructor(
 
     init {
         @Suppress("LeakingThis")
-        LayoutInflater.from(context).inflate(R.layout.gar_toolbar, this)
+        layoutInflater.inflate(R.layout.gar_toolbar, this)
 
         val ta = context.obtainStyledAttributes(attrs, R.styleable.GarToolbar)
         showUpNavigation = ta.getBoolean(R.styleable.GarToolbar_showUpNavigation, showUpNavigation)

@@ -2,13 +2,13 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.RegionManager
@@ -34,9 +34,8 @@ class TournamentInfoItemView @JvmOverloads constructor(
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentInfoItemView = LayoutInflater.from(
-                parent.context).inflate(R.layout.item_tournament_info, parent,
-                false) as TournamentInfoItemView
+        fun inflate(parent: ViewGroup): TournamentInfoItemView = parent.layoutInflater.inflate(
+                R.layout.item_tournament_info, parent, false) as TournamentInfoItemView
     }
 
     val dateVerticalPositionInWindow: Int

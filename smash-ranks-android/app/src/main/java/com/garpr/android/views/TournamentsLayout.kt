@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentsAdapter
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
@@ -40,8 +40,8 @@ class TournamentsLayout @JvmOverloads constructor(
 
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentsLayout = LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_tournaments, parent, false) as TournamentsLayout
+        fun inflate(parent: ViewGroup): TournamentsLayout = parent.layoutInflater.inflate(
+                R.layout.layout_tournaments, parent, false) as TournamentsLayout
     }
 
     override fun failure(errorCode: Int) {

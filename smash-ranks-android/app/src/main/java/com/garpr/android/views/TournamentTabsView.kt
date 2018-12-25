@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewPropertyAnimator
@@ -13,6 +12,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.models.TournamentMode
@@ -100,7 +100,7 @@ class TournamentTabsView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        LayoutInflater.from(context).inflate(R.layout.view_tournament_tabs, this)
+        layoutInflater.inflate(R.layout.view_tournament_tabs, this)
 
         matchesTab.setOnClickListener {
             listeners?.onTournamentModeClick(this, TournamentMode.MATCHES)

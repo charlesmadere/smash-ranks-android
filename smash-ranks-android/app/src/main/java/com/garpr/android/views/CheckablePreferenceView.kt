@@ -5,11 +5,11 @@ import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
-import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
 import kotlinx.android.synthetic.main.view_checkbox_preference.view.*
@@ -78,8 +78,6 @@ class CheckablePreferenceView @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-
-        val layoutInflater = LayoutInflater.from(context)
 
         when (checkableType) {
             CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(

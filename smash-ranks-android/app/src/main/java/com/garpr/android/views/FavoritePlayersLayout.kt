@@ -3,7 +3,6 @@ package com.garpr.android.views
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.garpr.android.R
 import com.garpr.android.adapters.FavoritePlayersAdapter
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
@@ -32,8 +32,8 @@ class FavoritePlayersLayout @JvmOverloads constructor(
 
 
     companion object {
-        fun inflate(parent: ViewGroup): FavoritePlayersLayout = LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_favorite_players, parent, false) as FavoritePlayersLayout
+        fun inflate(parent: ViewGroup): FavoritePlayersLayout = parent.layoutInflater.inflate(
+                R.layout.layout_favorite_players, parent, false) as FavoritePlayersLayout
     }
 
     override fun getRecyclerView(): RecyclerView? {
