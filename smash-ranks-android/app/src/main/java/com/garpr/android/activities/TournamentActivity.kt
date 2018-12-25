@@ -125,6 +125,14 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
                 ApiCall(this))
     }
 
+    override fun onBackPressed() {
+        if (toolbar.isSearchFieldExpanded) {
+            toolbar.closeSearchField()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)

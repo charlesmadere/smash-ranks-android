@@ -37,10 +37,9 @@ class PlayersActivity : BaseActivity(), PlayersLayout.Listener, Searchable, Sear
     override fun onBackPressed() {
         if (toolbar.isSearchFieldExpanded) {
             toolbar.closeSearchField()
-            return
+        } else {
+            super.onBackPressed()
         }
-
-        super.onBackPressed()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -121,10 +121,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     override fun onBackPressed() {
         if (toolbar.isSearchFieldExpanded) {
             toolbar.closeSearchField()
-            return
+        } else {
+            super.onBackPressed()
         }
-
-        super.onBackPressed()
     }
 
     override fun onClick(v: MatchItemView) {
