@@ -214,8 +214,8 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override val showSaveIcon: Boolean
-        get() = !refreshLayout.isRefreshing && !adapter.isEmpty && empty.visibility != View.VISIBLE
-                && error.visibility != View.VISIBLE && recyclerView.visibility == View.VISIBLE
+        get() = !refreshLayout.isRefreshing && empty.visibility != View.VISIBLE &&
+                error.visibility != View.VISIBLE && recyclerView.visibility == View.VISIBLE
 
     override val showSearchIcon: Boolean
         get() = showSaveIcon

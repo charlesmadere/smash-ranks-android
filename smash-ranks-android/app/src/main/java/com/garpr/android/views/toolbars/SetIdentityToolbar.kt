@@ -32,16 +32,6 @@ class SetIdentityToolbar @JvmOverloads constructor(
         }
     }
 
-    override fun onCloseSearchField() {
-        super.onCloseSearchField()
-        saveButton.visibility = View.VISIBLE
-    }
-
-    override fun onOpenSearchField() {
-        super.onOpenSearchField()
-        saveButton.visibility = View.GONE
-    }
-
     override fun refresh() {
         super.refresh()
 
