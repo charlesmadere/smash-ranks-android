@@ -100,14 +100,16 @@ open class SearchToolbar @JvmOverloads constructor(
 
     override fun refresh() {
         super.refresh()
-        closeSearchField()
         refreshSearchIcon()
     }
 
     private fun refreshSearchIcon() {
         if ((activity as? Listener)?.showSearchIcon == true) {
-            searchIcon.visibility = View.VISIBLE
+            if (!isSearchFieldExpanded) {
+                searchIcon.visibility = View.VISIBLE
+            }
         } else {
+            closeSearchField()
             searchIcon.visibility = View.GONE
         }
     }
