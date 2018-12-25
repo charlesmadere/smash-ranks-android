@@ -6,10 +6,12 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.View
+import android.widget.CompoundButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.extensions.requireViewByIdCompat
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
 import kotlinx.android.synthetic.main.view_checkbox_preference.view.*
@@ -43,6 +45,9 @@ class CheckablePreferenceView @JvmOverloads constructor(
         disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
         ta.recycle()
     }
+
+    private val checkable: CompoundButton
+        get() = requireViewByIdCompat(R.id.checkable)
 
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>) {
         dispatchThawSelfOnly(container)
