@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.SearchToolbar
+    <com.garpr.android.views.toolbars.SetIdentityToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:toolbarTitleText="@string/set_identity"
