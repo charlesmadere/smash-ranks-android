@@ -52,7 +52,7 @@
             android:alpha="0"
             android:background="?attr/colorPrimary"
             android:elevation="@dimen/elevation"
-            android:id="@+id/tournamentTabsView"
+            android:id="@+id/toolbarTournamentTabsView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:theme="@style/ToolbarTheme"

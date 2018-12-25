@@ -100,7 +100,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
 
         if (view == null) {
-            tournamentTabsView.animateIn()
+            toolbarTournamentTabsView.animateIn()
             return
         }
 
@@ -108,9 +108,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow + toolbar.height
 
         if (tabsVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            tournamentTabsView.animateIn()
+            toolbarTournamentTabsView.animateIn()
         } else {
-            tournamentTabsView.animateOut()
+            toolbarTournamentTabsView.animateOut()
         }
     }
 
@@ -170,7 +170,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
         val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
         adapter.set(tournamentMode, tournament)
-        tournamentTabsView.refresh()
+        toolbarTournamentTabsView.refresh()
         toolbar.closeSearchField()
     }
 
