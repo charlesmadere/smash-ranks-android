@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="com.garpr.android.views.TournamentTabsView">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <TextView
         android:id="@+id/matchesTab"

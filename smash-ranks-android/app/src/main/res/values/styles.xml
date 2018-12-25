@@ -270,6 +270,7 @@
 
     <style name="TextViewTab">
         <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">@dimen/tab_height</item>
         <item name="android:layout_width">0dp</item>
@@ -277,7 +278,6 @@
         <item name="android:paddingStart">@dimen/root_padding</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Toolbar">
@@ -300,7 +300,7 @@
 
     <style name="ToolbarTextButton">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
