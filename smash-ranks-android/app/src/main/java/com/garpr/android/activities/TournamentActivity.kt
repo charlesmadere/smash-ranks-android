@@ -44,6 +44,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private lateinit var adapter: TournamentAdapter
     private var _tournamentMode: TournamentMode = TournamentMode.MATCHES
 
+    private val tournamentId: String by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
+
     @Inject
     protected lateinit var regionManager: RegionManager
 
@@ -313,8 +315,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
             showFullTournament()
         }
     }
-
-    private val tournamentId: String by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
 
     override val tournamentMode: TournamentMode
         get() = _tournamentMode
