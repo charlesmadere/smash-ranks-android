@@ -24,16 +24,11 @@
         tools:ignore="UnusedAttribute" />
 
     <ImageButton
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/search"
         android:id="@+id/searchIcon"
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content"
-        android:paddingEnd="@dimen/root_padding_quarter"
-        android:paddingStart="@dimen/root_padding_quarter"
-        android:scaleType="centerInside"
         android:src="@drawable/ic_search_white_24dp"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        style="@style/ToolbarButton" />
 
 </merge>

@@ -2,6 +2,11 @@ package com.garpr.android.views.toolbars
 
 import android.content.Context
 import android.util.AttributeSet
+import com.garpr.android.R
+import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.layoutInflater
+import kotlinx.android.synthetic.main.gar_toolbar.view.*
+import kotlinx.android.synthetic.main.log_viewer_toolbar_items.view.*
 
 class LogViewerToolbar @JvmOverloads constructor(
         context: Context,
@@ -13,6 +18,22 @@ class LogViewerToolbar @JvmOverloads constructor(
         fun onClearClick(v: LogViewerToolbar)
     }
 
+    init {
+        layoutInflater.inflate(R.layout.log_viewer_toolbar_items, menuExpansionContainer)
+    }
 
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        clearButton.setOnClickListener {
+            (activity as? Listeners)?.onClearClick(this)
+        }
+    }
+
+    override fun refresh() {
+        super.refresh()
+
+        clearButton.isEnabled = (activity as? Listeners)?.enableClearButton == true
+    }
 
 }
