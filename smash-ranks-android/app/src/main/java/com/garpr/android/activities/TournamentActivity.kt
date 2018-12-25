@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.findTournamentInfoItemViewChild
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.smoothScrollToTop
@@ -30,7 +31,6 @@ import com.garpr.android.models.TournamentMode
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.TournamentInfoItemView
 import com.garpr.android.views.TournamentTabsView
 import com.garpr.android.views.toolbars.SearchToolbar
 import kotlinx.android.synthetic.main.activity_tournament.*
@@ -81,7 +81,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     override val activityName = TAG
 
     private fun checkNameAndDateViewScrollStates() {
-        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
+        val view = recyclerView.findTournamentInfoItemViewChild()
 
         if (view == null) {
             toolbar.fadeInTitleAndSubtitle()
@@ -99,7 +99,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     }
 
     private fun checkTournamentTabViewsScrollStates() {
-        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
+        val view = recyclerView.findTournamentInfoItemViewChild()
 
         if (view == null) {
             toolbarTournamentTabsView.animateIn()
