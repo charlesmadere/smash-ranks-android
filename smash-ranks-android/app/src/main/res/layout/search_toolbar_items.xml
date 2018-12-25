@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.LinearLayout">
 
@@ -23,8 +24,8 @@
     <ImageButton
         android:contentDescription="@string/search"
         android:id="@+id/searchIcon"
-        android:src="@drawable/ic_search_white_24dp"
         android:visibility="gone"
+        app:srcCompat="@drawable/ic_search_white_24dp"
         tools:visibility="visible"
         style="@style/ToolbarButton" />
 
