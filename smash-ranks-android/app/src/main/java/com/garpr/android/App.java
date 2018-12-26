@@ -17,16 +17,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class App extends BaseApp implements AppComponentHandle {
 
     private static final String TAG = "App";
-
-    @Nullable
-    private static App sInstance;
 
     @Nullable
     private AppComponent mAppComponent;
@@ -49,17 +45,6 @@ public class App extends BaseApp implements AppComponentHandle {
     @Inject
     Timber mTimber;
 
-
-    @NonNull
-    public static App get() throws IllegalStateException {
-        final App instance = sInstance;
-
-        if (instance == null) {
-            throw new IllegalStateException("sInstance is null");
-        }
-
-        return instance;
-    }
 
     private void applyNightMode() {
         final NightMode nightMode = mGeneralPreferenceStore.getNightMode().get();
@@ -100,7 +85,6 @@ public class App extends BaseApp implements AppComponentHandle {
     @Override
     public void onCreate() {
         super.onCreate();
-        sInstance = this;
 
         // The order of the following lines is important!
 
