@@ -188,8 +188,9 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         viewPager.offscreenPageLimit = 3
 
-        adapter = HomePagerAdapter()
+        val adapter = HomePagerAdapter()
         viewPager.adapter = adapter
+        this.adapter = adapter
     }
 
     override fun onViewYourselfClick(v: HomeToolbar) {
