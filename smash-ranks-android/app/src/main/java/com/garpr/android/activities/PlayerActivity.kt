@@ -95,11 +95,10 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
             return
         }
 
-        val dateVerticalPositionInWindow = view.regionVerticalPositionInWindow
-        val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow +
-                toolbar.height
+        val ratingVerticalPositionInWindow = view.ratingVerticalPositionInWindow
+        val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow + toolbar.height
 
-        if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
+        if (ratingVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
             toolbar.fadeInTitleAndSubtitle()
         } else {
             toolbar.fadeOutTitleAndSubtitle()

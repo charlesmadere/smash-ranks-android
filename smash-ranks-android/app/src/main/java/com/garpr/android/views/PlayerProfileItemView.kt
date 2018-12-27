@@ -274,8 +274,8 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
     }
 
-    val regionVerticalPositionInWindow: Int
-        get() = region.verticalPositionInWindow
+    val ratingVerticalPositionInWindow: Int
+        get() = rating.verticalPositionInWindow
 
     override fun setContent(content: FullPlayer) {
         fullPlayer = content
