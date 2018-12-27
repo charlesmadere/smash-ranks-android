@@ -15,6 +15,7 @@ import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.hideKeyboard
 import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.extensions.requestFocusAndOpenKeyboard
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
@@ -99,7 +100,7 @@ open class SearchToolbar @JvmOverloads constructor(
         }
 
         searchField.visibility = View.VISIBLE
-        searchField.requestFocus()
+        searchField.requestFocusAndOpenKeyboard()
     }
 
     private fun openSearchField() {

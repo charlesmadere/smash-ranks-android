@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentActivity
 import com.garpr.android.dagger.AppComponent
@@ -14,8 +15,16 @@ val View.activity: Activity?
 val View.appComponent: AppComponent
     get() = context.appComponent
 
+val View.inputMethodManager: InputMethodManager
+    get() = context.inputMethodManager
+
 val View.layoutInflater: LayoutInflater
     get() = LayoutInflater.from(context)
+
+fun View.requestFocusAndOpenKeyboard() {
+    requestFocus()
+    inputMethodManager.toggleSoftInputFromWindow(windowToken, InputMethodManager.SHOW_FORCED, 0)
+}
 
 fun View.requireActivity(): Activity {
     return context.requireActivity()
