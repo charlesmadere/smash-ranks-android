@@ -35,7 +35,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         RankingCriteriaHandle, RankingsLayout.Listener, RegionManager.OnRegionChangeListener,
         Searchable, SearchQueryHandle, SearchToolbar.Listener {
 
-    private lateinit var adapter: HomePagerAdapter
+    private var adapter: HomePagerAdapter? = null
 
     @Inject
     protected lateinit var identityManager: IdentityManager
@@ -75,7 +75,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override val activityName = TAG
 
     override fun onActivityRequirementsClick(v: HomeToolbar) {
-        val rankingCriteria = adapter.rankingsBundle?.rankingCriteria ?: return
+        val rankingCriteria = adapter?.rankingsBundle?.rankingCriteria ?: return
         val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
         val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
 
@@ -125,7 +125,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
-        adapter.onNavigationItemReselected(item.itemIdAsHomeTab)
+        adapter?.onNavigationItemReselected(item.itemIdAsHomeTab)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -146,7 +146,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onRegionChange(regionManager: RegionManager) {
         prepareMenuAndTitleAndSubtitle(null)
-        adapter.refresh()
+        adapter?.refresh()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -210,10 +210,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override val rankingCriteria: RankingCriteria?
-        get() = adapter.rankingCriteria
+        get() = adapter?.rankingCriteria
 
     override fun search(query: String?) {
-        adapter.search(query)
+        adapter?.search(query)
     }
 
     override val searchQuery: CharSequence?
