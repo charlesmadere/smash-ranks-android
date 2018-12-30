@@ -136,7 +136,7 @@
     <string name="this_tournament_has_no_players">This tournament has no players</string>
     <string name="tournaments">Tournaments</string>
     <string name="x_tournaments">%1$s Tournaments</string>
-    <string name="tsuaii_twitter_url">twitter.com/tsuaii</string>
+    <string name="tsuaii_twitter_url" translatable="false">twitter.com/tsuaii</string>
     <string name="twitch">Twitch</string>
     <string name="twitter">Twitter</string>
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
