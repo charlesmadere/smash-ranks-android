@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BottomSheetDialogRoot">
+
+    <TextView
+        android:text="@string/share"
+        style="@style/BottomSheetDialogMessage" />
+
+    <TextView
+        android:id="@+id/dialogRegionRankings"
+        tools:text="Norcal Rankings"
+        style="@style/BottomSheetDialogButton" />
+
+    <TextView
+        android:id="@+id/dialogRegionTournaments"
+        tools:text="Norcal Tournaments"
+        style="@style/BottomSheetDialogButton" />
+
+    <Space
+        android:layout_height="@dimen/root_padding"
+        android:layout_width="match_parent" />
+
+</LinearLayout>

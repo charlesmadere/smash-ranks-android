@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
+import com.garpr.android.dialogs.ShareRegionDialogFragment
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.currentItemAsHomeTab
 import com.garpr.android.extensions.itemIdAsHomeTab
@@ -159,20 +160,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onShareClick(v: HomeToolbar) {
-        val region = regionManager.getRegion(this).displayName
-        val items = arrayOf(getString(R.string.x_rankings, region),
-                getString(R.string.x_tournaments, region))
-
-        AlertDialog.Builder(this)
-                .setItems(items) { dialog, which ->
-                    when (which) {
-                        0 -> shareUtils.shareRankings(this)
-                        1 -> shareUtils.shareTournaments(this)
-                        else -> throw RuntimeException("illegal which: $which")
-                    }
-                }
-                .setTitle(R.string.share)
-                .show()
+        val dialog = ShareRegionDialogFragment.create()
+        dialog.show(supportFragmentManager, ShareRegionDialogFragment.TAG)
     }
 
     override fun onViewAllPlayersClick(v: HomeToolbar) {

@@ -17,6 +17,7 @@ import com.garpr.android.activities.TournamentsActivity;
 import com.garpr.android.adapters.TournamentAdapter;
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.dialogs.HeadToHeadDialogFragment;
+import com.garpr.android.dialogs.ShareRegionDialogFragment;
 import com.garpr.android.dialogs.TournamentMatchDialogFragment;
 import com.garpr.android.sync.rankings.RankingsPollingWorker;
 import com.garpr.android.sync.roster.SmashRosterSyncWorker;
@@ -84,6 +85,7 @@ public interface AppComponent {
     // dialogs
     void inject(AddOrRemovePlayerFromFavoritesDialogFragment dialog);
     void inject(HeadToHeadDialogFragment dialog);
+    void inject(ShareRegionDialogFragment dialog);
     void inject(TournamentMatchDialogFragment dialog);
 
     // sync
