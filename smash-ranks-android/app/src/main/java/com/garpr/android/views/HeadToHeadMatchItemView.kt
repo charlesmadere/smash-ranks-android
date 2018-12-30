@@ -76,10 +76,8 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
 
     override fun onClick(v: View) {
         val match = this.match ?: return
-
         val dialog = HeadToHeadDialogFragment.create(match)
-        dialog.show(requireFragmentActivity().supportFragmentManager,
-                HeadToHeadDialogFragment.TAG)
+        dialog.show(requireFragmentActivity().supportFragmentManager, HeadToHeadDialogFragment.TAG)
     }
 
     override fun onFinishInflate() {
