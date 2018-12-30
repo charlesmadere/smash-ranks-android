@@ -44,15 +44,16 @@ class ActivityRequirementsDialogFragment : BaseBottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dialogActivityRequirementsHead.text = getString(R.string.x_activity_requirements,
+                regionDisplayName)
+
         val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
         val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
 
         if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw RuntimeException("Region ($regionDisplayName) is missing necessary data")
+            dialogActivityRequirementsBody.setText(R.string.unknown_activity_requirements)
+            return
         }
-
-        dialogActivityRequirementsHead.text = getString(R.string.x_activity_requirements,
-                regionDisplayName)
 
         val tournaments = resources.getQuantityString(R.plurals.x_tournaments,
                 rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended))

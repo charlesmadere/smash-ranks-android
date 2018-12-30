@@ -143,6 +143,7 @@
     <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
     <string name="unfavorite">Unfavorite</string>
+    <string name="unknown_activity_requirements">This region\'s activity requirements are unknown.</string>
     <string name="updated_x">Updated %1$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
     <string name="version_x">Version %1$s</string>
