@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
+import com.garpr.android.dialogs.ActivityRequirementsDialogFragment
 import com.garpr.android.dialogs.ShareRegionDialogFragment
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.currentItemAsHomeTab
@@ -28,7 +28,6 @@ import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
-import java.text.NumberFormat
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
@@ -76,24 +75,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override val activityName = TAG
 
     override fun onActivityRequirementsClick(v: HomeToolbar) {
-        val rankingCriteria = adapter?.rankingsBundle?.rankingCriteria ?: return
-        val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
-        val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
-
-        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw RuntimeException("Region (${rankingCriteria.displayName}) is missing necessary data")
-        }
-
-        val numberFormat = NumberFormat.getIntegerInstance()
-        val tournaments = resources.getQuantityString(R.plurals.x_tournaments,
-                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended))
-        val days = resources.getQuantityString(R.plurals.x_days, rankingActivityDayLimit,
-                numberFormat.format(rankingActivityDayLimit))
-
-        AlertDialog.Builder(this)
-                .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
-                .setTitle(getString(R.string.x_activity_requirements, rankingCriteria.displayName))
-                .show()
+        val rankingCriteria = this.rankingCriteria ?: return
+        val regionDisplayName = regionManager.getRegion(this).displayName
+        val dialog = ActivityRequirementsDialogFragment.create(regionDisplayName, rankingCriteria)
+        dialog.show(supportFragmentManager, ActivityRequirementsDialogFragment.TAG)
     }
 
     override fun onBackPressed() {
