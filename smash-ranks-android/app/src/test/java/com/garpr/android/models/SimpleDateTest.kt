@@ -1,5 +1,6 @@
 package com.garpr.android.models
 
+import android.os.Parcel
 import com.garpr.android.BaseTest
 import com.google.gson.Gson
 import com.google.gson.JsonElement
@@ -128,6 +129,17 @@ class SimpleDateTest : BaseTest() {
         assertTrue(simpleDate4.happenedAfter(simpleDate2))
         assertTrue(simpleDate4.happenedAfter(simpleDate3))
         assertFalse(simpleDate4.happenedAfter(simpleDate4))
+    }
+
+    @Test
+    fun testParcelable() {
+        val simpleDate = SimpleDate()
+        val parcel = Parcel.obtain()
+        simpleDate.writeToParcel(parcel, simpleDate.describeContents())
+        parcel.setDataPosition(0)
+
+        val simpleDateFromParcel = SimpleDate.CREATOR.createFromParcel(parcel)
+        assertEquals(simpleDate, simpleDateFromParcel)
     }
 
     @Test
