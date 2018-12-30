@@ -13,7 +13,6 @@
     <color name="gray_dark">#212121</color>
     <color name="lose">#C1455A</color>
     <color name="lose_background">#22C1455A</color>
-    <color name="overlay">#11000000</color>
     <color name="red">#AD0013</color>
     <color name="transparent">#00000000</color>
     <color name="warn">#FF7070</color>
@@ -29,12 +28,5 @@
         <item>@color/blue</item>
         <item>@color/red</item>
     </array>
-
-    <color name="r">#FF0000</color>
-    <color name="g">#00FF00</color>
-    <color name="b">#0000FF</color>
-    <color name="c">#00FFFF</color>
-    <color name="m">#FF00FF</color>
-    <color name="y">#FFFF00</color>
 
 </resources>

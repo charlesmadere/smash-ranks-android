@@ -8,7 +8,6 @@
     <color name="fast_scroll_track">#22FFFFFF</color>
     <color name="lose">#F0BEC5</color>
     <color name="lose_background">#44F0BEC5</color>
-    <color name="overlay">#44000000</color>
     <color name="warn">#FFBBBB</color>
     <color name="win">#C6E8B5</color>
     <color name="window_background">#232323</color>
