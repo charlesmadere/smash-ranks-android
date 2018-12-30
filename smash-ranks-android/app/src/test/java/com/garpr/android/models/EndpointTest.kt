@@ -10,14 +10,12 @@ import org.robolectric.RobolectricTestRunner
 class EndpointTest : BaseTest() {
 
     @Test
-    @Throws(Exception::class)
     fun testGetBasePath() {
         assertEquals("https://www.garpr.com", Endpoint.GAR_PR.basePath)
         assertEquals("https://www.notgarpr.com", Endpoint.NOT_GAR_PR.basePath)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetPlayerWebPath() {
         assertEquals("https://www.garpr.com/#/norcal/players/588852e7d2994e3bbfa52d6e",
                 Endpoint.GAR_PR.getPlayerWebPath("norcal", "588852e7d2994e3bbfa52d6e"))
@@ -27,7 +25,6 @@ class EndpointTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetRankingsWebPath() {
         assertEquals("https://www.garpr.com/#/norcal/rankings",
                 Endpoint.GAR_PR.getRankingsWebPath("norcal"))
@@ -37,7 +34,6 @@ class EndpointTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetTournamentWebPath() {
         assertEquals("https://www.garpr.com/#/norcal/tournaments/58d8c3e8d2994e057e91f7fd",
                 Endpoint.GAR_PR.getTournamentWebPath("norcal", "58d8c3e8d2994e057e91f7fd"))
@@ -47,7 +43,6 @@ class EndpointTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetTournamentsWebPath() {
         assertEquals("https://www.garpr.com/#/googlemtv/tournaments",
                 Endpoint.GAR_PR.getTournamentsWebPath("googlemtv"))
@@ -58,7 +53,6 @@ class EndpointTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetWebPath() {
         assertEquals("https://www.garpr.com/#/", Endpoint.GAR_PR.getWebPath())
         assertEquals("https://www.notgarpr.com/#/", Endpoint.NOT_GAR_PR.getWebPath())

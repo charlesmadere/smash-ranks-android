@@ -81,7 +81,6 @@ class ListUtilsTest : BaseTest() {
 
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
@@ -101,7 +100,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreateHeadToHeadListWithHeadToHead1() {
         val list = ListUtils.createHeadToHeadList(application, headToHead1)
 
@@ -132,7 +130,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreateHeadToHeadListWithHeadToHead2() {
         val list = ListUtils.createHeadToHeadList(application, headToHead2)
 
@@ -152,7 +149,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreateHeadToHeadListWithHeadToHead3() {
         val list = ListUtils.createHeadToHeadList(application, headToHead3)
 
@@ -172,14 +168,12 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreateHeadToHeadListWithNull() {
         val list = ListUtils.createHeadToHeadList(application, null)
         assertNull(list)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreatePlayerMatchesList() {
         val list = ListUtils.createPlayerMatchesList(application, fullPlayer, matchesBundle)
 
@@ -209,7 +203,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreatePlayerMatchesListWithNullMatchesBundle() {
         val list = ListUtils.createPlayerMatchesList(application, fullPlayer, null)
 
@@ -221,7 +214,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreateRegionsList() {
         val list = ListUtils.createRegionsList(regionsBundle)
         assertNotNull(list)
@@ -269,7 +261,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreateRegionsListWithGarPrOnly() {
         val list = ListUtils.createRegionsList(regionsBundleGarPrOnly)
         assertNotNull(list)
@@ -294,7 +285,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreateRegionsListWithNotGarPrOnly() {
         val list = ListUtils.createRegionsList(regionsBundleNotGarPrOnly)
         assertNotNull(list)
@@ -331,21 +321,18 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testCreateRegionsListWithNull() {
         val list = ListUtils.createRegionsList(null)
         assertNull(list)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerListWithAlliance() {
         val players = ListUtils.searchPlayerList("[A]", playersBundle.players)
         assertEquals(2, players?.size)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerListWithEmpty() {
         val size = playersBundle.players?.size
         val players = ListUtils.searchPlayerList("", playersBundle.players)
@@ -353,7 +340,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerListThatIsNull() {
         assertNull(ListUtils.searchPlayerList(null, null))
         assertNull(ListUtils.searchPlayerList("", null))
@@ -361,7 +347,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerListWithImyt() {
         var players = ListUtils.searchPlayerList("Imyt", playersBundle.players)
         assertEquals(1, players?.size)
@@ -371,7 +356,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerListWithNull() {
         val size = playersBundle.players?.size
         val players = ListUtils.searchPlayerList(null, playersBundle.players)
@@ -379,7 +363,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerListWithWhitespace() {
         val size = playersBundle.players?.size
         val players = ListUtils.searchPlayerList(" ", playersBundle.players)
@@ -387,14 +370,12 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerListWithZebra() {
         val players = ListUtils.searchPlayerList("Zebra", playersBundle.players)
         assertTrue(players.isNullOrEmpty())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerMatchesListThatHasMatchesWithEmpty() {
         var list = ListUtils.createPlayerMatchesList(application, fullPlayer, matchesBundle)
         list = ListUtils.searchPlayerMatchesList("", list)
@@ -425,7 +406,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerMatchesListThatHasMatchesWithNull() {
         var list = ListUtils.createPlayerMatchesList(application, fullPlayer, matchesBundle)
         list = ListUtils.searchPlayerMatchesList(null, list)
@@ -456,7 +436,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerMatchesListThatHasMatchesWithAr() {
         var list = ListUtils.createPlayerMatchesList(application, fullPlayer, matchesBundle)
         list = ListUtils.searchPlayerMatchesList("ar", list)
@@ -474,7 +453,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerMatchesListThatHasMatchesWithWhitespace() {
         var list = ListUtils.createPlayerMatchesList(application, fullPlayer, matchesBundle)
         list = ListUtils.searchPlayerMatchesList(" ", list)
@@ -505,7 +483,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerMatchesListThatHasNoMatchesWithEmpty() {
         var list = ListUtils.createPlayerMatchesList(application, fullPlayer, null)
         list = ListUtils.searchPlayerMatchesList("", list)
@@ -518,7 +495,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerMatchesListThatHasNoMatchesWithNull() {
         var list = ListUtils.createPlayerMatchesList(application, fullPlayer, null)
         list = ListUtils.searchPlayerMatchesList(null, list)
@@ -531,7 +507,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchPlayerMatchesListThatHasNoMatchesWithWhitespace() {
         var list = ListUtils.createPlayerMatchesList(application, fullPlayer, null)
         list = ListUtils.searchPlayerMatchesList(" ", list)
@@ -544,7 +519,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchRankingListThatIsNull() {
         assertNull(ListUtils.searchRankingList(null, null))
         assertNull(ListUtils.searchRankingList("", null))
@@ -552,7 +526,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchRankingListWithEmpty() {
         val size = rankingsBundle.rankings?.size
         val rankings = ListUtils.searchRankingList("", rankingsBundle.rankings)
@@ -560,7 +533,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchRankingListWithImyt() {
         var rankings = ListUtils.searchRankingList("Imyt", rankingsBundle.rankings)
         assertEquals(1, rankings?.size)
@@ -570,7 +542,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchRankingListWithNull() {
         val size = rankingsBundle.rankings?.size
         val rankings = ListUtils.searchRankingList(null, rankingsBundle.rankings)
@@ -578,7 +549,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchRankingListWithOng() {
         var rankings = ListUtils.searchRankingList("ong", rankingsBundle.rankings)
         assertEquals(2, rankings?.size)
@@ -588,7 +558,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchRankingListWithWhitespace() {
         val size = rankingsBundle.rankings?.size
         val rankings = ListUtils.searchRankingList(" ", rankingsBundle.rankings)
@@ -596,7 +565,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentListThatIsNull() {
         assertNull(ListUtils.searchTournamentList(null, null))
         assertNull(ListUtils.searchTournamentList("", null))
@@ -604,7 +572,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentListWithEmpty() {
         val size = tournamentsBundle.tournaments?.size
         val tournaments = ListUtils.searchTournamentList("", tournamentsBundle.tournaments)
@@ -612,7 +579,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentListWithNull() {
         val size = tournamentsBundle.tournaments?.size
         val tournaments = ListUtils.searchTournamentList(null, tournamentsBundle.tournaments)
@@ -620,7 +586,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentListWith105() {
         var tournaments = ListUtils.searchTournamentList("105", tournamentsBundle.tournaments)
         assertEquals(1, tournaments?.size)
@@ -630,7 +595,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentListWithThe() {
         var tournaments = ListUtils.searchTournamentList("The", tournamentsBundle.tournaments)
         assertEquals(7, tournaments?.size)
@@ -640,7 +604,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentListWithWhitespace() {
         val size = tournamentsBundle.tournaments?.size
         val tournaments = ListUtils.searchTournamentList(" ", tournamentsBundle.tournaments)
@@ -648,7 +611,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentMatchesWithEmpty() {
         val size = fullTournament.matches?.size
         val matches = ListUtils.searchTournamentMatchesList("", fullTournament.matches)
@@ -656,7 +618,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentMatchesWithNull() {
         val size = fullTournament.matches?.size
         val matches = ListUtils.searchTournamentMatchesList(null, fullTournament.matches)
@@ -664,7 +625,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentMatchesWithWhitespace() {
         val size = fullTournament.matches?.size
         val matches = ListUtils.searchTournamentMatchesList(" ", fullTournament.matches)
@@ -672,7 +632,6 @@ class ListUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSearchTournamentMatchesWithZorc() {
         var matches = ListUtils.searchTournamentMatchesList("zorc", fullTournament.matches)
         assertEquals(8, matches?.size)

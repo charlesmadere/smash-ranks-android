@@ -40,7 +40,6 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testChronologicalOrder() {
         val list = listOf(SimpleDate(Date(2)), SimpleDate(Date(0)),
                 SimpleDate(Date(1)), SimpleDate(Date(5)), SimpleDate(Date(20)))
@@ -54,21 +53,18 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromBlankString() {
         val simpleDate = gson.fromJson(" ", SimpleDate::class.java)
         assertNull(simpleDate)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromEmptyString() {
         val simpleDate = gson.fromJson("", SimpleDate::class.java)
         assertNull(simpleDate)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJson() {
         var simpleDate = gson.fromJson(JSON_ONE, SimpleDate::class.java)
         assertNotNull(simpleDate)
@@ -78,7 +74,6 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromLong() {
         var simpleDate = gson.fromJson(LONG_ONE, SimpleDate::class.java)
         assertNotNull(simpleDate)
@@ -89,21 +84,18 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromNullJsonElement() {
         val simpleDate = gson.fromJson(null as JsonElement?, SimpleDate::class.java)
         assertNull(simpleDate)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromNullString() {
         val simpleDate = gson.fromJson(null as String?, SimpleDate::class.java)
         assertNull(simpleDate)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testHappenedAfter() {
         val simpleDate1 = gson.fromJson(JSON_ONE, SimpleDate::class.java)
         val simpleDate2 = gson.fromJson(JSON_TWO, SimpleDate::class.java)
@@ -143,7 +135,6 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testReverseChronologicalOrder() {
         val list = listOf(SimpleDate(Date(2)), SimpleDate(Date(0)), SimpleDate(Date(1)),
                 SimpleDate(Date(5)), SimpleDate(Date(20)))
@@ -157,7 +148,6 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testToJson() {
         var simpleDate1 = gson.fromJson(JSON_ONE, SimpleDate::class.java)
         var json = gson.toJson(simpleDate1, SimpleDate::class.java)
@@ -171,7 +161,6 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testValuesWithJsonOne() {
         val simpleDate = gson.fromJson(JSON_ONE, SimpleDate::class.java)
         val calendar = Calendar.getInstance()
@@ -183,7 +172,6 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testValuesWithJsonTwo() {
         val simpleDate = gson.fromJson(JSON_TWO, SimpleDate::class.java)
         val calendar = Calendar.getInstance()
@@ -195,7 +183,6 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testValuesWithLongOne() {
         val simpleDate = gson.fromJson(LONG_ONE, SimpleDate::class.java)
         assertEquals(0, simpleDate.date.time)
@@ -209,7 +196,6 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testValuesWithLongTwo() {
         val simpleDate = gson.fromJson(LONG_TWO, SimpleDate::class.java)
         assertEquals(1505859302322, simpleDate.date.time)

@@ -54,7 +54,6 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetNotificationInfo() {
         setHasNetworkConnection(true)
         rankingsPollingPreferenceStore.enabled.set(true)
@@ -80,7 +79,6 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetNotificationInfoWithNulls() {
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(null,
                 null))
@@ -96,7 +94,6 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetPollStatus() {
         setHasNetworkConnection(false)
         rankingsPollingPreferenceStore.enabled.set(false)
@@ -132,7 +129,6 @@ class RankingsNotificationsUtilsTest : BaseTest() {
         assertTrue(pollStatus.retry)
     }
 
-    @Throws(Exception::class)
     private fun setHasNetworkConnection(hasNetworkConnection: Boolean) {
         if (deviceUtils is TestDeviceUtilsImpl) {
             (deviceUtils as TestDeviceUtilsImpl).setHasNetworkConnection(hasNetworkConnection)

@@ -37,7 +37,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDeleteWithDefaultValue() {
         val player = gson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
         val preference = PersistentGsonPreference("gson", player, keyValueStore,
@@ -48,7 +47,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDeleteWithNullDefaultValue() {
         val preference = PersistentGsonPreference<AbsPlayer>("gson", null,
                 keyValueStore, AbsPlayer::class.java, gson)
@@ -57,7 +55,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithDefaultValue() {
         val player = gson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
         val preference = PersistentGsonPreference("gson", player, keyValueStore,
@@ -69,7 +66,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithNullDefaultValue() {
         val preference = PersistentGsonPreference<AbsPlayer>("gson", null,
                 keyValueStore, AbsPlayer::class.java, gson)
@@ -80,7 +76,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetDefaultValue() {
         val player = gson.fromJson(JSON_LITE_PLAYER_2, AbsPlayer::class.java)
         val preference = PersistentGsonPreference("gson", player, keyValueStore,
@@ -90,7 +85,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetDefaultValueWithNull() {
         val preference = PersistentGsonPreference<AbsPlayer>("gson", null,
                 keyValueStore, AbsPlayer::class.java, gson)
@@ -98,7 +92,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetWithDefaultValue() {
         val player = gson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
         val preference = PersistentGsonPreference("gson", player, keyValueStore,
@@ -108,7 +101,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetWithNullDefaultValue() {
         val preference = PersistentGsonPreference<AbsPlayer>("gson", null,
                 keyValueStore, AbsPlayer::class.java, gson)
@@ -116,7 +108,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSetWithDefaultValue() {
         val player1 = gson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
         val preference = PersistentGsonPreference("gson", player1, keyValueStore,
@@ -131,7 +122,6 @@ class PersistentGsonPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSetWithNullDefaultValue() {
         val preference = PersistentGsonPreference<AbsPlayer>("gson", null,
                 keyValueStore, AbsPlayer::class.java, gson)

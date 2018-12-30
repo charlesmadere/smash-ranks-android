@@ -51,7 +51,6 @@ class AbsRegionTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testComparatorAlphabeticalOrder() {
         val list = listOf(fullRegion1, liteRegion2, fullRegion2, fullRegion3)
         Collections.sort(list, AbsRegion.ALPHABETICAL_ORDER)
@@ -63,7 +62,6 @@ class AbsRegionTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testComparatorEndpointOrder() {
         val list = listOf(fullRegion1, liteRegion2, fullRegion2, fullRegion3, liteRegion1,
                 liteRegion3)
@@ -78,57 +76,48 @@ class AbsRegionTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJsonFullRegion1() {
         assertEquals(AbsRegion.Kind.FULL, fullRegion1.kind)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJsonFullRegion2() {
         assertEquals(AbsRegion.Kind.FULL, fullRegion2.kind)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJsonFullRegion3() {
         assertEquals(AbsRegion.Kind.FULL, fullRegion3.kind)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJsonLiteRegion1() {
         assertEquals(AbsRegion.Kind.LITE, liteRegion1.kind)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJsonLiteRegion2() {
         assertEquals(AbsRegion.Kind.LITE, liteRegion2.kind)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJsonLiteRegion3() {
         assertEquals(AbsRegion.Kind.LITE, liteRegion3.kind)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJsonNullJsonElement() {
         val region = gson.fromJson(null as JsonElement?, AbsRegion::class.java)
         assertNull(region)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFromJsonNullString() {
         val region = gson.fromJson(null as String?, AbsRegion::class.java)
         assertNull(region)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testHasActivityRequirements() {
         assertTrue(fullRegion1.hasActivityRequirements)
         assertTrue(fullRegion2.hasActivityRequirements)
@@ -139,7 +128,6 @@ class AbsRegionTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testKind() {
         assertEquals(AbsRegion.Kind.FULL, fullRegion1.kind)
         assertEquals(AbsRegion.Kind.FULL, fullRegion2.kind)

@@ -18,7 +18,6 @@ class WinsLossesTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testWinLossPercentages() {
         var percentages = WinsLosses(player0, 1, player1, 2)
                 .winLossPercentages
@@ -47,7 +46,6 @@ class WinsLossesTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testWinLossPercentagesEqualPlayerAndOpponentWins() {
         var percentages = WinsLosses(player1, 16, player0, 16)
                 .winLossPercentages
@@ -66,7 +64,6 @@ class WinsLossesTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testWinLossPercentagesNoOpponentWins() {
         var percentages = WinsLosses(player0, 36, player1, 0)
                 .winLossPercentages
@@ -80,7 +77,6 @@ class WinsLossesTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testWinLossPercentagesNoPlayerWins() {
         var percentages = WinsLosses(player0, 0, player1, 21)
                 .winLossPercentages
@@ -94,7 +90,6 @@ class WinsLossesTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testWinLossPercentagesNoPlayerWinsNoOpponentWins() {
         var percentages = WinsLosses(player0, 0, player1, 0)
                 .winLossPercentages
