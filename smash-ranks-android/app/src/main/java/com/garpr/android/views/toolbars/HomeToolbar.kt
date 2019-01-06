@@ -4,8 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
-import androidx.core.widget.PopupMenuCompat
+import androidx.appcompat.widget.PopupMenu
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
@@ -48,7 +47,7 @@ class HomeToolbar @JvmOverloads constructor(
         layoutInflater.inflate(R.layout.home_toolbar_items, menuExpansionContainer)
 
         overflowPopupMenu = PopupMenu(context, overflowButton)
-        overflowButton.setOnTouchListener(PopupMenuCompat.getDragToOpenListener(overflowPopupMenu))
+        overflowButton.setOnTouchListener(overflowPopupMenu.dragToOpenListener)
     }
 
     override fun onAttachedToWindow() {
