@@ -49,7 +49,6 @@ class EndpointTest : BaseTest() {
 
         assertEquals("https://www.notgarpr.com/#/nyc/tournaments",
                 Endpoint.NOT_GAR_PR.getTournamentsWebPath("nyc"))
-
     }
 
     @Test

@@ -29,15 +29,32 @@ enum class Endpoint(
         }
     }
 
-    fun getPlayerWebPath(regionId: String, playerId: String) =
-            getWebPath(regionId) + "/players/" + playerId
+    fun getPlayerWebPath(regionId: String, playerId: String): String {
+        return StringBuilder(getWebPath(regionId))
+                .append("/players/")
+                .append(playerId)
+                .toString()
+    }
 
-    fun getRankingsWebPath(regionId: String) = getWebPath(regionId) + "/rankings"
+    fun getRankingsWebPath(regionId: String): String {
+        return StringBuilder(getWebPath(regionId))
+                .append("/rankings")
+                .toString()
+    }
 
-    fun getTournamentWebPath(regionId: String, tournamentId: String) =
-            getTournamentsWebPath(regionId) + "/" + tournamentId
+    fun getTournamentWebPath(regionId: String, tournamentId: String): String {
+        return StringBuilder(getTournamentsWebPath(regionId))
+                .append('/')
+                .append(tournamentId)
+                .toString()
+    }
 
-    fun getTournamentsWebPath(regionId: String) = getWebPath(regionId) + "/tournaments"
+
+    fun getTournamentsWebPath(regionId: String): String {
+        return StringBuilder(getWebPath(regionId))
+                .append("/tournaments")
+                .toString()
+    }
 
     fun getWebPath(regionId: String? = null): String {
         val stringBuilder = StringBuilder(basePath)
@@ -50,7 +67,7 @@ enum class Endpoint(
         return stringBuilder.toString()
     }
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)
