@@ -49,7 +49,6 @@ enum class Endpoint(
                 .toString()
     }
 
-
     fun getTournamentsWebPath(regionId: String): String {
         return StringBuilder(getWebPath(regionId))
                 .append("/tournaments")
