@@ -55,13 +55,13 @@ abstract class AbsPlayer(
         return other is AbsPlayer && id.equals(other.id, ignoreCase = true)
     }
 
-    override fun hashCode() = id.hashCode()
+    override fun hashCode(): Int = id.hashCode()
 
     abstract val kind: Kind
 
-    override fun toString() = name
+    override fun toString(): String = name
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(id)
@@ -87,7 +87,7 @@ abstract class AbsPlayer(
             val CREATOR = createParcel { values()[it.readInt()] }
         }
 
-        override fun describeContents() = 0
+        override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(ordinal)

@@ -16,7 +16,7 @@ data class PlayersBundle(
         val CREATOR = createParcel { PlayersBundle(it.readAbsPlayerList()) }
     }
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeAbsPlayerList(players, flags)

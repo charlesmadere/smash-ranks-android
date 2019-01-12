@@ -18,7 +18,7 @@ data class Rating(
     val rating: Float
         get() = mu - (3f * sigma)
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeFloat(mu)

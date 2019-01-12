@@ -36,14 +36,14 @@ data class RankingsBundle(
         return other is RankingsBundle && id.equals(other.id, ignoreCase = true)
     }
 
-    override fun hashCode() = id.hashCode()
+    override fun hashCode(): Int = id.hashCode()
 
     fun hasPreviousRank(): Boolean {
         return rankings?.asSequence()
                 ?.firstOrNull { it.previousRank != null } != null
     }
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeTypedList(rankings)

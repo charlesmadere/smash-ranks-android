@@ -22,7 +22,7 @@ data class PlayerMatchesBundle(
         }
     }
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeParcelable(fullPlayer, flags)

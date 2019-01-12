@@ -43,7 +43,7 @@ class FullTournament(
         }
     }
 
-    override val kind
+    override val kind: Kind
         get() = Kind.FULL
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -81,9 +81,9 @@ class FullTournament(
             return other is Match && matchId.equals(other.matchId, ignoreCase = true)
         }
 
-        override fun hashCode() = matchId.hashCode()
+        override fun hashCode(): Int = matchId.hashCode()
 
-        override fun describeContents() = 0
+        override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeBoolean(isExcluded)

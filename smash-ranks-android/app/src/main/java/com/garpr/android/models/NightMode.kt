@@ -32,7 +32,7 @@ enum class NightMode constructor(
         val CREATOR = createParcel { values()[it.readInt()] }
     }
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)

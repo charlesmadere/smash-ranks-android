@@ -33,9 +33,9 @@ class HeadToHeadMatch(
                 && opponent == other.opponent
     }
 
-    override fun hashCode() = MiscUtils.hashCode(result, player, opponent)
+    override fun hashCode(): Int = MiscUtils.hashCode(result, player, opponent)
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)

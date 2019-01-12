@@ -36,7 +36,7 @@ class LiteRegion(
         }
     }
 
-    override val kind
+    override val kind: Kind
         get() = Kind.LITE
 
 }

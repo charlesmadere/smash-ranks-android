@@ -45,7 +45,7 @@ enum class PollFrequency constructor(
 
     val timeInSeconds: Long = TimeUnit.MILLISECONDS.toSeconds(timeInMillis)
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)

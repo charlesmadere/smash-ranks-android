@@ -13,11 +13,11 @@ abstract class AbsMatch(
         return other is AbsMatch && result == other.result
     }
 
-    override fun hashCode() = MiscUtils.hashCode(result)
+    override fun hashCode(): Int = MiscUtils.hashCode(result)
 
-    override fun toString() = result.toString()
+    override fun toString(): String = result.toString()
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeParcelable(result, flags)

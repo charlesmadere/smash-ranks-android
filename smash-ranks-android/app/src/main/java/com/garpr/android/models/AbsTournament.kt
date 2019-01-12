@@ -46,11 +46,11 @@ abstract class AbsTournament(
 
     abstract val kind: Kind
 
-    override fun hashCode() = id.hashCode()
+    override fun hashCode(): Int = id.hashCode()
 
-    override fun toString() = name
+    override fun toString(): String = name
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeStringList(regions)
@@ -72,7 +72,7 @@ abstract class AbsTournament(
             val CREATOR = createParcel { values()[it.readInt()] }
         }
 
-        override fun describeContents() = 0
+        override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(ordinal)

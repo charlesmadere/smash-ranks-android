@@ -72,16 +72,16 @@ abstract class AbsRegion(
     val hasActivityRequirements
         get() = rankingActivityDayLimit != null && rankingNumTourneysAttended != null
 
-    override fun hashCode() = id.hashCode()
+    override fun hashCode(): Int = id.hashCode()
 
     override val isActive: Boolean
         get() = activeTf ?: true
 
     abstract val kind: Kind
 
-    override fun toString() = displayName
+    override fun toString(): String = displayName
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeBoolean(activeTf)
@@ -105,7 +105,7 @@ abstract class AbsRegion(
             val CREATOR = createParcel { values()[it.readInt()] }
         }
 
-        override fun describeContents() = 0
+        override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(ordinal)

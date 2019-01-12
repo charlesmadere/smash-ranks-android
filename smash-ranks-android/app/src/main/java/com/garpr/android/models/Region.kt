@@ -55,7 +55,7 @@ class Region(
         return result
     }
 
-    override val kind
+    override val kind: Kind
         get() = Kind.FULL
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

@@ -22,7 +22,7 @@ enum class MatchResult : Parcelable {
         val CREATOR = createParcel { MatchResult.values()[it.readInt()] }
     }
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)

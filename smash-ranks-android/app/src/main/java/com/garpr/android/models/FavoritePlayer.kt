@@ -27,7 +27,7 @@ class FavoritePlayer(
         }
     }
 
-    override val kind
+    override val kind: Kind
         get() = Kind.FAVORITE
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

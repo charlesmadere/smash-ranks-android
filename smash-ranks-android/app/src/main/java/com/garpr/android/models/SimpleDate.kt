@@ -93,15 +93,15 @@ data class SimpleDate(
         return date.time > simpleDate.date.time
     }
 
-    override fun hashCode() = date.hashCode()
+    override fun hashCode(): Int = date.hashCode()
 
     val mediumForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.MEDIUM).format(date) }
 
     val shortForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.SHORT).format(date) }
 
-    override fun toString() = date.toString()
+    override fun toString(): String = date.toString()
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeLong(date.time)

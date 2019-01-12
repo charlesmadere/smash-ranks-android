@@ -59,9 +59,9 @@ class Match(
                 && tournament == other.tournament
     }
 
-    override fun hashCode() = MiscUtils.hashCode(result, opponent, tournament)
+    override fun hashCode(): Int = MiscUtils.hashCode(result, opponent, tournament)
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)

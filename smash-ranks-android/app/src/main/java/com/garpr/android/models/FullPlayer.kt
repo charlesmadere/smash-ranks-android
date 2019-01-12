@@ -32,7 +32,7 @@ class FullPlayer(
         }
     }
 
-    override val kind
+    override val kind: Kind
         get() = Kind.FULL
 
     val uniqueAliases: Array<String>?
