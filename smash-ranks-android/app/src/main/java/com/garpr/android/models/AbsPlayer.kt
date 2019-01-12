@@ -31,7 +31,7 @@ abstract class AbsPlayer(
                     jsonObject.has("regions") ||
                     jsonObject.has("ratings")) {
                 context.deserialize<FullPlayer>(json, FullPlayer::class.java)
-            } else if (jsonObject.has("ranked") ||
+            } else if (jsonObject.has("rank") ||
                     jsonObject.has("rating") ||
                     jsonObject.has("previous_rank")) {
                 context.deserialize<RankedPlayer>(json, RankedPlayer::class.java)
