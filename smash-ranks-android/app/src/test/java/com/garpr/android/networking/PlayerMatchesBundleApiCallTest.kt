@@ -1,11 +1,11 @@
 package com.garpr.android.networking
 
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.MatchesBundle
+import com.garpr.android.data.models.PlayerMatchesBundle
+import com.garpr.android.data.models.Region
 import com.garpr.android.misc.Constants
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.MatchesBundle
-import com.garpr.android.models.PlayerMatchesBundle
-import com.garpr.android.models.Region
 import com.google.gson.Gson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

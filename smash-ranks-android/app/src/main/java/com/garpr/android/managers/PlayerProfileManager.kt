@@ -1,7 +1,7 @@
 package com.garpr.android.managers
 
-import com.garpr.android.models.AbsRegion
-import com.garpr.android.models.FullPlayer
+import com.garpr.android.data.models.AbsRegion
+import com.garpr.android.data.models.FullPlayer
 
 interface PlayerProfileManager {
 

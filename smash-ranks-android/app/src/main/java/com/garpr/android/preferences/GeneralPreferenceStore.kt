@@ -1,8 +1,8 @@
 package com.garpr.android.preferences
 
-import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.NightMode
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.NightMode
+import com.garpr.android.data.models.Region
 
 interface GeneralPreferenceStore : PreferenceStore {
 

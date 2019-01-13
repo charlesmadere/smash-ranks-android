@@ -1,8 +1,8 @@
 package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.SmashCompetitor
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.SmashCompetitor
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.junit.Assert.assertNotNull

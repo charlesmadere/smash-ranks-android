@@ -10,6 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsTournament
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.Match
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.TournamentMode
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.findTournamentInfoItemViewChild
 import com.garpr.android.extensions.putOptionalExtra
@@ -22,12 +28,6 @@ import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.AbsTournament
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.Match
-import com.garpr.android.models.Region
-import com.garpr.android.models.TournamentMode
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi

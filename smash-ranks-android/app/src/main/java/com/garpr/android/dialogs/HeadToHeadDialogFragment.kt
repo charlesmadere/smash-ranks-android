@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
+import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.HeadToHeadMatch
 import kotlinx.android.synthetic.main.dialog_head_to_head.*
 import javax.inject.Inject
 

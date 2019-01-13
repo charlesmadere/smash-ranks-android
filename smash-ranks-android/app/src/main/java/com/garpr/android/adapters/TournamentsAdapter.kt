@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.LayoutRes
 
 import com.garpr.android.R
-import com.garpr.android.models.AbsTournament
+import com.garpr.android.data.models.AbsTournament
 
 class TournamentsAdapter(context: Context) : BaseAdapter<AbsTournament>(context) {
 

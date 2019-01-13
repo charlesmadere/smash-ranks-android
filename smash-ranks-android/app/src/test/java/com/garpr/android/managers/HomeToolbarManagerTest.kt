@@ -1,10 +1,10 @@
 package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.LiteRegion
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.LiteRegion
+import com.garpr.android.data.models.Region
 import com.google.gson.Gson
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

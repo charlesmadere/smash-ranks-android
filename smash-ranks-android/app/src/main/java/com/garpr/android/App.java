@@ -4,12 +4,12 @@ import com.garpr.android.dagger.AppComponent;
 import com.garpr.android.dagger.AppComponentHandle;
 import com.garpr.android.dagger.AppModule;
 import com.garpr.android.dagger.DaggerAppComponent;
+import com.garpr.android.data.models.NightMode;
 import com.garpr.android.managers.AppUpgradeManager;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.Timber;
-import com.garpr.android.models.NightMode;
 import com.garpr.android.preferences.GeneralPreferenceStore;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 

@@ -1,6 +1,6 @@
 package com.garpr.android.preferences
 
-import com.garpr.android.models.SmashRosterSyncResult
+import com.garpr.android.data.models.SmashRosterSyncResult
 import com.garpr.android.preferences.persistent.PersistentBooleanPreference
 import com.garpr.android.preferences.persistent.PersistentGsonPreference
 import com.google.gson.Gson

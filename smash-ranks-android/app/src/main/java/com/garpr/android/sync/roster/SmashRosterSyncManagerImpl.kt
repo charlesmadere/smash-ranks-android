@@ -6,12 +6,12 @@ import androidx.annotation.WorkerThread
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.PollFrequency
+import com.garpr.android.data.models.SmashRosterSyncResult
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.PollFrequency
-import com.garpr.android.models.SmashRosterSyncResult
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.sync.roster.SmashRosterSyncManager.OnSyncListeners

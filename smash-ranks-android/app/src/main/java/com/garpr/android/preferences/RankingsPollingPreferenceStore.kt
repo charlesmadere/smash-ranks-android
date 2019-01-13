@@ -2,8 +2,8 @@ package com.garpr.android.preferences
 
 import android.net.Uri
 
-import com.garpr.android.models.PollFrequency
-import com.garpr.android.models.SimpleDate
+import com.garpr.android.data.models.PollFrequency
+import com.garpr.android.data.models.SimpleDate
 
 interface RankingsPollingPreferenceStore : PreferenceStore {
 

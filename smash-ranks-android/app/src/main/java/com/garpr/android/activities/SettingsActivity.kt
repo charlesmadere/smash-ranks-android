@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import com.garpr.android.R
+import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
@@ -14,7 +15,6 @@ import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.rankings.RankingsPollingManager

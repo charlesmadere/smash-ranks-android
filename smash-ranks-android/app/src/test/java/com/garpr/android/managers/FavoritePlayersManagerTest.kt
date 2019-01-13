@@ -1,8 +1,8 @@
 package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FavoritePlayer
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
 import com.google.gson.Gson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

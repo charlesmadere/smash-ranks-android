@@ -7,13 +7,13 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.FullTournament
 import com.garpr.android.dialogs.TournamentMatchDialogFragment
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.requireFragmentActivity
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.FullTournament
 import kotlinx.android.synthetic.main.item_tournament_match.view.*
 import javax.inject.Inject
 

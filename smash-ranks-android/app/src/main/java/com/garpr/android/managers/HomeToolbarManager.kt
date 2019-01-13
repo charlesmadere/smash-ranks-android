@@ -1,6 +1,6 @@
 package com.garpr.android.managers
 
-import com.garpr.android.models.RankingCriteria
+import com.garpr.android.data.models.RankingCriteria
 
 interface HomeToolbarManager {
 

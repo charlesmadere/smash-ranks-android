@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.garpr.android.R
+import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.models.Region
 import com.garpr.android.views.PlayersLayout
 import com.garpr.android.views.toolbars.SearchToolbar
 import kotlinx.android.synthetic.main.activity_players.*

@@ -1,10 +1,10 @@
 package com.garpr.android.misc
 
 import android.text.TextUtils
+import com.garpr.android.data.models.RankingsBundle
+import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo
 import com.garpr.android.misc.RankingsNotificationsUtils.PollStatus
-import com.garpr.android.models.RankingsBundle
-import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 
 class RankingsNotificationsUtilsImpl(

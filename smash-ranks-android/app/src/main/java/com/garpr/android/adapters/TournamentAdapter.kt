@@ -3,11 +3,11 @@ package com.garpr.android.adapters
 import android.content.Context
 import androidx.annotation.LayoutRes
 import com.garpr.android.R
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.TournamentMode
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.TournamentAdapterManager
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.TournamentMode
 import javax.inject.Inject
 
 class TournamentAdapter(context: Context) : BaseAdapter<Any>(context) {

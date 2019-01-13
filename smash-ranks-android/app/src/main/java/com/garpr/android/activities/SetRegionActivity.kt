@@ -9,11 +9,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.RegionsSelectionAdapter
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi

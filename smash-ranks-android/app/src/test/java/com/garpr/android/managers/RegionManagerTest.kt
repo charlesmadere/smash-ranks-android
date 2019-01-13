@@ -2,7 +2,7 @@ package com.garpr.android.managers
 
 import android.app.Application
 import com.garpr.android.BaseTest
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.Region
 import com.google.gson.Gson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

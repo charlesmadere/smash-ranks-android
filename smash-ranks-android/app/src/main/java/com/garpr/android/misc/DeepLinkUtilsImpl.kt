@@ -9,10 +9,10 @@ import com.garpr.android.activities.PlayersActivity
 import com.garpr.android.activities.RankingsActivity
 import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.activities.TournamentsActivity
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
 
 class DeepLinkUtilsImpl(
         private val regionManager: RegionManager,

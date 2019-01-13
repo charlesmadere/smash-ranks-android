@@ -2,6 +2,7 @@ package com.garpr.android.dagger;
 
 import android.app.Application;
 
+import com.garpr.android.data.models.Region;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.CrashlyticsWrapperImpl;
 import com.garpr.android.misc.DeviceUtils;
@@ -9,7 +10,6 @@ import com.garpr.android.misc.DeviceUtilsImpl;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.ThreadUtilsImpl;
 import com.garpr.android.misc.Timber;
-import com.garpr.android.models.Region;
 import com.garpr.android.wrappers.FacebookFrescoWrapper;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 import com.garpr.android.wrappers.WorkManagerWrapper;

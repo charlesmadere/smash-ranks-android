@@ -1,7 +1,7 @@
 package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.FullTournament
+import com.garpr.android.data.models.FullTournament
 import com.google.gson.Gson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

@@ -1,7 +1,7 @@
 package com.garpr.android.misc
 
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
 
 object Constants {
 

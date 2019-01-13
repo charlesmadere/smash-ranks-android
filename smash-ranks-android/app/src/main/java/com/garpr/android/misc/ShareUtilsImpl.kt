@@ -8,10 +8,10 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.core.app.ShareCompat
 import com.garpr.android.R
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Constants.PLAIN_TEXT
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.AbsTournament
 
 class ShareUtilsImpl(
         private val regionManager: RegionManager,

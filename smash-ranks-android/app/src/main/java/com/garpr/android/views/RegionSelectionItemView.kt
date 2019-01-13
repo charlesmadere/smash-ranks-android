@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
-import com.garpr.android.models.Region
 import kotlinx.android.synthetic.main.item_region_selection.view.*
 
 class RegionSelectionItemView @JvmOverloads constructor(

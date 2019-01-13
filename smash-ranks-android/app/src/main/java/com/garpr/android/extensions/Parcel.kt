@@ -3,18 +3,18 @@ package com.garpr.android.extensions
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.AbsRegion
-import com.garpr.android.models.AbsTournament
-import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.LitePlayer
-import com.garpr.android.models.LiteRegion
-import com.garpr.android.models.LiteTournament
-import com.garpr.android.models.RankedPlayer
-import com.garpr.android.models.Rating
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsRegion
+import com.garpr.android.data.models.AbsTournament
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.LiteRegion
+import com.garpr.android.data.models.LiteTournament
+import com.garpr.android.data.models.RankedPlayer
+import com.garpr.android.data.models.Rating
+import com.garpr.android.data.models.Region
 
 inline fun <reified T : Parcelable> createParcel(
         crossinline createFromParcel: (Parcel) -> T?) = object : Parcelable.Creator<T> {

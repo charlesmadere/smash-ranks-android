@@ -1,12 +1,12 @@
 package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.LitePlayer
-import com.garpr.android.models.RankedPlayer
-import com.garpr.android.models.SimpleDate
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.RankedPlayer
+import com.garpr.android.data.models.SimpleDate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before

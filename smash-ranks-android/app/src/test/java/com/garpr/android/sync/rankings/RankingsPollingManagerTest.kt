@@ -1,7 +1,7 @@
 package com.garpr.android.sync.rankings
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.PollFrequency
+import com.garpr.android.data.models.PollFrequency
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

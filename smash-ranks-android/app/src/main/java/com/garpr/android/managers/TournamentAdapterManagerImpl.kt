@@ -2,9 +2,9 @@ package com.garpr.android.managers
 
 import android.app.Application
 import com.garpr.android.R
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.FullTournament.Match
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.FullTournament.Match
 
 class TournamentAdapterManagerImpl(
         private val application: Application

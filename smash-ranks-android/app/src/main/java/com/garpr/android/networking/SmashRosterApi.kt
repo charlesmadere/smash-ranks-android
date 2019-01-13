@@ -1,6 +1,6 @@
 package com.garpr.android.networking
 
-import com.garpr.android.models.SmashCompetitor
+import com.garpr.android.data.models.SmashCompetitor
 import retrofit2.Call
 import retrofit2.http.GET
 

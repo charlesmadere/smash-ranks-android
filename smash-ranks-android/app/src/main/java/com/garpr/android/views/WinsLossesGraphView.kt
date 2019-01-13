@@ -10,8 +10,8 @@ import android.view.animation.OvershootInterpolator
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
+import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.extensions.getLong
-import com.garpr.android.models.WinsLosses
 
 class WinsLossesGraphView @JvmOverloads constructor(
         context: Context,

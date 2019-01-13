@@ -3,8 +3,8 @@ package com.garpr.android.sync.rankings
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
+import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.PollFrequency
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.wrappers.WorkManagerWrapper
 import java.util.concurrent.TimeUnit

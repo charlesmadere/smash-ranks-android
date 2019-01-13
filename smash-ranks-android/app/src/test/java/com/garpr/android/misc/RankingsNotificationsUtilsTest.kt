@@ -1,11 +1,11 @@
 package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.CANCEL
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.SHOW
 import com.garpr.android.misc.RankingsNotificationsUtils.PollStatus
-import com.garpr.android.models.RankingsBundle
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.google.gson.Gson
 import org.junit.Assert.assertEquals

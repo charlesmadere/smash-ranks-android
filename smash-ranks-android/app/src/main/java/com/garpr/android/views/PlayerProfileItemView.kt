@@ -9,6 +9,7 @@ import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.activities.HeadToHeadActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireActivity
@@ -20,7 +21,6 @@ import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.models.FullPlayer
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import kotlinx.android.synthetic.main.item_player_profile.view.*
 import javax.inject.Inject

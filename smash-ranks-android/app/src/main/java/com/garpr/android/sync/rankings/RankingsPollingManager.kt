@@ -1,6 +1,6 @@
 package com.garpr.android.sync.rankings
 
-import com.garpr.android.models.PollFrequency
+import com.garpr.android.data.models.PollFrequency
 
 interface RankingsPollingManager {
 

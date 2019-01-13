@@ -1,11 +1,11 @@
 package com.garpr.android.networking
 
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.AbsRegion
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.misc.Constants
-import com.garpr.android.models.AbsRegion
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
 import com.google.gson.Gson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

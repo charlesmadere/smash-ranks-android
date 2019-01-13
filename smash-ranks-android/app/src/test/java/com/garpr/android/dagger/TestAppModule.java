@@ -2,11 +2,11 @@ package com.garpr.android.dagger;
 
 import android.app.Application;
 
+import com.garpr.android.data.models.Region;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.TestDeviceUtilsImpl;
 import com.garpr.android.misc.ThreadUtils;
-import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.wrappers.ImageLibraryWrapper;

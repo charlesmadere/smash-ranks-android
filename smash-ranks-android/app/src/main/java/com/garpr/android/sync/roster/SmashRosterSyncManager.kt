@@ -1,7 +1,7 @@
 package com.garpr.android.sync.roster
 
 import androidx.annotation.AnyThread
-import com.garpr.android.models.SmashRosterSyncResult
+import com.garpr.android.data.models.SmashRosterSyncResult
 
 interface SmashRosterSyncManager {
 

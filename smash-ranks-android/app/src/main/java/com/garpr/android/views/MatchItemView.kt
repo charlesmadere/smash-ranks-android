@@ -7,14 +7,14 @@ import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.Match
+import com.garpr.android.data.models.MatchResult
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.Match
-import com.garpr.android.models.MatchResult
 import kotlinx.android.synthetic.main.item_match.view.*
 import javax.inject.Inject
 

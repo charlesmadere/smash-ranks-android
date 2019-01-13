@@ -2,6 +2,13 @@ package com.garpr.android.dagger;
 
 import android.app.Application;
 
+import com.garpr.android.data.models.AbsPlayer;
+import com.garpr.android.data.models.AbsRegion;
+import com.garpr.android.data.models.AbsTournament;
+import com.garpr.android.data.models.Match;
+import com.garpr.android.data.models.RankedPlayer;
+import com.garpr.android.data.models.Region;
+import com.garpr.android.data.models.SimpleDate;
 import com.garpr.android.managers.AppUpgradeManager;
 import com.garpr.android.managers.AppUpgradeManagerImpl;
 import com.garpr.android.managers.FavoritePlayersManager;
@@ -40,13 +47,6 @@ import com.garpr.android.misc.SmashRosterStorageImpl;
 import com.garpr.android.misc.ThreadUtils;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.misc.TimberImpl;
-import com.garpr.android.models.AbsPlayer;
-import com.garpr.android.models.AbsRegion;
-import com.garpr.android.models.AbsTournament;
-import com.garpr.android.models.Match;
-import com.garpr.android.models.RankedPlayer;
-import com.garpr.android.models.Region;
-import com.garpr.android.models.SimpleDate;
 import com.garpr.android.networking.GarPrApi;
 import com.garpr.android.networking.ServerApi;
 import com.garpr.android.networking.ServerApiImpl;

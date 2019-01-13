@@ -3,13 +3,13 @@ package com.garpr.android.managers
 import android.app.Application
 import android.text.TextUtils
 import com.garpr.android.R
+import com.garpr.android.data.models.AbsRegion
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.truncate
 import com.garpr.android.managers.PlayerProfileManager.Presentation
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.SmashRosterStorage
-import com.garpr.android.models.AbsRegion
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.Region
 
 class PlayerProfileManagerImpl(
         val application: Application,

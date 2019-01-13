@@ -1,8 +1,8 @@
 package com.garpr.android.misc
 
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
-import com.garpr.android.models.SmashCompetitor
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.google.gson.Gson
 

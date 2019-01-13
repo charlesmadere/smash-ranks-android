@@ -1,6 +1,16 @@
 package com.garpr.android.dagger;
 
 import com.garpr.android.activities.TournamentsActivityTest;
+import com.garpr.android.data.models.AbsPlayerTest;
+import com.garpr.android.data.models.AbsRegionTest;
+import com.garpr.android.data.models.AbsTournamentTest;
+import com.garpr.android.data.models.AvatarTest;
+import com.garpr.android.data.models.MatchTest;
+import com.garpr.android.data.models.RankingCriteriaTest;
+import com.garpr.android.data.models.RankingsBundleTest;
+import com.garpr.android.data.models.RegionsBundleTest;
+import com.garpr.android.data.models.SimpleDateTest;
+import com.garpr.android.data.models.SmashCharacterTest;
 import com.garpr.android.managers.AppUpgradeManagerTest;
 import com.garpr.android.managers.FavoritePlayersManagerTest;
 import com.garpr.android.managers.HomeToolbarManagerTest;
@@ -17,16 +27,6 @@ import com.garpr.android.misc.PreviousRankUtilsTest;
 import com.garpr.android.misc.RankingsNotificationsUtilsTest;
 import com.garpr.android.misc.SmashRosterStorageTest;
 import com.garpr.android.misc.TimberTest;
-import com.garpr.android.models.AbsPlayerTest;
-import com.garpr.android.models.AbsRegionTest;
-import com.garpr.android.models.AbsTournamentTest;
-import com.garpr.android.models.AvatarTest;
-import com.garpr.android.models.MatchTest;
-import com.garpr.android.models.RankingCriteriaTest;
-import com.garpr.android.models.RankingsBundleTest;
-import com.garpr.android.models.RegionsBundleTest;
-import com.garpr.android.models.SimpleDateTest;
-import com.garpr.android.models.SmashCharacterTest;
 import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
 import com.garpr.android.networking.RegionsBundleApiCallTest;
 import com.garpr.android.preferences.KeyValueStoreProviderTest;
@@ -51,6 +51,18 @@ public interface TestAppComponent {
     // activities
     void inject(TournamentsActivityTest test);
 
+    // data/models
+    void inject(AbsPlayerTest test);
+    void inject(AbsRegionTest test);
+    void inject(AbsTournamentTest test);
+    void inject(AvatarTest test);
+    void inject(MatchTest test);
+    void inject(RankingCriteriaTest test);
+    void inject(RankingsBundleTest test);
+    void inject(RegionsBundleTest test);
+    void inject(SimpleDateTest test);
+    void inject(SmashCharacterTest test);
+
     // managers
     void inject(AppUpgradeManagerTest test);
     void inject(FavoritePlayersManagerTest test);
@@ -70,18 +82,6 @@ public interface TestAppComponent {
     void inject(RankingsNotificationsUtilsTest test);
     void inject(SmashRosterStorageTest test);
     void inject(TimberTest test);
-
-    // models
-    void inject(AbsPlayerTest test);
-    void inject(AbsRegionTest test);
-    void inject(AbsTournamentTest test);
-    void inject(AvatarTest test);
-    void inject(MatchTest test);
-    void inject(RankingCriteriaTest test);
-    void inject(RankingsBundleTest test);
-    void inject(RegionsBundleTest test);
-    void inject(SimpleDateTest test);
-    void inject(SmashCharacterTest test);
 
     // networking
     void inject(PlayerMatchesBundleApiCallTest test);

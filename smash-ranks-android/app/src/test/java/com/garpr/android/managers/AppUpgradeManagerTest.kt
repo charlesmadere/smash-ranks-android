@@ -2,10 +2,10 @@ package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
 import com.garpr.android.BuildConfig
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.LitePlayer
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

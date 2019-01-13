@@ -2,8 +2,8 @@ package com.garpr.android.activities
 
 import android.app.Application
 import com.garpr.android.BaseTest
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

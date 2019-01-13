@@ -3,14 +3,14 @@ package com.garpr.android.adapters
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import com.garpr.android.data.models.RankingCriteria
+import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.HomeTab
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
-import com.garpr.android.models.RankingCriteria
-import com.garpr.android.models.RankingsBundle
 import com.garpr.android.views.FavoritePlayersLayout
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.TournamentsLayout

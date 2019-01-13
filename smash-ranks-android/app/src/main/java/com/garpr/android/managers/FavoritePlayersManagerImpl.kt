@@ -1,13 +1,13 @@
 package com.garpr.android.managers
 
 import android.content.Context
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.Region
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment
 import com.garpr.android.extensions.requireFragmentActivity
 import com.garpr.android.managers.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.Region
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.wrappers.WeakReferenceWrapper
 import com.google.gson.Gson

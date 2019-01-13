@@ -2,9 +2,9 @@ package com.garpr.android.adapters
 
 import android.content.Context
 import com.garpr.android.R
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.LiteTournament
-import com.garpr.android.models.Match
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.LiteTournament
+import com.garpr.android.data.models.Match
 
 class PlayerAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
 

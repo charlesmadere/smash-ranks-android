@@ -2,8 +2,8 @@ package com.garpr.android.adapters
 
 import android.content.Context
 import com.garpr.android.R
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
 
 class RegionsSelectionAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
 

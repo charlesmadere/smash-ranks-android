@@ -2,9 +2,9 @@ package com.garpr.android.adapters
 
 import android.content.Context
 import com.garpr.android.R
-import com.garpr.android.models.HeadToHeadMatch
-import com.garpr.android.models.LiteTournament
-import com.garpr.android.models.WinsLosses
+import com.garpr.android.data.models.HeadToHeadMatch
+import com.garpr.android.data.models.LiteTournament
+import com.garpr.android.data.models.WinsLosses
 
 class HeadToHeadAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
 

@@ -3,9 +3,9 @@ package com.garpr.android.misc
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
 
 interface DeepLinkUtils {
 

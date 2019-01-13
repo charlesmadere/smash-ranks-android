@@ -9,13 +9,13 @@ import android.view.ViewPropertyAnimator
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
+import com.garpr.android.data.models.TournamentMode
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.models.TournamentMode
 import kotlinx.android.synthetic.main.view_tournament_tabs.view.*
 
 class TournamentTabsView @JvmOverloads constructor(

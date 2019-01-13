@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
-import com.garpr.android.models.AbsPlayer
 import kotlinx.android.synthetic.main.item_player_selection.view.*
 
 class PlayerSelectionItemView @JvmOverloads constructor(

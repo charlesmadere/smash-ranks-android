@@ -3,12 +3,12 @@ package com.garpr.android.sync.rankings
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.NotificationsManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingsNotificationsUtils
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.RankingsBundle
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import javax.inject.Inject

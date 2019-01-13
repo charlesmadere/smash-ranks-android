@@ -5,10 +5,10 @@ import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.extensions.getLong
 import com.garpr.android.misc.AnimationUtils
-import com.garpr.android.models.LitePlayer
-import com.garpr.android.models.WinsLosses
 import kotlinx.android.synthetic.main.item_wins_losses.view.*
 import java.text.NumberFormat
 

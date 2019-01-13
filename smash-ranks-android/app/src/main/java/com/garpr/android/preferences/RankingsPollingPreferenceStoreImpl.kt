@@ -1,7 +1,7 @@
 package com.garpr.android.preferences
 
-import com.garpr.android.models.PollFrequency
-import com.garpr.android.models.SimpleDate
+import com.garpr.android.data.models.PollFrequency
+import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.preferences.persistent.PersistentBooleanPreference
 import com.garpr.android.preferences.persistent.PersistentGsonPreference
 import com.garpr.android.preferences.persistent.PersistentStringPreference
