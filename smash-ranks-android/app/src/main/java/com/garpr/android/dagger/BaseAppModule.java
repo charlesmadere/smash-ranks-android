@@ -159,6 +159,7 @@ public abstract class BaseAppModule {
     }
 
     @Named(GAR_PR_RETROFIT)
+    @NonNull
     @Provides
     @Singleton
     Retrofit providesGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
@@ -169,6 +170,7 @@ public abstract class BaseAppModule {
     }
 
     @Named(GENERAL_KEY_VALUE_STORE)
+    @NonNull
     @Provides
     @Singleton
     KeyValueStore providesGeneralKeyValueStore(final KeyValueStoreProvider keyValueStoreProvider) {
@@ -176,6 +178,7 @@ public abstract class BaseAppModule {
                 ".Preferences.v2.General");
     }
 
+    @NonNull
     @Provides
     @Singleton
     GeneralPreferenceStore providesGeneralPreferenceStore(final Gson gson,
@@ -183,6 +186,7 @@ public abstract class BaseAppModule {
         return new GeneralPreferenceStoreImpl(gson, keyValueStore, mDefaultRegion);
     }
 
+    @NonNull
     @Provides
     @Singleton
     Gson providesGson() {
@@ -199,18 +203,21 @@ public abstract class BaseAppModule {
                 .create();
     }
 
+    @NonNull
     @Provides
     @Singleton
     GsonConverterFactory providesGsonConverterFactory(final Gson gson) {
         return GsonConverterFactory.create(gson);
     }
 
+    @NonNull
     @Provides
     @Singleton
     HomeToolbarManager providesHomeToolbarManager(final IdentityManager identityManager) {
         return new HomeToolbarManagerImpl(identityManager);
     }
 
+    @NonNull
     @Provides
     @Singleton
     IdentityManager providesIdentityManager(final GeneralPreferenceStore generalPreferenceStore,
@@ -218,6 +225,7 @@ public abstract class BaseAppModule {
         return new IdentityManagerImpl(generalPreferenceStore.getIdentity(), timber);
     }
 
+    @NonNull
     @Provides
     @Singleton
     KeyValueStoreProvider providesKeyValueStoreProvider() {
