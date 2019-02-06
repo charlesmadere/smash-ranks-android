@@ -1,6 +1,7 @@
 package com.garpr.android.dialogs
 
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +76,7 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
                 favoritePlayersManager.addPlayer(player, player.region)
             }
 
+            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             dismissAllowingStateLoss()
         }
 
