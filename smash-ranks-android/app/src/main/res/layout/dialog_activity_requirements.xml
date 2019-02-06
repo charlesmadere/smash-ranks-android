@@ -6,12 +6,12 @@
     <TextView
         android:id="@+id/dialogActivityRequirementsHead"
         tools:text="Norcal Activity Requirements"
-        style="@style/BottomSheetDialogMessage" />
+        style="@style/BottomSheetDialogTitle" />
 
     <TextView
         android:id="@+id/dialogActivityRequirementsBody"
         tools:text="2 tournaments within the last 60 days."
-        style="@style/BottomSheetDialogButton" />
+        style="@style/BottomSheetDialogMessage" />
 
     <Space
         android:layout_height="@dimen/root_padding"

@@ -5,7 +5,7 @@
 
     <TextView
         android:text="@string/share"
-        style="@style/BottomSheetDialogMessage" />
+        style="@style/BottomSheetDialogTitle" />
 
     <TextView
         android:id="@+id/dialogRegionRankings"

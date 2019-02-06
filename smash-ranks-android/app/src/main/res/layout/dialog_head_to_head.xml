@@ -5,7 +5,7 @@
 
     <TextView
         android:text="@string/view"
-        style="@style/BottomSheetDialogMessage" />
+        style="@style/BottomSheetDialogTitle" />
 
     <TextView
         android:id="@+id/dialogFirstPlayer"

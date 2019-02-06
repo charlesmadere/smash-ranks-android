@@ -6,7 +6,7 @@
     <TextView
         android:id="@+id/dialogMessage"
         tools:text="Add Behemoth87 to favorites?"
-        style="@style/BottomSheetDialogMessage" />
+        style="@style/BottomSheetDialogTitle" />
 
     <com.garpr.android.views.TintedTextView
         android:id="@+id/dialogPositiveText"
