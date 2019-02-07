@@ -18,7 +18,7 @@
 
 
 -keepclassmembers enum com.garpr.android.** { *; }
--keep class com.garpr.android.models.** { *; }
+-keep class com.garpr.android.data.models.** { *; }
 
 
 ############
