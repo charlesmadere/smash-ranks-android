@@ -75,7 +75,7 @@ dependencies {
 
     // Facebook's Fresco
     // https://github.com/facebook/fresco
-    implementation "com.facebook.fresco:fresco:1.12.0"
+    implementation "com.facebook.fresco:fresco:1.12.1"
 
     // Google's Dagger
     // https://github.com/google/dagger
