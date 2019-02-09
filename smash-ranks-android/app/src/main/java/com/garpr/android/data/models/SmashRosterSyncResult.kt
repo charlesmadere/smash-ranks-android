@@ -8,13 +8,15 @@ import com.garpr.android.extensions.requireBoolean
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeBoolean
 import com.garpr.android.extensions.writeInteger
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class SmashRosterSyncResult(
-        @SerializedName("success") val success: Boolean,
-        @SerializedName("httpCode") val httpCode: Int? = null,
-        @SerializedName("date") val date: SimpleDate = SimpleDate(),
-        @SerializedName("message") val message: String? = null
+        @Json(name = "success") val success: Boolean,
+        @Json(name = "httpCode") val httpCode: Int? = null,
+        @Json(name = "date") val date: SimpleDate = SimpleDate(),
+        @Json(name = "message") val message: String? = null
 ) : Parcelable {
 
     companion object {

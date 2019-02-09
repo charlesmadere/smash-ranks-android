@@ -1,11 +1,10 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
-import com.google.gson.Gson
-import com.google.gson.JsonElement
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -25,7 +24,7 @@ class AbsRegionTest : BaseTest() {
     private lateinit var liteRegion3: AbsRegion
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
 
     companion object {
@@ -42,12 +41,13 @@ class AbsRegionTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        fullRegion1 = gson.fromJson(JSON_FULL_REGION_1, AbsRegion::class.java)
-        fullRegion2 = gson.fromJson(JSON_FULL_REGION_2, AbsRegion::class.java)
-        fullRegion3 = gson.fromJson(JSON_FULL_REGION_3, AbsRegion::class.java)
-        liteRegion1 = gson.fromJson(JSON_LITE_REGION_1, AbsRegion::class.java)
-        liteRegion2 = gson.fromJson(JSON_LITE_REGION_2, AbsRegion::class.java)
-        liteRegion3 = gson.fromJson(JSON_LITE_REGION_3, AbsRegion::class.java)
+        val absRegionAdapter = moshi.adapter(AbsRegion::class.java)
+        fullRegion1 = absRegionAdapter.requireFromJson(JSON_FULL_REGION_1)
+        fullRegion2 = absRegionAdapter.requireFromJson(JSON_FULL_REGION_2)
+        fullRegion3 = absRegionAdapter.requireFromJson(JSON_FULL_REGION_3)
+        liteRegion1 = absRegionAdapter.requireFromJson(JSON_LITE_REGION_1)
+        liteRegion2 = absRegionAdapter.requireFromJson(JSON_LITE_REGION_2)
+        liteRegion3 = absRegionAdapter.requireFromJson(JSON_LITE_REGION_3)
     }
 
     @Test
@@ -63,8 +63,8 @@ class AbsRegionTest : BaseTest() {
 
     @Test
     fun testComparatorEndpointOrder() {
-        val list = listOf(fullRegion1, liteRegion2, fullRegion2, fullRegion3, liteRegion1,
-                liteRegion3)
+        val list = listOf(fullRegion1, liteRegion2, fullRegion2, fullRegion3,
+                liteRegion1, liteRegion3)
         Collections.sort(list, AbsRegion.ENDPOINT_ORDER)
 
         assertEquals(fullRegion1, list[0])
@@ -73,48 +73,6 @@ class AbsRegionTest : BaseTest() {
         assertEquals(liteRegion3, list[3])
         assertEquals(liteRegion2, list[4])
         assertEquals(liteRegion1, list[5])
-    }
-
-    @Test
-    fun testFromJsonFullRegion1() {
-        assertEquals(AbsRegion.Kind.FULL, fullRegion1.kind)
-    }
-
-    @Test
-    fun testFromJsonFullRegion2() {
-        assertEquals(AbsRegion.Kind.FULL, fullRegion2.kind)
-    }
-
-    @Test
-    fun testFromJsonFullRegion3() {
-        assertEquals(AbsRegion.Kind.FULL, fullRegion3.kind)
-    }
-
-    @Test
-    fun testFromJsonLiteRegion1() {
-        assertEquals(AbsRegion.Kind.LITE, liteRegion1.kind)
-    }
-
-    @Test
-    fun testFromJsonLiteRegion2() {
-        assertEquals(AbsRegion.Kind.LITE, liteRegion2.kind)
-    }
-
-    @Test
-    fun testFromJsonLiteRegion3() {
-        assertEquals(AbsRegion.Kind.LITE, liteRegion3.kind)
-    }
-
-    @Test
-    fun testFromJsonNullJsonElement() {
-        val region = gson.fromJson(null as JsonElement?, AbsRegion::class.java)
-        assertNull(region)
-    }
-
-    @Test
-    fun testFromJsonNullString() {
-        val region = gson.fromJson(null as String?, AbsRegion::class.java)
-        assertNull(region)
     }
 
     @Test

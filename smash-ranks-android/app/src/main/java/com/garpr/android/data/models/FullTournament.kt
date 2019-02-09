@@ -9,17 +9,19 @@ import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeAbsPlayerList
 import com.garpr.android.extensions.writeBoolean
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class FullTournament(
-        regions: List<String>? = null,
-        date: SimpleDate,
-        id: String,
-        name: String,
-        @SerializedName("players") val players: List<AbsPlayer>? = null,
-        @SerializedName("matches") val matches: List<Match>? = null,
-        @SerializedName("rawId") val rawId: String? = null,
-        @SerializedName("url") val url: String? = null
+        @Json(name = "regions") regions: List<String>? = null,
+        @Json(name = "date") date: SimpleDate,
+        @Json(name = "id") id: String,
+        @Json(name = "name") name: String,
+        @Json(name = "players") val players: List<AbsPlayer>? = null,
+        @Json(name = "matches") val matches: List<Match>? = null,
+        @Json(name = "rawId") val rawId: String? = null,
+        @Json(name = "url") val url: String? = null
 ) : AbsTournament(
         regions,
         date,
@@ -55,13 +57,14 @@ class FullTournament(
     }
 
 
+    @JsonClass(generateAdapter = true)
     data class Match(
-            @SerializedName("excluded") val isExcluded: Boolean,
-            @SerializedName("loser_id") val loserId: String,
-            @SerializedName("loser_name") val loserName: String,
-            @SerializedName("match_id") val matchId: String,
-            @SerializedName("winner_id") val winnerId: String,
-            @SerializedName("winner_name") val winnerName: String
+            @Json(name = "excluded") val isExcluded: Boolean,
+            @Json(name = "loser_id") val loserId: String,
+            @Json(name = "loser_name") val loserName: String,
+            @Json(name = "match_id") val matchId: String,
+            @Json(name = "winner_id") val winnerId: String,
+            @Json(name = "winner_name") val winnerName: String
     ) : Parcelable {
         companion object {
             @JvmField

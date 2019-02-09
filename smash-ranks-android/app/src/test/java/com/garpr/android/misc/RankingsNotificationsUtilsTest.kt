@@ -2,12 +2,13 @@ package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankingsBundle
+import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.CANCEL
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.SHOW
 import com.garpr.android.misc.RankingsNotificationsUtils.PollStatus
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -26,7 +27,7 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     protected lateinit var deviceUtils: DeviceUtils
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
     @Inject
     protected lateinit var rankingsNotificationsUtils: RankingsNotificationsUtils
@@ -50,7 +51,8 @@ class RankingsNotificationsUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        rankingsBundle = gson.fromJson(JSON_RANKINGS_BUNDLE, RankingsBundle::class.java)
+        val rankingsBundleAdapter = moshi.adapter(RankingsBundle::class.java)
+        rankingsBundle = rankingsBundleAdapter.requireFromJson(JSON_RANKINGS_BUNDLE)
     }
 
     @Test

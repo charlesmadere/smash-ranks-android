@@ -7,12 +7,14 @@ import com.garpr.android.extensions.readAbsPlayer
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
 import com.garpr.android.misc.MiscUtils
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class HeadToHeadMatch(
-        result: MatchResult,
-        @SerializedName("player") val player: AbsPlayer,
-        @SerializedName("opponent") val opponent: AbsPlayer
+        @Json(name = "result") result: MatchResult,
+        @Json(name = "player") val player: AbsPlayer,
+        @Json(name = "opponent") val opponent: AbsPlayer
 ) : AbsMatch(
         result
 ), Parcelable {

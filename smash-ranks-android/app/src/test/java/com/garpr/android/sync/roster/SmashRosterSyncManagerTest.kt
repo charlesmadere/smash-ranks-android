@@ -10,8 +10,9 @@ import com.garpr.android.misc.Timber
 import com.garpr.android.networking.AbsServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.wrappers.WorkManagerWrapper
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -27,7 +28,7 @@ import javax.inject.Inject
 class SmashRosterSyncManagerTest : BaseTest() {
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
     @Inject
     protected lateinit var smashRosterPreferenceStore: SmashRosterPreferenceStore
@@ -44,6 +45,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
     @Inject
     protected lateinit var workManagerWrapper: WorkManagerWrapper
 
+    private lateinit var smashRosterAdapter: JsonAdapter<Map<String, SmashCompetitor>>
     private lateinit var serverApiOverride: ServerApiOverride
     private lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
@@ -58,9 +60,13 @@ class SmashRosterSyncManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        serverApiOverride = ServerApiOverride(gson)
-        serverApiOverride.jsonGarPrSmashRoster = JSON_GAR_PR_SMASH_ROSTER
-        serverApiOverride.jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
+        smashRosterAdapter = moshi.adapter(Types.newParameterizedType(Map::class.java,
+                String::class.java, SmashCompetitor::class.java))
+
+        serverApiOverride = ServerApiOverride(
+                jsonGarPrSmashRoster = JSON_GAR_PR_SMASH_ROSTER,
+                jsonNotGarPrSmashRoster = JSON_NOT_GAR_PR_SMASH_ROSTER
+        )
 
         smashRosterSyncManager = SmashRosterSyncManagerImpl(serverApiOverride,
                 smashRosterPreferenceStore, smashRosterStorage, threadUtils, timber,
@@ -231,33 +237,20 @@ class SmashRosterSyncManagerTest : BaseTest() {
         assertTrue(smashRosterSyncManager.syncResult?.success == true)
     }
 
-    private class ServerApiOverride(
-            private val gson: Gson
+    private inner class ServerApiOverride(
+            internal var jsonGarPrSmashRoster: String?,
+            internal var jsonNotGarPrSmashRoster: String?
     ) : AbsServerApi() {
-        var jsonGarPrSmashRoster: String? = null
-        var jsonNotGarPrSmashRoster: String? = null
-
         override fun getSmashRoster(endpoint: Endpoint): ServerResponse<Map<String, SmashCompetitor>> {
-            val body: Map<String, SmashCompetitor>?
+            val json: String? = when (endpoint) {
+                Endpoint.GAR_PR -> jsonGarPrSmashRoster
+                Endpoint.NOT_GAR_PR -> jsonNotGarPrSmashRoster
+            }
 
-            when (endpoint) {
-                Endpoint.GAR_PR -> {
-                    body = if (jsonGarPrSmashRoster?.isNotBlank() == true) {
-                        gson.fromJson(jsonGarPrSmashRoster,
-                                object : TypeToken<Map<String, SmashCompetitor>>(){}.type)
-                    } else {
-                        null
-                    }
-                }
-
-                Endpoint.NOT_GAR_PR -> {
-                    body = if (jsonNotGarPrSmashRoster?.isNotBlank() == true) {
-                        gson.fromJson(jsonNotGarPrSmashRoster,
-                                object : TypeToken<Map<String, SmashCompetitor>>(){}.type)
-                    } else {
-                        null
-                    }
-                }
+            val body: Map<String, SmashCompetitor>? = if (json.isNullOrEmpty()) {
+                null
+            } else {
+                smashRosterAdapter.fromJson(json)
             }
 
             return ServerResponse(body, body != null, 200)

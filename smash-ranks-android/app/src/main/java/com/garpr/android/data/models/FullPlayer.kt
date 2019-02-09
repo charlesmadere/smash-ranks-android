@@ -6,14 +6,16 @@ import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readRatingsMap
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeRatingsMap
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class FullPlayer(
-        id: String,
-        name: String,
-        @SerializedName("aliases") val aliases: List<String>? = null,
-        @SerializedName("regions") val regions: List<String>? = null,
-        @SerializedName("ratings") val ratings: Map<String, Rating>? = null
+        @Json(name = "id") id: String,
+        @Json(name = "name") name: String,
+        @Json(name = "aliases") val aliases: List<String>? = null,
+        @Json(name = "regions") val regions: List<String>? = null,
+        @Json(name = "ratings") val ratings: Map<String, Rating>? = null
 ) : AbsPlayer(
         id,
         name

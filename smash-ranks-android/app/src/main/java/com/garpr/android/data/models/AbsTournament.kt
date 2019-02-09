@@ -3,15 +3,14 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.google.gson.JsonDeserializer
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Comparator
 
 abstract class AbsTournament(
-        @SerializedName("regions") val regions: List<String>? = null,
-        @SerializedName("date") val date: SimpleDate,
-        @SerializedName("id") val id: String,
-        @SerializedName("name") val name: String
+        val regions: List<String>? = null,
+        val date: SimpleDate,
+        val id: String,
+        val name: String
 ) : Parcelable {
 
     companion object {
@@ -21,22 +20,6 @@ abstract class AbsTournament(
 
         val REVERSE_CHRONOLOGICAL_ORDER = Comparator<AbsTournament> { o1, o2 ->
             CHRONOLOGICAL_ORDER.compare(o2, o1)
-        }
-
-        val JSON_DESERIALIZER = JsonDeserializer<AbsTournament> { json, typeOfT, context ->
-            if (json == null || json.isJsonNull) {
-                return@JsonDeserializer null
-            }
-
-            val jsonObject = json.asJsonObject
-
-            if (jsonObject.has("matches") ||
-                    jsonObject.has("players") ||
-                    jsonObject.has("raw_id")) {
-                context.deserialize<AbsTournament>(json, FullTournament::class.java)
-            } else {
-                context.deserialize<AbsTournament>(json, LiteTournament::class.java)
-            }
         }
     }
 
@@ -61,10 +44,10 @@ abstract class AbsTournament(
 
 
     enum class Kind : Parcelable {
-        @SerializedName("full")
+        @Json(name = "full")
         FULL,
 
-        @SerializedName("lite")
+        @Json(name = "lite")
         LITE;
 
         companion object {

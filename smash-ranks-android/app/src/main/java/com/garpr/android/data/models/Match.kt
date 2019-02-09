@@ -9,14 +9,15 @@ import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
 import com.garpr.android.extensions.writeAbsTournament
 import com.garpr.android.misc.MiscUtils
-import com.google.gson.JsonDeserializer
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.util.Comparator
 
+@JsonClass(generateAdapter = true)
 class Match(
-        result: MatchResult,
-        @SerializedName("opponent") val opponent: AbsPlayer,
-        @SerializedName("tournament") val tournament: AbsTournament
+        @Json(name = "result") result: MatchResult,
+        @Json(name = "opponent") val opponent: AbsPlayer,
+        @Json(name = "tournament") val tournament: AbsTournament
 ) : AbsMatch(
         result
 ), Parcelable {
@@ -37,27 +38,6 @@ class Match(
 
         val REVERSE_CHRONOLOGICAL_ORDER = Comparator<Match> { o1, o2 ->
             CHRONOLOGICAL_ORDER.compare(o2, o1)
-        }
-
-        val JSON_DESERIALIZER = JsonDeserializer<Match> { json, typeOfT, context ->
-            if (json == null || json.isJsonNull) {
-                return@JsonDeserializer null
-            }
-
-            val jsonObject = json.asJsonObject
-
-            val player = LitePlayer(
-                    jsonObject["opponent_id"].asString,
-                    jsonObject["opponent_name"].asString)
-            val tournament = LiteTournament(null,
-                    context.deserialize(jsonObject["tournament_date"],
-                            SimpleDate::class.java),
-                    jsonObject["tournament_id"].asString,
-                    jsonObject["tournament_name"].asString)
-            val result = context.deserialize<MatchResult>(jsonObject["result"],
-                    MatchResult::class.java)
-
-            Match(result, player, tournament)
         }
     }
 

@@ -5,7 +5,7 @@ import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.garpr.android.R
 import com.garpr.android.extensions.createParcel
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.concurrent.TimeUnit
 
 enum class PollFrequency constructor(
@@ -13,28 +13,28 @@ enum class PollFrequency constructor(
         timeInMillis: Long
 ) : Parcelable {
 
-    @SerializedName("every_8_hours")
+    @Json(name = "every_8_hours")
     EVERY_8_HOURS(R.string.every_8_hours, TimeUnit.HOURS.toMillis(8)),
 
-    @SerializedName("daily")
+    @Json(name = "daily")
     DAILY(R.string.daily, TimeUnit.DAYS.toMillis(1)),
 
-    @SerializedName("every_2_days")
+    @Json(name = "every_2_days")
     EVERY_2_DAYS(R.string.every_2_days, TimeUnit.DAYS.toMillis(2)),
 
-    @SerializedName("every_3_days")
+    @Json(name = "every_3_days")
     EVERY_3_DAYS(R.string.every_3_days, TimeUnit.DAYS.toMillis(3)),
 
-    @SerializedName("every_5_days")
+    @Json(name = "every_5_days")
     EVERY_5_DAYS(R.string.every_5_days, TimeUnit.DAYS.toMillis(5)),
 
-    @SerializedName("weekly")
+    @Json(name = "weekly")
     WEEKLY(R.string.weekly, TimeUnit.DAYS.toMillis(7)),
 
-    @SerializedName("every_10_days")
+    @Json(name = "every_10_days")
     EVERY_10_DAYS(R.string.every_10_days, TimeUnit.DAYS.toMillis(10)),
 
-    @SerializedName("every_2_weeks")
+    @Json(name = "every_2_weeks")
     EVERY_2_WEEKS(R.string.every_2_weeks, TimeUnit.DAYS.toMillis(14));
 
 

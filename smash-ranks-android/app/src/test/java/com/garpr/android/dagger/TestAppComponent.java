@@ -1,12 +1,17 @@
 package com.garpr.android.dagger;
 
 import com.garpr.android.activities.TournamentsActivityTest;
+import com.garpr.android.data.converters.AbsPlayerConverterTest;
+import com.garpr.android.data.converters.AbsRegionConverterTest;
+import com.garpr.android.data.converters.AbsTournamentConverterTest;
+import com.garpr.android.data.converters.MatchConverterTest;
+import com.garpr.android.data.converters.RankedPlayerConverterTest;
+import com.garpr.android.data.converters.SimpleDateConverterTest;
 import com.garpr.android.data.models.AbsPlayerTest;
 import com.garpr.android.data.models.AbsRegionTest;
 import com.garpr.android.data.models.AbsTournamentTest;
 import com.garpr.android.data.models.AvatarTest;
 import com.garpr.android.data.models.MatchTest;
-import com.garpr.android.data.models.RankingCriteriaTest;
 import com.garpr.android.data.models.RankingsBundleTest;
 import com.garpr.android.data.models.RegionsBundleTest;
 import com.garpr.android.data.models.SimpleDateTest;
@@ -32,9 +37,9 @@ import com.garpr.android.networking.RegionsBundleApiCallTest;
 import com.garpr.android.preferences.KeyValueStoreProviderTest;
 import com.garpr.android.preferences.KeyValueStoreTest;
 import com.garpr.android.preferences.persistent.PersistentBooleanPreferenceTest;
-import com.garpr.android.preferences.persistent.PersistentGsonPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentIntegerPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentLongPreferenceTest;
+import com.garpr.android.preferences.persistent.PersistentMoshiPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentUriPreferenceTest;
 import com.garpr.android.sync.rankings.RankingsPollingManagerTest;
@@ -51,13 +56,20 @@ public interface TestAppComponent {
     // activities
     void inject(TournamentsActivityTest test);
 
+    // data/converters
+    void inject(AbsPlayerConverterTest test);
+    void inject(AbsRegionConverterTest test);
+    void inject(AbsTournamentConverterTest test);
+    void inject(MatchConverterTest test);
+    void inject(RankedPlayerConverterTest test);
+    void inject(SimpleDateConverterTest test);
+
     // data/models
     void inject(AbsPlayerTest test);
     void inject(AbsRegionTest test);
     void inject(AbsTournamentTest test);
     void inject(AvatarTest test);
     void inject(MatchTest test);
-    void inject(RankingCriteriaTest test);
     void inject(RankingsBundleTest test);
     void inject(RegionsBundleTest test);
     void inject(SimpleDateTest test);
@@ -91,9 +103,9 @@ public interface TestAppComponent {
     void inject(KeyValueStoreProviderTest test);
     void inject(KeyValueStoreTest test);
     void inject(PersistentBooleanPreferenceTest test);
-    void inject(PersistentGsonPreferenceTest test);
     void inject(PersistentIntegerPreferenceTest test);
     void inject(PersistentLongPreferenceTest test);
+    void inject(PersistentMoshiPreferenceTest test);
     void inject(PersistentStringPreferenceTest test);
     void inject(PersistentUriPreferenceTest test);
 

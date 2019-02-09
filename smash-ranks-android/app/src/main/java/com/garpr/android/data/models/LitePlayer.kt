@@ -3,10 +3,13 @@ package com.garpr.android.data.models
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.requireString
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class LitePlayer(
-        id: String,
-        name: String
+        @Json(name = "id") id: String,
+        @Json(name = "name") name: String
 ) : AbsPlayer(
         id,
         name

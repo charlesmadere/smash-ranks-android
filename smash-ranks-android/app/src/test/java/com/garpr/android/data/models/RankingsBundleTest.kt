@@ -1,7 +1,8 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
-import com.google.gson.Gson
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -17,7 +18,7 @@ class RankingsBundleTest : BaseTest() {
     private lateinit var rankingsBundle2: RankingsBundle
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
 
     companion object {
@@ -30,8 +31,9 @@ class RankingsBundleTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        rankingsBundle1 = gson.fromJson(JSON_RANKINGS_BUNDLE_1, RankingsBundle::class.java)
-        rankingsBundle2 = gson.fromJson(JSON_RANKINGS_BUNDLE_2, RankingsBundle::class.java)
+        val rankingsBundleAdapter = moshi.adapter(RankingsBundle::class.java)
+        rankingsBundle1 = rankingsBundleAdapter.requireFromJson(JSON_RANKINGS_BUNDLE_1)
+        rankingsBundle2 = rankingsBundleAdapter.requireFromJson(JSON_RANKINGS_BUNDLE_2)
     }
 
     @Test

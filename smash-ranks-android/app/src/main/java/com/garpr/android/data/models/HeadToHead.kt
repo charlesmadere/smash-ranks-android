@@ -5,14 +5,16 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readAbsPlayer
 import com.garpr.android.extensions.writeAbsPlayer
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class HeadToHead(
-        @SerializedName("opponent") val opponent: AbsPlayer,
-        @SerializedName("player") val player: AbsPlayer,
-        @SerializedName("losses") val losses: Int = 0,
-        @SerializedName("wins") val wins: Int = 0,
-        @SerializedName("matches") val matches: List<Match>? = null
+        @Json(name = "opponent") val opponent: AbsPlayer,
+        @Json(name = "player") val player: AbsPlayer,
+        @Json(name = "losses") val losses: Int = 0,
+        @Json(name = "wins") val wins: Int = 0,
+        @Json(name = "matches") val matches: List<Match>? = null
 ) : Parcelable {
 
     companion object {

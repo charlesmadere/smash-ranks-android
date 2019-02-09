@@ -2,13 +2,13 @@ package com.garpr.android.dagger;
 
 import android.app.Application;
 
-import com.garpr.android.data.models.AbsPlayer;
-import com.garpr.android.data.models.AbsRegion;
-import com.garpr.android.data.models.AbsTournament;
-import com.garpr.android.data.models.Match;
-import com.garpr.android.data.models.RankedPlayer;
+import com.garpr.android.data.converters.AbsPlayerConverter;
+import com.garpr.android.data.converters.AbsRegionConverter;
+import com.garpr.android.data.converters.AbsTournamentConverter;
+import com.garpr.android.data.converters.MatchConverter;
+import com.garpr.android.data.converters.RankedPlayerConverter;
+import com.garpr.android.data.converters.SimpleDateConverter;
 import com.garpr.android.data.models.Region;
-import com.garpr.android.data.models.SimpleDate;
 import com.garpr.android.managers.AppUpgradeManager;
 import com.garpr.android.managers.AppUpgradeManagerImpl;
 import com.garpr.android.managers.FavoritePlayersManager;
@@ -65,8 +65,7 @@ import com.garpr.android.sync.rankings.RankingsPollingManagerImpl;
 import com.garpr.android.sync.roster.SmashRosterSyncManager;
 import com.garpr.android.sync.roster.SmashRosterSyncManagerImpl;
 import com.garpr.android.wrappers.WorkManagerWrapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.squareup.moshi.Moshi;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -75,7 +74,7 @@ import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 @Module
 public abstract class BaseAppModule {
@@ -137,10 +136,10 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    FavoritePlayersManager providesFavoritePlayersManager(final Gson gson,
+    FavoritePlayersManager providesFavoritePlayersManager(final Moshi moshi,
             @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE) final KeyValueStore keyValueStore,
             final Timber timber) {
-        return new FavoritePlayersManagerImpl(gson, keyValueStore, timber);
+        return new FavoritePlayersManagerImpl(keyValueStore, moshi, timber);
     }
 
     @NonNull
@@ -162,9 +161,9 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    Retrofit providesGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
+    Retrofit providesGarPrRetrofit(final MoshiConverterFactory moshiConverterFactory) {
         return new Retrofit.Builder()
-                .addConverterFactory(gsonConverterFactory)
+                .addConverterFactory(moshiConverterFactory)
                 .baseUrl(Constants.GAR_PR_BASE_PATH + ':' + Constants.GAR_PR_API_PORT)
                 .build();
     }
@@ -181,33 +180,9 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    GeneralPreferenceStore providesGeneralPreferenceStore(final Gson gson,
+    GeneralPreferenceStore providesGeneralPreferenceStore(final Moshi moshi,
             @Named(GENERAL_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
-        return new GeneralPreferenceStoreImpl(gson, keyValueStore, mDefaultRegion);
-    }
-
-    @NonNull
-    @Provides
-    @Singleton
-    Gson providesGson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_DESERIALIZER())
-                .registerTypeAdapter(AbsPlayer.class, AbsPlayer.Companion.getJSON_SERIALIZER())
-                .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_DESERIALIZER())
-                .registerTypeAdapter(AbsRegion.class, AbsRegion.Companion.getJSON_SERIALIZER())
-                .registerTypeAdapter(AbsTournament.class, AbsTournament.Companion.getJSON_DESERIALIZER())
-                .registerTypeAdapter(Match.class, Match.Companion.getJSON_DESERIALIZER())
-                .registerTypeAdapter(RankedPlayer.class, RankedPlayer.Companion.getJSON_DESERIALIZER())
-                .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_DESERIALIZER())
-                .registerTypeAdapter(SimpleDate.class, SimpleDate.Companion.getJSON_SERIALIZER())
-                .create();
-    }
-
-    @NonNull
-    @Provides
-    @Singleton
-    GsonConverterFactory providesGsonConverterFactory(final Gson gson) {
-        return GsonConverterFactory.create(gson);
+        return new GeneralPreferenceStoreImpl(keyValueStore, moshi, mDefaultRegion);
     }
 
     @NonNull
@@ -232,6 +207,27 @@ public abstract class BaseAppModule {
         return new KeyValueStoreProviderImpl(mApplication);
     }
 
+    @NonNull
+    @Provides
+    @Singleton
+    Moshi providesMoshi() {
+        return new Moshi.Builder()
+                .add(AbsPlayerConverter.INSTANCE)
+                .add(AbsRegionConverter.INSTANCE)
+                .add(AbsTournamentConverter.INSTANCE)
+                .add(MatchConverter.INSTANCE)
+                .add(RankedPlayerConverter.INSTANCE)
+                .add(SimpleDateConverter.INSTANCE)
+                .build();
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    MoshiConverterFactory providesMoshiConverterFactory(final Moshi moshi) {
+        return MoshiConverterFactory.create(moshi);
+    }
+
     @Named(NOT_GAR_PR_API)
     @NonNull
     @Provides
@@ -244,9 +240,9 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    Retrofit providesNotGarPrRetrofit(final GsonConverterFactory gsonConverterFactory) {
+    Retrofit providesNotGarPrRetrofit(final MoshiConverterFactory moshiConverterFactory) {
         return new Retrofit.Builder()
-                .addConverterFactory(gsonConverterFactory)
+                .addConverterFactory(moshiConverterFactory)
                 .baseUrl(Constants.NOT_GAR_PR_BASE_PATH + ':' + Constants.NOT_GAR_PR_API_PORT)
                 .build();
     }
@@ -303,9 +299,9 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    RankingsPollingPreferenceStore providesRankingsPollingPreferenceStore(final Gson gson,
+    RankingsPollingPreferenceStore providesRankingsPollingPreferenceStore(final Moshi moshi,
             @Named(RANKINGS_POLLING_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
-        return new RankingsPollingPreferenceStoreImpl(gson, keyValueStore);
+        return new RankingsPollingPreferenceStoreImpl(keyValueStore, moshi);
     }
 
     @NonNull
@@ -376,9 +372,9 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    Retrofit providesSmashRosterRetrofit(final GsonConverterFactory gsonConverterFactory) {
+    Retrofit providesSmashRosterRetrofit(final MoshiConverterFactory moshiConverterFactory) {
         return new Retrofit.Builder()
-                .addConverterFactory(gsonConverterFactory)
+                .addConverterFactory(moshiConverterFactory)
                 .baseUrl(mSmashRosterBasePath)
                 .build();
     }
@@ -386,17 +382,17 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    SmashRosterPreferenceStore providesSmashRosterPreferenceStore(final Gson gson,
+    SmashRosterPreferenceStore providesSmashRosterPreferenceStore(final Moshi moshi,
             @Named(SMASH_ROSTER_KEY_VALUE_STORE) final KeyValueStore keyValueStore) {
-        return new SmashRosterPreferenceStoreImpl(gson, keyValueStore);
+        return new SmashRosterPreferenceStoreImpl(keyValueStore, moshi);
     }
 
     @NonNull
     @Provides
     @Singleton
-    SmashRosterStorage providesSmashRosterStorage(final Gson gson,
+    SmashRosterStorage providesSmashRosterStorage(final Moshi moshi,
             final KeyValueStoreProvider keyValueStoreProvider, final Timber timber) {
-        return new SmashRosterStorageImpl(gson, keyValueStoreProvider,
+        return new SmashRosterStorageImpl(keyValueStoreProvider, moshi,
                 mApplication.getPackageName(), timber);
     }
 

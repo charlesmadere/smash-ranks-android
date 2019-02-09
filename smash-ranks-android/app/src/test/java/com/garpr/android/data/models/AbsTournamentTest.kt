@@ -1,10 +1,9 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
-import com.google.gson.Gson
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,7 +20,7 @@ class AbsTournamentTest : BaseTest() {
     private lateinit var liteTournament3: AbsTournament
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
 
     companion object {
@@ -36,10 +35,11 @@ class AbsTournamentTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        fullTournament = gson.fromJson(JSON_FULL_TOURNAMENT, AbsTournament::class.java)
-        liteTournament1 = gson.fromJson(JSON_LITE_TOURNAMENT_1, AbsTournament::class.java)
-        liteTournament2 = gson.fromJson(JSON_LITE_TOURNAMENT_2, AbsTournament::class.java)
-        liteTournament3 = gson.fromJson(JSON_LITE_TOURNAMENT_3, AbsTournament::class.java)
+        val absTournamentAdapter = moshi.adapter(AbsTournament::class.java)
+        fullTournament = absTournamentAdapter.requireFromJson(JSON_FULL_TOURNAMENT)
+        liteTournament1 = absTournamentAdapter.requireFromJson(JSON_LITE_TOURNAMENT_1)
+        liteTournament2 = absTournamentAdapter.requireFromJson(JSON_LITE_TOURNAMENT_2)
+        liteTournament3 = absTournamentAdapter.requireFromJson(JSON_LITE_TOURNAMENT_3)
     }
 
     @Test
@@ -62,48 +62,6 @@ class AbsTournamentTest : BaseTest() {
         assertEquals(liteTournament2, list[1])
         assertEquals(fullTournament, list[2])
         assertEquals(liteTournament1, list[3])
-    }
-
-    @Test
-    fun testFromJsonFullTournament() {
-        assertEquals("Melee @ the Made 23", fullTournament.name)
-        assertEquals("5888282dd2994e0d53b14559", fullTournament.id)
-        assertEquals(AbsTournament.Kind.FULL, fullTournament.kind)
-        assertTrue(fullTournament is FullTournament)
-
-        val fullTournament = fullTournament as FullTournament
-        assertTrue(fullTournament.matches?.isNotEmpty() == true)
-        assertTrue(fullTournament.players?.isNotEmpty() == true)
-    }
-
-    @Test
-    fun testFromJsonLiteTournament1() {
-        assertEquals("The Beat Down Ep.14", liteTournament1.name)
-        assertEquals("588827bad2994e0d53b14556", liteTournament1.id)
-        assertEquals(AbsTournament.Kind.LITE, liteTournament1.kind)
-        assertTrue(liteTournament1 is LiteTournament)
-    }
-
-    @Test
-    fun testFromJsonLiteTournament2() {
-        assertEquals("Get MADE at the Foundry", liteTournament2.name)
-        assertEquals("58ad3b1cd2994e756952adba", liteTournament2.id)
-        assertEquals(AbsTournament.Kind.LITE, liteTournament2.kind)
-        assertTrue(liteTournament2 is LiteTournament)
-    }
-
-    @Test
-    fun testFromJsonLiteTournament3() {
-        assertEquals("GENESIS: RED", liteTournament3.name)
-        assertEquals("597d2903d2994e34028b4cc4", liteTournament3.id)
-        assertEquals(AbsTournament.Kind.LITE, liteTournament3.kind)
-        assertTrue(liteTournament3 is LiteTournament)
-    }
-
-    @Test
-    fun testFromNull() {
-        val tournament = gson.fromJson(null as String?, AbsTournament::class.java)
-        assertNull(tournament)
     }
 
 }

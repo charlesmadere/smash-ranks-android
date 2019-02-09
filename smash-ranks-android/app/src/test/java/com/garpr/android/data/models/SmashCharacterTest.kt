@@ -1,10 +1,9 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
-import com.google.gson.Gson
-import com.google.gson.JsonElement
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,8 +13,10 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class SmashCharacterTest : BaseTest() {
 
+    private lateinit var smashCharacterAdapter: JsonAdapter<SmashCharacter>
+
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
 
     companion object {
@@ -102,483 +103,470 @@ class SmashCharacterTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+
+        smashCharacterAdapter = moshi.adapter(SmashCharacter::class.java)
     }
 
     @Test
     fun testBayonetta() {
-        assertEquals(JSON_BAYONETTA, gson.toJson(SmashCharacter.BAYONETTA))
-        assertEquals(SmashCharacter.BAYONETTA, gson.fromJson(JSON_BAYONETTA, SmashCharacter::class.java))
+        assertEquals(JSON_BAYONETTA, smashCharacterAdapter.toJson(SmashCharacter.BAYONETTA))
+        assertEquals(SmashCharacter.BAYONETTA, smashCharacterAdapter.fromJson(JSON_BAYONETTA))
     }
 
     @Test
     fun testBowser() {
-        assertEquals(JSON_BOWSER, gson.toJson(SmashCharacter.BOWSER))
-        assertEquals(SmashCharacter.BOWSER, gson.fromJson(JSON_BOWSER, SmashCharacter::class.java))
+        assertEquals(JSON_BOWSER, smashCharacterAdapter.toJson(SmashCharacter.BOWSER))
+        assertEquals(SmashCharacter.BOWSER, smashCharacterAdapter.fromJson(JSON_BOWSER))
     }
 
     @Test
     fun testBowserJr() {
-        assertEquals(JSON_BOWSER_JR, gson.toJson(SmashCharacter.BOWSER_JR))
-        assertEquals(SmashCharacter.BOWSER_JR, gson.fromJson(JSON_BOWSER_JR, SmashCharacter::class.java))
+        assertEquals(JSON_BOWSER_JR, smashCharacterAdapter.toJson(SmashCharacter.BOWSER_JR))
+        assertEquals(SmashCharacter.BOWSER_JR, smashCharacterAdapter.fromJson(JSON_BOWSER_JR))
     }
 
     @Test
     fun testCptnFalcon() {
-        assertEquals(JSON_CPTN_FALCON, gson.toJson(SmashCharacter.CPTN_FALCON))
-        assertEquals(SmashCharacter.CPTN_FALCON, gson.fromJson(JSON_CPTN_FALCON, SmashCharacter::class.java))
+        assertEquals(JSON_CPTN_FALCON, smashCharacterAdapter.toJson(SmashCharacter.CPTN_FALCON))
+        assertEquals(SmashCharacter.CPTN_FALCON, smashCharacterAdapter.fromJson(JSON_CPTN_FALCON))
     }
 
     @Test
     fun testCptnOlimar() {
-        assertEquals(JSON_CPTN_OLIMAR, gson.toJson(SmashCharacter.CPTN_OLIMAR))
-        assertEquals(SmashCharacter.CPTN_OLIMAR, gson.fromJson(JSON_CPTN_OLIMAR, SmashCharacter::class.java))
+        assertEquals(JSON_CPTN_OLIMAR, smashCharacterAdapter.toJson(SmashCharacter.CPTN_OLIMAR))
+        assertEquals(SmashCharacter.CPTN_OLIMAR, smashCharacterAdapter.fromJson(JSON_CPTN_OLIMAR))
     }
 
     @Test
     fun testCharizard() {
-        assertEquals(JSON_CHARIZARD, gson.toJson(SmashCharacter.CHARIZARD))
-        assertEquals(SmashCharacter.CHARIZARD, gson.fromJson(JSON_CHARIZARD, SmashCharacter::class.java))
+        assertEquals(JSON_CHARIZARD, smashCharacterAdapter.toJson(SmashCharacter.CHARIZARD))
+        assertEquals(SmashCharacter.CHARIZARD, smashCharacterAdapter.fromJson(JSON_CHARIZARD))
     }
 
     @Test
     fun testChrom() {
-        assertEquals(JSON_CHROM, gson.toJson(SmashCharacter.CHROM))
-        assertEquals(SmashCharacter.CHROM, gson.fromJson(JSON_CHROM, SmashCharacter::class.java))
+        assertEquals(JSON_CHROM, smashCharacterAdapter.toJson(SmashCharacter.CHROM))
+        assertEquals(SmashCharacter.CHROM, smashCharacterAdapter.fromJson(JSON_CHROM))
     }
 
     @Test
     fun testCloud() {
-        assertEquals(JSON_CLOUD, gson.toJson(SmashCharacter.CLOUD))
-        assertEquals(SmashCharacter.CLOUD, gson.fromJson(JSON_CLOUD, SmashCharacter::class.java))
+        assertEquals(JSON_CLOUD, smashCharacterAdapter.toJson(SmashCharacter.CLOUD))
+        assertEquals(SmashCharacter.CLOUD, smashCharacterAdapter.fromJson(JSON_CLOUD))
     }
 
     @Test
     fun testCorrin() {
-        assertEquals(JSON_CORRIN, gson.toJson(SmashCharacter.CORRIN))
-        assertEquals(SmashCharacter.CORRIN, gson.fromJson(JSON_CORRIN, SmashCharacter::class.java))
+        assertEquals(JSON_CORRIN, smashCharacterAdapter.toJson(SmashCharacter.CORRIN))
+        assertEquals(SmashCharacter.CORRIN, smashCharacterAdapter.fromJson(JSON_CORRIN))
     }
 
     @Test
     fun testDarkPit() {
-        assertEquals(JSON_DARK_PIT, gson.toJson(SmashCharacter.DARK_PIT))
-        assertEquals(SmashCharacter.DARK_PIT, gson.fromJson(JSON_DARK_PIT, SmashCharacter::class.java))
+        assertEquals(JSON_DARK_PIT, smashCharacterAdapter.toJson(SmashCharacter.DARK_PIT))
+        assertEquals(SmashCharacter.DARK_PIT, smashCharacterAdapter.fromJson(JSON_DARK_PIT))
     }
 
     @Test
     fun testDarkSamus() {
-        assertEquals(JSON_DARK_SAMUS, gson.toJson(SmashCharacter.DARK_SAMUS))
-        assertEquals(SmashCharacter.DARK_SAMUS, gson.fromJson(JSON_DARK_SAMUS, SmashCharacter::class.java))
+        assertEquals(JSON_DARK_SAMUS, smashCharacterAdapter.toJson(SmashCharacter.DARK_SAMUS))
+        assertEquals(SmashCharacter.DARK_SAMUS, smashCharacterAdapter.fromJson(JSON_DARK_SAMUS))
     }
 
     @Test
     fun testDiddyKong() {
-        assertEquals(JSON_DIDDY_KONG, gson.toJson(SmashCharacter.DIDDY_KONG))
-        assertEquals(SmashCharacter.DIDDY_KONG, gson.fromJson(JSON_DIDDY_KONG, SmashCharacter::class.java))
+        assertEquals(JSON_DIDDY_KONG, smashCharacterAdapter.toJson(SmashCharacter.DIDDY_KONG))
+        assertEquals(SmashCharacter.DIDDY_KONG, smashCharacterAdapter.fromJson(JSON_DIDDY_KONG))
     }
 
     @Test
     fun testDonkeyKong() {
-        assertEquals(JSON_DONKEY_KONG, gson.toJson(SmashCharacter.DONKEY_KONG))
-        assertEquals(SmashCharacter.DONKEY_KONG, gson.fromJson(JSON_DONKEY_KONG, SmashCharacter::class.java))
+        assertEquals(JSON_DONKEY_KONG, smashCharacterAdapter.toJson(SmashCharacter.DONKEY_KONG))
+        assertEquals(SmashCharacter.DONKEY_KONG, smashCharacterAdapter.fromJson(JSON_DONKEY_KONG))
     }
 
     @Test
     fun testDrMario() {
-        assertEquals(JSON_DR_MARIO, gson.toJson(SmashCharacter.DR_MARIO))
-        assertEquals(SmashCharacter.DR_MARIO, gson.fromJson(JSON_DR_MARIO, SmashCharacter::class.java))
+        assertEquals(JSON_DR_MARIO, smashCharacterAdapter.toJson(SmashCharacter.DR_MARIO))
+        assertEquals(SmashCharacter.DR_MARIO, smashCharacterAdapter.fromJson(JSON_DR_MARIO))
     }
 
     @Test
     fun testDuckHunt() {
-        assertEquals(JSON_DUCK_HUNT, gson.toJson(SmashCharacter.DUCK_HUNT))
-        assertEquals(SmashCharacter.DUCK_HUNT, gson.fromJson(JSON_DUCK_HUNT, SmashCharacter::class.java))
-    }
-
-    @Test
-    fun testEmptyString() {
-        assertNull(gson.fromJson("", SmashCharacter::class.java))
+        assertEquals(JSON_DUCK_HUNT, smashCharacterAdapter.toJson(SmashCharacter.DUCK_HUNT))
+        assertEquals(SmashCharacter.DUCK_HUNT, smashCharacterAdapter.fromJson(JSON_DUCK_HUNT))
     }
 
     @Test
     fun testFalco() {
-        assertEquals(JSON_FALCO, gson.toJson(SmashCharacter.FALCO))
-        assertEquals(SmashCharacter.FALCO, gson.fromJson(JSON_FALCO, SmashCharacter::class.java))
+        assertEquals(JSON_FALCO, smashCharacterAdapter.toJson(SmashCharacter.FALCO))
+        assertEquals(SmashCharacter.FALCO, smashCharacterAdapter.fromJson(JSON_FALCO))
     }
 
     @Test
     fun testFox() {
-        assertEquals(JSON_FOX, gson.toJson(SmashCharacter.FOX))
-        assertEquals(SmashCharacter.FOX, gson.fromJson(JSON_FOX, SmashCharacter::class.java))
+        assertEquals(JSON_FOX, smashCharacterAdapter.toJson(SmashCharacter.FOX))
+        assertEquals(SmashCharacter.FOX, smashCharacterAdapter.fromJson(JSON_FOX))
     }
 
     @Test
     fun testGanondorf() {
-        assertEquals(JSON_GANONDORF, gson.toJson(SmashCharacter.GANONDORF))
-        assertEquals(SmashCharacter.GANONDORF, gson.fromJson(JSON_GANONDORF, SmashCharacter::class.java))
+        assertEquals(JSON_GANONDORF, smashCharacterAdapter.toJson(SmashCharacter.GANONDORF))
+        assertEquals(SmashCharacter.GANONDORF, smashCharacterAdapter.fromJson(JSON_GANONDORF))
     }
 
     @Test
     fun testGreninja() {
-        assertEquals(JSON_GRENINJA, gson.toJson(SmashCharacter.GRENINJA))
-        assertEquals(SmashCharacter.GRENINJA, gson.fromJson(JSON_GRENINJA, SmashCharacter::class.java))
+        assertEquals(JSON_GRENINJA, smashCharacterAdapter.toJson(SmashCharacter.GRENINJA))
+        assertEquals(SmashCharacter.GRENINJA, smashCharacterAdapter.fromJson(JSON_GRENINJA))
     }
 
     @Test
     fun testIceClimbers() {
-        assertEquals(JSON_ICE_CLIMBERS, gson.toJson(SmashCharacter.ICE_CLIMBERS))
-        assertEquals(SmashCharacter.ICE_CLIMBERS, gson.fromJson(JSON_ICE_CLIMBERS, SmashCharacter::class.java))
+        assertEquals(JSON_ICE_CLIMBERS, smashCharacterAdapter.toJson(SmashCharacter.ICE_CLIMBERS))
+        assertEquals(SmashCharacter.ICE_CLIMBERS, smashCharacterAdapter.fromJson(JSON_ICE_CLIMBERS))
     }
 
     @Test
     fun testIke() {
-        assertEquals(JSON_IKE, gson.toJson(SmashCharacter.IKE))
-        assertEquals(SmashCharacter.IKE, gson.fromJson(JSON_IKE, SmashCharacter::class.java))
+        assertEquals(JSON_IKE, smashCharacterAdapter.toJson(SmashCharacter.IKE))
+        assertEquals(SmashCharacter.IKE, smashCharacterAdapter.fromJson(JSON_IKE))
     }
 
     @Test
     fun testIncineroar() {
-        assertEquals(JSON_INCINEROAR, gson.toJson(SmashCharacter.INCINEROAR))
-        assertEquals(SmashCharacter.INCINEROAR, gson.fromJson(JSON_INCINEROAR, SmashCharacter::class.java))
+        assertEquals(JSON_INCINEROAR, smashCharacterAdapter.toJson(SmashCharacter.INCINEROAR))
+        assertEquals(SmashCharacter.INCINEROAR, smashCharacterAdapter.fromJson(JSON_INCINEROAR))
     }
 
     @Test
     fun testInkling() {
-        assertEquals(JSON_INKLING, gson.toJson(SmashCharacter.INKLING))
-        assertEquals(SmashCharacter.INKLING, gson.fromJson(JSON_INKLING, SmashCharacter::class.java))
+        assertEquals(JSON_INKLING, smashCharacterAdapter.toJson(SmashCharacter.INKLING))
+        assertEquals(SmashCharacter.INKLING, smashCharacterAdapter.fromJson(JSON_INKLING))
     }
 
     @Test
     fun testIvysaur() {
-        assertEquals(JSON_IVYSAUR, gson.toJson(SmashCharacter.IVYSAUR))
-        assertEquals(SmashCharacter.IVYSAUR, gson.fromJson(JSON_IVYSAUR, SmashCharacter::class.java))
+        assertEquals(JSON_IVYSAUR, smashCharacterAdapter.toJson(SmashCharacter.IVYSAUR))
+        assertEquals(SmashCharacter.IVYSAUR, smashCharacterAdapter.fromJson(JSON_IVYSAUR))
     }
 
     @Test
     fun testJigglypuff() {
-        assertEquals(JSON_JIGGLYPUFF, gson.toJson(SmashCharacter.JIGGLYPUFF))
-        assertEquals(SmashCharacter.JIGGLYPUFF, gson.fromJson(JSON_JIGGLYPUFF, SmashCharacter::class.java))
+        assertEquals(JSON_JIGGLYPUFF, smashCharacterAdapter.toJson(SmashCharacter.JIGGLYPUFF))
+        assertEquals(SmashCharacter.JIGGLYPUFF, smashCharacterAdapter.fromJson(JSON_JIGGLYPUFF))
     }
 
     @Test
     fun testJoker() {
-        assertEquals(JSON_JOKER, gson.toJson(SmashCharacter.JOKER))
-        assertEquals(SmashCharacter.JOKER, gson.fromJson(JSON_JOKER, SmashCharacter::class.java))
+        assertEquals(JSON_JOKER, smashCharacterAdapter.toJson(SmashCharacter.JOKER))
+        assertEquals(SmashCharacter.JOKER, smashCharacterAdapter.fromJson(JSON_JOKER))
     }
 
     @Test
     fun testKen() {
-        assertEquals(JSON_KEN, gson.toJson(SmashCharacter.KEN))
-        assertEquals(SmashCharacter.KEN, gson.fromJson(JSON_KEN, SmashCharacter::class.java))
+        assertEquals(JSON_KEN, smashCharacterAdapter.toJson(SmashCharacter.KEN))
+        assertEquals(SmashCharacter.KEN, smashCharacterAdapter.fromJson(JSON_KEN))
     }
 
     @Test
     fun testKingDedede() {
-        assertEquals(JSON_KING_DEDEDE, gson.toJson(SmashCharacter.KING_DEDEDE))
-        assertEquals(SmashCharacter.KING_DEDEDE, gson.fromJson(JSON_KING_DEDEDE, SmashCharacter::class.java))
+        assertEquals(JSON_KING_DEDEDE, smashCharacterAdapter.toJson(SmashCharacter.KING_DEDEDE))
+        assertEquals(SmashCharacter.KING_DEDEDE, smashCharacterAdapter.fromJson(JSON_KING_DEDEDE))
     }
 
     @Test
     fun testKingKRool() {
-        assertEquals(JSON_KING_K_ROOL, gson.toJson(SmashCharacter.KING_K_ROOL))
-        assertEquals(SmashCharacter.KING_K_ROOL, gson.fromJson(JSON_KING_K_ROOL, SmashCharacter::class.java))
+        assertEquals(JSON_KING_K_ROOL, smashCharacterAdapter.toJson(SmashCharacter.KING_K_ROOL))
+        assertEquals(SmashCharacter.KING_K_ROOL, smashCharacterAdapter.fromJson(JSON_KING_K_ROOL))
     }
 
     @Test
     fun testKirby() {
-        assertEquals(JSON_KIRBY, gson.toJson(SmashCharacter.KIRBY))
-        assertEquals(SmashCharacter.KIRBY, gson.fromJson(JSON_KIRBY, SmashCharacter::class.java))
+        assertEquals(JSON_KIRBY, smashCharacterAdapter.toJson(SmashCharacter.KIRBY))
+        assertEquals(SmashCharacter.KIRBY, smashCharacterAdapter.fromJson(JSON_KIRBY))
     }
 
     @Test
     fun testLink() {
-        assertEquals(JSON_LINK, gson.toJson(SmashCharacter.LINK))
-        assertEquals(SmashCharacter.LINK, gson.fromJson(JSON_LINK, SmashCharacter::class.java))
+        assertEquals(JSON_LINK, smashCharacterAdapter.toJson(SmashCharacter.LINK))
+        assertEquals(SmashCharacter.LINK, smashCharacterAdapter.fromJson(JSON_LINK))
     }
 
     @Test
     fun testLittleMac() {
-        assertEquals(JSON_LITTLE_MAC, gson.toJson(SmashCharacter.LITTLE_MAC))
-        assertEquals(SmashCharacter.LITTLE_MAC, gson.fromJson(JSON_LITTLE_MAC, SmashCharacter::class.java))
+        assertEquals(JSON_LITTLE_MAC, smashCharacterAdapter.toJson(SmashCharacter.LITTLE_MAC))
+        assertEquals(SmashCharacter.LITTLE_MAC, smashCharacterAdapter.fromJson(JSON_LITTLE_MAC))
     }
 
     @Test
     fun testLucario() {
-        assertEquals(JSON_LUCARIO, gson.toJson(SmashCharacter.LUCARIO))
-        assertEquals(SmashCharacter.LUCARIO, gson.fromJson(JSON_LUCARIO, SmashCharacter::class.java))
+        assertEquals(JSON_LUCARIO, smashCharacterAdapter.toJson(SmashCharacter.LUCARIO))
+        assertEquals(SmashCharacter.LUCARIO, smashCharacterAdapter.fromJson(JSON_LUCARIO))
     }
 
     @Test
     fun testLucas() {
-        assertEquals(JSON_LUCAS, gson.toJson(SmashCharacter.LUCAS))
-        assertEquals(SmashCharacter.LUCAS, gson.fromJson(JSON_LUCAS, SmashCharacter::class.java))
+        assertEquals(JSON_LUCAS, smashCharacterAdapter.toJson(SmashCharacter.LUCAS))
+        assertEquals(SmashCharacter.LUCAS, smashCharacterAdapter.fromJson(JSON_LUCAS))
     }
 
     @Test
     fun testLucina() {
-        assertEquals(JSON_LUCINA, gson.toJson(SmashCharacter.LUCINA))
-        assertEquals(SmashCharacter.LUCINA, gson.fromJson(JSON_LUCINA, SmashCharacter::class.java))
+        assertEquals(JSON_LUCINA, smashCharacterAdapter.toJson(SmashCharacter.LUCINA))
+        assertEquals(SmashCharacter.LUCINA, smashCharacterAdapter.fromJson(JSON_LUCINA))
     }
 
     @Test
     fun testLuigi() {
-        assertEquals(JSON_LUIGI, gson.toJson(SmashCharacter.LUIGI))
-        assertEquals(SmashCharacter.LUIGI, gson.fromJson(JSON_LUIGI, SmashCharacter::class.java))
+        assertEquals(JSON_LUIGI, smashCharacterAdapter.toJson(SmashCharacter.LUIGI))
+        assertEquals(SmashCharacter.LUIGI, smashCharacterAdapter.fromJson(JSON_LUIGI))
     }
 
     @Test
     fun testMario() {
-        assertEquals(JSON_MARIO, gson.toJson(SmashCharacter.MARIO))
-        assertEquals(SmashCharacter.MARIO, gson.fromJson(JSON_MARIO, SmashCharacter::class.java))
+        assertEquals(JSON_MARIO, smashCharacterAdapter.toJson(SmashCharacter.MARIO))
+        assertEquals(SmashCharacter.MARIO, smashCharacterAdapter.fromJson(JSON_MARIO))
     }
 
     @Test
     fun testMarth() {
-        assertEquals(JSON_MARTH, gson.toJson(SmashCharacter.MARTH))
-        assertEquals(SmashCharacter.MARTH, gson.fromJson(JSON_MARTH, SmashCharacter::class.java))
+        assertEquals(JSON_MARTH, smashCharacterAdapter.toJson(SmashCharacter.MARTH))
+        assertEquals(SmashCharacter.MARTH, smashCharacterAdapter.fromJson(JSON_MARTH))
     }
 
     @Test
     fun testMegaMan() {
-        assertEquals(JSON_MEGA_MAN, gson.toJson(SmashCharacter.MEGA_MAN))
-        assertEquals(SmashCharacter.MEGA_MAN, gson.fromJson(JSON_MEGA_MAN, SmashCharacter::class.java))
+        assertEquals(JSON_MEGA_MAN, smashCharacterAdapter.toJson(SmashCharacter.MEGA_MAN))
+        assertEquals(SmashCharacter.MEGA_MAN, smashCharacterAdapter.fromJson(JSON_MEGA_MAN))
     }
 
     @Test
     fun testMetaKnight() {
-        assertEquals(JSON_META_KNIGHT, gson.toJson(SmashCharacter.META_KNIGHT))
-        assertEquals(SmashCharacter.META_KNIGHT, gson.fromJson(JSON_META_KNIGHT, SmashCharacter::class.java))
+        assertEquals(JSON_META_KNIGHT, smashCharacterAdapter.toJson(SmashCharacter.META_KNIGHT))
+        assertEquals(SmashCharacter.META_KNIGHT, smashCharacterAdapter.fromJson(JSON_META_KNIGHT))
     }
 
     @Test
     fun testMewtwo() {
-        assertEquals(JSON_MEWTWO, gson.toJson(SmashCharacter.MEWTWO))
-        assertEquals(SmashCharacter.MEWTWO, gson.fromJson(JSON_MEWTWO, SmashCharacter::class.java))
+        assertEquals(JSON_MEWTWO, smashCharacterAdapter.toJson(SmashCharacter.MEWTWO))
+        assertEquals(SmashCharacter.MEWTWO, smashCharacterAdapter.fromJson(JSON_MEWTWO))
     }
 
     @Test
     fun testMiiBrawler() {
-        assertEquals(JSON_MII_BRAWLER, gson.toJson(SmashCharacter.MII_BRAWLER))
-        assertEquals(SmashCharacter.MII_BRAWLER, gson.fromJson(JSON_MII_BRAWLER, SmashCharacter::class.java))
+        assertEquals(JSON_MII_BRAWLER, smashCharacterAdapter.toJson(SmashCharacter.MII_BRAWLER))
+        assertEquals(SmashCharacter.MII_BRAWLER, smashCharacterAdapter.fromJson(JSON_MII_BRAWLER))
     }
 
     @Test
     fun testMiiGunner() {
-        assertEquals(JSON_MII_GUNNER, gson.toJson(SmashCharacter.MII_GUNNER))
-        assertEquals(SmashCharacter.MII_GUNNER, gson.fromJson(JSON_MII_GUNNER, SmashCharacter::class.java))
+        assertEquals(JSON_MII_GUNNER, smashCharacterAdapter.toJson(SmashCharacter.MII_GUNNER))
+        assertEquals(SmashCharacter.MII_GUNNER, smashCharacterAdapter.fromJson(JSON_MII_GUNNER))
     }
 
     @Test
     fun testMiiSwordFighter() {
-        assertEquals(JSON_MII_SWORDFIGHTER, gson.toJson(SmashCharacter.MII_SWORDFIGHTER))
-        assertEquals(SmashCharacter.MII_SWORDFIGHTER, gson.fromJson(JSON_MII_SWORDFIGHTER, SmashCharacter::class.java))
+        assertEquals(JSON_MII_SWORDFIGHTER, smashCharacterAdapter.toJson(SmashCharacter.MII_SWORDFIGHTER))
+        assertEquals(SmashCharacter.MII_SWORDFIGHTER, smashCharacterAdapter.fromJson(JSON_MII_SWORDFIGHTER))
     }
 
     @Test
     fun testMrGameAndWatch() {
-        assertEquals(JSON_MR_GAME_AND_WATCH, gson.toJson(SmashCharacter.MR_GAME_AND_WATCH))
-        assertEquals(SmashCharacter.MR_GAME_AND_WATCH, gson.fromJson(JSON_MR_GAME_AND_WATCH, SmashCharacter::class.java))
+        assertEquals(JSON_MR_GAME_AND_WATCH, smashCharacterAdapter.toJson(SmashCharacter.MR_GAME_AND_WATCH))
+        assertEquals(SmashCharacter.MR_GAME_AND_WATCH, smashCharacterAdapter.fromJson(JSON_MR_GAME_AND_WATCH))
     }
 
     @Test
     fun testNess() {
-        assertEquals(JSON_NESS, gson.toJson(SmashCharacter.NESS))
-        assertEquals(SmashCharacter.NESS, gson.fromJson(JSON_NESS, SmashCharacter::class.java))
-    }
-
-    @Test
-    fun testNullJsonElement() {
-        assertNull(gson.fromJson(null as JsonElement?, SmashCharacter::class.java))
-    }
-
-    @Test
-    fun testNullString() {
-        assertNull(gson.fromJson(null as String?, SmashCharacter::class.java))
+        assertEquals(JSON_NESS, smashCharacterAdapter.toJson(SmashCharacter.NESS))
+        assertEquals(SmashCharacter.NESS, smashCharacterAdapter.fromJson(JSON_NESS))
     }
 
     @Test
     fun testPacMan() {
-        assertEquals(JSON_PAC_MAN, gson.toJson(SmashCharacter.PAC_MAN))
-        assertEquals(SmashCharacter.PAC_MAN, gson.fromJson(JSON_PAC_MAN, SmashCharacter::class.java))
+        assertEquals(JSON_PAC_MAN, smashCharacterAdapter.toJson(SmashCharacter.PAC_MAN))
+        assertEquals(SmashCharacter.PAC_MAN, smashCharacterAdapter.fromJson(JSON_PAC_MAN))
     }
 
     @Test
     fun testPalutena() {
-        assertEquals(JSON_PALUTENA, gson.toJson(SmashCharacter.PALUTENA))
-        assertEquals(SmashCharacter.PALUTENA, gson.fromJson(JSON_PALUTENA, SmashCharacter::class.java))
+        assertEquals(JSON_PALUTENA, smashCharacterAdapter.toJson(SmashCharacter.PALUTENA))
+        assertEquals(SmashCharacter.PALUTENA, smashCharacterAdapter.fromJson(JSON_PALUTENA))
     }
 
     @Test
     fun testPeach() {
-        assertEquals(JSON_PEACH, gson.toJson(SmashCharacter.PEACH))
-        assertEquals(SmashCharacter.PEACH, gson.fromJson(JSON_PEACH, SmashCharacter::class.java))
+        assertEquals(JSON_PEACH, smashCharacterAdapter.toJson(SmashCharacter.PEACH))
+        assertEquals(SmashCharacter.PEACH, smashCharacterAdapter.fromJson(JSON_PEACH))
     }
 
     @Test
     fun testPichu() {
-        assertEquals(JSON_PICHU, gson.toJson(SmashCharacter.PICHU))
-        assertEquals(SmashCharacter.PICHU, gson.fromJson(JSON_PICHU, SmashCharacter::class.java))
+        assertEquals(JSON_PICHU, smashCharacterAdapter.toJson(SmashCharacter.PICHU))
+        assertEquals(SmashCharacter.PICHU, smashCharacterAdapter.fromJson(JSON_PICHU))
     }
 
     @Test
     fun testPikachu() {
-        assertEquals(JSON_PIKACHU, gson.toJson(SmashCharacter.PIKACHU))
-        assertEquals(SmashCharacter.PIKACHU, gson.fromJson(JSON_PIKACHU, SmashCharacter::class.java))
+        assertEquals(JSON_PIKACHU, smashCharacterAdapter.toJson(SmashCharacter.PIKACHU))
+        assertEquals(SmashCharacter.PIKACHU, smashCharacterAdapter.fromJson(JSON_PIKACHU))
     }
 
     @Test
     fun testPiranhaPlant() {
-        assertEquals(JSON_PIRANHA_PLANT, gson.toJson(SmashCharacter.PIRANHA_PLANT))
-        assertEquals(SmashCharacter.PIRANHA_PLANT, gson.fromJson(JSON_PIRANHA_PLANT, SmashCharacter::class.java))
+        assertEquals(JSON_PIRANHA_PLANT, smashCharacterAdapter.toJson(SmashCharacter.PIRANHA_PLANT))
+        assertEquals(SmashCharacter.PIRANHA_PLANT, smashCharacterAdapter.fromJson(JSON_PIRANHA_PLANT))
     }
 
     @Test
     fun testPit() {
-        assertEquals(JSON_PIT, gson.toJson(SmashCharacter.PIT))
-        assertEquals(SmashCharacter.PIT, gson.fromJson(JSON_PIT, SmashCharacter::class.java))
+        assertEquals(JSON_PIT, smashCharacterAdapter.toJson(SmashCharacter.PIT))
+        assertEquals(SmashCharacter.PIT, smashCharacterAdapter.fromJson(JSON_PIT))
     }
 
     @Test
     fun testPokemonTrainer() {
-        assertEquals(JSON_POKEMON_TRAINER, gson.toJson(SmashCharacter.POKEMON_TRAINER))
-        assertEquals(SmashCharacter.POKEMON_TRAINER, gson.fromJson(JSON_POKEMON_TRAINER, SmashCharacter::class.java))
+        assertEquals(JSON_POKEMON_TRAINER, smashCharacterAdapter.toJson(SmashCharacter.POKEMON_TRAINER))
+        assertEquals(SmashCharacter.POKEMON_TRAINER, smashCharacterAdapter.fromJson(JSON_POKEMON_TRAINER))
     }
 
     @Test
     fun testRicter() {
-        assertEquals(JSON_RICTER, gson.toJson(SmashCharacter.RICTER))
-        assertEquals(SmashCharacter.RICTER, gson.fromJson(JSON_RICTER, SmashCharacter::class.java))
+        assertEquals(JSON_RICTER, smashCharacterAdapter.toJson(SmashCharacter.RICTER))
+        assertEquals(SmashCharacter.RICTER, smashCharacterAdapter.fromJson(JSON_RICTER))
     }
 
     @Test
     fun testRidley() {
-        assertEquals(JSON_RIDLEY, gson.toJson(SmashCharacter.RIDLEY))
-        assertEquals(SmashCharacter.RIDLEY, gson.fromJson(JSON_RIDLEY, SmashCharacter::class.java))
+        assertEquals(JSON_RIDLEY, smashCharacterAdapter.toJson(SmashCharacter.RIDLEY))
+        assertEquals(SmashCharacter.RIDLEY, smashCharacterAdapter.fromJson(JSON_RIDLEY))
     }
 
     @Test
     fun testRob() {
-        assertEquals(JSON_ROB, gson.toJson(SmashCharacter.ROB))
-        assertEquals(SmashCharacter.ROB, gson.fromJson(JSON_ROB, SmashCharacter::class.java))
+        assertEquals(JSON_ROB, smashCharacterAdapter.toJson(SmashCharacter.ROB))
+        assertEquals(SmashCharacter.ROB, smashCharacterAdapter.fromJson(JSON_ROB))
     }
 
     @Test
     fun testRobin() {
-        assertEquals(JSON_ROBIN, gson.toJson(SmashCharacter.ROBIN))
-        assertEquals(SmashCharacter.ROBIN, gson.fromJson(JSON_ROBIN, SmashCharacter::class.java))
+        assertEquals(JSON_ROBIN, smashCharacterAdapter.toJson(SmashCharacter.ROBIN))
+        assertEquals(SmashCharacter.ROBIN, smashCharacterAdapter.fromJson(JSON_ROBIN))
     }
 
     @Test
     fun testRosalina() {
-        assertEquals(JSON_ROSALINA, gson.toJson(SmashCharacter.ROSALINA))
-        assertEquals(SmashCharacter.ROSALINA, gson.fromJson(JSON_ROSALINA, SmashCharacter::class.java))
+        assertEquals(JSON_ROSALINA, smashCharacterAdapter.toJson(SmashCharacter.ROSALINA))
+        assertEquals(SmashCharacter.ROSALINA, smashCharacterAdapter.fromJson(JSON_ROSALINA))
     }
 
     @Test
     fun testRoy() {
-        assertEquals(JSON_ROY, gson.toJson(SmashCharacter.ROY))
-        assertEquals(SmashCharacter.ROY, gson.fromJson(JSON_ROY, SmashCharacter::class.java))
+        assertEquals(JSON_ROY, smashCharacterAdapter.toJson(SmashCharacter.ROY))
+        assertEquals(SmashCharacter.ROY, smashCharacterAdapter.fromJson(JSON_ROY))
     }
 
     @Test
     fun testRyu() {
-        assertEquals(JSON_RYU, gson.toJson(SmashCharacter.RYU))
-        assertEquals(SmashCharacter.RYU, gson.fromJson(JSON_RYU, SmashCharacter::class.java))
+        assertEquals(JSON_RYU, smashCharacterAdapter.toJson(SmashCharacter.RYU))
+        assertEquals(SmashCharacter.RYU, smashCharacterAdapter.fromJson(JSON_RYU))
     }
 
     @Test
     fun testSamus() {
-        assertEquals(JSON_SAMUS, gson.toJson(SmashCharacter.SAMUS))
-        assertEquals(SmashCharacter.SAMUS, gson.fromJson(JSON_SAMUS, SmashCharacter::class.java))
+        assertEquals(JSON_SAMUS, smashCharacterAdapter.toJson(SmashCharacter.SAMUS))
+        assertEquals(SmashCharacter.SAMUS, smashCharacterAdapter.fromJson(JSON_SAMUS))
     }
 
     @Test
     fun testSheik() {
-        assertEquals(JSON_SHEIK, gson.toJson(SmashCharacter.SHEIK))
-        assertEquals(SmashCharacter.SHEIK, gson.fromJson(JSON_SHEIK, SmashCharacter::class.java))
+        assertEquals(JSON_SHEIK, smashCharacterAdapter.toJson(SmashCharacter.SHEIK))
+        assertEquals(SmashCharacter.SHEIK, smashCharacterAdapter.fromJson(JSON_SHEIK))
     }
 
     @Test
     fun testShulk() {
-        assertEquals(JSON_SHULK, gson.toJson(SmashCharacter.SHULK))
-        assertEquals(SmashCharacter.SHULK, gson.fromJson(JSON_SHULK, SmashCharacter::class.java))
+        assertEquals(JSON_SHULK, smashCharacterAdapter.toJson(SmashCharacter.SHULK))
+        assertEquals(SmashCharacter.SHULK, smashCharacterAdapter.fromJson(JSON_SHULK))
     }
 
     @Test
     fun testSimon() {
-        assertEquals(JSON_SIMON, gson.toJson(SmashCharacter.SIMON))
-        assertEquals(SmashCharacter.SIMON, gson.fromJson(JSON_SIMON, SmashCharacter::class.java))
+        assertEquals(JSON_SIMON, smashCharacterAdapter.toJson(SmashCharacter.SIMON))
+        assertEquals(SmashCharacter.SIMON, smashCharacterAdapter.fromJson(JSON_SIMON))
     }
 
     @Test
     fun testSnake() {
-        assertEquals(JSON_SNAKE, gson.toJson(SmashCharacter.SNAKE))
-        assertEquals(SmashCharacter.SNAKE, gson.fromJson(JSON_SNAKE, SmashCharacter::class.java))
+        assertEquals(JSON_SNAKE, smashCharacterAdapter.toJson(SmashCharacter.SNAKE))
+        assertEquals(SmashCharacter.SNAKE, smashCharacterAdapter.fromJson(JSON_SNAKE))
     }
 
     @Test
     fun testSonic() {
-        assertEquals(JSON_SONIC, gson.toJson(SmashCharacter.SONIC))
-        assertEquals(SmashCharacter.SONIC, gson.fromJson(JSON_SONIC, SmashCharacter::class.java))
+        assertEquals(JSON_SONIC, smashCharacterAdapter.toJson(SmashCharacter.SONIC))
+        assertEquals(SmashCharacter.SONIC, smashCharacterAdapter.fromJson(JSON_SONIC))
     }
 
     @Test
     fun testSquirtle() {
-        assertEquals(JSON_SQUIRTLE, gson.toJson(SmashCharacter.SQUIRTLE))
-        assertEquals(SmashCharacter.SQUIRTLE, gson.fromJson(JSON_SQUIRTLE, SmashCharacter::class.java))
+        assertEquals(JSON_SQUIRTLE, smashCharacterAdapter.toJson(SmashCharacter.SQUIRTLE))
+        assertEquals(SmashCharacter.SQUIRTLE, smashCharacterAdapter.fromJson(JSON_SQUIRTLE))
     }
 
     @Test
     fun testToonLink() {
-        assertEquals(JSON_TOON_LINK, gson.toJson(SmashCharacter.TOON_LINK))
-        assertEquals(SmashCharacter.TOON_LINK, gson.fromJson(JSON_TOON_LINK, SmashCharacter::class.java))
+        assertEquals(JSON_TOON_LINK, smashCharacterAdapter.toJson(SmashCharacter.TOON_LINK))
+        assertEquals(SmashCharacter.TOON_LINK, smashCharacterAdapter.fromJson(JSON_TOON_LINK))
     }
 
     @Test
     fun testVillager() {
-        assertEquals(JSON_VILLAGER, gson.toJson(SmashCharacter.VILLAGER))
-        assertEquals(SmashCharacter.VILLAGER, gson.fromJson(JSON_VILLAGER, SmashCharacter::class.java))
+        assertEquals(JSON_VILLAGER, smashCharacterAdapter.toJson(SmashCharacter.VILLAGER))
+        assertEquals(SmashCharacter.VILLAGER, smashCharacterAdapter.fromJson(JSON_VILLAGER))
     }
 
     @Test
     fun testWario() {
-        assertEquals(JSON_WARIO, gson.toJson(SmashCharacter.WARIO))
-        assertEquals(SmashCharacter.WARIO, gson.fromJson(JSON_WARIO, SmashCharacter::class.java))
+        assertEquals(JSON_WARIO, smashCharacterAdapter.toJson(SmashCharacter.WARIO))
+        assertEquals(SmashCharacter.WARIO, smashCharacterAdapter.fromJson(JSON_WARIO))
     }
 
     @Test
     fun testWiiFitTrainer() {
-        assertEquals(JSON_WII_FIT_TRAINER, gson.toJson(SmashCharacter.WII_FIT_TRAINER))
-        assertEquals(SmashCharacter.WII_FIT_TRAINER, gson.fromJson(JSON_WII_FIT_TRAINER, SmashCharacter::class.java))
+        assertEquals(JSON_WII_FIT_TRAINER, smashCharacterAdapter.toJson(SmashCharacter.WII_FIT_TRAINER))
+        assertEquals(SmashCharacter.WII_FIT_TRAINER, smashCharacterAdapter.fromJson(JSON_WII_FIT_TRAINER))
     }
 
     @Test
     fun testWolf() {
-        assertEquals(JSON_WOLF, gson.toJson(SmashCharacter.WOLF))
-        assertEquals(SmashCharacter.WOLF, gson.fromJson(JSON_WOLF, SmashCharacter::class.java))
+        assertEquals(JSON_WOLF, smashCharacterAdapter.toJson(SmashCharacter.WOLF))
+        assertEquals(SmashCharacter.WOLF, smashCharacterAdapter.fromJson(JSON_WOLF))
     }
 
     @Test
     fun testYoshi() {
-        assertEquals(JSON_YOSHI, gson.toJson(SmashCharacter.YOSHI))
-        assertEquals(SmashCharacter.YOSHI, gson.fromJson(JSON_YOSHI, SmashCharacter::class.java))
+        assertEquals(JSON_YOSHI, smashCharacterAdapter.toJson(SmashCharacter.YOSHI))
+        assertEquals(SmashCharacter.YOSHI, smashCharacterAdapter.fromJson(JSON_YOSHI))
     }
 
     @Test
     fun testYoungLink() {
-        assertEquals(JSON_YOUNG_LINK, gson.toJson(SmashCharacter.YOUNG_LINK))
-        assertEquals(SmashCharacter.YOUNG_LINK, gson.fromJson(JSON_YOUNG_LINK, SmashCharacter::class.java))
+        assertEquals(JSON_YOUNG_LINK, smashCharacterAdapter.toJson(SmashCharacter.YOUNG_LINK))
+        assertEquals(SmashCharacter.YOUNG_LINK, smashCharacterAdapter.fromJson(JSON_YOUNG_LINK))
     }
 
     @Test
     fun testZelda() {
-        assertEquals(JSON_ZELDA, gson.toJson(SmashCharacter.ZELDA))
-        assertEquals(SmashCharacter.ZELDA, gson.fromJson(JSON_ZELDA, SmashCharacter::class.java))
+        assertEquals(JSON_ZELDA, smashCharacterAdapter.toJson(SmashCharacter.ZELDA))
+        assertEquals(SmashCharacter.ZELDA, smashCharacterAdapter.fromJson(JSON_ZELDA))
     }
 
     @Test
     fun testZeroSuitSamus() {
-        assertEquals(JSON_ZERO_SUIT_SAMUS, gson.toJson(SmashCharacter.ZERO_SUIT_SAMUS))
-        assertEquals(SmashCharacter.ZERO_SUIT_SAMUS, gson.fromJson(JSON_ZERO_SUIT_SAMUS, SmashCharacter::class.java))
+        assertEquals(JSON_ZERO_SUIT_SAMUS, smashCharacterAdapter.toJson(SmashCharacter.ZERO_SUIT_SAMUS))
+        assertEquals(SmashCharacter.ZERO_SUIT_SAMUS, smashCharacterAdapter.fromJson(JSON_ZERO_SUIT_SAMUS))
     }
 
 }

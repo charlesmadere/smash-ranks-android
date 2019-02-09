@@ -4,16 +4,16 @@ import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 enum class BracketSource(
         private val host: String
 ) : Parcelable {
 
-    @SerializedName("challonge")
+    @Json(name = "challonge")
     CHALLONGE("challonge.com"),
 
-    @SerializedName("smash_gg")
+    @Json(name = "smash_gg")
     SMASH_GG("smash.gg");
 
 

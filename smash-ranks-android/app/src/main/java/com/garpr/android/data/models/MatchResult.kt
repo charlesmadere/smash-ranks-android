@@ -3,17 +3,17 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 enum class MatchResult : Parcelable {
 
-    @SerializedName("excluded")
+    @Json(name = "excluded")
     EXCLUDED,
 
-    @SerializedName("lose")
+    @Json(name = "lose")
     LOSE,
 
-    @SerializedName("win")
+    @Json(name = "win")
     WIN;
 
 

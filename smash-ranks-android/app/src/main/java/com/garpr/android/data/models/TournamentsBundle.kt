@@ -5,18 +5,18 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readAbsTournamentList
 import com.garpr.android.extensions.writeAbsTournamentList
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class TournamentsBundle(
-        @SerializedName("tournaments") val tournaments: List<AbsTournament>? = null
+        @Json(name = "tournaments") val tournaments: List<AbsTournament>? = null
 ) : Parcelable {
 
     companion object {
         @JvmField
         val CREATOR = createParcel {
-            TournamentsBundle(
-                    it.readAbsTournamentList()
-            )
+            TournamentsBundle(it.readAbsTournamentList())
         }
     }
 

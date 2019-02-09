@@ -3,9 +3,11 @@ package com.garpr.android.managers
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.LiteRegion
+import com.garpr.android.data.models.RankedPlayer
+import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
-import com.google.gson.Gson
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -17,12 +19,6 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class HomeToolbarManagerTest : BaseTest() {
 
-    private lateinit var hax: AbsPlayer
-    private lateinit var imyt: AbsPlayer
-
-    @Inject
-    protected lateinit var gson: Gson
-
     @Inject
     protected lateinit var homeToolbarManager: HomeToolbarManager
 
@@ -31,8 +27,21 @@ class HomeToolbarManagerTest : BaseTest() {
 
 
     companion object {
-        private const val JSON_PLAYER_HAX = "{\"id\":\"53c64dba8ab65f6e6651f7bc\",\"name\":\"Hax\",\"rank\":2,\"rating\":37.975921649503086}"
-        private const val JSON_PLAYER_IMYT = "{\"ratings\":{\"norcal\":{\"mu\":37.52665547291405,\"sigma\":0.9061366338189941}},\"name\":\"Imyt\",\"regions\":[\"norcal\"],\"merge_children\":[\"5877eb55d2994e15c7dea98b\"],\"id\":\"5877eb55d2994e15c7dea98b\",\"merged\":false,\"merge_parent\":null}"
+        private val HAX: AbsPlayer = RankedPlayer(
+                id = "53c64dba8ab65f6e6651f7bc",
+                name = "Hax",
+                rank = 2,
+                rating = 37.975921649503086f
+        )
+
+        private val IMYT: AbsPlayer = FullPlayer(
+                id = "5877eb55d2994e15c7dea98b",
+                name = "Imyt",
+                ratings = mapOf(
+                        "norcal" to Rating(37.52665547291405f, 0.9061366338189941f)
+                ),
+                regions = listOf("norcal")
+        )
 
         private val GOOGLE_MTV = LiteRegion(
                 activeTf = null,
@@ -64,9 +73,6 @@ class HomeToolbarManagerTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
-
-        hax = gson.fromJson(JSON_PLAYER_HAX, AbsPlayer::class.java)
-        imyt = gson.fromJson(JSON_PLAYER_IMYT, AbsPlayer::class.java)
     }
 
     @Test
@@ -80,7 +86,7 @@ class HomeToolbarManagerTest : BaseTest() {
 
     @Test
     fun testGetPresentationWithNorcalWithIdentityImyt() {
-        identityManager.setIdentity(imyt, NORCAL)
+        identityManager.setIdentity(IMYT, NORCAL)
 
         val presentation = homeToolbarManager.getPresentation(NORCAL)
         assertFalse(presentation.isActivityRequirementsVisible)
@@ -98,7 +104,7 @@ class HomeToolbarManagerTest : BaseTest() {
 
     @Test
     fun testGetPresentationWithNycWithIdentityHax() {
-        identityManager.setIdentity(hax, NYC)
+        identityManager.setIdentity(HAX, NYC)
 
         val presentation = homeToolbarManager.getPresentation(NYC)
         assertTrue(presentation.isActivityRequirementsVisible)

@@ -6,15 +6,17 @@ import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readStringMap
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeStringMap
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class SmashCompetitor(
-        @SerializedName("avatar") val avatar: Avatar? = null,
-        @SerializedName("mains") val mains: List<SmashCharacter?>? = null,
-        @SerializedName("websites") val websites: Map<String, String>? = null,
-        @SerializedName("id") val id: String,
-        @SerializedName("name") val name: String,
-        @SerializedName("tag") val tag: String
+        @Json(name = "avatar") val avatar: Avatar? = null,
+        @Json(name = "mains") val mains: List<SmashCharacter?>? = null,
+        @Json(name = "websites") val websites: Map<String, String>? = null,
+        @Json(name = "id") val id: String,
+        @Json(name = "name") val name: String,
+        @Json(name = "tag") val tag: String
 ) : Parcelable {
 
     companion object {

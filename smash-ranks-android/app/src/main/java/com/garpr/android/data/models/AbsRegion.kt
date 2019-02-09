@@ -5,18 +5,16 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.writeBoolean
 import com.garpr.android.extensions.writeInteger
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonSerializer
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Comparator
 
 abstract class AbsRegion(
-        @SerializedName("activeTF") val activeTf: Boolean? = null,
-        @SerializedName("ranking_activity_day_limit") override val rankingActivityDayLimit: Int? = null,
-        @SerializedName("ranking_num_tourneys_attended") override val rankingNumTourneysAttended: Int? = null,
-        @SerializedName("tournament_qualified_day_limit") override val tournamentQualifiedDayLimit: Int? = null,
-        @SerializedName("display_name") val displayName: String,
-        @SerializedName("id") val id: String
+        val activeTf: Boolean? = null,
+        override val rankingActivityDayLimit: Int? = null,
+        override val rankingNumTourneysAttended: Int? = null,
+        override val tournamentQualifiedDayLimit: Int? = null,
+        val displayName: String,
+        val id: String
 ) : Parcelable, RankingCriteria {
 
     companion object {
@@ -40,28 +38,6 @@ abstract class AbsRegion(
             }
 
             result
-        }
-
-        val JSON_DESERIALIZER = JsonDeserializer<AbsRegion> { json, typeOfT, context ->
-            if (json == null || json.isJsonNull) {
-                return@JsonDeserializer null
-            }
-
-            val jsonObject = json.asJsonObject
-
-            if (jsonObject.has("endpoint")) {
-                context.deserialize<Region>(json, Region::class.java)
-            } else {
-                context.deserialize<LiteRegion>(json, LiteRegion::class.java)
-            }
-        }
-
-        val JSON_SERIALIZER = JsonSerializer<AbsRegion> { src, typeOfSrc, context ->
-            when (src?.kind) {
-                Kind.FULL -> context.serialize(src, Region::class.java)
-                Kind.LITE -> context.serialize(src, LiteRegion::class.java)
-                else -> null
-            }
         }
     }
 
@@ -94,10 +70,10 @@ abstract class AbsRegion(
 
 
     enum class Kind : Parcelable {
-        @SerializedName("full")
+        @Json(name = "full")
         FULL,
 
-        @SerializedName("lite")
+        @Json(name = "lite")
         LITE;
 
         companion object {

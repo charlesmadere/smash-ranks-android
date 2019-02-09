@@ -1,12 +1,10 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
-import com.google.gson.Gson
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,9 +23,8 @@ class AbsPlayerTest : BaseTest() {
     private lateinit var rankedPlayer1: AbsPlayer
     private lateinit var rankedPlayer2: AbsPlayer
 
-
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
 
     companion object {
@@ -45,17 +42,17 @@ class AbsPlayerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        favoritePlayer1 = gson.fromJson(JSON_FAVORITE_PLAYER_1, AbsPlayer::class.java)
-        favoritePlayer2 = gson.fromJson(JSON_FAVORITE_PLAYER_2, AbsPlayer::class.java)
-        fullPlayer1 = gson.fromJson(JSON_FULL_PLAYER_1, AbsPlayer::class.java)
-        litePlayer1 = gson.fromJson(JSON_LITE_PLAYER_1, AbsPlayer::class.java)
-        litePlayer2 = gson.fromJson(JSON_LITE_PLAYER_2, AbsPlayer::class.java)
-        rankedPlayer1 = gson.fromJson(JSON_RANKED_PLAYER_1, AbsPlayer::class.java)
-        rankedPlayer2 = gson.fromJson(JSON_RANKED_PLAYER_2, AbsPlayer::class.java)
+        val absPlayerAdapter = moshi.adapter(AbsPlayer::class.java)
+        favoritePlayer1 = absPlayerAdapter.requireFromJson(JSON_FAVORITE_PLAYER_1)
+        favoritePlayer2 = absPlayerAdapter.requireFromJson(JSON_FAVORITE_PLAYER_2)
+        fullPlayer1 = absPlayerAdapter.requireFromJson(JSON_FULL_PLAYER_1)
+        litePlayer1 = absPlayerAdapter.requireFromJson(JSON_LITE_PLAYER_1)
+        litePlayer2 = absPlayerAdapter.requireFromJson(JSON_LITE_PLAYER_2)
+        rankedPlayer1 = absPlayerAdapter.requireFromJson(JSON_RANKED_PLAYER_1)
+        rankedPlayer2 = absPlayerAdapter.requireFromJson(JSON_RANKED_PLAYER_2)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testComparatorAlphabeticalOrder() {
         val list = listOf(fullPlayer1, litePlayer2, litePlayer1, favoritePlayer2, favoritePlayer1)
         Collections.sort(list, AbsPlayer.ALPHABETICAL_ORDER)
@@ -68,7 +65,6 @@ class AbsPlayerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testEquals() {
         assertEquals(favoritePlayer1, favoritePlayer1)
         assertEquals(favoritePlayer2, favoritePlayer2)
@@ -88,107 +84,6 @@ class AbsPlayerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testFromJsonFavoritePlayer1() {
-        assertEquals("mikkuz", favoritePlayer1.name)
-        assertEquals("583a4a15d2994e0577b05c74", favoritePlayer1.id)
-
-        assertTrue(favoritePlayer1 is FavoritePlayer)
-        assertEquals(AbsPlayer.Kind.FAVORITE, favoritePlayer1.kind)
-
-        val favoritePlayer = favoritePlayer1 as FavoritePlayer
-        assertEquals("norcal", favoritePlayer.region.id)
-        assertEquals(Endpoint.GAR_PR, favoritePlayer.region.endpoint)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFromJsonFavoritePlayer2() {
-        assertEquals("druggedfox", favoritePlayer2.name)
-        assertEquals("583a4a15d2994e0577b05c86", favoritePlayer2.id)
-
-        assertTrue(favoritePlayer2 is FavoritePlayer)
-        assertEquals(AbsPlayer.Kind.FAVORITE, favoritePlayer2.kind)
-
-        val favoritePlayer = favoritePlayer2 as FavoritePlayer
-        assertEquals("georgia", favoritePlayer.region.id)
-        assertEquals(Endpoint.NOT_GAR_PR, favoritePlayer.region.endpoint)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFromJsonFullPlayer1() {
-        assertEquals("gaR", fullPlayer1.name)
-        assertEquals("58523b44d2994e15c7dea945", fullPlayer1.id)
-
-        assertTrue(fullPlayer1 is FullPlayer)
-        assertEquals(AbsPlayer.Kind.FULL, fullPlayer1.kind)
-
-        val fullPlayer = fullPlayer1 as FullPlayer
-        assertTrue(fullPlayer.aliases.isNullOrEmpty())
-        assertTrue(fullPlayer.ratings?.isNotEmpty() == true)
-        assertTrue(fullPlayer.regions?.isNotEmpty() == true)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFromJsonLitePlayer1() {
-        assertEquals("homemadewaffles", litePlayer1.name)
-        assertEquals("583a4a15d2994e0577b05c74", litePlayer1.id)
-
-        assertTrue(litePlayer1 is LitePlayer)
-        assertEquals(AbsPlayer.Kind.LITE, litePlayer1.kind)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFromJsonLitePlayer2() {
-        assertEquals("Spark", litePlayer2.name)
-        assertEquals("5877eb55d2994e15c7dea97e", litePlayer2.id)
-
-        assertTrue(litePlayer2 is LitePlayer)
-        assertEquals(AbsPlayer.Kind.LITE, litePlayer2.kind)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFromJsonNull() {
-        val player = gson.fromJson(null as String?, AbsPlayer::class.java)
-        assertNull(player)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFromJsonRankedPlayer1() {
-        assertEquals("ycz6", rankedPlayer1.name)
-        assertEquals("5888542ad2994e3bbfa52de4", rankedPlayer1.id)
-
-        assertTrue(rankedPlayer1 is RankedPlayer)
-        assertEquals(AbsPlayer.Kind.RANKED, rankedPlayer1.kind)
-
-        val rankedPlayer = rankedPlayer1 as RankedPlayer
-        assertEquals(13, rankedPlayer.rank)
-        assertNotNull(rankedPlayer.rating)
-        assertEquals(16, rankedPlayer.previousRank)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testFromJsonRankedPlayer2() {
-        assertEquals("Hax", rankedPlayer2.name)
-        assertEquals("53c64dba8ab65f6e6651f7bc", rankedPlayer2.id)
-
-        assertTrue(rankedPlayer2 is RankedPlayer)
-        assertEquals(AbsPlayer.Kind.RANKED, rankedPlayer2.kind)
-
-        val rankedPlayer = rankedPlayer2 as RankedPlayer
-        assertEquals(2, rankedPlayer.rank)
-        assertNotNull(rankedPlayer.rating)
-        assertNull(rankedPlayer.previousRank)
-    }
-
-    @Test
-    @Throws(Exception::class)
     fun testHashCode() {
         assertEquals("583a4a15d2994e0577b05c74".hashCode(), favoritePlayer1.hashCode())
         assertEquals("583a4a15d2994e0577b05c86".hashCode(), favoritePlayer2.hashCode())
@@ -197,46 +92,6 @@ class AbsPlayerTest : BaseTest() {
         assertEquals("5877eb55d2994e15c7dea97e".hashCode(), litePlayer2.hashCode())
         assertEquals("5888542ad2994e3bbfa52de4".hashCode(), rankedPlayer1.hashCode())
         assertEquals("53c64dba8ab65f6e6651f7bc".hashCode(), rankedPlayer2.hashCode())
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testToJsonAndBackWithFavoritePlayer() {
-        val json = gson.toJson(favoritePlayer1, AbsPlayer::class.java)
-        val after = gson.fromJson(json, AbsPlayer::class.java)
-
-        assertEquals(favoritePlayer1, after)
-        assertEquals(favoritePlayer1.kind, after.kind)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testToJsonAndBackWithFullPlayer() {
-        val json = gson.toJson(fullPlayer1, AbsPlayer::class.java)
-        val after = gson.fromJson(json, AbsPlayer::class.java)
-
-        assertEquals(fullPlayer1, after)
-        assertEquals(fullPlayer1.kind, after.kind)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testToJsonAndBackWithLitePlayer1() {
-        val json = gson.toJson(litePlayer1, AbsPlayer::class.java)
-        val after = gson.fromJson(json, AbsPlayer::class.java)
-
-        assertEquals(litePlayer1, after)
-        assertEquals(litePlayer1.kind, after.kind)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testToJsonAndBackWithLitePlayer2() {
-        val json = gson.toJson(litePlayer2, AbsPlayer::class.java)
-        val after = gson.fromJson(json, AbsPlayer::class.java)
-
-        assertEquals(litePlayer2, after)
-        assertEquals(litePlayer2.kind, after.kind)
     }
 
 }

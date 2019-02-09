@@ -7,7 +7,8 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
-import com.google.gson.Gson
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -32,7 +33,7 @@ class DeepLinkUtilsTest : BaseTest() {
     protected lateinit var deepLinkUtils: DeepLinkUtils
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
 
     companion object {
@@ -107,8 +108,9 @@ class DeepLinkUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        regionsBundle = gson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
-        regionsBundleEmpty = gson.fromJson(JSON_REGIONS_BUNDLE_EMPTY, RegionsBundle::class.java)
+        val regionsBundleAdapter = moshi.adapter(RegionsBundle::class.java)
+        regionsBundle = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE)
+        regionsBundleEmpty = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE_EMPTY)
     }
 
     @Test

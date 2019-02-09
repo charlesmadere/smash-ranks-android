@@ -4,14 +4,19 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.preferences.KeyValueStoreProvider
-import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 
 class SmashRosterStorageImpl(
-        private val gson: Gson,
         private val keyValueStoreProvider: KeyValueStoreProvider,
+        private val moshi: Moshi,
         private val packageName: String,
         private val timber: Timber
 ) : SmashRosterStorage {
+
+    private val smashCompetitorAdapter: JsonAdapter<SmashCompetitor> by lazy {
+        moshi.adapter(SmashCompetitor::class.java)
+    }
 
     companion object {
         private const val TAG = "SmashRosterStorageImpl"
@@ -30,8 +35,13 @@ class SmashRosterStorageImpl(
             return null
         }
 
-        val smashCompetitor = getKeyValueStore(endpoint).getString(playerId, null)
-        return gson.fromJson(smashCompetitor, SmashCompetitor::class.java)
+        val json = getKeyValueStore(endpoint).getString(playerId, null)
+
+        return if (json == null) {
+            null
+        } else {
+            smashCompetitorAdapter.fromJson(json)
+        }
     }
 
     override fun getSmashCompetitor(region: Region, playerId: String?): SmashCompetitor? {
@@ -48,8 +58,8 @@ class SmashRosterStorageImpl(
         keyValueStoreEditor.clear()
 
         for (entry in smashRoster) {
-            keyValueStoreEditor.putString(entry.key, gson.toJson(entry.value,
-                    SmashCompetitor::class.java))
+            val json = smashCompetitorAdapter.toJson(entry.value)
+            keyValueStoreEditor.putString(entry.key, json)
         }
 
         keyValueStoreEditor.apply()

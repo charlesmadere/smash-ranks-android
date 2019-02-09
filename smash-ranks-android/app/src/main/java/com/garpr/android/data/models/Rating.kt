@@ -3,11 +3,13 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Rating(
-        @SerializedName("mu") val mu: Float,
-        @SerializedName("sigma") val sigma: Float
+        @Json(name = "mu") val mu: Float,
+        @Json(name = "sigma") val sigma: Float
 ) : Parcelable {
 
     companion object {

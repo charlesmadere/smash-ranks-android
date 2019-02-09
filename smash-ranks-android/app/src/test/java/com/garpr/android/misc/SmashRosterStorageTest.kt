@@ -3,8 +3,10 @@ package com.garpr.android.misc
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.SmashCompetitor
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -17,7 +19,7 @@ import javax.inject.Inject
 class SmashRosterStorageTest : BaseTest() {
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
     @Inject
     protected lateinit var smashRosterStorage: SmashRosterStorage
@@ -43,10 +45,12 @@ class SmashRosterStorageTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        garPrSmashRoster = gson.fromJson(JSON_GAR_PR_SMASH_ROSTER,
-                object : TypeToken<Map<String, SmashCompetitor>>(){}.type)
-        notGarPrSmashRoster = gson.fromJson(JSON_NOT_GAR_PR_SMASH_ROSTER,
-                object : TypeToken<Map<String, SmashCompetitor>>(){}.type)
+        val smashRosterAdapter: JsonAdapter<Map<String, SmashCompetitor>> = moshi.adapter(
+                Types.newParameterizedType(Map::class.java, String::class.java,
+                        SmashCompetitor::class.java))
+
+        garPrSmashRoster = smashRosterAdapter.requireFromJson(JSON_GAR_PR_SMASH_ROSTER)
+        notGarPrSmashRoster = smashRosterAdapter.requireFromJson(JSON_NOT_GAR_PR_SMASH_ROSTER)
     }
 
     @Test

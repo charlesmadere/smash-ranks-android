@@ -5,12 +5,14 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class FavoritePlayer(
-        id: String,
-        name: String,
-        @SerializedName("region") val region: Region
+        @Json(name = "id") id: String,
+        @Json(name = "name") name: String,
+        @Json(name = "region") val region: Region
 ) : AbsPlayer(
         id,
         name

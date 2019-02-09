@@ -4,12 +4,13 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.requireParcelable
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-import com.google.gson.annotations.SerializedName
-
+@JsonClass(generateAdapter = true)
 data class PlayerMatchesBundle(
-        @SerializedName("full_player") val fullPlayer: FullPlayer,
-        @SerializedName("matches_bundle") val matchesBundle: MatchesBundle? = null
+        @Json(name = "full_player") val fullPlayer: FullPlayer,
+        @Json(name = "matches_bundle") val matchesBundle: MatchesBundle? = null
 ) : Parcelable {
 
     companion object {

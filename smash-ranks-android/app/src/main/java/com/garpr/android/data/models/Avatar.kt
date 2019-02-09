@@ -3,13 +3,15 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Avatar(
-        @SerializedName(LARGE) val large: String? = null,
-        @SerializedName(MEDIUM) val medium: String? = null,
-        @SerializedName(ORIGINAL) val original: String? = null,
-        @SerializedName(SMALL) val small: String? = null
+        @Json(name = LARGE) val large: String? = null,
+        @Json(name = MEDIUM) val medium: String? = null,
+        @Json(name = ORIGINAL) val original: String? = null,
+        @Json(name = SMALL) val small: String? = null
 ) : Parcelable {
 
     companion object {

@@ -1,7 +1,8 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
-import com.google.gson.Gson
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +17,7 @@ class RegionsBundleTest : BaseTest() {
     private lateinit var regionsBundle: RegionsBundle
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
 
     companion object {
@@ -28,8 +29,8 @@ class RegionsBundleTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        regionsBundle = gson.fromJson(
-                JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
+        val regionsBundleAdapter = moshi.adapter(RegionsBundle::class.java)
+        regionsBundle = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE)
     }
 
     @Test
@@ -44,6 +45,14 @@ class RegionsBundleTest : BaseTest() {
         assertEquals("newengland", regions[8].id)
         assertEquals("pittsburgh", regions[14].id)
         assertEquals("westchester", regions[16].id)
+    }
+
+    @Test
+    fun testComparatorEndpointOrder() {
+        val regions = regionsBundle.regions ?: throw NullPointerException()
+        Collections.sort(regions, AbsRegion.ENDPOINT_ORDER)
+
+        assertEquals("alabama", regions[0].id)
     }
 
 }

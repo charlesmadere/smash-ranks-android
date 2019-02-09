@@ -3,14 +3,14 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 enum class TournamentMode : Parcelable {
 
-    @SerializedName("matches")
+    @Json(name = "matches")
     MATCHES,
 
-    @SerializedName("players")
+    @Json(name = "players")
     PLAYERS;
 
 

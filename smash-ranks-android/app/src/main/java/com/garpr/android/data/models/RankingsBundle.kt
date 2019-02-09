@@ -7,15 +7,17 @@ import com.garpr.android.extensions.readAbsRegion
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeAbsRegion
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class RankingsBundle(
-        @SerializedName("ranking") val rankings: List<RankedPlayer>? = null,
-        @SerializedName("tournaments") val tournaments: List<String>? = null,
-        @SerializedName("ranking_criteria") val rankingCriteria: AbsRegion,
-        @SerializedName("time") val time: SimpleDate,
-        @SerializedName("id") val id: String,
-        @SerializedName("region") val region: String
+        @Json(name = "ranking") val rankings: List<RankedPlayer>? = null,
+        @Json(name = "tournaments") val tournaments: List<String>? = null,
+        @Json(name = "ranking_criteria") val rankingCriteria: AbsRegion,
+        @Json(name = "time") val time: SimpleDate,
+        @Json(name = "id") val id: String,
+        @Json(name = "region") val region: String
 ) : Parcelable {
 
     companion object {

@@ -3,10 +3,9 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.misc.MiscUtils
-import com.google.gson.annotations.SerializedName
 
 abstract class AbsMatch(
-        @SerializedName("result") val result: MatchResult
+        val result: MatchResult
 ) : Parcelable {
 
     override fun equals(other: Any?): Boolean {

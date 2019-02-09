@@ -5,241 +5,241 @@ import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.garpr.android.R
 import com.garpr.android.extensions.createParcel
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 enum class SmashCharacter(
         @StringRes val textResId: Int
 ) : Parcelable {
 
-    @SerializedName("byo")
+    @Json(name = "byo")
     BAYONETTA(R.string.bayonetta),
 
-    @SerializedName("bow")
+    @Json(name = "bow")
     BOWSER(R.string.bowser),
 
-    @SerializedName("bjr")
+    @Json(name = "bjr")
     BOWSER_JR(R.string.bowser_jr),
 
-    @SerializedName("fcn")
+    @Json(name = "fcn")
     CPTN_FALCON(R.string.captain_falcon),
 
-    @SerializedName("olm")
+    @Json(name = "olm")
     CPTN_OLIMAR(R.string.captain_olimar),
 
-    @SerializedName("chr")
+    @Json(name = "chr")
     CHARIZARD(R.string.charizard),
 
-    @SerializedName("chm")
+    @Json(name = "chm")
     CHROM(R.string.chrom),
 
-    @SerializedName("cld")
+    @Json(name = "cld")
     CLOUD(R.string.cloud),
 
-    @SerializedName("crn")
+    @Json(name = "crn")
     CORRIN(R.string.corrin),
 
-    @SerializedName("dpt")
+    @Json(name = "dpt")
     DARK_PIT(R.string.dark_pit),
 
-    @SerializedName("dks")
+    @Json(name = "dks")
     DARK_SAMUS(R.string.dark_samus),
 
-    @SerializedName("ddy")
+    @Json(name = "ddy")
     DIDDY_KONG(R.string.diddy_kong),
 
-    @SerializedName("doc")
+    @Json(name = "doc")
     DR_MARIO(R.string.dr_mario),
 
-    @SerializedName("dnk")
+    @Json(name = "dnk")
     DONKEY_KONG(R.string.donkey_kong),
 
-    @SerializedName("dck")
+    @Json(name = "dck")
     DUCK_HUNT(R.string.duck_hunt),
 
-    @SerializedName("fco")
+    @Json(name = "fco")
     FALCO(R.string.falco),
 
-    @SerializedName("fox")
+    @Json(name = "fox")
     FOX(R.string.fox),
 
-    @SerializedName("gnn")
+    @Json(name = "gnn")
     GANONDORF(R.string.ganondorf),
 
-    @SerializedName("grn")
+    @Json(name = "grn")
     GRENINJA(R.string.greninja),
 
-    @SerializedName("ics")
+    @Json(name = "ics")
     ICE_CLIMBERS(R.string.ice_climbers),
 
-    @SerializedName("ike")
+    @Json(name = "ike")
     IKE(R.string.ike),
 
-    @SerializedName("inc")
+    @Json(name = "inc")
     INCINEROAR(R.string.incineroar),
 
-    @SerializedName("ink")
+    @Json(name = "ink")
     INKLING(R.string.inkling),
 
-    @SerializedName("ivy")
+    @Json(name = "ivy")
     IVYSAUR(R.string.ivysaur),
 
-    @SerializedName("puf")
+    @Json(name = "puf")
     JIGGLYPUFF(R.string.jigglypuff),
 
-    @SerializedName("jok")
+    @Json(name = "jok")
     JOKER(R.string.joker),
 
-    @SerializedName("ken")
+    @Json(name = "ken")
     KEN(R.string.ken),
 
-    @SerializedName("ddd")
+    @Json(name = "ddd")
     KING_DEDEDE(R.string.king_dedede),
 
-    @SerializedName("kkr")
+    @Json(name = "kkr")
     KING_K_ROOL(R.string.king_k_rool),
 
-    @SerializedName("kby")
+    @Json(name = "kby")
     KIRBY(R.string.kirby),
 
-    @SerializedName("lnk")
+    @Json(name = "lnk")
     LINK(R.string.link),
 
-    @SerializedName("lmc")
+    @Json(name = "lmc")
     LITTLE_MAC(R.string.little_mac),
 
-    @SerializedName("lcr")
+    @Json(name = "lcr")
     LUCARIO(R.string.lucario),
 
-    @SerializedName("lcs")
+    @Json(name = "lcs")
     LUCAS(R.string.lucas),
 
-    @SerializedName("lcn")
+    @Json(name = "lcn")
     LUCINA(R.string.lucina),
 
-    @SerializedName("lgi")
+    @Json(name = "lgi")
     LUIGI(R.string.luigi),
 
-    @SerializedName("mar")
+    @Json(name = "mar")
     MARIO(R.string.mario),
 
-    @SerializedName("mrt")
+    @Json(name = "mrt")
     MARTH(R.string.marth),
 
-    @SerializedName("meg")
+    @Json(name = "meg")
     MEGA_MAN(R.string.mega_man),
 
-    @SerializedName("mtk")
+    @Json(name = "mtk")
     META_KNIGHT(R.string.meta_knight),
 
-    @SerializedName("mw2")
+    @Json(name = "mw2")
     MEWTWO(R.string.mewtwo),
 
-    @SerializedName("mib")
+    @Json(name = "mib")
     MII_BRAWLER(R.string.mii_brawler),
 
-    @SerializedName("mig")
+    @Json(name = "mig")
     MII_GUNNER(R.string.mii_gunner),
 
-    @SerializedName("mis")
+    @Json(name = "mis")
     MII_SWORDFIGHTER(R.string.mii_swordfighter),
 
-    @SerializedName("gnw")
+    @Json(name = "gnw")
     MR_GAME_AND_WATCH(R.string.mr_game_and_watch),
 
-    @SerializedName("nes")
+    @Json(name = "nes")
     NESS(R.string.ness),
 
-    @SerializedName("pac")
+    @Json(name = "pac")
     PAC_MAN(R.string.pac_man),
 
-    @SerializedName("pal")
+    @Json(name = "pal")
     PALUTENA(R.string.palutena),
 
-    @SerializedName("pch")
+    @Json(name = "pch")
     PEACH(R.string.peach),
 
-    @SerializedName("pic")
+    @Json(name = "pic")
     PICHU(R.string.pichu),
 
-    @SerializedName("pik")
+    @Json(name = "pik")
     PIKACHU(R.string.pikachu),
 
-    @SerializedName("pir")
+    @Json(name = "pir")
     PIRANHA_PLANT(R.string.piranha_plant),
 
-    @SerializedName("pit")
+    @Json(name = "pit")
     PIT(R.string.pit),
 
-    @SerializedName("pkt")
+    @Json(name = "pkt")
     POKEMON_TRAINER(R.string.pokemon_trainer),
 
-    @SerializedName("ric")
+    @Json(name = "ric")
     RICTER(R.string.ricter),
 
-    @SerializedName("rid")
+    @Json(name = "rid")
     RIDLEY(R.string.ridley),
 
-    @SerializedName("rob")
+    @Json(name = "rob")
     ROB(R.string.rob),
 
-    @SerializedName("rbn")
+    @Json(name = "rbn")
     ROBIN(R.string.robin),
 
-    @SerializedName("ros")
+    @Json(name = "ros")
     ROSALINA(R.string.rosalina),
 
-    @SerializedName("roy")
+    @Json(name = "roy")
     ROY(R.string.roy),
 
-    @SerializedName("ryu")
+    @Json(name = "ryu")
     RYU(R.string.ryu),
 
-    @SerializedName("sam")
+    @Json(name = "sam")
     SAMUS(R.string.samus),
 
-    @SerializedName("shk")
+    @Json(name = "shk")
     SHEIK(R.string.sheik),
 
-    @SerializedName("slk")
+    @Json(name = "slk")
     SHULK(R.string.shulk),
 
-    @SerializedName("smn")
+    @Json(name = "smn")
     SIMON(R.string.simon),
 
-    @SerializedName("snk")
+    @Json(name = "snk")
     SNAKE(R.string.snake),
 
-    @SerializedName("snc")
+    @Json(name = "snc")
     SONIC(R.string.sonic),
 
-    @SerializedName("sqt")
+    @Json(name = "sqt")
     SQUIRTLE(R.string.squirtle),
 
-    @SerializedName("tlk")
+    @Json(name = "tlk")
     TOON_LINK(R.string.toon_link),
 
-    @SerializedName("vlg")
+    @Json(name = "vlg")
     VILLAGER(R.string.villager),
 
-    @SerializedName("war")
+    @Json(name = "war")
     WARIO(R.string.wario),
 
-    @SerializedName("wft")
+    @Json(name = "wft")
     WII_FIT_TRAINER(R.string.wii_fit_trainer),
 
-    @SerializedName("wlf")
+    @Json(name = "wlf")
     WOLF(R.string.wolf),
 
-    @SerializedName("ysh")
+    @Json(name = "ysh")
     YOSHI(R.string.yoshi),
 
-    @SerializedName("ylk")
+    @Json(name = "ylk")
     YOUNG_LINK(R.string.young_link),
 
-    @SerializedName("zld")
+    @Json(name = "zld")
     ZELDA(R.string.zelda),
 
-    @SerializedName("zss")
+    @Json(name = "zss")
     ZERO_SUIT_SAMUS(R.string.zero_suit_samus);
 
 

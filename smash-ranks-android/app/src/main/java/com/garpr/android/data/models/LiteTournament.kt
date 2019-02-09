@@ -4,12 +4,15 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class LiteTournament(
-        regions: List<String>? = null,
-        date: SimpleDate,
-        id: String,
-        name: String
+        @Json(name = "regions") regions: List<String>? = null,
+        @Json(name = "date") date: SimpleDate,
+        @Json(name = "id") id: String,
+        @Json(name = "name") name: String
 ) : AbsTournament(
         regions,
         date,

@@ -6,17 +6,17 @@ import androidx.annotation.StringRes
 import com.garpr.android.R
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.misc.Constants
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 enum class Endpoint(
         val basePath: String,
         @StringRes val title: Int
 ) : Parcelable {
 
-    @SerializedName("gar_pr")
+    @Json(name = "gar_pr")
     GAR_PR(Constants.GAR_PR_BASE_PATH, R.string.gar_pr),
 
-    @SerializedName("not_gar_pr")
+    @Json(name = "not_gar_pr")
     NOT_GAR_PR(Constants.NOT_GAR_PR_BASE_PATH, R.string.not_gar_pr);
 
 

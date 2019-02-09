@@ -5,10 +5,12 @@ import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readAbsRegionList
 import com.garpr.android.extensions.writeAbsRegionList
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class RegionsBundle(
-        @SerializedName("regions") val regions: List<AbsRegion>? = null
+        @Json(name = "regions") val regions: List<AbsRegion>? = null
 ) : Parcelable {
 
     companion object {

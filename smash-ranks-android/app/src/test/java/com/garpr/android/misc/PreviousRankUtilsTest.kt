@@ -2,7 +2,8 @@ package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankedPlayer
-import com.google.gson.Gson
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -21,7 +22,7 @@ class PreviousRankUtilsTest : BaseTest() {
     private lateinit var unchanged: RankedPlayer
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
     @Inject
     protected lateinit var previousRankUtils: PreviousRankUtils
@@ -40,11 +41,12 @@ class PreviousRankUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        decreased = gson.fromJson(JSON_RANKING_DECREASED, RankedPlayer::class.java)
-        increased = gson.fromJson(JSON_RANKING_INCREASED, RankedPlayer::class.java)
-        noPreviousRank = gson.fromJson(JSON_RANKING_NO_PREVIOUS_RANK, RankedPlayer::class.java)
-        nullPreviousRank = gson.fromJson(JSON_RANKING_NULL_PREVIOUS_RANK, RankedPlayer::class.java)
-        unchanged = gson.fromJson(JSON_RANKING_UNCHANGED, RankedPlayer::class.java)
+        val rankedPlayerAdapter = moshi.adapter(RankedPlayer::class.java)
+        decreased = rankedPlayerAdapter.requireFromJson(JSON_RANKING_DECREASED)
+        increased = rankedPlayerAdapter.requireFromJson(JSON_RANKING_INCREASED)
+        noPreviousRank = rankedPlayerAdapter.requireFromJson(JSON_RANKING_NO_PREVIOUS_RANK)
+        nullPreviousRank = rankedPlayerAdapter.requireFromJson(JSON_RANKING_NULL_PREVIOUS_RANK)
+        unchanged = rankedPlayerAdapter.requireFromJson(JSON_RANKING_UNCHANGED)
     }
 
     @Test

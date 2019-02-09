@@ -19,7 +19,8 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.data.models.WinsLosses
-import com.google.gson.Gson
+import com.garpr.android.extensions.requireFromJson
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -64,7 +65,7 @@ class ListUtilsTest : BaseTest() {
     protected lateinit var application: Application
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
     private lateinit var fullPlayer: FullPlayer
     private lateinit var fullTournament: FullTournament
@@ -85,18 +86,33 @@ class ListUtilsTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        fullPlayer = gson.fromJson(JSON_FULL_PLAYER, FullPlayer::class.java)
-        fullTournament = gson.fromJson(JSON_FULL_TOURNAMENT, FullTournament::class.java)
-        headToHead1 = gson.fromJson(JSON_HEAD_TO_HEAD_1, HeadToHead::class.java)
-        headToHead2 = gson.fromJson(JSON_HEAD_TO_HEAD_2, HeadToHead::class.java)
-        headToHead3 = gson.fromJson(JSON_HEAD_TO_HEAD_3, HeadToHead::class.java)
-        matchesBundle = gson.fromJson(JSON_MATCHES, MatchesBundle::class.java)
-        playersBundle = gson.fromJson(JSON_PLAYERS_BUNDLE, PlayersBundle::class.java)
-        rankingsBundle = gson.fromJson(JSON_RANKINGS_BUNDLE, RankingsBundle::class.java)
-        regionsBundle = gson.fromJson(JSON_REGIONS_BUNDLE, RegionsBundle::class.java)
-        regionsBundleGarPrOnly = gson.fromJson(JSON_REGIONS_BUNDLE_GAR_PR_ONLY, RegionsBundle::class.java)
-        regionsBundleNotGarPrOnly = gson.fromJson(JSON_REGIONS_BUNDLE_NOT_GAR_PR_ONLY, RegionsBundle::class.java)
-        tournamentsBundle = gson.fromJson(JSON_TOURNAMENTS_BUNDLE, TournamentsBundle::class.java)
+        val fullPlayerAdapter = moshi.adapter(FullPlayer::class.java)
+        fullPlayer = fullPlayerAdapter.requireFromJson(JSON_FULL_PLAYER)
+
+        val fullTournamentAdapter = moshi.adapter(FullTournament::class.java)
+        fullTournament = fullTournamentAdapter.requireFromJson(JSON_FULL_TOURNAMENT)
+
+        val headToHeadAdapter = moshi.adapter(HeadToHead::class.java)
+        headToHead1 = headToHeadAdapter.requireFromJson(JSON_HEAD_TO_HEAD_1)
+        headToHead2 = headToHeadAdapter.requireFromJson(JSON_HEAD_TO_HEAD_2)
+        headToHead3 = headToHeadAdapter.requireFromJson(JSON_HEAD_TO_HEAD_3)
+
+        val matchesBundleAdapter = moshi.adapter(MatchesBundle::class.java)
+        matchesBundle = matchesBundleAdapter.requireFromJson(JSON_MATCHES)
+
+        val playersBundleAdapter = moshi.adapter(PlayersBundle::class.java)
+        playersBundle = playersBundleAdapter.requireFromJson(JSON_PLAYERS_BUNDLE)
+
+        val rankingsBundleAdapter = moshi.adapter(RankingsBundle::class.java)
+        rankingsBundle = rankingsBundleAdapter.requireFromJson(JSON_RANKINGS_BUNDLE)
+
+        val regionsBundleAdapter = moshi.adapter(RegionsBundle::class.java)
+        regionsBundle = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE)
+        regionsBundleGarPrOnly = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE_GAR_PR_ONLY)
+        regionsBundleNotGarPrOnly = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE_NOT_GAR_PR_ONLY)
+
+        val tournamentsBundleAdapter = moshi.adapter(TournamentsBundle::class.java)
+        tournamentsBundle = tournamentsBundleAdapter.requireFromJson(JSON_TOURNAMENTS_BUNDLE)
     }
 
     @Test

@@ -6,18 +6,24 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment
 import com.garpr.android.extensions.requireFragmentActivity
+import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.managers.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.wrappers.WeakReferenceWrapper
-import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import java.util.Collections
 
 class FavoritePlayersManagerImpl(
-        private val gson: Gson,
         private val keyValueStore: KeyValueStore,
+        private val moshi: Moshi,
         private val timber: Timber
 ) : FavoritePlayersManager {
+
+    private val favoritePlayerAdapter: JsonAdapter<FavoritePlayer> by lazy {
+        moshi.adapter(FavoritePlayer::class.java)
+    }
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnFavoritePlayersChangeListener>>()
 
@@ -57,7 +63,7 @@ class FavoritePlayersManagerImpl(
         timber.d(TAG, "Adding favorite (there are currently $size)")
 
         val favoritePlayer = FavoritePlayer(player.id, player.name, region)
-        val playerJson = gson.toJson(favoritePlayer, FavoritePlayer::class.java)
+        val playerJson = favoritePlayerAdapter.toJson(favoritePlayer)
         keyValueStore.setString(player.id, playerJson)
         notifyListeners()
     }
@@ -117,7 +123,8 @@ class FavoritePlayersManagerImpl(
 
             for ((key, value) in all) {
                 val json = value as String
-                players.add(gson.fromJson(json, FavoritePlayer::class.java))
+                val player = favoritePlayerAdapter.requireFromJson(json)
+                players.add(player)
             }
 
             Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
