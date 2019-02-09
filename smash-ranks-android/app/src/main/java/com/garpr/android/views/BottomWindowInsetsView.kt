@@ -2,13 +2,11 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.graphics.Canvas
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.DeviceUtils
 import javax.inject.Inject
@@ -27,7 +25,11 @@ class BottomWindowInsetsView @JvmOverloads constructor(
             height = insets.systemWindowInsetBottom
         }
 
-        return insets.consumeSystemWindowInsets()
+        return insets.replaceSystemWindowInsets(
+                insets.systemWindowInsetLeft,
+                insets.systemWindowInsetTop,
+                insets.systemWindowInsetRight,
+                0)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -41,27 +43,7 @@ class BottomWindowInsetsView @JvmOverloads constructor(
             appComponent.inject(this)
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ViewCompat.setOnApplyWindowInsetsListener(this, this)
-        }
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP || Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-            return
-        }
-
-        val navigationBarHeight = if (isInEditMode) {
-            resources.getDimensionPixelSize(R.dimen.navigation_bar_height)
-        } else if (deviceUtils.supportsTranslucentNavigationBar) {
-            deviceUtils.navigationBarHeight
-        } else {
-            0
-        }
-
-        setMeasuredDimension(widthMeasureSpec,
-                MeasureSpec.makeMeasureSpec(navigationBarHeight, MeasureSpec.EXACTLY))
+        ViewCompat.setOnApplyWindowInsetsListener(this, this)
     }
 
 }

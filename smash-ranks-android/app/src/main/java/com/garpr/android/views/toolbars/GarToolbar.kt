@@ -21,7 +21,6 @@ import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
-import com.garpr.android.extensions.statusBarColorCompat
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.MiscUtils
@@ -152,14 +151,14 @@ open class GarToolbar @JvmOverloads constructor(
                     STATUS_BAR_DARKEN_FACTOR)
         }
 
-        val toolbarAnimator = AnimationUtils.createArgbValueAnimator(
+        val toolbarAnimator = ValueAnimator.ofArgb(
                 background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
         toolbarAnimator.addUpdateListener(backgroundAnimatorUpdateListener)
 
-        val statusBarAnimator = AnimationUtils.createArgbValueAnimator(
-                window.statusBarColorCompat ?: statusBarBackgroundFallback, statusBarBackground)
+        val statusBarAnimator = ValueAnimator.ofArgb(
+                window.statusBarColor, statusBarBackground)
         statusBarAnimator.addUpdateListener {
-            window.statusBarColorCompat = it.animatedValue as Int
+            window.statusBarColor = it.animatedValue as Int
         }
 
         val animatorSet = AnimatorSet()
@@ -179,8 +178,7 @@ open class GarToolbar @JvmOverloads constructor(
         outSubtitleAnimation?.cancel()
         outSubtitleAnimation = null
 
-        val titleAnimation = AnimationUtils.createArgbValueAnimator(titleTextColor,
-                textColorPrimary)
+        val titleAnimation = ValueAnimator.ofArgb(titleTextColor, textColorPrimary)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
         titleAnimation.duration = animationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
@@ -191,8 +189,7 @@ open class GarToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = AnimationUtils.createArgbValueAnimator(subtitleTextColor,
-                textColorSecondary)
+        val subtitleAnimation = ValueAnimator.ofArgb(subtitleTextColor, textColorSecondary)
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
         subtitleAnimation.duration = titleAnimation.duration
         subtitleAnimation.interpolator = titleAnimation.interpolator
@@ -220,8 +217,7 @@ open class GarToolbar @JvmOverloads constructor(
         inSubtitleAnimation?.cancel()
         inSubtitleAnimation = null
 
-        val titleAnimation = AnimationUtils.createArgbValueAnimator(titleTextColor,
-                Color.TRANSPARENT)
+        val titleAnimation = ValueAnimator.ofArgb(titleTextColor, Color.TRANSPARENT)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
         titleAnimation.duration = animationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
@@ -232,8 +228,7 @@ open class GarToolbar @JvmOverloads constructor(
             }
         })
 
-        val subtitleAnimation = AnimationUtils.createArgbValueAnimator(subtitleTextColor,
-                Color.TRANSPARENT)
+        val subtitleAnimation = ValueAnimator.ofArgb(subtitleTextColor, Color.TRANSPARENT)
         subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
         subtitleAnimation.duration = titleAnimation.duration
         subtitleAnimation.interpolator = titleAnimation.interpolator
