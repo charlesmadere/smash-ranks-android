@@ -9,21 +9,20 @@
         <item name="colorPrimaryDark">@color/gray_dark</item>
     </style>
 
-    <style name="AppTheme" parent="AppThemeBase" />
-
-    <style name="AppThemeDayNight" parent="Theme.MaterialComponents.Light.NoActionBar" />
-
-    <style name="AppThemeBase" parent="AppThemeDayNight">
-        <item name="timberDebug">@color/debug</item>
-        <item name="timberError">@color/error</item>
-        <item name="timberWarn">@color/warn</item>
-
+    <style name="AppTheme" parent="AppThemeDayNight">
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
+        <item name="timberDebug">@color/debug</item>
+        <item name="timberError">@color/error</item>
+        <item name="timberWarn">@color/warn</item>
+
+        <item name="android:alertDialogTheme">@style/FrameworkAlertDialogTheme</item>
         <item name="android:windowBackground">@color/window_background</item>
     </style>
+
+    <style name="AppThemeDayNight" parent="Theme.MaterialComponents.Light.NoActionBar" />
 
     <style name="BottomSheetDialogThemeDayNight" parent="Theme.MaterialComponents.Light.BottomSheetDialog" />
 
@@ -33,11 +32,15 @@
         <item name="colorPrimaryDark">@color/gray_dark</item>
     </style>
 
-    <style name="SplashThemeBase" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/bg_splash_theme</item>
+    <style name="FrameworkAlertDialogTheme" parent="android:Theme.Material.Dialog">
+        <item name="android:colorAccent">@color/blue</item>
+        <item name="android:colorPrimary">@color/gray</item>
+        <item name="android:colorPrimaryDark">@color/gray_dark</item>
     </style>
 
-    <style name="SplashTheme" parent="SplashThemeBase" />
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/bg_splash_theme</item>
+    </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="colorAccent">@color/blue</item>
