@@ -20,6 +20,7 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 
 @Module
 public class AppModule extends BaseAppModule {
@@ -47,8 +48,8 @@ public class AppModule extends BaseAppModule {
     @Provides
     @Singleton
     ImageLibraryWrapper providesImageLibraryWrapper(final Application application,
-            final Timber timber) {
-        return new FacebookFrescoWrapper(application, timber);
+            final OkHttpClient okHttpClient, final Timber timber) {
+        return new FacebookFrescoWrapper(application, okHttpClient, timber);
     }
 
     @NonNull

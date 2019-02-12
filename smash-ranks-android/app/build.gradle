@@ -85,6 +85,7 @@ dependencies {
     // Facebook's Fresco
     // https://github.com/facebook/fresco
     implementation "com.facebook.fresco:fresco:$fresco_version"
+    implementation "com.facebook.fresco:imagepipeline-okhttp3:$fresco_version"
 
     // Google's Dagger
     // https://github.com/google/dagger
@@ -104,6 +105,10 @@ dependencies {
     // https://github.com/square/moshi
     implementation "com.squareup.moshi:moshi:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+
+    // Square's OkHttp
+    // https://github.com/square/okhttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
     // Square's Retrofit
     // https://github.com/square/retrofit

@@ -73,6 +73,7 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -161,10 +162,12 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    Retrofit providesGarPrRetrofit(final MoshiConverterFactory moshiConverterFactory) {
+    Retrofit providesGarPrRetrofit(final MoshiConverterFactory moshiConverterFactory,
+            final OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(moshiConverterFactory)
                 .baseUrl(Constants.GAR_PR_BASE_PATH + ':' + Constants.GAR_PR_API_PORT)
+                .client(okHttpClient)
                 .build();
     }
 
@@ -240,10 +243,12 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    Retrofit providesNotGarPrRetrofit(final MoshiConverterFactory moshiConverterFactory) {
+    Retrofit providesNotGarPrRetrofit(final MoshiConverterFactory moshiConverterFactory,
+            final OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(moshiConverterFactory)
                 .baseUrl(Constants.NOT_GAR_PR_BASE_PATH + ':' + Constants.NOT_GAR_PR_API_PORT)
+                .client(okHttpClient)
                 .build();
     }
 
@@ -255,6 +260,14 @@ public abstract class BaseAppModule {
             final RegionManager regionManager, final Timber timber) {
         return new NotificationsManagerImpl(mApplication, rankingsPollingPreferenceStore,
                 regionManager, timber);
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    OkHttpClient providesOkHttpClient() {
+        return new OkHttpClient.Builder()
+                .build();
     }
 
     @NonNull
@@ -372,10 +385,12 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    Retrofit providesSmashRosterRetrofit(final MoshiConverterFactory moshiConverterFactory) {
+    Retrofit providesSmashRosterRetrofit(final MoshiConverterFactory moshiConverterFactory,
+            final OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(moshiConverterFactory)
                 .baseUrl(mSmashRosterBasePath)
+                .client(okHttpClient)
                 .build();
     }
 
