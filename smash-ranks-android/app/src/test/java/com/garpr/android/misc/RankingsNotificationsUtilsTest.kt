@@ -86,13 +86,13 @@ class RankingsNotificationsUtilsTest : BaseTest() {
                 null))
 
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(null, false, false), null))
+                PollStatus(proceed = false, retry = false), null))
 
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(RANKINGS_ID_1, false, false), null))
+                PollStatus(oldRankingsId = RANKINGS_ID_1, proceed = false, retry = false), null))
 
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(null, false, false), null))
+                PollStatus(proceed = false, retry = false), null))
     }
 
     @Test

@@ -13,7 +13,7 @@ interface RankingsNotificationsUtils {
     }
 
     data class PollStatus constructor(
-            val oldRankingsId: String?,
+            val oldRankingsId: String? = null,
             val proceed: Boolean,
             val retry: Boolean
     )
