@@ -1,5 +1,6 @@
 package com.garpr.android.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.LayoutRes
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.TaskStackBuilder
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.optHideKeyboard
 import com.garpr.android.managers.RegionManager.RegionHandle
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Timber
@@ -81,6 +83,11 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     override fun setContentView(@LayoutRes layoutResID: Int) {
         super.setContentView(layoutResID)
         onViewsBound()
+    }
+
+    override fun startActivity(intent: Intent?) {
+        optHideKeyboard()
+        super.startActivity(intent)
     }
 
     override fun toString() = activityName
