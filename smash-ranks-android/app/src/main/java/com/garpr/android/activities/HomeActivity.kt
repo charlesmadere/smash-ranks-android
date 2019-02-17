@@ -19,7 +19,6 @@ import com.garpr.android.misc.HomeTab
 import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ShareUtils
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
@@ -44,9 +43,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     @Inject
     protected lateinit var regionManager: RegionManager
-
-    @Inject
-    protected lateinit var shareUtils: ShareUtils
 
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
