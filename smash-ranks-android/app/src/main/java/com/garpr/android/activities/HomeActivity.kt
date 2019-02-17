@@ -11,7 +11,6 @@ import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.dialogs.ActivityRequirementsDialogFragment
 import com.garpr.android.dialogs.ShareRegionDialogFragment
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.currentItemAsHomeTab
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.managers.IdentityManager
@@ -87,8 +86,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             return
         }
 
-        if (viewPager.currentItemAsHomeTab != HomeTab.RANKINGS) {
-            viewPager.currentItemAsHomeTab = HomeTab.RANKINGS
+        if (viewPager.currentTab != HomeTab.RANKINGS) {
+            viewPager.currentTab = HomeTab.RANKINGS
             return
         }
 
@@ -115,7 +114,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        viewPager.currentItemAsHomeTab = item.itemIdAsHomeTab
+        viewPager.currentTab = item.itemIdAsHomeTab
         return true
     }
 
@@ -137,7 +136,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_CURRENT_POSITION, viewPager.currentItemAsHomeTab)
+        outState.putParcelable(KEY_CURRENT_POSITION, viewPager.currentTab)
     }
 
     override fun onSettingsClick(v: HomeToolbar) {
@@ -206,7 +205,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
         if (initialPosition != null) {
-            viewPager.currentItemAsHomeTab = initialPosition
+            viewPager.currentTab = initialPosition
         }
     }
 
@@ -214,7 +213,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         get() = toolbar.hasSubtitleText
 
     private fun updateSelectedBottomNavigationItem() {
-        val itemId = when (viewPager.currentItemAsHomeTab) {
+        val itemId = when (viewPager.currentTab) {
             HomeTab.RANKINGS -> R.id.actionRankings
             HomeTab.TOURNAMENTS -> R.id.actionTournaments
             HomeTab.FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
