@@ -139,15 +139,15 @@ open class GarToolbar @JvmOverloads constructor(
         val swatch = palette?.darkVibrantSwatch ?: palette?.darkMutedSwatch
 
         @ColorInt val toolbarBackground: Int
-        @ColorInt val statusBarBackground: Int
+        @ColorInt val systemWindowBackground: Int
 
         if (swatch == null) {
             toolbarBackground = toolbarBackgroundFallback
-            statusBarBackground = statusBarBackgroundFallback
+            systemWindowBackground = statusBarBackgroundFallback
         } else {
             toolbarBackground = MiscUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb,
                     TOO_LIGHT_DARKEN_FACTOR, LIGHTNESS_LIMIT)
-            statusBarBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground,
+            systemWindowBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground,
                     STATUS_BAR_DARKEN_FACTOR)
         }
 
@@ -155,16 +155,22 @@ open class GarToolbar @JvmOverloads constructor(
                 background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
         toolbarAnimator.addUpdateListener(backgroundAnimatorUpdateListener)
 
-        val statusBarAnimator = ValueAnimator.ofArgb(
-                window.statusBarColor, statusBarBackground)
+        val statusBarAnimator = ValueAnimator.ofArgb(window.statusBarColor,
+                systemWindowBackground)
         statusBarAnimator.addUpdateListener {
             window.statusBarColor = it.animatedValue as Int
+        }
+
+        val navigationBarAnimator = ValueAnimator.ofArgb(window.navigationBarColor,
+                systemWindowBackground)
+        navigationBarAnimator.addUpdateListener {
+            window.navigationBarColor = it.animatedValue as Int
         }
 
         val animatorSet = AnimatorSet()
         animatorSet.duration = resources.getLong(R.integer.color_animation_duration)
         animatorSet.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
-        animatorSet.playTogether(toolbarAnimator, statusBarAnimator)
+        animatorSet.playTogether(toolbarAnimator, statusBarAnimator, navigationBarAnimator)
         animatorSet.start()
     }
 
