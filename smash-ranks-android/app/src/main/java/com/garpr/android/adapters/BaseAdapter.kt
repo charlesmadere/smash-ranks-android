@@ -22,9 +22,6 @@ abstract class BaseAdapter<T>(
         }
     }
 
-    val context: Context
-        get() = layoutInflater.context
-
     fun getItem(position: Int) = items[position]
 
     override fun getItemCount() = items.size
