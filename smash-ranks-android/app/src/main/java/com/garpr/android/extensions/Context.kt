@@ -70,7 +70,7 @@ val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
 val Context.fragmentActivity: FragmentActivity?
-    get() = activity as? FragmentActivity
+    get() = activity as? FragmentActivity?
 
 @ColorInt
 @Throws(Resources.NotFoundException::class)
