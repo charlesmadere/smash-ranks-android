@@ -15,12 +15,8 @@ class BuildInfoPreferenceView @JvmOverloads constructor(
 
         isEnabled = false
         titleText = resources.getString(R.string.version_x, BuildConfig.VERSION_NAME)
-
-        descriptionText = if (BuildConfig.DEBUG) {
-            resources.getString(R.string.build_x_debug, BuildConfig.VERSION_CODE)
-        } else {
-            resources.getString(R.string.build_x, BuildConfig.VERSION_CODE)
-        }
+        descriptionText = resources.getString(R.string.build_x_y, BuildConfig.VERSION_CODE,
+                BuildConfig.VERSION_NAME)
     }
 
 }
