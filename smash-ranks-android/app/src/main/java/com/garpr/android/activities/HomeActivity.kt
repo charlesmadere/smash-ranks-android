@@ -57,11 +57,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         fun getLaunchIntent(context: Context, initialPosition: HomeTab? = null,
                 restartActivityTask: Boolean = false): Intent {
             var intent = Intent(context, HomeActivity::class.java)
-                    .putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
 
             if (restartActivityTask) {
                 intent = Intent.makeRestartActivityTask(intent.component)
             }
+
+            intent.putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
 
             return intent
         }
