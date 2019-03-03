@@ -62,9 +62,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
                 intent = Intent.makeRestartActivityTask(intent.component)
             }
 
-            intent.putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
-
-            return intent
+            return intent.putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
         }
     }
 
