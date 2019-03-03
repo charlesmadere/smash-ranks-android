@@ -16,7 +16,8 @@ object AbsRegionConverter {
 
 
     @FromJson
-    fun fromJson(reader: JsonReader,
+    fun fromJson(
+            reader: JsonReader,
             liteRegionAdapter: JsonAdapter<LiteRegion>,
             regionAdapter: JsonAdapter<Region>
     ): AbsRegion? {
@@ -30,7 +31,8 @@ object AbsRegionConverter {
     }
 
     @ToJson
-    fun toJson(writer: JsonWriter,
+    fun toJson(
+            writer: JsonWriter,
             value: AbsRegion?,
             liteRegionAdapter: JsonAdapter<LiteRegion>,
             regionAdapter: JsonAdapter<Region>
