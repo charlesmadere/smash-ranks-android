@@ -1,6 +1,7 @@
 package com.garpr.android.dagger;
 
 import com.garpr.android.activities.HomeActivityTest;
+import com.garpr.android.activities.PlayerActivityTest;
 import com.garpr.android.activities.TournamentsActivityTest;
 import com.garpr.android.data.converters.AbsPlayerConverterTest;
 import com.garpr.android.data.converters.AbsRegionConverterTest;
@@ -56,6 +57,7 @@ public interface TestAppComponent {
 
     // activities
     void inject(HomeActivityTest test);
+    void inject(PlayerActivityTest test);
     void inject(TournamentsActivityTest test);
 
     // data/converters
