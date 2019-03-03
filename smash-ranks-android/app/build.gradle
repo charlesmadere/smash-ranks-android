@@ -68,6 +68,10 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
+    // Kotlin Reflection (only for tests)
+    // https://kotlinlang.org/docs/reference/using-gradle.html
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
     // Android Support Library
     // https://developer.android.com/jetpack/androidx/
     implementation "androidx.appcompat:appcompat:$appcompat_version"
