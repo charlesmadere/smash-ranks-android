@@ -10,8 +10,8 @@
 
     <com.garpr.android.views.TintedTextView
         android:id="@+id/dialogPositiveText"
-        android:text="@string/yes"
         tools:drawableEnd="@drawable/ic_add_circle_white_24"
+        tools:text="@string/yes_add"
         style="@style/BottomSheetDialogButton.Accent" />
 
     <TextView

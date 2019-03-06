@@ -156,6 +156,8 @@
     <string name="weekly">Weekly</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>
     <string name="yes">Yes</string>
+    <string name="yes_add">Yes, add</string>
+    <string name="yes_remove">Yes, remove</string>
     <string name="youtube">YouTube</string>
     <string name="youve_selected_a_region_but_havent_saved">You\'ve selected a region but haven\'t saved. Are you sure you still want to close this screen?</string>
     <string name="youve_selected_an_identity_but_havent_saved">You\'ve selected an identity but haven\'t saved. Are you sure you still want to close this screen?</string>
