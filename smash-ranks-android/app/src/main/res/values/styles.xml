@@ -14,7 +14,7 @@
 
     <style name="BottomSheetDialogButton">
         <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
@@ -32,7 +32,7 @@
     </style>
 
     <style name="BottomSheetDialogMessage">
-        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:fontFamily">@font/nunito_regular</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:padding">@dimen/root_padding</item>
@@ -40,7 +40,7 @@
     </style>
 
     <style name="BottomSheetDialogTitle">
-        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:padding">@dimen/root_padding</item>
