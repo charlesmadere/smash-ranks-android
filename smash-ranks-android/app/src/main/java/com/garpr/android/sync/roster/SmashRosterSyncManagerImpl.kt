@@ -28,7 +28,6 @@ class SmashRosterSyncManagerImpl(
         private val workManagerWrapper: WorkManagerWrapper
 ) : SmashRosterSyncManager {
 
-    private var _isSyncing = false
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnSyncListeners>>()
 
 
@@ -99,8 +98,9 @@ class SmashRosterSyncManagerImpl(
         }
     }
 
-    private val hajimeteSync: Boolean
+    private var hajimeteSync: Boolean
         get() = smashRosterPreferenceStore.hajimeteSync.get() == true
+        set(value) = smashRosterPreferenceStore.hajimeteSync.set(value)
 
     override var isEnabled: Boolean
         get() = smashRosterPreferenceStore.enabled.get() == true
@@ -109,8 +109,7 @@ class SmashRosterSyncManagerImpl(
             enableOrDisable()
         }
 
-    override val isSyncing: Boolean
-        get() = _isSyncing
+    override var isSyncing: Boolean = false
 
     @UiThread
     private fun notifyListenersOfOnSyncBegin() {
@@ -177,7 +176,7 @@ class SmashRosterSyncManagerImpl(
             )
         }
 
-        smashRosterPreferenceStore.syncResult.set(smashRosterSyncResult)
+        syncResult = smashRosterSyncResult
     }
 
     @UiThread
@@ -187,8 +186,8 @@ class SmashRosterSyncManagerImpl(
         threadUtils.runOnBackground(Runnable {
             performSync()
 
-            synchronized (_isSyncing) {
-                _isSyncing = false
+            synchronized (isSyncing) {
+                isSyncing = false
             }
 
             threadUtils.runOnUi(Runnable {
@@ -205,8 +204,8 @@ class SmashRosterSyncManagerImpl(
 
         performSync()
 
-        synchronized (_isSyncing) {
-            _isSyncing = false
+        synchronized (isSyncing) {
+            isSyncing = false
         }
 
         threadUtils.runOnUi(Runnable {
@@ -222,15 +221,15 @@ class SmashRosterSyncManagerImpl(
 
     @SuppressLint("WrongThread")
     override fun sync() {
-        synchronized (_isSyncing) {
-            if (_isSyncing) {
+        synchronized (isSyncing) {
+            if (isSyncing) {
                 return
             } else {
-                _isSyncing = true
+                isSyncing = true
             }
         }
 
-        smashRosterPreferenceStore.hajimeteSync.set(false)
+        hajimeteSync = false
         timber.d(TAG, "syncing now...")
 
         if (threadUtils.isUiThread) {
@@ -240,7 +239,8 @@ class SmashRosterSyncManagerImpl(
         }
     }
 
-    override val syncResult: SmashRosterSyncResult?
+    override var syncResult: SmashRosterSyncResult?
         get() = smashRosterPreferenceStore.syncResult.get()
+        set(value) = smashRosterPreferenceStore.syncResult.set(value)
 
 }
