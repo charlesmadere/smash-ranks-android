@@ -2,12 +2,14 @@ package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import javax.inject.Inject
+import kotlin.random.Random
 
 @RunWith(RobolectricTestRunner::class)
 class TimberTest : BaseTest() {
@@ -67,6 +69,18 @@ class TimberTest : BaseTest() {
         timber.e(TAG, "three")
         val entries = timber.entries
         assertEquals(3, entries.size)
+    }
+
+    @Test
+    fun testMaxSize() {
+        val times = Random.nextInt(1000, 2000)
+
+        repeat(times) {
+            timber.d(TAG, it.toString())
+        }
+
+        val entries = timber.entries
+        assertNotEquals(times, entries.size)
     }
 
 }
