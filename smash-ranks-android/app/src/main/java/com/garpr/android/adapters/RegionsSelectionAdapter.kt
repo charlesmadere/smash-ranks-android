@@ -1,11 +1,10 @@
 package com.garpr.android.adapters
 
-import android.content.Context
 import com.garpr.android.R
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 
-class RegionsSelectionAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
+class RegionsSelectionAdapter : BaseMultiAdapter(LAYOUT_KEY_MAP) {
 
     companion object {
         private val LAYOUT_KEY_MAP = mapOf<Class<*>, Int>(

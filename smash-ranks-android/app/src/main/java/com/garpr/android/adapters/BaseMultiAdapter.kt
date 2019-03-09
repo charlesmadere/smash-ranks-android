@@ -1,12 +1,10 @@
 package com.garpr.android.adapters
 
-import android.content.Context
 import androidx.annotation.LayoutRes
 
 abstract class BaseMultiAdapter(
-        context: Context,
         private val layoutKeyMap: Map<Class<*>, Int>
-) : BaseAdapter<Any>(context) {
+) : BaseAdapter<Any>() {
 
     @LayoutRes
     override fun getItemViewType(position: Int): Int {

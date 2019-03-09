@@ -1,12 +1,11 @@
 package com.garpr.android.adapters
 
-import android.content.Context
 import com.garpr.android.R
 import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.WinsLosses
 
-class HeadToHeadAdapter(context: Context) : BaseMultiAdapter(context, LAYOUT_KEY_MAP) {
+class HeadToHeadAdapter : BaseMultiAdapter(LAYOUT_KEY_MAP) {
 
     companion object {
         private val LAYOUT_KEY_MAP = mapOf<Class<*>, Int>(

@@ -41,7 +41,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         SwipeRefreshLayout.OnRefreshListener {
 
     private var list: List<Any>? = null
-    private lateinit var adapter: PlayerAdapter
+    private val adapter = PlayerAdapter()
     private var playerMatchesBundle: PlayerMatchesBundle? = null
 
     @Inject
@@ -170,7 +170,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         recyclerView.setHasFixedSize(true)
         recyclerView.addOnScrollListener(onScrollListener)
 
-        adapter = PlayerAdapter(this)
         recyclerView.adapter = adapter
     }
 

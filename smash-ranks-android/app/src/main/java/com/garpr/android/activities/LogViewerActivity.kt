@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_log_viewer.*
 class LogViewerActivity : BaseActivity(), LogViewerToolbar.Listeners,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var adapter: TimberEntriesAdapter
+    private val adapter = TimberEntriesAdapter()
 
 
     companion object {
@@ -66,7 +66,6 @@ class LogViewerActivity : BaseActivity(), LogViewerToolbar.Listeners,
         recyclerView.addItemDecoration(DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        adapter = TimberEntriesAdapter(this)
         recyclerView.adapter = adapter
     }
 

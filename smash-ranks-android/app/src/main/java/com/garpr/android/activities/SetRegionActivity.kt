@@ -28,7 +28,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
     private var _selectedRegion: Region? = null
     private var regionsBundle: RegionsBundle? = null
-    private lateinit var adapter: RegionsSelectionAdapter
+    private val adapter = RegionsSelectionAdapter()
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -122,7 +122,6 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
-        adapter = RegionsSelectionAdapter(this)
         recyclerView.adapter = adapter
     }
 

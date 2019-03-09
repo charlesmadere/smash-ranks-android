@@ -30,7 +30,7 @@ class TournamentsLayout @JvmOverloads constructor(
 ) : SearchableRefreshLayout(context, attrs), ApiListener<TournamentsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var adapter: TournamentsAdapter
+    private val adapter = TournamentsAdapter()
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -71,7 +71,6 @@ class TournamentsLayout @JvmOverloads constructor(
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        adapter = TournamentsAdapter(context)
         recyclerView.adapter = adapter
 
         fetchTournamentsBundle()

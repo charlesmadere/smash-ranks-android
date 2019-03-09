@@ -32,6 +32,11 @@ class RankingsLayout @JvmOverloads constructor(
 ) : SearchableRefreshLayout(context, attrs), ApiListener<RankingsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
+    private val adapter = RankingsAdapter()
+
+    var rankingsBundle: RankingsBundle? = null
+        private set
+
     @Inject
     protected lateinit var notificationsManager: NotificationsManager
 
@@ -40,11 +45,6 @@ class RankingsLayout @JvmOverloads constructor(
 
     @Inject
     protected lateinit var serverApi: ServerApi
-
-    private lateinit var adapter: RankingsAdapter
-
-    var rankingsBundle: RankingsBundle? = null
-        private set
 
 
     interface Listener {
@@ -85,7 +85,6 @@ class RankingsLayout @JvmOverloads constructor(
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        adapter = RankingsAdapter(context)
         recyclerView.adapter = adapter
 
         fetchRankingsBundle()

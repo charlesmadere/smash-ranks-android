@@ -30,7 +30,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     private var list: List<Any>? = null
     private var headToHead: HeadToHead? = null
-    private lateinit var adapter: HeadToHeadAdapter
+    private val adapter = HeadToHeadAdapter()
 
     private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
 
@@ -118,7 +118,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
-        adapter = HeadToHeadAdapter(this)
         recyclerView.adapter = adapter
     }
 

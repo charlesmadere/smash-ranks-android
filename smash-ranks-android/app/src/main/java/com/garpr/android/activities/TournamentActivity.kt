@@ -23,6 +23,7 @@ import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.smoothScrollToTop
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.managers.TournamentAdapterManager
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
@@ -54,6 +55,9 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     @Inject
     protected lateinit var threadUtils: ThreadUtils
+
+    @Inject
+    protected lateinit var tournamentAdapterManager: TournamentAdapterManager
 
 
     companion object {
@@ -193,7 +197,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         recyclerView.setHasFixedSize(true)
         recyclerView.addOnScrollListener(onScrollListener)
 
-        adapter = TournamentAdapter(this)
+        adapter = TournamentAdapter(tournamentAdapterManager)
         recyclerView.adapter = adapter
     }
 

@@ -1,19 +1,13 @@
 package com.garpr.android.adapters
 
-import android.content.Context
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
+import com.garpr.android.extensions.layoutInflater
 
-abstract class BaseAdapter<T>(
-        private val layoutInflater: LayoutInflater
-) : RecyclerView.Adapter<BaseAdapterViewHolder>() {
+abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapterViewHolder>() {
 
     private val items = mutableListOf<T>()
-
-
-    constructor(context: Context) : this(LayoutInflater.from(context))
 
     open fun clear() {
         if (!isEmpty) {
@@ -43,7 +37,7 @@ abstract class BaseAdapter<T>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapterViewHolder {
-        val view = layoutInflater.inflate(viewType, parent, false)
+        val view = parent.layoutInflater.inflate(viewType, parent, false)
         return BaseAdapterViewHolder(view)
     }
 

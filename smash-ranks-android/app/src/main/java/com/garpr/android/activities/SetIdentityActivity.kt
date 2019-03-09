@@ -35,7 +35,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     private var _selectedPlayer: AbsPlayer? = null
     private var playersBundle: PlayersBundle? = null
-    private lateinit var adapter: PlayersSelectionAdapter
+    private val adapter = PlayersSelectionAdapter()
 
     @Inject
     protected lateinit var identityManager: IdentityManager
@@ -147,7 +147,6 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         recyclerView.addItemDecoration(DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        adapter = PlayersSelectionAdapter(this)
         recyclerView.adapter = adapter
     }
 

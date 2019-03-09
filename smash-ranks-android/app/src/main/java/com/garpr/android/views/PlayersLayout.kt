@@ -28,16 +28,16 @@ class PlayersLayout @JvmOverloads constructor(
 ) : SearchableRefreshLayout(context, attrs), ApiListener<PlayersBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
+    private val adapter = PlayersAdapter()
+
+    var playersBundle: PlayersBundle? = null
+        private set
+
     @Inject
     protected lateinit var regionManager: RegionManager
 
     @Inject
     protected lateinit var serverApi: ServerApi
-
-    private lateinit var adapter: PlayersAdapter
-
-    var playersBundle: PlayersBundle? = null
-        private set
 
 
     interface Listener {
@@ -71,7 +71,6 @@ class PlayersLayout @JvmOverloads constructor(
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        adapter = PlayersAdapter(context)
         recyclerView.adapter = adapter
 
         fetchPlayersBundle()

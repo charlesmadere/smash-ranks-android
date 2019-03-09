@@ -33,7 +33,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         RankingCriteriaHandle, RankingsLayout.Listener, RegionManager.OnRegionChangeListener,
         Searchable, SearchQueryHandle, SearchToolbar.Listener {
 
-    private var adapter: HomePagerAdapter? = null
+    private val adapter = HomePagerAdapter()
 
     @Inject
     protected lateinit var identityManager: IdentityManager
@@ -105,7 +105,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
-        adapter?.onNavigationItemReselected(item.itemIdAsHomeTab)
+        adapter.onNavigationItemReselected(item.itemIdAsHomeTab)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -126,7 +126,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onRegionChange(regionManager: RegionManager) {
         prepareMenuAndTitleAndSubtitle(null)
-        adapter?.refresh()
+        adapter.refresh()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -155,10 +155,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         viewPager.addOnPageChangeListener(onPageChangeListener)
         viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         viewPager.offscreenPageLimit = 3
-
-        val adapter = HomePagerAdapter()
         viewPager.adapter = adapter
-        this.adapter = adapter
     }
 
     override fun onViewYourselfClick(v: HomeToolbar) {
@@ -179,10 +176,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override val rankingCriteria: RankingCriteria?
-        get() = adapter?.rankingCriteria
+        get() = adapter.rankingCriteria
 
     override fun search(query: String?) {
-        adapter?.search(query)
+        adapter.search(query)
     }
 
     override val searchQuery: CharSequence?

@@ -14,7 +14,6 @@ import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.activities.SplashActivity;
 import com.garpr.android.activities.TournamentActivity;
 import com.garpr.android.activities.TournamentsActivity;
-import com.garpr.android.adapters.TournamentAdapter;
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.dialogs.HeadToHeadDialogFragment;
 import com.garpr.android.dialogs.ShareRegionDialogFragment;
@@ -78,9 +77,6 @@ public interface AppComponent {
     void inject(SplashActivity activity);
     void inject(TournamentActivity activity);
     void inject(TournamentsActivity activity);
-
-    // adapters
-    void inject(TournamentAdapter adapter);
 
     // dialogs
     void inject(AddOrRemovePlayerFromFavoritesDialogFragment dialog);

@@ -25,7 +25,7 @@ class FavoritePlayersLayout @JvmOverloads constructor(
 ) : SearchableFrameLayout(context, attrs), FavoritePlayersManager.OnFavoritePlayersChangeListener,
         Refreshable {
 
-    private lateinit var adapter: FavoritePlayersAdapter
+    private val adapter = FavoritePlayersAdapter()
 
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
@@ -75,7 +75,6 @@ class FavoritePlayersLayout @JvmOverloads constructor(
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        adapter = FavoritePlayersAdapter(context)
         recyclerView.adapter = adapter
         favoritePlayersManager.addListener(this)
 

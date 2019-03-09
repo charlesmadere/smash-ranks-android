@@ -1,12 +1,11 @@
 package com.garpr.android.adapters
 
-import android.content.Context
 import androidx.annotation.LayoutRes
 import com.garpr.android.R
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.RankingsBundle
 
-class RankingsAdapter(context: Context) : BaseAdapter<RankedPlayer>(context) {
+class RankingsAdapter : BaseAdapter<RankedPlayer>() {
 
     init {
         setHasStableIds(true)
