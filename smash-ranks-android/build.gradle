@@ -16,7 +16,7 @@ buildscript {
     ext.retrofit_version = '2.5.0'
     ext.robolectric_version = '4.2'
     ext.testcore_version = '1.1.0'
-    ext.workmanager_version = '1.0.0'
+    ext.workmanager_version = '2.0.0-rc01'
 
     repositories {
         google()
