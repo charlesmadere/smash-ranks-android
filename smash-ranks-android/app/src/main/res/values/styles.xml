@@ -141,38 +141,11 @@
     </style>
 
     <style name="NoContentLinearLayout.Empty">
-        <item name="descriptionText">@string/swipe_to_refresh_to_check_again</item>
+        <item name="descriptionText">@string/swipe_to_refresh_and_check_again</item>
     </style>
 
     <style name="NoContentLinearLayout.Error">
-        <item name="descriptionText">@string/swipe_to_refresh_to_try_again</item>
-    </style>
-
-    <style name="NoContentLinearLayoutBody">
-        <item name="android:gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
-    <style name="NoContentLinearLayoutBody.Image">
-        <item name="android:adjustViewBounds">true</item>
-        <item name="android:importantForAccessibility">no</item>
-        <item name="android:layout_marginBottom">@dimen/root_padding_double</item>
-        <item name="android:layout_marginEnd">@dimen/root_padding_double</item>
-        <item name="android:layout_marginStart">@dimen/root_padding_double</item>
-        <item name="android:layout_marginTop">@dimen/root_padding</item>
-        <item name="android:scaleType">centerInside</item>
-    </style>
-
-    <style name="NoContentLinearLayoutBody.Line1">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="NoContentLinearLayoutBody.Line2">
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="descriptionText">@string/swipe_to_refresh_and_try_again</item>
     </style>
 
     <style name="PreferenceView">

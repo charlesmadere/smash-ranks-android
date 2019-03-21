@@ -8,7 +8,7 @@
     <com.garpr.android.views.toolbars.GarToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
-        app:toolbarTitleText="@string/head_to_head"
+        app:titleText="@string/head_to_head"
         style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout
@@ -26,8 +26,8 @@
 
             <com.garpr.android.views.NoContentLinearLayout
                 android:id="@+id/empty"
+                app:descriptionText="@string/head_to_head_swipe_to_refresh_and_check_again"
                 app:titleText="@string/no_head_to_head_data"
-                app:descriptionText="@string/head_to_head_swipe_to_refresh_to_check_again"
                 style="@style/NoContentLinearLayout.Empty" />
 
             <com.garpr.android.views.ErrorContentLinearLayout

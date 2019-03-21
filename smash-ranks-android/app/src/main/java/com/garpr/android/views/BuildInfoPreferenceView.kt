@@ -10,9 +10,7 @@ class BuildInfoPreferenceView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs) {
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
+    init {
         isEnabled = false
         titleText = resources.getString(R.string.version_x, BuildConfig.VERSION_NAME)
         descriptionText = resources.getString(R.string.build_x_y, BuildConfig.VERSION_CODE,

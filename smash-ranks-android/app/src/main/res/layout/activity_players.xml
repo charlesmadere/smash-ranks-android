@@ -8,7 +8,7 @@
     <com.garpr.android.views.toolbars.SearchToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
-        app:toolbarTitleText="@string/players"
+        app:titleText="@string/players"
         style="@style/Toolbar" />
 
     <include

@@ -49,7 +49,7 @@
     <string name="gar_pr" translatable="false">GAR PR</string>
     <string name="gar_twitter_url" translatable="false">twitter.com/garsh0p</string>
     <string name="head_to_head">Head to Head</string>
-    <string name="head_to_head_swipe_to_refresh_to_check_again">Swipe down to refresh to check again. This probably means that these two competitors have never played in tournament before.</string>
+    <string name="head_to_head_swipe_to_refresh_and_check_again">This probably means that these two competitors have never played in tournament before. But, you can swipe down to refresh and check again</string>
     <string name="identity">Identity</string>
     <string name="identity_region_format">%1$s (%2$s)</string>
     <string name="identity_saved_">Identity saved!</string>
@@ -118,8 +118,8 @@
     <string name="start_using_the_app">Start using the app</string>
     <string name="start_using_the_app_description">You can change your region and identity at any time in Settings</string>
     <string name="submit_your_own_profile_to_the_roster">Submit your own profile to the roster!</string>
-    <string name="swipe_to_refresh_to_check_again">Swipe down to refresh to check again</string>
-    <string name="swipe_to_refresh_to_try_again">Swipe down to refresh to try again</string>
+    <string name="swipe_to_refresh_and_check_again">Swipe down to refresh and check again</string>
+    <string name="swipe_to_refresh_and_try_again">Swipe down to refresh and try again</string>
     <string name="syncing_now_">Syncing now…</string>
     <string name="sync_error_occurred">Sync error occurred</string>
     <string name="sync_error_occurred_code">Sync error occurred (%1$d)</string>

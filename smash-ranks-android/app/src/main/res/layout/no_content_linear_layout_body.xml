@@ -1,24 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress XmlUnusedNamespaceDeclaration -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="com.garpr.android.views.NoContentLinearLayout"
-    style="@style/NoContentLinearLayout">
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <Space
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent" />
 
     <ImageView
         android:id="@+id/image"
-        tools:ignore="ContentDescription"
+        android:importantForAccessibility="no"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_double"
+        android:layout_marginEnd="@dimen/root_padding_double"
+        android:layout_marginStart="@dimen/root_padding_double"
+        android:layout_width="wrap_content"
+        android:scaleType="centerInside"
+        android:visibility="gone"
         tools:src="@mipmap/launcher"
-        style="@style/NoContentLinearLayoutBody.Image" />
+        tools:visibility="visible" />
 
     <TextView
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
         android:id="@+id/title"
-        tools:text="@string/error_loading_players"
-        style="@style/NoContentLinearLayoutBody.Line1" />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding_quadruple"
+        android:layout_marginStart="@dimen/root_padding_quadruple"
+        android:layout_width="match_parent"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
+        tools:text="@string/error_loading_players" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/description"
-        tools:text="@string/swipe_to_refresh_to_try_again"
-        style="@style/NoContentLinearLayoutBody.Line2" />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding_quadruple"
+        android:layout_marginStart="@dimen/root_padding_quadruple"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/text_size_small"
+        tools:text="@string/swipe_to_refresh_and_try_again" />
+
+    <Space
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent" />
 
 </merge>

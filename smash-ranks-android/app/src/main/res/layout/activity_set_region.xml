@@ -8,7 +8,7 @@
     <com.garpr.android.views.toolbars.SetRegionToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
-        app:toolbarTitleText="@string/set_region"
+        app:titleText="@string/set_region"
         style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout

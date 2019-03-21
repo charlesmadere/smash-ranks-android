@@ -44,11 +44,14 @@ open class NoContentLinearLayout @JvmOverloads constructor(
         @Suppress("LeakingThis")
         layoutInflater.inflate(R.layout.no_content_linear_layout_body, this)
 
+        var ta = context.obtainStyledAttributes(attrs, R.styleable.NoContentLinearLayout)
+        imageDrawable = ta.getDrawable(R.styleable.NoContentLinearLayout_android_src)
+        ta.recycle()
+
         @SuppressLint("CustomViewStyleable")
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        ta = context.obtainStyledAttributes(attrs, R.styleable.View)
         titleText = ta.getText(R.styleable.View_titleText)
         descriptionText = ta.getText(R.styleable.View_descriptionText)
-        imageDrawable = ta.getDrawable(R.styleable.View_image)
         ta.recycle()
     }
 

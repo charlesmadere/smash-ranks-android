@@ -31,22 +31,22 @@
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/customizeRegion"
+                android:src="@drawable/ic_chevron_right_white_24dp"
                 app:descriptionText="@string/customize_region_description"
-                app:icon="@drawable/ic_chevron_right_white_24dp"
                 app:titleText="@string/customize_region"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/customizeIdentity"
+                android:src="@drawable/ic_chevron_right_white_24dp"
                 app:descriptionText="@string/customize_identity_description"
-                app:icon="@drawable/ic_chevron_right_white_24dp"
                 app:titleText="@string/customize_identity"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/startUsingTheApp"
+                android:src="@drawable/ic_controller_white_24dp"
                 app:descriptionText="@string/start_using_the_app_description"
-                app:icon="@drawable/ic_controller_white_24dp"
                 app:titleText="@string/start_using_the_app"
                 style="@style/PreferenceView" />
 

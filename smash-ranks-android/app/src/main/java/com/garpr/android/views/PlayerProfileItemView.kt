@@ -154,7 +154,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
     }
 
     override fun onPaletteBuilt(palette: Palette?) {
-        (activity as? ColorListener)?.onPaletteBuilt(palette)
+        (activity as? ColorListener?)?.onPaletteBuilt(palette)
 
         repeat(childCount) {
             applyPaletteToView(palette, getChildAt(it))

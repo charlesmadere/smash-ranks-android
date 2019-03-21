@@ -25,7 +25,8 @@ class SplashCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : LifecycleCardView(context, attrs), DialogInterface.OnClickListener,
-        IdentityManager.OnIdentityChangeListener, Refreshable, RegionManager.OnRegionChangeListener {
+        IdentityManager.OnIdentityChangeListener, Refreshable,
+        RegionManager.OnRegionChangeListener {
 
     private var hasAnimated: Boolean = false
 
@@ -173,13 +174,13 @@ class SplashCardView @JvmOverloads constructor(
             customizeIdentity.descriptionText = context.getText(
                     R.string.customize_identity_description)
             customizeIdentity.titleText = context.getText(R.string.customize_identity)
-            customizeIdentity.iconDrawable = ContextCompat.getDrawable(context,
+            customizeIdentity.imageDrawable = ContextCompat.getDrawable(context,
                     R.drawable.ic_chevron_right_white_24dp)
         } else {
             customizeIdentity.descriptionText = context.getString(R.string.identity_region_format,
                     identity.name, identity.region.displayName)
             customizeIdentity.titleText = context.getText(R.string.delete_identity)
-            customizeIdentity.iconDrawable = ContextCompat.getDrawable(context,
+            customizeIdentity.imageDrawable = ContextCompat.getDrawable(context,
                     R.drawable.ic_delete_white_24dp)
         }
 

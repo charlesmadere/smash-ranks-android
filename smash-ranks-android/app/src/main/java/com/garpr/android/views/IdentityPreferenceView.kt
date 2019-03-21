@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.SetIdentityActivity
 import com.garpr.android.extensions.activity
@@ -22,6 +23,13 @@ class IdentityPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var identityManager: IdentityManager
 
+    init {
+        titleText = resources.getText(R.string.identity)
+        descriptionText = resources.getText(R.string.easily_find_yourself_throughout_the_app)
+        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_face_white_24dp)
+
+        setOnClickListener(this)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -68,18 +76,9 @@ class IdentityPreferenceView @JvmOverloads constructor(
 
         if (!isInEditMode) {
             appComponent.inject(this)
+            identityManager.addListener(this)
+            refresh()
         }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.identity)
-        descriptionText = resources.getText(R.string.easily_find_yourself_throughout_the_app)
-
-        if (isInEditMode) {
-            return
-        }
-
-        identityManager.addListener(this)
-        refresh()
     }
 
     override fun onIdentityChange(identityManager: IdentityManager) {

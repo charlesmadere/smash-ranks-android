@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="color_animation_duration">250</integer>
     <integer name="splash_card_animation_delay">275</integer>
     <integer name="splash_card_animation_duration">1500</integer>
+    <integer name="tab_animation_duration">200</integer>
+    <integer name="toolbar_color_animation_duration">1000</integer>
+    <integer name="toolbar_title_animation_duration">250</integer>
     <integer name="win_losses_animation">1000</integer>
 
 </resources>

@@ -7,9 +7,9 @@
 
     <com.garpr.android.views.toolbars.SearchToolbar
         android:id="@+id/toolbar"
-        app:toolbarSubtitleTextColor="@color/transparent"
-        app:toolbarTitleTextColor="@color/transparent"
+        app:descriptionTextColor="@color/transparent"
         app:showUpNavigation="true"
+        app:titleTextColor="@color/transparent"
         style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout

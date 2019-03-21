@@ -3,6 +3,7 @@ package com.garpr.android.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.SetRegionActivity
 import com.garpr.android.extensions.activity
@@ -20,6 +21,18 @@ class RegionPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
+    init {
+        titleText = resources.getText(R.string.region)
+
+        if (isInEditMode) {
+            descriptionText = resources.getString(R.string.region_endpoint_format,
+                    resources.getString(R.string.norcal), resources.getString(R.string.gar_pr))
+        }
+
+        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_location_on_white_24dp)
+
+        setOnClickListener(this)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -55,15 +68,6 @@ class RegionPreferenceView @JvmOverloads constructor(
         if (!isInEditMode) {
             appComponent.inject(this)
             regionManager.addListener(this)
-        }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.region)
-
-        if (isInEditMode) {
-            descriptionText = resources.getString(R.string.region_endpoint_format,
-                    resources.getString(R.string.norcal), resources.getString(R.string.gar_pr))
-        } else {
             refresh()
         }
     }

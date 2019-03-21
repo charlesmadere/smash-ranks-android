@@ -23,10 +23,8 @@ class CheckablePreferenceView @JvmOverloads constructor(
         Refreshable, View.OnClickListener {
 
     private val disabledDescriptionText: CharSequence?
-    private val enabledDescriptionText: CharSequence?
+    private val descriptionText: CharSequence?
     private val titleText: CharSequence?
-    private val checkableType: Int
-
 
     companion object {
         private const val CHECKABLE_TYPE_CHECKBOX = 0
@@ -34,15 +32,27 @@ class CheckablePreferenceView @JvmOverloads constructor(
     }
 
     init {
-        @SuppressLint("CustomViewStyleable")
-        var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
-        enabledDescriptionText = ta.getText(R.styleable.View_descriptionText)
-        titleText = ta.getText(R.styleable.View_titleText)
+        var ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
+        val checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType,
+                CHECKABLE_TYPE_CHECKBOX)
+
+        when (checkableType) {
+            CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(
+                    R.layout.view_checkbox_preference, this)
+
+            CHECKABLE_TYPE_SWITCH_COMPAT -> layoutInflater.inflate(
+                    R.layout.view_switch_compat_preference, this)
+
+            else -> throw RuntimeException("checkableType is an illegal value: $checkableType")
+        }
+
+        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
         ta.recycle()
 
-        ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
-        checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType, CHECKABLE_TYPE_CHECKBOX)
-        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
+        @SuppressLint("CustomViewStyleable")
+        ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        descriptionText = ta.getText(R.styleable.View_descriptionText)
+        titleText = ta.getText(R.styleable.View_titleText)
         ta.recycle()
     }
 
@@ -84,24 +94,14 @@ class CheckablePreferenceView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        when (checkableType) {
-            CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(
-                    R.layout.view_checkbox_preference, this)
-
-            CHECKABLE_TYPE_SWITCH_COMPAT -> layoutInflater.inflate(
-                    R.layout.view_switch_compat_preference, this)
-
-            else -> throw RuntimeException("checkableType is an illegal value: $checkableType")
-        }
-
         setOnClickListener(this)
 
         if (isInEditMode) {
             title.text = titleText
-            description.text = enabledDescriptionText
+            description.text = descriptionText
         }
 
-        if (disabledDescriptionText.isNullOrBlank() || enabledDescriptionText.isNullOrBlank()) {
+        if (disabledDescriptionText.isNullOrBlank()) {
             val layoutParams = title.layoutParams as ConstraintLayout.LayoutParams
             layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             layoutParams.bottomMargin = layoutParams.topMargin
@@ -135,7 +135,7 @@ class CheckablePreferenceView @JvmOverloads constructor(
             title.text = titleText
 
             if (preference.get() == true) {
-                description.text = enabledDescriptionText
+                description.text = descriptionText
                 checkable.isChecked = true
             } else {
                 description.text = disabledDescriptionText

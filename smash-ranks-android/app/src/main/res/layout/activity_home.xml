@@ -7,7 +7,7 @@
 
     <com.garpr.android.views.toolbars.HomeToolbar
         android:id="@+id/toolbar"
-        app:toolbarTitleText="@string/gar_pr"
+        app:titleText="@string/gar_pr"
         style="@style/Toolbar" />
 
     <com.garpr.android.views.HomeViewPager

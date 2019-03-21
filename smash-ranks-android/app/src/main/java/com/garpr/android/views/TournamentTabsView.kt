@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewPropertyAnimator
-import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.TournamentMode
@@ -29,21 +28,32 @@ class TournamentTabsView @JvmOverloads constructor(
     }
 
     private val animationDuration: Long by lazy {
-        resources.getLong(android.R.integer.config_shortAnimTime)
+        resources.getLong(R.integer.tab_animation_duration)
     }
-
-    @ColorInt
-    private val indicatorLineColor: Int
 
     private var inAnimation: ViewPropertyAnimator? = null
     private var outAnimation: ViewPropertyAnimator? = null
 
-
     init {
+        @Suppress("LeakingThis")
+        layoutInflater.inflate(R.layout.view_tournament_tabs, this)
+
         val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsView)
-        indicatorLineColor = ta.getColor(R.styleable.TournamentTabsView_indicatorLineColor,
+        val indicatorLineColor = ta.getColor(R.styleable.TournamentTabsView_indicatorLineColor,
                 context.getAttrColor(R.attr.colorAccent))
         ta.recycle()
+
+        matchesTab.setOnClickListener {
+            listeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
+            refresh()
+        }
+
+        playersTab.setOnClickListener {
+            listeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
+            refresh()
+        }
+
+        indicatorLine.setBackgroundColor(indicatorLineColor)
     }
 
     fun animateIn() {
@@ -97,24 +107,6 @@ class TournamentTabsView @JvmOverloads constructor(
         refresh()
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        layoutInflater.inflate(R.layout.view_tournament_tabs, this)
-
-        matchesTab.setOnClickListener {
-            listeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
-            refresh()
-        }
-
-        playersTab.setOnClickListener {
-            listeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
-            refresh()
-        }
-
-        indicatorLine.setBackgroundColor(indicatorLineColor)
-    }
-
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         return if (canBeTouched) super.onInterceptTouchEvent(ev) else true
     }
@@ -125,7 +117,7 @@ class TournamentTabsView @JvmOverloads constructor(
     }
 
     override fun refresh() {
-        val layoutParams = indicatorLine.layoutParams as? ConstraintLayout.LayoutParams ?: return
+        val layoutParams = indicatorLine.layoutParams as? ConstraintLayout.LayoutParams? ?: return
 
         when (listeners?.tournamentMode) {
             TournamentMode.MATCHES -> {

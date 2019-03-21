@@ -8,7 +8,7 @@
     <com.garpr.android.views.toolbars.GarToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
-        app:toolbarTitleText="@string/settings"
+        app:titleText="@string/settings"
         style="@style/Toolbar" />
 
     <ScrollView
@@ -24,17 +24,14 @@
 
             <com.garpr.android.views.RegionPreferenceView
                 android:id="@+id/regionPreference"
-                app:icon="@drawable/ic_location_on_white_24dp"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.IdentityPreferenceView
                 android:id="@+id/identityPreference"
-                app:icon="@drawable/ic_face_white_24dp"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.ThemePreferenceView
                 android:id="@+id/themePreference"
-                app:icon="@drawable/ic_format_paint_white_24dp"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.DeleteFavoritePlayersPreferenceView
@@ -106,8 +103,8 @@
 
             <com.garpr.android.views.SimplePreferenceView
                 android:id="@+id/smashRosterFormLink"
+                android:src="@drawable/ic_open_in_browser_white_24dp"
                 app:descriptionText="@string/click_to_open_form"
-                app:icon="@drawable/ic_open_in_browser_white_24dp"
                 app:titleText="@string/submit_your_own_profile_to_the_roster"
                 style="@style/PreferenceView" />
 

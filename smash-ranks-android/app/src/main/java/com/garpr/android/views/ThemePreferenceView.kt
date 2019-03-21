@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.HomeActivity
 import com.garpr.android.data.models.NightMode
@@ -29,6 +30,18 @@ class ThemePreferenceView @JvmOverloads constructor(
 
     companion object {
         private const val TAG = "ThemePreferenceView"
+    }
+
+    init {
+        titleText = context.getText(R.string.theme)
+
+        if (isInEditMode) {
+            descriptionText = context.getText(R.string.auto)
+        }
+
+        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_format_paint_white_24dp)
+
+        setOnClickListener(this)
     }
 
     override fun onAttachedToWindow() {
@@ -94,14 +107,6 @@ class ThemePreferenceView @JvmOverloads constructor(
 
         if (!isInEditMode) {
             appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.theme)
-
-        if (isInEditMode) {
-            descriptionText = resources.getText(R.string.auto)
-        } else {
             generalPreferenceStore.nightMode.addListener(this)
             refresh()
         }

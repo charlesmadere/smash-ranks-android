@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -37,8 +38,8 @@ open class GarToolbar @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs), Heartbeat, Refreshable {
 
     // begin animation variables
-    private val animationDuration: Long by lazy {
-        resources.getLong(android.R.integer.config_shortAnimTime)
+    private val colorAnimationDuration: Long by lazy {
+        resources.getLong(R.integer.toolbar_color_animation_duration)
     }
 
     private val colorPrimary: Int by lazy {
@@ -55,6 +56,10 @@ open class GarToolbar @JvmOverloads constructor(
 
     private val textColorSecondary: Int by lazy {
         context.getAttrColor(android.R.attr.textColorSecondary)
+    }
+
+    private val titleAnimationDuration: Long by lazy {
+        resources.getLong(R.integer.toolbar_title_animation_duration)
     }
 
     private var inTitleAnimation: ValueAnimator? = null
@@ -123,12 +128,16 @@ open class GarToolbar @JvmOverloads constructor(
         @Suppress("LeakingThis")
         layoutInflater.inflate(R.layout.gar_toolbar, this)
 
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.GarToolbar)
+        var ta = context.obtainStyledAttributes(attrs, R.styleable.GarToolbar)
         showUpNavigation = ta.getBoolean(R.styleable.GarToolbar_showUpNavigation, showUpNavigation)
-        subtitleText = ta.getText(R.styleable.GarToolbar_toolbarSubtitleText)
-        subtitleTextColor = ta.getColor(R.styleable.GarToolbar_toolbarSubtitleTextColor, subtitleTextColor)
-        titleText = ta.getText(R.styleable.GarToolbar_toolbarTitleText)
-        titleTextColor = ta.getColor(R.styleable.GarToolbar_toolbarTitleTextColor, titleTextColor)
+        subtitleTextColor = ta.getColor(R.styleable.GarToolbar_descriptionTextColor, subtitleTextColor)
+        titleTextColor = ta.getColor(R.styleable.GarToolbar_titleTextColor, titleTextColor)
+        ta.recycle()
+
+        @SuppressLint("CustomViewStyleable")
+        ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        subtitleText = ta.getText(R.styleable.View_descriptionText)
+        titleText = ta.getText(R.styleable.View_titleText)
         ta.recycle()
     }
 
@@ -168,8 +177,8 @@ open class GarToolbar @JvmOverloads constructor(
         }
 
         val animatorSet = AnimatorSet()
-        animatorSet.duration = resources.getLong(R.integer.color_animation_duration)
-        animatorSet.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
+        animatorSet.duration = colorAnimationDuration
+        animatorSet.interpolator = AnimationUtils.DECELERATE_INTERPOLATOR
         animatorSet.playTogether(toolbarAnimator, statusBarAnimator, navigationBarAnimator)
         animatorSet.start()
     }
@@ -186,7 +195,7 @@ open class GarToolbar @JvmOverloads constructor(
 
         val titleAnimation = ValueAnimator.ofArgb(titleTextColor, textColorPrimary)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
-        titleAnimation.duration = animationDuration
+        titleAnimation.duration = titleAnimationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
 
         titleAnimation.addListener(object : AnimatorListenerAdapter() {
@@ -225,7 +234,7 @@ open class GarToolbar @JvmOverloads constructor(
 
         val titleAnimation = ValueAnimator.ofArgb(titleTextColor, Color.TRANSPARENT)
         titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
-        titleAnimation.duration = animationDuration
+        titleAnimation.duration = titleAnimationDuration
         titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
 
         titleAnimation.addListener(object : AnimatorListenerAdapter() {
