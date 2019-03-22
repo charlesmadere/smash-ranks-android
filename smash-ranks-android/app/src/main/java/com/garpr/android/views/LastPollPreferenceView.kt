@@ -17,6 +17,15 @@ class LastPollPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
+    init {
+        titleText = context.getText(R.string.last_poll)
+
+        if (isInEditMode) {
+            descriptionText = context.getText(R.string.poll_has_yet_to_occur)
+        }
+
+        isEnabled = false
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -40,14 +49,6 @@ class LastPollPreferenceView @JvmOverloads constructor(
         if (!isInEditMode) {
             appComponent.inject(this)
             rankingsPollingPreferenceStore.lastPoll.addListener(this)
-        }
-
-        isEnabled = false
-        titleText = resources.getText(R.string.last_poll)
-
-        if (isInEditMode) {
-            descriptionText = resources.getText(R.string.poll_has_yet_to_occur)
-        } else {
             refresh()
         }
     }
@@ -63,7 +64,7 @@ class LastPollPreferenceView @JvmOverloads constructor(
 
         val date = rankingsPollingPreferenceStore.lastPoll.get()
         descriptionText = date?.getRelativeDateTimeText(context) ?:
-                resources.getText(R.string.poll_has_yet_to_occur)
+                context.getText(R.string.poll_has_yet_to_occur)
     }
 
 }

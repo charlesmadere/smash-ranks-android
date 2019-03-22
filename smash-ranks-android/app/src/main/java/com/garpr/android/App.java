@@ -4,23 +4,24 @@ import com.garpr.android.dagger.AppComponent;
 import com.garpr.android.dagger.AppComponentHandle;
 import com.garpr.android.dagger.AppModule;
 import com.garpr.android.dagger.DaggerAppComponent;
-import com.garpr.android.data.models.NightMode;
 import com.garpr.android.managers.AppUpgradeManager;
+import com.garpr.android.managers.NightModeManager;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.Timber;
-import com.garpr.android.preferences.GeneralPreferenceStore;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
-public class App extends BaseApp implements AppComponentHandle {
+public class App extends BaseApp implements AppComponentHandle,
+        NightModeManager.OnNightModeChangeListener {
 
     private static final String TAG = "App";
 
@@ -37,19 +38,18 @@ public class App extends BaseApp implements AppComponentHandle {
     DeviceUtils mDeviceUtils;
 
     @Inject
-    GeneralPreferenceStore mGeneralPreferenceStore;
+    ImageLibraryWrapper mImageLibraryWrapper;
 
     @Inject
-    ImageLibraryWrapper mImageLibraryWrapper;
+    NightModeManager mNightModeManager;
 
     @Inject
     Timber mTimber;
 
 
     private void applyNightMode() {
-        final NightMode nightMode = mGeneralPreferenceStore.getNightMode().get();
-        AppCompatDelegate.setDefaultNightMode(nightMode != null ? nightMode.getThemeValue() :
-                NightMode.SYSTEM.getThemeValue());
+        AppCompatDelegate.setDefaultNightMode(mNightModeManager.getNightMode().getThemeValue());
+        mNightModeManager.addListener(this);
     }
 
     @NotNull
@@ -97,6 +97,11 @@ public class App extends BaseApp implements AppComponentHandle {
 
         mImageLibraryWrapper.initialize();
         mAppUpgradeManager.upgradeApp();
+    }
+
+    @Override
+    public void onNightModeChange(@NonNull final NightModeManager nightModeManager) {
+        AppCompatDelegate.setDefaultNightMode(nightModeManager.getNightMode().getThemeValue());
     }
 
 }

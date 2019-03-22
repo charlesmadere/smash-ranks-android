@@ -24,8 +24,8 @@ class IdentityPreferenceView @JvmOverloads constructor(
     protected lateinit var identityManager: IdentityManager
 
     init {
-        titleText = resources.getText(R.string.identity)
-        descriptionText = resources.getText(R.string.easily_find_yourself_throughout_the_app)
+        titleText = context.getText(R.string.identity)
+        descriptionText = context.getText(R.string.easily_find_yourself_throughout_the_app)
         imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_face_white_24dp)
 
         setOnClickListener(this)

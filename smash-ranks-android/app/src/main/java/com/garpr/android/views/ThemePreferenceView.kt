@@ -5,32 +5,22 @@ import android.content.DialogInterface
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.HomeActivity
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.misc.Timber
-import com.garpr.android.preferences.GeneralPreferenceStore
-import com.garpr.android.preferences.Preference
+import com.garpr.android.managers.NightModeManager
 import javax.inject.Inject
 
 class ThemePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
-        Preference.OnPreferenceChangeListener<NightMode>, View.OnClickListener {
+        NightModeManager.OnNightModeChangeListener, View.OnClickListener {
 
     @Inject
-    protected lateinit var generalPreferenceStore: GeneralPreferenceStore
-
-    @Inject
-    protected lateinit var timber: Timber
-
-    companion object {
-        private const val TAG = "ThemePreferenceView"
-    }
+    protected lateinit var nightModeManager: NightModeManager
 
     init {
         titleText = context.getText(R.string.theme)
@@ -51,14 +41,14 @@ class ThemePreferenceView @JvmOverloads constructor(
             return
         }
 
-        generalPreferenceStore.nightMode.addListener(this)
+        nightModeManager.addListener(this)
         refresh()
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         dialog.dismiss()
 
-        val current = generalPreferenceStore.nightMode.get()
+        val current = nightModeManager.nightMode
         val selected = NightMode.values()[which]
 
         if (current == selected) {
@@ -69,11 +59,7 @@ class ThemePreferenceView @JvmOverloads constructor(
                 .setMessage(R.string.the_app_will_now_restart)
                 .setNeutralButton(R.string.ok, null)
                 .setOnDismissListener {
-                    timber.d(TAG, "theme was \"$current\", is now \"$selected\"")
-                    generalPreferenceStore.nightMode.set(selected)
-                    refresh()
-
-                    AppCompatDelegate.setDefaultNightMode(selected.themeValue)
+                    nightModeManager.nightMode = selected
                     context.startActivity(HomeActivity.getLaunchIntent(context = context,
                             restartActivityTask = true))
                 }
@@ -87,8 +73,7 @@ class ThemePreferenceView @JvmOverloads constructor(
             items[i] = resources.getText(NightMode.values()[i].textResId)
         }
 
-        val current = generalPreferenceStore.nightMode.get()
-        val checkedItem = current?.ordinal ?: -1
+        val checkedItem = nightModeManager.nightMode.ordinal
 
         AlertDialog.Builder(context)
                 .setSingleChoiceItems(items, checkedItem, this)
@@ -99,7 +84,7 @@ class ThemePreferenceView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        generalPreferenceStore.nightMode.removeListener(this)
+        nightModeManager.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -107,12 +92,12 @@ class ThemePreferenceView @JvmOverloads constructor(
 
         if (!isInEditMode) {
             appComponent.inject(this)
-            generalPreferenceStore.nightMode.addListener(this)
+            nightModeManager.addListener(this)
             refresh()
         }
     }
 
-    override fun onPreferenceChange(preference: Preference<NightMode>) {
+    override fun onNightModeChange(nightModeManager: NightModeManager) {
         if (isAlive) {
             refresh()
         }
@@ -121,8 +106,7 @@ class ThemePreferenceView @JvmOverloads constructor(
     override fun refresh() {
         super.refresh()
 
-        val nightMode = generalPreferenceStore.nightMode.get()
-        descriptionText = resources.getText(nightMode?.textResId ?: R.string.not_yet_set)
+        descriptionText = resources.getText(nightModeManager.nightMode.textResId)
     }
 
 }

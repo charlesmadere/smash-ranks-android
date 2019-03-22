@@ -34,6 +34,16 @@ class RingtonePreferenceView @JvmOverloads constructor(
         private const val TAG = "RingtonePreferenceView"
     }
 
+    init {
+        titleText = context.getText(R.string.ringtone)
+
+        if (isInEditMode) {
+            descriptionText = context.getText(R.string.none)
+        }
+
+        setOnClickListener(this)
+    }
+
     fun onActivityResult(data: Intent?) {
         if (data == null || !data.hasExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)) {
             return
@@ -91,16 +101,8 @@ class RingtonePreferenceView @JvmOverloads constructor(
         if (!isInEditMode) {
             appComponent.inject(this)
             rankingsPollingPreferenceStore.ringtone.addListener(this)
+            refresh()
         }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.ringtone)
-
-        if (isInEditMode) {
-            return
-        }
-
-        refresh()
     }
 
     override fun onPreferenceChange(preference: Preference<Uri>) {
@@ -117,7 +119,7 @@ class RingtonePreferenceView @JvmOverloads constructor(
         }
 
         descriptionText = if (ringtone == null) {
-            resources.getText(R.string.none)
+            context.getText(R.string.none)
         } else {
             ringtone.getTitle(context)
         }

@@ -19,6 +19,12 @@ class TestNotificationView @JvmOverloads constructor(
     @Inject
     protected lateinit var notificationsManager: NotificationsManager
 
+    init {
+        titleText = context.getText(R.string.show_test_notification)
+        descriptionText = context.getText(R.string.debug_only)
+        visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+        setOnClickListener(this)
+    }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         dialog.dismiss()
@@ -45,11 +51,6 @@ class TestNotificationView @JvmOverloads constructor(
         if (!isInEditMode) {
             appComponent.inject(this)
         }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.show_test_notification)
-        descriptionText = resources.getText(R.string.debug_only)
-        visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
     }
 
 }

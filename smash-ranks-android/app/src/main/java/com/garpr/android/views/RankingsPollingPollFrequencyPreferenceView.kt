@@ -25,6 +25,15 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
+    init {
+        titleText = context.getText(R.string.poll_frequency)
+
+        if (isInEditMode) {
+            descriptionText = context.getText(R.string.every_3_days)
+        }
+
+        setOnClickListener(this)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -78,16 +87,8 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
         if (!isInEditMode) {
             appComponent.inject(this)
             rankingsPollingPreferenceStore.pollFrequency.addListener(this)
+            refresh()
         }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.poll_frequency)
-
-        if (isInEditMode) {
-            return
-        }
-
-        refresh()
     }
 
     override fun onPreferenceChange(preference: Preference<PollFrequency>) {
@@ -100,7 +101,7 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
         super.refresh()
 
         val pollFrequency = rankingsPollingManager.pollFrequency
-        descriptionText = resources.getText(pollFrequency.textResId)
+        descriptionText = context.getText(pollFrequency.textResId)
     }
 
 }

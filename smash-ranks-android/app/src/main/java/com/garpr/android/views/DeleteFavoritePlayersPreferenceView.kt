@@ -22,6 +22,16 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
+    init {
+        titleText = context.getText(R.string.delete_all_favorite_players)
+
+        if (isInEditMode) {
+            descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
+                    numberFormat.format(8))
+        }
+
+        setOnClickListener(this)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -64,15 +74,6 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         if (!isInEditMode) {
             appComponent.inject(this)
             favoritePlayersManager.addListener(this)
-        }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.delete_all_favorite_players)
-
-        if (isInEditMode) {
-            descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
-                    numberFormat.format(8))
-        } else {
             refresh()
         }
     }

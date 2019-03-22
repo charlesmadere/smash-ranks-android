@@ -22,6 +22,7 @@ import com.garpr.android.managers.AppUpgradeManagerTest;
 import com.garpr.android.managers.FavoritePlayersManagerTest;
 import com.garpr.android.managers.HomeToolbarManagerTest;
 import com.garpr.android.managers.IdentityManagerTest;
+import com.garpr.android.managers.NightModeManagerTest;
 import com.garpr.android.managers.PlayerProfileManagerTest;
 import com.garpr.android.managers.RegionManagerTest;
 import com.garpr.android.managers.SmashRosterAvatarUrlHelperTest;
@@ -84,6 +85,7 @@ public interface TestAppComponent {
     void inject(FavoritePlayersManagerTest test);
     void inject(HomeToolbarManagerTest test);
     void inject(IdentityManagerTest test);
+    void inject(NightModeManagerTest test);
     void inject(PlayerProfileManagerTest test);
     void inject(RegionManagerTest test);
     void inject(SmashRosterAvatarUrlHelperTest test);

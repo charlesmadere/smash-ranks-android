@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_arrow_upward_white_18dp"
+        tools:srcCompat="@drawable/ic_arrow_upward_white_18dp"
         tools:visibility="visible" />
 
     <TextView

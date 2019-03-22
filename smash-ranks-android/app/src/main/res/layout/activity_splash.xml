@@ -4,21 +4,13 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <com.garpr.android.views.BottomWindowInsetsView
-        android:id="@+id/bottomWindowInsetsView"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <com.garpr.android.views.SplashCardView
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding"
         android:layout_width="@dimen/splash_card_width"
         app:cardCornerRadius="@dimen/splash_card_corner_radius"
         app:cardElevation="@dimen/splash_card_start_elevation"
-        app:layout_constraintBottom_toTopOf="@id/bottomWindowInsetsView"
+        app:layout_constraintBottom_toTopOf="@+id/bottomWindowInsetsView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -53,5 +45,13 @@
         </LinearLayout>
 
     </com.garpr.android.views.SplashCardView>
+
+    <com.garpr.android.views.BottomWindowInsetsView
+        android:id="@+id/bottomWindowInsetsView"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

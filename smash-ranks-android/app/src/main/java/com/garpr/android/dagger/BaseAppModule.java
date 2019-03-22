@@ -17,6 +17,8 @@ import com.garpr.android.managers.HomeToolbarManager;
 import com.garpr.android.managers.HomeToolbarManagerImpl;
 import com.garpr.android.managers.IdentityManager;
 import com.garpr.android.managers.IdentityManagerImpl;
+import com.garpr.android.managers.NightModeManager;
+import com.garpr.android.managers.NightModeManagerImpl;
 import com.garpr.android.managers.NotificationsManager;
 import com.garpr.android.managers.NotificationsManagerImpl;
 import com.garpr.android.managers.PlayerProfileManager;
@@ -229,6 +231,14 @@ public abstract class BaseAppModule {
     @Singleton
     MoshiConverterFactory providesMoshiConverterFactory(final Moshi moshi) {
         return MoshiConverterFactory.create(moshi);
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    NightModeManager providesNightModeManager(final GeneralPreferenceStore generalPreferenceStore,
+            final Timber timber) {
+        return new NightModeManagerImpl(generalPreferenceStore, timber);
     }
 
     @Named(NOT_GAR_PR_API)

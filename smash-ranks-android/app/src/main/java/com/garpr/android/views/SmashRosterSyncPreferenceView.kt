@@ -17,6 +17,15 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
+    init {
+        titleText = context.getText(R.string.smash_roster_sync_status)
+
+        if (isInEditMode) {
+            descriptionText = context.getText(R.string.sync_has_yet_to_occur)
+        }
+
+        setOnClickListener(this)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -47,14 +56,6 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
         if (!isInEditMode) {
             appComponent.inject(this)
             smashRosterSyncManager.addListener(this)
-        }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.smash_roster_sync_status)
-
-        if (isInEditMode) {
-            descriptionText = resources.getText(R.string.sync_has_yet_to_occur)
-        } else {
             refresh()
         }
     }

@@ -10,7 +10,7 @@
     <com.garpr.android.views.TintedImageView
         android:id="@+id/icon"
         android:importantForAccessibility="no"
-        tools:src="@drawable/ic_date_range_white_24dp"
+        tools:srcCompat="@drawable/ic_date_range_white_24dp"
         style="@style/PreferenceViewCheckable" />
 
     <TextView

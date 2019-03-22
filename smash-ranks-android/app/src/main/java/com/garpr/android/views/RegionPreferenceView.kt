@@ -22,11 +22,11 @@ class RegionPreferenceView @JvmOverloads constructor(
     protected lateinit var regionManager: RegionManager
 
     init {
-        titleText = resources.getText(R.string.region)
+        titleText = context.getText(R.string.region)
 
         if (isInEditMode) {
-            descriptionText = resources.getString(R.string.region_endpoint_format,
-                    resources.getString(R.string.norcal), resources.getString(R.string.gar_pr))
+            descriptionText = context.getString(R.string.region_endpoint_format,
+                    context.getString(R.string.norcal), context.getString(R.string.gar_pr))
         }
 
         imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_location_on_white_24dp)
@@ -82,8 +82,8 @@ class RegionPreferenceView @JvmOverloads constructor(
         super.refresh()
 
         val region = regionManager.getRegion(context)
-        descriptionText = resources.getString(R.string.region_endpoint_format,
-                region.displayName, resources.getString(region.endpoint.title))
+        descriptionText = context.getString(R.string.region_endpoint_format,
+                region.displayName, context.getString(region.endpoint.title))
     }
 
 }

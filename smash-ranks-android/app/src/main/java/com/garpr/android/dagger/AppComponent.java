@@ -43,6 +43,7 @@ import com.garpr.android.views.SearchableRefreshLayout;
 import com.garpr.android.views.SmashRosterSyncPreferenceView;
 import com.garpr.android.views.SplashCardView;
 import com.garpr.android.views.TestNotificationView;
+import com.garpr.android.views.ThemeOneLinePreferenceView;
 import com.garpr.android.views.ThemePreferenceView;
 import com.garpr.android.views.TintedImageView;
 import com.garpr.android.views.TournamentDividerView;
@@ -115,6 +116,7 @@ public interface AppComponent {
     void inject(SplashCardView view);
     void inject(TestNotificationView view);
     void inject(ThemePreferenceView view);
+    void inject(ThemeOneLinePreferenceView view);
     void inject(TintedImageView view);
     void inject(TournamentDividerView view);
     void inject(TournamentInfoItemView view);
