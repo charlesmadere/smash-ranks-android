@@ -42,6 +42,11 @@
                 app:titleText="@string/start_using_the_app"
                 style="@style/PreferenceView" />
 
+            <com.garpr.android.views.ThemeOneLinePreferenceView
+                android:background="#22000000"
+                android:id="@+id/themePreference"
+                style="@style/OneLinePreferenceView" />
+
         </LinearLayout>
 
     </com.garpr.android.views.SplashCardView>
