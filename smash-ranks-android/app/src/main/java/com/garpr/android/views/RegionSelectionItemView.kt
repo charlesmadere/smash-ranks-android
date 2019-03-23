@@ -27,7 +27,7 @@ class RegionSelectionItemView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        (activity as? Listeners)?.onClick(this)
+        (activity as? Listeners?)?.onClick(this)
     }
 
     override fun onFinishInflate() {
@@ -44,7 +44,7 @@ class RegionSelectionItemView @JvmOverloads constructor(
                 return
             }
 
-            radioButton.isChecked = value == (activity as? Listeners)?.selectedRegion
+            radioButton.isChecked = value == (activity as? Listeners?)?.selectedRegion
             displayName.text = value.displayName
             regionId.text = value.id
         }

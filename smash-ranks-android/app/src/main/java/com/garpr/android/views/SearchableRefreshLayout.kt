@@ -29,6 +29,6 @@ abstract class SearchableRefreshLayout @JvmOverloads constructor(
     }
 
     override val searchQuery: CharSequence?
-        get() = (activity as? SearchQueryHandle)?.searchQuery
+        get() = (activity as? SearchQueryHandle?)?.searchQuery
 
 }

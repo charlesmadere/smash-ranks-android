@@ -108,7 +108,7 @@ class HomeToolbar @JvmOverloads constructor(
         super.refresh()
 
         val presentation = homeToolbarManager.getPresentation(
-                (activity as? RankingCriteriaHandle)?.rankingCriteria)
+                (activity as? RankingCriteriaHandle?)?.rankingCriteria)
 
         overflowPopupMenu.menu.clear()
         overflowPopupMenu.menu.add(R.string.share)
@@ -132,27 +132,27 @@ class HomeToolbar @JvmOverloads constructor(
     }
 
     private val activityRequirementsClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners)?.onActivityRequirementsClick(this)
+        (activity as? Listeners?)?.onActivityRequirementsClick(this)
         true
     }
 
     private val shareClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners)?.onShareClick(this)
+        (activity as? Listeners?)?.onShareClick(this)
         true
     }
 
     private val viewAllPlayersClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners)?.onViewAllPlayersClick(this)
+        (activity as? Listeners?)?.onViewAllPlayersClick(this)
         true
     }
 
     private val viewYourselfClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners)?.onViewYourselfClick(this)
+        (activity as? Listeners?)?.onViewYourselfClick(this)
         true
     }
 
     private val settingsClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners)?.onSettingsClick(this)
+        (activity as? Listeners?)?.onSettingsClick(this)
         true
     }
 

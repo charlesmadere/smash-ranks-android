@@ -57,7 +57,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
     }
 
     private fun notifyListener(palette: Palette?) {
-        colorListener?.onPaletteBuilt(palette) ?: (activity as? ColorListener)?.onPaletteBuilt(palette)
+        colorListener?.onPaletteBuilt(palette) ?: (activity as? ColorListener?)?.onPaletteBuilt(palette)
     }
 
     override fun onFinishInflate() {

@@ -38,7 +38,7 @@ open class SearchToolbar @JvmOverloads constructor(
     }
 
     override fun afterTextChanged(s: Editable?) {
-        (activity as? Searchable)?.search(searchQuery?.toString())
+        (activity as? Searchable?)?.search(searchQuery?.toString())
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -71,7 +71,7 @@ open class SearchToolbar @JvmOverloads constructor(
 
     override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            (activity as? Searchable)?.search(searchQuery?.toString())
+            (activity as? Searchable?)?.search(searchQuery?.toString())
             activity?.hideKeyboard()
         }
 
@@ -119,7 +119,7 @@ open class SearchToolbar @JvmOverloads constructor(
     }
 
     private fun refreshSearchIcon() {
-        if ((activity as? Listener)?.showSearchIcon == true) {
+        if ((activity as? Listener?)?.showSearchIcon == true) {
             if (!isSearchFieldExpanded) {
                 searchIcon.visibility = View.VISIBLE
             }

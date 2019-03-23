@@ -53,8 +53,8 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable, Sea
     fun onNavigationItemReselected(homeTab: HomeTab) {
         val view = pages[homeTab]?.get()
 
-        if ((view as? Heartbeat)?.isAlive == true) {
-            (view as? ListLayout)?.smoothScrollToTop()
+        if ((view as? Heartbeat?)?.isAlive == true) {
+            (view as? ListLayout?)?.smoothScrollToTop()
         }
     }
 
@@ -71,8 +71,8 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable, Sea
         pages.values.forEach {
             val view = it?.get()
 
-            if ((view as? Heartbeat)?.isAlive == true) {
-                (view as? Refreshable)?.refresh()
+            if ((view as? Heartbeat?)?.isAlive == true) {
+                (view as? Refreshable?)?.refresh()
             }
         }
     }
@@ -81,8 +81,8 @@ class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable, Sea
         pages.values.forEach {
             val view = it?.get()
 
-            if ((view as? Heartbeat)?.isAlive == true) {
-                (view as? Searchable)?.search(query)
+            if ((view as? Heartbeat?)?.isAlive == true) {
+                (view as? Searchable?)?.search(query)
             }
         }
     }

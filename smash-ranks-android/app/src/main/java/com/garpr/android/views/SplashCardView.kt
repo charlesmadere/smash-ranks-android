@@ -98,7 +98,7 @@ class SplashCardView @JvmOverloads constructor(
         }
 
         startUsingTheApp.setOnClickListener {
-            (activity as? Listener)?.onStartUsingTheAppClick(this)
+            (activity as? Listener?)?.onStartUsingTheAppClick(this)
         }
 
         identityManager.addListener(this)

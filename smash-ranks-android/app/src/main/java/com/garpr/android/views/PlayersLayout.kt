@@ -81,7 +81,7 @@ class PlayersLayout @JvmOverloads constructor(
             return
         }
 
-        (activity as? Listener)?.onPlayersBundleFetched(this)
+        (activity as? Listener?)?.onPlayersBundleFetched(this)
     }
 
     override fun onRefresh() {

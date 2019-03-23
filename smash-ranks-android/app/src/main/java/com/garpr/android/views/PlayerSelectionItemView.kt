@@ -28,13 +28,13 @@ class PlayerSelectionItemView @JvmOverloads constructor(
                 radioButton.isChecked = false
                 name.clear()
             } else {
-                radioButton.isChecked = (activity as? Listeners)?.selectedPlayer == value
+                radioButton.isChecked = (activity as? Listeners?)?.selectedPlayer == value
                 name.text = value.name
             }
         }
 
     override fun onClick(v: View) {
-        (activity as? Listeners)?.onClick(this)
+        (activity as? Listeners?)?.onClick(this)
     }
 
     override fun onFinishInflate() {

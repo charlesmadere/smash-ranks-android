@@ -26,14 +26,14 @@ class LogViewerToolbar @JvmOverloads constructor(
         super.onFinishInflate()
 
         clearButton.setOnClickListener {
-            (activity as? Listeners)?.onClearClick(this)
+            (activity as? Listeners?)?.onClearClick(this)
         }
     }
 
     override fun refresh() {
         super.refresh()
 
-        clearButton.isEnabled = (activity as? Listeners)?.enableClearButton == true
+        clearButton.isEnabled = (activity as? Listeners?)?.enableClearButton == true
     }
 
 }

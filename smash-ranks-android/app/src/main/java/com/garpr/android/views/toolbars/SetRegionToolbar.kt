@@ -28,14 +28,14 @@ class SetRegionToolbar @JvmOverloads constructor(
         super.onFinishInflate()
 
         saveButton.setOnClickListener {
-            (activity as? Listeners)?.onSaveClick(this)
+            (activity as? Listeners?)?.onSaveClick(this)
         }
     }
 
     override fun refresh() {
         super.refresh()
 
-        val listeners = activity as? Listeners
+        val listeners = activity as? Listeners?
         saveButton.visibility = if (listeners?.showSaveIcon == true) View.VISIBLE else View.GONE
         saveButton.isEnabled = listeners?.enableSaveIcon == true
     }
