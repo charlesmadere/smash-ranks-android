@@ -151,7 +151,11 @@
     <style name="OneLinePreferenceView">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:minHeight">32dp</item>
+        <item name="android:minHeight">@dimen/one_line_item_height</item>
+    </style>
+
+    <style name="OneLinePreferenceView.Subtle">
+        <item name="android:background">@color/translucent</item>
     </style>
 
     <style name="PreferenceView">

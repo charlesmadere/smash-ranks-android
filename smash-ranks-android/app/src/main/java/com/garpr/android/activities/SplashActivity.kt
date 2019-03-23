@@ -1,5 +1,7 @@
 package com.garpr.android.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
@@ -15,6 +17,11 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
 
     companion object {
         private const val TAG = "SplashActivity"
+
+        fun getLaunchIntent(context: Context): Intent {
+            val intent = Intent(context, SplashActivity::class.java)
+            return Intent.makeRestartActivityTask(intent.component)
+        }
     }
 
     override val activityName = TAG

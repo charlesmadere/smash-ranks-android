@@ -5,6 +5,7 @@
     <string name="x_activity_requirements">%1$s Activity Requirements</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
+    <string name="app_restarted_to_apply_theme">App restarted to apply theme</string>
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
@@ -13,6 +14,7 @@
     <string name="build_x_y">Build %1$d (%2$s)</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_all">Cancel all</string>
+    <string name="change_theme">Change theme</string>
     <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
     <string name="click_to_open_form">Click to open form</string>

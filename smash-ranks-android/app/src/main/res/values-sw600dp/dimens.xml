@@ -2,6 +2,7 @@
 <resources>
 
     <dimen name="list_item_height">52dp</dimen>
+    <dimen name="one_line_item_height">28dp</dimen>
     <dimen name="root_padding">18dp</dimen>
     <dimen name="root_padding_double">36dp</dimen>
     <dimen name="root_padding_eighth">2.25dp</dimen>

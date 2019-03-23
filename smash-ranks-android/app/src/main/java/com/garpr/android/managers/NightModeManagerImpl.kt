@@ -1,5 +1,6 @@
 package com.garpr.android.managers
 
+import android.content.Context
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.managers.NightModeManager.OnNightModeChangeListener
 import com.garpr.android.misc.Timber
@@ -38,6 +39,17 @@ class NightModeManagerImpl(
                 }
             }
         }
+    }
+
+    override fun getNightModeStrings(context: Context): Array<CharSequence> {
+        val items = arrayOfNulls<CharSequence>(NightMode.values().size)
+
+        for (i in 0 until NightMode.values().size) {
+            items[i] = context.getText(NightMode.values()[i].textResId)
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        return items as Array<CharSequence>
     }
 
     override var nightMode: NightMode

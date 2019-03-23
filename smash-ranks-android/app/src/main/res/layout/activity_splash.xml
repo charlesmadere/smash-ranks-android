@@ -43,9 +43,8 @@
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.ThemeOneLinePreferenceView
-                android:background="#22000000"
                 android:id="@+id/themePreference"
-                style="@style/OneLinePreferenceView" />
+                style="@style/OneLinePreferenceView.Subtle" />
 
         </LinearLayout>
 

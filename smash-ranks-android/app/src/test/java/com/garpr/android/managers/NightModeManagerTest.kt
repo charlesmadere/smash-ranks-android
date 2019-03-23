@@ -1,8 +1,10 @@
 package com.garpr.android.managers
 
+import android.app.Application
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.NightMode
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -13,6 +15,9 @@ import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class NightModeManagerTest : BaseTest() {
+
+    @Inject
+    protected lateinit var application: Application
 
     @Inject
     protected lateinit var nightModeManager: NightModeManager
@@ -60,6 +65,16 @@ class NightModeManagerTest : BaseTest() {
     @Test
     fun testGetNightMode() {
         assertNotNull(nightModeManager.nightMode)
+    }
+
+    @Test
+    fun testGetNightModeStrings() {
+        val strings = nightModeManager.getNightModeStrings(application)
+        assertFalse(strings.isNullOrEmpty())
+
+        strings.forEach {
+            assertFalse(it.isBlank())
+        }
     }
 
     @Test

@@ -14,6 +14,7 @@
     <color name="lose">#C1455A</color>
     <color name="lose_background">#22C1455A</color>
     <color name="red">#AD0013</color>
+    <color name="translucent">#11000000</color>
     <color name="transparent">#00000000</color>
     <color name="warn">#FF7070</color>
     <color name="win">#5DA33A</color>

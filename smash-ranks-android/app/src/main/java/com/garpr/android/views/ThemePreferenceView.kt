@@ -22,6 +22,7 @@ class ThemePreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var nightModeManager: NightModeManager
 
+
     init {
         titleText = context.getText(R.string.theme)
 
@@ -48,10 +49,8 @@ class ThemePreferenceView @JvmOverloads constructor(
     override fun onClick(dialog: DialogInterface, which: Int) {
         dialog.dismiss()
 
-        val current = nightModeManager.nightMode
         val selected = NightMode.values()[which]
-
-        if (current == selected) {
+        if (nightModeManager.nightMode == selected) {
             return
         }
 
@@ -67,12 +66,7 @@ class ThemePreferenceView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        val items = arrayOfNulls<CharSequence>(NightMode.values().size)
-
-        for (i in 0 until NightMode.values().size) {
-            items[i] = resources.getText(NightMode.values()[i].textResId)
-        }
-
+        val items = nightModeManager.getNightModeStrings(context)
         val checkedItem = nightModeManager.nightMode.ordinal
 
         AlertDialog.Builder(context)
