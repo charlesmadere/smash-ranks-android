@@ -14,7 +14,6 @@
     <string name="build_x_y">Build %1$d (%2$s)</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_all">Cancel all</string>
-    <string name="change_theme">Change theme</string>
     <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
     <string name="click_to_open_form">Click to open form</string>
@@ -25,6 +24,7 @@
     <string name="customize_identity_description">None currently selected</string>
     <string name="customize_region">Customize region</string>
     <string name="customize_region_description">The default is Norcal (GAR PR)</string>
+    <string name="customize_theme">Customize theme</string>
     <string name="daily">Daily</string>
     <string name="day">Day</string>
     <string name="debug_only">Debug only</string>

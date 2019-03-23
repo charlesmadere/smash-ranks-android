@@ -25,7 +25,7 @@ class ThemeOneLinePreferenceView @JvmOverloads constructor(
 
 
     init {
-        titleText = context.getText(R.string.change_theme)
+        titleText = context.getText(R.string.customize_theme)
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.system)
@@ -66,7 +66,7 @@ class ThemeOneLinePreferenceView @JvmOverloads constructor(
 
         AlertDialog.Builder(context)
                 .setSingleChoiceItems(items, checkedItem, this)
-                .setTitle(R.string.change_theme)
+                .setTitle(R.string.theme)
                 .show()
     }
 
