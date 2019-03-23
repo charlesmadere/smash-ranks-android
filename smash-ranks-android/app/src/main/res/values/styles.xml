@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="BottomNavigationView">
-        <item name="android:background">?attr/colorPrimary</item>
+    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">?attr/colorPrimaryDark</item>
         <item name="android:layout_height">@dimen/bottom_navigation_view_height</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:theme">@style/ToolbarTheme</item>
         <item name="elevation">@dimen/elevation</item>
         <item name="itemIconTint">@drawable/bottom_navigation_view_item_tint</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavigationViewTextAppearance.Active</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationViewTextAppearance.Inactive</item>
         <item name="itemTextColor">@drawable/bottom_navigation_view_item_tint</item>
-        <item name="menu">@menu/bottom_navigation_view</item>
+    </style>
+
+    <style name="BottomNavigationViewTextAppearance">
+
+    </style>
+
+    <style name="BottomNavigationViewTextAppearance.Active">
+        <item name="android:fontFamily">@font/nunito_bold</item>
+    </style>
+
+    <style name="BottomNavigationViewTextAppearance.Inactive">
+        <item name="android:fontFamily">@font/nunito_semibold</item>
     </style>
 
     <style name="BottomSheetDialogButton">
@@ -62,12 +75,12 @@
 
     <style name="ConstraintListItem.WithBackground">
         <item name="android:background">@color/card_background</item>
-        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
+        <item name="android:elevation">@dimen/elevation_quarter</item>
     </style>
 
     <style name="DividerItem">
         <item name="android:background">@color/card_background</item>
-        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
+        <item name="android:elevation">@dimen/elevation_quarter</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/root_padding</item>
         <item name="android:layout_width">match_parent</item>
@@ -122,7 +135,7 @@
 
     <style name="ListItem.WithBackground">
         <item name="android:background">@color/card_background</item>
-        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
+        <item name="android:elevation">@dimen/elevation_quarter</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
@@ -274,7 +287,7 @@
 
     <style name="Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
+        <item name="android:elevation">@dimen/elevation</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">horizontal</item>

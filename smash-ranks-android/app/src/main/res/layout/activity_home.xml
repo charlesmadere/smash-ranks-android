@@ -18,6 +18,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
+        app:menu="@menu/bottom_navigation_view"
         style="@style/BottomNavigationView" />
 
 </LinearLayout>

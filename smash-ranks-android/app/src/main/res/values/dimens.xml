@@ -5,9 +5,9 @@
     <dimen name="bottom_navigation_view_height">56dp</dimen>
     <dimen name="divider_height">3dp</dimen>
     <dimen name="divider_item_height">32dp</dimen>
-    <dimen name="elevation">4dp</dimen>
-    <dimen name="elevation_half">2dp</dimen>
-    <dimen name="elevation_quarter">1dp</dimen>
+    <dimen name="elevation">8dp</dimen>
+    <dimen name="elevation_half">4dp</dimen>
+    <dimen name="elevation_quarter">2dp</dimen>
     <dimen name="list_item_height">48dp</dimen>
     <dimen name="one_line_item_height">24dp</dimen>
     <dimen name="previous_rank_view_size">18dp</dimen>
@@ -18,9 +18,9 @@
     <dimen name="root_padding_half">8dp</dimen>
     <dimen name="root_padding_quadruple">64dp</dimen>
     <dimen name="root_padding_triple">48dp</dimen>
-    <dimen name="splash_card_corner_radius">8dp</dimen>
-    <dimen name="splash_card_end_elevation">8dp</dimen>
-    <dimen name="splash_card_start_elevation">2dp</dimen>
+    <dimen name="splash_card_corner_radius">12dp</dimen>
+    <dimen name="splash_card_end_elevation">16dp</dimen>
+    <dimen name="splash_card_start_elevation">4dp</dimen>
     <dimen name="splash_card_width">288dp</dimen>
     <dimen name="tab_height">56dp</dimen>
     <dimen name="text_size_normal">14sp</dimen>
