@@ -21,13 +21,15 @@ open class RefreshLayout @JvmOverloads constructor(
 ) : SwipeRefreshLayout(context, attrs), Heartbeat, ListLayout {
 
     @IdRes
-    private var scrollingChildId: Int = View.NO_ID
+    private val scrollingChildId: Int
 
     var scrollingChild: View? = null
 
 
     init {
-        parseAttributes(attrs)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.RefreshLayout)
+        scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChildId, View.NO_ID)
+        ta.recycle()
     }
 
     /*
@@ -52,24 +54,8 @@ open class RefreshLayout @JvmOverloads constructor(
                     "unable to find scrolling child (${resources.getResourceName(scrollingChildId)})")
         }
 
+        setColorSchemeColors(*resources.getIntArray(R.array.spinner_colors))
         setProgressBackgroundColorSchemeResource(R.color.card_background)
-    }
-
-    private fun parseAttributes(attrs: AttributeSet?) {
-        if (isInEditMode) {
-            return
-        }
-
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.RefreshLayout)
-        val spinnerColorsResId = ta.getResourceId(R.styleable.RefreshLayout_spinnerColors,
-                R.array.spinner_colors)
-        setColorSchemeColors(*resources.getIntArray(spinnerColorsResId))
-
-        if (ta.hasValue(R.styleable.RefreshLayout_scrollingChildId)) {
-            scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChildId, View.NO_ID)
-        }
-
-        ta.recycle()
     }
 
 }

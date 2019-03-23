@@ -29,8 +29,6 @@
 
     <declare-styleable name="RefreshLayout">
         <attr name="scrollingChildId" format="reference" />
-        <attr name="spinnerBackground" format="color" />
-        <attr name="spinnerColors" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="SimplePreferenceView">
