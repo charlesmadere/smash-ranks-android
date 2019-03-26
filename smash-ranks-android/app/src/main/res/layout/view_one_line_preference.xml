@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/change_theme" />
+        tools:text="@string/customize_theme" />
 
     <TextView
         android:id="@+id/description"
