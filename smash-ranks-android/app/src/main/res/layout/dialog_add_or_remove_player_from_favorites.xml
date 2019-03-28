@@ -10,14 +10,9 @@
 
     <com.garpr.android.views.TintedTextView
         android:id="@+id/dialogPositiveText"
-        tools:drawableEnd="@drawable/ic_add_circle_white_24"
+        tools:drawableStart="@drawable/ic_add_circle_white_24"
         tools:text="@string/yes_add"
         style="@style/BottomSheetDialogButton.Accent" />
-
-    <TextView
-        android:id="@+id/dialogNegativeText"
-        android:text="@string/cancel"
-        style="@style/BottomSheetDialogButton" />
 
     <Space
         android:layout_height="@dimen/root_padding"

@@ -44,9 +44,9 @@ class TintedTextView @JvmOverloads constructor(
         setTintedDrawableColor(drawableTintColor)
     }
 
-    fun setEndCompoundDrawableRelativeWithIntrinsicBounds(@DrawableRes drawableResId: Int) {
+    fun setStartCompoundDrawableRelativeWithIntrinsicBounds(@DrawableRes drawableResId: Int) {
         val drawables = compoundDrawablesRelativeCompat
-        drawables[2] = ContextCompat.getDrawable(context, drawableResId)
+        drawables[0] = ContextCompat.getDrawable(context, drawableResId)
         compoundDrawablesRelativeCompat = drawables
 
         refresh()
