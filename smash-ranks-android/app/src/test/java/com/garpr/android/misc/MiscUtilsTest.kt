@@ -25,24 +25,6 @@ class MiscUtilsTest : BaseTest() {
     }
 
     @Test
-    fun testHashCodeDouble() {
-        val double: Double = Math.PI
-        assertEquals(double.hashCode(), MiscUtils.hashCode(double))
-    }
-
-    @Test
-    fun testHashCodeInteger() {
-        val integer = 100
-        assertEquals(integer.hashCode(), MiscUtils.hashCode(integer))
-    }
-
-    @Test
-    fun testHashCodeString() {
-        val string = "hello"
-        assertEquals(string.hashCode(), MiscUtils.hashCode(string))
-    }
-
-    @Test
     fun testIsColorLightnessWithBlack() {
         assertTrue(MiscUtils.isColorLightness(Color.BLACK, 0f))
         assertFalse(MiscUtils.isColorLightness(Color.BLACK, 1f))

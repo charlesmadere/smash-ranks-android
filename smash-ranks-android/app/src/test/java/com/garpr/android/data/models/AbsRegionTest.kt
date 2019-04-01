@@ -1,98 +1,120 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
-import com.garpr.android.extensions.requireFromJson
-import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.util.Collections
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class AbsRegionTest : BaseTest() {
 
-    private lateinit var fullRegion1: AbsRegion
-    private lateinit var fullRegion2: AbsRegion
-    private lateinit var fullRegion3: AbsRegion
-    private lateinit var liteRegion1: AbsRegion
-    private lateinit var liteRegion2: AbsRegion
-    private lateinit var liteRegion3: AbsRegion
-
-    @Inject
-    protected lateinit var moshi: Moshi
-
-
     companion object {
-        private const val JSON_FULL_REGION_1 = "{\"ranking_num_tourneys_attended\":1,\"ranking_activity_day_limit\":60,\"display_name\":\"Google MTV\",\"id\":\"googlemtv\",\"tournament_qualified_day_limit\":999,\"endpoint\":\"gar_pr\"}"
-        private const val JSON_FULL_REGION_2 = "{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":200,\"display_name\":\"Oregon\",\"id\":\"oregon\",\"tournament_qualified_day_limit\":999,\"endpoint\":\"not_gar_pr\"}"
-        private const val JSON_FULL_REGION_3 = "{\"display_name\":\"Norcal\",\"id\":\"norcal\",\"tournament_qualified_day_limit\":1000,\"endpoint\":\"gar_pr\"}"
-        private const val JSON_LITE_REGION_1 = "{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":45,\"display_name\":\"Norcal\",\"id\":\"norcal\",\"tournament_qualified_day_limit\":1000}"
-        private const val JSON_LITE_REGION_2 = "{\"ranking_activity_day_limit\":90,\"display_name\":\"New Jersey\",\"id\":\"newjersey\",\"tournament_qualified_day_limit\":9999999}"
-        private const val JSON_LITE_REGION_3 = "{\"ranking_num_tourneys_attended\":6,\"display_name\":\"Google MTV\",\"id\":\"googlemtv\",\"tournament_qualified_day_limit\":999}"
-    }
+        private val LITE_REGION_1: AbsRegion = LiteRegion(
+                rankingActivityDayLimit = 45,
+                rankingNumTourneysAttended = 2,
+                tournamentQualifiedDayLimit = 1000,
+                displayName = "Norcal",
+                id = "norcal"
+        )
 
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
+        private val LITE_REGION_2: AbsRegion = LiteRegion(
+                rankingActivityDayLimit = 90,
+                tournamentQualifiedDayLimit = 9999999,
+                displayName = "New Jersey",
+                id = "newjersey"
+        )
 
-        val absRegionAdapter = moshi.adapter(AbsRegion::class.java)
-        fullRegion1 = absRegionAdapter.requireFromJson(JSON_FULL_REGION_1)
-        fullRegion2 = absRegionAdapter.requireFromJson(JSON_FULL_REGION_2)
-        fullRegion3 = absRegionAdapter.requireFromJson(JSON_FULL_REGION_3)
-        liteRegion1 = absRegionAdapter.requireFromJson(JSON_LITE_REGION_1)
-        liteRegion2 = absRegionAdapter.requireFromJson(JSON_LITE_REGION_2)
-        liteRegion3 = absRegionAdapter.requireFromJson(JSON_LITE_REGION_3)
+        private val LITE_REGION_3: AbsRegion = LiteRegion(
+                rankingNumTourneysAttended = 6,
+                tournamentQualifiedDayLimit = 999,
+                displayName = "Google MTV",
+                id = "googlemtv"
+        )
+
+        private val REGION_1: AbsRegion = Region(
+                rankingActivityDayLimit = 60,
+                rankingNumTourneysAttended = 1,
+                tournamentQualifiedDayLimit = 999,
+                displayName = "Google MTV",
+                id = "googlemtv",
+                endpoint = Endpoint.GAR_PR
+        )
+
+        private val REGION_2: AbsRegion = Region(
+                rankingActivityDayLimit = 200,
+                rankingNumTourneysAttended = 2,
+                tournamentQualifiedDayLimit = 999,
+                displayName = "Oregon",
+                id = "oregon",
+                endpoint = Endpoint.NOT_GAR_PR
+        )
+
+        private val REGION_3: AbsRegion = Region(
+                tournamentQualifiedDayLimit = 1000,
+                displayName = "Norcal",
+                id = "norcal",
+                endpoint = Endpoint.GAR_PR
+        )
     }
 
     @Test
     fun testComparatorAlphabeticalOrder() {
-        val list = listOf(fullRegion1, liteRegion2, fullRegion2, fullRegion3)
+        val list = listOf(REGION_1, LITE_REGION_2, REGION_2, REGION_3)
         Collections.sort(list, AbsRegion.ALPHABETICAL_ORDER)
 
-        assertEquals(fullRegion1, list[0])
-        assertEquals(liteRegion2, list[1])
-        assertEquals(fullRegion3, list[2])
-        assertEquals(fullRegion2, list[3])
+        assertEquals(REGION_1, list[0])
+        assertEquals(LITE_REGION_2, list[1])
+        assertEquals(REGION_3, list[2])
+        assertEquals(REGION_2, list[3])
     }
 
     @Test
     fun testComparatorEndpointOrder() {
-        val list = listOf(fullRegion1, liteRegion2, fullRegion2, fullRegion3,
-                liteRegion1, liteRegion3)
+        val list = listOf(REGION_1, LITE_REGION_2, REGION_2, REGION_3, LITE_REGION_1,
+                LITE_REGION_3)
         Collections.sort(list, AbsRegion.ENDPOINT_ORDER)
 
-        assertEquals(fullRegion1, list[0])
-        assertEquals(fullRegion3, list[1])
-        assertEquals(fullRegion2, list[2])
-        assertEquals(liteRegion3, list[3])
-        assertEquals(liteRegion2, list[4])
-        assertEquals(liteRegion1, list[5])
+        assertEquals(REGION_1, list[0])
+        assertEquals(REGION_3, list[1])
+        assertEquals(REGION_2, list[2])
+        assertEquals(LITE_REGION_3, list[3])
+        assertEquals(LITE_REGION_2, list[4])
+        assertEquals(LITE_REGION_1, list[5])
     }
 
     @Test
     fun testHasActivityRequirements() {
-        assertTrue(fullRegion1.hasActivityRequirements)
-        assertTrue(fullRegion2.hasActivityRequirements)
-        assertFalse(fullRegion3.hasActivityRequirements)
-        assertTrue(liteRegion1.hasActivityRequirements)
-        assertFalse(liteRegion2.hasActivityRequirements)
-        assertFalse(liteRegion3.hasActivityRequirements)
+        assertTrue(LITE_REGION_1.hasActivityRequirements)
+        assertFalse(LITE_REGION_2.hasActivityRequirements)
+        assertFalse(LITE_REGION_3.hasActivityRequirements)
+        assertTrue(REGION_1.hasActivityRequirements)
+        assertTrue(REGION_2.hasActivityRequirements)
+        assertFalse(REGION_3.hasActivityRequirements)
+    }
+
+    @Test
+    fun testHashCode() {
+        assertEquals(LITE_REGION_1.id.hashCode(), LITE_REGION_1.hashCode())
+        assertEquals(LITE_REGION_2.id.hashCode(), LITE_REGION_2.hashCode())
+        assertEquals(LITE_REGION_3.id.hashCode(), LITE_REGION_3.hashCode())
+        assertNotEquals(REGION_1.id.hashCode(), REGION_1.hashCode())
+        assertNotEquals(REGION_2.id.hashCode(), REGION_2.hashCode())
+        assertNotEquals(REGION_3.id.hashCode(), REGION_3.hashCode())
     }
 
     @Test
     fun testKind() {
-        assertEquals(AbsRegion.Kind.FULL, fullRegion1.kind)
-        assertEquals(AbsRegion.Kind.FULL, fullRegion2.kind)
-        assertEquals(AbsRegion.Kind.FULL, fullRegion3.kind)
-        assertEquals(AbsRegion.Kind.LITE, liteRegion1.kind)
-        assertEquals(AbsRegion.Kind.LITE, liteRegion2.kind)
-        assertEquals(AbsRegion.Kind.LITE, liteRegion3.kind)
+        assertEquals(AbsRegion.Kind.LITE, LITE_REGION_1.kind)
+        assertEquals(AbsRegion.Kind.LITE, LITE_REGION_2.kind)
+        assertEquals(AbsRegion.Kind.LITE, LITE_REGION_3.kind)
+        assertEquals(AbsRegion.Kind.FULL, REGION_1.kind)
+        assertEquals(AbsRegion.Kind.FULL, REGION_2.kind)
+        assertEquals(AbsRegion.Kind.FULL, REGION_3.kind)
     }
 
 }

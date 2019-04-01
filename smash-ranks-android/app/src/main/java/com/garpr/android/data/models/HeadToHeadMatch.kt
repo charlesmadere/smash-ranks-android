@@ -6,9 +6,9 @@ import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readAbsPlayer
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
-import com.garpr.android.misc.MiscUtils
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.util.Objects
 
 @JsonClass(generateAdapter = true)
 class HeadToHeadMatch(
@@ -35,7 +35,7 @@ class HeadToHeadMatch(
                 && opponent == other.opponent
     }
 
-    override fun hashCode(): Int = MiscUtils.hashCode(result, player, opponent)
+    override fun hashCode(): Int = Objects.hash(result, player, opponent)
 
     override fun describeContents(): Int = 0
 

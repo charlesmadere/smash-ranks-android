@@ -8,10 +8,10 @@ import com.garpr.android.extensions.readAbsTournament
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
 import com.garpr.android.extensions.writeAbsTournament
-import com.garpr.android.misc.MiscUtils
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.Comparator
+import java.util.Objects
 
 @JsonClass(generateAdapter = true)
 class Match(
@@ -46,7 +46,7 @@ class Match(
                 && tournament == other.tournament
     }
 
-    override fun hashCode(): Int = MiscUtils.hashCode(result, opponent, tournament)
+    override fun hashCode(): Int = Objects.hash(result, opponent, tournament)
 
     override fun describeContents(): Int = 0
 

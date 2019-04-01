@@ -64,4 +64,12 @@ class AbsTournamentTest : BaseTest() {
         assertEquals(liteTournament1, list[3])
     }
 
+    @Test
+    fun testHashCode() {
+        assertEquals(fullTournament.id.hashCode(), fullTournament.hashCode())
+        assertEquals(liteTournament1.id.hashCode(), liteTournament1.hashCode())
+        assertEquals(liteTournament2.id.hashCode(), liteTournament2.hashCode())
+        assertEquals(liteTournament3.id.hashCode(), liteTournament3.hashCode())
+    }
+
 }

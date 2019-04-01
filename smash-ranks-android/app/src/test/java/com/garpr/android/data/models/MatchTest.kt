@@ -4,6 +4,7 @@ import com.garpr.android.BaseTest
 import com.garpr.android.extensions.requireFromJson
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -61,6 +62,10 @@ class MatchTest : BaseTest() {
         assertEquals(match1.hashCode(), match1.hashCode())
         assertEquals(match2.hashCode(), match2.hashCode())
         assertEquals(match3.hashCode(), match3.hashCode())
+
+        assertNotEquals(match1.hashCode(), match2.hashCode())
+        assertNotEquals(match1.hashCode(), match3.hashCode())
+        assertNotEquals(match2.hashCode(), match3.hashCode())
     }
 
     @Test

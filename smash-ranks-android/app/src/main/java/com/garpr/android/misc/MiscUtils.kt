@@ -22,24 +22,6 @@ object MiscUtils {
         }
     }
 
-    fun hashCode(vararg objects: Any?): Int {
-        if (objects.isNullOrEmpty()) {
-            return 0
-        }
-
-        if (objects.size == 1) {
-            return objects[0]?.hashCode() ?: 0
-        }
-
-        var result = 1
-
-        for (element in objects) {
-            result = 31 * result + (element?.hashCode() ?: 0)
-        }
-
-        return result
-    }
-
     fun isColorLightness(@ColorInt color: Int, lightness: Float): Boolean {
         val hsl = FloatArray(3)
         ColorUtils.colorToHSL(color, hsl)

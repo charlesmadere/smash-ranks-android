@@ -2,7 +2,6 @@ package com.garpr.android.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.misc.MiscUtils
 
 abstract class AbsMatch(
         val result: MatchResult
@@ -12,7 +11,7 @@ abstract class AbsMatch(
         return other is AbsMatch && result == other.result
     }
 
-    override fun hashCode(): Int = MiscUtils.hashCode(result)
+    override fun hashCode(): Int = result.hashCode()
 
     override fun toString(): String = result.toString()
 
