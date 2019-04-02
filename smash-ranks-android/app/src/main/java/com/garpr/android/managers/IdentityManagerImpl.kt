@@ -45,10 +45,6 @@ class IdentityManagerImpl(
     override val identity: FavoritePlayer?
         get() = identityPreference.get()
 
-    private fun getPlayerString(player: AbsPlayer?): String {
-        return if (player == null) { "null" } else { "(id:${player.id}) (name:${player.name})" }
-    }
-
     override val hasIdentity: Boolean
         get() = identityPreference.exists
 
@@ -73,9 +69,7 @@ class IdentityManagerImpl(
     }
 
     override fun removeIdentity() {
-        timber.d(TAG, "identity is being removed, old identity was \"" +
-                getPlayerString(identity) + "\"")
-
+        timber.d(TAG, "identity is being removed, hasIdentity: $hasIdentity")
         identityPreference.delete()
         notifyListeners()
     }
@@ -85,9 +79,7 @@ class IdentityManagerImpl(
     }
 
     override fun setIdentity(player: AbsPlayer, region: Region) {
-        timber.d(TAG, "old identity was \"" + getPlayerString(identity) + "\"" +
-                ", new identity is \"" + getPlayerString(player) + "\"")
-
+        timber.d(TAG, "identity is being set, hasIdentity: $hasIdentity")
         identityPreference.set(FavoritePlayer(player.id, player.name, region))
         notifyListeners()
     }
