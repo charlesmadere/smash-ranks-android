@@ -16,7 +16,6 @@ class FacebookFrescoWrapper(
         private const val TAG = "FacebookFrescoWrapper"
     }
 
-
     override fun initialize() {
         if (Fresco.hasBeenInitialized()) {
             timber.w(TAG, "Fresco has already been initialized!")

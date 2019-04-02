@@ -12,7 +12,8 @@ class PlayerAdapter : BaseMultiAdapter(LAYOUT_KEY_MAP) {
                 FullPlayer::class.java to R.layout.item_player_profile,
                 LiteTournament::class.java to R.layout.divider_tournament,
                 Match::class.java to R.layout.item_match,
-                String::class.java to R.layout.item_string)
+                String::class.java to R.layout.item_string
+        )
     }
 
     init {

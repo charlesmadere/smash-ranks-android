@@ -12,7 +12,8 @@ class HeadToHeadAdapter : BaseMultiAdapter(LAYOUT_KEY_MAP) {
                 HeadToHeadMatch::class.java to R.layout.item_head_to_head_match,
                 LiteTournament::class.java to R.layout.divider_tournament,
                 String::class.java to R.layout.item_string,
-                WinsLosses::class.java to R.layout.item_wins_losses)
+                WinsLosses::class.java to R.layout.item_wins_losses
+        )
     }
 
     init {
