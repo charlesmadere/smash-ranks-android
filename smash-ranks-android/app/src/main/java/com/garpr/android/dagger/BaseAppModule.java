@@ -285,11 +285,11 @@ public abstract class BaseAppModule {
     @Singleton
     PlayerProfileManager providesPlayerProfileViewManager(
             final FavoritePlayersManager favoritePlayersManager,
-            final IdentityManager identityManager, final RegionManager regionManager,
+            final IdentityManager identityManager,
             final SmashRosterAvatarUrlHelper smashRosterAvatarUrlHelper,
             final SmashRosterStorage smashRosterStorage) {
         return new PlayerProfileManagerImpl(mApplication, favoritePlayersManager, identityManager,
-                regionManager, smashRosterAvatarUrlHelper, smashRosterStorage);
+                smashRosterAvatarUrlHelper, smashRosterStorage);
     }
 
     @NonNull

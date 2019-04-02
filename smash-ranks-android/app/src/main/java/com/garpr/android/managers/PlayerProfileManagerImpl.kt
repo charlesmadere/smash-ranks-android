@@ -12,33 +12,34 @@ import com.garpr.android.misc.Constants
 import com.garpr.android.misc.SmashRosterStorage
 
 class PlayerProfileManagerImpl(
-        val application: Application,
-        val favoritePlayersManager: FavoritePlayersManager,
-        val identityManager: IdentityManager,
-        val regionManager: RegionManager,
-        val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper,
-        val smashRosterStorage: SmashRosterStorage
+        private val application: Application,
+        private val favoritePlayersManager: FavoritePlayersManager,
+        private val identityManager: IdentityManager,
+        private val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper,
+        private val smashRosterStorage: SmashRosterStorage
 ) : PlayerProfileManager {
 
     override fun getPresentation(player: FullPlayer, region: AbsRegion): Presentation {
         var presentation = Presentation(
                 isAddToFavoritesVisible = !favoritePlayersManager.contains(player),
                 isViewYourselfVsThisOpponentVisible = identityManager.hasIdentity &&
-                        !identityManager.isPlayer(player))
+                        !identityManager.isPlayer(player)
+        )
 
-        val rating = player.ratings?.get(region.id)
-        if (rating != null) {
+        player.ratings?.get(region.id)?.let { rating ->
             presentation = presentation.copy(
                     rating = application.getString(R.string.rating_x, rating.rating.truncate()),
                     unadjustedRating = application.getString(R.string.unadjusted_x_y,
-                            rating.mu.truncate(), rating.sigma.truncate()))
+                            rating.mu.truncate(), rating.sigma.truncate())
+            )
         }
 
         val uniqueAliases = player.uniqueAliases
         if (uniqueAliases?.isNotEmpty() == true) {
             presentation = presentation.copy(aliases = application.resources.getQuantityString(
                     R.plurals.aliases_x, uniqueAliases.size, TextUtils.join(
-                    application.getText(R.string.delimiter), uniqueAliases)))
+                    application.getText(R.string.delimiter), uniqueAliases))
+            )
         }
 
         val competitor = if (region is Region) {
@@ -55,7 +56,8 @@ class PlayerProfileManagerImpl(
 
         presentation = presentation.copy(
                 name = competitor.name,
-                tag = competitor.tag)
+                tag = competitor.tag
+        )
 
         val avatar = smashRosterAvatarUrlHelper.getAvatarUrl(
             competitor.avatar?.largeButFallbackToMediumThenOriginalThenSmall)
