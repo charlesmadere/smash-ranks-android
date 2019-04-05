@@ -71,7 +71,7 @@ fun Parcel.writeAbsPlayerList(list: List<AbsPlayer>?, flags: Int) {
     }
 
     for (i in 0 until size) {
-        writeAbsPlayer(list!![i], flags)
+        writeAbsPlayer(list.require(i), flags)
     }
 }
 
@@ -122,7 +122,7 @@ fun Parcel.writeAbsRegionList(list: List<AbsRegion>?, flags: Int) {
     }
 
     for (i in 0 until size) {
-        writeAbsRegion(list!![i], flags)
+        writeAbsRegion(list.require(i), flags)
     }
 }
 
@@ -173,7 +173,7 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
     }
 
     for (i in 0 until size) {
-        writeAbsTournament(list!![i], flags)
+        writeAbsTournament(list.require(i), flags)
     }
 }
 
