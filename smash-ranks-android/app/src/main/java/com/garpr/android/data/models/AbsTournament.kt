@@ -27,9 +27,9 @@ abstract class AbsTournament(
         return other is AbsTournament && id.equals(other.id, ignoreCase = true)
     }
 
-    abstract val kind: Kind
-
     override fun hashCode(): Int = id.hashCode()
+
+    abstract val kind: Kind
 
     override fun toString(): String = name
 

@@ -217,16 +217,14 @@ fun Parcel.readRatingsMap(): Map<String, Rating>? {
 }
 
 fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
-    val size = map?.size ?: 0
-
-    if (size == 0) {
+    if (map.isNullOrEmpty()) {
         writeBundle(null)
         return
     }
 
-    val bundle = Bundle(size)
+    val bundle = Bundle(map.size)
 
-    for ((key, value) in map!!) {
+    for ((key, value) in map) {
         bundle.putParcelable(key, value)
     }
 
@@ -249,16 +247,14 @@ fun Parcel.readStringMap(): Map<String, String>? {
 }
 
 fun Parcel.writeStringMap(map: Map<String, String>?) {
-    val size = map?.size ?: 0
-
-    if (size == 0) {
+    if (map.isNullOrEmpty()) {
         writeBundle(null)
         return
     }
 
-    val bundle = Bundle(size)
+    val bundle = Bundle(map.size)
 
-    for ((key, value) in map!!) {
+    for ((key, value) in map) {
         bundle.putString(key, value)
     }
 

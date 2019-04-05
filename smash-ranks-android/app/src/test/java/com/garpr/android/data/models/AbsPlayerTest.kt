@@ -117,4 +117,15 @@ class AbsPlayerTest : BaseTest() {
         assertEquals(RANKED_PLAYER_2.id.hashCode(), RANKED_PLAYER_2.hashCode())
     }
 
+    @Test
+    fun testKind() {
+        assertEquals(AbsPlayer.Kind.FAVORITE, FAVORITE_PLAYER_1.kind)
+        assertEquals(AbsPlayer.Kind.FAVORITE, FAVORITE_PLAYER_2.kind)
+        assertEquals(AbsPlayer.Kind.FULL, FULL_PLAYER_1.kind)
+        assertEquals(AbsPlayer.Kind.LITE, LITE_PLAYER_1.kind)
+        assertEquals(AbsPlayer.Kind.LITE, LITE_PLAYER_2.kind)
+        assertEquals(AbsPlayer.Kind.RANKED, RANKED_PLAYER_1.kind)
+        assertEquals(AbsPlayer.Kind.RANKED, RANKED_PLAYER_2.kind)
+    }
+
 }
