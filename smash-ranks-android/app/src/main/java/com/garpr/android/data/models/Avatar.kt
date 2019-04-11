@@ -8,18 +8,13 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Avatar(
-        @Json(name = LARGE) val large: String? = null,
-        @Json(name = MEDIUM) val medium: String? = null,
-        @Json(name = ORIGINAL) val original: String? = null,
-        @Json(name = SMALL) val small: String? = null
+        @Json(name = "large") val large: String? = null,
+        @Json(name = "medium") val medium: String? = null,
+        @Json(name = "original") val original: String? = null,
+        @Json(name = "small") val small: String? = null
 ) : Parcelable {
 
     companion object {
-        private const val LARGE = "large"
-        private const val MEDIUM = "medium"
-        private const val ORIGINAL = "original"
-        private const val SMALL = "small"
-
         @JvmField
         val CREATOR = createParcel {
             Avatar(
