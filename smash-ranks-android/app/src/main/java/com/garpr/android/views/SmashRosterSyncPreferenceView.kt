@@ -25,6 +25,10 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
         }
 
         setOnClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -54,7 +58,6 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            appComponent.inject(this)
             smashRosterSyncManager.addListener(this)
             refresh()
         }

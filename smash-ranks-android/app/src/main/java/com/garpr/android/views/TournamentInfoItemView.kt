@@ -38,15 +38,17 @@ class TournamentInfoItemView @JvmOverloads constructor(
                 R.layout.item_tournament_info, parent, false) as TournamentInfoItemView
     }
 
+    init {
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
+
     val dateVerticalPositionInWindow: Int
         get() = date.verticalPositionInWindow
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
 
         openLink.setOnClickListener {
             tournament?.let { t -> shareUtils.openUrl(context, t.url) }
@@ -84,19 +86,11 @@ class TournamentInfoItemView @JvmOverloads constructor(
                 openLink.visibility = View.GONE
                 share.visibility = View.GONE
             } else {
-                when (BracketSource.fromUrl(value.url)) {
-                    BracketSource.CHALLONGE -> {
-                        openLink.text = resources.getText(R.string.open_challonge_link)
-                    }
-
-                    BracketSource.SMASH_GG -> {
-                        openLink.text = resources.getText(R.string.open_smash_gg_link)
-                    }
-
-                    else -> {
-                        openLink.text = resources.getText(R.string.open_bracket_link)
-                    }
-                }
+                openLink.setText(when (BracketSource.fromUrl(value.url)) {
+                    BracketSource.CHALLONGE -> R.string.open_challonge_link
+                    BracketSource.SMASH_GG -> R.string.open_smash_gg_link
+                    else -> R.string.open_bracket_link
+                })
 
                 openLink.visibility = View.VISIBLE
                 share.visibility = View.VISIBLE

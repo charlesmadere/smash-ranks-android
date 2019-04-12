@@ -22,6 +22,14 @@ class TournamentItemView @JvmOverloads constructor(
     protected lateinit var regionManager: RegionManager
 
 
+    init {
+        setOnClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
+
     private fun clear() {
         date.clear()
         name.clear()
@@ -31,16 +39,6 @@ class TournamentItemView @JvmOverloads constructor(
         val tournament = this.tournament ?: return
         context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
                 regionManager.getRegion(context)))
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
     }
 
     override fun setContent(content: AbsTournament) {

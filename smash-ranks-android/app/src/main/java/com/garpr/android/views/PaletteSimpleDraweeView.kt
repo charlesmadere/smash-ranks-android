@@ -56,16 +56,14 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
         }
     }
 
-    private fun notifyListener(palette: Palette?) {
-        colorListener?.onPaletteBuilt(palette) ?: (activity as? ColorListener?)?.onPaletteBuilt(palette)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
+    init {
         if (!isInEditMode) {
             appComponent.inject(this)
         }
+    }
+
+    private fun notifyListener(palette: Palette?) {
+        colorListener?.onPaletteBuilt(palette) ?: (activity as? ColorListener?)?.onPaletteBuilt(palette)
     }
 
     override fun setImageURI(uriString: String?) {

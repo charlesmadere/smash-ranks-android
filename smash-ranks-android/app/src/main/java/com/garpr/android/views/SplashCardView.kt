@@ -58,6 +58,7 @@ class SplashCardView @JvmOverloads constructor(
 
         identityManager.addListener(this)
         regionManager.addListener(this)
+        refresh()
 
         if (!hasAnimated && !deviceUtils.hasLowRam) {
             hasAnimated = true

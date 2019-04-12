@@ -21,6 +21,15 @@ class TournamentDividerView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
+
+    init {
+        setOnClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
+
     var tournament: AbsTournament? = null
         private set(value) {
             field = value
@@ -43,16 +52,6 @@ class TournamentDividerView @JvmOverloads constructor(
         val tournament = this.tournament ?: return
         context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
                 regionManager.getRegion(context)))
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
     }
 
     override fun setContent(content: AbsTournament) {

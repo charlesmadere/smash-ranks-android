@@ -21,10 +21,9 @@ class WinsLossesView @JvmOverloads constructor(
     private val numberFormat = NumberFormat.getIntegerInstance()
 
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
+    init {
         if (isInEditMode) {
+            hasAnimated = true
             setContent(WinsLosses(LitePlayer("0", "PewPewU"), 8,
                     LitePlayer("1", "Shroomed"), 5))
         }
@@ -41,17 +40,13 @@ class WinsLossesView @JvmOverloads constructor(
     }
 
     override fun setContent(content: WinsLosses) {
-        if (isInEditMode) {
-            hasAnimated = true
-        }
-
         playerName.text = content.player.name
         playerWins.text = numberFormat.format(content.playerWins)
 
         opponentName.text = content.opponent.name
         opponentWins.text = numberFormat.format(content.opponentWins)
 
-        winsLossesGraph.setWinsLosses(content, hasAnimated)
+        winsLossesGraph.setContent(Pair(content, hasAnimated))
 
         if (hasAnimated) {
             alpha = 1f

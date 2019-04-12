@@ -41,6 +41,15 @@ class RankingItemView @JvmOverloads constructor(
     protected lateinit var timber: Timber
 
 
+    init {
+        setOnClickListener(this)
+        setOnLongClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
+
     override fun clear() {
         super.clear()
         previousRankView.clear()
@@ -63,17 +72,6 @@ class RankingItemView @JvmOverloads constructor(
         val identity = this.identity ?: return
         context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
                 regionManager.getRegion(context)))
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
-        setOnLongClickListener(this)
     }
 
     override fun onLongClick(v: View): Boolean {

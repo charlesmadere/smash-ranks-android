@@ -35,6 +35,15 @@ class MatchItemView @JvmOverloads constructor(
         fun onClick(v: MatchItemView)
     }
 
+    init {
+        setOnClickListener(this)
+        setOnLongClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
+
     override fun clear() {
         name.clear()
         super.clear()
@@ -82,17 +91,6 @@ class MatchItemView @JvmOverloads constructor(
             context.startActivity(PlayerActivity.getLaunchIntent(context, opponent.id,
                     regionManager.getRegion(context)))
         }
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
-        setOnLongClickListener(this)
     }
 
     override fun onLongClick(v: View): Boolean {

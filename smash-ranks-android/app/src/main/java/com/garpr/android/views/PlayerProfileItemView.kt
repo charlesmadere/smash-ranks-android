@@ -54,11 +54,11 @@ class PlayerProfileItemView @JvmOverloads constructor(
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
 
-    private var fullPlayer: FullPlayer? = null
-        set(value) {
-            field = value
-            refresh()
+    init {
+        if (!isInEditMode) {
+            appComponent.inject(this)
         }
+    }
 
     private fun applyPaletteToView(palette: Palette?, view: View?) {
         if (view is ColorListener) {
@@ -69,6 +69,12 @@ class PlayerProfileItemView @JvmOverloads constructor(
             }
         }
     }
+
+    private var fullPlayer: FullPlayer? = null
+        set(value) {
+            field = value
+            refresh()
+        }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -103,9 +109,9 @@ class PlayerProfileItemView @JvmOverloads constructor(
             return
         }
 
-        appComponent.inject(this)
         favoritePlayersManager.addListener(this)
         identityManager.addListener(this)
+        smashRosterSyncManager.addListener(this)
 
         avatar.colorListener = this
 

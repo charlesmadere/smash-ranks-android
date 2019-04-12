@@ -9,13 +9,10 @@ import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.dialogs.TournamentMatchDialogFragment
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.requireFragmentActivity
-import com.garpr.android.managers.RegionManager
 import kotlinx.android.synthetic.main.item_tournament_match.view.*
-import javax.inject.Inject
 
 class TournamentMatchItemView @JvmOverloads constructor(
         context: Context,
@@ -24,17 +21,18 @@ class TournamentMatchItemView @JvmOverloads constructor(
         View.OnClickListener {
 
     @ColorInt
-    private var exclusionColor: Int = 0
+    private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
 
     @ColorInt
-    private var loseColor: Int = 0
+    private val loseColor: Int = ContextCompat.getColor(context, R.color.lose)
 
     @ColorInt
-    private var winColor: Int = 0
+    private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
-    @Inject
-    protected lateinit var regionManager: RegionManager
 
+    init {
+        setOnClickListener(this)
+    }
 
     override fun clear() {
         loserName.clear()
@@ -71,20 +69,6 @@ class TournamentMatchItemView @JvmOverloads constructor(
         val dialog = TournamentMatchDialogFragment.create(match)
         dialog.show(requireFragmentActivity().supportFragmentManager,
                 TournamentMatchDialogFragment.TAG)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
-
-        exclusionColor = context.getAttrColor(android.R.attr.textColorSecondary)
-        loseColor = ContextCompat.getColor(context, R.color.lose)
-        winColor = ContextCompat.getColor(context, R.color.win)
-
-        setOnClickListener(this)
     }
 
     override fun refresh() {

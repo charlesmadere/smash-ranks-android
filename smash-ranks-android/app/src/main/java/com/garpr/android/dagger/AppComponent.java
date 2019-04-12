@@ -23,7 +23,6 @@ import com.garpr.android.sync.roster.SmashRosterSyncWorker;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.FavoritePlayerItemView;
 import com.garpr.android.views.FavoritePlayersLayout;
-import com.garpr.android.views.HeadToHeadMatchItemView;
 import com.garpr.android.views.IdentityConstraintLayout;
 import com.garpr.android.views.IdentityFrameLayout;
 import com.garpr.android.views.IdentityPreferenceView;
@@ -48,7 +47,6 @@ import com.garpr.android.views.TintedImageView;
 import com.garpr.android.views.TournamentDividerView;
 import com.garpr.android.views.TournamentInfoItemView;
 import com.garpr.android.views.TournamentItemView;
-import com.garpr.android.views.TournamentMatchItemView;
 import com.garpr.android.views.TournamentsLayout;
 import com.garpr.android.views.toolbars.HomeToolbar;
 
@@ -94,7 +92,6 @@ public interface AppComponent {
     void inject(DeleteFavoritePlayersPreferenceView view);
     void inject(FavoritePlayerItemView view);
     void inject(FavoritePlayersLayout view);
-    void inject(HeadToHeadMatchItemView view);
     void inject(IdentityConstraintLayout view);
     void inject(IdentityFrameLayout view);
     void inject(IdentityPreferenceView view);
@@ -119,7 +116,6 @@ public interface AppComponent {
     void inject(TournamentDividerView view);
     void inject(TournamentInfoItemView view);
     void inject(TournamentItemView view);
-    void inject(TournamentMatchItemView view);
     void inject(TournamentsLayout view);
 
 }

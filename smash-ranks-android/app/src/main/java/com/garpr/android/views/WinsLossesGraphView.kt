@@ -10,19 +10,19 @@ import android.view.animation.OvershootInterpolator
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
+import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.extensions.getLong
 
 class WinsLossesGraphView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : View(context, attrs) {
+) : View(context, attrs), BaseAdapterView<Pair<WinsLosses, Boolean>> {
 
-    private lateinit var playerPalette: GraphPalette
-    private lateinit var opponentPalette: GraphPalette
+    private val playerPalette = GraphPalette(R.color.win_background, R.color.win)
+    private val opponentPalette = GraphPalette(R.color.lose_background, R.color.lose)
     private val rect = RectF()
     private var winsLosses: WinsLosses? = null
-
 
     companion object {
         private const val OVERSHOOT_TENSION: Float = 3.8f
@@ -69,13 +69,6 @@ class WinsLossesGraphView @JvmOverloads constructor(
         }
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        playerPalette = GraphPalette(R.color.win_background, R.color.win)
-        opponentPalette = GraphPalette(R.color.lose_background, R.color.lose)
-    }
-
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         calculateRects()
@@ -98,10 +91,10 @@ class WinsLossesGraphView @JvmOverloads constructor(
                 .start()
     }
 
-    internal fun setWinsLosses(winsLosses: WinsLosses, hasAnimated: Boolean) {
-        this.winsLosses = winsLosses
+    override fun setContent(content: Pair<WinsLosses, Boolean>) {
+        this.winsLosses = content.first
 
-        if (hasAnimated) {
+        if (content.second) {
             scaleX = 1f
             scaleY = 1f
             calculateRects()

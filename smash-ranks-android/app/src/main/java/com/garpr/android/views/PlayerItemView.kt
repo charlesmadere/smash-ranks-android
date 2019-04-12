@@ -25,6 +25,15 @@ class PlayerItemView @JvmOverloads constructor(
     protected lateinit var regionManager: RegionManager
 
 
+    init {
+        setOnClickListener(this)
+        setOnLongClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
+
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
         styleTextViewForSomeoneElse(name)
@@ -36,21 +45,9 @@ class PlayerItemView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        identity?.let {
-            context.startActivity(PlayerActivity.getLaunchIntent(context, it,
-                    regionManager.getRegion(context)))
-        }
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
-        setOnLongClickListener(this)
+        val identity = this.identity ?: return
+        context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
+                regionManager.getRegion(context)))
     }
 
     override fun onLongClick(v: View): Boolean {

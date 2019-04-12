@@ -24,6 +24,10 @@ class TestNotificationView @JvmOverloads constructor(
         descriptionText = context.getText(R.string.debug_only)
         visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
         setOnClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
@@ -43,14 +47,6 @@ class TestNotificationView @JvmOverloads constructor(
         AlertDialog.Builder(context)
                 .setItems(items, this)
                 .show()
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
 }
