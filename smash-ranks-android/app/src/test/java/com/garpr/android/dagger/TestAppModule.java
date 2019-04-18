@@ -12,8 +12,6 @@ import com.garpr.android.preferences.KeyValueStoreImpl;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 import com.garpr.android.wrappers.WorkManagerWrapper;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -43,27 +41,27 @@ public class TestAppModule extends BaseAppModule {
             }
 
             @Override
-            public void log(final int priority, @NotNull final String tag, @NotNull final String msg) {
+            public void log(final int priority, @NonNull final String tag, @NonNull final String msg) {
                 // intentionally empty
             }
 
             @Override
-            public void logException(@NotNull final Throwable tr) {
+            public void logException(@NonNull final Throwable tr) {
                 // intentionally empty
             }
 
             @Override
-            public void setBool(@NotNull final String key, final boolean value) {
+            public void setBool(@NonNull final String key, final boolean value) {
                 // intentionally empty
             }
 
             @Override
-            public void setInt(@NotNull final String key, final int value) {
+            public void setInt(@NonNull final String key, final int value) {
                 // intentionally empty
             }
 
             @Override
-            public void setString(@NotNull final String key, @NotNull final String value) {
+            public void setString(@NonNull final String key, @NonNull final String value) {
                 // intentionally empty
             }
         };
@@ -102,7 +100,7 @@ public class TestAppModule extends BaseAppModule {
         return new ThreadUtils() {
             private final ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
 
-            @NotNull
+            @NonNull
             @Override
             public ExecutorService getExecutorService() {
                 return mExecutorService;
@@ -114,18 +112,18 @@ public class TestAppModule extends BaseAppModule {
             }
 
             @Override
-            public void run(@NotNull final Task task) {
+            public void run(@NonNull final Task task) {
                 task.onBackground();
                 task.onUi();
             }
 
             @Override
-            public void runOnBackground(@NotNull final Runnable task) {
+            public void runOnBackground(@NonNull final Runnable task) {
                 task.run();
             }
 
             @Override
-            public void runOnUi(@NotNull final Runnable task) {
+            public void runOnUi(@NonNull final Runnable task) {
                 task.run();
             }
         };
@@ -137,12 +135,12 @@ public class TestAppModule extends BaseAppModule {
     WorkManagerWrapper providesWorkManagerWrapper() {
         return new WorkManagerWrapper() {
             @Override
-            public void cancelAllWorkByTag(@NotNull final String tag) {
+            public void cancelAllWorkByTag(@NonNull final String tag) {
                 // intentionally empty
             }
 
             @Override
-            public void enqueue(@NotNull final WorkRequest workRequest) {
+            public void enqueue(@NonNull final WorkRequest workRequest) {
                 // intentionally empty
             }
         };

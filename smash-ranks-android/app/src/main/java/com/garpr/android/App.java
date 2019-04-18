@@ -12,8 +12,6 @@ import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
@@ -52,7 +50,7 @@ public class App extends BaseApp implements AppComponentHandle,
         mNightModeManager.addListener(this);
     }
 
-    @NotNull
+    @NonNull
     @Override
     public AppComponent getAppComponent() throws IllegalStateException {
         final AppComponent appComponent = mAppComponent;

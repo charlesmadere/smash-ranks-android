@@ -8,9 +8,9 @@ import com.garpr.android.dagger.TestAppComponentHandle;
 import com.garpr.android.dagger.TestAppModule;
 import com.garpr.android.misc.Constants;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 
 public class TestApp extends BaseApp implements TestAppComponentHandle {
@@ -19,7 +19,7 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
     private TestAppComponent mTestAppComponent;
 
 
-    @NotNull
+    @NonNull
     @Override
     public TestAppComponent getTestAppComponent() {
         final TestAppComponent testAppComponent = mTestAppComponent;
