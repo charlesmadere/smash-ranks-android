@@ -72,19 +72,33 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // Android Support Library
-    // https://developer.android.com/jetpack/androidx/
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.cardview:cardview:$cardview_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-    implementation "androidx.palette:palette:$palette_version"
-    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
-    testImplementation "androidx.test:core:$testcore_version"
-
-    // Android Architecture Components
-    // WorkManager
-    // https://developer.android.com/topic/libraries/architecture/workmanager/
+    // Android Architecture Component WorkManager
+    // https://developer.android.com/jetpack/androidx/releases/work
     implementation "androidx.work:work-runtime:$workmanager_version"
+
+    // AndroidX AppCompat
+    // https://developer.android.com/jetpack/androidx/releases/appcompat
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+
+    // AndroidX CardView
+    // https://developer.android.com/jetpack/androidx/releases/cardview
+    implementation "androidx.cardview:cardview:$cardview_version"
+
+    // AndroidX ConstraintLayout
+    // https://developer.android.com/jetpack/androidx/releases/constraintlayout
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+
+    // AndroidX Palette
+    // https://developer.android.com/jetpack/androidx/releases/palette
+    implementation "androidx.palette:palette:$palette_version"
+
+    // AndroidX RecyclerView
+    // https://developer.android.com/jetpack/androidx/releases/recyclerview
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+
+    // AndroidX Test
+    // https://developer.android.com/jetpack/androidx/releases/test
+    testImplementation "androidx.test:core:$testcore_version"
 
     // Facebook's Fresco
     // https://github.com/facebook/fresco
