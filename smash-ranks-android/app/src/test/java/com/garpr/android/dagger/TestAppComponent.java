@@ -11,7 +11,6 @@ import com.garpr.android.data.converters.RankedPlayerConverterTest;
 import com.garpr.android.data.converters.SimpleDateConverterTest;
 import com.garpr.android.data.models.AbsTournamentTest;
 import com.garpr.android.data.models.AvatarTest;
-import com.garpr.android.data.models.MatchTest;
 import com.garpr.android.data.models.RankingsBundleTest;
 import com.garpr.android.data.models.RegionsBundleTest;
 import com.garpr.android.data.models.SimpleDateTest;
@@ -70,7 +69,6 @@ public interface TestAppComponent {
     // data/models
     void inject(AbsTournamentTest test);
     void inject(AvatarTest test);
-    void inject(MatchTest test);
     void inject(RankingsBundleTest test);
     void inject(RegionsBundleTest test);
     void inject(SimpleDateTest test);
