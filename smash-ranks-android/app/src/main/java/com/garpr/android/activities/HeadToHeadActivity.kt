@@ -28,9 +28,9 @@ import javax.inject.Inject
 class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private var list: List<Any>? = null
     private var headToHead: HeadToHead? = null
     private val adapter = HeadToHeadAdapter()
+    private var list: List<Any>? = null
 
     private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
 
