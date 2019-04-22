@@ -1,5 +1,7 @@
 package com.garpr.android.data.converters
 
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.Match
@@ -33,12 +35,12 @@ object MatchConverter {
 
         val result = matchResultAdapter.requireFromJsonValue(json[RESULT])
 
-        val opponent = LitePlayer(
+        val opponent: AbsPlayer = LitePlayer(
                 id = json[OPPONENT_ID] as String,
                 name = json[OPPONENT_NAME] as String
         )
 
-        val tournament = LiteTournament(
+        val tournament: AbsTournament = LiteTournament(
                 date = simpleDateAdapter.requireFromJsonValue(json[TOURNAMENT_DATE]),
                 id = json[TOURNAMENT_ID] as String,
                 name = json[TOURNAMENT_NAME] as String
