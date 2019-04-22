@@ -6,15 +6,19 @@ import android.os.Parcelable
 fun <T : Parcelable> Bundle?.requireParcelable(key: String): T {
     if (this == null) {
         throw NullPointerException("Bundle is null")
+    } else if (containsKey(key)) {
+        return getParcelable(key) ?: throw NullPointerException("Bundle Parcelable \"$key\" is null")
+    } else {
+        throw NoSuchElementException("Bundle does not contain Parcelable: \"$key\"")
     }
-
-    return getParcelable(key) ?: throw NullPointerException("Parcelable \"$key\" doesn't exist")
 }
 
 fun Bundle?.requireString(key: String): String {
     if (this == null) {
         throw NullPointerException("Bundle is null")
+    } else if (containsKey(key)) {
+        return getString(key) ?: throw NullPointerException("Bundle String \"$key\" is null")
+    } else {
+        throw NoSuchElementException("Bundle does not contain String: \"$key\"")
     }
-
-    return getString(key) ?: throw NullPointerException("String \"$key\" doesn't exist")
 }

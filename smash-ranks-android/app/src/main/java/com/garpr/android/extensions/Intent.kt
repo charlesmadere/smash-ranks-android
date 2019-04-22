@@ -14,11 +14,9 @@ fun Intent.putOptionalExtra(name: String, value: Parcelable?): Intent {
 fun Intent?.requireStringExtra(name: String): String {
     if (this == null) {
         throw NullPointerException("Intent is null")
+    } else if (hasExtra(name)) {
+        return getStringExtra(name) ?: throw NullPointerException("Intent String extra is null: \"$name\"")
+    } else {
+        throw NoSuchElementException("Intent does not have String extra: \"$name\"")
     }
-
-    if (!hasExtra(name)) {
-        throw RuntimeException("Intent does not have String extra: \"$name\"")
-    }
-
-    return getStringExtra(name) ?: throw NullPointerException("Intent String extra is null: \"$name\"")
 }
