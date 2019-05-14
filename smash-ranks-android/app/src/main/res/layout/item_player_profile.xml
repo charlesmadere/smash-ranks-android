@@ -26,7 +26,6 @@
         app:placeholderImage="@drawable/avatar_placeholder"
         app:placeholderImageScaleType="centerCrop"
         app:roundAsCircle="true"
-        tools:ignore="UnusedAttribute"
         tools:visibility="visible" />
 
     <TextView
