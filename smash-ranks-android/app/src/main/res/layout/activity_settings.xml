@@ -134,9 +134,9 @@
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
-                android:id="@+id/tsuaiiTwitter"
-                app:descriptionText="@string/tsuaii_twitter_url"
-                app:titleText="@string/sheik_artwork_by_tsuaii"
+                android:id="@+id/germWebsite"
+                app:descriptionText="@string/germ_website_url"
+                app:titleText="@string/sheik_artwork_by_germ"
                 style="@style/PreferenceView" />
 
             <include

@@ -30,7 +30,7 @@ object Constants {
     // URLs
     const val CHARLES_TWITTER_URL = "https://twitter.com/charlesmadere"
     const val GAR_TWITTER_URL = "https://twitter.com/garsh0p"
+    const val GERM_WEBSITE_URL = "http://www.germroverso.com/"
     const val GITHUB_URL = "https://github.com/charlesmadere/smash-ranks-android"
-    const val TSUAII_TWITTER_URL = "https://twitter.com/tsuaii"
 
 }

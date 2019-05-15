@@ -135,8 +135,8 @@ class SettingsActivity : BaseActivity() {
             shareUtils.openUrl(this, Constants.GAR_TWITTER_URL)
         }
 
-        tsuaiiTwitter.setOnClickListener {
-            shareUtils.openUrl(this, Constants.TSUAII_TWITTER_URL)
+        germWebsite.setOnClickListener {
+            shareUtils.openUrl(this, Constants.GERM_WEBSITE_URL)
         }
 
         logViewer.setOnClickListener {

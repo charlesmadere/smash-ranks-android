@@ -50,6 +50,7 @@
     <string name="favorite_players">Favorite Players</string>
     <string name="gar_pr" translatable="false">GAR PR</string>
     <string name="gar_twitter_url" translatable="false">twitter.com/garsh0p</string>
+    <string name="germ_website_url" translatable="false">germroverso.com</string>
     <string name="head_to_head">Head to Head</string>
     <string name="head_to_head_swipe_to_refresh_and_check_again">This probably means that these two competitors have never played in tournament before. But, you can swipe down to refresh and check again</string>
     <string name="identity">Identity</string>
@@ -111,7 +112,7 @@
     <string name="share_rankings">Share rankings</string>
     <string name="share_tournaments">Share tournaments</string>
     <string name="share_x">Share %1$s</string>
-    <string name="sheik_artwork_by_tsuaii">Sheik artwork by tsuaii</string>
+    <string name="sheik_artwork_by_germ">Sheik artwork by Germ</string>
     <string name="show">Show</string>
     <string name="show_test_notification">Show test notification</string>
     <string name="smash_roster">Smash roster</string>
@@ -137,7 +138,6 @@
     <string name="this_tournament_has_no_players">This tournament has no players</string>
     <string name="tournaments">Tournaments</string>
     <string name="x_tournaments">%1$s Tournaments</string>
-    <string name="tsuaii_twitter_url" translatable="false">twitter.com/tsuaii</string>
     <string name="twitch">Twitch</string>
     <string name="twitter">Twitter</string>
     <string name="unable_to_launch_ringtone_picker">Unable to launch ringtone picker</string>
