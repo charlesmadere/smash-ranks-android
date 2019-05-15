@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.View
 import android.widget.CompoundButton
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.layoutInflater
@@ -33,10 +32,9 @@ class CheckablePreferenceView @JvmOverloads constructor(
 
     init {
         var ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
-        val checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType,
-                CHECKABLE_TYPE_CHECKBOX)
 
-        when (checkableType) {
+        when (val checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType,
+                CHECKABLE_TYPE_CHECKBOX)) {
             CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(
                     R.layout.view_checkbox_preference, this)
 
@@ -102,8 +100,8 @@ class CheckablePreferenceView @JvmOverloads constructor(
         }
 
         if (disabledDescriptionText.isNullOrBlank()) {
-            val layoutParams = title.layoutParams as ConstraintLayout.LayoutParams
-            layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            val layoutParams = title.layoutParams as LayoutParams
+            layoutParams.bottomToBottom = LayoutParams.PARENT_ID
             layoutParams.bottomMargin = layoutParams.topMargin
             title.layoutParams = layoutParams
             description.visibility = View.GONE

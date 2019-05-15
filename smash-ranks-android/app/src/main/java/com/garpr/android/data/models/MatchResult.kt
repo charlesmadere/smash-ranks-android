@@ -19,7 +19,7 @@ enum class MatchResult : Parcelable {
 
     companion object {
         @JvmField
-        val CREATOR = createParcel { MatchResult.values()[it.readInt()] }
+        val CREATOR = createParcel { values()[it.readInt()] }
     }
 
     override fun describeContents(): Int = 0

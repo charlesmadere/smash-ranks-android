@@ -27,6 +27,7 @@ fun Parcel.readAbsPlayer(): AbsPlayer {
 }
 
 fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
+    @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsPlayer.Kind>(AbsPlayer.Kind::class.java.classLoader) ?: return null
 
     return when (kind) {
@@ -80,6 +81,7 @@ fun Parcel.readAbsRegion(): AbsRegion {
 }
 
 fun Parcel.readOptionalAbsRegion(): AbsRegion? {
+    @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsRegion.Kind>(AbsRegion::class.java.classLoader) ?: return null
 
     return when (kind) {
@@ -131,6 +133,7 @@ fun Parcel.readAbsTournament(): AbsTournament {
 }
 
 fun Parcel.readOptionalAbsTournament(): AbsTournament? {
+    @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsTournament.Kind>(AbsTournament.Kind::class.java.classLoader) ?: return null
 
     return when (kind) {

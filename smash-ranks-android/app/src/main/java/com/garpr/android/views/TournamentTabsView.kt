@@ -117,7 +117,7 @@ class TournamentTabsView @JvmOverloads constructor(
     }
 
     override fun refresh() {
-        val layoutParams = indicatorLine.layoutParams as? ConstraintLayout.LayoutParams? ?: return
+        val layoutParams = indicatorLine.layoutParams as? LayoutParams? ?: return
 
         when (listeners?.tournamentMode) {
             TournamentMode.MATCHES -> {
@@ -133,8 +133,8 @@ class TournamentTabsView @JvmOverloads constructor(
             }
 
             else -> {
-                layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                layoutParams.endToEnd = LayoutParams.PARENT_ID
+                layoutParams.startToStart = LayoutParams.PARENT_ID
                 indicatorLine.visibility = View.INVISIBLE
             }
         }

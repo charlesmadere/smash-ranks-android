@@ -299,9 +299,7 @@ open class GarToolbar @JvmOverloads constructor(
     }
 
     protected open fun upNavigate() {
-        val activity = requireActivity()
-
-        when (activity) {
+        when (val activity = requireActivity()) {
             is BaseActivity -> {
                 activity.navigateUp()
             }

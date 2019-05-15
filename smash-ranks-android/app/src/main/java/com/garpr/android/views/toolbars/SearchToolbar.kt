@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
@@ -60,7 +59,7 @@ open class SearchToolbar @JvmOverloads constructor(
         searchField.visibility = View.GONE
         showUpNavigation = wasShowingUpNavigation
 
-        menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as ConstraintLayout.LayoutParams).apply {
+        menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as LayoutParams).apply {
             startToEnd = View.NO_ID
             width = ViewGroup.LayoutParams.WRAP_CONTENT
         }
@@ -94,9 +93,9 @@ open class SearchToolbar @JvmOverloads constructor(
         searchIcon.visibility = View.GONE
         showUpNavigation = true
 
-        menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as ConstraintLayout.LayoutParams).apply {
+        menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as LayoutParams).apply {
             startToEnd = toolbarSpace.id
-            width = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
+            width = LayoutParams.MATCH_CONSTRAINT
         }
 
         searchField.visibility = View.VISIBLE

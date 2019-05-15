@@ -1,7 +1,6 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
-import com.garpr.android.data.models.PollFrequency
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

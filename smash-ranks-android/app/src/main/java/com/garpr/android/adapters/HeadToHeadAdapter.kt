@@ -21,15 +21,15 @@ class HeadToHeadAdapter : BaseMultiAdapter(LAYOUT_KEY_MAP) {
     }
 
     override fun getItemId(position: Int): Long {
-        val item = getItem(position)
-
-        return when (item) {
+        return when (val item = getItem(position)) {
             is String -> {
                 Long.MIN_VALUE
             }
+
             is WinsLosses -> {
                 Long.MIN_VALUE + 1L
             }
+
             else -> {
                 item.hashCode().toLong()
             }
