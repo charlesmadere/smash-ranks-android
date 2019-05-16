@@ -4,16 +4,15 @@
     <item
         android:drawable="@color/window_background" />
 
-    <!-- TODO
-    <item>
+    <item
+        android:bottom="@dimen/root_padding_triple">
 
         <bitmap
-            android:antialias="true"
             android:filter="true"
             android:gravity="center"
-            android:src="@drawable/sheik" />
+            android:src="@drawable/sheik"
+            android:tileMode="disabled" />
 
     </item>
-    -->
 
 </layer-list>
