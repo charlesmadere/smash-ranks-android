@@ -2,9 +2,9 @@ package com.garpr.android.managers
 
 import android.content.Context
 
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.Region
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.Region
 
 interface FavoritePlayersManager {
 

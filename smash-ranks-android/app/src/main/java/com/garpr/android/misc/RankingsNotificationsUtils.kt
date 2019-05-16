@@ -1,6 +1,6 @@
 package com.garpr.android.misc
 
-import com.garpr.android.models.RankingsBundle
+import com.garpr.android.data.models.RankingsBundle
 
 interface RankingsNotificationsUtils {
 
@@ -13,7 +13,7 @@ interface RankingsNotificationsUtils {
     }
 
     data class PollStatus constructor(
-            val oldRankingsId: String?,
+            val oldRankingsId: String? = null,
             val proceed: Boolean,
             val retry: Boolean
     )

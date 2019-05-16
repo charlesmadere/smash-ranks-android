@@ -3,15 +3,15 @@ package com.garpr.android.views
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.widget.TextView
-import com.garpr.android.App
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.garpr.android.R
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.models.AbsPlayer
 import javax.inject.Inject
 
 abstract class IdentityConstraintLayout @JvmOverloads constructor(
@@ -20,20 +20,19 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
 ) : LifecycleConstraintLayout(context, attrs), IdentityManager.OnIdentityChangeListener,
         Refreshable {
 
-    private var originalBackground: Drawable? = null
-
     @Inject
     protected lateinit var identityManager: IdentityManager
+
+    private var originalBackground: Drawable? = null
+    protected var identity: AbsPlayer? = null
+    protected var identityId: String? = null
 
 
     protected open fun clear() {
         identity = null
         identityId = null
+        refresh()
     }
-
-    protected var identity: AbsPlayer? = null
-
-    protected var identityId: String? = null
 
     protected open fun identityIsSomeoneElse() {
         ViewCompat.setBackground(this, originalBackground)
@@ -63,7 +62,7 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             identityManager.addListener(this)
         }
 

@@ -45,21 +45,17 @@ abstract class BasePreference<T>(
         }
     }
 
-    protected abstract fun performSet(newValue: T, notifyListeners: Boolean = true)
+    protected abstract fun performSet(newValue: T)
 
     override fun removeListener(listener: OnPreferenceChangeListener<T>) {
         cleanListeners(listener)
     }
 
-    override fun set(preference: Preference<T>, notifyListeners: Boolean) {
-        set(preference.get(), notifyListeners)
-    }
-
-    override fun set(newValue: T?, notifyListeners: Boolean) {
+    override fun set(newValue: T?) {
         if (newValue == null) {
-            delete(notifyListeners)
+            delete()
         } else {
-            performSet(newValue, notifyListeners)
+            performSet(newValue)
         }
     }
 

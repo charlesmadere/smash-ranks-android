@@ -1,23 +1,18 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.ColorInt
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
-import com.garpr.android.App
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.activities.HeadToHeadActivity
-import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.dialogs.TournamentMatchDialogFragment
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.FullTournament
-import kotterknife.bindView
-import javax.inject.Inject
+import com.garpr.android.extensions.requireFragmentActivity
+import kotlinx.android.synthetic.main.item_tournament_match.view.*
 
 class TournamentMatchItemView @JvmOverloads constructor(
         context: Context,
@@ -26,27 +21,23 @@ class TournamentMatchItemView @JvmOverloads constructor(
         View.OnClickListener {
 
     @ColorInt
-    private var exclusionColor: Int = 0
+    private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
 
     @ColorInt
-    private var loseColor: Int = 0
+    private val loseColor: Int = ContextCompat.getColor(context, R.color.lose)
 
     @ColorInt
-    private var winColor: Int = 0
+    private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
-    @Inject
-    protected lateinit var regionManager: RegionManager
 
-    private val loserName: TextView by bindView(R.id.tvLoserName)
-    private val winnerName: TextView by bindView(R.id.tvWinnerName)
-
+    init {
+        setOnClickListener(this)
+    }
 
     override fun clear() {
-        super.clear()
-
         loserName.clear()
         winnerName.clear()
-        refresh()
+        super.clear()
     }
 
     private var match: FullTournament.Match? = null
@@ -74,40 +65,10 @@ class TournamentMatchItemView @JvmOverloads constructor(
 
     override fun onClick(v: View) {
         val match = this.match ?: return
-        val items = arrayOf(match.winnerName, match.loserName,
-                resources.getText(R.string.head_to_head))
 
-        AlertDialog.Builder(context)
-                .setItems(items, { dialog, which ->
-                    when (which) {
-                        0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.winnerId, regionManager.getRegion(context)))
-
-                        1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.loserId, regionManager.getRegion(context)))
-
-                        2 -> context.startActivity(HeadToHeadActivity.getLaunchIntent(context,
-                                match, regionManager.getRegion(context)))
-
-                        else -> throw RuntimeException("illegal which: $which")
-                    }
-                })
-                .setTitle(R.string.view)
-                .show()
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            App.get().appComponent.inject(this)
-        }
-
-        exclusionColor = context.getAttrColor(android.R.attr.textColorSecondary)
-        loseColor = ContextCompat.getColor(context, R.color.lose)
-        winColor = ContextCompat.getColor(context, R.color.win)
-
-        setOnClickListener(this)
+        val dialog = TournamentMatchDialogFragment.create(match)
+        dialog.show(requireFragmentActivity().supportFragmentManager,
+                TournamentMatchDialogFragment.TAG)
     }
 
     override fun refresh() {

@@ -1,13 +1,13 @@
 package com.garpr.android.activities
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.widget.Toast
-import com.garpr.android.App
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.DeepLinkUtils
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
@@ -31,8 +31,8 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
     private fun deepLink(region: Region) {
         val intentStack = deepLinkUtils.buildIntentStack(this, intent, region)
 
-        if (intentStack == null || intentStack.isEmpty()) {
-            startActivity(HomeActivity.getLaunchIntent(this))
+        if (intentStack.isNullOrEmpty()) {
+            startActivity(HomeActivity.getLaunchIntent(context = this))
         } else {
             ContextCompat.startActivities(this, intentStack.toTypedArray())
         }
@@ -42,7 +42,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     private fun error() {
         Toast.makeText(this, R.string.error_loading_deep_link_data, Toast.LENGTH_LONG).show()
-        startActivity(HomeActivity.getLaunchIntent(this))
+        startActivity(HomeActivity.getLaunchIntent(context = this))
         supportFinishAfterTransition()
     }
 
@@ -52,7 +52,7 @@ class DeepLinkActivity : BaseActivity(), ApiListener<RegionsBundle> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_deep_link)
 
         if (deepLinkUtils.isValidUri(intent)) {

@@ -1,18 +1,16 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
-import com.garpr.android.App
-import com.garpr.android.R
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.AbsTournament
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.AbsTournament
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_tournament.view.*
 import javax.inject.Inject
 
 class TournamentItemView @JvmOverloads constructor(
@@ -23,9 +21,14 @@ class TournamentItemView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
-    private val date: TextView by bindView(R.id.tvDate)
-    private val name: TextView by bindView(R.id.tvName)
 
+    init {
+        setOnClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
 
     private fun clear() {
         date.clear()
@@ -36,16 +39,6 @@ class TournamentItemView @JvmOverloads constructor(
         val tournament = this.tournament ?: return
         context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
                 regionManager.getRegion(context)))
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            App.get().appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
     }
 
     override fun setContent(content: AbsTournament) {

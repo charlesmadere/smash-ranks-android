@@ -2,9 +2,9 @@ package com.garpr.android.managers
 
 import android.content.Context
 import android.content.ContextWrapper
+import com.garpr.android.data.models.Region
 import com.garpr.android.managers.RegionManager.OnRegionChangeListener
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.wrappers.WeakReferenceWrapper

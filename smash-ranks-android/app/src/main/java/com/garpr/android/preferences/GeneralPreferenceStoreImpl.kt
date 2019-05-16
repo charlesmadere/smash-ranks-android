@@ -1,28 +1,32 @@
 package com.garpr.android.preferences
 
-import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.NightMode
-import com.garpr.android.models.Region
-import com.garpr.android.preferences.persistent.PersistentGsonPreference
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.NightMode
+import com.garpr.android.data.models.Region
+import com.garpr.android.preferences.persistent.PersistentBooleanPreference
 import com.garpr.android.preferences.persistent.PersistentIntegerPreference
-import com.google.gson.Gson
+import com.garpr.android.preferences.persistent.PersistentMoshiPreference
+import com.squareup.moshi.Moshi
 
 class GeneralPreferenceStoreImpl(
-        gson: Gson,
         override val keyValueStore: KeyValueStore,
+        moshi: Moshi,
         defaultRegion: Region
 ) : GeneralPreferenceStore {
 
-    override val currentRegion by lazy { PersistentGsonPreference<Region>("CURRENT_REGION",
-            defaultRegion, keyValueStore, Region::class.java, gson) }
+    override val currentRegion by lazy { PersistentMoshiPreference("CURRENT_REGION",
+            defaultRegion, keyValueStore, moshi, Region::class.java) }
 
-    override val identity by lazy { PersistentGsonPreference<FavoritePlayer>("IDENTITY",
-            null, keyValueStore, FavoritePlayer::class.java, gson) }
+    override val hajimeteKimasu by lazy { PersistentBooleanPreference("HAJIMETE_KIMASU",
+            true, keyValueStore) }
+
+    override val identity by lazy { PersistentMoshiPreference<FavoritePlayer>("IDENTITY",
+            null, keyValueStore, moshi, FavoritePlayer::class.java) }
 
     override val lastVersion by lazy { PersistentIntegerPreference("LAST_VERSION",
             null, keyValueStore) }
 
-    override val nightMode by lazy { PersistentGsonPreference("NIGHT_MODE", NightMode.SYSTEM,
-            keyValueStore, NightMode::class.java, gson) }
+    override val nightMode by lazy { PersistentMoshiPreference("NIGHT_MODE",
+            NightMode.SYSTEM, keyValueStore, moshi, NightMode::class.java) }
 
 }

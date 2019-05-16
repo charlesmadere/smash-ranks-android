@@ -1,9 +1,26 @@
 package com.garpr.android.networking
 
+import android.annotation.SuppressLint
+import androidx.annotation.UiThread
+import androidx.annotation.WorkerThread
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.HeadToHead
+import com.garpr.android.data.models.MatchesBundle
+import com.garpr.android.data.models.PlayerMatchesBundle
+import com.garpr.android.data.models.PlayersBundle
+import com.garpr.android.data.models.RankingsBundle
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.data.models.ServerResponse
+import com.garpr.android.data.models.SmashCompetitor
+import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.Constants
 import com.garpr.android.misc.FullTournamentUtils
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.*
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +33,7 @@ class ServerApiImpl(
         private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
         private val regionManager: RegionManager,
         private val smashRosterApi: SmashRosterApi,
+        private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : ServerApi {
 
@@ -112,28 +130,32 @@ class ServerApiImpl(
         })
     }
 
+    @SuppressLint("WrongThread")
     override fun getRankings(region: Region, listener: ApiListener<RankingsBundle>) {
+        if (threadUtils.isUiThread) {
+            getRankingsFromUiThread(region, listener)
+        } else {
+            getRankingsFromWorkerThread(region, listener)
+        }
+    }
+
+    @UiThread
+    private fun getRankingsFromUiThread(region: Region, listener: ApiListener<RankingsBundle>) {
         getGarPrApi(region).getRankings(region.id).enqueue(object : Callback<RankingsBundle> {
             override fun onResponse(call: Call<RankingsBundle>, response: Response<RankingsBundle>) {
-                val body = if (response.isSuccessful) response.body() else null
-
-                if (body == null) {
-                    timber.e(TAG, "getRankings ($region) failed (code ${response.code()})")
-                    listener.failure(response.code())
-                } else {
-                    if (region == regionManager.getRegion()) {
-                        rankingsPollingPreferenceStore.rankingsId.set(body.id)
-                    }
-
-                    listener.success(body)
-                }
+                handleGetRankingsResponse(region, listener, response)
             }
 
             override fun onFailure(call: Call<RankingsBundle>, t: Throwable) {
-                timber.e(TAG, "getRankings ($region) failed", t)
-                listener.failure()
+                handleGetRankingsResponse(region, listener, null, t)
             }
         })
+    }
+
+    @WorkerThread
+    private fun getRankingsFromWorkerThread(region: Region, listener: ApiListener<RankingsBundle>) {
+        val call = getGarPrApi(region).getRankings(region.id)
+        handleGetRankingsResponse(region, listener, call.execute())
     }
 
     override fun getRegions(endpoint: Endpoint?, listener: ApiListener<RegionsBundle>) {
@@ -160,8 +182,19 @@ class ServerApiImpl(
         }
     }
 
-    override fun getSmashRoster(region: Region, listener: ApiListener<SmashRoster>) {
-        // TODO
+    override fun getSmashRoster(endpoint: Endpoint): ServerResponse<Map<String, SmashCompetitor>> {
+        val response = when (endpoint) {
+            Endpoint.GAR_PR -> {
+                smashRosterApi.getGarPrJson().execute()
+            }
+
+            Endpoint.NOT_GAR_PR -> {
+                smashRosterApi.getNotGarPrJson().execute()
+            }
+        }
+
+        return ServerResponse(if (response.isSuccessful) response.body() else null,
+                response.isSuccessful, response.code(), response.message())
     }
 
     override fun getTournament(region: Region, tournamentId: String,
@@ -190,8 +223,7 @@ class ServerApiImpl(
 
     override fun getTournaments(region: Region, listener: ApiListener<TournamentsBundle>) {
         getGarPrApi(region).getTournaments(region.id).enqueue(object : Callback<TournamentsBundle> {
-            override fun onResponse(call: Call<TournamentsBundle>,
-                    response: Response<TournamentsBundle>) {
+            override fun onResponse(call: Call<TournamentsBundle>, response: Response<TournamentsBundle>) {
                 if (response.isSuccessful) {
                     listener.success(response.body())
                 } else {
@@ -205,6 +237,22 @@ class ServerApiImpl(
                 listener.failure()
             }
         })
+    }
+
+    private fun handleGetRankingsResponse(region: Region, listener: ApiListener<RankingsBundle>,
+            response: Response<RankingsBundle>?, throwable: Throwable? = null) {
+        val body = if (response?.isSuccessful == true) response.body() else null
+
+        if (body == null) {
+            timber.e(TAG, "getRankings ($region) failed (code ${response?.code()})", throwable)
+            listener.failure(response?.code() ?: Constants.ERROR_CODE_UNKNOWN)
+        } else {
+            if (region == regionManager.getRegion()) {
+                rankingsPollingPreferenceStore.rankingsId.set(body.id)
+            }
+
+            listener.success(body)
+        }
     }
 
 }

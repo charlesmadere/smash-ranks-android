@@ -15,7 +15,6 @@ class PersistentUriPreference(
 
     private val backingPreference = PersistentStringPreference(key, null, keyValueStore)
 
-
     override val exists: Boolean
         get() = backingPreference.exists || defaultValue != null
 
@@ -27,8 +26,8 @@ class PersistentUriPreference(
         }
     }
 
-    override fun performSet(newValue: Uri, notifyListeners: Boolean) {
-        backingPreference.set(newValue.toString(), notifyListeners)
+    override fun performSet(newValue: Uri) {
+        backingPreference.set(newValue.toString())
     }
 
 }

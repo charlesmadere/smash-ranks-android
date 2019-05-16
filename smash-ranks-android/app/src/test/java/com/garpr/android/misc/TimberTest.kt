@@ -2,12 +2,14 @@ package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import javax.inject.Inject
+import kotlin.random.Random
 
 @RunWith(RobolectricTestRunner::class)
 class TimberTest : BaseTest() {
@@ -21,14 +23,12 @@ class TimberTest : BaseTest() {
     }
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testClearEntries() {
         timber.clearEntries()
 
@@ -42,14 +42,12 @@ class TimberTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetEntries() {
         val entries = timber.entries
         assertTrue(entries.isEmpty())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetEntriesWithOne() {
         timber.d(TAG, "one")
         val entries = timber.entries
@@ -57,7 +55,6 @@ class TimberTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetEntriesWithTwo() {
         timber.d(TAG, "one")
         timber.w(TAG, "two")
@@ -66,13 +63,24 @@ class TimberTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetEntriesWithThree() {
         timber.d(TAG, "one")
         timber.w(TAG, "two")
         timber.e(TAG, "three")
         val entries = timber.entries
         assertEquals(3, entries.size)
+    }
+
+    @Test
+    fun testMaxSize() {
+        val times = Random.nextInt(1000, 2000)
+
+        repeat(times) {
+            timber.d(TAG, it.toString())
+        }
+
+        val entries = timber.entries
+        assertNotEquals(times, entries.size)
     }
 
 }

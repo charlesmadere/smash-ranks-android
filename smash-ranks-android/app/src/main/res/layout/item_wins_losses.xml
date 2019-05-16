@@ -7,7 +7,7 @@
     android:layout_width="match_parent">
 
     <com.garpr.android.views.WinsLossesGraphView
-        android:id="@+id/winsLossesGraphView"
+        android:id="@+id/winsLossesGraph"
         android:layout_height="@dimen/wins_losses_graph_size"
         android:layout_width="@dimen/wins_losses_graph_size"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,34 +16,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvPlayerWinCount"
-        app:layout_constraintBottom_toTopOf="@+id/tvPlayerName"
-        app:layout_constraintEnd_toStartOf="@id/winsLossesGraphView"
+        android:id="@+id/playerWins"
+        app:layout_constraintBottom_toTopOf="@+id/playerName"
+        app:layout_constraintEnd_toStartOf="@+id/winsLossesGraph"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="8"
         style="@style/WinsLossesCount" />
 
     <TextView
-        android:id="@id/tvPlayerName"
-        app:layout_constraintEnd_toStartOf="@id/winsLossesGraphView"
+        android:id="@+id/playerName"
+        app:layout_constraintEnd_toStartOf="@+id/winsLossesGraph"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvPlayerWinCount"
+        app:layout_constraintTop_toBottomOf="@+id/playerWins"
         tools:text="PewPewU"
         style="@style/WinsLossesPlayerName" />
 
     <TextView
-        android:id="@+id/tvOpponentWinCount"
-        app:layout_constraintBottom_toTopOf="@+id/tvOpponentName"
+        android:id="@+id/opponentWins"
+        app:layout_constraintBottom_toTopOf="@+id/opponentName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/winsLossesGraphView"
+        app:layout_constraintStart_toEndOf="@+id/winsLossesGraph"
         tools:text="5"
         style="@style/WinsLossesCount" />
 
     <TextView
-        android:id="@id/tvOpponentName"
+        android:id="@+id/opponentName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/winsLossesGraphView"
-        app:layout_constraintTop_toBottomOf="@id/tvOpponentWinCount"
+        app:layout_constraintStart_toEndOf="@+id/winsLossesGraph"
+        app:layout_constraintTop_toBottomOf="@+id/opponentWins"
         tools:text="Shroomed"
         style="@style/WinsLossesPlayerName" />
 

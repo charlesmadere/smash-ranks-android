@@ -12,6 +12,7 @@
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/launcher"
+        android:isGame="false"
         android:label="@string/gar_pr"
         android:name=".App"
         android:resizeableActivity="true"
@@ -44,12 +45,7 @@
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
             android:name=".activities.HomeActivity"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:label="@string/log_viewer"
@@ -75,27 +71,28 @@
         <activity
             android:label="@string/set_identity"
             android:launchMode="singleTop"
-            android:name=".activities.SetIdentityActivity"
-            android:parentActivityName=".activities.SettingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SettingsActivity" />
-        </activity>
+            android:name=".activities.SetIdentityActivity" />
 
         <activity
             android:label="@string/set_region"
             android:launchMode="singleTop"
-            android:name=".activities.SetRegionActivity"
-            android:parentActivityName=".activities.SettingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SettingsActivity" />
-        </activity>
+            android:name=".activities.SetRegionActivity" />
 
         <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:name=".activities.SettingsActivity" />
+
+        <activity
+            android:label="@string/gar_pr"
+            android:launchMode="singleTop"
+            android:name=".activities.SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:label=""
@@ -112,14 +109,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="bd8750ba792168bfa4d0bc52e19ad83a6fad27c3" />
-
-        <service
-            android:exported="false"
-            android:name=".sync.RankingsPollingJobService">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-            </intent-filter>
-        </service>
 
     </application>
 

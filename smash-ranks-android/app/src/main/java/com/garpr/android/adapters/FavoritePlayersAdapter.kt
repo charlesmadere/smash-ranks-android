@@ -1,12 +1,11 @@
 package com.garpr.android.adapters
 
-import android.content.Context
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import com.garpr.android.R
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.PlayersBundle
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.PlayersBundle
 
-class FavoritePlayersAdapter(context: Context) : BaseAdapter<AbsPlayer>(context) {
+class FavoritePlayersAdapter : BaseAdapter<AbsPlayer>() {
 
     init {
         setHasStableIds(true)

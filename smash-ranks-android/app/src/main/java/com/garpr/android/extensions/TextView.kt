@@ -1,20 +1,24 @@
 package com.garpr.android.extensions
 
-import android.support.annotation.ColorInt
-import android.support.v4.widget.TextViewCompat
+import android.graphics.drawable.Drawable
 import android.widget.TextView
-import com.garpr.android.misc.MiscUtils
+import androidx.annotation.ColorInt
+import androidx.core.widget.TextViewCompat
 
 fun TextView.clear() {
     text = ""
 }
 
+var TextView.compoundDrawablesRelativeCompat: Array<Drawable?>
+    get() = TextViewCompat.getCompoundDrawablesRelative(this)
+    set(value) = TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this,
+            value[0], value[1], value[2], value[3])
+
 fun TextView.setTintedDrawableColor(@ColorInt color: Int) {
-    val drawables = TextViewCompat.getCompoundDrawablesRelative(this)
-    drawables[0] = MiscUtils.tintDrawable(drawables[0], color)
-    drawables[1] = MiscUtils.tintDrawable(drawables[1], color)
-    drawables[2] = MiscUtils.tintDrawable(drawables[2], color)
-    drawables[3] = MiscUtils.tintDrawable(drawables[3], color)
-    TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, drawables[0],
-            drawables[1], drawables[2], drawables[3])
+    val drawables = compoundDrawablesRelativeCompat
+    drawables[0] = drawables[0].setTintCompat(color)
+    drawables[1] = drawables[1].setTintCompat(color)
+    drawables[2] = drawables[2].setTintCompat(color)
+    drawables[3] = drawables[3].setTintCompat(color)
+    compoundDrawablesRelativeCompat = drawables
 }

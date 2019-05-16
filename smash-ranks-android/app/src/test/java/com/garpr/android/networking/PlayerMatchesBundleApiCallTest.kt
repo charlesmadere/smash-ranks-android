@@ -1,13 +1,16 @@
 package com.garpr.android.networking
 
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.MatchesBundle
+import com.garpr.android.data.models.PlayerMatchesBundle
+import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.misc.Constants
-import com.garpr.android.models.FullPlayer
-import com.garpr.android.models.MatchesBundle
-import com.garpr.android.models.PlayerMatchesBundle
-import com.garpr.android.models.Region
-import com.google.gson.Gson
-import org.junit.Assert.*
+import com.squareup.moshi.Moshi
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,7 +25,8 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
     private lateinit var norcal: Region
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
+
 
 
     companion object {
@@ -33,14 +37,18 @@ class PlayerMatchesBundleApiCallTest : BaseTest() {
     }
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
 
-        matchesSpark = gson.fromJson(JSON_MATCHES_SPARK, MatchesBundle::class.java)
-        playerSpark = gson.fromJson(JSON_PLAYER_SPARK, FullPlayer::class.java)
-        norcal = gson.fromJson(JSON_REGION_NORCAL, Region::class.java)
+        val matchesBundleAdapter = moshi.adapter(MatchesBundle::class.java)
+        matchesSpark = matchesBundleAdapter.requireFromJson(JSON_MATCHES_SPARK)
+
+        val fullPlayerAdapter = moshi.adapter(FullPlayer::class.java)
+        playerSpark = fullPlayerAdapter.requireFromJson(JSON_PLAYER_SPARK)
+
+        val regionAdapter = moshi.adapter(Region::class.java)
+        norcal = regionAdapter.requireFromJson(JSON_REGION_NORCAL)
     }
 
     @Test

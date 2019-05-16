@@ -1,32 +1,27 @@
 package com.garpr.android.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.LayoutRes
-import android.support.v4.app.TaskStackBuilder
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.Menu
 import android.view.MenuItem
-import com.garpr.android.App
-import com.garpr.android.R
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.TaskStackBuilder
+import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.optHideKeyboard
+import com.garpr.android.managers.NightModeManager
 import com.garpr.android.managers.RegionManager.RegionHandle
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.Region
-import com.garpr.android.preferences.GeneralPreferenceStore
-import com.garpr.android.views.toolbars.MenuToolbar
-import kotterknife.bindOptionalView
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     @Inject
-    protected lateinit var generalPreferenceStore: GeneralPreferenceStore
+    protected lateinit var nightModeManager: NightModeManager
 
     @Inject
     protected lateinit var timber: Timber
-
-    protected val toolbar: Toolbar? by bindOptionalView(R.id.toolbar)
 
 
     companion object {
@@ -43,7 +38,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     override val isAlive: Boolean
         get() = !isFinishing && !isDestroyed
 
-    protected open fun navigateUp() {
+    open fun navigateUp() {
         val intent = supportParentActivityIntent
 
         if (intent == null) {
@@ -58,46 +53,28 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
 
-        generalPreferenceStore.nightMode.get()?.let {
-            delegate.setLocalNightMode(it.themeValue)
-        } ?: throw RuntimeException("nightMode is null")
-
+        delegate.setLocalNightMode(nightModeManager.nightMode.themeValue)
         super.onCreate(savedInstanceState)
         timber.d(TAG, "$activityName created")
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        (toolbar as? MenuToolbar)?.onCreateOptionsMenu(menuInflater, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             android.R.id.home -> {
                 navigateUp()
-                return true
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
             }
         }
-
-        if ((toolbar as? MenuToolbar)?.onOptionsItemSelected(item) == true) {
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        (toolbar as? MenuToolbar)?.refresh()
-        return super.onPrepareOptionsMenu(menu)
     }
 
     protected open fun onViewsBound() {
-        // ButterKnife was once right here
-
-        toolbar?.let { setSupportActionBar(it) }
-        supportActionBar?.setDisplayHomeAsUpEnabled(showUpNavigation)
+        // intentionally empty, children can override
     }
 
     override fun setContentView(@LayoutRes layoutResID: Int) {
@@ -105,7 +82,10 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
         onViewsBound()
     }
 
-    protected open val showUpNavigation = false
+    override fun startActivity(intent: Intent?) {
+        optHideKeyboard()
+        super.startActivity(intent)
+    }
 
     override fun toString() = activityName
 

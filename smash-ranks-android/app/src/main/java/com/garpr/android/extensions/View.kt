@@ -1,15 +1,46 @@
 package com.garpr.android.extensions
 
-import android.support.annotation.IdRes
+import android.app.Activity
+import android.os.Build
+import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.annotation.IdRes
+import androidx.fragment.app.FragmentActivity
+import com.garpr.android.dagger.AppComponent
 
-fun <T : View> View.findViewByIdFromRoot(@IdRes id: Int): T? {
-    return rootView.findViewById(id)
+val View.activity: Activity?
+    get() = context.activity
+
+val View.appComponent: AppComponent
+    get() = context.appComponent
+
+val View.inputMethodManager: InputMethodManager
+    get() = context.inputMethodManager
+
+val View.layoutInflater: LayoutInflater
+    get() = LayoutInflater.from(context)
+
+fun View.requestFocusAndOpenKeyboard() {
+    requestFocus()
+    inputMethodManager.toggleSoftInputFromWindow(windowToken, InputMethodManager.SHOW_FORCED, 0)
 }
 
-fun <T : View> View.requireViewByIdFromRoot(@IdRes id: Int): T {
-    return findViewByIdFromRoot(id) ?: throw NullPointerException(
-            "can't find view (${resources.getResourceName(id)})")
+fun View.requireActivity(): Activity {
+    return context.requireActivity()
+}
+
+fun View.requireFragmentActivity(): FragmentActivity {
+    return context.requireFragmentActivity()
+}
+
+fun <T: View> View.requireViewByIdCompat(@IdRes id: Int): T {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        requireViewById(id)
+    } else {
+        findViewById(id) ?: throw IllegalArgumentException(
+                "ID ${resources.getResourceEntryName(id)} does not reference a View inside this View")
+    }
 }
 
 val View.verticalPositionInWindow: Int

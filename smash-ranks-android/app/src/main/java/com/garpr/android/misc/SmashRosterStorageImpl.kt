@@ -1,56 +1,69 @@
 package com.garpr.android.misc
 
-import com.garpr.android.models.Region
-import com.garpr.android.models.SmashCharacter
-import com.garpr.android.models.SmashCompetitor
-import com.garpr.android.models.SmashRoster
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.preferences.KeyValueStoreProvider
-import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 
 class SmashRosterStorageImpl(
-        private val gson: Gson,
         private val keyValueStoreProvider: KeyValueStoreProvider,
+        private val moshi: Moshi,
         private val packageName: String,
         private val timber: Timber
 ) : SmashRosterStorage {
+
+    private val smashCompetitorAdapter: JsonAdapter<SmashCompetitor> by lazy {
+        moshi.adapter(SmashCompetitor::class.java)
+    }
 
     companion object {
         private const val TAG = "SmashRosterStorageImpl"
     }
 
-    override fun deleteFromStorage(region: Region) {
-        getKeyValueStore(region).clear()
-        timber.d(TAG, "deleted ${region.endpoint.title} from storage")
+    override fun deleteFromStorage(endpoint: Endpoint) {
+        getKeyValueStore(endpoint).clear()
+        timber.d(TAG, "deleted $endpoint from storage")
     }
 
-    private fun getKeyValueStore(region: Region) = keyValueStoreProvider.getKeyValueStore(
-            "$packageName.SmashRosterStorage.${region.endpoint.title}")
+    private fun getKeyValueStore(endpoint: Endpoint) = keyValueStoreProvider.getKeyValueStore(
+            "$packageName.SmashRosterStorage.$endpoint")
 
-    override fun getSmashCompetitor(region: Region, playerId: String?): SmashCompetitor? {
-        if (playerId == null || playerId.isBlank()) {
+    override fun getSmashCompetitor(endpoint: Endpoint, playerId: String?): SmashCompetitor? {
+        if (playerId.isNullOrBlank()) {
             return null
         }
 
-        val smashCompetitor = getKeyValueStore(region).getString(playerId, null)
-        return gson.fromJson(smashCompetitor, SmashCompetitor::class.java)
+        val json = getKeyValueStore(endpoint).getString(playerId, null)
+
+        return if (json == null) {
+            null
+        } else {
+            smashCompetitorAdapter.fromJson(json)
+        }
     }
 
-    override fun writeToStorage(region: Region, smashRoster: SmashRoster?) {
-        if (smashRoster?.competitors == null || smashRoster.competitors.isEmpty()) {
-            deleteFromStorage(region)
+    override fun getSmashCompetitor(region: Region, playerId: String?): SmashCompetitor? {
+        return getSmashCompetitor(region.endpoint, playerId)
+    }
+
+    override fun writeToStorage(endpoint: Endpoint, smashRoster: Map<String, SmashCompetitor>?) {
+        if (smashRoster.isNullOrEmpty()) {
+            deleteFromStorage(endpoint)
             return
         }
 
-        val keyValueStoreEditor = getKeyValueStore(region).batchEdit()
+        val keyValueStoreEditor = getKeyValueStore(endpoint).batchEdit()
         keyValueStoreEditor.clear()
 
-        for (entry in smashRoster.competitors) {
-            keyValueStoreEditor.putString(entry.key, gson.toJson(entry.value,
-                    SmashCharacter::class.java))
+        for (entry in smashRoster) {
+            val json = smashCompetitorAdapter.toJson(entry.value)
+            keyValueStoreEditor.putString(entry.key, json)
         }
 
         keyValueStoreEditor.apply()
-        timber.d(TAG, "wrote ${region.endpoint.title}.${region.id} to storage")
+        timber.d(TAG, "wrote ${smashRoster.size} $endpoint competitor(s) to storage")
     }
 
 }

@@ -5,7 +5,7 @@
     style="@style/DividerItem">
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Not GAR PR"
         style="@style/DividerItemTitle" />

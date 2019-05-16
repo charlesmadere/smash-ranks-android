@@ -1,10 +1,10 @@
 package com.garpr.android.misc
 
 import android.text.TextUtils
+import com.garpr.android.data.models.RankingsBundle
+import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo
 import com.garpr.android.misc.RankingsNotificationsUtils.PollStatus
-import com.garpr.android.models.RankingsBundle
-import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 
 class RankingsNotificationsUtilsImpl(
@@ -29,19 +29,19 @@ class RankingsNotificationsUtilsImpl(
     override fun getPollStatus(): PollStatus {
         if (rankingsPollingPreferenceStore.enabled.get() != true) {
             timber.e(TAG, "will not sync, polling is not enabled")
-            return PollStatus(null, false, false)
+            return PollStatus(proceed = false, retry = false)
         }
 
         val oldRankingsId = rankingsPollingPreferenceStore.rankingsId.get()
 
         if (oldRankingsId == null) {
-            timber.d(TAG, "will not sync, the user does not have a rankings date")
-            return PollStatus(null, false, false)
+            timber.d(TAG, "will not sync, the user does not have a rankings ID")
+            return PollStatus(proceed = false, retry = false)
         }
 
         if (!deviceUtils.hasNetworkConnection) {
             timber.d(TAG, "will retry sync later, the device does not have a network connection")
-            return PollStatus(oldRankingsId, false, true)
+            return PollStatus(oldRankingsId = oldRankingsId, proceed = false, retry = true)
         }
 
         val lastPoll = rankingsPollingPreferenceStore.lastPoll.get()
@@ -49,7 +49,7 @@ class RankingsNotificationsUtilsImpl(
         rankingsPollingPreferenceStore.lastPoll.set(currentPoll)
         timber.d(TAG, "will sync, last poll: $lastPoll, current poll: $currentPoll")
 
-        return PollStatus(oldRankingsId, true, true)
+        return PollStatus(oldRankingsId = oldRankingsId, proceed = true, retry = true)
     }
 
 }

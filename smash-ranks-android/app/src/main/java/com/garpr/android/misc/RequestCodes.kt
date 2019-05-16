@@ -19,7 +19,7 @@ enum class RequestCodes : Parcelable {
     val value: Int
         get() = ordinal + 10000
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)

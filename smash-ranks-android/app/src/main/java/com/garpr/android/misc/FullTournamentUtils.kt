@@ -1,7 +1,7 @@
 package com.garpr.android.misc
 
-import android.support.annotation.UiThread
-import com.garpr.android.models.FullTournament
+import androidx.annotation.UiThread
+import com.garpr.android.data.models.FullTournament
 
 interface FullTournamentUtils {
 

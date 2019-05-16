@@ -1,6 +1,6 @@
 package com.garpr.android.misc
 
-import android.support.annotation.AttrRes
+import androidx.annotation.AttrRes
 
 import com.garpr.android.R
 

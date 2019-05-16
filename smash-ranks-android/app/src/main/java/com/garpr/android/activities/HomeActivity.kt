@@ -3,83 +3,86 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AlertDialog
 import android.view.MenuItem
-import com.garpr.android.App
+import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
 import com.garpr.android.adapters.HomePagerAdapter
-import com.garpr.android.extensions.subtitle
+import com.garpr.android.data.models.RankingCriteria
+import com.garpr.android.dialogs.ActivityRequirementsDialogFragment
+import com.garpr.android.dialogs.ShareRegionDialogFragment
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.itemIdAsHomeTab
+import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.HomeTab
+import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ShareUtils
-import com.garpr.android.sync.RankingsPollingSyncManager
+import com.garpr.android.sync.rankings.RankingsPollingManager
+import com.garpr.android.sync.roster.SmashRosterSyncManager
 import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
-import kotterknife.bindView
-import java.text.NumberFormat
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
-        BottomNavigationView.OnNavigationItemSelectedListener, RankingsLayout.Listener,
-        RegionManager.OnRegionChangeListener, Searchable, SearchQueryHandle,
-        SearchToolbar.Listener {
+        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners,
+        RankingCriteriaHandle, RankingsLayout.Listener, RegionManager.OnRegionChangeListener,
+        Searchable, SearchQueryHandle, SearchToolbar.Listener {
 
-    private lateinit var adapter: HomePagerAdapter
+    private val adapter = HomePagerAdapter()
 
     @Inject
     protected lateinit var identityManager: IdentityManager
 
     @Inject
-    protected lateinit var rankingsPollingSyncManager: RankingsPollingSyncManager
+    protected lateinit var rankingsPollingManager: RankingsPollingManager
 
     @Inject
     protected lateinit var regionManager: RegionManager
 
     @Inject
-    protected lateinit var shareUtils: ShareUtils
-
-    private val bottomNavigationView: BottomNavigationView by bindView(R.id.bottomNavigationView)
-    private val homeToolbar: HomeToolbar by bindView(R.id.toolbar)
-    private val viewPager: ViewPager by bindView(R.id.viewPager)
+    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
 
     companion object {
-        private const val TAG = "HomeActivity"
+        const val TAG = "HomeActivity"
         private val CNAME = HomeActivity::class.java.canonicalName
         private val EXTRA_INITIAL_POSITION = "$CNAME.InitialPosition"
         private const val KEY_CURRENT_POSITION = "CurrentPosition"
 
-        const val POSITION_RANKINGS = 0
-        const val POSITION_TOURNAMENTS = 1
-        const val POSITION_FAVORITE_PLAYERS = 2
+        fun getLaunchIntent(context: Context, initialPosition: HomeTab? = null,
+                restartActivityTask: Boolean = false): Intent {
+            var intent = Intent(context, HomeActivity::class.java)
 
-        fun getLaunchIntent(context: Context, initialPosition: Int? = null): Intent {
-            val intent = Intent.makeRestartActivityTask(
-                    Intent(context, HomeActivity::class.java).component)
-
-            if (initialPosition != null) {
-                intent.putExtra(EXTRA_INITIAL_POSITION, initialPosition)
+            if (restartActivityTask) {
+                intent = Intent.makeRestartActivityTask(intent.component)
             }
 
-            return intent
+            return intent.putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
         }
     }
 
     override val activityName = TAG
 
+    override fun onActivityRequirementsClick(v: HomeToolbar) {
+        val rankingCriteria = this.rankingCriteria ?: return
+        val regionDisplayName = regionManager.getRegion(this).displayName
+        val dialog = ActivityRequirementsDialogFragment.create(regionDisplayName, rankingCriteria)
+        dialog.show(supportFragmentManager, ActivityRequirementsDialogFragment.TAG)
+    }
+
     override fun onBackPressed() {
-        if (homeToolbar.isSearchLayoutExpanded) {
-            homeToolbar.closeSearchLayout()
+        if (toolbar.isSearchFieldExpanded) {
+            toolbar.closeSearchField()
             return
         }
 
-        if (viewPager.currentItem != POSITION_RANKINGS) {
-            viewPager.setCurrentItem(POSITION_RANKINGS, false)
+        if (viewPager.currentTab != HomeTab.RANKINGS) {
+            viewPager.currentTab = HomeTab.RANKINGS
             return
         }
 
@@ -88,10 +91,11 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_home)
         setInitialPosition(savedInstanceState)
-        rankingsPollingSyncManager.enableOrDisable()
+        rankingsPollingManager.enableOrDisable()
+        smashRosterSyncManager.enableOrDisable()
         regionManager.addListener(this)
     }
 
@@ -101,64 +105,20 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
-        val position = when (item.itemId) {
-            R.id.actionFavoritePlayers -> POSITION_FAVORITE_PLAYERS
-            R.id.actionRankings -> POSITION_RANKINGS
-            R.id.actionTournaments -> POSITION_TOURNAMENTS
-            else -> throw RuntimeException("unknown item: ${item.title}")
-        }
-
-        adapter.onNavigationItemReselected(position)
+        adapter.onNavigationItemReselected(item.itemIdAsHomeTab)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val position = when (item.itemId) {
-            R.id.actionFavoritePlayers -> POSITION_FAVORITE_PLAYERS
-            R.id.actionRankings -> POSITION_RANKINGS
-            R.id.actionTournaments -> POSITION_TOURNAMENTS
-            else -> throw RuntimeException("unknown item: ${item.title}")
-        }
-
-        homeToolbar.closeSearchLayout()
-        viewPager.setCurrentItem(position, false)
-
+        viewPager.currentTab = item.itemIdAsHomeTab
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.miActivityRequirements -> {
-                showActivityRequirements()
-                true
-            }
-
-            R.id.miSettings -> {
-                startActivity(SettingsActivity.getLaunchIntent(this))
-                true
-            }
-
-            R.id.miShare -> {
-                share()
-                true
-            }
-
-            R.id.miViewAllPlayers -> {
-                startActivity(PlayersActivity.getLaunchIntent(this))
-                true
-            }
-
-            R.id.miViewYourself -> {
-                identityManager.identity?.let {
-                    startActivity(PlayerActivity.getLaunchIntent(this, it,
-                            regionManager.getRegion(this)))
-                } ?: throw NullPointerException("identity is null")
-                true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
+    private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            updateSelectedBottomNavigationItem()
         }
+    }
 
     override fun onRankingsBundleFetched(layout: RankingsLayout) {
         prepareMenuAndTitleAndSubtitle(layout)
@@ -171,7 +131,20 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(KEY_CURRENT_POSITION, viewPager.currentItem)
+        outState.putParcelable(KEY_CURRENT_POSITION, viewPager.currentTab)
+    }
+
+    override fun onSettingsClick(v: HomeToolbar) {
+        startActivity(SettingsActivity.getLaunchIntent(this))
+    }
+
+    override fun onShareClick(v: HomeToolbar) {
+        val dialog = ShareRegionDialogFragment.create()
+        dialog.show(supportFragmentManager, ShareRegionDialogFragment.TAG)
+    }
+
+    override fun onViewAllPlayersClick(v: HomeToolbar) {
+        startActivity(PlayersActivity.getLaunchIntent(this))
     }
 
     override fun onViewsBound() {
@@ -182,102 +155,63 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         viewPager.addOnPageChangeListener(onPageChangeListener)
         viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         viewPager.offscreenPageLimit = 3
-
-        adapter = HomePagerAdapter()
         viewPager.adapter = adapter
+    }
+
+    override fun onViewYourselfClick(v: HomeToolbar) {
+        val identity = identityManager.identity ?: throw NullPointerException("identity is null")
+        startActivity(PlayerActivity.getLaunchIntent(this, identity,
+                regionManager.getRegion(this)))
     }
 
     private fun prepareMenuAndTitleAndSubtitle(layout: RankingsLayout?) {
         val region = regionManager.getRegion(this)
-        title = region.displayName
+        toolbar.titleText = region.displayName
 
-        subtitle = layout?.rankingsBundle?.let {
+        toolbar.subtitleText = layout?.rankingsBundle?.let {
             getString(R.string.updated_x, it.time.shortForm)
         } ?: getString(region.endpoint.title)
 
-        invalidateOptionsMenu()
+        toolbar.refresh()
     }
 
+    override val rankingCriteria: RankingCriteria?
+        get() = adapter.rankingCriteria
+
     override fun search(query: String?) {
-        adapter.search(viewPager.currentItem, query)
+        adapter.search(query)
     }
 
     override val searchQuery: CharSequence?
-        get() = homeToolbar.searchQuery
+        get() = toolbar.searchQuery
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {
-        var initialPosition = -1
+        var initialPosition: HomeTab? = null
 
         if (savedInstanceState != null && !savedInstanceState.isEmpty) {
-            initialPosition = savedInstanceState.getInt(KEY_CURRENT_POSITION, -1)
+            initialPosition = savedInstanceState.getParcelable(KEY_CURRENT_POSITION)
         }
 
-        if (initialPosition == -1) {
-            intent?.let { initialPosition = it.getIntExtra(EXTRA_INITIAL_POSITION, -1) }
+        if (initialPosition == null) {
+            initialPosition = intent?.getParcelableExtra(EXTRA_INITIAL_POSITION)
         }
 
-        if (initialPosition != -1) {
-            viewPager.currentItem = initialPosition
+        if (initialPosition != null) {
+            viewPager.currentTab = initialPosition
         }
     }
 
-    private fun share() {
-        val region = regionManager.getRegion(this).displayName
-        val items = arrayOf(getString(R.string.x_rankings, region),
-                getString(R.string.x_tournaments, region))
-
-        AlertDialog.Builder(this)
-                .setItems(items) { dialog, which ->
-                    when (which) {
-                        0 -> shareUtils.shareRankings(this)
-                        1 -> shareUtils.shareTournaments(this)
-                        else -> throw RuntimeException("illegal which: $which")
-                    }
-                }
-                .setTitle(R.string.share)
-                .show()
-    }
-
-    private fun showActivityRequirements() {
-        val rankingCriteria = adapter.rankingsBundle?.rankingCriteria ?: return
-        val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
-        val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
-
-        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
-            throw RuntimeException("Region (${rankingCriteria.displayName}) is missing necessary data")
-        }
-
-        val numberFormat = NumberFormat.getIntegerInstance()
-        val tournaments = resources.getQuantityString(R.plurals.x_tournaments,
-                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended))
-        val days = resources.getQuantityString(R.plurals.x_days,
-                rankingActivityDayLimit, numberFormat.format(rankingActivityDayLimit))
-
-        AlertDialog.Builder(this)
-                .setMessage(getString(R.string.x_within_the_last_y, tournaments, days))
-                .setTitle(getString(R.string.x_activity_requirements, rankingCriteria.displayName))
-                .show()
-    }
-
-    override val showSearchMenuItem: Boolean
-        get() = subtitle?.isNotBlank() == true
+    override val showSearchIcon: Boolean
+        get() = toolbar.hasSubtitleText
 
     private fun updateSelectedBottomNavigationItem() {
-        val itemId = when (viewPager.currentItem) {
-            POSITION_FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
-            POSITION_RANKINGS -> R.id.actionRankings
-            POSITION_TOURNAMENTS -> R.id.actionTournaments
-            else -> throw RuntimeException("unknown current item: ${viewPager.currentItem}")
+        val itemId = when (viewPager.currentTab) {
+            HomeTab.RANKINGS -> R.id.actionRankings
+            HomeTab.TOURNAMENTS -> R.id.actionTournaments
+            HomeTab.FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
         }
 
         bottomNavigationView.menu.findItem(itemId).isChecked = true
-    }
-
-    private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            updateSelectedBottomNavigationItem()
-        }
     }
 
 }

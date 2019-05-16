@@ -2,6 +2,7 @@
 <resources>
 
     <dimen name="list_item_height">52dp</dimen>
+    <dimen name="one_line_item_height">28dp</dimen>
     <dimen name="root_padding">18dp</dimen>
     <dimen name="root_padding_double">36dp</dimen>
     <dimen name="root_padding_eighth">2.25dp</dimen>
@@ -9,6 +10,7 @@
     <dimen name="root_padding_half">9dp</dimen>
     <dimen name="root_padding_quadruple">72dp</dimen>
     <dimen name="root_padding_triple">54dp</dimen>
+    <dimen name="splash_card_width">320dp</dimen>
     <dimen name="wins_losses_graph_size">72dp</dimen>
     <dimen name="wins_losses_height">144dp</dimen>
 

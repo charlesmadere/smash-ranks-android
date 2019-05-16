@@ -2,11 +2,11 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
+import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -22,6 +22,16 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
+    init {
+        titleText = context.getText(R.string.delete_all_favorite_players)
+
+        if (isInEditMode) {
+            descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
+                    numberFormat.format(8))
+        }
+
+        setOnClickListener(this)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -62,17 +72,8 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             favoritePlayersManager.addListener(this)
-        }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.delete_favorite_players)
-
-        if (isInEditMode) {
-            descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
-                    numberFormat.format(8))
-        } else {
             refresh()
         }
     }

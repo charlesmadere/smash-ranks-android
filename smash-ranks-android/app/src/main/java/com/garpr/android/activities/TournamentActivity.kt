@@ -3,29 +3,38 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
-import com.garpr.android.App
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentAdapter
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsTournament
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.Match
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.TournamentMode
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.findTournamentInfoItemViewChild
+import com.garpr.android.extensions.putOptionalExtra
+import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.smoothScrollToTop
-import com.garpr.android.extensions.subtitle
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.*
-import com.garpr.android.models.*
+import com.garpr.android.managers.TournamentAdapterManager
+import com.garpr.android.misc.Constants
+import com.garpr.android.misc.ListUtils
+import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorContentLinearLayout
-import com.garpr.android.views.TournamentInfoItemView
 import com.garpr.android.views.TournamentTabsView
 import com.garpr.android.views.toolbars.SearchToolbar
-import com.garpr.android.views.toolbars.TournamentToolbar
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_tournament.*
 import javax.inject.Inject
 
 class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchable,
@@ -33,9 +42,10 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         TournamentTabsView.Listeners {
 
     private var fullTournament: FullTournament? = null
-    private lateinit var tournamentId: String
     private lateinit var adapter: TournamentAdapter
     private var _tournamentMode: TournamentMode = TournamentMode.MATCHES
+
+    private val tournamentId: String by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -46,11 +56,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     @Inject
     protected lateinit var threadUtils: ThreadUtils
 
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val tournamentTabsView: TournamentTabsView by bindView(R.id.topTournamentTabsView)
-    private val tournamentToolbar: TournamentToolbar by bindView(R.id.toolbar)
+    @Inject
+    protected lateinit var tournamentAdapterManager: TournamentAdapterManager
 
 
     companion object {
@@ -69,54 +76,47 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         }
 
         fun getLaunchIntent(context: Context, tournamentId: String, region: Region? = null): Intent {
-            val intent = Intent(context, TournamentActivity::class.java)
+            return Intent(context, TournamentActivity::class.java)
                     .putExtra(EXTRA_TOURNAMENT_ID, tournamentId)
-
-            if (region != null) {
-                intent.putExtra(EXTRA_REGION, region)
-            }
-
-            return intent
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 
     override val activityName = TAG
 
     private fun checkNameAndDateViewScrollStates() {
-        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
+        val view = recyclerView.findTournamentInfoItemViewChild()
 
         if (view == null) {
-            tournamentToolbar.fadeInTitleAndSubtitle()
+            toolbar.fadeInTitleAndSubtitle()
             return
         }
 
         val dateVerticalPositionInWindow = view.dateVerticalPositionInWindow
-        val toolbarVerticalPositionInWindow = tournamentToolbar.verticalPositionInWindow +
-                tournamentToolbar.height
+        val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow + toolbar.height
 
         if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            tournamentToolbar.fadeInTitleAndSubtitle()
+            toolbar.fadeInTitleAndSubtitle()
         } else {
-            tournamentToolbar.fadeOutTitleAndSubtitle()
+            toolbar.fadeOutTitleAndSubtitle()
         }
     }
 
     private fun checkTournamentTabViewsScrollStates() {
-        val view = recyclerView.getChildAt(0) as? TournamentInfoItemView
+        val view = recyclerView.findTournamentInfoItemViewChild()
 
         if (view == null) {
-            tournamentTabsView.animateIn()
+            toolbarTournamentTabsView.animateIn()
             return
         }
 
         val tabsVerticalPositionInWindow = view.tabsVerticalPositionInWindow
-        val toolbarVerticalPositionInWindow = tournamentToolbar.verticalPositionInWindow +
-                tournamentToolbar.height
+        val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow + toolbar.height
 
         if (tabsVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            tournamentTabsView.animateIn()
+            toolbarTournamentTabsView.animateIn()
         } else {
-            tournamentTabsView.animateOut()
+            toolbarTournamentTabsView.animateOut()
         }
     }
 
@@ -131,12 +131,19 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
                 ApiCall(this))
     }
 
+    override fun onBackPressed() {
+        if (toolbar.isSearchFieldExpanded) {
+            toolbar.closeSearchField()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_tournament)
 
-        tournamentId = intent.getStringExtra(EXTRA_TOURNAMENT_ID)
         _tournamentMode = savedInstanceState?.getParcelable(KEY_TOURNAMENT_MODE) ?: tournamentMode
 
         setTitleAndSubtitle()
@@ -145,6 +152,11 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     override fun onRefresh() {
         fetchFullTournament()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(KEY_TOURNAMENT_MODE, tournamentMode)
     }
 
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
@@ -168,12 +180,12 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         }
 
         _tournamentMode = tournamentMode
-        invalidateOptionsMenu()
+        toolbar.refresh()
 
         val tournament = fullTournament ?: throw NullPointerException("fullTournament is null")
         adapter.set(tournamentMode, tournament)
-        tournamentTabsView.refresh()
-        tournamentToolbar.closeSearchLayout()
+        toolbarTournamentTabsView.refresh()
+        toolbar.closeSearchField()
     }
 
     override fun onViewsBound() {
@@ -185,13 +197,8 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         recyclerView.setHasFixedSize(true)
         recyclerView.addOnScrollListener(onScrollListener)
 
-        adapter = TournamentAdapter(this)
+        adapter = TournamentAdapter(tournamentAdapterManager)
         recyclerView.adapter = adapter
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_TOURNAMENT_MODE, tournamentMode)
     }
 
     override fun search(query: String?) {
@@ -207,12 +214,12 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     }
 
     override val searchQuery: CharSequence?
-        get() = tournamentToolbar.searchQuery
+        get() = toolbar.searchQuery
 
     private fun searchTournamentMatches(query: String?, matches: List<FullTournament.Match>?) {
         val tournament = fullTournament
 
-        if (tournament == null || matches == null || matches.isEmpty()) {
+        if (tournament == null || matches.isNullOrEmpty()) {
             return
         }
 
@@ -238,7 +245,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private fun searchTournamentPlayers(query: String?, players: List<AbsPlayer>?) {
         val tournament = fullTournament
 
-        if (tournament == null || players == null || players.isEmpty()) {
+        if (tournament == null || players.isNullOrEmpty()) {
             return
         }
 
@@ -262,20 +269,19 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     }
 
     private fun setTitleAndSubtitle() {
-        if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
+        if (toolbar.hasTitleText && toolbar.hasSubtitleText) {
             return
         }
 
         val tournament = fullTournament ?: return
-        title = tournament.name
-
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.titleText = tournament.name
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
     }
 
     private fun showError(errorCode: Int = Constants.ERROR_CODE_UNKNOWN) {
         recyclerView.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
-        invalidateOptionsMenu()
+        toolbar.refresh()
         refreshLayout.isRefreshing = false
     }
 
@@ -287,13 +293,13 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
         recyclerView.visibility = View.VISIBLE
 
         setTitleAndSubtitle()
-        invalidateOptionsMenu()
+        toolbar.refresh()
 
         refreshLayout.isRefreshing = false
         refreshLayout.isEnabled = false
     }
 
-    override val showSearchMenuItem: Boolean
+    override val showSearchIcon: Boolean
         get() = when (tournamentMode) {
                     TournamentMode.MATCHES -> {
                         fullTournament?.matches?.isNotEmpty() == true
@@ -303,8 +309,6 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
                         fullTournament?.players?.isNotEmpty() == true
                     }
                 }
-
-    override val showUpNavigation = true
 
     override fun success(`object`: FullTournament?) {
         fullTournament = `object`

@@ -1,24 +1,32 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.appcompat_version = '27.1.1'
-    ext.constraint_layout_version = '1.1.0'
-    ext.dagger_version = '2.16'
-    ext.firebase_jobdispatcher_version = '0.8.5'
-    ext.google_play_services_version = '15.0.1'
-    ext.gson_version = '2.8.4'
-    ext.kotlin_version = '1.2.41'
-    ext.retrofit_version = '2.4.0'
-    ext.robolectric_version = '3.8'
+
+    ext.appcompat_version = '1.0.2'
+    ext.cardview_version = '1.0.0'
+    ext.constraintlayout_version = '1.1.3'
+    ext.crashlytics_version = '2.10.0'
+    ext.dagger_version = '2.22.1'
+    ext.fresco_version = '1.13.0'
+    ext.kotlin_version = '1.3.31'
+    ext.material_design_version = '1.0.0'
+    ext.moshi_version = '1.8.0'
+    ext.okhttp_version = '3.14.1'
+    ext.palette_version = '1.0.0'
+    ext.recyclerview_version = '1.0.0'
+    ext.retrofit_version = '2.5.0'
+    ext.robolectric_version = '4.2.1'
+    ext.testcore_version = '1.1.0'
+    ext.workmanager_version = '2.0.1'
 
     repositories {
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:3.1.2"
+        classpath "com.android.tools.build:gradle:3.4.0"
 
         // Kotlin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -31,7 +39,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
     }
 }

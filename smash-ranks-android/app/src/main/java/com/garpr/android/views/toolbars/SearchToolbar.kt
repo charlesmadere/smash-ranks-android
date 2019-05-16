@@ -1,94 +1,142 @@
 package com.garpr.android.views.toolbars
 
 import android.content.Context
-import android.support.v7.widget.SearchView
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.KeyEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import com.garpr.android.R
-import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.clear
+import com.garpr.android.extensions.hideKeyboard
+import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.extensions.requestFocusAndOpenKeyboard
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
+import kotlinx.android.synthetic.main.gar_toolbar.view.*
+import kotlinx.android.synthetic.main.search_toolbar_items.view.*
 
-abstract class SearchToolbar @JvmOverloads constructor(
+open class SearchToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : MenuToolbar(context, attrs), MenuItem.OnActionExpandListener, SearchQueryHandle,
-        SearchView.OnQueryTextListener {
+) : GarToolbar(context, attrs), SearchQueryHandle, TextView.OnEditorActionListener, TextWatcher {
 
-    private var searchMenuItem: MenuItem? = null
-    private var searchView: SearchView? = null
+    private val wasShowingUpNavigation = showUpNavigation
 
 
     interface Listener {
-        val showSearchMenuItem: Boolean
+        val showSearchIcon: Boolean
     }
 
-    fun closeSearchLayout() {
-        if (isSearchLayoutExpanded) {
-            searchMenuItem?.collapseActionView()
+    init {
+        layoutInflater.inflate(R.layout.search_toolbar_items, menuExpansionContainer)
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+        (activity as? Searchable?)?.search(searchQuery?.toString())
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        // intentionally empty
+    }
+
+    fun closeSearchField() {
+        if (isSearchFieldExpanded) {
+            onCloseSearchField()
         }
     }
 
-    val isSearchLayoutExpanded: Boolean
-        get() = searchMenuItem?.isActionViewExpanded == true
+    val isSearchFieldExpanded: Boolean
+        get() = searchField.visibility == View.VISIBLE
 
-    override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
-        val searchMenuItem = menu.findItem(R.id.miSearch) ?: throw NullPointerException(
-                "searchMenuItem is null")
-        searchMenuItem.setOnActionExpandListener(this)
-        this.searchMenuItem = searchMenuItem
+    protected open fun onCloseSearchField() {
+        activity?.hideKeyboard()
+        searchField.clear()
+        searchField.visibility = View.GONE
+        showUpNavigation = wasShowingUpNavigation
 
-        val searchView = searchMenuItem.actionView as SearchView
-        searchView.queryHint = resources.getText(R.string.search_)
-        searchView.setOnQueryTextListener(this)
-        this.searchView = searchView
+        menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as LayoutParams).apply {
+            startToEnd = View.NO_ID
+            width = ViewGroup.LayoutParams.WRAP_CONTENT
+        }
 
-        super.onCreateOptionsMenu(inflater, menu)
+        showTitleContainer = true
+        refreshSearchIcon()
     }
 
-    override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-        postRefresh()
-        return true
-    }
+    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            (activity as? Searchable?)?.search(searchQuery?.toString())
+            activity?.hideKeyboard()
+        }
 
-    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-        postRefresh()
-        return true
-    }
-
-    override fun onQueryTextChange(newText: String): Boolean {
-        (context.optActivity() as? Searchable)?.search(newText)
         return false
     }
 
-    override fun onQueryTextSubmit(query: String): Boolean {
-        onQueryTextChange(query)
-        return false
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        searchIcon.setOnClickListener {
+            openSearchField()
+        }
+
+        searchField.addTextChangedListener(this)
+        searchField.setOnEditorActionListener(this)
     }
 
-    override fun onRefreshMenu() {
-        super.onRefreshMenu()
+    protected open fun onOpenSearchField() {
+        showTitleContainer = false
+        searchIcon.visibility = View.GONE
+        showUpNavigation = true
 
-        val searchMenuItem = this.searchMenuItem ?: throw IllegalStateException(
-                "searchMenuItem is null")
+        menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as LayoutParams).apply {
+            startToEnd = toolbarSpace.id
+            width = LayoutParams.MATCH_CONSTRAINT
+        }
 
-        if (isSearchLayoutExpanded) {
-            for (i in 0 until menu.size()) {
-                val menuItem = menu.getItem(i)
+        searchField.visibility = View.VISIBLE
+        searchField.requestFocusAndOpenKeyboard()
+    }
 
-                if (menuItem.itemId != searchMenuItem.itemId) {
-                    menuItem.isVisible = false
-                }
+    private fun openSearchField() {
+        if (!isSearchFieldExpanded) {
+            onOpenSearchField()
+        }
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        // intentionally empty
+    }
+
+    override fun refresh() {
+        super.refresh()
+        refreshSearchIcon()
+    }
+
+    private fun refreshSearchIcon() {
+        if ((activity as? Listener?)?.showSearchIcon == true) {
+            if (!isSearchFieldExpanded) {
+                searchIcon.visibility = View.VISIBLE
             }
         } else {
-            val activity = context.optActivity()
-            searchMenuItem.isVisible = (activity as? Listener)?.showSearchMenuItem == true
+            closeSearchField()
+            searchIcon.visibility = View.GONE
         }
     }
 
     override val searchQuery: CharSequence?
-        get() = searchView?.query
+        get() = searchField.text
+
+    override fun upNavigate() {
+        if (isSearchFieldExpanded) {
+            closeSearchField()
+        } else {
+            super.upNavigate()
+        }
+    }
 
 }

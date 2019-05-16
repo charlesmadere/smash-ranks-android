@@ -21,12 +21,9 @@ class PersistentIntegerPreference(
         }
     }
 
-    override fun performSet(newValue: Int, notifyListeners: Boolean) {
+    override fun performSet(newValue: Int) {
         keyValueStore.setInteger(key, newValue)
-
-        if (notifyListeners) {
-            notifyListeners()
-        }
+        notifyListeners()
     }
 
 }

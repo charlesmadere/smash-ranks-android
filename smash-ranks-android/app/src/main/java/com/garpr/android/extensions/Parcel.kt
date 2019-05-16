@@ -3,7 +3,18 @@ package com.garpr.android.extensions
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import com.garpr.android.models.*
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsRegion
+import com.garpr.android.data.models.AbsTournament
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.LiteRegion
+import com.garpr.android.data.models.LiteTournament
+import com.garpr.android.data.models.RankedPlayer
+import com.garpr.android.data.models.Rating
+import com.garpr.android.data.models.Region
 
 inline fun <reified T : Parcelable> createParcel(
         crossinline createFromParcel: (Parcel) -> T?) = object : Parcelable.Creator<T> {
@@ -16,6 +27,7 @@ fun Parcel.readAbsPlayer(): AbsPlayer {
 }
 
 fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
+    @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsPlayer.Kind>(AbsPlayer.Kind::class.java.classLoader) ?: return null
 
     return when (kind) {
@@ -60,7 +72,7 @@ fun Parcel.writeAbsPlayerList(list: List<AbsPlayer>?, flags: Int) {
     }
 
     for (i in 0 until size) {
-        writeAbsPlayer(list!![i], flags)
+        writeAbsPlayer(list.require(i), flags)
     }
 }
 
@@ -69,6 +81,7 @@ fun Parcel.readAbsRegion(): AbsRegion {
 }
 
 fun Parcel.readOptionalAbsRegion(): AbsRegion? {
+    @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsRegion.Kind>(AbsRegion::class.java.classLoader) ?: return null
 
     return when (kind) {
@@ -111,7 +124,7 @@ fun Parcel.writeAbsRegionList(list: List<AbsRegion>?, flags: Int) {
     }
 
     for (i in 0 until size) {
-        writeAbsRegion(list!![i], flags)
+        writeAbsRegion(list.require(i), flags)
     }
 }
 
@@ -120,6 +133,7 @@ fun Parcel.readAbsTournament(): AbsTournament {
 }
 
 fun Parcel.readOptionalAbsTournament(): AbsTournament? {
+    @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsTournament.Kind>(AbsTournament.Kind::class.java.classLoader) ?: return null
 
     return when (kind) {
@@ -162,15 +176,15 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
     }
 
     for (i in 0 until size) {
-        writeAbsTournament(list!![i], flags)
+        writeAbsTournament(list.require(i), flags)
     }
 }
 
-fun Parcel.readBoolean(): Boolean {
-    return readOptionalBoolean() ?: throw NullPointerException()
+fun Parcel.requireBoolean(): Boolean {
+    return readBoolean() ?: throw NullPointerException()
 }
 
-fun Parcel.readOptionalBoolean(): Boolean? {
+fun Parcel.readBoolean(): Boolean? {
     return readValue(Boolean::class.java.classLoader) as Boolean?
 }
 
@@ -178,7 +192,7 @@ fun Parcel.writeBoolean(boolean: Boolean?) {
     writeValue(boolean)
 }
 
-fun Parcel.readOptionalInteger(): Int? {
+fun Parcel.readInteger(): Int? {
     return readValue(Integer::class.java.classLoader) as Int?
 }
 
@@ -186,60 +200,42 @@ fun Parcel.writeInteger(integer: Int?) {
     writeValue(integer)
 }
 
+fun <T : Parcelable> Parcel.requireParcelable(loader: ClassLoader?): T {
+    if (loader == null) {
+        throw NullPointerException("ClassLoader is null")
+    }
+
+    return readParcelable(loader) ?: throw NullPointerException()
+}
+
 fun Parcel.readRatingsMap(): Map<String, Rating>? {
     val bundle = readBundle(Rating::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, Rating>()
 
     for (key in bundle.keySet()) {
-        map[key] = bundle.getParcelable(key)
+        map[key] = bundle.requireParcelable(key)
     }
 
     return map
 }
 
 fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
-    val size = map?.size ?: 0
-
-    if (size == 0) {
+    if (map.isNullOrEmpty()) {
         writeBundle(null)
         return
     }
 
-    val bundle = Bundle(size)
+    val bundle = Bundle(map.size)
 
-    for ((key, value) in map!!) {
+    for ((key, value) in map) {
         bundle.putParcelable(key, value)
     }
 
     writeBundle(bundle)
 }
 
-fun Parcel.readSmashCompetitorMap(): Map<String, SmashCompetitor>? {
-    val bundle = readBundle(SmashCompetitor::class.java.classLoader) ?: return null
-    val map = mutableMapOf<String, SmashCompetitor>()
-
-    for (key in bundle.keySet()) {
-        map[key] = bundle.getParcelable(key)
-    }
-
-    return map
-}
-
-fun Parcel.writeSmashCompetitorMap(map: Map<String, SmashCompetitor>?) {
-    val size = map?.size ?: 0
-
-    if (size == 0) {
-        writeBundle(null)
-        return
-    }
-
-    val bundle = Bundle(size)
-
-    for ((key, value) in map!!) {
-        bundle.putParcelable(key, value)
-    }
-
-    writeBundle(bundle)
+fun Parcel.requireString(): String {
+    return readString() ?: throw NullPointerException()
 }
 
 fun Parcel.readStringMap(): Map<String, String>? {
@@ -247,23 +243,21 @@ fun Parcel.readStringMap(): Map<String, String>? {
     val map = mutableMapOf<String, String>()
 
     for (key in bundle.keySet()) {
-        map[key] = bundle.getString(key)
+        map[key] = bundle.requireString(key)
     }
 
     return map
 }
 
 fun Parcel.writeStringMap(map: Map<String, String>?) {
-    val size = map?.size ?: 0
-
-    if (size == 0) {
+    if (map.isNullOrEmpty()) {
         writeBundle(null)
         return
     }
 
-    val bundle = Bundle(size)
+    val bundle = Bundle(map.size)
 
-    for ((key, value) in map!!) {
+    for ((key, value) in map) {
         bundle.putString(key, value)
     }
 

@@ -7,7 +7,7 @@
     <TextView
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:id="@+id/tvName"
+        android:id="@+id/name"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
         android:layout_weight="1"

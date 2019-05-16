@@ -1,24 +1,21 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
-import com.garpr.android.App
-import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.AbsPlayer
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_player.view.*
 import javax.inject.Inject
 
-class PlayerItemView : IdentityFrameLayout, BaseAdapterView<AbsPlayer>, View.OnClickListener,
+class PlayerItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : IdentityFrameLayout(context, attrs), BaseAdapterView<AbsPlayer>, View.OnClickListener,
         View.OnLongClickListener {
 
     @Inject
@@ -27,17 +24,15 @@ class PlayerItemView : IdentityFrameLayout, BaseAdapterView<AbsPlayer>, View.OnC
     @Inject
     protected lateinit var regionManager: RegionManager
 
-    private val name: TextView by bindView(R.id.tvName)
 
+    init {
+        setOnClickListener(this)
+        setOnLongClickListener(this)
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
 
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
@@ -50,21 +45,9 @@ class PlayerItemView : IdentityFrameLayout, BaseAdapterView<AbsPlayer>, View.OnC
     }
 
     override fun onClick(v: View) {
-        identity?.let {
-            context.startActivity(PlayerActivity.getLaunchIntent(context, it,
-                    regionManager.getRegion(context)))
-        }
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            App.get().appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
-        setOnLongClickListener(this)
+        val identity = this.identity ?: return
+        context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
+                regionManager.getRegion(context)))
     }
 
     override fun onLongClick(v: View): Boolean {

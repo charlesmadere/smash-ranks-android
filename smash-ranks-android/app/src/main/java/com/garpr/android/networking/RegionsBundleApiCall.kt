@@ -1,11 +1,11 @@
 package com.garpr.android.networking
 
+import com.garpr.android.data.models.AbsRegion
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.misc.Heartbeat
-import com.garpr.android.models.AbsRegion
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
-import java.util.*
+import java.util.Collections
 
 class RegionsBundleApiCall(
         private val listener: ApiListener<RegionsBundle>,
@@ -35,11 +35,11 @@ class RegionsBundleApiCall(
         val regionsSet = mutableSetOf<AbsRegion>()
 
         garPrRegions?.regions?.let {
-            it.mapTo(regionsSet) { Region(it, Endpoint.GAR_PR) }
+            it.mapTo(regionsSet) { region -> Region(region, Endpoint.GAR_PR) }
         }
 
         notGarPrRegions?.regions?.let {
-            it.mapTo(regionsSet) { Region(it, Endpoint.NOT_GAR_PR) }
+            it.mapTo(regionsSet) { region -> Region(region, Endpoint.NOT_GAR_PR) }
         }
 
         if (regionsSet.isEmpty()) {

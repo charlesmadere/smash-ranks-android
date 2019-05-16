@@ -4,23 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/ConstraintListItem">
 
+    <ImageView
+        android:id="@+id/previousRankView"
+        android:importantForAccessibility="no"
+        android:layout_height="@dimen/previous_rank_view_size"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_width="@dimen/previous_rank_view_size"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_arrow_upward_white_18dp"
+        tools:visibility="visible" />
+
     <TextView
         android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
-        android:id="@+id/tvRank"
+        android:id="@+id/rank"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/previousRankView"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="84" />
 
     <TextView
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:id="@+id/tvName"
+        android:id="@+id/name"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_marginEnd="@dimen/root_padding"
@@ -31,8 +44,8 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_large"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvRating"
-        app:layout_constraintStart_toEndOf="@id/tvRank"
+        app:layout_constraintEnd_toStartOf="@+id/rating"
+        app:layout_constraintStart_toEndOf="@id/rank"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Charlezard" />
 
@@ -40,7 +53,7 @@
         android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
         android:gravity="end"
-        android:id="@id/tvRating"
+        android:id="@+id/rating"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_width="wrap_content"

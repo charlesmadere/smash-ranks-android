@@ -1,9 +1,9 @@
 package com.garpr.android.misc
 
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FullTournament
 import com.garpr.android.misc.FullTournamentUtils.Callback
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullTournament
-import java.util.*
+import java.util.Collections
 
 class FullTournamentUtilsImpl(
         private val threadUtils: ThreadUtils

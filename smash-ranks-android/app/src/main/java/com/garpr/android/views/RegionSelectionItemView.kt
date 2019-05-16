@@ -1,27 +1,19 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
-import android.widget.RadioButton
-import android.widget.TextView
-import com.garpr.android.R
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
-import com.garpr.android.extensions.optActivity
-import com.garpr.android.models.Region
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_region_selection.view.*
 
 class RegionSelectionItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs), BaseAdapterView<Region>, View.OnClickListener {
-
-    private val radioButton: RadioButton by bindView(R.id.radioButton)
-    private val displayName: TextView by bindView(R.id.tvDisplayName)
-    private val id: TextView by bindView(R.id.tvId)
-
 
     interface Listeners {
         fun onClick(v: RegionSelectionItemView)
@@ -31,11 +23,11 @@ class RegionSelectionItemView @JvmOverloads constructor(
     private fun clear() {
         radioButton.isChecked = false
         displayName.clear()
-        id.clear()
+        regionId.clear()
     }
 
     override fun onClick(v: View) {
-        (context.optActivity() as? Listeners)?.onClick(this)
+        (activity as? Listeners?)?.onClick(this)
     }
 
     override fun onFinishInflate() {
@@ -52,9 +44,9 @@ class RegionSelectionItemView @JvmOverloads constructor(
                 return
             }
 
-            radioButton.isChecked = value == (context.optActivity() as? Listeners)?.selectedRegion
+            radioButton.isChecked = value == (activity as? Listeners?)?.selectedRegion
             displayName.text = value.displayName
-            id.text = value.id
+            regionId.text = value.id
         }
 
     override fun setContent(content: Region) {

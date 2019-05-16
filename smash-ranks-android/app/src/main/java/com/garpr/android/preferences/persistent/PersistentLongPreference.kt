@@ -21,12 +21,9 @@ class PersistentLongPreference(
         }
     }
 
-    override fun performSet(newValue: Long, notifyListeners: Boolean) {
+    override fun performSet(newValue: Long) {
         keyValueStore.setLong(key, newValue)
-
-        if (notifyListeners) {
-            notifyListeners()
-        }
+        notifyListeners()
     }
 
 }

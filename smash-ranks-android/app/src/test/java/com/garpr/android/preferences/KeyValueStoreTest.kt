@@ -1,7 +1,11 @@
 package com.garpr.android.preferences
 
 import com.garpr.android.BaseTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,24 +20,21 @@ class KeyValueStoreTest : BaseTest() {
 
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testAll() {
         val all = keyValueStore.all
-        assertTrue(all == null || all.isEmpty())
+        assertTrue(all.isNullOrEmpty())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testAllAndSet() {
         var all = keyValueStore.all
-        assertTrue(all == null || all.isEmpty())
+        assertTrue(all.isNullOrEmpty())
 
         keyValueStore.setFloat("float", Float.MIN_VALUE)
         all = keyValueStore.all
@@ -47,87 +48,79 @@ class KeyValueStoreTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBatchEditNotNull() {
         assertNotNull(keyValueStore.batchEdit())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBatchEditPutAndApplyWithInteger() {
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putInteger("Integer", 100)
                 .apply()
 
-        assertTrue(keyValueStore.contains("Integer"))
+        assertTrue("Integer" in keyValueStore)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBatchEditPutAndApplyWithString() {
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putString("String", "Hello, World")
                 .apply()
 
-        assertTrue(keyValueStore.contains("String"))
+        assertTrue("String" in keyValueStore)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBatchEditPutAndApplyAndClear() {
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putString("String", "Hello, World")
                 .apply()
 
-        assertTrue(keyValueStore.contains("String"))
+        assertTrue("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putInteger("Integer", 1000)
                 .apply()
 
-        assertTrue(keyValueStore.contains("String"))
-        assertTrue(keyValueStore.contains("Integer"))
+        assertTrue("String" in keyValueStore)
+        assertTrue("Integer" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .clear()
                 .apply()
 
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
         assertEquals(0, keyValueStore.all?.size ?: 0)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBatchEditPutWithoutApply() {
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putString("String", "Hello, World")
 
-        assertFalse(keyValueStore.contains("String"))
+        assertFalse("String" in keyValueStore)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testClear() {
         keyValueStore.clear()
         assertNull(keyValueStore.all)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testContains() {
         assertFalse("boolean" in keyValueStore)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testContainsAndSet() {
         assertFalse("hello" in keyValueStore)
 
@@ -136,7 +129,6 @@ class KeyValueStoreTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testContainsAndSetAndRemove() {
         assertFalse("hello" in keyValueStore)
 
@@ -148,7 +140,6 @@ class KeyValueStoreTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testFallbackValue() {
         assertEquals(keyValueStore.getBoolean("bool", false), false)
         assertEquals(keyValueStore.getBoolean("bool", true), true)
@@ -162,10 +153,9 @@ class KeyValueStoreTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAllAndSetAndRemove() {
         var all = keyValueStore.all
-        assertTrue(all == null || all.isEmpty())
+        assertTrue(all.isNullOrEmpty())
 
         keyValueStore.setFloat("float", Float.MIN_VALUE)
         all = keyValueStore.all
@@ -189,18 +179,16 @@ class KeyValueStoreTest : BaseTest() {
 
         keyValueStore.remove("String")
         all = keyValueStore.all
-        assertTrue(all == null || all.isEmpty())
+        assertTrue(all.isNullOrEmpty())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetBoolean() {
         assertFalse(keyValueStore.getBoolean("boolean", false))
         assertTrue(keyValueStore.getBoolean("boolean", true))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAndSetBoolean() {
         assertFalse(keyValueStore.getBoolean("boolean", false))
 
@@ -212,43 +200,54 @@ class KeyValueStoreTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetFloat() {
-        assertEquals(keyValueStore.getFloat("float", Float.MIN_VALUE), Float.MIN_VALUE)
-        assertEquals(keyValueStore.getFloat("float", Float.MAX_VALUE), Float.MAX_VALUE)
+        assertEquals(Float.MIN_VALUE, keyValueStore.getFloat("float", Float.MIN_VALUE))
+        assertEquals(Float.MAX_VALUE, keyValueStore.getFloat("float", Float.MAX_VALUE))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAndSetFloat() {
-        assertEquals(keyValueStore.getFloat("float", Float.MIN_VALUE), Float.MIN_VALUE)
-        assertEquals(keyValueStore.getFloat("float", Float.MAX_VALUE), Float.MAX_VALUE)
+        assertEquals(Float.MIN_VALUE, keyValueStore.getFloat("float", Float.MIN_VALUE))
+        assertEquals(Float.MAX_VALUE, keyValueStore.getFloat("float", Float.MAX_VALUE))
 
         keyValueStore.setFloat("float", Float.MAX_VALUE)
-        assertEquals(keyValueStore.getFloat("float", Float.MIN_VALUE), Float.MAX_VALUE)
+        assertEquals(Float.MAX_VALUE, keyValueStore.getFloat("float", Float.MIN_VALUE))
 
         keyValueStore.setFloat("float", Float.MIN_VALUE)
-        assertEquals(keyValueStore.getFloat("float", Float.MIN_VALUE), Float.MIN_VALUE)
+        assertEquals(Float.MIN_VALUE, keyValueStore.getFloat("float", Float.MIN_VALUE))
     }
 
     @Test
-    @Throws(Exception::class)
+    fun testGetString() {
+        assertNull(keyValueStore.getString("hello", null))
+        assertEquals("world", keyValueStore.getString("hello", "world"))
+    }
+
+    @Test
+    fun testGetAndSetString() {
+        assertNull(keyValueStore.getString("string", null))
+
+        keyValueStore.setString("string", "moose")
+        assertEquals("moose", keyValueStore.getString("string", null))
+        assertNull(keyValueStore.getString("moose", null))
+    }
+
+    @Test
     fun testRemove() {
         keyValueStore.remove("boolean")
-        assertFalse(keyValueStore.contains("boolean"))
+        assertFalse("boolean" in keyValueStore)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRemoveAndSet() {
         keyValueStore.remove("long")
-        assertFalse(keyValueStore.contains("long"))
+        assertFalse("long" in keyValueStore)
 
         keyValueStore.setLong("long", 100)
-        assertTrue(keyValueStore.contains("long"))
+        assertTrue("long" in keyValueStore)
 
         keyValueStore.remove("long")
-        assertFalse(keyValueStore.contains("long"))
+        assertFalse("long" in keyValueStore)
     }
 
 }

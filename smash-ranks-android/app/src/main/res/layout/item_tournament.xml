@@ -6,7 +6,7 @@
 
     <TextView
         android:ellipsize="end"
-        android:id="@+id/tvName"
+        android:id="@+id/name"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_marginEnd="@dimen/root_padding"
@@ -17,7 +17,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_large"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvDate"
+        app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Genesis 3" />
@@ -26,7 +26,7 @@
         android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
         android:gravity="end"
-        android:id="@id/tvDate"
+        android:id="@+id/date"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/root_padding"
         android:layout_width="wrap_content"

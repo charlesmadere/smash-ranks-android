@@ -1,24 +1,20 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.ColorInt
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
-import com.garpr.android.App
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.HeadToHeadMatch
+import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.MatchResult
+import com.garpr.android.dialogs.HeadToHeadDialogFragment
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.HeadToHeadMatch
-import com.garpr.android.models.LitePlayer
-import com.garpr.android.models.MatchResult
-import kotterknife.bindView
-import javax.inject.Inject
+import com.garpr.android.extensions.requireFragmentActivity
+import kotlinx.android.synthetic.main.item_head_to_head_match.view.*
 
 class HeadToHeadMatchItemView @JvmOverloads constructor(
         context: Context,
@@ -27,27 +23,28 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
         View.OnClickListener {
 
     @ColorInt
-    private var exclusionColor: Int = 0
+    private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
 
     @ColorInt
-    private var loseColor: Int = 0
+    private val loseColor: Int = ContextCompat.getColor(context, R.color.lose)
 
     @ColorInt
-    private var winColor: Int = 0
+    private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
-    @Inject
-    protected lateinit var regionManager: RegionManager
 
-    private val opponentName: TextView by bindView(R.id.tvOpponentName)
-    private val playerName: TextView by bindView(R.id.tvPlayerName)
+    init {
+        setOnClickListener(this)
 
+        if (isInEditMode) {
+            setContent(HeadToHeadMatch(MatchResult.WIN, LitePlayer("0", "Shroomed"),
+                    LitePlayer("1", "PewPewU")))
+        }
+    }
 
     override fun clear() {
-        super.clear()
-
         playerName.clear()
         opponentName.clear()
-        refresh()
+        super.clear()
     }
 
     private var match: HeadToHeadMatch? = null
@@ -82,41 +79,8 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
 
     override fun onClick(v: View) {
         val match = this.match ?: return
-        val items = arrayOf(match.player.name, match.opponent.name)
-
-        AlertDialog.Builder(context)
-                .setItems(items, { dialog, which ->
-                    when (which) {
-                        0 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.player, regionManager.getRegion(context)))
-
-                        1 -> context.startActivity(PlayerActivity.getLaunchIntent(context,
-                                match.opponent, regionManager.getRegion(context)))
-
-                        else -> throw RuntimeException("illegal which: $which")
-                    }
-                })
-                .setTitle(R.string.view)
-                .show()
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            App.get().appComponent.inject(this)
-        }
-
-        exclusionColor = context.getAttrColor(android.R.attr.textColorSecondary)
-        loseColor = ContextCompat.getColor(context, R.color.lose)
-        winColor = ContextCompat.getColor(context, R.color.win)
-
-        setOnClickListener(this)
-
-        if (isInEditMode) {
-            setContent(HeadToHeadMatch(MatchResult.WIN, LitePlayer("0", "Shroomed"),
-                    LitePlayer("1", "PewPewU")))
-        }
+        val dialog = HeadToHeadDialogFragment.create(match)
+        dialog.show(requireFragmentActivity().supportFragmentManager, HeadToHeadDialogFragment.TAG)
     }
 
     override fun setContent(content: HeadToHeadMatch) {

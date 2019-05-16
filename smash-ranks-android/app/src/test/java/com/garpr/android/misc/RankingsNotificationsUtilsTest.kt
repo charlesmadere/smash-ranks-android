@@ -1,12 +1,19 @@
 package com.garpr.android.misc
 
 import com.garpr.android.BaseTest
-import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.*
+import com.garpr.android.data.models.RankingsBundle
+import com.garpr.android.extensions.requireFromJson
+import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.CANCEL
+import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
+import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo.SHOW
 import com.garpr.android.misc.RankingsNotificationsUtils.PollStatus
-import com.garpr.android.models.RankingsBundle
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.google.gson.Gson
-import org.junit.Assert.*
+import com.squareup.moshi.Moshi
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,7 +27,7 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     protected lateinit var deviceUtils: DeviceUtils
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
     @Inject
     protected lateinit var rankingsNotificationsUtils: RankingsNotificationsUtils
@@ -40,16 +47,15 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     }
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
 
-        rankingsBundle = gson.fromJson(JSON_RANKINGS_BUNDLE, RankingsBundle::class.java)
+        val rankingsBundleAdapter = moshi.adapter(RankingsBundle::class.java)
+        rankingsBundle = rankingsBundleAdapter.requireFromJson(JSON_RANKINGS_BUNDLE)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetNotificationInfo() {
         setHasNetworkConnection(true)
         rankingsPollingPreferenceStore.enabled.set(true)
@@ -75,23 +81,21 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetNotificationInfoWithNulls() {
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(null,
                 null))
 
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(null, false, false), null))
+                PollStatus(proceed = false, retry = false), null))
 
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(RANKINGS_ID_1, false, false), null))
+                PollStatus(oldRankingsId = RANKINGS_ID_1, proceed = false, retry = false), null))
 
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(null, false, false), null))
+                PollStatus(proceed = false, retry = false), null))
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetPollStatus() {
         setHasNetworkConnection(false)
         rankingsPollingPreferenceStore.enabled.set(false)
@@ -127,7 +131,6 @@ class RankingsNotificationsUtilsTest : BaseTest() {
         assertTrue(pollStatus.retry)
     }
 
-    @Throws(Exception::class)
     private fun setHasNetworkConnection(hasNetworkConnection: Boolean) {
         if (deviceUtils is TestDeviceUtilsImpl) {
             (deviceUtils as TestDeviceUtilsImpl).setHasNetworkConnection(hasNetworkConnection)

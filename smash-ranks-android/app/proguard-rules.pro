@@ -18,7 +18,7 @@
 
 
 -keepclassmembers enum com.garpr.android.** { *; }
--keep class com.garpr.android.models.** { *; }
+-keep class com.garpr.android.data.models.** { *; }
 
 
 ############
@@ -38,49 +38,41 @@
 }
 
 
+#######################
+## Facebook's Fresco ##
+#######################
+# Fresco v0.8.1 ProGuard rules.
+# https://github.com/facebook/fresco
+
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+
+# Do not strip any method/class that is annotated with @DoNotStrip
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+    @com.facebook.common.internal.DoNotStrip *;
+}
+
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn com.android.volley.toolbox.**
+
+
 ################################
 ## Google's AppCompat Library ##
 ################################
--keep public class android.support.v7.widget.** { *; }
--keep public class android.support.v7.internal.widget.** { *; }
--keep public class android.support.v7.internal.view.menu.** { *; }
-
--keep public class * extends android.support.v4.view.ActionProvider {
-    public <init>(android.content.Context);
-}
+-keep public class androidx.appcompat.widget.** { *; }
 
 
 ##############################
 ## Google's CardView Libary ##
 ##############################
 # http://stackoverflow.com/questions/29679177/cardview-shadow-not-appearing-in-lollipop-after-obfuscate-with-proguard/29698051
--keep class android.support.v7.widget.RoundRectDrawable { *; }
-
-
-#############################
-## Google's Design Library ##
-#############################
--dontwarn android.support.design.**
--keep class android.support.design.** { *; }
--keep interface android.support.design.** { *; }
--keep public class android.support.design.R$* { *; }
-
-
-###################
-## Google's GSON ##
-###################
-# Gson uses generic type information stored in a class file when working with fields. Proguard
-# removes such information by default, so configure it to keep all of it.
--keepattributes Signature
-
-# For using GSON @Expose annotation
--keepattributes *Annotation*
-
--keepattributes EnclosingMethod
-
-# Gson specific classes
--keep class sun.misc.Unsafe { *; }
--keep class com.google.gson.stream.** { *; }
+-keep class androidx.cardview.widget.RoundRectDrawable { *; }
 
 
 ##########################
@@ -101,6 +93,60 @@
 
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
+}
+
+
+####################
+## Square's Moshi ##
+####################
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+-keepclasseswithmembers class * {
+    @com.squareup.moshi.* <methods>;
+}
+
+-keep @com.squareup.moshi.JsonQualifier interface *
+
+# Enum field names are used by the integrated EnumJsonAdapter.
+# Annotate enums with @JsonClass(generateAdapter = false) to use them with Moshi.
+-keepclassmembers @com.squareup.moshi.JsonClass class * extends java.lang.Enum {
+    <fields>;
+}
+
+# The name of @JsonClass types is used to look up the generated adapter.
+-keepnames @com.squareup.moshi.JsonClass class *
+
+# Retain generated JsonAdapters if annotated type is retained.
+-if @com.squareup.moshi.JsonClass class *
+-keep class <1>JsonAdapter {
+    <init>(...);
+    <fields>;
+}
+-if @com.squareup.moshi.JsonClass class **$*
+-keep class <1>_<2>JsonAdapter {
+    <init>(...);
+    <fields>;
+}
+-if @com.squareup.moshi.JsonClass class **$*$*
+-keep class <1>_<2>_<3>JsonAdapter {
+    <init>(...);
+    <fields>;
+}
+-if @com.squareup.moshi.JsonClass class **$*$*$*
+-keep class <1>_<2>_<3>_<4>JsonAdapter {
+    <init>(...);
+    <fields>;
+}
+-if @com.squareup.moshi.JsonClass class **$*$*$*$*
+-keep class <1>_<2>_<3>_<4>_<5>JsonAdapter {
+    <init>(...);
+    <fields>;
+}
+-if @com.squareup.moshi.JsonClass class **$*$*$*$*$*
+-keep class <1>_<2>_<3>_<4>_<5>_<6>JsonAdapter {
+    <init>(...);
+    <fields>;
 }
 
 
@@ -126,11 +172,11 @@
 #######################
 ## Square's Retrofit ##
 #######################
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
+# Retain generic type information for use by reflection by converters and adapters.
 -keepattributes Signature
--keepattributes Exceptions
-
--keepclasseswithmembers class * {
+# Retain service method parameters.
+-keepclassmembernames,allowobfuscation interface * {
     @retrofit2.http.* <methods>;
 }
+# Ignore annotation used for build tooling.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
