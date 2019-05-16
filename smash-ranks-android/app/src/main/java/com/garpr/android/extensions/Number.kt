@@ -1,13 +1,12 @@
 package com.garpr.android.extensions
 
-import java.text.DecimalFormat
 import java.text.NumberFormat
 
-private val DECIMAL_FORMAT: NumberFormat = DecimalFormat("#.###").apply {
+private val TRUNCATE_DECIMAL_FORMAT: NumberFormat = NumberFormat.getInstance().apply {
     maximumFractionDigits = 3
     minimumFractionDigits = 3
 }
 
 fun Number.truncate(): String {
-    return DECIMAL_FORMAT.format(toDouble())
+    return TRUNCATE_DECIMAL_FORMAT.format(toDouble())
 }
