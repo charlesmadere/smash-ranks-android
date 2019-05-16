@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_height="@dimen/avatar_size"
         android:layout_marginBottom="@dimen/root_padding_half"
-        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_marginTop="@dimen/root_padding"
         android:layout_width="@dimen/avatar_size"
         android:visibility="gone"
         app:actualImageScaleType="centerCrop"
