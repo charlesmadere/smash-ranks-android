@@ -93,7 +93,7 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
             dialogMessage.text = getString(R.string.add_x_to_favorites, player.name)
             dialogPositiveText.setText(R.string.yes_add)
             dialogPositiveText.setStartCompoundDrawableRelativeWithIntrinsicBounds(
-                    R.drawable.ic_add_circle_white_24)
+                    R.drawable.ic_add_circle_white_24dp)
         }
     }
 
