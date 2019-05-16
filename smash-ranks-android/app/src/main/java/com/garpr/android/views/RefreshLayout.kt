@@ -1,12 +1,12 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.annotation.IdRes
-import android.support.v4.view.ViewCompat
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.IdRes
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.ListLayout
@@ -21,11 +21,15 @@ open class RefreshLayout @JvmOverloads constructor(
 ) : SwipeRefreshLayout(context, attrs), Heartbeat, ListLayout {
 
     @IdRes
-    private var scrollingChildId: Int = View.NO_ID
+    private val scrollingChildId: Int
+
+    var scrollingChild: View? = null
 
 
     init {
-        parseAttributes(attrs)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.RefreshLayout)
+        scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChildId, View.NO_ID)
+        ta.recycle()
     }
 
     /*
@@ -33,6 +37,10 @@ open class RefreshLayout @JvmOverloads constructor(
      */
     override fun canChildScrollUp(): Boolean {
         return scrollingChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
+    }
+
+    override fun getRecyclerView(): RecyclerView? {
+        return scrollingChild as? RecyclerView
     }
 
     override val isAlive: Boolean
@@ -46,29 +54,8 @@ open class RefreshLayout @JvmOverloads constructor(
                     "unable to find scrolling child (${resources.getResourceName(scrollingChildId)})")
         }
 
+        setColorSchemeColors(*resources.getIntArray(R.array.spinner_colors))
         setProgressBackgroundColorSchemeResource(R.color.card_background)
     }
-
-    private fun parseAttributes(attrs: AttributeSet?) {
-        if (isInEditMode) {
-            return
-        }
-
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.RefreshLayout)
-        val spinnerColorsResId = ta.getResourceId(R.styleable.RefreshLayout_spinnerColors,
-                R.array.spinner_colors)
-        setColorSchemeColors(*resources.getIntArray(spinnerColorsResId))
-
-        if (ta.hasValue(R.styleable.RefreshLayout_scrollingChildId)) {
-            scrollingChildId = ta.getResourceId(R.styleable.RefreshLayout_scrollingChildId, View.NO_ID)
-        }
-
-        ta.recycle()
-    }
-
-    override val recyclerView: RecyclerView?
-        get() = scrollingChild as? RecyclerView
-
-    var scrollingChild: View? = null
 
 }

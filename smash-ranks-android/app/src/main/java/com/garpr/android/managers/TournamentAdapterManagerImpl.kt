@@ -2,9 +2,9 @@ package com.garpr.android.managers
 
 import android.app.Application
 import com.garpr.android.R
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FullTournament
-import com.garpr.android.models.FullTournament.Match
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.FullTournament.Match
 
 class TournamentAdapterManagerImpl(
         private val application: Application
@@ -23,17 +23,6 @@ class TournamentAdapterManagerImpl(
         return list
     }
 
-    override fun buildSearchedMatchesList(content: FullTournament, matches: List<Match>?): List<Any> {
-        val list = mutableListOf<Any>()
-        list.add(content)
-
-        if (matches?.isNotEmpty() == true) {
-            list.addAll(matches)
-        }
-
-        return list
-    }
-
     override fun buildPlayersList(content: FullTournament): List<Any> {
         val list = mutableListOf<Any>()
         list.add(content)
@@ -42,6 +31,17 @@ class TournamentAdapterManagerImpl(
             list.addAll(content.players)
         } else {
             list.add(application.getString(R.string.this_tournament_has_no_players))
+        }
+
+        return list
+    }
+
+    override fun buildSearchedMatchesList(content: FullTournament, matches: List<Match>?): List<Any> {
+        val list = mutableListOf<Any>()
+        list.add(content)
+
+        if (matches?.isNotEmpty() == true) {
+            list.addAll(matches)
         }
 
         return list

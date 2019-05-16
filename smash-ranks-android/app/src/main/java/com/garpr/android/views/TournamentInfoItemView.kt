@@ -1,30 +1,28 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
-import com.garpr.android.App
 import com.garpr.android.R
 import com.garpr.android.adapters.BaseAdapterView
-import com.garpr.android.extensions.getActivity
+import com.garpr.android.data.models.BracketSource
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.models.BracketSource
-import com.garpr.android.models.FullTournament
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_tournament_info.view.*
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
+class TournamentInfoItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LinearLayout(context, attrs), BaseAdapterView<FullTournament> {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
@@ -34,29 +32,17 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
     @Inject
     protected lateinit var shareUtils: ShareUtils
 
-    private val date: TextView by bindView(R.id.tvDate)
-    private val entrantsCount: TextView by bindView(R.id.tvEntrantsCount)
-    private val name: TextView by bindView(R.id.tvName)
-    private val openLink: TextView by bindView(R.id.tvOpenLink)
-    private val region: TextView by bindView(R.id.tvRegion)
-    private val share: TextView by bindView(R.id.tvShare)
-    private val tournamentTabsView: TournamentTabsView by bindView(R.id.tournamentTabsView)
-
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentInfoItemView = LayoutInflater.from(
-                parent.context).inflate(R.layout.item_tournament_info, parent,
-                false) as TournamentInfoItemView
+        fun inflate(parent: ViewGroup): TournamentInfoItemView = parent.layoutInflater.inflate(
+                R.layout.item_tournament_info, parent, false) as TournamentInfoItemView
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-                @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+    init {
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
 
     val dateVerticalPositionInWindow: Int
         get() = date.verticalPositionInWindow
@@ -64,16 +50,12 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (!isInEditMode) {
-            App.get().appComponent.inject(this)
-        }
-
         openLink.setOnClickListener {
-            tournament?.let { shareUtils.openUrl(context, it.url) }
+            tournament?.let { t -> shareUtils.openUrl(context, t.url) }
         }
 
         share.setOnClickListener {
-            tournament?.let { shareUtils.shareTournament(context.getActivity(), it) }
+            tournament?.let { t -> shareUtils.shareTournament(requireActivity(), t) }
         }
     }
 
@@ -104,19 +86,11 @@ class TournamentInfoItemView : LinearLayout, BaseAdapterView<FullTournament> {
                 openLink.visibility = View.GONE
                 share.visibility = View.GONE
             } else {
-                when (BracketSource.fromUrl(value.url)) {
-                    BracketSource.CHALLONGE -> {
-                        openLink.text = resources.getText(R.string.open_challonge_link)
-                    }
-
-                    BracketSource.SMASH_GG -> {
-                        openLink.text = resources.getText(R.string.open_smash_gg_link)
-                    }
-
-                    else -> {
-                        openLink.text = resources.getText(R.string.open_bracket_link)
-                    }
-                }
+                openLink.setText(when (BracketSource.fromUrl(value.url)) {
+                    BracketSource.CHALLONGE -> R.string.open_challonge_link
+                    BracketSource.SMASH_GG -> R.string.open_smash_gg_link
+                    else -> R.string.open_bracket_link
+                })
 
                 openLink.visibility = View.VISIBLE
                 share.visibility = View.VISIBLE

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AlertDialogThemeDayNight" parent="Theme.MaterialComponents.Dialog.Alert" />
+
+    <style name="AppThemeDayNight" parent="Theme.MaterialComponents.NoActionBar" />
+
+    <style name="BottomSheetDialogThemeDayNight" parent="Theme.MaterialComponents.BottomSheetDialog" />
+
+</resources>

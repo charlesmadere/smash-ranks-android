@@ -1,9 +1,10 @@
 package com.garpr.android.misc
 
+import android.text.TextUtils
+import com.garpr.android.data.models.RankingsBundle
+import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.misc.RankingsNotificationsUtils.NotificationInfo
 import com.garpr.android.misc.RankingsNotificationsUtils.PollStatus
-import com.garpr.android.models.RankingsBundle
-import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 
 class RankingsNotificationsUtilsImpl(
@@ -17,9 +18,9 @@ class RankingsNotificationsUtilsImpl(
     }
 
     override fun getNotificationInfo(pollStatus: PollStatus?, rankingsBundle: RankingsBundle?) =
-        if (pollStatus?.oldRankingsDate == null || rankingsBundle == null) {
+        if (pollStatus == null || pollStatus.oldRankingsId.isNullOrBlank() || rankingsBundle == null) {
             NotificationInfo.CANCEL
-        } else if (rankingsBundle.time.happenedAfter(pollStatus.oldRankingsDate)) {
+        } else if (!TextUtils.equals(rankingsBundle.id, pollStatus.oldRankingsId)) {
             NotificationInfo.SHOW
         } else {
             NotificationInfo.NO_CHANGE
@@ -28,19 +29,19 @@ class RankingsNotificationsUtilsImpl(
     override fun getPollStatus(): PollStatus {
         if (rankingsPollingPreferenceStore.enabled.get() != true) {
             timber.e(TAG, "will not sync, polling is not enabled")
-            return PollStatus(null, false, false)
+            return PollStatus(proceed = false, retry = false)
         }
 
-        val oldRankingsDate = rankingsPollingPreferenceStore.rankingsDate.get()
+        val oldRankingsId = rankingsPollingPreferenceStore.rankingsId.get()
 
-        if (oldRankingsDate == null) {
-            timber.d(TAG, "will not sync, the user does not have a rankings date")
-            return PollStatus(null, false, false)
+        if (oldRankingsId == null) {
+            timber.d(TAG, "will not sync, the user does not have a rankings ID")
+            return PollStatus(proceed = false, retry = false)
         }
 
         if (!deviceUtils.hasNetworkConnection) {
             timber.d(TAG, "will retry sync later, the device does not have a network connection")
-            return PollStatus(oldRankingsDate, false, true)
+            return PollStatus(oldRankingsId = oldRankingsId, proceed = false, retry = true)
         }
 
         val lastPoll = rankingsPollingPreferenceStore.lastPoll.get()
@@ -48,7 +49,7 @@ class RankingsNotificationsUtilsImpl(
         rankingsPollingPreferenceStore.lastPoll.set(currentPoll)
         timber.d(TAG, "will sync, last poll: $lastPoll, current poll: $currentPoll")
 
-        return PollStatus(oldRankingsDate, true, true)
+        return PollStatus(oldRankingsId = oldRankingsId, proceed = true, retry = true)
     }
 
 }

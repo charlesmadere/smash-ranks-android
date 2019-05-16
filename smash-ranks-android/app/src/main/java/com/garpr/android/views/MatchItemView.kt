@@ -1,29 +1,27 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
-import com.garpr.android.App
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.Match
+import com.garpr.android.data.models.MatchResult
+import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.extensions.optActivity
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.Match
-import com.garpr.android.models.MatchResult
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_match.view.*
 import javax.inject.Inject
 
-class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickListener,
+class MatchItemView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : IdentityFrameLayout(context, attrs), BaseAdapterView<Match>, View.OnClickListener,
         View.OnLongClickListener {
 
     @Inject
@@ -32,27 +30,23 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
     @Inject
     protected lateinit var regionManager: RegionManager
 
-    private val name: TextView by bindView(R.id.tvName)
-
 
     interface OnClickListener {
         fun onClick(v: MatchItemView)
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    init {
+        setOnClickListener(this)
+        setOnLongClickListener(this)
 
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
 
     override fun clear() {
-        super.clear()
-
         name.clear()
-        refresh()
+        super.clear()
     }
 
     override fun identityIsSomeoneElse() {
@@ -88,7 +82,7 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
 
     override fun onClick(v: View) {
         val match = this.match ?: return
-        val activity = context.optActivity()
+        val activity = this.activity
 
         if (activity is OnClickListener) {
             activity.onClick(this)
@@ -97,17 +91,6 @@ class MatchItemView : IdentityFrameLayout, BaseAdapterView<Match>, View.OnClickL
             context.startActivity(PlayerActivity.getLaunchIntent(context, opponent.id,
                     regionManager.getRegion(context)))
         }
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            App.get().appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
-        setOnLongClickListener(this)
     }
 
     override fun onLongClick(v: View): Boolean {

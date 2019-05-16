@@ -1,27 +1,27 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.garpr.android.App
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.TournamentsAdapter
+import com.garpr.android.data.models.AbsTournament
+import com.garpr.android.data.models.TournamentsBundle
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.AbsTournament
-import com.garpr.android.models.TournamentsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.layout_tournaments.view.*
 import javax.inject.Inject
 
 class TournamentsLayout @JvmOverloads constructor(
@@ -30,7 +30,7 @@ class TournamentsLayout @JvmOverloads constructor(
 ) : SearchableRefreshLayout(context, attrs), ApiListener<TournamentsBundle>, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var adapter: TournamentsAdapter
+    private val adapter = TournamentsAdapter()
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -38,13 +38,10 @@ class TournamentsLayout @JvmOverloads constructor(
     @Inject
     protected lateinit var serverApi: ServerApi
 
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val empty: View by bindView(R.id.empty)
-
 
     companion object {
-        fun inflate(parent: ViewGroup): TournamentsLayout = LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_tournaments, parent, false) as TournamentsLayout
+        fun inflate(parent: ViewGroup): TournamentsLayout = parent.layoutInflater.inflate(
+                R.layout.layout_tournaments, parent, false) as TournamentsLayout
     }
 
     override fun failure(errorCode: Int) {
@@ -57,6 +54,10 @@ class TournamentsLayout @JvmOverloads constructor(
         serverApi.getTournaments(regionManager.getRegion(context), ApiCall(this))
     }
 
+    override fun getRecyclerView(): RecyclerView? {
+        return recyclerView
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -64,13 +65,12 @@ class TournamentsLayout @JvmOverloads constructor(
             return
         }
 
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
 
         setOnRefreshListener(this)
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        adapter = TournamentsAdapter(context)
         recyclerView.adapter = adapter
 
         fetchTournamentsBundle()
@@ -80,8 +80,6 @@ class TournamentsLayout @JvmOverloads constructor(
         fetchTournamentsBundle()
     }
 
-    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-
     override fun refresh() {
         fetchTournamentsBundle()
     }
@@ -89,7 +87,7 @@ class TournamentsLayout @JvmOverloads constructor(
     override fun search(query: String?) {
         val tournaments = tournamentsBundle?.tournaments
 
-        if (tournaments == null || tournaments.isEmpty()) {
+        if (tournaments.isNullOrEmpty()) {
             return
         }
 

@@ -1,13 +1,16 @@
 package com.garpr.android.networking
 
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.AbsRegion
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.misc.Constants
-import com.garpr.android.models.AbsRegion
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
-import com.google.gson.Gson
-import org.junit.Assert.*
+import com.squareup.moshi.Moshi
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,7 +24,7 @@ class RegionsBundleApiCallTest : BaseTest() {
     private lateinit var notGarPrRegionsBundle: RegionsBundle
 
     @Inject
-    protected lateinit var gson: Gson
+    protected lateinit var moshi: Moshi
 
 
     companion object {
@@ -30,17 +33,16 @@ class RegionsBundleApiCallTest : BaseTest() {
     }
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
 
-        garPrRegionsBundle = gson.fromJson(JSON_REGIONS_BUNDLE_GAR_PR, RegionsBundle::class.java)
-        notGarPrRegionsBundle = gson.fromJson(JSON_REGIONS_BUNDLE_NOT_GAR_PR, RegionsBundle::class.java)
+        val regionsBundleAdapter = moshi.adapter(RegionsBundle::class.java)
+        garPrRegionsBundle = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE_GAR_PR)
+        notGarPrRegionsBundle = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE_NOT_GAR_PR)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetRegionsBundleIsSorted() {
         var result: RegionsBundle? = null
 
@@ -73,7 +75,6 @@ class RegionsBundleApiCallTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetRegionsBundleIsRegionType() {
         var result: RegionsBundle? = null
 
@@ -103,7 +104,6 @@ class RegionsBundleApiCallTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetRegionsBundleWithNonNullGarPrAndNonNullNotGarPr() {
         var result: RegionsBundle? = null
 
@@ -130,7 +130,6 @@ class RegionsBundleApiCallTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetRegionsBundleWithNonNullGarPrAndNullNotGarPr() {
         var result: RegionsBundle? = null
 
@@ -157,7 +156,6 @@ class RegionsBundleApiCallTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetRegionsBundleWithNullGarPrAndNonNullNotGarPr() {
         var result: RegionsBundle? = null
 
@@ -184,7 +182,6 @@ class RegionsBundleApiCallTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetRegionsBundleWithNullGarPrAndNullNotGarPr() {
         var result: Int? = null
 

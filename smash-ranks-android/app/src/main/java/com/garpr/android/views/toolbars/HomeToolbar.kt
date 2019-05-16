@@ -2,13 +2,19 @@ package com.garpr.android.views.toolbars
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Menu
-import android.view.MenuInflater
-import com.garpr.android.App
+import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.widget.PopupMenu
 import com.garpr.android.R
+import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.managers.HomeToolbarManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.RankingCriteriaHandle
+import kotlinx.android.synthetic.main.gar_toolbar.view.*
+import kotlinx.android.synthetic.main.home_toolbar_items.view.*
 import javax.inject.Inject
 
 class HomeToolbar @JvmOverloads constructor(
@@ -16,6 +22,8 @@ class HomeToolbar @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SearchToolbar(context, attrs), IdentityManager.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
+
+    private val overflowPopupMenu: PopupMenu
 
     @Inject
     protected lateinit var homeToolbarManager: HomeToolbarManager
@@ -26,6 +34,21 @@ class HomeToolbar @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
+
+    interface Listeners {
+        fun onActivityRequirementsClick(v: HomeToolbar)
+        fun onSettingsClick(v: HomeToolbar)
+        fun onShareClick(v: HomeToolbar)
+        fun onViewAllPlayersClick(v: HomeToolbar)
+        fun onViewYourselfClick(v: HomeToolbar)
+    }
+
+    init {
+        layoutInflater.inflate(R.layout.home_toolbar_items, menuExpansionContainer)
+
+        overflowPopupMenu = PopupMenu(context, overflowButton)
+        overflowButton.setOnTouchListener(overflowPopupMenu.dragToOpenListener)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -38,13 +61,14 @@ class HomeToolbar @JvmOverloads constructor(
         regionManager.addListener(this)
     }
 
-    override fun onCreateOptionsMenu(inflater: MenuInflater, menu: Menu) {
-        inflater.inflate(R.menu.toolbar_home, menu)
-        super.onCreateOptionsMenu(inflater, menu)
+    override fun onCloseSearchField() {
+        super.onCloseSearchField()
+        overflowButton.visibility = View.VISIBLE
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         identityManager.removeListener(this)
         regionManager.removeListener(this)
     }
@@ -53,35 +77,83 @@ class HomeToolbar @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             identityManager.addListener(this)
             regionManager.addListener(this)
+        }
+
+        overflowButton.setOnClickListener {
+            overflowPopupMenu.show()
         }
     }
 
     override fun onIdentityChange(identityManager: IdentityManager) {
         if (isAlive) {
-            postRefresh()
+            refresh()
         }
     }
 
-    override fun onRefreshMenu() {
-        super.onRefreshMenu()
-
-        if (isSearchLayoutExpanded) {
-            return
-        }
-
-        val presentation = homeToolbarManager.getPresentation(context)
-        menu.findItem(R.id.miActivityRequirements).isVisible = presentation.isActivityRequirementsVisible
-        menu.findItem(R.id.miViewYourself).isVisible = presentation.isViewYourselfVisible
+    override fun onOpenSearchField() {
+        super.onOpenSearchField()
+        overflowButton.visibility = View.GONE
     }
 
     override fun onRegionChange(regionManager: RegionManager) {
         if (isAlive) {
-            closeSearchLayout()
-            postRefresh()
+            refresh()
         }
+    }
+
+    override fun refresh() {
+        super.refresh()
+
+        val presentation = homeToolbarManager.getPresentation(
+                (activity as? RankingCriteriaHandle?)?.rankingCriteria)
+
+        overflowPopupMenu.menu.clear()
+        overflowPopupMenu.menu.add(R.string.share)
+                .setOnMenuItemClickListener(shareClickListener)
+
+        if (presentation.isActivityRequirementsVisible) {
+            overflowPopupMenu.menu.add(R.string.activity_requirements)
+                    .setOnMenuItemClickListener(activityRequirementsClickListener)
+        }
+
+        overflowPopupMenu.menu.add(R.string.view_all_players)
+                .setOnMenuItemClickListener(viewAllPlayersClickListener)
+
+        if (presentation.isViewYourselfVisible) {
+            overflowPopupMenu.menu.add(R.string.view_yourself)
+                    .setOnMenuItemClickListener(viewYourselfClickListener)
+        }
+
+        overflowPopupMenu.menu.add(R.string.settings)
+                .setOnMenuItemClickListener(settingsClickListener)
+    }
+
+    private val activityRequirementsClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners?)?.onActivityRequirementsClick(this)
+        true
+    }
+
+    private val shareClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners?)?.onShareClick(this)
+        true
+    }
+
+    private val viewAllPlayersClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners?)?.onViewAllPlayersClick(this)
+        true
+    }
+
+    private val viewYourselfClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners?)?.onViewYourselfClick(this)
+        true
+    }
+
+    private val settingsClickListener = MenuItem.OnMenuItemClickListener {
+        (activity as? Listeners?)?.onSettingsClick(this)
+        true
     }
 
 }

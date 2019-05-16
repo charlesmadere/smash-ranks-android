@@ -1,16 +1,20 @@
 package com.garpr.android.managers
 
-import android.app.*
+import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
-import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import com.garpr.android.R
 import com.garpr.android.activities.HomeActivity
+import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.extensions.notificationManager
 import com.garpr.android.extensions.notificationManagerCompat
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.SimpleDate
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 
 class NotificationsManagerImpl(
@@ -31,7 +35,7 @@ class NotificationsManagerImpl(
                     .setCategory(NotificationCompat.CATEGORY_SOCIAL)
                     .setContentTitle(context.getString(R.string.gar_pr))
                     .setPriority(NotificationCompat.PRIORITY_LOW)
-                    .setSmallIcon(R.drawable.notification)
+                    .setSmallIcon(R.drawable.ic_controller_white_24dp)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         }
     }
@@ -74,7 +78,8 @@ class NotificationsManagerImpl(
         val builder = impl.createBuilder(application)
 
         builder.setContentIntent(PendingIntent.getActivity(application, 0,
-                HomeActivity.getLaunchIntent(application), PendingIntent.FLAG_UPDATE_CURRENT))
+                HomeActivity.getLaunchIntent(context = application, restartActivityTask = true),
+                PendingIntent.FLAG_UPDATE_CURRENT))
 
         val regionDisplayName = regionManager.getRegion().displayName
         builder.setContentText(application.getString(R.string.x_rankings_have_been_updated,
@@ -90,18 +95,9 @@ class NotificationsManagerImpl(
             builder.setSound(it)
         }
 
-        val rankingsDate = rankingsPollingPreferenceStore.rankingsDate.get()?.let {
-            builder.setShowWhen(true)
-                    .setWhen(it.date.time)
-            it
-        } ?: "null"
-
-        val time = SimpleDate()
-
         timber.d(TAG, "Showing rankings updated notification! Debug info: " +
                 "regionDisplayName = $regionDisplayName, " +
-                "rankingsDate = $rankingsDate, " +
-                "time = $time")
+                "time = ${SimpleDate()}")
 
         show(RANKINGS_ID, builder)
     }

@@ -13,14 +13,26 @@
         <attr name="disabledDescriptionText" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="MenuToolbar">
-        <attr name="startWithTransparentTextColors" format="boolean" />
+    <declare-styleable name="GarToolbar">
+        <attr name="descriptionTextColor" format="color" />
+        <attr name="showUpNavigation" format="boolean" />
+        <attr name="titleTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="NoContentLinearLayout">
+        <attr name="android:src" />
+    </declare-styleable>
+
+    <declare-styleable name="OneLinePreferenceView">
+        <attr name="android:src" />
     </declare-styleable>
 
     <declare-styleable name="RefreshLayout">
         <attr name="scrollingChildId" format="reference" />
-        <attr name="spinnerBackground" format="color" />
-        <attr name="spinnerColors" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SimplePreferenceView">
+        <attr name="android:src" />
     </declare-styleable>
 
     <declare-styleable name="TournamentTabsView">
@@ -30,8 +42,6 @@
     <declare-styleable name="View">
         <attr name="descriptionText" format="string" />
         <attr name="drawableTintColor" format="color" />
-        <attr name="icon" format="reference" />
-        <attr name="image" format="reference" />
         <attr name="titleText" format="string" />
     </declare-styleable>
 

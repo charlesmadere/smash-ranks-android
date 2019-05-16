@@ -3,11 +3,12 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.extensions.subtitle
+import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.Region
+import kotlinx.android.synthetic.main.activity_tournaments.*
 import javax.inject.Inject
 
 class TournamentsActivity : BaseActivity() {
@@ -20,13 +21,8 @@ class TournamentsActivity : BaseActivity() {
         private const val TAG = "TournamentsActivity"
 
         fun getLaunchIntent(context: Context, region: Region? = null): Intent {
-            val intent = Intent(context, TournamentsActivity::class.java)
-
-            if (region != null) {
-                intent.putExtra(EXTRA_REGION, region)
-            }
-
-            return intent
+            return Intent(context, TournamentsActivity::class.java)
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 
@@ -34,11 +30,9 @@ class TournamentsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_tournaments)
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
     }
-
-    override val showUpNavigation = true
 
 }

@@ -3,8 +3,8 @@ package com.garpr.android.misc
 import android.app.Activity
 import android.content.Context
 
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.AbsTournament
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsTournament
 
 interface ShareUtils {
 

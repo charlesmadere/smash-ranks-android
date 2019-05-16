@@ -1,28 +1,29 @@
 package com.garpr.android;
 
-import android.app.Application;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatDelegate;
-
 import com.garpr.android.dagger.AppComponent;
+import com.garpr.android.dagger.AppComponentHandle;
 import com.garpr.android.dagger.AppModule;
 import com.garpr.android.dagger.DaggerAppComponent;
 import com.garpr.android.managers.AppUpgradeManager;
+import com.garpr.android.managers.NightModeManager;
 import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.Timber;
-import com.garpr.android.models.NightMode;
-import com.garpr.android.preferences.GeneralPreferenceStore;
+import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import javax.inject.Inject;
 
-public class App extends Application {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+
+public class App extends BaseApp implements AppComponentHandle,
+        NightModeManager.OnNightModeChangeListener {
 
     private static final String TAG = "App";
 
-    private static App sInstance;
-
+    @Nullable
     private AppComponent mAppComponent;
 
     @Inject
@@ -35,24 +36,23 @@ public class App extends Application {
     DeviceUtils mDeviceUtils;
 
     @Inject
-    GeneralPreferenceStore mGeneralPreferenceStore;
+    ImageLibraryWrapper mImageLibraryWrapper;
+
+    @Inject
+    NightModeManager mNightModeManager;
 
     @Inject
     Timber mTimber;
 
 
-    public static App get() {
-        return sInstance;
-    }
-
     private void applyNightMode() {
-        final NightMode nightMode = mGeneralPreferenceStore.getNightMode().get();
-        AppCompatDelegate.setDefaultNightMode(nightMode != null ? nightMode.getThemeValue() :
-                NightMode.SYSTEM.getThemeValue());
+        AppCompatDelegate.setDefaultNightMode(mNightModeManager.getNightMode().getThemeValue());
+        mNightModeManager.addListener(this);
     }
 
     @NonNull
-    public AppComponent getAppComponent() {
+    @Override
+    public AppComponent getAppComponent() throws IllegalStateException {
         final AppComponent appComponent = mAppComponent;
 
         if (appComponent == null) {
@@ -63,11 +63,16 @@ public class App extends Application {
     }
 
     private void initializeAppComponent() {
-        mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this, Constants.INSTANCE.getDefaultRegion()))
+        final AppComponent appComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(
+                        this,
+                        Constants.INSTANCE.getDefaultRegion(),
+                        Constants.SMASH_ROSTER_BASE_PATH)
+                )
                 .build();
 
-        mAppComponent.inject(this);
+        appComponent.inject(this);
+        mAppComponent = appComponent;
     }
 
     private void initializeCrashlytics() {
@@ -78,7 +83,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sInstance = this;
+
+        // The order of the following lines is important!
 
         initializeAppComponent();
         initializeCrashlytics();
@@ -86,7 +92,14 @@ public class App extends Application {
         mTimber.d(TAG, "App created", null);
 
         applyNightMode();
+
+        mImageLibraryWrapper.initialize();
         mAppUpgradeManager.upgradeApp();
+    }
+
+    @Override
+    public void onNightModeChange(@NonNull final NightModeManager nightModeManager) {
+        AppCompatDelegate.setDefaultNightMode(nightModeManager.getNightMode().getThemeValue());
     }
 
 }

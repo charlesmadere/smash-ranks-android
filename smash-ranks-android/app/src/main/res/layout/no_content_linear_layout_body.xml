@@ -1,21 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress XmlUnusedNamespaceDeclaration -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="com.garpr.android.views.NoContentLinearLayout"
-    style="@style/NoContentLinearLayout">
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <Space
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent" />
 
     <ImageView
-        tools:ignore="ContentDescription"
-        tools:src="@mipmap/launcher"
-        style="@style/NoContentLinearLayoutBody.Image" />
+        android:id="@+id/image"
+        android:importantForAccessibility="no"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_double"
+        android:layout_marginEnd="@dimen/root_padding_double"
+        android:layout_marginStart="@dimen/root_padding_double"
+        android:layout_width="wrap_content"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        tools:srcCompat="@mipmap/launcher"
+        tools:visibility="visible" />
 
     <TextView
-        tools:text="@string/error_loading_players"
-        style="@style/NoContentLinearLayoutBody.Line1" />
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:id="@+id/title"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding_triple"
+        android:layout_marginStart="@dimen/root_padding_triple"
+        android:layout_width="match_parent"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
+        tools:text="@string/error_loading_players" />
 
     <TextView
-        tools:text="@string/swipe_to_refresh_to_try_again"
-        style="@style/NoContentLinearLayoutBody.Line2" />
+        android:gravity="center"
+        android:id="@+id/description"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding_triple"
+        android:layout_marginStart="@dimen/root_padding_triple"
+        android:layout_marginTop="@dimen/root_padding_eighth"
+        android:layout_width="match_parent"
+        android:lineSpacingExtra="2dp"
+        android:textSize="@dimen/text_size_small"
+        tools:text="@string/swipe_to_refresh_and_try_again" />
+
+    <Space
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent" />
 
 </merge>

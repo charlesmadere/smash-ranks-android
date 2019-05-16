@@ -6,32 +6,25 @@
     <color name="card_background">#FFFFFF</color>
     <color name="debug">@color/black</color>
     <color name="error">#FF2222</color>
+    <color name="fast_scroll_thumb_normal">#44000000</color>
+    <color name="fast_scroll_thumb_pressed">@color/blue</color>
+    <color name="fast_scroll_track">#22000000</color>
     <color name="gray">#303030</color>
     <color name="gray_dark">#212121</color>
     <color name="lose">#C1455A</color>
     <color name="lose_background">#22C1455A</color>
-    <color name="overlay">#11000000</color>
     <color name="red">#AD0013</color>
-    <color name="fast_scroll_thumb_normal">#44000000</color>
-    <color name="fast_scroll_thumb_pressed">@color/blue</color>
-    <color name="fast_scroll_track">#22000000</color>
+    <color name="translucent">#16000000</color>
     <color name="transparent">#00000000</color>
     <color name="warn">#FF7070</color>
     <color name="win">#5DA33A</color>
+    <color name="window_background">#E6E6E6</color>
     <color name="win_background">#225DA33A</color>
     <color name="white">#FFFFFF</color>
-    <color name="window_background">#E6E6E6</color>
 
     <array name="spinner_colors">
         <item>@color/blue</item>
         <item>@color/red</item>
     </array>
-
-    <color name="r">#FF0000</color>
-    <color name="g">#00FF00</color>
-    <color name="b">#0000FF</color>
-    <color name="c">#00FFFF</color>
-    <color name="m">#FF00FF</color>
-    <color name="y">#FFFF00</color>
 
 </resources>

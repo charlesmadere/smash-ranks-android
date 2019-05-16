@@ -3,11 +3,16 @@ package com.garpr.android.misc
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.garpr.android.activities.*
+import com.garpr.android.activities.HomeActivity
+import com.garpr.android.activities.PlayerActivity
+import com.garpr.android.activities.PlayersActivity
+import com.garpr.android.activities.RankingsActivity
+import com.garpr.android.activities.TournamentActivity
+import com.garpr.android.activities.TournamentsActivity
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.Endpoint
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
 
 class DeepLinkUtilsImpl(
         private val regionManager: RegionManager,
@@ -55,7 +60,7 @@ class DeepLinkUtilsImpl(
     }
 
     override fun buildIntentStack(context: Context, uri: String?, region: Region): List<Intent>? {
-        if (uri == null || uri.isBlank()) {
+        if (uri.isNullOrBlank()) {
             timber.d(TAG, "Can't deep link, uri is null / blank")
             return null
         }
@@ -76,7 +81,7 @@ class DeepLinkUtilsImpl(
             return null
         }
 
-        val splits = path.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val splits = path.split("/")
 
         if (splits.isEmpty()) {
             timber.d(TAG, "Deep link's path split is empty")
@@ -99,17 +104,14 @@ class DeepLinkUtilsImpl(
         val intentStack = mutableListOf<Intent>()
         val page = splits[1]
 
-        when {
-            PLAYERS.equals(page, ignoreCase = true) -> {
-                buildPlayersIntentStack(context, intentStack, region, sameRegion, splits)
-            }
-            RANKINGS.equals(page, ignoreCase = true) -> {
-                buildRankingsIntentStack(context, intentStack, region, sameRegion)
-            }
-            TOURNAMENTS.equals(page, ignoreCase = true) -> {
-                buildTournamentsIntentStack(context, intentStack, region, sameRegion, splits)
-            }
-            else -> timber.w(TAG, "Unknown page \"$page\"")
+        if (PLAYERS.equals(page, ignoreCase = true)) {
+            buildPlayersIntentStack(context, intentStack, region, sameRegion, splits)
+        } else if (RANKINGS.equals(page, ignoreCase = true)) {
+            buildRankingsIntentStack(context, intentStack, region, sameRegion)
+        } else if (TOURNAMENTS.equals(page, ignoreCase = true)) {
+            buildTournamentsIntentStack(context, intentStack, region, sameRegion, splits)
+        } else {
+            timber.w(TAG, "Unknown page \"$page\"")
         }
 
         return intentStack
@@ -125,8 +127,8 @@ class DeepLinkUtilsImpl(
     }
 
     private fun buildPlayersIntentStack(context: Context, intentStack: MutableList<Intent>,
-            region: Region, sameRegion: Boolean, splits: Array<String>) {
-        intentStack.add(HomeActivity.getLaunchIntent(context))
+            region: Region, sameRegion: Boolean, splits: List<String>) {
+        intentStack.add(HomeActivity.getLaunchIntent(context = context))
 
         if (sameRegion) {
             intentStack.add(PlayersActivity.getLaunchIntent(context))
@@ -151,19 +153,21 @@ class DeepLinkUtilsImpl(
     private fun buildRankingsIntentStack(context: Context, intentStack: MutableList<Intent>,
             region: Region, sameRegion: Boolean) {
         if (sameRegion) {
-            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_RANKINGS))
+            intentStack.add(HomeActivity.getLaunchIntent(context = context,
+                initialPosition = HomeTab.RANKINGS))
         } else {
-            intentStack.add(HomeActivity.getLaunchIntent(context))
+            intentStack.add(HomeActivity.getLaunchIntent(context = context))
             intentStack.add(RankingsActivity.getLaunchIntent(context, region))
         }
     }
 
     private fun buildTournamentsIntentStack(context: Context, intentStack: MutableList<Intent>,
-            region: Region, sameRegion: Boolean, splits: Array<String>) {
+            region: Region, sameRegion: Boolean, splits: List<String>) {
         if (sameRegion) {
-            intentStack.add(HomeActivity.getLaunchIntent(context, HomeActivity.POSITION_TOURNAMENTS))
+            intentStack.add(HomeActivity.getLaunchIntent(context = context,
+                initialPosition = HomeTab.TOURNAMENTS))
         } else {
-            intentStack.add(HomeActivity.getLaunchIntent(context))
+            intentStack.add(HomeActivity.getLaunchIntent(context = context))
             intentStack.add(TournamentsActivity.getLaunchIntent(context, region))
         }
 
@@ -215,17 +219,18 @@ class DeepLinkUtilsImpl(
     override fun getRegion(uri: String?, regionsBundle: RegionsBundle?): Region? {
         val trimmedUri = uri?.trim()
 
-        if (trimmedUri == null || trimmedUri.isBlank()) {
+        if (trimmedUri.isNullOrBlank()) {
             return null
         }
 
         val regions = regionsBundle?.regions
 
-        if (regions == null || regions.isEmpty()) {
+        if (regions.isNullOrEmpty()) {
             return null
         }
 
         return regions
+                .asSequence()
                 .filterIsInstance<Region>()
                 .firstOrNull { trimmedUri.startsWith(it.endpoint.getWebPath(it.id)) }
     }

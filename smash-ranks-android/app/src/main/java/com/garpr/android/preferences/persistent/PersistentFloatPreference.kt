@@ -21,12 +21,9 @@ class PersistentFloatPreference(
         }
     }
 
-    override fun performSet(newValue: Float, notifyListeners: Boolean) {
+    override fun performSet(newValue: Float) {
         keyValueStore.setFloat(key, newValue)
-
-        if (notifyListeners) {
-            notifyListeners()
-        }
+        notifyListeners()
     }
 
 }

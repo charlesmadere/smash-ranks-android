@@ -2,9 +2,9 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.util.AttributeSet
-import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.models.SimpleDate
+import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import javax.inject.Inject
@@ -17,6 +17,15 @@ class LastPollPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
+    init {
+        titleText = context.getText(R.string.last_poll)
+
+        if (isInEditMode) {
+            descriptionText = context.getText(R.string.poll_has_yet_to_occur)
+        }
+
+        isEnabled = false
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -38,18 +47,10 @@ class LastPollPreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             rankingsPollingPreferenceStore.lastPoll.addListener(this)
+            refresh()
         }
-
-        isEnabled = false
-        titleText = resources.getText(R.string.last_poll)
-
-        if (isInEditMode) {
-            return
-        }
-
-        refresh()
     }
 
     override fun onPreferenceChange(preference: Preference<SimpleDate>) {
@@ -63,7 +64,7 @@ class LastPollPreferenceView @JvmOverloads constructor(
 
         val date = rankingsPollingPreferenceStore.lastPoll.get()
         descriptionText = date?.getRelativeDateTimeText(context) ?:
-                resources.getText(R.string.poll_has_yet_to_occur)
+                context.getText(R.string.poll_has_yet_to_occur)
     }
 
 }

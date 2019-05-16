@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    tools:parentTag="android.widget.FrameLayout">
 
     <LinearLayout
         android:layout_height="match_parent"
@@ -15,17 +14,20 @@
             android:layout_width="match_parent" />
 
         <com.garpr.android.views.RefreshLayout
+            android:id="@id/refreshLayout"
             style="@style/RefreshLayout">
 
             <FrameLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:visibility="gone"
                     style="@style/RecyclerView" />
 
                 <com.garpr.android.views.ErrorContentLinearLayout
+                    android:id="@+id/error"
                     app:titleText="@string/error_loading_tournament"
                     style="@style/NoContentLinearLayout.Error" />
 
@@ -40,21 +42,22 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-        <com.garpr.android.views.toolbars.TournamentToolbar
-            app:startWithTransparentTextColors="true"
+        <com.garpr.android.views.toolbars.SearchToolbar
+            android:id="@+id/toolbar"
+            app:descriptionTextColor="@color/transparent"
+            app:showUpNavigation="true"
+            app:titleTextColor="@color/transparent"
             style="@style/Toolbar" />
 
         <com.garpr.android.views.TournamentTabsView
             android:alpha="0"
             android:background="?attr/colorPrimary"
             android:elevation="@dimen/elevation"
-            android:id="@+id/topTournamentTabsView"
+            android:id="@+id/toolbarTournamentTabsView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:theme="@style/ToolbarTheme"
-            app:indicatorLineColor="@color/white"
-            tools:ignore="UnusedAttribute" />
+            android:theme="@style/ToolbarTheme" />
 
     </LinearLayout>
 
-</FrameLayout>
+</merge>

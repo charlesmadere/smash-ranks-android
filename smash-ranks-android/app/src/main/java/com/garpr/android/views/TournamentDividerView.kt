@@ -1,18 +1,16 @@
 package com.garpr.android.views
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
-import com.garpr.android.App
-import com.garpr.android.R
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.data.models.AbsTournament
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.models.AbsTournament
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.divider_tournament.view.*
 import javax.inject.Inject
 
 class TournamentDividerView @JvmOverloads constructor(
@@ -23,33 +21,13 @@ class TournamentDividerView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
-    private val date: TextView by bindView(R.id.tvDate)
-    private val name: TextView by bindView(R.id.tvName)
 
-
-    private fun clear() {
-        date.clear()
-        name.clear()
-    }
-
-    override fun onClick(v: View) {
-        val tournament = this.tournament ?: return
-        context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
-                regionManager.getRegion(context)))
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    init {
+        setOnClickListener(this)
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
         }
-
-        setOnClickListener(this)
-    }
-
-    override fun setContent(content: AbsTournament) {
-        tournament = content
     }
 
     var tournament: AbsTournament? = null
@@ -64,5 +42,20 @@ class TournamentDividerView @JvmOverloads constructor(
             name.text = value.name
             date.text = value.date.mediumForm
         }
+
+    private fun clear() {
+        date.clear()
+        name.clear()
+    }
+
+    override fun onClick(v: View) {
+        val tournament = this.tournament ?: return
+        context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
+                regionManager.getRegion(context)))
+    }
+
+    override fun setContent(content: AbsTournament) {
+        tournament = content
+    }
 
 }

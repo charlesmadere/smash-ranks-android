@@ -1,7 +1,10 @@
 package com.garpr.android.misc
 
+import android.graphics.Color
 import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -10,59 +13,39 @@ import org.robolectric.RobolectricTestRunner
 class MiscUtilsTest : BaseTest() {
 
     @Test
-    @Throws(Exception::class)
-    fun testHashCodeDouble() {
-        val double: Double = Math.PI
-        assertEquals(double.hashCode(), MiscUtils.hashCode(double))
+    fun testBrightenOrDarkenColorIfLightnessIsWithBlack() {
+        val color = MiscUtils.brightenOrDarkenColorIfLightnessIs(Color.BLACK, 0f, 0f)
+        assertEquals(Color.BLACK, color)
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testHashCodeInteger() {
-        val integer = 100
-        assertEquals(integer.hashCode(), MiscUtils.hashCode(integer))
+    fun testBrightenOrDarkenColorIfLightnessIsWithWhite() {
+        val color = MiscUtils.brightenOrDarkenColorIfLightnessIs(Color.WHITE, 0f, 0f)
+        assertEquals(Color.BLACK, color)
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testHashCodeString() {
-        val string = "hello"
-        assertEquals(string.hashCode(), MiscUtils.hashCode(string))
+    fun testIsColorLightnessWithBlack() {
+        assertTrue(MiscUtils.isColorLightness(Color.BLACK, 0f))
+        assertFalse(MiscUtils.isColorLightness(Color.BLACK, 1f))
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testTruncateFloatImytRanking() {
-        val value = MiscUtils.truncateFloat(31.384343063802955f)
-        assertEquals("31.384", value)
+    fun testIsColorLightnessWithDarkGray() {
+        assertTrue(MiscUtils.isColorLightness(Color.DKGRAY, 0f))
+        assertFalse(MiscUtils.isColorLightness(Color.DKGRAY, 1f))
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testTruncateFloatMaxValue() {
-        val value = MiscUtils.truncateFloat(Float.MAX_VALUE)
-        assertEquals("340282346638528860000000000000000000000.000", value)
+    fun testIsColorLightnessWithLightGray() {
+        assertTrue(MiscUtils.isColorLightness(Color.LTGRAY, 0f))
+        assertFalse(MiscUtils.isColorLightness(Color.LTGRAY, 1f))
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testTruncateFloatMinValue() {
-        val value = MiscUtils.truncateFloat(Float.MIN_VALUE)
-        assertEquals("0.000", value)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testTruncateFloatPi() {
-        val value = MiscUtils.truncateFloat(Math.PI.toFloat())
-        assertEquals("3.142", value)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun testTruncateFloatSfatRanking() {
-        val value = MiscUtils.truncateFloat(41.906930141097256f)
-        assertEquals("41.907", value)
+    fun testIsColorLightnessWithWhite() {
+        assertTrue(MiscUtils.isColorLightness(Color.WHITE, 0f))
+        assertTrue(MiscUtils.isColorLightness(Color.WHITE, 1f))
     }
 
 }

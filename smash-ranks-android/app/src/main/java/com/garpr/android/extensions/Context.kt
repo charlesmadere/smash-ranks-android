@@ -7,21 +7,70 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
 import android.net.ConnectivityManager
-import android.support.annotation.AttrRes
-import android.support.annotation.ColorInt
-import android.support.v4.app.NotificationManagerCompat
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.FragmentActivity
+import com.garpr.android.dagger.AppComponent
+import com.garpr.android.dagger.AppComponentHandle
+
+val Context.activity: Activity?
+    get() {
+        if (this is Activity) {
+            return this
+        }
+
+        if (this is ContextWrapper) {
+            var context = this
+
+            do {
+                context = (context as ContextWrapper).baseContext
+
+                if (context is Activity) {
+                    return context
+                }
+            } while (context is ContextWrapper)
+        }
+
+        return null
+    }
 
 val Context.activityManager: ActivityManager
     get() = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
+val Context.appComponent: AppComponent
+    get() {
+        if (this is AppComponentHandle) {
+            return appComponent
+        }
+
+        if (this is ContextWrapper) {
+            var c = this
+
+            do {
+                c = (c as ContextWrapper).baseContext
+
+                if (c is AppComponentHandle) {
+                    return c.appComponent
+                }
+            } while (c is ContextWrapper)
+        }
+
+        val applicationContext = applicationContext
+
+        if (applicationContext is AppComponentHandle) {
+            return applicationContext.appComponent
+        }
+
+        throw RuntimeException("Context ($this) has no AppComponentHandle")
+    }
+
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-fun Context.getActivity(): Activity {
-    return optActivity() ?: throw NullPointerException(
-            "Context ($this) is not attached to an Activity")
-}
+val Context.fragmentActivity: FragmentActivity?
+    get() = activity as? FragmentActivity?
 
 @ColorInt
 @Throws(Resources.NotFoundException::class)
@@ -50,22 +99,10 @@ val Context.notificationManager: NotificationManager
 val Context.notificationManagerCompat: NotificationManagerCompat
     get() = NotificationManagerCompat.from(this)
 
-fun Context.optActivity(): Activity? {
-    if (this is Activity) {
-        return this
-    }
+fun Context.requireActivity(): Activity {
+    return activity ?: throw NullPointerException("Context ($this) is not attached to an Activity")
+}
 
-    if (this is ContextWrapper) {
-        var context = this
-
-        do {
-            context = (context as ContextWrapper).baseContext
-
-            if (context is Activity) {
-                return context
-            }
-        } while (context is ContextWrapper)
-    }
-
-    return null
+fun Context.requireFragmentActivity(): FragmentActivity {
+    return fragmentActivity ?: throw RuntimeException("Context ($this) is not attached to a FragmentActivity")
 }

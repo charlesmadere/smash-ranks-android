@@ -27,7 +27,7 @@ class AppUpgradeManagerImpl(
             return
         }
 
-        lastVersionPref.set(BuildConfig.VERSION_CODE, true)
+        lastVersionPref.set(BuildConfig.VERSION_CODE)
 
         if (lastVersion == null || lastVersion < 1011) {
             // it used to be a String, is now a Region

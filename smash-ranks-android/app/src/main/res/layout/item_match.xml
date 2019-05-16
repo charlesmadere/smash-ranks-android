@@ -2,10 +2,11 @@
 <com.garpr.android.views.MatchItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/ListItem.WithBackground">
+
     <TextView
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:id="@+id/tvName"
+        android:id="@+id/name"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -13,4 +14,5 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_large"
         tools:text="Armada" />
+
 </com.garpr.android.views.MatchItemView>

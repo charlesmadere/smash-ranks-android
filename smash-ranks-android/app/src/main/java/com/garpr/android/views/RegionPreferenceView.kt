@@ -3,10 +3,11 @@ package com.garpr.android.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.SetRegionActivity
-import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
@@ -20,6 +21,18 @@ class RegionPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
+    init {
+        titleText = context.getText(R.string.region)
+
+        if (isInEditMode) {
+            descriptionText = context.getString(R.string.region_endpoint_format,
+                    context.getString(R.string.norcal), context.getString(R.string.gar_pr))
+        }
+
+        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_location_on_white_24dp)
+
+        setOnClickListener(this)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -33,7 +46,7 @@ class RegionPreferenceView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        val activity = context.optActivity()
+        val activity = this.activity
 
         if (activity == null) {
             context.startActivity(SetRegionActivity.getLaunchIntent(context))
@@ -53,17 +66,8 @@ class RegionPreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             regionManager.addListener(this)
-        }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.region)
-
-        if (isInEditMode) {
-            descriptionText = resources.getString(R.string.region_endpoint_format,
-                    resources.getString(R.string.norcal), resources.getString(R.string.gar_pr))
-        } else {
             refresh()
         }
     }
@@ -78,8 +82,8 @@ class RegionPreferenceView @JvmOverloads constructor(
         super.refresh()
 
         val region = regionManager.getRegion(context)
-        descriptionText = resources.getString(R.string.region_endpoint_format,
-                region.displayName, resources.getString(region.endpoint.title))
+        descriptionText = context.getString(R.string.region_endpoint_format,
+                region.displayName, context.getString(region.endpoint.title))
     }
 
 }

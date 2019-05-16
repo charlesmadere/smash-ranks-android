@@ -1,19 +1,19 @@
 package com.garpr.android.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcelable
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.util.SparseArray
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.TextView
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
+import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.extensions.requireViewByIdCompat
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.view_checkbox_preference.view.*
 
 class CheckablePreferenceView @JvmOverloads constructor(
         context: Context,
@@ -21,15 +21,9 @@ class CheckablePreferenceView @JvmOverloads constructor(
 ) : LifecycleConstraintLayout(context, attrs), Preference.OnPreferenceChangeListener<Boolean>,
         Refreshable, View.OnClickListener {
 
-    private var disabledDescriptionText: CharSequence? = null
-    private var enabledDescriptionText: CharSequence? = null
-    private var titleText: CharSequence? = null
-    private var checkableType: Int = 0
-
-    private val checkable: CompoundButton by bindView(R.id.checkable)
-    private val description: TextView by bindView(R.id.description)
-    private val title: TextView by bindView(R.id.title)
-
+    private val disabledDescriptionText: CharSequence?
+    private val descriptionText: CharSequence?
+    private val titleText: CharSequence?
 
     companion object {
         private const val CHECKABLE_TYPE_CHECKBOX = 0
@@ -37,8 +31,31 @@ class CheckablePreferenceView @JvmOverloads constructor(
     }
 
     init {
-        parseAttributes(attrs)
+        var ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
+
+        when (val checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType,
+                CHECKABLE_TYPE_CHECKBOX)) {
+            CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(
+                    R.layout.view_checkbox_preference, this)
+
+            CHECKABLE_TYPE_SWITCH_COMPAT -> layoutInflater.inflate(
+                    R.layout.view_switch_compat_preference, this)
+
+            else -> throw RuntimeException("checkableType is an illegal value: $checkableType")
+        }
+
+        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
+        ta.recycle()
+
+        @SuppressLint("CustomViewStyleable")
+        ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        descriptionText = ta.getText(R.styleable.View_descriptionText)
+        titleText = ta.getText(R.styleable.View_titleText)
+        ta.recycle()
     }
+
+    private val checkable: CompoundButton
+        get() = requireViewByIdCompat(R.id.checkable)
 
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>) {
         dispatchThawSelfOnly(container)
@@ -75,28 +92,16 @@ class CheckablePreferenceView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        val layoutInflater = LayoutInflater.from(context)
-
-        when (checkableType) {
-            CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(
-                    R.layout.view_checkbox_preference, this)
-
-            CHECKABLE_TYPE_SWITCH_COMPAT -> layoutInflater.inflate(
-                    R.layout.view_switch_compat_preference, this)
-
-            else -> throw RuntimeException("checkableType is an illegal value: $checkableType")
-        }
-
         setOnClickListener(this)
 
         if (isInEditMode) {
             title.text = titleText
-            description.text = enabledDescriptionText
+            description.text = descriptionText
         }
 
-        if (disabledDescriptionText.isNullOrBlank() || enabledDescriptionText.isNullOrBlank()) {
-            val layoutParams = title.layoutParams as ConstraintLayout.LayoutParams
-            layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+        if (disabledDescriptionText.isNullOrBlank()) {
+            val layoutParams = title.layoutParams as LayoutParams
+            layoutParams.bottomToBottom = LayoutParams.PARENT_ID
             layoutParams.bottomMargin = layoutParams.topMargin
             title.layoutParams = layoutParams
             description.visibility = View.GONE
@@ -107,18 +112,6 @@ class CheckablePreferenceView @JvmOverloads constructor(
         if (isAlive) {
             refresh()
         }
-    }
-
-    private fun parseAttributes(attrs: AttributeSet?) {
-        var ta = context.obtainStyledAttributes(attrs, R.styleable.View)
-        enabledDescriptionText = ta.getText(R.styleable.View_descriptionText)
-        titleText = ta.getText(R.styleable.View_titleText)
-        ta.recycle()
-
-        ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
-        checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType, CHECKABLE_TYPE_CHECKBOX)
-        disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
-        ta.recycle()
     }
 
     var preference: Preference<Boolean>? = null
@@ -140,7 +133,7 @@ class CheckablePreferenceView @JvmOverloads constructor(
             title.text = titleText
 
             if (preference.get() == true) {
-                description.text = enabledDescriptionText
+                description.text = descriptionText
                 checkable.isChecked = true
             } else {
                 description.text = disabledDescriptionText

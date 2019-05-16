@@ -1,20 +1,24 @@
 package com.garpr.android.dagger;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 
+import com.garpr.android.data.models.Region;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.TestDeviceUtilsImpl;
 import com.garpr.android.misc.ThreadUtils;
-import com.garpr.android.models.Region;
 import com.garpr.android.preferences.KeyValueStore;
 import com.garpr.android.preferences.KeyValueStoreImpl;
+import com.garpr.android.wrappers.ImageLibraryWrapper;
+import com.garpr.android.wrappers.WorkManagerWrapper;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
+import androidx.work.WorkRequest;
 import dagger.Module;
 import dagger.Provides;
 
@@ -22,10 +26,11 @@ import dagger.Provides;
 public class TestAppModule extends BaseAppModule {
 
     public TestAppModule(@NonNull final Application application,
-            @NonNull final Region defaultRegion) {
-        super(application, defaultRegion);
+            @NonNull final Region defaultRegion, @NonNull final String smashRosterBasePath) {
+        super(application, defaultRegion, smashRosterBasePath);
     }
 
+    @NonNull
     @Provides
     @Singleton
     CrashlyticsWrapper providesCrashlyticsWrapper() {
@@ -62,36 +67,81 @@ public class TestAppModule extends BaseAppModule {
         };
     }
 
+    @NonNull
     @Provides
     @Singleton
-    DeviceUtils providesDeviceUtils(final Application application) {
+    DeviceUtils providesDeviceUtils(@NonNull final Application application) {
         return new TestDeviceUtilsImpl(application);
     }
 
+    @NonNull
     @Provides
     @Singleton
-    KeyValueStore providesKeyValueStore(final Application application) {
+    ImageLibraryWrapper providesImageLibraryWrapper() {
+        return new ImageLibraryWrapper() {
+            @Override
+            public void initialize() {
+                // intentionally empty
+            }
+        };
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    KeyValueStore providesKeyValueStore(@NonNull final Application application) {
         return new KeyValueStoreImpl(application, "TEST");
     }
 
+    @NonNull
     @Provides
     @Singleton
     ThreadUtils providesThreadUtils() {
         return new ThreadUtils() {
+            private final ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+
+            @NonNull
             @Override
-            public void run(@NotNull final Task task) {
+            public ExecutorService getExecutorService() {
+                return mExecutorService;
+            }
+
+            @Override
+            public boolean isUiThread() {
+                return false;
+            }
+
+            @Override
+            public void run(@NonNull final Task task) {
                 task.onBackground();
                 task.onUi();
             }
 
             @Override
-            public void runOnBackground(@NotNull final Runnable task) {
+            public void runOnBackground(@NonNull final Runnable task) {
                 task.run();
             }
 
             @Override
-            public void runOnUi(@NotNull final Runnable task) {
+            public void runOnUi(@NonNull final Runnable task) {
                 task.run();
+            }
+        };
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    WorkManagerWrapper providesWorkManagerWrapper() {
+        return new WorkManagerWrapper() {
+            @Override
+            public void cancelAllWorkByTag(@NonNull final String tag) {
+                // intentionally empty
+            }
+
+            @Override
+            public void enqueue(@NonNull final WorkRequest workRequest) {
+                // intentionally empty
             }
         };
     }

@@ -1,24 +1,34 @@
 package com.garpr.android.views
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.support.annotation.ColorInt
 import android.util.AttributeSet
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
+import androidx.palette.graphics.Palette
 import com.garpr.android.R
+import com.garpr.android.extensions.compoundDrawablesRelativeCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.setTintedDrawableColor
+import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 
 class TintedTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleTextView(context, attrs), Refreshable {
+) : LifecycleTextView(context, attrs), ColorListener, Refreshable {
 
     @ColorInt
-    private var drawableTintColor: Int = 0
+    private val drawableTintColor: Int
 
 
     init {
-        parseAttributes(attrs)
+        @SuppressLint("CustomViewStyleable")
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
+        drawableTintColor = ta.getColor(R.styleable.View_drawableTintColor,
+                context.getAttrColor(android.R.attr.textColorSecondary))
+        ta.recycle()
     }
 
     override fun onFinishInflate() {
@@ -26,15 +36,20 @@ class TintedTextView @JvmOverloads constructor(
         refresh()
     }
 
-    private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.View)
-        drawableTintColor = ta.getColor(R.styleable.View_drawableTintColor,
-                context.getAttrColor(android.R.attr.textColorSecondary))
-        ta.recycle()
+    override fun onPaletteBuilt(palette: Palette?) {
+        setTintedDrawableColor(palette?.mutedSwatch?.rgb ?: drawableTintColor)
     }
 
     override fun refresh() {
         setTintedDrawableColor(drawableTintColor)
+    }
+
+    fun setStartCompoundDrawableRelativeWithIntrinsicBounds(@DrawableRes drawableResId: Int) {
+        val drawables = compoundDrawablesRelativeCompat
+        drawables[0] = ContextCompat.getDrawable(context, drawableResId)
+        compoundDrawablesRelativeCompat = drawables
+
+        refresh()
     }
 
 }

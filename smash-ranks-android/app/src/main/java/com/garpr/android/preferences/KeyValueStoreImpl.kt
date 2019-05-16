@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.garpr.android.preferences.KeyValueStore.BatchEditor
-import java.util.*
+import java.util.Collections
 
 class KeyValueStoreImpl(
         private val application: Application,
@@ -15,7 +15,7 @@ class KeyValueStoreImpl(
         get() {
             val map = sharedPreferences.all
 
-            return if (map == null || map.isEmpty()) {
+            return if (map.isNullOrEmpty()) {
                 null
             } else {
                 Collections.unmodifiableMap(map)

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar" />
+    <com.garpr.android.views.toolbars.GarToolbar
+        android:id="@+id/toolbar"
+        app:showUpNavigation="true"
+        app:titleText="@string/settings"
+        style="@style/Toolbar" />
 
     <ScrollView
         android:fillViewport="true"
@@ -21,22 +23,19 @@
             android:orientation="vertical">
 
             <com.garpr.android.views.RegionPreferenceView
-                android:id="@+id/regionPreferenceView"
-                app:icon="@drawable/ic_location_on_white_24dp"
-                style="@style/PreferenceView" />
-
-            <com.garpr.android.views.ThemePreferenceView
-                android:id="@+id/themePreferenceView"
-                app:icon="@drawable/ic_format_paint_white_24dp"
+                android:id="@+id/regionPreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.IdentityPreferenceView
-                android:id="@+id/identityPreferenceView"
-                app:icon="@drawable/ic_face_white_24dp"
+                android:id="@+id/identityPreference"
+                style="@style/PreferenceView" />
+
+            <com.garpr.android.views.ThemePreferenceView
+                android:id="@+id/themePreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.DeleteFavoritePlayersPreferenceView
-                android:id="@+id/deleteFavoritePlayersPreferenceView"
+                android:id="@+id/deleteFavoritePlayersPreference"
                 style="@style/PreferenceView" />
 
             <include
@@ -50,78 +49,101 @@
                 android:text="@string/rankings_polling_description"
                 style="@style/SettingsCardDescription" />
 
-            <TextView
-                android:background="?attr/selectableItemBackground"
-                android:id="@+id/tvGooglePlayServicesError"
-                android:text="@string/rankings_polling_requires_google_play_services"
-                android:visibility="gone"
-                tools:visibility="visible"
-                style="@style/SettingsCardDescription.Warn" />
-
             <com.garpr.android.views.CheckablePreferenceView
-                android:id="@+id/cpvUseRankingsPolling"
+                android:id="@+id/useRankingsPolling"
                 app:checkableType="switch_compat"
                 app:titleText="@string/use_rankings_polling"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.PollFrequencyPreferenceView
-                android:id="@+id/pollFrequencyPreferenceView"
+            <com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView
+                android:id="@+id/rankingsPollingFrequencyPreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.RingtonePreferenceView
-                android:id="@+id/ringtonePreferenceView"
+                android:id="@+id/ringtonePreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.CheckablePreferenceView
-                android:id="@+id/cpvVibrate"
+                android:id="@+id/vibratePreference"
                 app:titleText="@string/vibrate"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.CheckablePreferenceView
-                android:id="@+id/cpvMustBeOnWifi"
+                android:id="@+id/mustBeOnWifiPreference"
                 app:titleText="@string/must_be_on_wifi"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.CheckablePreferenceView
-                android:id="@+id/cpvMustBeCharging"
+                android:id="@+id/mustBeChargingPreference"
                 app:titleText="@string/must_be_charging"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.LastPollPreferenceView
-                android:id="@+id/lastPollPreferenceView"
+                android:id="@+id/lastPollPreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.TestNotificationView
-                android:id="@+id/testNotificationView"
+                android:id="@+id/testNotification"
                 style="@style/PreferenceView" />
 
             <include
                 layout="@layout/divider" />
 
             <TextView
-                android:text="@string/miscellaneous"
+                android:text="@string/smash_roster"
+                style="@style/SettingsCardTitle" />
+
+            <TextView
+                android:text="@string/smash_roster_polling_description"
+                style="@style/SettingsCardDescription" />
+
+            <com.garpr.android.views.SmashRosterSyncPreferenceView
+                android:id="@+id/smashRosterPreference"
+                style="@style/PreferenceView" />
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/smashRosterFormLink"
+                android:src="@drawable/ic_open_in_browser_white_24dp"
+                app:descriptionText="@string/click_to_open_form"
+                app:titleText="@string/submit_your_own_profile_to_the_roster"
+                style="@style/PreferenceView" />
+
+            <include
+                layout="@layout/divider" />
+
+            <TextView
+                android:text="@string/credits"
                 style="@style/SettingsCardTitle" />
 
             <com.garpr.android.views.SimplePreferenceView
-                android:id="@+id/spvCharlesTwitter"
+                android:id="@+id/charlesTwitter"
                 app:descriptionText="@string/charles_twitter_url"
                 app:titleText="@string/app_by_charles_madere"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
-                android:id="@+id/spvGarTwitter"
-                app:descriptionText="@string/gar_twitter_url"
-                app:titleText="@string/website_by_ivan_van"
-                style="@style/PreferenceView" />
-
-            <com.garpr.android.views.SimplePreferenceView
-                android:id="@+id/spvGitHub"
+                android:id="@+id/gitHub"
                 app:descriptionText="@string/contribute_your_changes"
                 app:titleText="@string/open_source_on_github"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.views.SimplePreferenceView
-                android:id="@+id/spvLogViewer"
+                android:id="@+id/garTwitter"
+                app:descriptionText="@string/gar_twitter_url"
+                app:titleText="@string/website_by_ivan_van"
+                style="@style/PreferenceView" />
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/germWebsite"
+                app:descriptionText="@string/germ_website_url"
+                app:titleText="@string/sheik_artwork_by_germ"
+                style="@style/PreferenceView" />
+
+            <include
+                layout="@layout/divider" />
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/logViewer"
                 app:descriptionText="@string/view_logs_description"
                 app:titleText="@string/view_logs"
                 style="@style/PreferenceView" />

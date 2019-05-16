@@ -1,10 +1,8 @@
 package com.garpr.android.misc
 
 import android.app.Application
-
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
-
 import io.fabric.sdk.android.Fabric
 
 class CrashlyticsWrapperImpl(

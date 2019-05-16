@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <Space
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_width="0dp" />
+
+    <TextView
+        android:id="@+id/clearButton"
+        android:text="@string/clear"
+        style="@style/ToolbarTextButton" />
+
+</merge>

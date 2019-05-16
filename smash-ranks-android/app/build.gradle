@@ -10,11 +10,13 @@ buildscript {
     }
 }
 
+// Android
 apply plugin: 'com.android.application'
 
 // Kotlin
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 // Fabric
 apply plugin: 'io.fabric'
@@ -25,14 +27,19 @@ repositories {
 }
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 27
-        versionCode 10401
-        versionName "1.4.1"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 20000
+        versionName "2.0.0"
     }
 
     buildTypes {
@@ -55,45 +62,83 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
-
-    // Android Support Library
-    implementation "com.android.support:appcompat-v7:$appcompat_version"
-    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
-    implementation "com.android.support:design:$appcompat_version"
-    implementation "com.android.support:recyclerview-v7:$appcompat_version"
-    implementation "com.android.support:support-v4:$appcompat_version"
-
-    // Firebase JobDispatcher
-    implementation "com.firebase:firebase-jobdispatcher:$firebase_jobdispatcher_version"
-
-    // Google's Dagger
-    implementation "com.google.dagger:dagger:$dagger_version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
-    testAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
-
-    // Google's GSON
-    implementation "com.google.code.gson:gson:$gson_version"
-
-    // Google Play Services
-    implementation "com.google.android.gms:play-services-base:$google_play_services_version"
-
-    // Jake Wharton's KotterKnife
-    // this is currently just a standalone file that was copy & pasted into our source code
-    // https://github.com/JakeWharton/kotterknife
+    testImplementation "junit:junit:4.12"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    // https://kotlinlang.org/docs/reference/using-gradle.html
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Kotlin Reflection (only for tests)
+    // https://kotlinlang.org/docs/reference/using-gradle.html
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    // Android Architecture Component WorkManager
+    // https://developer.android.com/jetpack/androidx/releases/work
+    implementation "androidx.work:work-runtime:$workmanager_version"
+
+    // AndroidX AppCompat
+    // https://developer.android.com/jetpack/androidx/releases/appcompat
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+
+    // AndroidX CardView
+    // https://developer.android.com/jetpack/androidx/releases/cardview
+    implementation "androidx.cardview:cardview:$cardview_version"
+
+    // AndroidX ConstraintLayout
+    // https://developer.android.com/jetpack/androidx/releases/constraintlayout
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+
+    // AndroidX Palette
+    // https://developer.android.com/jetpack/androidx/releases/palette
+    implementation "androidx.palette:palette:$palette_version"
+
+    // AndroidX RecyclerView
+    // https://developer.android.com/jetpack/androidx/releases/recyclerview
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+
+    // AndroidX Test
+    // https://developer.android.com/jetpack/androidx/releases/test
+    testImplementation "androidx.test:core:$testcore_version"
+
+    // Facebook's Fresco
+    // https://github.com/facebook/fresco
+    implementation "com.facebook.fresco:fresco:$fresco_version"
+    implementation "com.facebook.fresco:imagepipeline-okhttp3:$fresco_version"
+
+    // Google's Dagger
+    // https://github.com/google/dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kaptTest "com.google.dagger:dagger-compiler:$dagger_version"
+
+    // Google's Material Design Library
+    // https://material.io/develop/android/
+    implementation "com.google.android.material:material:$material_design_version"
 
     // Robolectric
+    // https://github.com/robolectric/robolectric
     testImplementation "org.robolectric:robolectric:$robolectric_version"
 
+    // Square's Moshi
+    // https://github.com/square/moshi
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+
+    // Square's OkHttp
+    // https://github.com/square/okhttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+
     // Square's Retrofit
+    // https://github.com/square/retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     // Fabric
-    implementation("com.crashlytics.sdk.android:crashlytics:2.9.1@aar") {
+    // https://fabric.io/kits/android/crashlytics/update
+    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics_version@aar") {
         transitive = true
     }
+
+    // Annoying fix for compile error: "error cannot access nullable"
+    implementation "com.google.code.findbugs:jsr305:3.0.2"
 }

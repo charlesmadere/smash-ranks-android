@@ -5,22 +5,28 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar" />
+    <com.garpr.android.views.toolbars.LogViewerToolbar
+        android:id="@+id/toolbar"
+        app:showUpNavigation="true"
+        app:titleText="@string/log_viewer"
+        style="@style/Toolbar" />
 
     <com.garpr.android.views.RefreshLayout
+        android:id="@+id/refreshLayout"
         style="@style/RefreshLayout">
 
         <FrameLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:scrollbars="none"
                 android:visibility="gone"
                 style="@style/RecyclerView" />
 
             <com.garpr.android.views.NoContentLinearLayout
+                android:id="@+id/empty"
                 app:titleText="@string/no_log_entries"
                 style="@style/NoContentLinearLayout.Empty" />
 

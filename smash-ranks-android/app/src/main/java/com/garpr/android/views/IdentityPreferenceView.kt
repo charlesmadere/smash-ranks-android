@@ -2,13 +2,14 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.SetIdentityActivity
-import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.misc.RequestCodes
 import javax.inject.Inject
@@ -22,6 +23,13 @@ class IdentityPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var identityManager: IdentityManager
 
+    init {
+        titleText = context.getText(R.string.identity)
+        descriptionText = context.getText(R.string.easily_find_yourself_throughout_the_app)
+        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_face_white_24dp)
+
+        setOnClickListener(this)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -46,7 +54,7 @@ class IdentityPreferenceView @JvmOverloads constructor(
                     .setPositiveButton(R.string.yes, this)
                     .show()
         } else {
-            val activity = context.optActivity()
+            val activity = this.activity
 
             if (activity == null) {
                 context.startActivity(SetIdentityActivity.getLaunchIntent(context))
@@ -67,19 +75,10 @@ class IdentityPreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
+            identityManager.addListener(this)
+            refresh()
         }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.identity)
-        descriptionText = resources.getText(R.string.easily_find_yourself_throughout_the_app)
-
-        if (isInEditMode) {
-            return
-        }
-
-        identityManager.addListener(this)
-        refresh()
     }
 
     override fun onIdentityChange(identityManager: IdentityManager) {

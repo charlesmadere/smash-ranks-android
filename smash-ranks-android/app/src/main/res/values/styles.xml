@@ -1,16 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="BottomNavigationView">
-        <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:id">@id/bottomNavigationView</item>
+    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">?attr/colorPrimaryDark</item>
         <item name="android:layout_height">@dimen/bottom_navigation_view_height</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:theme">@style/ToolbarTheme</item>
         <item name="elevation">@dimen/elevation</item>
         <item name="itemIconTint">@drawable/bottom_navigation_view_item_tint</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavigationViewTextAppearance.Active</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationViewTextAppearance.Inactive</item>
         <item name="itemTextColor">@drawable/bottom_navigation_view_item_tint</item>
-        <item name="menu">@menu/bottom_navigation_view</item>
+    </style>
+
+    <style name="BottomNavigationViewTextAppearance">
+
+    </style>
+
+    <style name="BottomNavigationViewTextAppearance.Active">
+        <item name="android:fontFamily">@font/nunito_bold</item>
+    </style>
+
+    <style name="BottomNavigationViewTextAppearance.Inactive">
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
+    <style name="BottomSheetDialogButton">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:drawablePadding">@dimen/root_padding</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">@dimen/list_item_height</item>
+        <item name="android:paddingBottom">@dimen/root_padding_half</item>
+        <item name="android:paddingEnd">@dimen/root_padding</item>
+        <item name="android:paddingStart">@dimen/root_padding</item>
+        <item name="android:paddingTop">@dimen/root_padding_half</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="BottomSheetDialogButton.Accent">
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="drawableTintColor">?attr/colorAccent</item>
+    </style>
+
+    <style name="BottomSheetDialogMessage">
+        <item name="android:fontFamily">@font/nunito_regular</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">@dimen/root_padding</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="BottomSheetDialogTitle">
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">@dimen/root_padding</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="BottomSheetDialogRoot">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="ConstraintListItem">
@@ -21,12 +76,12 @@
 
     <style name="ConstraintListItem.WithBackground">
         <item name="android:background">@color/card_background</item>
-        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
+        <item name="android:elevation">@dimen/elevation_quarter</item>
     </style>
 
     <style name="DividerItem">
         <item name="android:background">@color/card_background</item>
-        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
+        <item name="android:elevation">@dimen/elevation_quarter</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/root_padding</item>
         <item name="android:layout_width">match_parent</item>
@@ -67,12 +122,6 @@
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
-    <style name="InnerListItem">
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
     <style name="ListItem">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center_vertical</item>
@@ -87,7 +136,7 @@
 
     <style name="ListItem.WithBackground">
         <item name="android:background">@color/card_background</item>
-        <item name="android:elevation" tools:ignore="NewApi">@dimen/elevation_quarter</item>
+        <item name="android:elevation">@dimen/elevation_quarter</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
@@ -106,43 +155,11 @@
     </style>
 
     <style name="NoContentLinearLayout.Empty">
-        <item name="android:id">@id/empty</item>
-        <item name="descriptionText">@string/swipe_to_refresh_to_check_again</item>
+        <item name="descriptionText">@string/swipe_to_refresh_and_check_again</item>
     </style>
 
     <style name="NoContentLinearLayout.Error">
-        <item name="android:id">@id/error</item>
-        <item name="descriptionText">@string/swipe_to_refresh_to_try_again</item>
-    </style>
-
-    <style name="NoContentLinearLayoutBody">
-        <item name="android:gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
-    <style name="NoContentLinearLayoutBody.Image">
-        <item name="android:adjustViewBounds">true</item>
-        <item name="android:id">@id/image</item>
-        <item name="android:importantForAccessibility">no</item>
-        <item name="android:layout_marginBottom">@dimen/root_padding_double</item>
-        <item name="android:layout_marginEnd">@dimen/root_padding_double</item>
-        <item name="android:layout_marginStart">@dimen/root_padding_double</item>
-        <item name="android:layout_marginTop">@dimen/root_padding</item>
-        <item name="android:scaleType">centerInside</item>
-    </style>
-
-    <style name="NoContentLinearLayoutBody.Line1">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:id">@id/title</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="NoContentLinearLayoutBody.Line2">
-        <item name="android:id">@id/description</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="descriptionText">@string/swipe_to_refresh_and_try_again</item>
     </style>
 
     <style name="PreferenceView">
@@ -154,7 +171,6 @@
     <style name="PreferenceViewCheckable">
         <item name="android:background">@null</item>
         <item name="android:clickable">false</item>
-        <item name="android:id">@id/checkable</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/root_padding_half</item>
         <item name="android:layout_marginEnd">@dimen/root_padding</item>
@@ -166,7 +182,6 @@
     </style>
 
     <style name="PreferenceViewDescription">
-        <item name="android:id">@id/description</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/root_padding_half</item>
         <item name="android:layout_marginEnd">@dimen/root_padding_half</item>
@@ -174,13 +189,10 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintEnd_toStartOf">@id/checkable</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
-        <item name="layout_constraintTop_toBottomOf">@id/title</item>
     </style>
 
     <style name="PreferenceViewTitle">
-        <item name="android:id">@id/title</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginEnd">@dimen/root_padding_half</item>
         <item name="android:layout_marginStart">@dimen/root_padding</item>
@@ -188,13 +200,11 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="layout_constraintEnd_toStartOf">@id/checkable</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
     <style name="RecyclerView">
-        <item name="android:id">@id/recyclerView</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:overScrollMode">never</item>
@@ -212,10 +222,8 @@
     </style>
 
     <style name="RefreshLayout">
-        <item name="android:id">@id/refreshLayout</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="scrollingChildId">@id/recyclerView</item>
     </style>
 
     <style name="SettingsCardDescription">
@@ -227,13 +235,9 @@
         <item name="android:paddingTop">@dimen/root_padding_half</item>
     </style>
 
-    <style name="SettingsCardDescription.Warn">
-        <item name="android:textColor">@color/warn</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="SettingsCardTitle">
         <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingBottom">@dimen/root_padding_quarter</item>
@@ -242,26 +246,18 @@
         <item name="android:paddingTop">@dimen/root_padding_quarter</item>
         <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TabLayout">
-        <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
-        <item name="android:id">@id/tabLayout</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:theme">@style/TabLayoutTheme</item>
     </style>
 
     <style name="TextButton" parent="@style/MediumOrBoldText">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:drawablePadding">@dimen/root_padding_eighth</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:maxLines">2</item>
         <item name="android:minHeight">@dimen/list_item_height</item>
         <item name="android:padding">@dimen/root_padding_half</item>
         <item name="android:textAllCaps">true</item>
@@ -270,44 +266,49 @@
 
     <style name="TextViewTab">
         <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">@dimen/tab_height</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:letterSpacing">0.05</item>
         <item name="android:paddingEnd">@dimen/root_padding</item>
         <item name="android:paddingStart">@dimen/root_padding</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/elevation</item>
-        <item name="android:id">@id/toolbar</item>
+        <item name="android:elevation">@dimen/elevation</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
         <item name="android:theme">@style/ToolbarTheme</item>
     </style>
 
-    <style name="ViewPager">
-        <item name="android:id">@id/viewPager</item>
+    <style name="ToolbarButton">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingEnd">@dimen/root_padding_half</item>
+        <item name="android:paddingStart">@dimen/root_padding_half</item>
+        <item name="android:scaleType">centerInside</item>
     </style>
 
-    <style name="WinsLossesColumnView">
+    <style name="ToolbarTextButton">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/root_padding</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:orientation">vertical</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingEnd">@dimen/root_padding_half</item>
+        <item name="android:paddingStart">@dimen/root_padding_half</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="WinsLossesCount">
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginEnd">@dimen/root_padding</item>
@@ -321,8 +322,9 @@
         <item name="layout_constraintVertical_chainStyle">packed</item>
     </style>
 
-    <style name="WinsLossesPlayerNameBase">
+    <style name="WinsLossesPlayerName">
         <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginEnd">@dimen/root_padding</item>
@@ -332,10 +334,6 @@
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
-    </style>
-
-    <style name="WinsLossesPlayerName" parent="WinsLossesPlayerNameBase">
-        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

@@ -4,7 +4,8 @@ Shows Super Smash Bros tournament results data from [GAR PR](https://www.garpr.c
 
 Available on the [Google Play store](https://play.google.com/store/apps/details?id=com.garpr.android)!
 
-## License ##
+
+## Unlicense ##
 
     This is free and unencumbered software released into the public domain.
 

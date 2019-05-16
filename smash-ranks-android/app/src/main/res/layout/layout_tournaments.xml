@@ -8,15 +8,18 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:visibility="gone"
             style="@style/RecyclerView" />
 
         <com.garpr.android.views.NoContentLinearLayout
+            android:id="@+id/empty"
             app:titleText="@string/no_tournaments"
             style="@style/NoContentLinearLayout.Empty" />
 
         <com.garpr.android.views.ErrorContentLinearLayout
+            android:id="@+id/error"
             app:titleText="@string/error_loading_tournaments"
             style="@style/NoContentLinearLayout.Error" />
 

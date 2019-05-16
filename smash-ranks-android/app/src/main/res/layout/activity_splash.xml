@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <com.garpr.android.views.SplashCardView
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_double"
+        android:layout_width="@dimen/splash_card_width"
+        app:cardCornerRadius="@dimen/splash_card_corner_radius"
+        app:cardElevation="@dimen/splash_card_start_elevation"
+        app:layout_constraintBottom_toTopOf="@+id/bottomWindowInsetsView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:divider="?android:attr/listDivider"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/customizeRegion"
+                android:src="@drawable/ic_chevron_right_white_24dp"
+                app:descriptionText="@string/customize_region_description"
+                app:titleText="@string/customize_region"
+                style="@style/PreferenceView" />
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/customizeIdentity"
+                android:src="@drawable/ic_chevron_right_white_24dp"
+                app:descriptionText="@string/customize_identity_description"
+                app:titleText="@string/customize_identity"
+                style="@style/PreferenceView" />
+
+            <com.garpr.android.views.SimplePreferenceView
+                android:id="@+id/startUsingTheApp"
+                android:src="@drawable/ic_controller_white_24dp"
+                app:descriptionText="@string/start_using_the_app_description"
+                app:titleText="@string/start_using_the_app"
+                style="@style/PreferenceView" />
+
+        </LinearLayout>
+
+    </com.garpr.android.views.SplashCardView>
+
+    <com.garpr.android.views.BottomWindowInsetsView
+        android:id="@+id/bottomWindowInsetsView"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

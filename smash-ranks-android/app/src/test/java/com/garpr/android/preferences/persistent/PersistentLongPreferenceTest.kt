@@ -3,7 +3,11 @@ package com.garpr.android.preferences.persistent
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.Preference
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,7 +22,6 @@ class PersistentLongPreferenceTest : BaseTest() {
 
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
@@ -41,9 +44,6 @@ class PersistentLongPreferenceTest : BaseTest() {
 
         preference.set(11L)
         assertEquals(11L, value)
-
-        preference.set(-9815L, false)
-        assertNotEquals(-9851L, value)
 
         preference.set(21L)
         assertEquals(21L, value)

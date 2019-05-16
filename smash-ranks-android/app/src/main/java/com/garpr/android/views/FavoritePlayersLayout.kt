@@ -1,52 +1,44 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.garpr.android.App
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.garpr.android.R
 import com.garpr.android.adapters.FavoritePlayersAdapter
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.AbsPlayer
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.layout_favorite_players.view.*
 import javax.inject.Inject
 
-class FavoritePlayersLayout : SearchableFrameLayout,
-        FavoritePlayersManager.OnFavoritePlayersChangeListener, Refreshable {
+class FavoritePlayersLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : SearchableFrameLayout(context, attrs), FavoritePlayersManager.OnFavoritePlayersChangeListener,
+        Refreshable {
 
-    private lateinit var adapter: FavoritePlayersAdapter
+    private val adapter = FavoritePlayersAdapter()
 
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
-    private val empty: View by bindView(R.id.empty)
-
 
     companion object {
-        fun inflate(parent: ViewGroup): FavoritePlayersLayout = LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_favorite_players, parent, false) as FavoritePlayersLayout
+        fun inflate(parent: ViewGroup): FavoritePlayersLayout = parent.layoutInflater.inflate(
+                R.layout.layout_favorite_players, parent, false) as FavoritePlayersLayout
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+    override fun getRecyclerView(): RecyclerView? {
+        return recyclerView
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -78,19 +70,16 @@ class FavoritePlayersLayout : SearchableFrameLayout,
             return
         }
 
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
 
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        adapter = FavoritePlayersAdapter(context)
         recyclerView.adapter = adapter
         favoritePlayersManager.addListener(this)
 
         refresh()
     }
-
-    override val recyclerView: RecyclerView by bindView(R.id.recyclerView)
 
     override fun refresh() {
         if (favoritePlayersManager.isEmpty) {

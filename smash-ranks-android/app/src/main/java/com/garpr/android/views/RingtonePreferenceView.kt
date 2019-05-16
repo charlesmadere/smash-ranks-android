@@ -8,9 +8,9 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
-import com.garpr.android.App
 import com.garpr.android.R
-import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.activity
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
@@ -32,6 +32,16 @@ class RingtonePreferenceView @JvmOverloads constructor(
 
     companion object {
         private const val TAG = "RingtonePreferenceView"
+    }
+
+    init {
+        titleText = context.getText(R.string.ringtone)
+
+        if (isInEditMode) {
+            descriptionText = context.getText(R.string.none)
+        }
+
+        setOnClickListener(this)
     }
 
     fun onActivityResult(data: Intent?) {
@@ -65,7 +75,7 @@ class RingtonePreferenceView @JvmOverloads constructor(
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, it)
         }
 
-        val activity = context.optActivity()
+        val activity = this.activity
 
         try {
             if (activity == null) {
@@ -89,18 +99,10 @@ class RingtonePreferenceView @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            App.get().appComponent.inject(this)
+            appComponent.inject(this)
             rankingsPollingPreferenceStore.ringtone.addListener(this)
+            refresh()
         }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.ringtone)
-
-        if (isInEditMode) {
-            return
-        }
-
-        refresh()
     }
 
     override fun onPreferenceChange(preference: Preference<Uri>) {
@@ -117,7 +119,7 @@ class RingtonePreferenceView @JvmOverloads constructor(
         }
 
         descriptionText = if (ringtone == null) {
-            resources.getText(R.string.none)
+            context.getText(R.string.none)
         } else {
             ringtone.getTitle(context)
         }

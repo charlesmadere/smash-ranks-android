@@ -2,7 +2,8 @@ package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
-import org.junit.Assert.*
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,24 +18,21 @@ class PersistentBooleanPreferenceTest : BaseTest() {
 
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNonNullGetDefaultValue() {
         val preference = PersistentBooleanPreference("boolean",false, keyValueStore)
-        assertEquals(preference.defaultValue, java.lang.Boolean.FALSE)
+        assertTrue(preference.defaultValue == false)
 
         preference.set(true)
         assertTrue(preference.defaultValue == false)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullGetDefaultValue() {
         val preference = PersistentBooleanPreference("boolean", null, keyValueStore)
         assertNull(preference.defaultValue)

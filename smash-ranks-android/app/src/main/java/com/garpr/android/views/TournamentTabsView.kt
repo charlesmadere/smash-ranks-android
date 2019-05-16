@@ -2,22 +2,20 @@ package com.garpr.android.views
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.support.annotation.ColorInt
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewPropertyAnimator
-import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
+import com.garpr.android.data.models.TournamentMode
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.extensions.optActivity
+import com.garpr.android.extensions.getLong
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.models.TournamentMode
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.view_tournament_tabs.view.*
 
 class TournamentTabsView @JvmOverloads constructor(
         context: Context,
@@ -29,24 +27,33 @@ class TournamentTabsView @JvmOverloads constructor(
         val tournamentMode: TournamentMode
     }
 
-
     private val animationDuration: Long by lazy {
-        resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        resources.getLong(R.integer.tab_animation_duration)
     }
-
-    @ColorInt
-    private var indicatorLineColor: Int = Color.TRANSPARENT
 
     private var inAnimation: ViewPropertyAnimator? = null
     private var outAnimation: ViewPropertyAnimator? = null
 
-    private val matchesTab: TextView by bindView(R.id.tvMatchesTab)
-    private val playersTab: TextView by bindView(R.id.tvPlayersTab)
-    private val indicatorLine: View by bindView(R.id.indicatorLine)
-
-
     init {
-        parseAttributes(attrs)
+        @Suppress("LeakingThis")
+        layoutInflater.inflate(R.layout.view_tournament_tabs, this)
+
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsView)
+        val indicatorLineColor = ta.getColor(R.styleable.TournamentTabsView_indicatorLineColor,
+                context.getAttrColor(R.attr.colorAccent))
+        ta.recycle()
+
+        matchesTab.setOnClickListener {
+            listeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
+            refresh()
+        }
+
+        playersTab.setOnClickListener {
+            listeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
+            refresh()
+        }
+
+        indicatorLine.setBackgroundColor(indicatorLineColor)
     }
 
     fun animateIn() {
@@ -93,29 +100,11 @@ class TournamentTabsView @JvmOverloads constructor(
         get() = alpha == 1f && visibility == View.VISIBLE
 
     private val listeners: Listeners?
-        get() = context.optActivity() as? Listeners
+        get() = activity as? Listeners
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         refresh()
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        LayoutInflater.from(context).inflate(R.layout.view_tournament_tabs, this)
-
-        matchesTab.setOnClickListener {
-            listeners?.onTournamentModeClick(this, TournamentMode.MATCHES)
-            refresh()
-        }
-
-        playersTab.setOnClickListener {
-            listeners?.onTournamentModeClick(this, TournamentMode.PLAYERS)
-            refresh()
-        }
-
-        indicatorLine.setBackgroundColor(indicatorLineColor)
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
@@ -127,15 +116,8 @@ class TournamentTabsView @JvmOverloads constructor(
         return if (canBeTouched) super.onTouchEvent(event) else false
     }
 
-    private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.TournamentTabsView)
-        indicatorLineColor = ta.getColor(R.styleable.TournamentTabsView_indicatorLineColor,
-                context.getAttrColor(R.attr.colorAccent))
-        ta.recycle()
-    }
-
     override fun refresh() {
-        val layoutParams = indicatorLine.layoutParams as? ConstraintLayout.LayoutParams ?: return
+        val layoutParams = indicatorLine.layoutParams as? LayoutParams? ?: return
 
         when (listeners?.tournamentMode) {
             TournamentMode.MATCHES -> {
@@ -151,8 +133,8 @@ class TournamentTabsView @JvmOverloads constructor(
             }
 
             else -> {
-                layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                layoutParams.endToEnd = LayoutParams.PARENT_ID
+                layoutParams.startToStart = LayoutParams.PARENT_ID
                 indicatorLine.visibility = View.INVISIBLE
             }
         }

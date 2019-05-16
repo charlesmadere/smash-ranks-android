@@ -7,7 +7,7 @@
     <TextView
         android:ellipsize="end"
         android:gravity="center_vertical|start"
-        android:id="@+id/tvWinnerName"
+        android:id="@+id/winnerName"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_marginEnd="@dimen/root_padding_half"
@@ -17,7 +17,7 @@
         android:maxLines="2"
         android:textColor="@color/win"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvLoserName"
+        app:layout_constraintEnd_toStartOf="@+id/loserName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Mikkuz" />
@@ -25,7 +25,7 @@
     <TextView
         android:ellipsize="end"
         android:gravity="center_vertical|end"
-        android:id="@+id/tvLoserName"
+        android:id="@id/loserName"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_marginEnd="@dimen/root_padding"
@@ -36,7 +36,7 @@
         android:textColor="@color/lose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvWinnerName"
+        app:layout_constraintStart_toEndOf="@id/winnerName"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="gaR" />
 

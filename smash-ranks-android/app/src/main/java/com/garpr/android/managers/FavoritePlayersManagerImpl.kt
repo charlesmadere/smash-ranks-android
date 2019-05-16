@@ -1,23 +1,29 @@
 package com.garpr.android.managers
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
-import com.garpr.android.R
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.Region
+import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment
+import com.garpr.android.extensions.requireFragmentActivity
+import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.managers.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.misc.Timber
-import com.garpr.android.models.AbsPlayer
-import com.garpr.android.models.FavoritePlayer
-import com.garpr.android.models.Region
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.wrappers.WeakReferenceWrapper
-import com.google.gson.Gson
-import java.util.*
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import java.util.Collections
 
 class FavoritePlayersManagerImpl(
-        private val gson: Gson,
         private val keyValueStore: KeyValueStore,
+        private val moshi: Moshi,
         private val timber: Timber
 ) : FavoritePlayersManager {
+
+    private val favoritePlayerAdapter: JsonAdapter<FavoritePlayer> by lazy {
+        moshi.adapter(FavoritePlayer::class.java)
+    }
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnFavoritePlayersChangeListener>>()
 
@@ -30,7 +36,7 @@ class FavoritePlayersManagerImpl(
         get() {
             val players = this.players
 
-            if (players == null || players.isEmpty()) {
+            if (players.isNullOrEmpty()) {
                 return null
             }
 
@@ -54,10 +60,10 @@ class FavoritePlayersManagerImpl(
             return
         }
 
-        timber.d(TAG, "Adding favorite (there are currently $size favorite(s))")
+        timber.d(TAG, "Adding favorite (there are currently $size)")
 
         val favoritePlayer = FavoritePlayer(player.id, player.name, region)
-        val playerJson = gson.toJson(favoritePlayer, FavoritePlayer::class.java)
+        val playerJson = favoritePlayerAdapter.toJson(favoritePlayer)
         keyValueStore.setString(player.id, playerJson)
         notifyListeners()
     }
@@ -77,6 +83,7 @@ class FavoritePlayersManagerImpl(
     }
 
     override fun clear() {
+        timber.d(TAG, "Clearing favorites (there are currently $size)")
         keyValueStore.clear()
         notifyListeners()
     }
@@ -90,10 +97,7 @@ class FavoritePlayersManagerImpl(
     }
 
     override val isEmpty: Boolean
-        get() {
-            val all = keyValueStore.all
-            return all == null || all.isEmpty()
-        }
+        get() = keyValueStore.all.isNullOrEmpty()
 
     private fun notifyListeners() {
         cleanListeners()
@@ -111,7 +115,7 @@ class FavoritePlayersManagerImpl(
         get() {
             val all = keyValueStore.all
 
-            if (all == null || all.isEmpty()) {
+            if (all.isNullOrEmpty()) {
                 return null
             }
 
@@ -119,7 +123,8 @@ class FavoritePlayersManagerImpl(
 
             for ((key, value) in all) {
                 val json = value as String
-                players.add(gson.fromJson(json, FavoritePlayer::class.java))
+                val player = favoritePlayerAdapter.requireFromJson(json)
+                players.add(player)
             }
 
             Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
@@ -135,6 +140,7 @@ class FavoritePlayersManagerImpl(
     }
 
     override fun removePlayer(playerId: String) {
+        timber.d(TAG, "Removing favorite (there are currently $size)")
         keyValueStore.remove(playerId)
         notifyListeners()
     }
@@ -144,22 +150,11 @@ class FavoritePlayersManagerImpl(
             return false
         }
 
-        val builder = AlertDialog.Builder(context)
-                .setNegativeButton(R.string.cancel, null)
+        val favoritePlayer = FavoritePlayer(player.id, player.name, region)
+        val dialog = AddOrRemovePlayerFromFavoritesDialogFragment.create(favoritePlayer)
+        dialog.show(context.requireFragmentActivity().supportFragmentManager,
+                AddOrRemovePlayerFromFavoritesDialogFragment.TAG)
 
-        if (player in this) {
-            builder.setMessage(context.getString(R.string.remove_x_from_favorites, player.name))
-                    .setPositiveButton(R.string.yes) { dialog, which ->
-                        removePlayer(player)
-                    }
-        } else {
-            builder.setMessage(context.getString(R.string.add_x_to_favorites, player.name))
-                    .setPositiveButton(R.string.yes) { dialog, which ->
-                        addPlayer(player, region)
-                    }
-        }
-
-        builder.show()
         return true
     }
 

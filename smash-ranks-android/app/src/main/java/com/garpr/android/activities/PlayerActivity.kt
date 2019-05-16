@@ -3,44 +3,46 @@ package com.garpr.android.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
-import android.view.MenuItem
 import android.view.View
-import com.garpr.android.App
+import androidx.palette.graphics.Palette
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.PlayerAdapter
-import com.garpr.android.extensions.subtitle
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.PlayerMatchesBundle
+import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.putOptionalExtra
+import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.models.*
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.ErrorContentLinearLayout
 import com.garpr.android.views.MatchItemView
 import com.garpr.android.views.PlayerProfileItemView
-import com.garpr.android.views.toolbars.PlayerToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_player.*
 import javax.inject.Inject
 
-class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
-        MatchItemView.OnClickListener, PlayerToolbar.DataProvider, Searchable, SearchQueryHandle,
-        SearchToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
+class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorListener,
+        MatchItemView.OnClickListener, Searchable, SearchQueryHandle, SearchToolbar.Listener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private var list: List<Any>? = null
-    private var _matchResult: MatchResult? = null
-    private lateinit var adapter: PlayerAdapter
+    private val adapter = PlayerAdapter()
     private var playerMatchesBundle: PlayerMatchesBundle? = null
-    private lateinit var playerId: String
 
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
@@ -55,13 +57,10 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     protected lateinit var serverApi: ServerApi
 
     @Inject
-    protected lateinit var threadUtils: ThreadUtils
+    protected lateinit var smashRosterStorage: SmashRosterStorage
 
-    private val error: ErrorContentLinearLayout by bindView(R.id.error)
-    private val playerToolbar: PlayerToolbar by bindView(R.id.toolbar)
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val empty: View by bindView(R.id.empty)
+    @Inject
+    protected lateinit var threadUtils: ThreadUtils
 
 
     companion object {
@@ -80,14 +79,9 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         }
 
         fun getLaunchIntent(context: Context, playerId: String, region: Region? = null): Intent {
-            val intent = Intent(context, PlayerActivity::class.java)
+            return Intent(context, PlayerActivity::class.java)
                     .putExtra(EXTRA_PLAYER_ID, playerId)
-
-            if (region != null) {
-                intent.putExtra(EXTRA_REGION, region)
-            }
-
-            return intent
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 
@@ -97,25 +91,23 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         val view = recyclerView.getChildAt(0) as? PlayerProfileItemView
 
         if (view == null) {
-            playerToolbar.fadeInTitleAndSubtitle()
+            toolbar.fadeInTitleAndSubtitle()
             return
         }
 
-        val dateVerticalPositionInWindow = view.regionVerticalPositionInWindow
-        val toolbarVerticalPositionInWindow = playerToolbar.verticalPositionInWindow +
-                playerToolbar.height
+        val ratingVerticalPositionInWindow = view.ratingVerticalPositionInWindow
+        val toolbarVerticalPositionInWindow = toolbar.verticalPositionInWindow + toolbar.height
 
-        if (dateVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
-            playerToolbar.fadeInTitleAndSubtitle()
+        if (ratingVerticalPositionInWindow <= toolbarVerticalPositionInWindow) {
+            toolbar.fadeInTitleAndSubtitle()
         } else {
-            playerToolbar.fadeOutTitleAndSubtitle()
+            toolbar.fadeOutTitleAndSubtitle()
         }
     }
 
     override fun failure(errorCode: Int) {
         playerMatchesBundle = null
         list = null
-        _matchResult = null
         showError(errorCode)
     }
 
@@ -125,38 +117,13 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
                 ApiCall(this))
     }
 
-    private fun filter(matchResult: MatchResult?) {
-        _matchResult = matchResult
-        val list = this.list
-
-        if (list == null || list.isEmpty()) {
-            return
+    override fun onBackPressed() {
+        if (toolbar.isSearchFieldExpanded) {
+            toolbar.closeSearchField()
+        } else {
+            super.onBackPressed()
         }
-
-        threadUtils.run(object : ThreadUtils.Task {
-            private var list: List<Any>? = null
-
-            override fun onBackground() {
-                if (!isAlive || matchResult != _matchResult) {
-                    return
-                }
-
-                this.list = ListUtils.filterPlayerMatchesList(matchResult, list)
-            }
-
-            override fun onUi() {
-                if (!isAlive || matchResult != _matchResult) {
-                    return
-                }
-
-                adapter.set(this.list)
-                invalidateOptionsMenu()
-            }
-        })
     }
-
-    override val matchesBundle: MatchesBundle?
-        get() = playerMatchesBundle?.matchesBundle
 
     override fun onClick(v: MatchItemView) {
         val player = playerMatchesBundle?.fullPlayer ?: return
@@ -167,36 +134,18 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_player)
-
-        playerId = intent.getStringExtra(EXTRA_PLAYER_ID)
 
         setTitleAndSubtitle()
         fetchPlayerMatchesBundle()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.miFilterToLosses -> {
-                filter(MatchResult.LOSE)
-                true
-            }
-
-            R.id.miFilterToWins -> {
-                filter(MatchResult.WIN)
-                true
-            }
-
-            R.id.miShowAll -> {
-                filter(null)
-                true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
+    override fun onPaletteBuilt(palette: Palette?) {
+        if (isAlive) {
+            toolbar.animateToPaletteColors(window, palette)
         }
+    }
 
     override fun onRefresh() {
         fetchPlayerMatchesBundle()
@@ -221,17 +170,15 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         recyclerView.setHasFixedSize(true)
         recyclerView.addOnScrollListener(onScrollListener)
 
-        adapter = PlayerAdapter(this)
         recyclerView.adapter = adapter
     }
 
-    override val matchResult: MatchResult?
-        get() = _matchResult
+    private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     override fun search(query: String?) {
         val list = this.list
 
-        if (list == null || list.isEmpty()) {
+        if (list.isNullOrEmpty()) {
             return
         }
 
@@ -253,17 +200,23 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
     }
 
     override val searchQuery: CharSequence?
-        get() = playerToolbar.searchQuery
+        get() = toolbar.searchQuery
 
     private fun setTitleAndSubtitle() {
-        if (title.isNotBlank() && subtitle?.isNotBlank() == true) {
+        if (toolbar.hasTitleText && toolbar.hasSubtitleText) {
             return
         }
 
-        val bundle = playerMatchesBundle ?: return
-        title = bundle.fullPlayer.name
+        val region = regionManager.getRegion(this)
+        val smashCompetitor = smashRosterStorage.getSmashCompetitor(region, playerId)
+        val title = smashCompetitor?.tag ?: playerMatchesBundle?.fullPlayer?.name
 
-        subtitle = regionManager.getRegion(this).displayName
+        if (title.isNullOrBlank()) {
+            return
+        }
+
+        toolbar.titleText = title
+        toolbar.subtitleText = region.displayName
     }
 
     private fun showData() {
@@ -274,7 +227,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
 
         error.visibility = View.GONE
 
-        if (list == null || list.isEmpty()) {
+        if (list.isNullOrEmpty()) {
             adapter.clear()
             recyclerView.visibility = View.GONE
             empty.visibility = View.VISIBLE
@@ -285,7 +238,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         }
 
         setTitleAndSubtitle()
-        invalidateOptionsMenu()
+        toolbar.refresh()
 
         refreshLayout.isRefreshing = false
     }
@@ -296,18 +249,15 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>,
         empty.visibility = View.GONE
         error.setVisibility(View.VISIBLE, errorCode)
         refreshLayout.isRefreshing = false
-        invalidateOptionsMenu()
+        toolbar.refresh()
     }
 
-    override val showSearchMenuItem: Boolean
+    override val showSearchIcon: Boolean
         get() = playerMatchesBundle?.matchesBundle?.matches?.isNotEmpty() == true
-
-    override val showUpNavigation = true
 
     override fun success(`object`: PlayerMatchesBundle?) {
         playerMatchesBundle = `object`
         list = null
-        _matchResult = null
         showData()
     }
 

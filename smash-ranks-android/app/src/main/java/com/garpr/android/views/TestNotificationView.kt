@@ -2,12 +2,12 @@ package com.garpr.android.views
 
 import android.content.Context
 import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.App
+import androidx.appcompat.app.AlertDialog
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.NotificationsManager
 import javax.inject.Inject
 
@@ -19,6 +19,16 @@ class TestNotificationView @JvmOverloads constructor(
     @Inject
     protected lateinit var notificationsManager: NotificationsManager
 
+    init {
+        titleText = context.getText(R.string.show_test_notification)
+        descriptionText = context.getText(R.string.debug_only)
+        visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+        setOnClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         dialog.dismiss()
@@ -37,19 +47,6 @@ class TestNotificationView @JvmOverloads constructor(
         AlertDialog.Builder(context)
                 .setItems(items, this)
                 .show()
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            App.get().appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
-        titleText = resources.getText(R.string.show_test_notification)
-        descriptionText = resources.getText(R.string.debug_only)
-        visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
     }
 
 }

@@ -5,13 +5,13 @@
     style="@style/DividerItem">
 
     <TextView
-        android:id="@+id/tvDate"
+        android:id="@+id/date"
         tools:text="Jan 20, 2016"
         style="@style/DividerItemDescription" />
 
     <TextView
-        android:id="@+id/tvName"
-        app:layout_constraintEnd_toStartOf="@id/tvDate"
+        android:id="@+id/name"
+        app:layout_constraintEnd_toStartOf="@id/date"
         tools:text="Melee @ the Made #12 hello world hello world hello world hello world"
         style="@style/DividerItemTitle" />
 

@@ -6,6 +6,4 @@ interface DeviceUtils {
 
     val hasNetworkConnection: Boolean
 
-    val isEmulator: Boolean
-
 }

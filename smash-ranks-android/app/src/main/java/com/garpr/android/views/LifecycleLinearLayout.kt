@@ -1,25 +1,15 @@
 package com.garpr.android.views
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.StyleRes
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import androidx.core.view.ViewCompat
 import com.garpr.android.misc.Heartbeat
 
-open class LifecycleLinearLayout : LinearLayout, Heartbeat {
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int,
-            @StyleRes defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+open class LifecycleLinearLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null
+) : LinearLayout(context, attrs), Heartbeat {
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)

@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress XmlUnusedNamespaceDeclaration -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="com.garpr.android.views.SimplePreferenceView"
-    tools:style="@style/PreferenceView">
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:minHeight="@dimen/list_item_height"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <com.garpr.android.views.TintedImageView
-        tools:src="@drawable/ic_date_range_white_24dp"
+        android:id="@+id/icon"
+        android:importantForAccessibility="no"
+        tools:srcCompat="@drawable/ic_date_range_white_24dp"
         style="@style/PreferenceViewCheckable" />
 
     <TextView
+        android:id="@+id/title"
+        app:layout_constraintEnd_toStartOf="@id/icon"
         tools:text="@string/must_be_charging"
         style="@style/PreferenceViewTitle" />
 
     <TextView
+        android:id="@+id/description"
+        app:layout_constraintEnd_toStartOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="@string/rankings_polling_description"
         style="@style/PreferenceViewDescription" />
 

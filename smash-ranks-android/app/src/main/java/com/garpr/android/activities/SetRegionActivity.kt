@@ -4,45 +4,37 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import com.garpr.android.App
+import androidx.appcompat.app.AlertDialog
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.adapters.RegionsSelectionAdapter
-import com.garpr.android.extensions.subtitle
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
-import com.garpr.android.models.Region
-import com.garpr.android.models.RegionsBundle
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.RegionSelectionItemView
-import kotterknife.bindView
+import com.garpr.android.views.toolbars.SetRegionToolbar
+import kotlinx.android.synthetic.main.activity_set_region.*
 import javax.inject.Inject
 
 class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
-        RegionSelectionItemView.Listeners, SwipeRefreshLayout.OnRefreshListener {
+        RegionSelectionItemView.Listeners, SetRegionToolbar.Listeners,
+        SwipeRefreshLayout.OnRefreshListener {
 
-    private var saveMenuItem: MenuItem? = null
     private var _selectedRegion: Region? = null
     private var regionsBundle: RegionsBundle? = null
-    private lateinit var adapter: RegionsSelectionAdapter
+    private val adapter = RegionsSelectionAdapter()
 
     @Inject
     protected lateinit var regionManager: RegionManager
 
     @Inject
     protected lateinit var serverApi: ServerApi
-
-    private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-    private val refreshLayout: SwipeRefreshLayout by bindView(R.id.refreshLayout)
-    private val empty: View by bindView(R.id.empty)
-    private val error: View by bindView(R.id.error)
 
 
     companion object {
@@ -52,6 +44,9 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     }
 
     override val activityName = TAG
+
+    override val enableSaveIcon: Boolean
+        get() = showSaveIcon && _selectedRegion != null
 
     override fun failure(errorCode: Int) {
         _selectedRegion = null
@@ -98,44 +93,28 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
     override fun onClick(v: RegionSelectionItemView) {
         val region = v.region
-
         _selectedRegion = if (region == regionManager.getRegion()) null else region
-
-        refreshMenu()
+        toolbar.refresh()
         adapter.notifyDataSetChanged()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.get().appComponent.inject(this)
+        appComponent.inject(this)
         setContentView(R.layout.activity_set_region)
-        subtitle = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionManager.getRegion(this).displayName
 
         fetchRegionsBundle()
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_set_region, menu)
-        saveMenuItem = menu.findItem(R.id.miSave)
-        refreshMenu()
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.miSave -> {
-                save()
-                true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
 
     override fun onRefresh() {
         fetchRegionsBundle()
+    }
+
+    override fun onSaveClick(v: SetRegionToolbar) {
+        regionManager.setRegion(_selectedRegion ?: throw RuntimeException("_selectedRegion is null"))
+        setResult(Activity.RESULT_OK)
+        supportFinishAfterTransition()
     }
 
     override fun onViewsBound() {
@@ -143,27 +122,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
-        adapter = RegionsSelectionAdapter(this)
         recyclerView.adapter = adapter
-    }
-
-    private fun refreshMenu() {
-        val saveMenuItem = saveMenuItem ?: return
-
-        if (refreshLayout.isRefreshing || adapter.isEmpty ||
-                empty.visibility == View.VISIBLE || error.visibility == View.VISIBLE) {
-            saveMenuItem.isEnabled = false
-            saveMenuItem.isVisible = false
-        } else {
-            saveMenuItem.isEnabled = _selectedRegion != null
-            saveMenuItem.isVisible = true
-        }
-    }
-
-    private fun save() {
-        regionManager.setRegion(_selectedRegion ?: throw RuntimeException("_selectedRegion is null"))
-        setResult(Activity.RESULT_OK)
-        supportFinishAfterTransition()
     }
 
     override val selectedRegion: Region?
@@ -175,7 +134,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         error.visibility = View.GONE
         empty.visibility = View.VISIBLE
         refreshLayout.isRefreshing = false
-        refreshMenu()
+        toolbar.refresh()
     }
 
     private fun showError() {
@@ -184,7 +143,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         empty.visibility = View.GONE
         error.visibility = View.VISIBLE
         refreshLayout.isRefreshing = false
-        refreshMenu()
+        toolbar.refresh()
     }
 
     private fun showRegionsBundle() {
@@ -194,10 +153,13 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         recyclerView.visibility = View.VISIBLE
         refreshLayout.isRefreshing = false
         refreshLayout.isEnabled = false
-        refreshMenu()
+        toolbar.refresh()
     }
 
-    override val showUpNavigation = true
+    override val showSaveIcon: Boolean
+        get() = !refreshLayout.isRefreshing && !adapter.isEmpty &&
+                empty.visibility != View.VISIBLE && error.visibility != View.VISIBLE &&
+                recyclerView.visibility == View.VISIBLE
 
     override fun success(`object`: RegionsBundle?) {
         regionsBundle = `object`

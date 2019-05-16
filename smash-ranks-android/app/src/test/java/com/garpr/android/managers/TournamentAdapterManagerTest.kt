@@ -1,7 +1,12 @@
 package com.garpr.android.managers
 
 import com.garpr.android.BaseTest
-import com.garpr.android.models.*
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.RankedPlayer
+import com.garpr.android.data.models.SimpleDate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -45,7 +50,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Before
-    @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
