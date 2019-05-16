@@ -1,10 +1,8 @@
 package com.garpr.android.views
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.content.DialogInterface
 import android.util.AttributeSet
-import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
@@ -44,9 +42,10 @@ class SplashCardView @JvmOverloads constructor(
         fun onStartUsingTheAppClick(v: SplashCardView)
     }
 
-    companion object {
-        private const val ELEVATION_OVERSHOOT_TENSION: Float = 6f
-        private const val MARGIN_OVERSHOOT_TENSION: Float = 12f
+    init {
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -84,8 +83,6 @@ class SplashCardView @JvmOverloads constructor(
             return
         }
 
-        appComponent.inject(this)
-
         customizeIdentity.setOnClickListener {
             if (identityManager.hasIdentity) {
                 showDeleteIdentityConfirmationDialog()
@@ -119,53 +116,19 @@ class SplashCardView @JvmOverloads constructor(
         }
     }
 
-    private fun performElevationAnimation() {
-        val animator = ValueAnimator.ofFloat(cardElevation,
-                resources.getDimension(R.dimen.splash_card_end_elevation))
-
-        animator.addUpdateListener {
-            cardElevation = it.animatedValue as Float
-        }
-
-        animator.duration = resources.getLong(R.integer.splash_card_animation_duration)
-        animator.interpolator = OvershootInterpolator(ELEVATION_OVERSHOOT_TENSION)
-        animator.start()
-    }
-
     private fun performFullAnimation() {
         alpha = 0f
-        scaleX = 0.6f
-        scaleY = 0.6f
+        scaleX = 0.5f
+        scaleY = 0.5f
 
         animate()
                 .alpha(1f)
                 .scaleX(1f)
                 .scaleY(1f)
                 .setDuration(resources.getLong(R.integer.splash_card_animation_duration))
-                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR)
                 .setStartDelay(resources.getLong(R.integer.splash_card_animation_delay))
-                .withStartAction {
-                    performElevationAnimation()
-                    performMarginBottomAnimation()
-                }
                 .start()
-    }
-
-    private fun performMarginBottomAnimation() {
-        val layoutParams = this.layoutParams as MarginLayoutParams
-
-        val animator = ValueAnimator.ofInt(layoutParams.bottomMargin,
-                resources.getDimensionPixelSize(R.dimen.root_padding_quadruple),
-                resources.getDimensionPixelSize(R.dimen.root_padding_triple))
-
-        animator.addUpdateListener {
-            layoutParams.bottomMargin = it.animatedValue as Int
-            this.layoutParams = layoutParams
-        }
-
-        animator.duration = resources.getLong(R.integer.splash_card_animation_duration)
-        animator.interpolator = OvershootInterpolator(MARGIN_OVERSHOOT_TENSION)
-        animator.start()
     }
 
     override fun refresh() {
