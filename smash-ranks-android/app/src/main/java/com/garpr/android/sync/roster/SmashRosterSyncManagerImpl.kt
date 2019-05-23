@@ -72,6 +72,9 @@ class SmashRosterSyncManagerImpl(
                 .setRequiredNetworkType(NetworkType.UNMETERED)
                 .build()
 
+        val pollFrequency = smashRosterPreferenceStore.pollFrequency.get()
+                ?: PollFrequency.EVERY_10_DAYS
+
         val periodicRequest = PeriodicWorkRequest.Builder(
                 SmashRosterSyncWorker::class.java,
                 pollFrequency.timeInSeconds,
@@ -212,8 +215,6 @@ class SmashRosterSyncManagerImpl(
             notifyListenersOfOnSyncComplete()
         })
     }
-
-    private val pollFrequency: PollFrequency = PollFrequency.EVERY_5_DAYS
 
     override fun removeListener(listener: OnSyncListeners) {
         cleanListeners(listener)
