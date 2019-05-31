@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.tournament
 
 import android.app.Application
 import com.garpr.android.R

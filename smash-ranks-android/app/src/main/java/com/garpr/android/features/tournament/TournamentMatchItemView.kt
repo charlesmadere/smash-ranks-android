@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.tournament
 
 import android.content.Context
 import android.util.AttributeSet
@@ -12,6 +12,7 @@ import com.garpr.android.dialogs.TournamentMatchDialogFragment
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.requireFragmentActivity
+import com.garpr.android.views.IdentityConstraintLayout
 import kotlinx.android.synthetic.main.item_tournament_match.view.*
 
 class TournamentMatchItemView @JvmOverloads constructor(

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.RankingsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.features.ranking.RankingsLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rankingsLayout"
     style="@style/RefreshLayout">
@@ -25,4 +25,4 @@
 
     </FrameLayout>
 
-</com.garpr.android.views.RankingsLayout>
+</com.garpr.android.features.ranking.RankingsLayout>

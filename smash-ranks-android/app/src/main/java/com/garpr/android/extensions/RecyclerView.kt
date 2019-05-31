@@ -1,7 +1,7 @@
 package com.garpr.android.extensions
 
 import androidx.recyclerview.widget.RecyclerView
-import com.garpr.android.views.TournamentInfoItemView
+import com.garpr.android.features.tournament.TournamentInfoItemView
 
 fun RecyclerView.findTournamentInfoItemViewChild(): TournamentInfoItemView? {
     repeat(childCount) {

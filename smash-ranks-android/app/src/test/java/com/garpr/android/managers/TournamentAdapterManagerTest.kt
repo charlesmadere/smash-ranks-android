@@ -7,6 +7,7 @@ import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.features.tournament.TournamentAdapterManager
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before

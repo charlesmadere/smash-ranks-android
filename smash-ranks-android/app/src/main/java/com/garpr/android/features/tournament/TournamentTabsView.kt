@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.tournament
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -66,7 +66,7 @@
 
         <activity
             android:label="@string/rankings"
-            android:name=".activities.RankingsActivity" />
+            android:name=".features.ranking.RankingsActivity" />
 
         <activity
             android:label="@string/set_identity"
@@ -96,11 +96,11 @@
 
         <activity
             android:label=""
-            android:name=".activities.TournamentActivity" />
+            android:name=".features.tournament.TournamentActivity" />
 
         <activity
             android:label="@string/tournaments"
-            android:name=".activities.TournamentsActivity" />
+            android:name=".features.tournaments.TournamentsActivity" />
 
         <meta-data
             android:name="android.max_aspect"

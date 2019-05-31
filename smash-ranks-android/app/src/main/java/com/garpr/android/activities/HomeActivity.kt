@@ -13,6 +13,7 @@ import com.garpr.android.dialogs.ShareRegionDialogFragment
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
+import com.garpr.android.features.ranking.RankingsLayout
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.HomeTab
@@ -21,7 +22,6 @@ import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
-import com.garpr.android.views.RankingsLayout
 import com.garpr.android.views.toolbars.HomeToolbar
 import com.garpr.android.views.toolbars.SearchToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView

@@ -1,14 +1,14 @@
-package com.garpr.android.views
+package com.garpr.android.features.headToHead
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.garpr.android.activities.TournamentActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
+import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.managers.RegionManager
 import kotlinx.android.synthetic.main.divider_tournament.view.*
 import javax.inject.Inject
@@ -30,8 +30,8 @@ class TournamentDividerView @JvmOverloads constructor(
         }
     }
 
-    var tournament: AbsTournament? = null
-        private set(value) {
+    private var tournament: AbsTournament? = null
+        set(value) {
             field = value
 
             if (value == null) {

@@ -2,7 +2,6 @@ package com.garpr.android.dagger;
 
 import com.garpr.android.activities.HomeActivityTest;
 import com.garpr.android.activities.PlayerActivityTest;
-import com.garpr.android.activities.TournamentsActivityTest;
 import com.garpr.android.data.converters.AbsPlayerConverterTest;
 import com.garpr.android.data.converters.AbsRegionConverterTest;
 import com.garpr.android.data.converters.AbsTournamentConverterTest;
@@ -15,6 +14,7 @@ import com.garpr.android.data.models.RankingsBundleTest;
 import com.garpr.android.data.models.RegionsBundleTest;
 import com.garpr.android.data.models.SimpleDateTest;
 import com.garpr.android.data.models.SmashCharacterTest;
+import com.garpr.android.features.tournaments.TournamentsActivityTest;
 import com.garpr.android.managers.AppUpgradeManagerTest;
 import com.garpr.android.managers.FavoritePlayersManagerTest;
 import com.garpr.android.managers.HomeToolbarManagerTest;
@@ -56,7 +56,6 @@ public interface TestAppComponent {
     // activities
     void inject(HomeActivityTest test);
     void inject(PlayerActivityTest test);
-    void inject(TournamentsActivityTest test);
 
     // data/converters
     void inject(AbsPlayerConverterTest test);
@@ -73,6 +72,9 @@ public interface TestAppComponent {
     void inject(RegionsBundleTest test);
     void inject(SimpleDateTest test);
     void inject(SmashCharacterTest test);
+
+    // features/tournaments
+    void inject(TournamentsActivityTest test);
 
     // managers
     void inject(AppUpgradeManagerTest test);

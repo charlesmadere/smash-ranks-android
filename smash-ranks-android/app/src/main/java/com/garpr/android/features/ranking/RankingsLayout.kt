@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.ranking
 
 import android.content.Context
 import android.text.TextUtils
@@ -23,6 +23,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
+import com.garpr.android.views.SearchableRefreshLayout
 import kotlinx.android.synthetic.main.layout_rankings.view.*
 import javax.inject.Inject
 

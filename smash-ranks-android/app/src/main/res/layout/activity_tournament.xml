@@ -49,7 +49,7 @@
             app:titleTextColor="@color/transparent"
             style="@style/Toolbar" />
 
-        <com.garpr.android.views.TournamentTabsView
+        <com.garpr.android.features.tournament.TournamentTabsView
             android:alpha="0"
             android:background="?attr/colorPrimary"
             android:elevation="@dimen/elevation"

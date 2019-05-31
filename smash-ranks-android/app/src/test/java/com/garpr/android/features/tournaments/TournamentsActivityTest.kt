@@ -1,7 +1,8 @@
-package com.garpr.android.activities
+package com.garpr.android.features.tournaments
 
 import android.app.Application
 import com.garpr.android.BaseTest
+import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
