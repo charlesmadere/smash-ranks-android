@@ -1,6 +1,7 @@
-package com.garpr.android.adapters
+package com.garpr.android.features.setRegion
 
 import com.garpr.android.R
+import com.garpr.android.adapters.BaseMultiAdapter
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 

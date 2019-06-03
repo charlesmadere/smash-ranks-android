@@ -1,4 +1,4 @@
-package com.garpr.android.views.toolbars
+package com.garpr.android.features.setRegion
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,6 +6,7 @@ import android.view.View
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.views.toolbars.GarToolbar
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.set_region_toolbar_items.view.*
 

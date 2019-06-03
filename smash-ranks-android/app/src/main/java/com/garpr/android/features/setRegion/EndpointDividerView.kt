@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.setRegion
 
 import android.content.Context
 import android.util.AttributeSet

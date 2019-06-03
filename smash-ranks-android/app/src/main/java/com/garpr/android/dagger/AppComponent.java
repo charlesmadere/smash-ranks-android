@@ -5,7 +5,6 @@ import com.garpr.android.activities.BaseActivity;
 import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.activities.SetIdentityActivity;
-import com.garpr.android.activities.SetRegionActivity;
 import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.dialogs.ShareRegionDialogFragment;
@@ -22,6 +21,7 @@ import com.garpr.android.features.players.PlayersActivity;
 import com.garpr.android.features.players.PlayersLayout;
 import com.garpr.android.features.ranking.RankingsActivity;
 import com.garpr.android.features.ranking.RankingsLayout;
+import com.garpr.android.features.setRegion.SetRegionActivity;
 import com.garpr.android.features.splash.SplashActivity;
 import com.garpr.android.features.splash.SplashCardView;
 import com.garpr.android.features.tournament.TournamentActivity;
@@ -65,7 +65,6 @@ public interface AppComponent {
     void inject(HomeActivity activity);
     void inject(PlayerActivity activity);
     void inject(SetIdentityActivity activity);
-    void inject(SetRegionActivity activity);
     void inject(SettingsActivity activity);
 
     // dialogs
@@ -94,6 +93,9 @@ public interface AppComponent {
 
     // features/rankings
     void inject(RankingsActivity activity);
+
+    // features/setRegion
+    void inject(SetRegionActivity activity);
 
     // features/tournament
     void inject(TournamentActivity activity);

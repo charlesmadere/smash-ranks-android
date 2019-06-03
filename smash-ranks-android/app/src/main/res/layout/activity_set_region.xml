@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.SetRegionToolbar
+    <com.garpr.android.features.setRegion.SetRegionToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:titleText="@string/set_region"

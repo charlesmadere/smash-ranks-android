@@ -76,7 +76,7 @@
         <activity
             android:label="@string/set_region"
             android:launchMode="singleTop"
-            android:name=".activities.SetRegionActivity" />
+            android:name=".features.setRegion.SetRegionActivity" />
 
         <activity
             android:label="@string/settings"

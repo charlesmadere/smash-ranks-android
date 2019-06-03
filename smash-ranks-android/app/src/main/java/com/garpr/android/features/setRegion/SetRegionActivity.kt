@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.setRegion
 
 import android.app.Activity
 import android.content.Context
@@ -8,7 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.adapters.RegionsSelectionAdapter
+import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.extensions.appComponent
@@ -18,7 +18,6 @@ import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.views.RegionSelectionItemView
-import com.garpr.android.views.toolbars.SetRegionToolbar
 import kotlinx.android.synthetic.main.activity_set_region.*
 import javax.inject.Inject
 
