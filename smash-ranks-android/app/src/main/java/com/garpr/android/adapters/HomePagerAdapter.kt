@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.data.models.RankingsBundle
+import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout
+import com.garpr.android.features.ranking.RankingsLayout
+import com.garpr.android.features.tournaments.TournamentsLayout
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.HomeTab
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
-import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout
-import com.garpr.android.features.ranking.RankingsLayout
-import com.garpr.android.views.TournamentsLayout
 import java.lang.ref.WeakReference
 
 class HomePagerAdapter : PagerAdapter(), RankingCriteriaHandle, Refreshable, Searchable {

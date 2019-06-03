@@ -23,8 +23,7 @@ class TournamentsActivity : BaseActivity() {
 
         fun getLaunchIntent(context: Context, region: Region? = null): Intent {
             return Intent(context, TournamentsActivity::class.java)
-                    .putOptionalExtra(
-                            EXTRA_REGION, region)
+                    .putOptionalExtra(EXTRA_REGION, region)
         }
     }
 
