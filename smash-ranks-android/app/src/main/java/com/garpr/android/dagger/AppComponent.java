@@ -4,7 +4,6 @@ import com.garpr.android.App;
 import com.garpr.android.activities.BaseActivity;
 import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.activities.PlayerActivity;
-import com.garpr.android.activities.PlayersActivity;
 import com.garpr.android.activities.SetIdentityActivity;
 import com.garpr.android.activities.SetRegionActivity;
 import com.garpr.android.activities.SettingsActivity;
@@ -14,6 +13,9 @@ import com.garpr.android.dialogs.TournamentMatchDialogFragment;
 import com.garpr.android.features.deepLink.DeepLinkActivity;
 import com.garpr.android.features.headToHead.HeadToHeadActivity;
 import com.garpr.android.features.headToHead.HeadToHeadDialogFragment;
+import com.garpr.android.features.players.PlayerItemView;
+import com.garpr.android.features.players.PlayersActivity;
+import com.garpr.android.features.players.PlayersLayout;
 import com.garpr.android.features.ranking.RankingsActivity;
 import com.garpr.android.features.ranking.RankingsLayout;
 import com.garpr.android.features.splash.SplashActivity;
@@ -33,9 +35,7 @@ import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.PaletteSimpleDraweeView;
-import com.garpr.android.views.PlayerItemView;
 import com.garpr.android.views.PlayerProfileItemView;
-import com.garpr.android.views.PlayersLayout;
 import com.garpr.android.views.RankingItemView;
 import com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView;
 import com.garpr.android.views.RegionPreferenceView;
@@ -64,7 +64,6 @@ public interface AppComponent {
     void inject(BaseActivity activity);
     void inject(HomeActivity activity);
     void inject(PlayerActivity activity);
-    void inject(PlayersActivity activity);
     void inject(SetIdentityActivity activity);
     void inject(SetRegionActivity activity);
     void inject(SettingsActivity activity);
@@ -80,6 +79,10 @@ public interface AppComponent {
     // features/headToHead
     void inject(HeadToHeadActivity activity);
     void inject(HeadToHeadDialogFragment dialog);
+
+    // features/players
+    void inject(PlayerItemView view);
+    void inject(PlayersActivity activity);
 
     // features/rankings
     void inject(RankingsActivity activity);
@@ -112,7 +115,6 @@ public interface AppComponent {
     void inject(LastPollPreferenceView view);
     void inject(MatchItemView view);
     void inject(PaletteSimpleDraweeView view);
-    void inject(PlayerItemView view);
     void inject(PlayerProfileItemView view);
     void inject(PlayersLayout view);
     void inject(RankingsPollingPollFrequencyPreferenceView view);

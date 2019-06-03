@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.players
 
 import android.content.Context
 import android.text.TextUtils
@@ -7,7 +7,6 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.garpr.android.adapters.PlayersAdapter
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.activity
@@ -19,6 +18,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
+import com.garpr.android.views.SearchableRefreshLayout
 import kotlinx.android.synthetic.main.layout_players.view.*
 import javax.inject.Inject
 

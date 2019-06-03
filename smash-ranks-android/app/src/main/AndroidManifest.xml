@@ -62,7 +62,7 @@
 
         <activity
             android:label="@string/players"
-            android:name=".activities.PlayersActivity" />
+            android:name=".features.players.PlayersActivity" />
 
         <activity
             android:label="@string/rankings"

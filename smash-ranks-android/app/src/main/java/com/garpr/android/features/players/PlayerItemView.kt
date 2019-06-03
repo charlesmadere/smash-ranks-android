@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.players
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,6 +9,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.views.IdentityFrameLayout
 import kotlinx.android.synthetic.main.item_player.view.*
 import javax.inject.Inject
 

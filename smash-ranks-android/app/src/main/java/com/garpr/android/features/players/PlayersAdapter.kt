@@ -1,7 +1,8 @@
-package com.garpr.android.adapters
+package com.garpr.android.features.players
 
 import androidx.annotation.LayoutRes
 import com.garpr.android.R
+import com.garpr.android.adapters.BaseAdapter
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.PlayersBundle
