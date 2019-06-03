@@ -11,6 +11,8 @@ import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.dialogs.ShareRegionDialogFragment;
 import com.garpr.android.dialogs.TournamentMatchDialogFragment;
 import com.garpr.android.features.deepLink.DeepLinkActivity;
+import com.garpr.android.features.favoritePlayers.FavoritePlayerItemView;
+import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout;
 import com.garpr.android.features.headToHead.HeadToHeadActivity;
 import com.garpr.android.features.headToHead.HeadToHeadDialogFragment;
 import com.garpr.android.features.players.PlayerItemView;
@@ -27,8 +29,6 @@ import com.garpr.android.features.tournaments.TournamentsActivity;
 import com.garpr.android.sync.rankings.RankingsPollingWorker;
 import com.garpr.android.sync.roster.SmashRosterSyncWorker;
 import com.garpr.android.views.DeleteFavoritePlayersPreferenceView;
-import com.garpr.android.views.FavoritePlayerItemView;
-import com.garpr.android.views.FavoritePlayersLayout;
 import com.garpr.android.views.IdentityConstraintLayout;
 import com.garpr.android.views.IdentityFrameLayout;
 import com.garpr.android.views.IdentityPreferenceView;
@@ -76,6 +76,10 @@ public interface AppComponent {
     // features/deepLink
     void inject(DeepLinkActivity activity);
 
+    // features/favoritePlayers
+    void inject(FavoritePlayerItemView view);
+    void inject(FavoritePlayersLayout view);
+
     // features/headToHead
     void inject(HeadToHeadActivity activity);
     void inject(HeadToHeadDialogFragment dialog);
@@ -107,8 +111,6 @@ public interface AppComponent {
 
     // views
     void inject(DeleteFavoritePlayersPreferenceView view);
-    void inject(FavoritePlayerItemView view);
-    void inject(FavoritePlayersLayout view);
     void inject(IdentityConstraintLayout view);
     void inject(IdentityFrameLayout view);
     void inject(IdentityPreferenceView view);

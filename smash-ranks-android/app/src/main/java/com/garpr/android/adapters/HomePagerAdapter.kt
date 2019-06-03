@@ -11,7 +11,7 @@ import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
-import com.garpr.android.views.FavoritePlayersLayout
+import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout
 import com.garpr.android.features.ranking.RankingsLayout
 import com.garpr.android.views.TournamentsLayout
 import java.lang.ref.WeakReference
