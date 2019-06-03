@@ -4,9 +4,9 @@ import android.content.Context
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment
 import com.garpr.android.extensions.requireFragmentActivity
 import com.garpr.android.extensions.requireFromJson
+import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment
 import com.garpr.android.managers.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStore

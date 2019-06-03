@@ -2,10 +2,10 @@ package com.garpr.android.dagger;
 
 import com.garpr.android.App;
 import com.garpr.android.activities.BaseActivity;
-import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.dialogs.ShareRegionDialogFragment;
 import com.garpr.android.dialogs.TournamentMatchDialogFragment;
 import com.garpr.android.features.deepLink.DeepLinkActivity;
+import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.features.favoritePlayers.FavoritePlayerItemView;
 import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout;
 import com.garpr.android.features.headToHead.HeadToHeadActivity;
@@ -22,7 +22,15 @@ import com.garpr.android.features.rankings.RankingsActivity;
 import com.garpr.android.features.rankings.RankingsLayout;
 import com.garpr.android.features.setIdentity.SetIdentityActivity;
 import com.garpr.android.features.setRegion.SetRegionActivity;
+import com.garpr.android.features.settings.DeleteFavoritePlayersPreferenceView;
+import com.garpr.android.features.settings.IdentityPreferenceView;
+import com.garpr.android.features.settings.LastPollPreferenceView;
+import com.garpr.android.features.settings.RankingsPollingPollFrequencyPreferenceView;
+import com.garpr.android.features.settings.RegionPreferenceView;
+import com.garpr.android.features.settings.RingtonePreferenceView;
 import com.garpr.android.features.settings.SettingsActivity;
+import com.garpr.android.features.settings.SmashRosterSyncPreferenceView;
+import com.garpr.android.features.settings.ThemePreferenceView;
 import com.garpr.android.features.splash.SplashActivity;
 import com.garpr.android.features.splash.SplashCardView;
 import com.garpr.android.features.tournament.TournamentActivity;
@@ -33,20 +41,12 @@ import com.garpr.android.features.tournaments.TournamentsActivity;
 import com.garpr.android.features.tournaments.TournamentsLayout;
 import com.garpr.android.sync.rankings.RankingsPollingWorker;
 import com.garpr.android.sync.roster.SmashRosterSyncWorker;
-import com.garpr.android.features.settings.DeleteFavoritePlayersPreferenceView;
 import com.garpr.android.views.IdentityConstraintLayout;
 import com.garpr.android.views.IdentityFrameLayout;
-import com.garpr.android.features.settings.IdentityPreferenceView;
-import com.garpr.android.features.settings.LastPollPreferenceView;
 import com.garpr.android.views.PaletteSimpleDraweeView;
-import com.garpr.android.features.settings.RankingsPollingPollFrequencyPreferenceView;
-import com.garpr.android.features.settings.RegionPreferenceView;
-import com.garpr.android.features.settings.RingtonePreferenceView;
 import com.garpr.android.views.SearchableFrameLayout;
 import com.garpr.android.views.SearchableRefreshLayout;
-import com.garpr.android.features.settings.SmashRosterSyncPreferenceView;
 import com.garpr.android.views.TestNotificationView;
-import com.garpr.android.features.settings.ThemePreferenceView;
 import com.garpr.android.views.TintedImageView;
 import com.garpr.android.views.toolbars.HomeToolbar;
 
@@ -64,7 +64,6 @@ public interface AppComponent {
     void inject(BaseActivity activity);
 
     // dialogs
-    void inject(AddOrRemovePlayerFromFavoritesDialogFragment dialog);
     void inject(ShareRegionDialogFragment dialog);
     void inject(TournamentMatchDialogFragment dialog);
 
@@ -72,6 +71,7 @@ public interface AppComponent {
     void inject(DeepLinkActivity activity);
 
     // features/favoritePlayers
+    void inject(AddOrRemovePlayerFromFavoritesDialogFragment dialog);
     void inject(FavoritePlayerItemView view);
     void inject(FavoritePlayersLayout view);
 
