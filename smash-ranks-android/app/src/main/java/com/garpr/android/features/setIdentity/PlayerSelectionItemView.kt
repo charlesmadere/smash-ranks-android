@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.setIdentity
 
 import android.content.Context
 import android.util.AttributeSet
@@ -33,13 +33,12 @@ class PlayerSelectionItemView @JvmOverloads constructor(
             }
         }
 
-    override fun onClick(v: View) {
-        (activity as? Listeners?)?.onClick(this)
+    init {
+        setOnClickListener(this)
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        setOnClickListener(this)
+    override fun onClick(v: View) {
+        (activity as? Listeners?)?.onClick(this)
     }
 
     override fun setContent(content: AbsPlayer) {

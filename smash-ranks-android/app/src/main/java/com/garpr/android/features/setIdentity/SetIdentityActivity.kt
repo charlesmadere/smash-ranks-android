@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.setIdentity
 
 import android.app.Activity
 import android.content.Context
@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.adapters.PlayersSelectionAdapter
+import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.appComponent
@@ -23,9 +23,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.PlayerSelectionItemView
 import com.garpr.android.views.toolbars.SearchToolbar
-import com.garpr.android.views.toolbars.SetIdentityToolbar
 import kotlinx.android.synthetic.main.activity_set_identity.*
 import javax.inject.Inject
 

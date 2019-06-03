@@ -71,7 +71,7 @@
         <activity
             android:label="@string/set_identity"
             android:launchMode="singleTop"
-            android:name=".activities.SetIdentityActivity" />
+            android:name=".features.setIdentity.SetIdentityActivity" />
 
         <activity
             android:label="@string/set_region"

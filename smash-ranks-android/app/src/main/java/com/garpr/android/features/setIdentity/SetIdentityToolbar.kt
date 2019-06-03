@@ -1,11 +1,13 @@
-package com.garpr.android.views.toolbars
+package com.garpr.android.features.setIdentity
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.View.OnClickListener
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.views.toolbars.SearchToolbar
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.set_identity_toolbar_items.view.*
 
@@ -13,6 +15,10 @@ class SetIdentityToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SearchToolbar(context, attrs) {
+
+    private val onSaveClickListener = OnClickListener {
+        (activity as? Listeners?)?.onSaveClick(this)
+    }
 
     interface Listeners {
         val enableSaveIcon: Boolean
@@ -22,14 +28,7 @@ class SetIdentityToolbar @JvmOverloads constructor(
 
     init {
         layoutInflater.inflate(R.layout.set_identity_toolbar_items, menuExpansionContainer)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        saveButton.setOnClickListener {
-            (activity as? Listeners?)?.onSaveClick(this)
-        }
+        saveButton.setOnClickListener(onSaveClickListener)
     }
 
     override fun refresh() {

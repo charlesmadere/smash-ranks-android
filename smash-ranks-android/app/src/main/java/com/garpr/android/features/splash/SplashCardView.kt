@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.activities.SetIdentityActivity
+import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
