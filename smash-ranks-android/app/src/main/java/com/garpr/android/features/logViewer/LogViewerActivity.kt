@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.logViewer
 
 import android.content.Context
 import android.content.Intent
@@ -7,8 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.adapters.TimberEntriesAdapter
-import com.garpr.android.views.toolbars.LogViewerToolbar
+import com.garpr.android.activities.BaseActivity
 import kotlinx.android.synthetic.main.activity_log_viewer.*
 
 class LogViewerActivity : BaseActivity(), LogViewerToolbar.Listeners,

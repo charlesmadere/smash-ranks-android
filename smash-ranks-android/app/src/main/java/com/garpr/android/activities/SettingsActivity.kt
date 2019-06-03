@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.garpr.android.R
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.logViewer.LogViewerActivity
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager

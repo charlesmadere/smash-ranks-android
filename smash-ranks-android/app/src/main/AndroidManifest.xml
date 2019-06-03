@@ -49,7 +49,7 @@
 
         <activity
             android:label="@string/log_viewer"
-            android:name=".activities.LogViewerActivity"
+            android:name=".features.logViewer.LogViewerActivity"
             android:parentActivityName=".activities.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
