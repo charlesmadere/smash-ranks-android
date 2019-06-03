@@ -8,10 +8,10 @@ import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.common.SimplePreferenceView
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.rankings.RankingsPollingManager
-import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(

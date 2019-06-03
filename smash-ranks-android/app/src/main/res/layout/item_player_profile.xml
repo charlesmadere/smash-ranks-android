@@ -10,7 +10,7 @@
     android:paddingStart="@dimen/root_padding"
     android:paddingTop="@dimen/root_padding_half">
 
-    <com.garpr.android.views.PaletteSimpleDraweeView
+    <com.garpr.android.features.common.PaletteSimpleDraweeView
         android:contentDescription="@string/avatar"
         android:elevation="@dimen/elevation_half"
         android:id="@+id/avatar"
@@ -93,7 +93,7 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.TintedTextView
             android:drawableTop="@drawable/ic_twitter_24dp"
             android:id="@+id/twitter"
             android:text="@string/twitter"
@@ -101,7 +101,7 @@
             tools:visibility="visible"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.TintedTextView
             android:drawableTop="@drawable/ic_twitch_24dp"
             android:id="@+id/twitch"
             android:text="@string/twitch"
@@ -109,7 +109,7 @@
             tools:visibility="visible"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.TintedTextView
             android:drawableTop="@drawable/ic_youtube_24dp"
             android:id="@+id/youTube"
             android:text="@string/youtube"
@@ -117,7 +117,7 @@
             tools:visibility="visible"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.TintedTextView
             android:drawableTop="@drawable/ic_web_24dp"
             android:id="@+id/otherWebsite"
             android:text="@string/other"
@@ -169,13 +169,13 @@
         android:layout_width="match_parent"
         android:orientation="horizontal">
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.TintedTextView
             android:drawableTop="@drawable/ic_favorite_white_24dp"
             android:id="@+id/favoriteOrUnfavorite"
             android:text="@string/favorite"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.TintedTextView
             android:drawableTop="@drawable/ic_crossed_swords_white_24dp"
             android:id="@+id/viewYourselfVsThisOpponent"
             android:text="@string/compare"
@@ -183,7 +183,7 @@
             tools:visibility="visible"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.TintedTextView
             android:drawableTop="@drawable/ic_share_white_24dp"
             android:id="@+id/share"
             android:text="@string/share"

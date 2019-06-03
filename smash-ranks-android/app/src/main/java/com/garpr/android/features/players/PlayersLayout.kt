@@ -11,6 +11,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.common.SearchableRefreshLayout
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
@@ -18,7 +19,6 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.SearchableRefreshLayout
 import kotlinx.android.synthetic.main.layout_players.view.*
 import javax.inject.Inject
 

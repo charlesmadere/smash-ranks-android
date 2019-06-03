@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.GarToolbar
+    <com.garpr.android.features.common.GarToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:titleText="@string/settings"
@@ -101,7 +101,7 @@
                 android:id="@+id/smashRosterPreference"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.SimplePreferenceView
+            <com.garpr.android.features.common.SimplePreferenceView
                 android:id="@+id/smashRosterFormLink"
                 android:src="@drawable/ic_open_in_browser_white_24dp"
                 app:descriptionText="@string/click_to_open_form"
@@ -115,25 +115,25 @@
                 android:text="@string/credits"
                 style="@style/SettingsCardTitle" />
 
-            <com.garpr.android.views.SimplePreferenceView
+            <com.garpr.android.features.common.SimplePreferenceView
                 android:id="@+id/charlesTwitter"
                 app:descriptionText="@string/charles_twitter_url"
                 app:titleText="@string/app_by_charles_madere"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.SimplePreferenceView
+            <com.garpr.android.features.common.SimplePreferenceView
                 android:id="@+id/gitHub"
                 app:descriptionText="@string/contribute_your_changes"
                 app:titleText="@string/open_source_on_github"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.SimplePreferenceView
+            <com.garpr.android.features.common.SimplePreferenceView
                 android:id="@+id/garTwitter"
                 app:descriptionText="@string/gar_twitter_url"
                 app:titleText="@string/website_by_ivan_van"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.SimplePreferenceView
+            <com.garpr.android.features.common.SimplePreferenceView
                 android:id="@+id/germWebsite"
                 app:descriptionText="@string/germ_website_url"
                 app:titleText="@string/sheik_artwork_by_germ"
@@ -142,7 +142,7 @@
             <include
                 layout="@layout/divider" />
 
-            <com.garpr.android.views.SimplePreferenceView
+            <com.garpr.android.features.common.SimplePreferenceView
                 android:id="@+id/logViewer"
                 app:descriptionText="@string/view_logs_description"
                 app:titleText="@string/view_logs"

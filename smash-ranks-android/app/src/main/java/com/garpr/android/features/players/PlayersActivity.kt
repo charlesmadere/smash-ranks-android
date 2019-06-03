@@ -8,10 +8,10 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.SearchToolbar
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.views.toolbars.SearchToolbar
 import kotlinx.android.synthetic.main.activity_players.*
 import kotlinx.android.synthetic.main.layout_players.*
 import javax.inject.Inject

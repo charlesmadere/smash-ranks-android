@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.GarToolbar
+    <com.garpr.android.features.common.GarToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:titleText="@string/head_to_head"
         style="@style/Toolbar" />
 
-    <com.garpr.android.views.RefreshLayout
+    <com.garpr.android.features.common.RefreshLayout
         android:id="@+id/refreshLayout"
         style="@style/RefreshLayout">
 
@@ -24,19 +24,19 @@
                 android:visibility="gone"
                 style="@style/RecyclerView.WithSections" />
 
-            <com.garpr.android.views.NoContentLinearLayout
+            <com.garpr.android.features.common.NoContentLinearLayout
                 android:id="@+id/empty"
                 app:descriptionText="@string/head_to_head_swipe_to_refresh_and_check_again"
                 app:titleText="@string/no_head_to_head_data"
                 style="@style/NoContentLinearLayout.Empty" />
 
-            <com.garpr.android.views.ErrorContentLinearLayout
+            <com.garpr.android.features.common.ErrorContentLinearLayout
                 android:id="@+id/error"
                 app:titleText="@string/error_loading_head_to_head"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>
 
-    </com.garpr.android.views.RefreshLayout>
+    </com.garpr.android.features.common.RefreshLayout>
 
 </LinearLayout>

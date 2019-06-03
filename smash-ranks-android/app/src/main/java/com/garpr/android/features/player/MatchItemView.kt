@@ -12,9 +12,9 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.features.base.BaseAdapterView
+import com.garpr.android.features.common.IdentityFrameLayout
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.views.IdentityFrameLayout
 import kotlinx.android.synthetic.main.item_match.view.*
 import javax.inject.Inject
 

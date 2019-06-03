@@ -9,10 +9,10 @@ import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.common.SimplePreferenceView
 import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.misc.RequestCodes
-import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class IdentityPreferenceView @JvmOverloads constructor(

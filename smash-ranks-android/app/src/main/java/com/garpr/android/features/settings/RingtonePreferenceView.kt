@@ -11,11 +11,11 @@ import android.widget.Toast
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.common.SimplePreferenceView
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class RingtonePreferenceView @JvmOverloads constructor(

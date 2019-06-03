@@ -10,7 +10,7 @@
         android:visibility="gone"
         style="@style/RecyclerView" />
 
-    <com.garpr.android.views.NoContentLinearLayout
+    <com.garpr.android.features.common.NoContentLinearLayout
         android:id="@+id/empty"
         app:descriptionText="@string/you_can_add_a_player_to_your_favorites"
         app:titleText="@string/no_favorite_players"

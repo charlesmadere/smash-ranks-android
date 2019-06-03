@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
-import com.garpr.android.views.SimplePreferenceView
+import com.garpr.android.features.common.SimplePreferenceView
 
 class BuildInfoPreferenceView @JvmOverloads constructor(
         context: Context,

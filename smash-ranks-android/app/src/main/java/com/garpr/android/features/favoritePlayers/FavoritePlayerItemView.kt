@@ -6,10 +6,10 @@ import android.view.View
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.base.BaseAdapterView
+import com.garpr.android.features.common.IdentityConstraintLayout
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
-import com.garpr.android.views.IdentityConstraintLayout
 import kotlinx.android.synthetic.main.item_favorite_player.view.*
 import javax.inject.Inject
 

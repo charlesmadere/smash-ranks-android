@@ -22,6 +22,7 @@ import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.smoothScrollToTop
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.SearchToolbar
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.ListUtils
@@ -31,7 +32,6 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.toolbars.SearchToolbar
 import kotlinx.android.synthetic.main.activity_tournament.*
 import javax.inject.Inject
 

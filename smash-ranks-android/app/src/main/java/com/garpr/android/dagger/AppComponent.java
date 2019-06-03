@@ -2,6 +2,12 @@ package com.garpr.android.dagger;
 
 import com.garpr.android.App;
 import com.garpr.android.features.base.BaseActivity;
+import com.garpr.android.features.common.IdentityConstraintLayout;
+import com.garpr.android.features.common.IdentityFrameLayout;
+import com.garpr.android.features.common.PaletteSimpleDraweeView;
+import com.garpr.android.features.common.SearchableFrameLayout;
+import com.garpr.android.features.common.SearchableRefreshLayout;
+import com.garpr.android.features.common.TintedImageView;
 import com.garpr.android.features.deepLink.DeepLinkActivity;
 import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.features.favoritePlayers.FavoritePlayerItemView;
@@ -43,12 +49,6 @@ import com.garpr.android.features.tournaments.TournamentsActivity;
 import com.garpr.android.features.tournaments.TournamentsLayout;
 import com.garpr.android.sync.rankings.RankingsPollingWorker;
 import com.garpr.android.sync.roster.SmashRosterSyncWorker;
-import com.garpr.android.views.IdentityConstraintLayout;
-import com.garpr.android.views.IdentityFrameLayout;
-import com.garpr.android.views.PaletteSimpleDraweeView;
-import com.garpr.android.views.SearchableFrameLayout;
-import com.garpr.android.views.SearchableRefreshLayout;
-import com.garpr.android.views.TintedImageView;
 
 import javax.inject.Singleton;
 
@@ -62,6 +62,14 @@ public interface AppComponent {
 
     // features/base
     void inject(BaseActivity activity);
+
+    // features/common
+    void inject(IdentityConstraintLayout view);
+    void inject(IdentityFrameLayout view);
+    void inject(PaletteSimpleDraweeView view);
+    void inject(SearchableFrameLayout view);
+    void inject(SearchableRefreshLayout view);
+    void inject(TintedImageView view);
 
     // features/deepLink
     void inject(DeepLinkActivity activity);
@@ -88,6 +96,7 @@ public interface AppComponent {
     // features/players
     void inject(PlayerItemView view);
     void inject(PlayersActivity activity);
+    void inject(PlayersLayout view);
 
     // features/rankings
     void inject(RankingItemView view);
@@ -114,6 +123,7 @@ public interface AppComponent {
 
     // features/tournament
     void inject(TournamentActivity activity);
+    void inject(TournamentInfoItemView view);
     void inject(TournamentMatchDialogFragment dialog);
 
     // features/tournaments
@@ -129,15 +139,5 @@ public interface AppComponent {
     // sync
     void inject(RankingsPollingWorker worker);
     void inject(SmashRosterSyncWorker worker);
-
-    // views
-    void inject(IdentityConstraintLayout view);
-    void inject(IdentityFrameLayout view);
-    void inject(PaletteSimpleDraweeView view);
-    void inject(PlayersLayout view);
-    void inject(SearchableFrameLayout view);
-    void inject(SearchableRefreshLayout view);
-    void inject(TintedImageView view);
-    void inject(TournamentInfoItemView view);
 
 }

@@ -1,4 +1,4 @@
-package com.garpr.android.features.activityRequirements
+package com.garpr.android.features.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

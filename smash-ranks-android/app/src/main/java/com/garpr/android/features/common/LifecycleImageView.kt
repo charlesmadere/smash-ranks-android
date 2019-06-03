@@ -1,15 +1,15 @@
-package com.garpr.android.views
+package com.garpr.android.features.common
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
 import com.garpr.android.misc.Heartbeat
 
-open class LifecycleFrameLayout @JvmOverloads constructor(
+open class LifecycleImageView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : FrameLayout(context, attrs), Heartbeat {
+) : AppCompatImageView(context, attrs), Heartbeat {
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)

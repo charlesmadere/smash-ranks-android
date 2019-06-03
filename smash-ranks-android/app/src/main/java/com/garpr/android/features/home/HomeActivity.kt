@@ -10,8 +10,8 @@ import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.features.activityRequirements.ActivityRequirementsDialogFragment
 import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.SearchToolbar
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsLayout
@@ -24,7 +24,6 @@ import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
-import com.garpr.android.views.toolbars.SearchToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject

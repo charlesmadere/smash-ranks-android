@@ -8,8 +8,8 @@ import androidx.appcompat.app.AlertDialog
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.common.SimplePreferenceView
 import com.garpr.android.features.notifications.NotificationsManager
-import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class TestNotificationsView @JvmOverloads constructor(

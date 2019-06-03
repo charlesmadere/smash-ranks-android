@@ -1,15 +1,15 @@
-package com.garpr.android.views
+package com.garpr.android.features.common
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import com.garpr.android.misc.Heartbeat
 
-open class LifecycleLinearLayout @JvmOverloads constructor(
+open class LifecycleConstraintLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LinearLayout(context, attrs), Heartbeat {
+) : ConstraintLayout(context, attrs), Heartbeat {
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)

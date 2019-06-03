@@ -12,12 +12,12 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.RegionSelectionItemView
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.views.RegionSelectionItemView
 import kotlinx.android.synthetic.main.activity_set_region.*
 import javax.inject.Inject
 

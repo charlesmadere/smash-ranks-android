@@ -13,7 +13,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_width="match_parent" />
 
-        <com.garpr.android.views.RefreshLayout
+        <com.garpr.android.features.common.RefreshLayout
             android:id="@id/refreshLayout"
             style="@style/RefreshLayout">
 
@@ -26,14 +26,14 @@
                     android:visibility="gone"
                     style="@style/RecyclerView" />
 
-                <com.garpr.android.views.ErrorContentLinearLayout
+                <com.garpr.android.features.common.ErrorContentLinearLayout
                     android:id="@+id/error"
                     app:titleText="@string/error_loading_tournament"
                     style="@style/NoContentLinearLayout.Error" />
 
             </FrameLayout>
 
-        </com.garpr.android.views.RefreshLayout>
+        </com.garpr.android.features.common.RefreshLayout>
 
     </LinearLayout>
 
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-        <com.garpr.android.views.toolbars.SearchToolbar
+        <com.garpr.android.features.common.SearchToolbar
             android:id="@+id/toolbar"
             app:descriptionTextColor="@color/transparent"
             app:showUpNavigation="true"

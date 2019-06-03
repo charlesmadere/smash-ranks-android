@@ -1,4 +1,4 @@
-package com.garpr.android.views.toolbars
+package com.garpr.android.features.common
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -27,10 +27,6 @@ import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.MiscUtils
 import com.garpr.android.misc.Refreshable
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
-
-private const val LIGHTNESS_LIMIT = 0.4f
-private const val STATUS_BAR_DARKEN_FACTOR = 0.8f
-private const val TOO_LIGHT_DARKEN_FACTOR = 0.75f
 
 open class GarToolbar @JvmOverloads constructor(
         context: Context,
@@ -123,6 +119,12 @@ open class GarToolbar @JvmOverloads constructor(
             field = value
             titleView.setTextColor(value)
         }
+
+    companion object {
+        private const val LIGHTNESS_LIMIT = 0.4f
+        private const val STATUS_BAR_DARKEN_FACTOR = 0.8f
+        private const val TOO_LIGHT_DARKEN_FACTOR = 0.75f
+    }
 
     init {
         @Suppress("LeakingThis")

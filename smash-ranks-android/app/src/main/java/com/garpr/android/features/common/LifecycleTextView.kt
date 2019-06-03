@@ -1,15 +1,15 @@
-package com.garpr.android.views
+package com.garpr.android.features.common
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import com.garpr.android.misc.Heartbeat
-import com.google.android.material.card.MaterialCardView
 
-open class LifecycleCardView @JvmOverloads constructor(
+open class LifecycleTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : MaterialCardView(context, attrs), Heartbeat {
+) : AppCompatTextView(context, attrs), Heartbeat {
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)

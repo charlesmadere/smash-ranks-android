@@ -9,9 +9,9 @@ import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.common.SimplePreferenceView
 import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.managers.NightModeManager
-import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class ThemePreferenceView @JvmOverloads constructor(

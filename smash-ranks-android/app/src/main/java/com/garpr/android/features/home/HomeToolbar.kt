@@ -9,11 +9,11 @@ import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.features.common.SearchToolbar
 import com.garpr.android.managers.HomeToolbarManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingCriteriaHandle
-import com.garpr.android.views.toolbars.SearchToolbar
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.home_toolbar_items.view.*
 import javax.inject.Inject
