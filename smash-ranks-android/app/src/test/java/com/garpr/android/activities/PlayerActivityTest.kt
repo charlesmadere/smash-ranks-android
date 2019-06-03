@@ -7,6 +7,7 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
+import com.garpr.android.features.player.PlayerActivity
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

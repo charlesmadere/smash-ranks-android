@@ -3,7 +3,6 @@ package com.garpr.android.dagger;
 import com.garpr.android.App;
 import com.garpr.android.activities.BaseActivity;
 import com.garpr.android.activities.HomeActivity;
-import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.activities.SetIdentityActivity;
 import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
@@ -15,6 +14,7 @@ import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout;
 import com.garpr.android.features.headToHead.HeadToHeadActivity;
 import com.garpr.android.features.headToHead.HeadToHeadDialogFragment;
 import com.garpr.android.features.player.MatchItemView;
+import com.garpr.android.features.player.PlayerActivity;
 import com.garpr.android.features.player.PlayerProfileItemView;
 import com.garpr.android.features.players.PlayerItemView;
 import com.garpr.android.features.players.PlayersActivity;
@@ -63,7 +63,6 @@ public interface AppComponent {
     // activities
     void inject(BaseActivity activity);
     void inject(HomeActivity activity);
-    void inject(PlayerActivity activity);
     void inject(SetIdentityActivity activity);
     void inject(SettingsActivity activity);
 
@@ -85,6 +84,7 @@ public interface AppComponent {
 
     // feature/player
     void inject(MatchItemView view);
+    void inject(PlayerActivity activity);
     void inject(PlayerProfileItemView view);
 
     // features/players

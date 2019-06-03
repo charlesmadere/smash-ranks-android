@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.player
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,7 @@ import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
+import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.PlayerMatchesBundle
@@ -18,9 +19,6 @@ import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.headToHead.HeadToHeadActivity
-import com.garpr.android.features.player.MatchItemView
-import com.garpr.android.features.player.PlayerAdapter
-import com.garpr.android.features.player.PlayerProfileItemView
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
@@ -44,6 +42,8 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     private var list: List<Any>? = null
     private val adapter = PlayerAdapter()
     private var playerMatchesBundle: PlayerMatchesBundle? = null
+
+    private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
@@ -173,8 +173,6 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
 
         recyclerView.adapter = adapter
     }
-
-    private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     override fun search(query: String?) {
         val list = this.list

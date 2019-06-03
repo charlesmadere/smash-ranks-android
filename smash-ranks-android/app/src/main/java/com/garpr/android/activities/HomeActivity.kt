@@ -13,6 +13,7 @@ import com.garpr.android.dialogs.ShareRegionDialogFragment
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
+import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.ranking.RankingsLayout
 import com.garpr.android.managers.IdentityManager

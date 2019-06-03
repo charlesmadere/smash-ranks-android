@@ -58,7 +58,7 @@
 
         <activity
             android:label=""
-            android:name=".activities.PlayerActivity" />
+            android:name=".features.player.PlayerActivity" />
 
         <activity
             android:label="@string/players"

@@ -3,10 +3,10 @@ package com.garpr.android.features.favoritePlayers
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.views.IdentityConstraintLayout
@@ -26,6 +26,15 @@ class FavoritePlayerItemView @JvmOverloads constructor(
     protected lateinit var regionManager: RegionManager
 
 
+    init {
+        setOnClickListener(this)
+        setOnLongClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
+    }
+
     override fun identityIsSomeoneElse() {
         super.identityIsSomeoneElse()
         styleTextViewForSomeoneElse(name)
@@ -40,17 +49,6 @@ class FavoritePlayerItemView @JvmOverloads constructor(
         val identity = this.identity ?: return
         context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
                 (identity as FavoritePlayer).region))
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
-
-        setOnClickListener(this)
-        setOnLongClickListener(this)
     }
 
     override fun onLongClick(v: View): Boolean {

@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.activities.PlayerActivity
 import com.garpr.android.adapters.BaseAdapterView
 import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
