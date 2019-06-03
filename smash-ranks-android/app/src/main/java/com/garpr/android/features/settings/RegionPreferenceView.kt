@@ -1,15 +1,16 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RequestCodes
+import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class RegionPreferenceView @JvmOverloads constructor(
@@ -21,17 +22,18 @@ class RegionPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionManager: RegionManager
 
+
     init {
         titleText = context.getText(R.string.region)
+        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_location_on_white_24dp)
+        setOnClickListener(this)
 
         if (isInEditMode) {
             descriptionText = context.getString(R.string.region_endpoint_format,
                     context.getString(R.string.norcal), context.getString(R.string.gar_pr))
+        } else {
+            appComponent.inject(this)
         }
-
-        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_location_on_white_24dp)
-
-        setOnClickListener(this)
     }
 
     override fun onAttachedToWindow() {
@@ -60,16 +62,6 @@ class RegionPreferenceView @JvmOverloads constructor(
         super.onDetachedFromWindow()
 
         regionManager.removeListener(this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            regionManager.addListener(this)
-            refresh()
-        }
     }
 
     override fun onRegionChange(regionManager: RegionManager) {

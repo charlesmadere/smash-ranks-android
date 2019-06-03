@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.content.DialogInterface
@@ -11,6 +11,7 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.rankings.RankingsPollingManager
+import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
@@ -25,14 +26,16 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
+
     init {
         titleText = context.getText(R.string.poll_frequency)
+        setOnClickListener(this)
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.every_3_days)
+        } else {
+            appComponent.inject(this)
         }
-
-        setOnClickListener(this)
     }
 
     override fun onAttachedToWindow() {
@@ -79,16 +82,6 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
         super.onDetachedFromWindow()
 
         rankingsPollingPreferenceStore.pollFrequency.removeListener(this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            rankingsPollingPreferenceStore.pollFrequency.addListener(this)
-            refresh()
-        }
     }
 
     override fun onPreferenceChange(preference: Preference<PollFrequency>) {

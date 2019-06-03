@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.settings
 
 import android.app.Activity
 import android.content.Context
@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import com.garpr.android.R
+import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.logViewer.LogViewerActivity

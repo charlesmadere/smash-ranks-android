@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.content.DialogInterface
@@ -7,10 +7,11 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.managers.NightModeManager
+import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class ThemePreferenceView @JvmOverloads constructor(
@@ -25,14 +26,14 @@ class ThemePreferenceView @JvmOverloads constructor(
 
     init {
         titleText = context.getText(R.string.theme)
+        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_format_paint_white_24dp)
+        setOnClickListener(this)
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.auto)
+        } else {
+            appComponent.inject(this)
         }
-
-        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_format_paint_white_24dp)
-
-        setOnClickListener(this)
     }
 
     override fun onAttachedToWindow() {
@@ -79,16 +80,6 @@ class ThemePreferenceView @JvmOverloads constructor(
         super.onDetachedFromWindow()
 
         nightModeManager.removeListener(this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            nightModeManager.addListener(this)
-            refresh()
-        }
     }
 
     override fun onNightModeChange(nightModeManager: NightModeManager) {

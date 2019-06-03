@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.content.DialogInterface
@@ -12,6 +12,7 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.misc.RequestCodes
+import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class IdentityPreferenceView @JvmOverloads constructor(
@@ -23,12 +24,16 @@ class IdentityPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var identityManager: IdentityManager
 
+
     init {
         titleText = context.getText(R.string.identity)
         descriptionText = context.getText(R.string.easily_find_yourself_throughout_the_app)
         imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_face_white_24dp)
-
         setOnClickListener(this)
+
+        if (!isInEditMode) {
+            appComponent.inject(this)
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -69,16 +74,6 @@ class IdentityPreferenceView @JvmOverloads constructor(
         super.onDetachedFromWindow()
 
         identityManager.removeListener(this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            identityManager.addListener(this)
-            refresh()
-        }
     }
 
     override fun onIdentityChange(identityManager: IdentityManager) {

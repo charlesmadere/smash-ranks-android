@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.content.DialogInterface
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.FavoritePlayersManager
+import com.garpr.android.views.SimplePreferenceView
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -22,15 +23,17 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var favoritePlayersManager: FavoritePlayersManager
 
+
     init {
         titleText = context.getText(R.string.delete_all_favorite_players)
+        setOnClickListener(this)
 
         if (isInEditMode) {
             descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
                     numberFormat.format(8))
+        } else {
+            appComponent.inject(this)
         }
-
-        setOnClickListener(this)
     }
 
     override fun onAttachedToWindow() {
@@ -64,16 +67,6 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
 
     override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
         if (isAlive) {
-            refresh()
-        }
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            favoritePlayersManager.addListener(this)
             refresh()
         }
     }

@@ -26,6 +26,7 @@
             android:launchMode="singleTop"
             android:name=".features.deepLink.DeepLinkActivity"
             android:noHistory="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -35,6 +36,7 @@
                 <data android:host="notgarpr.com" android:scheme="https" />
                 <data android:host="www.notgarpr.com" android:scheme="https" />
             </intent-filter>
+
         </activity>
 
         <activity
@@ -50,10 +52,12 @@
         <activity
             android:label="@string/log_viewer"
             android:name=".features.logViewer.LogViewerActivity"
-            android:parentActivityName=".activities.SettingsActivity">
+            android:parentActivityName=".features.settings.SettingsActivity">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SettingsActivity" />
+                android:value=".features.settings.SettingsActivity" />
+
         </activity>
 
         <activity
@@ -81,17 +85,19 @@
         <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
-            android:name=".activities.SettingsActivity" />
+            android:name=".features.settings.SettingsActivity" />
 
         <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
             android:name=".features.splash.SplashActivity"
             android:theme="@style/SplashTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity

@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,6 +6,7 @@ import android.view.View
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.sync.roster.SmashRosterSyncManager
+import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class SmashRosterSyncPreferenceView @JvmOverloads constructor(
@@ -19,14 +20,11 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
 
     init {
         titleText = context.getText(R.string.smash_roster_sync_status)
+        setOnClickListener(this)
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.sync_has_yet_to_occur)
-        }
-
-        setOnClickListener(this)
-
-        if (!isInEditMode) {
+        } else {
             appComponent.inject(this)
         }
     }
@@ -52,15 +50,6 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
         super.onDetachedFromWindow()
 
         smashRosterSyncManager.removeListener(this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            smashRosterSyncManager.addListener(this)
-            refresh()
-        }
     }
 
     override fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager) {

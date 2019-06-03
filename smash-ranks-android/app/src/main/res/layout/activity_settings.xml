@@ -22,19 +22,19 @@
             android:layout_width="match_parent"
             android:orientation="vertical">
 
-            <com.garpr.android.views.RegionPreferenceView
+            <com.garpr.android.features.settings.RegionPreferenceView
                 android:id="@+id/regionPreference"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.IdentityPreferenceView
+            <com.garpr.android.features.settings.IdentityPreferenceView
                 android:id="@+id/identityPreference"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.ThemePreferenceView
+            <com.garpr.android.features.settings.ThemePreferenceView
                 android:id="@+id/themePreference"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.DeleteFavoritePlayersPreferenceView
+            <com.garpr.android.features.settings.DeleteFavoritePlayersPreferenceView
                 android:id="@+id/deleteFavoritePlayersPreference"
                 style="@style/PreferenceView" />
 
@@ -49,36 +49,36 @@
                 android:text="@string/rankings_polling_description"
                 style="@style/SettingsCardDescription" />
 
-            <com.garpr.android.views.CheckablePreferenceView
+            <com.garpr.android.features.settings.CheckablePreferenceView
                 android:id="@+id/useRankingsPolling"
                 app:checkableType="switch_compat"
                 app:titleText="@string/use_rankings_polling"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView
+            <com.garpr.android.features.settings.RankingsPollingPollFrequencyPreferenceView
                 android:id="@+id/rankingsPollingFrequencyPreference"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.RingtonePreferenceView
+            <com.garpr.android.features.settings.RingtonePreferenceView
                 android:id="@+id/ringtonePreference"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.CheckablePreferenceView
+            <com.garpr.android.features.settings.CheckablePreferenceView
                 android:id="@+id/vibratePreference"
                 app:titleText="@string/vibrate"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.CheckablePreferenceView
+            <com.garpr.android.features.settings.CheckablePreferenceView
                 android:id="@+id/mustBeOnWifiPreference"
                 app:titleText="@string/must_be_on_wifi"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.CheckablePreferenceView
+            <com.garpr.android.features.settings.CheckablePreferenceView
                 android:id="@+id/mustBeChargingPreference"
                 app:titleText="@string/must_be_charging"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.LastPollPreferenceView
+            <com.garpr.android.features.settings.LastPollPreferenceView
                 android:id="@+id/lastPollPreference"
                 style="@style/PreferenceView" />
 
@@ -97,7 +97,7 @@
                 android:text="@string/smash_roster_polling_description"
                 style="@style/SettingsCardDescription" />
 
-            <com.garpr.android.views.SmashRosterSyncPreferenceView
+            <com.garpr.android.features.settings.SmashRosterSyncPreferenceView
                 android:id="@+id/smashRosterPreference"
                 style="@style/PreferenceView" />
 
@@ -148,7 +148,7 @@
                 app:titleText="@string/view_logs"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.BuildInfoPreferenceView
+            <com.garpr.android.features.settings.BuildInfoPreferenceView
                 style="@style/PreferenceView" />
 
         </LinearLayout>

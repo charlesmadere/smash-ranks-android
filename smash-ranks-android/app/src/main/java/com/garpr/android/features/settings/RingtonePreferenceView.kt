@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -15,6 +15,7 @@ import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class RingtonePreferenceView @JvmOverloads constructor(
@@ -36,12 +37,13 @@ class RingtonePreferenceView @JvmOverloads constructor(
 
     init {
         titleText = context.getText(R.string.ringtone)
+        setOnClickListener(this)
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.none)
+        } else {
+            appComponent.inject(this)
         }
-
-        setOnClickListener(this)
     }
 
     fun onActivityResult(data: Intent?) {
@@ -92,17 +94,8 @@ class RingtonePreferenceView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         rankingsPollingPreferenceStore.ringtone.removeListener(this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            rankingsPollingPreferenceStore.ringtone.addListener(this)
-            refresh()
-        }
     }
 
     override fun onPreferenceChange(preference: Preference<Uri>) {

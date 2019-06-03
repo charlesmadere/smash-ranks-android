@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,6 +13,7 @@ import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireViewByIdCompat
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
+import com.garpr.android.views.LifecycleConstraintLayout
 import kotlinx.android.synthetic.main.view_checkbox_preference.view.*
 
 class CheckablePreferenceView @JvmOverloads constructor(
@@ -24,6 +25,17 @@ class CheckablePreferenceView @JvmOverloads constructor(
     private val disabledDescriptionText: CharSequence?
     private val descriptionText: CharSequence?
     private val titleText: CharSequence?
+
+    private val checkable: CompoundButton
+        get() = requireViewByIdCompat(R.id.checkable)
+
+    var preference: Preference<Boolean>? = null
+        set(value) {
+            field?.removeListener(this)
+            field = value
+            refresh()
+        }
+
 
     companion object {
         private const val CHECKABLE_TYPE_CHECKBOX = 0
@@ -52,10 +64,22 @@ class CheckablePreferenceView @JvmOverloads constructor(
         descriptionText = ta.getText(R.styleable.View_descriptionText)
         titleText = ta.getText(R.styleable.View_titleText)
         ta.recycle()
-    }
 
-    private val checkable: CompoundButton
-        get() = requireViewByIdCompat(R.id.checkable)
+        setOnClickListener(this)
+
+        if (isInEditMode) {
+            title.text = titleText
+            description.text = descriptionText
+        }
+
+        if (disabledDescriptionText.isNullOrBlank()) {
+            val layoutParams = title.layoutParams as LayoutParams
+            layoutParams.bottomToBottom = LayoutParams.PARENT_ID
+            layoutParams.bottomMargin = layoutParams.topMargin
+            title.layoutParams = layoutParams
+            description.visibility = View.GONE
+        }
+    }
 
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>) {
         dispatchThawSelfOnly(container)
@@ -89,37 +113,11 @@ class CheckablePreferenceView @JvmOverloads constructor(
         preference?.removeListener(this)
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        setOnClickListener(this)
-
-        if (isInEditMode) {
-            title.text = titleText
-            description.text = descriptionText
-        }
-
-        if (disabledDescriptionText.isNullOrBlank()) {
-            val layoutParams = title.layoutParams as LayoutParams
-            layoutParams.bottomToBottom = LayoutParams.PARENT_ID
-            layoutParams.bottomMargin = layoutParams.topMargin
-            title.layoutParams = layoutParams
-            description.visibility = View.GONE
-        }
-    }
-
     override fun onPreferenceChange(preference: Preference<Boolean>) {
         if (isAlive) {
             refresh()
         }
     }
-
-    var preference: Preference<Boolean>? = null
-        set(value) {
-            field?.removeListener(this)
-            field = value
-            refresh()
-        }
 
     override fun refresh() {
         val preference = this.preference

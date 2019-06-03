@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,6 +7,7 @@ import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
 class LastPollPreferenceView @JvmOverloads constructor(
@@ -17,14 +18,16 @@ class LastPollPreferenceView @JvmOverloads constructor(
     @Inject
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
+
     init {
+        isEnabled = false
         titleText = context.getText(R.string.last_poll)
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.poll_has_yet_to_occur)
+        } else {
+            appComponent.inject(this)
         }
-
-        isEnabled = false
     }
 
     override fun onAttachedToWindow() {
@@ -40,17 +43,8 @@ class LastPollPreferenceView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         rankingsPollingPreferenceStore.lastPoll.removeListener(this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            rankingsPollingPreferenceStore.lastPoll.addListener(this)
-            refresh()
-        }
     }
 
     override fun onPreferenceChange(preference: Preference<SimpleDate>) {

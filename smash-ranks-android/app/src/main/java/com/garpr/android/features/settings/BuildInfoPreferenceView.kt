@@ -1,9 +1,10 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.util.AttributeSet
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
+import com.garpr.android.views.SimplePreferenceView
 
 class BuildInfoPreferenceView @JvmOverloads constructor(
         context: Context,

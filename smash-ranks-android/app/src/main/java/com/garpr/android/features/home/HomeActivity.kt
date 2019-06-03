@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
 import com.garpr.android.activities.BaseActivity
-import com.garpr.android.activities.SettingsActivity
 import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.dialogs.ActivityRequirementsDialogFragment
 import com.garpr.android.dialogs.ShareRegionDialogFragment
@@ -17,6 +16,7 @@ import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsLayout
+import com.garpr.android.features.settings.SettingsActivity
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.HomeTab
