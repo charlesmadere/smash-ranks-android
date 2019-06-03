@@ -9,6 +9,7 @@ import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout;
 import com.garpr.android.features.headToHead.HeadToHeadActivity;
 import com.garpr.android.features.headToHead.HeadToHeadDialogFragment;
 import com.garpr.android.features.home.HomeActivity;
+import com.garpr.android.features.home.HomeToolbar;
 import com.garpr.android.features.home.ShareRegionDialogFragment;
 import com.garpr.android.features.player.MatchItemView;
 import com.garpr.android.features.player.PlayerActivity;
@@ -48,7 +49,6 @@ import com.garpr.android.views.PaletteSimpleDraweeView;
 import com.garpr.android.views.SearchableFrameLayout;
 import com.garpr.android.views.SearchableRefreshLayout;
 import com.garpr.android.views.TintedImageView;
-import com.garpr.android.views.toolbars.HomeToolbar;
 
 import javax.inject.Singleton;
 
@@ -77,6 +77,7 @@ public interface AppComponent {
 
     // features/home
     void inject(HomeActivity activity);
+    void inject(HomeToolbar toolbar);
     void inject(ShareRegionDialogFragment dialog);
 
     // feature/player
@@ -128,9 +129,6 @@ public interface AppComponent {
     // sync
     void inject(RankingsPollingWorker worker);
     void inject(SmashRosterSyncWorker worker);
-
-    // toolbars
-    void inject(HomeToolbar toolbar);
 
     // views
     void inject(IdentityConstraintLayout view);

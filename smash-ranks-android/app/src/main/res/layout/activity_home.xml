@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.HomeToolbar
+    <com.garpr.android.features.home.HomeToolbar
         android:id="@+id/toolbar"
         app:titleText="@string/gar_pr"
         style="@style/Toolbar" />
 
-    <com.garpr.android.views.HomeViewPager
+    <com.garpr.android.features.home.HomeViewPager
         android:id="@+id/viewPager"
         android:layout_height="0dp"
         android:layout_weight="1"

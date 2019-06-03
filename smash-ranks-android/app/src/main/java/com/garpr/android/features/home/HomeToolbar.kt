@@ -1,4 +1,4 @@
-package com.garpr.android.views.toolbars
+package com.garpr.android.features.home
 
 import android.content.Context
 import android.util.AttributeSet
@@ -13,6 +13,7 @@ import com.garpr.android.managers.HomeToolbarManager
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingCriteriaHandle
+import com.garpr.android.views.toolbars.SearchToolbar
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.home_toolbar_items.view.*
 import javax.inject.Inject
