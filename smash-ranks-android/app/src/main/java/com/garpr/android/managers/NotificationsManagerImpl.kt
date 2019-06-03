@@ -10,10 +10,10 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.garpr.android.R
-import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.extensions.notificationManager
 import com.garpr.android.extensions.notificationManagerCompat
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 

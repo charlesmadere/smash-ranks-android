@@ -3,15 +3,15 @@ package com.garpr.android.misc
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsActivity
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsActivity
-import com.garpr.android.data.models.Endpoint
-import com.garpr.android.data.models.Region
-import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.managers.RegionManager
 
 class DeepLinkUtilsImpl(

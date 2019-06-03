@@ -2,9 +2,9 @@ package com.garpr.android.features.setIdentity
 
 import androidx.annotation.LayoutRes
 import com.garpr.android.R
-import com.garpr.android.features.base.BaseAdapter
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
+import com.garpr.android.features.base.BaseAdapter
 
 class PlayersSelectionAdapter : BaseAdapter<AbsPlayer>() {
 

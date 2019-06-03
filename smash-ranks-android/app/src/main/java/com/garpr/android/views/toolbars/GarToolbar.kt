@@ -16,12 +16,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
-import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
+import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.MiscUtils

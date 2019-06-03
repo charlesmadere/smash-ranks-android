@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.garpr.android.R
-import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.data.models.BracketSource
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ShareUtils
 import kotlinx.android.synthetic.main.item_tournament_info.view.*

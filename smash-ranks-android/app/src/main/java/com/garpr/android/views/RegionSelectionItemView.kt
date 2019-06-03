@@ -4,10 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
+import com.garpr.android.features.base.BaseAdapterView
 import kotlinx.android.synthetic.main.item_region_selection.view.*
 
 class RegionSelectionItemView @JvmOverloads constructor(

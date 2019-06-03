@@ -5,12 +5,12 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.setTintedImageResource
 import com.garpr.android.extensions.truncate
+import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
