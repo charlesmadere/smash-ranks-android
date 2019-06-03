@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
+import com.garpr.android.extensions.requireViewByIdCompat
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.ListLayout
 
@@ -50,8 +51,7 @@ open class RefreshLayout @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (scrollingChildId != View.NO_ID) {
-            scrollingChild = findViewById(scrollingChildId) ?: throw NullPointerException(
-                    "unable to find scrolling child (${resources.getResourceName(scrollingChildId)})")
+            scrollingChild = requireViewByIdCompat(scrollingChildId)
         }
 
         setColorSchemeColors(*resources.getIntArray(R.array.spinner_colors))
