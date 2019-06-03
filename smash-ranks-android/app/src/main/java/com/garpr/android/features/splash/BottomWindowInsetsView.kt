@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.splash
 
 import android.content.Context
 import android.graphics.Canvas
@@ -17,7 +17,7 @@ class BottomWindowInsetsView @JvmOverloads constructor(
         ViewCompat.setOnApplyWindowInsetsListener(this, this)
     }
 
-    override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat? {
+    override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {
         layoutParams = layoutParams.apply {
             height = insets.systemWindowInsetBottom
         }

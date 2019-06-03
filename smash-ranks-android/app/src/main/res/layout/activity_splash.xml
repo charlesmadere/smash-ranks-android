@@ -46,7 +46,7 @@
 
     </com.garpr.android.features.splash.SplashCardView>
 
-    <com.garpr.android.views.BottomWindowInsetsView
+    <com.garpr.android.features.splash.BottomWindowInsetsView
         android:id="@+id/bottomWindowInsetsView"
         android:layout_height="0dp"
         android:layout_width="0dp"
