@@ -82,7 +82,7 @@
                 android:id="@+id/lastPollPreference"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.views.TestNotificationView
+            <com.garpr.android.features.settings.TestNotificationsView
                 android:id="@+id/testNotification"
                 style="@style/PreferenceView" />
 

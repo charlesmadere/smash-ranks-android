@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.notifications
 
 import android.app.Notification
 import androidx.core.app.NotificationCompat

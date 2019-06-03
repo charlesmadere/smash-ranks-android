@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.settings
 
 import android.content.Context
 import android.content.DialogInterface
@@ -8,16 +8,18 @@ import androidx.appcompat.app.AlertDialog
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.managers.NotificationsManager
+import com.garpr.android.features.notifications.NotificationsManager
+import com.garpr.android.views.SimplePreferenceView
 import javax.inject.Inject
 
-class TestNotificationView @JvmOverloads constructor(
+class TestNotificationsView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, View.OnClickListener {
 
     @Inject
     protected lateinit var notificationsManager: NotificationsManager
+
 
     init {
         titleText = context.getText(R.string.show_test_notification)

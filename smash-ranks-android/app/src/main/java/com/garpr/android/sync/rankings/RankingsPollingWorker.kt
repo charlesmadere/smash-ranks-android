@@ -5,7 +5,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.managers.NotificationsManager
+import com.garpr.android.features.notifications.NotificationsManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.RankingsNotificationsUtils
 import com.garpr.android.misc.Timber

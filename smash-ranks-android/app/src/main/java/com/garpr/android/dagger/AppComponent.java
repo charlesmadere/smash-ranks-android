@@ -29,6 +29,7 @@ import com.garpr.android.features.settings.RegionPreferenceView;
 import com.garpr.android.features.settings.RingtonePreferenceView;
 import com.garpr.android.features.settings.SettingsActivity;
 import com.garpr.android.features.settings.SmashRosterSyncPreferenceView;
+import com.garpr.android.features.settings.TestNotificationsView;
 import com.garpr.android.features.settings.ThemePreferenceView;
 import com.garpr.android.features.splash.SplashActivity;
 import com.garpr.android.features.splash.SplashCardView;
@@ -46,7 +47,6 @@ import com.garpr.android.views.IdentityFrameLayout;
 import com.garpr.android.views.PaletteSimpleDraweeView;
 import com.garpr.android.views.SearchableFrameLayout;
 import com.garpr.android.views.SearchableRefreshLayout;
-import com.garpr.android.views.TestNotificationView;
 import com.garpr.android.views.TintedImageView;
 import com.garpr.android.views.toolbars.HomeToolbar;
 
@@ -108,7 +108,7 @@ public interface AppComponent {
     void inject(RingtonePreferenceView view);
     void inject(SettingsActivity activity);
     void inject(SmashRosterSyncPreferenceView view);
-    void inject(TestNotificationView view);
+    void inject(TestNotificationsView view);
     void inject(ThemePreferenceView view);
 
     // features/tournament
