@@ -7,7 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.activities.HomeActivity
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.NightModeManager

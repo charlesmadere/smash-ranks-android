@@ -1,4 +1,4 @@
-package com.garpr.android.adapters
+package com.garpr.android.features.home
 
 import android.view.View
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.home
 
 import android.content.Context
 import android.content.Intent
@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
-import com.garpr.android.adapters.HomePagerAdapter
+import com.garpr.android.activities.BaseActivity
+import com.garpr.android.activities.SettingsActivity
 import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.dialogs.ActivityRequirementsDialogFragment
 import com.garpr.android.dialogs.ShareRegionDialogFragment

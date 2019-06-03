@@ -2,6 +2,7 @@ package com.garpr.android.activities
 
 import android.app.Application
 import com.garpr.android.BaseTest
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.misc.HomeTab
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

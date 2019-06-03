@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.activities.BaseActivity
-import com.garpr.android.activities.HomeActivity
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.extensions.appComponent

@@ -3,7 +3,7 @@ package com.garpr.android.misc
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.garpr.android.activities.HomeActivity
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsActivity
