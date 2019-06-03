@@ -2,7 +2,6 @@ package com.garpr.android.dagger;
 
 import com.garpr.android.App;
 import com.garpr.android.activities.BaseActivity;
-import com.garpr.android.activities.DeepLinkActivity;
 import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.activities.PlayersActivity;
@@ -13,6 +12,7 @@ import com.garpr.android.activities.SplashActivity;
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.dialogs.ShareRegionDialogFragment;
 import com.garpr.android.dialogs.TournamentMatchDialogFragment;
+import com.garpr.android.features.deepLink.DeepLinkActivity;
 import com.garpr.android.features.headToHead.HeadToHeadActivity;
 import com.garpr.android.features.headToHead.HeadToHeadDialogFragment;
 import com.garpr.android.features.ranking.RankingsActivity;
@@ -62,7 +62,6 @@ public interface AppComponent {
 
     // activities
     void inject(BaseActivity activity);
-    void inject(DeepLinkActivity activity);
     void inject(HomeActivity activity);
     void inject(PlayerActivity activity);
     void inject(PlayersActivity activity);
@@ -75,6 +74,9 @@ public interface AppComponent {
     void inject(AddOrRemovePlayerFromFavoritesDialogFragment dialog);
     void inject(ShareRegionDialogFragment dialog);
     void inject(TournamentMatchDialogFragment dialog);
+
+    // features/deepLink
+    void inject(DeepLinkActivity activity);
 
     // features/headToHead
     void inject(HeadToHeadActivity activity);

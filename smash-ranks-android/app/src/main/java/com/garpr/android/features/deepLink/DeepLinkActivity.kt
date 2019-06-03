@@ -1,9 +1,11 @@
-package com.garpr.android.activities
+package com.garpr.android.features.deepLink
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
+import com.garpr.android.activities.BaseActivity
+import com.garpr.android.activities.HomeActivity
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.extensions.appComponent

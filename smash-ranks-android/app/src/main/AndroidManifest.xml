@@ -24,7 +24,7 @@
         <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
-            android:name=".activities.DeepLinkActivity"
+            android:name=".features.deepLink.DeepLinkActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
