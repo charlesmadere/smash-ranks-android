@@ -3,7 +3,7 @@ package com.garpr.android.features.players
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.player.PlayerActivity

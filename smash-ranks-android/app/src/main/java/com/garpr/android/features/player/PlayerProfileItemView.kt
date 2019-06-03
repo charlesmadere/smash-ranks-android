@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.widget.TextViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
-import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent

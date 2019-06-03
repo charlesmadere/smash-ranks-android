@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.garpr.android.R
-import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.data.models.BracketSource
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.extensions.appComponent

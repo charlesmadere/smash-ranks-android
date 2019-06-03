@@ -2,10 +2,10 @@ package com.garpr.android.features.tournament
 
 import androidx.annotation.LayoutRes
 import com.garpr.android.R
-import com.garpr.android.adapters.BaseAdapter
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.TournamentMode
+import com.garpr.android.features.base.BaseAdapter
 
 class TournamentAdapter(
         private val tournamentAdapterManager: TournamentAdapterManager

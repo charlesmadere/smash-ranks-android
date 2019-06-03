@@ -2,9 +2,9 @@ package com.garpr.android.features.favoritePlayers
 
 import androidx.annotation.LayoutRes
 import com.garpr.android.R
-import com.garpr.android.adapters.BaseAdapter
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
+import com.garpr.android.features.base.BaseAdapter
 
 class FavoritePlayersAdapter : BaseAdapter<AbsPlayer>() {
 

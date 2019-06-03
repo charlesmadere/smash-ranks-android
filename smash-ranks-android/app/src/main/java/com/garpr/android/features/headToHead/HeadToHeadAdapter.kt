@@ -1,10 +1,10 @@
 package com.garpr.android.features.headToHead
 
 import com.garpr.android.R
-import com.garpr.android.adapters.BaseMultiAdapter
 import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.WinsLosses
+import com.garpr.android.features.base.BaseMultiAdapter
 
 class HeadToHeadAdapter : BaseMultiAdapter(LAYOUT_KEY_MAP) {
 

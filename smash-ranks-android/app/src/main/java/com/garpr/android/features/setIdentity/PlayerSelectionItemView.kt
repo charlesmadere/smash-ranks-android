@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear

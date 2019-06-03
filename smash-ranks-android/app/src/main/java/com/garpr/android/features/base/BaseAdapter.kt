@@ -1,4 +1,4 @@
-package com.garpr.android.adapters
+package com.garpr.android.features.base
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes

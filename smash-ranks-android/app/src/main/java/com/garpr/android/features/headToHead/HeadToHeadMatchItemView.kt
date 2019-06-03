@@ -6,7 +6,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.adapters.BaseAdapterView
+import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.MatchResult
