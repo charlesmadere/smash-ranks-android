@@ -1,4 +1,4 @@
-package com.garpr.android.sync.rankings
+package com.garpr.android.features.sync.rankings
 
 import android.content.Context
 import androidx.work.Worker

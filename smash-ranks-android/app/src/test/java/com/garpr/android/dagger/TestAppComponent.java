@@ -14,6 +14,8 @@ import com.garpr.android.data.models.RankingsBundleTest;
 import com.garpr.android.data.models.RegionsBundleTest;
 import com.garpr.android.data.models.SimpleDateTest;
 import com.garpr.android.data.models.SmashCharacterTest;
+import com.garpr.android.features.sync.rankings.RankingsPollingManagerTest;
+import com.garpr.android.features.sync.roster.SmashRosterSyncManagerTest;
 import com.garpr.android.features.tournaments.TournamentsActivityTest;
 import com.garpr.android.managers.AppUpgradeManagerTest;
 import com.garpr.android.managers.FavoritePlayersManagerTest;
@@ -42,8 +44,6 @@ import com.garpr.android.preferences.persistent.PersistentLongPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentMoshiPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentUriPreferenceTest;
-import com.garpr.android.sync.rankings.RankingsPollingManagerTest;
-import com.garpr.android.sync.roster.SmashRosterSyncManagerTest;
 
 import javax.inject.Singleton;
 
@@ -52,10 +52,6 @@ import dagger.Component;
 @Singleton
 @Component(modules = { TestAppModule.class })
 public interface TestAppComponent {
-
-    // activities
-    void inject(HomeActivityTest test);
-    void inject(PlayerActivityTest test);
 
     // data/converters
     void inject(AbsPlayerConverterTest test);
@@ -73,6 +69,21 @@ public interface TestAppComponent {
     void inject(SimpleDateTest test);
     void inject(SmashCharacterTest test);
 
+    // features/deepLink
+    void inject(DeepLinkUtilsTest test);
+
+    // features/home
+    void inject(HomeActivityTest test);
+
+    // features/player
+    void inject(PlayerActivityTest test);
+
+    // features/sync/rankings
+    void inject(RankingsPollingManagerTest test);
+
+    // features/sync/roster
+    void inject(SmashRosterSyncManagerTest test);
+
     // features/tournaments
     void inject(TournamentsActivityTest test);
 
@@ -87,9 +98,6 @@ public interface TestAppComponent {
     void inject(SmashRosterAvatarUrlHelperTest test);
     void inject(SplashScreenManagerTest test);
     void inject(TournamentAdapterManagerTest test);
-
-    // misc
-    void inject(DeepLinkUtilsTest test);
     void inject(FullTournamentUtilsTest test);
     void inject(ListUtilsTest test);
     void inject(PreviousRankUtilsTest test);
@@ -110,9 +118,5 @@ public interface TestAppComponent {
     void inject(PersistentMoshiPreferenceTest test);
     void inject(PersistentStringPreferenceTest test);
     void inject(PersistentUriPreferenceTest test);
-
-    // sync
-    void inject(RankingsPollingManagerTest test);
-    void inject(SmashRosterSyncManagerTest test);
 
 }

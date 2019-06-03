@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.features.deepLink
 
 import android.content.Context
 import android.content.Intent
@@ -13,6 +13,8 @@ import com.garpr.android.features.rankings.RankingsActivity
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsActivity
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.misc.HomeTab
+import com.garpr.android.misc.Timber
 
 class DeepLinkUtilsImpl(
         private val regionManager: RegionManager,

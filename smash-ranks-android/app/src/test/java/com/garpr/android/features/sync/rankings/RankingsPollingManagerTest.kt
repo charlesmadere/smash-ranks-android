@@ -1,4 +1,4 @@
-package com.garpr.android.sync.rankings
+package com.garpr.android.features.sync.rankings
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.PollFrequency

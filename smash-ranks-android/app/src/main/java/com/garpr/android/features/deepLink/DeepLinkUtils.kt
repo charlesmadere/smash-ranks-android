@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.features.deepLink
 
 import android.content.Context
 import android.content.Intent

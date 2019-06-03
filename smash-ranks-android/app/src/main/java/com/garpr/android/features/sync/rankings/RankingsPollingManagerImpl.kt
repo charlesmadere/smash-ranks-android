@@ -1,4 +1,4 @@
-package com.garpr.android.sync.rankings
+package com.garpr.android.features.sync.rankings
 
 import androidx.work.Constraints
 import androidx.work.NetworkType
