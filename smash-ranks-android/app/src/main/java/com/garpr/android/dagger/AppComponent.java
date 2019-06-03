@@ -8,7 +8,6 @@ import com.garpr.android.activities.PlayersActivity;
 import com.garpr.android.activities.SetIdentityActivity;
 import com.garpr.android.activities.SetRegionActivity;
 import com.garpr.android.activities.SettingsActivity;
-import com.garpr.android.activities.SplashActivity;
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.dialogs.ShareRegionDialogFragment;
 import com.garpr.android.dialogs.TournamentMatchDialogFragment;
@@ -17,6 +16,8 @@ import com.garpr.android.features.headToHead.HeadToHeadActivity;
 import com.garpr.android.features.headToHead.HeadToHeadDialogFragment;
 import com.garpr.android.features.ranking.RankingsActivity;
 import com.garpr.android.features.ranking.RankingsLayout;
+import com.garpr.android.features.splash.SplashActivity;
+import com.garpr.android.features.splash.SplashCardView;
 import com.garpr.android.features.tournament.TournamentActivity;
 import com.garpr.android.features.tournament.TournamentInfoItemView;
 import com.garpr.android.features.tournaments.TournamentDividerView;
@@ -42,7 +43,6 @@ import com.garpr.android.views.RingtonePreferenceView;
 import com.garpr.android.views.SearchableFrameLayout;
 import com.garpr.android.views.SearchableRefreshLayout;
 import com.garpr.android.views.SmashRosterSyncPreferenceView;
-import com.garpr.android.views.SplashCardView;
 import com.garpr.android.views.TestNotificationView;
 import com.garpr.android.views.ThemePreferenceView;
 import com.garpr.android.views.TintedImageView;
@@ -68,7 +68,6 @@ public interface AppComponent {
     void inject(SetIdentityActivity activity);
     void inject(SetRegionActivity activity);
     void inject(SettingsActivity activity);
-    void inject(SplashActivity activity);
 
     // dialogs
     void inject(AddOrRemovePlayerFromFavoritesDialogFragment dialog);
@@ -91,6 +90,10 @@ public interface AppComponent {
     // features/tournaments
     void inject(TournamentDividerView view);
     void inject(TournamentsActivity activity);
+
+    // features/splash
+    void inject(SplashActivity activity);
+    void inject(SplashCardView view);
 
     // sync
     void inject(RankingsPollingWorker worker);
@@ -120,7 +123,6 @@ public interface AppComponent {
     void inject(SearchableFrameLayout view);
     void inject(SearchableRefreshLayout view);
     void inject(SmashRosterSyncPreferenceView view);
-    void inject(SplashCardView view);
     void inject(TestNotificationView view);
     void inject(ThemePreferenceView view);
     void inject(TintedImageView view);

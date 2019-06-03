@@ -86,7 +86,7 @@
         <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
-            android:name=".activities.SplashActivity"
+            android:name=".features.splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

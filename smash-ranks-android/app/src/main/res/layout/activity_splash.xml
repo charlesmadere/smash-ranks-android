@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <com.garpr.android.views.SplashCardView
+    <com.garpr.android.features.splash.SplashCardView
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_double"
         android:layout_width="@dimen/splash_card_width"
@@ -44,7 +44,7 @@
 
         </LinearLayout>
 
-    </com.garpr.android.views.SplashCardView>
+    </com.garpr.android.features.splash.SplashCardView>
 
     <com.garpr.android.views.BottomWindowInsetsView
         android:id="@+id/bottomWindowInsetsView"

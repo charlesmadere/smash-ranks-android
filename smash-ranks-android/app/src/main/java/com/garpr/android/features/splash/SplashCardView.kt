@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.splash
 
 import android.content.Context
 import android.content.DialogInterface
@@ -16,6 +16,7 @@ import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.views.LifecycleCardView
 import kotlinx.android.synthetic.main.activity_splash.view.*
 import javax.inject.Inject
 
