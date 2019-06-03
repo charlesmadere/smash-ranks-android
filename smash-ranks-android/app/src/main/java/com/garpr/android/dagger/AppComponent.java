@@ -18,8 +18,9 @@ import com.garpr.android.features.player.PlayerProfileItemView;
 import com.garpr.android.features.players.PlayerItemView;
 import com.garpr.android.features.players.PlayersActivity;
 import com.garpr.android.features.players.PlayersLayout;
-import com.garpr.android.features.ranking.RankingsActivity;
-import com.garpr.android.features.ranking.RankingsLayout;
+import com.garpr.android.features.rankings.RankingItemView;
+import com.garpr.android.features.rankings.RankingsActivity;
+import com.garpr.android.features.rankings.RankingsLayout;
 import com.garpr.android.features.setIdentity.SetIdentityActivity;
 import com.garpr.android.features.setRegion.SetRegionActivity;
 import com.garpr.android.features.splash.SplashActivity;
@@ -38,7 +39,6 @@ import com.garpr.android.views.IdentityFrameLayout;
 import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
 import com.garpr.android.views.PaletteSimpleDraweeView;
-import com.garpr.android.views.RankingItemView;
 import com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView;
 import com.garpr.android.views.RegionPreferenceView;
 import com.garpr.android.views.RingtonePreferenceView;
@@ -91,7 +91,9 @@ public interface AppComponent {
     void inject(PlayersActivity activity);
 
     // features/rankings
+    void inject(RankingItemView view);
     void inject(RankingsActivity activity);
+    void inject(RankingsLayout view);
 
     // features/setIdentity
     void inject(SetIdentityActivity activity);
@@ -128,8 +130,6 @@ public interface AppComponent {
     void inject(PaletteSimpleDraweeView view);
     void inject(PlayersLayout view);
     void inject(RankingsPollingPollFrequencyPreferenceView view);
-    void inject(RankingItemView view);
-    void inject(RankingsLayout view);
     void inject(RegionPreferenceView view);
     void inject(RingtonePreferenceView view);
     void inject(SearchableFrameLayout view);

@@ -1,4 +1,4 @@
-package com.garpr.android.features.ranking
+package com.garpr.android.features.rankings
 
 import android.content.Context
 import android.content.Intent

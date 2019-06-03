@@ -1,4 +1,4 @@
-package com.garpr.android.features.ranking
+package com.garpr.android.features.rankings
 
 import android.content.Context
 import android.text.TextUtils
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.adapters.RankingsAdapter
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.activity

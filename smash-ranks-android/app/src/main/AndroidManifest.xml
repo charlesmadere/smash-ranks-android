@@ -66,7 +66,7 @@
 
         <activity
             android:label="@string/rankings"
-            android:name=".features.ranking.RankingsActivity" />
+            android:name=".features.rankings.RankingsActivity" />
 
         <activity
             android:label="@string/set_identity"

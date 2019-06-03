@@ -6,7 +6,7 @@ import android.net.Uri
 import com.garpr.android.activities.HomeActivity
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
-import com.garpr.android.features.ranking.RankingsActivity
+import com.garpr.android.features.rankings.RankingsActivity
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsActivity
 import com.garpr.android.data.models.Endpoint

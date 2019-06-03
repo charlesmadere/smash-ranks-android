@@ -15,7 +15,7 @@ import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
-import com.garpr.android.features.ranking.RankingsLayout
+import com.garpr.android.features.rankings.RankingsLayout
 import com.garpr.android.managers.IdentityManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.HomeTab

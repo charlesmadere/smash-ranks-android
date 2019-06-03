@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.rankings
 
 import android.content.Context
 import android.util.AttributeSet
@@ -16,6 +16,7 @@ import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.PreviousRankUtils
 import com.garpr.android.misc.Timber
+import com.garpr.android.views.IdentityConstraintLayout
 import kotlinx.android.synthetic.main.item_ranking.view.*
 import java.text.NumberFormat
 import javax.inject.Inject

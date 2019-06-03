@@ -6,7 +6,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout
-import com.garpr.android.features.ranking.RankingsLayout
+import com.garpr.android.features.rankings.RankingsLayout
 import com.garpr.android.features.tournaments.TournamentsLayout
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.HomeTab
