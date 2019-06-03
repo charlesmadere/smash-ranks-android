@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.WinsLossesView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.features.headToHead.WinsLossesView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:clipChildren="false"
     android:layout_height="@dimen/wins_losses_height"
     android:layout_width="match_parent">
 
-    <com.garpr.android.views.WinsLossesGraphView
+    <com.garpr.android.features.headToHead.WinsLossesGraphView
         android:id="@+id/winsLossesGraph"
         android:layout_height="@dimen/wins_losses_graph_size"
         android:layout_width="@dimen/wins_losses_graph_size"
@@ -47,4 +47,4 @@
         tools:text="Shroomed"
         style="@style/WinsLossesPlayerName" />
 
-</com.garpr.android.views.WinsLossesView>
+</com.garpr.android.features.headToHead.WinsLossesView>

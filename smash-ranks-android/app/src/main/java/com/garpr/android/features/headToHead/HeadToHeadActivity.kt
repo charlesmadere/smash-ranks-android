@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.headToHead
 
 import android.content.Context
 import android.content.Intent
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.adapters.HeadToHeadAdapter
+import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullTournament
@@ -33,6 +33,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private var list: List<Any>? = null
 
     private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
+    private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -120,8 +121,6 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
     }
-
-    private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     private fun showData() {
         list = ListUtils.createHeadToHeadList(this, headToHead)

@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.headToHead
 
 import android.content.Context
 import android.graphics.Canvas
@@ -25,7 +25,7 @@ class WinsLossesGraphView @JvmOverloads constructor(
     private var winsLosses: WinsLosses? = null
 
     companion object {
-        private const val OVERSHOOT_TENSION: Float = 3.8f
+        private val INTERPOLATOR = OvershootInterpolator(3.8f)
     }
 
     private fun calculateRects() {
@@ -87,7 +87,7 @@ class WinsLossesGraphView @JvmOverloads constructor(
                 .scaleX(1f)
                 .scaleY(1f)
                 .setDuration(resources.getLong(R.integer.win_losses_animation))
-                .setInterpolator(OvershootInterpolator(OVERSHOOT_TENSION))
+                .setInterpolator(INTERPOLATOR)
                 .start()
     }
 

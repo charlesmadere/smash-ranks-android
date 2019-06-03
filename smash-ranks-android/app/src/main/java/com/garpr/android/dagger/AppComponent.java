@@ -3,7 +3,6 @@ package com.garpr.android.dagger;
 import com.garpr.android.App;
 import com.garpr.android.activities.BaseActivity;
 import com.garpr.android.activities.DeepLinkActivity;
-import com.garpr.android.activities.HeadToHeadActivity;
 import com.garpr.android.activities.HomeActivity;
 import com.garpr.android.activities.PlayerActivity;
 import com.garpr.android.activities.PlayersActivity;
@@ -12,14 +11,15 @@ import com.garpr.android.activities.SetRegionActivity;
 import com.garpr.android.activities.SettingsActivity;
 import com.garpr.android.activities.SplashActivity;
 import com.garpr.android.dialogs.AddOrRemovePlayerFromFavoritesDialogFragment;
-import com.garpr.android.dialogs.HeadToHeadDialogFragment;
 import com.garpr.android.dialogs.ShareRegionDialogFragment;
 import com.garpr.android.dialogs.TournamentMatchDialogFragment;
-import com.garpr.android.features.headToHead.TournamentDividerView;
+import com.garpr.android.features.headToHead.HeadToHeadActivity;
+import com.garpr.android.features.headToHead.HeadToHeadDialogFragment;
 import com.garpr.android.features.ranking.RankingsActivity;
 import com.garpr.android.features.ranking.RankingsLayout;
 import com.garpr.android.features.tournament.TournamentActivity;
 import com.garpr.android.features.tournament.TournamentInfoItemView;
+import com.garpr.android.features.tournaments.TournamentDividerView;
 import com.garpr.android.features.tournaments.TournamentsActivity;
 import com.garpr.android.sync.rankings.RankingsPollingWorker;
 import com.garpr.android.sync.roster.SmashRosterSyncWorker;
@@ -63,7 +63,6 @@ public interface AppComponent {
     // activities
     void inject(BaseActivity activity);
     void inject(DeepLinkActivity activity);
-    void inject(HeadToHeadActivity activity);
     void inject(HomeActivity activity);
     void inject(PlayerActivity activity);
     void inject(PlayersActivity activity);
@@ -74,9 +73,12 @@ public interface AppComponent {
 
     // dialogs
     void inject(AddOrRemovePlayerFromFavoritesDialogFragment dialog);
-    void inject(HeadToHeadDialogFragment dialog);
     void inject(ShareRegionDialogFragment dialog);
     void inject(TournamentMatchDialogFragment dialog);
+
+    // features/headToHead
+    void inject(HeadToHeadActivity activity);
+    void inject(HeadToHeadDialogFragment dialog);
 
     // features/rankings
     void inject(RankingsActivity activity);
@@ -85,6 +87,7 @@ public interface AppComponent {
     void inject(TournamentActivity activity);
 
     // features/tournaments
+    void inject(TournamentDividerView view);
     void inject(TournamentsActivity activity);
 
     // sync
@@ -119,7 +122,6 @@ public interface AppComponent {
     void inject(TestNotificationView view);
     void inject(ThemePreferenceView view);
     void inject(TintedImageView view);
-    void inject(TournamentDividerView view);
     void inject(TournamentInfoItemView view);
     void inject(TournamentItemView view);
     void inject(TournamentsLayout view);

@@ -1,4 +1,4 @@
-package com.garpr.android.features.headToHead
+package com.garpr.android.features.tournaments
 
 import android.content.Context
 import android.util.AttributeSet

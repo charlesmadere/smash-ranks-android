@@ -1,6 +1,7 @@
-package com.garpr.android.adapters
+package com.garpr.android.features.headToHead
 
 import com.garpr.android.R
+import com.garpr.android.adapters.BaseMultiAdapter
 import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.WinsLosses

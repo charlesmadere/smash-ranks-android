@@ -39,7 +39,7 @@
 
         <activity
             android:label="@string/head_to_head"
-            android:name=".activities.HeadToHeadActivity" />
+            android:name=".features.headToHead.HeadToHeadActivity" />
 
         <activity
             android:label="@string/gar_pr"
