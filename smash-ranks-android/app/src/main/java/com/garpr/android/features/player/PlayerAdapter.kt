@@ -1,6 +1,7 @@
-package com.garpr.android.adapters
+package com.garpr.android.features.player
 
 import com.garpr.android.R
+import com.garpr.android.adapters.BaseMultiAdapter
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.Match

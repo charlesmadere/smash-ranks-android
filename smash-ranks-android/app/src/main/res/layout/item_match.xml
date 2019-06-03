@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.MatchItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.features.player.MatchItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/ListItem.WithBackground">
 
@@ -15,4 +15,4 @@
         android:textSize="@dimen/text_size_large"
         tools:text="Armada" />
 
-</com.garpr.android.views.MatchItemView>
+</com.garpr.android.features.player.MatchItemView>

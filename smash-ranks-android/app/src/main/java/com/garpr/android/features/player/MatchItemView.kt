@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.player
 
 import android.content.Context
 import android.util.AttributeSet
@@ -15,6 +15,7 @@ import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.managers.RegionManager
+import com.garpr.android.views.IdentityFrameLayout
 import kotlinx.android.synthetic.main.item_match.view.*
 import javax.inject.Inject
 

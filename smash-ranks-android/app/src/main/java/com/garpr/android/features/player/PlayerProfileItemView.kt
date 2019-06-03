@@ -1,4 +1,4 @@
-package com.garpr.android.views
+package com.garpr.android.features.player
 
 import android.content.Context
 import android.util.AttributeSet
@@ -22,6 +22,7 @@ import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.sync.roster.SmashRosterSyncManager
+import com.garpr.android.views.LifecycleLinearLayout
 import kotlinx.android.synthetic.main.item_player_profile.view.*
 import javax.inject.Inject
 

@@ -15,6 +15,8 @@ import com.garpr.android.features.favoritePlayers.FavoritePlayerItemView;
 import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout;
 import com.garpr.android.features.headToHead.HeadToHeadActivity;
 import com.garpr.android.features.headToHead.HeadToHeadDialogFragment;
+import com.garpr.android.features.player.MatchItemView;
+import com.garpr.android.features.player.PlayerProfileItemView;
 import com.garpr.android.features.players.PlayerItemView;
 import com.garpr.android.features.players.PlayersActivity;
 import com.garpr.android.features.players.PlayersLayout;
@@ -33,9 +35,7 @@ import com.garpr.android.views.IdentityConstraintLayout;
 import com.garpr.android.views.IdentityFrameLayout;
 import com.garpr.android.views.IdentityPreferenceView;
 import com.garpr.android.views.LastPollPreferenceView;
-import com.garpr.android.views.MatchItemView;
 import com.garpr.android.views.PaletteSimpleDraweeView;
-import com.garpr.android.views.PlayerProfileItemView;
 import com.garpr.android.views.RankingItemView;
 import com.garpr.android.views.RankingsPollingPollFrequencyPreferenceView;
 import com.garpr.android.views.RegionPreferenceView;
@@ -84,6 +84,10 @@ public interface AppComponent {
     void inject(HeadToHeadActivity activity);
     void inject(HeadToHeadDialogFragment dialog);
 
+    // feature/player
+    void inject(MatchItemView view);
+    void inject(PlayerProfileItemView view);
+
     // features/players
     void inject(PlayerItemView view);
     void inject(PlayersActivity activity);
@@ -115,9 +119,7 @@ public interface AppComponent {
     void inject(IdentityFrameLayout view);
     void inject(IdentityPreferenceView view);
     void inject(LastPollPreferenceView view);
-    void inject(MatchItemView view);
     void inject(PaletteSimpleDraweeView view);
-    void inject(PlayerProfileItemView view);
     void inject(PlayersLayout view);
     void inject(RankingsPollingPollFrequencyPreferenceView view);
     void inject(RankingItemView view);
