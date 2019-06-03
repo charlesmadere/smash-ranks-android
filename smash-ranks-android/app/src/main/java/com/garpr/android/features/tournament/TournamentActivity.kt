@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.FullTournament
@@ -22,6 +21,7 @@ import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.smoothScrollToTop
 import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.ListUtils

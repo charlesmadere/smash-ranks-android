@@ -1,7 +1,7 @@
 package com.garpr.android.dagger;
 
 import com.garpr.android.App;
-import com.garpr.android.activities.BaseActivity;
+import com.garpr.android.features.base.BaseActivity;
 import com.garpr.android.features.deepLink.DeepLinkActivity;
 import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.features.favoritePlayers.FavoritePlayerItemView;
@@ -60,7 +60,7 @@ public interface AppComponent {
 
     void inject(App app);
 
-    // activities
+    // features/base
     void inject(BaseActivity activity);
 
     // features/deepLink

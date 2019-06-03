@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
-import com.garpr.android.activities.BaseActivity
+import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong

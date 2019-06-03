@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.garpr.android.R
-import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
+import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.managers.RegionManager
 import kotlinx.android.synthetic.main.activity_tournaments.*
 import javax.inject.Inject

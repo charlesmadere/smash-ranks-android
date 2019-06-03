@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.R
 import com.garpr.android.data.models.RankingCriteria
-import com.garpr.android.dialogs.BaseBottomSheetDialogFragment
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
+import com.garpr.android.features.base.BaseBottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_activity_requirements.*
 import java.text.NumberFormat
 

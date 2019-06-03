@@ -2,9 +2,9 @@ package com.garpr.android.features.tournaments
 
 import android.app.Application
 import com.garpr.android.BaseTest
-import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
+import com.garpr.android.features.base.BaseActivity
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

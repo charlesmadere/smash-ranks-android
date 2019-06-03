@@ -7,7 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.activities.BaseActivity
+import com.garpr.android.features.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_log_viewer.*
 
 class LogViewerActivity : BaseActivity(), LogViewerToolbar.Listeners,

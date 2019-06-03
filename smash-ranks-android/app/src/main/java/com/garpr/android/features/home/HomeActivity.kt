@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
-import com.garpr.android.activities.BaseActivity
 import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.activityRequirements.ActivityRequirementsDialogFragment
+import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsLayout

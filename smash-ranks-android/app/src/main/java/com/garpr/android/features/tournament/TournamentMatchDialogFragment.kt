@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.R
 import com.garpr.android.data.models.FullTournament
-import com.garpr.android.dialogs.BaseBottomSheetDialogFragment
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
+import com.garpr.android.features.base.BaseBottomSheetDialogFragment
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.managers.RegionManager

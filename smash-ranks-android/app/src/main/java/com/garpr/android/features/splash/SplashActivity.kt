@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.garpr.android.R
-import com.garpr.android.activities.BaseActivity
-import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.managers.SplashScreenManager
 import javax.inject.Inject
 

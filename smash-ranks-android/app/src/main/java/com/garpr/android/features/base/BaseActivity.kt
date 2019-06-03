@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.base
 
 import android.content.Intent
 import android.os.Bundle
