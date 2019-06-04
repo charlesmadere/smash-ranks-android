@@ -9,7 +9,7 @@ import com.garpr.android.R
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
-import com.garpr.android.features.base.BaseBottomSheetDialogFragment
+import com.garpr.android.features.common.fragments.dialogs.BaseBottomSheetDialogFragment
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.FavoritePlayersRepository
 import kotlinx.android.synthetic.main.dialog_add_or_remove_player_from_favorites.*

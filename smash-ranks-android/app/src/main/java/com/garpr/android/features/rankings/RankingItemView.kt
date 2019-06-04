@@ -11,8 +11,8 @@ import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.extensions.setTintedImageResource
 import com.garpr.android.extensions.truncate
-import com.garpr.android.features.base.BaseAdapterView
-import com.garpr.android.features.common.IdentityConstraintLayout
+import com.garpr.android.features.common.adapters.BaseAdapterView
+import com.garpr.android.features.common.views.IdentityConstraintLayout
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.PreviousRankUtils
 import com.garpr.android.misc.Timber

@@ -11,7 +11,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.features.common.SearchableRefreshLayout
+import com.garpr.android.features.common.views.SearchableRefreshLayout
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils

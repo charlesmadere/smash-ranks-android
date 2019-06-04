@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.features.base.BaseBottomSheetDialogFragment
+import com.garpr.android.features.common.fragments.dialogs.BaseBottomSheetDialogFragment
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.RegionRepository

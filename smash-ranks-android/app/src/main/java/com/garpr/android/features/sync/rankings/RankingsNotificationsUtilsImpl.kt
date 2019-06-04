@@ -19,14 +19,15 @@ class RankingsNotificationsUtilsImpl(
         private const val TAG = "RankingsNotificationsUtilsImpl"
     }
 
-    override fun getNotificationInfo(pollStatus: PollStatus?, rankingsBundle: RankingsBundle?) =
-        if (pollStatus == null || pollStatus.oldRankingsId.isNullOrBlank() || rankingsBundle == null) {
+    override fun getNotificationInfo(pollStatus: PollStatus?, rankingsBundle: RankingsBundle?): NotificationInfo {
+        return if (pollStatus == null || pollStatus.oldRankingsId.isNullOrBlank() || rankingsBundle == null) {
             NotificationInfo.CANCEL
         } else if (!TextUtils.equals(rankingsBundle.id, pollStatus.oldRankingsId)) {
             NotificationInfo.SHOW
         } else {
             NotificationInfo.NO_CHANGE
         }
+    }
 
     override fun getPollStatus(): PollStatus {
         if (rankingsPollingPreferenceStore.enabled.get() != true) {
@@ -43,7 +44,7 @@ class RankingsNotificationsUtilsImpl(
 
         if (!deviceUtils.hasNetworkConnection) {
             timber.d(TAG, "will retry sync later, the device does not have a network connection")
-            return PollStatus(oldRankingsId = oldRankingsId, proceed = false, retry = true)
+            return PollStatus(proceed = false, retry = true, oldRankingsId = oldRankingsId)
         }
 
         val lastPoll = rankingsPollingPreferenceStore.lastPoll.get()
@@ -51,7 +52,7 @@ class RankingsNotificationsUtilsImpl(
         rankingsPollingPreferenceStore.lastPoll.set(currentPoll)
         timber.d(TAG, "will sync, last poll: $lastPoll, current poll: $currentPoll")
 
-        return PollStatus(oldRankingsId = oldRankingsId, proceed = true, retry = true)
+        return PollStatus(proceed = true, retry = true, oldRankingsId = oldRankingsId)
     }
 
 }

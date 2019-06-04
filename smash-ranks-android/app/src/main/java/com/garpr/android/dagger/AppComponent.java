@@ -1,13 +1,13 @@
 package com.garpr.android.dagger;
 
 import com.garpr.android.App;
-import com.garpr.android.features.base.BaseActivity;
-import com.garpr.android.features.common.IdentityConstraintLayout;
-import com.garpr.android.features.common.IdentityFrameLayout;
-import com.garpr.android.features.common.PaletteSimpleDraweeView;
-import com.garpr.android.features.common.SearchableFrameLayout;
-import com.garpr.android.features.common.SearchableRefreshLayout;
-import com.garpr.android.features.common.TintedImageView;
+import com.garpr.android.features.common.activities.BaseActivity;
+import com.garpr.android.features.common.views.IdentityConstraintLayout;
+import com.garpr.android.features.common.views.IdentityFrameLayout;
+import com.garpr.android.features.common.views.PaletteSimpleDraweeView;
+import com.garpr.android.features.common.views.SearchableFrameLayout;
+import com.garpr.android.features.common.views.SearchableRefreshLayout;
+import com.garpr.android.features.common.views.TintedImageView;
 import com.garpr.android.features.deepLink.DeepLinkActivity;
 import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment;
 import com.garpr.android.features.favoritePlayers.FavoritePlayerItemView;

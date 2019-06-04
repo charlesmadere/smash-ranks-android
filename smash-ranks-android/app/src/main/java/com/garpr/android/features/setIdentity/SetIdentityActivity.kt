@@ -13,8 +13,8 @@ import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.features.base.BaseActivity
-import com.garpr.android.features.common.SearchToolbar
+import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.common.views.SearchToolbar
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable

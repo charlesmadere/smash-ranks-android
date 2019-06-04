@@ -4,7 +4,7 @@ import android.app.Application
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.activities.BaseActivity
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

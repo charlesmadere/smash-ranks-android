@@ -10,8 +10,8 @@ import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.features.base.BaseActivity
-import com.garpr.android.features.common.SearchToolbar
+import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.common.views.SearchToolbar
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsLayout

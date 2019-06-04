@@ -10,8 +10,8 @@ import com.garpr.android.data.models.FullTournament
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.requireFragmentActivity
-import com.garpr.android.features.base.BaseAdapterView
-import com.garpr.android.features.common.IdentityConstraintLayout
+import com.garpr.android.features.common.adapters.BaseAdapterView
+import com.garpr.android.features.common.views.IdentityConstraintLayout
 import kotlinx.android.synthetic.main.item_tournament_match.view.*
 
 class TournamentMatchItemView @JvmOverloads constructor(

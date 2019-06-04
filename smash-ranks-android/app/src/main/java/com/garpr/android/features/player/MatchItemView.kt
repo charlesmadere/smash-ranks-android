@@ -12,8 +12,8 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.features.base.BaseAdapterView
-import com.garpr.android.features.common.IdentityFrameLayout
+import com.garpr.android.features.common.adapters.BaseAdapterView
+import com.garpr.android.features.common.views.IdentityFrameLayout
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_match.view.*

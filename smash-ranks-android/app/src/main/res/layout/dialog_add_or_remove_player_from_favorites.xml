@@ -8,7 +8,7 @@
         tools:text="Add Behemoth87 to favorites?"
         style="@style/BottomSheetDialogTitle" />
 
-    <com.garpr.android.features.common.TintedTextView
+    <com.garpr.android.features.common.views.TintedTextView
         android:id="@+id/dialogPositiveText"
         tools:drawableStart="@drawable/ic_add_circle_white_24dp"
         tools:text="@string/yes_add"

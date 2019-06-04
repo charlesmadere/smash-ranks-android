@@ -9,7 +9,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.features.common.SearchToolbar
+import com.garpr.android.features.common.views.SearchToolbar
 import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository

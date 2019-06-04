@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.features.common.SimplePreferenceView
+import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.features.sync.roster.SmashRosterSyncManager
 import javax.inject.Inject
 

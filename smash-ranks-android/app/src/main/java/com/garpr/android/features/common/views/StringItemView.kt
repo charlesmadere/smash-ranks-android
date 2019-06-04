@@ -1,9 +1,9 @@
-package com.garpr.android.features.common
+package com.garpr.android.features.common.views
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-import com.garpr.android.features.base.BaseAdapterView
+import com.garpr.android.features.common.adapters.BaseAdapterView
 
 class StringItemView @JvmOverloads constructor(
         context: Context,

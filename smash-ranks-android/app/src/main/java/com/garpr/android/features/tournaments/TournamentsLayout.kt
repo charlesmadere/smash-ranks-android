@@ -13,7 +13,7 @@ import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.features.common.SearchableRefreshLayout
+import com.garpr.android.features.common.views.SearchableRefreshLayout
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils

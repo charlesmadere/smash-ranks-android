@@ -4,7 +4,7 @@ import androidx.annotation.LayoutRes
 import com.garpr.android.R
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.RankingsBundle
-import com.garpr.android.features.base.BaseAdapter
+import com.garpr.android.features.common.adapters.BaseAdapter
 
 class RankingsAdapter : BaseAdapter<RankedPlayer>() {
 

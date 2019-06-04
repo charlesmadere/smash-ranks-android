@@ -13,12 +13,12 @@
             android:visibility="gone"
             style="@style/RecyclerView" />
 
-        <com.garpr.android.features.common.NoContentLinearLayout
+        <com.garpr.android.features.common.views.NoContentLinearLayout
             android:id="@+id/empty"
             app:titleText="@string/no_rankings"
             style="@style/NoContentLinearLayout.Empty" />
 
-        <com.garpr.android.features.common.ErrorContentLinearLayout
+        <com.garpr.android.features.common.views.ErrorContentLinearLayout
             android:id="@+id/error"
             app:titleText="@string/error_loading_rankings"
             style="@style/NoContentLinearLayout.Error" />

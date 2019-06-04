@@ -1,4 +1,4 @@
-package com.garpr.android.features.base
+package com.garpr.android.features.common.fragments.dialogs
 
 import androidx.annotation.StyleRes
 import com.garpr.android.R

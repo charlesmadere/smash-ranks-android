@@ -3,7 +3,7 @@ package com.garpr.android.features.tournaments
 import androidx.annotation.LayoutRes
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsTournament
-import com.garpr.android.features.base.BaseAdapter
+import com.garpr.android.features.common.adapters.BaseAdapter
 
 class TournamentsAdapter : BaseAdapter<AbsTournament>() {
 

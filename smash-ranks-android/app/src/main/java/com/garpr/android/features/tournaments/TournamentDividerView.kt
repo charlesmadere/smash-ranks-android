@@ -7,7 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
-import com.garpr.android.features.base.BaseAdapterView
+import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.divider_tournament.view.*

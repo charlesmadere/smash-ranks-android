@@ -14,7 +14,7 @@ import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.features.common.SearchableRefreshLayout
+import com.garpr.android.features.common.views.SearchableRefreshLayout
 import com.garpr.android.features.notifications.NotificationsManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable

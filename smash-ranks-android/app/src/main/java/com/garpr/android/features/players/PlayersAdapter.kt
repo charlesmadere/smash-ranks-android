@@ -5,7 +5,7 @@ import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.PlayersBundle
-import com.garpr.android.features.base.BaseAdapter
+import com.garpr.android.features.common.adapters.BaseAdapter
 
 class PlayersAdapter : BaseAdapter<AbsPlayer>() {
 

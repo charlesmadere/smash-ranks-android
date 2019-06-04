@@ -1,4 +1,4 @@
-package com.garpr.android.features.base
+package com.garpr.android.features.common.adapters
 
 interface BaseAdapterView<in T> {
 

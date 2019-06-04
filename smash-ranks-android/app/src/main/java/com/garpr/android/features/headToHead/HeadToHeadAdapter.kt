@@ -4,7 +4,7 @@ import com.garpr.android.R
 import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.WinsLosses
-import com.garpr.android.features.base.BaseMultiAdapter
+import com.garpr.android.features.common.adapters.BaseMultiAdapter
 
 class HeadToHeadAdapter : BaseMultiAdapter(LAYOUT_KEY_MAP) {
 

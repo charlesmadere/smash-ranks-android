@@ -17,8 +17,8 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.features.base.BaseActivity
-import com.garpr.android.features.common.SearchToolbar
+import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.common.views.SearchToolbar
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.ListUtils

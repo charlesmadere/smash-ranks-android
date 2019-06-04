@@ -7,7 +7,7 @@ import com.garpr.android.R
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_rankings.*
 import javax.inject.Inject

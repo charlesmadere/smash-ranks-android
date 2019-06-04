@@ -12,8 +12,8 @@ import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.features.base.BaseAdapterView
-import com.garpr.android.features.common.LifecycleLinearLayout
+import com.garpr.android.features.common.adapters.BaseAdapterView
+import com.garpr.android.features.common.views.LifecycleLinearLayout
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.sync.roster.SmashRosterSyncManager
 import com.garpr.android.misc.ColorListener

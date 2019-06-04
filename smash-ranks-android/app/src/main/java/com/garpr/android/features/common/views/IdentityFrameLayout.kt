@@ -1,4 +1,4 @@
-package com.garpr.android.features.common
+package com.garpr.android.features.common.views
 
 import android.content.Context
 import android.graphics.Typeface

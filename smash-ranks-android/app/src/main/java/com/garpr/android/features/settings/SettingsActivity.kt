@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.garpr.android.R
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.logViewer.LogViewerActivity
 import com.garpr.android.features.sync.rankings.RankingsPollingManager
 import com.garpr.android.misc.Constants

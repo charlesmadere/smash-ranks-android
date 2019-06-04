@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.data.models.Endpoint
-import com.garpr.android.features.base.BaseAdapterView
+import com.garpr.android.features.common.adapters.BaseAdapterView
 import kotlinx.android.synthetic.main.divider_endpoint.view.*
 
 class EndpointDividerView @JvmOverloads constructor(

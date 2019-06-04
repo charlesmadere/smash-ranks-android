@@ -1,4 +1,4 @@
-package com.garpr.android.features.common
+package com.garpr.android.features.common.views
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -21,7 +21,7 @@ import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
-import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.MiscUtils

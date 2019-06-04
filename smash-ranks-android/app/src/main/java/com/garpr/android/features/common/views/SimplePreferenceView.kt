@@ -1,4 +1,4 @@
-package com.garpr.android.features.common
+package com.garpr.android.features.common.views
 
 import android.annotation.SuppressLint
 import android.content.Context

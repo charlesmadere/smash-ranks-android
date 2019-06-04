@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.features.common.SimplePreferenceView
+import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.features.sync.rankings.RankingsPollingManager
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore

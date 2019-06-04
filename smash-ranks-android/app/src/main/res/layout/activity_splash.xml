@@ -21,21 +21,21 @@
             android:orientation="vertical"
             android:showDividers="middle">
 
-            <com.garpr.android.features.common.SimplePreferenceView
+            <com.garpr.android.features.common.views.SimplePreferenceView
                 android:id="@+id/customizeRegion"
                 android:src="@drawable/ic_chevron_right_white_24dp"
                 app:descriptionText="@string/customize_region_description"
                 app:titleText="@string/customize_region"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.features.common.SimplePreferenceView
+            <com.garpr.android.features.common.views.SimplePreferenceView
                 android:id="@+id/customizeIdentity"
                 android:src="@drawable/ic_chevron_right_white_24dp"
                 app:descriptionText="@string/customize_identity_description"
                 app:titleText="@string/customize_identity"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.features.common.SimplePreferenceView
+            <com.garpr.android.features.common.views.SimplePreferenceView
                 android:id="@+id/startUsingTheApp"
                 android:src="@drawable/ic_controller_white_24dp"
                 app:descriptionText="@string/start_using_the_app_description"

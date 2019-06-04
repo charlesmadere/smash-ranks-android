@@ -11,7 +11,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireViewByIdCompat
-import com.garpr.android.features.common.LifecycleConstraintLayout
+import com.garpr.android.features.common.views.LifecycleConstraintLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.preferences.Preference
 import kotlinx.android.synthetic.main.view_checkbox_preference.view.*

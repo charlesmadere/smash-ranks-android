@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.extensions.getLong
-import com.garpr.android.features.base.BaseAdapterView
+import com.garpr.android.features.common.adapters.BaseAdapterView
 
 class WinsLossesGraphView @JvmOverloads constructor(
         context: Context,
@@ -23,6 +23,7 @@ class WinsLossesGraphView @JvmOverloads constructor(
     private val opponentPalette = GraphPalette(R.color.lose_background, R.color.lose)
     private val rect = RectF()
     private var winsLosses: WinsLosses? = null
+
 
     companion object {
         private val INTERPOLATOR = OvershootInterpolator(3.8f)

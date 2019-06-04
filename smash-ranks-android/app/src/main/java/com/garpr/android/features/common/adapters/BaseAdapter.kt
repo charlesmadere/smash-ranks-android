@@ -1,4 +1,4 @@
-package com.garpr.android.features.base
+package com.garpr.android.features.common.adapters
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -30,8 +30,8 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapterViewHolder>() {
         val item = items[position]
 
         @Suppress("UNCHECKED_CAST")
-        val view = holder.itemView as? BaseAdapterView<T> ?: throw ClassCastException(
-                "itemView is an unknown type: ${holder.itemView}")
+        val view = holder.itemView as? BaseAdapterView<T>?
+                ?: throw ClassCastException("itemView is an unknown type: ${holder.itemView}")
 
         view.setContent(item)
     }

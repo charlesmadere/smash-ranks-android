@@ -3,7 +3,7 @@ package com.garpr.android.features.setRegion
 import com.garpr.android.R
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.base.BaseMultiAdapter
+import com.garpr.android.features.common.adapters.BaseMultiAdapter
 
 class RegionsSelectionAdapter : BaseMultiAdapter(LAYOUT_KEY_MAP) {
 

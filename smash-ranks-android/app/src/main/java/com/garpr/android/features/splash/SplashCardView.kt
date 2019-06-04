@@ -9,7 +9,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.getLong
-import com.garpr.android.features.common.LifecycleCardView
+import com.garpr.android.features.common.views.LifecycleCardView
 import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.misc.AnimationUtils

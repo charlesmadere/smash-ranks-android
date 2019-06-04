@@ -8,7 +8,7 @@ import com.garpr.android.R
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
-import com.garpr.android.features.base.BaseBottomSheetDialogFragment
+import com.garpr.android.features.common.fragments.dialogs.BaseBottomSheetDialogFragment
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.repositories.RegionRepository

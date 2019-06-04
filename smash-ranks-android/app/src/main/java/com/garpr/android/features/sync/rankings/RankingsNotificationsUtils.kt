@@ -12,10 +12,10 @@ interface RankingsNotificationsUtils {
         CANCEL, NO_CHANGE, SHOW
     }
 
-    data class PollStatus(
-            val oldRankingsId: String? = null,
+    class PollStatus(
             val proceed: Boolean,
-            val retry: Boolean
+            val retry: Boolean,
+            val oldRankingsId: String? = null
     )
 
 }

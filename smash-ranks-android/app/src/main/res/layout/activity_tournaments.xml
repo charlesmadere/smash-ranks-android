@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.features.common.GarToolbar
+    <com.garpr.android.features.common.views.GarToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:titleText="@string/tournaments"

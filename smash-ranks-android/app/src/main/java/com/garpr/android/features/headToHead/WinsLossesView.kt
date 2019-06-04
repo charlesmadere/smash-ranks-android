@@ -7,7 +7,7 @@ import com.garpr.android.R
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.extensions.getLong
-import com.garpr.android.features.base.BaseAdapterView
+import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.misc.AnimationUtils
 import kotlinx.android.synthetic.main.item_wins_losses.view.*
 import java.text.NumberFormat

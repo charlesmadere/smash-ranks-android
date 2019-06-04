@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.features.base.BaseActivity
+import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.home.HomeActivity
 import javax.inject.Inject
 

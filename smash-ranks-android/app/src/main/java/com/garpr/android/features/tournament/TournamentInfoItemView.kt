@@ -12,7 +12,7 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.features.base.BaseAdapterView
+import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_tournament_info.view.*

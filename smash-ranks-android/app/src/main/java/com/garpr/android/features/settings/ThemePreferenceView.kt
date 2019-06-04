@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.features.common.SimplePreferenceView
+import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.repositories.NightModeRepository
 import javax.inject.Inject
