@@ -19,7 +19,7 @@ import com.garpr.android.features.sync.roster.SmashRosterSyncManager
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityManager
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.item_player_profile.view.*
@@ -29,14 +29,14 @@ class PlayerProfileItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : LifecycleLinearLayout(context, attrs), BaseAdapterView<FullPlayer>, ColorListener,
-        FavoritePlayersManager.OnFavoritePlayersChangeListener,
+        FavoritePlayersRepository.OnFavoritePlayersChangeListener,
         IdentityManager.OnIdentityChangeListener, Refreshable,
         SmashRosterSyncManager.OnSyncListeners {
 
     private var presentation: PlayerProfileManager.Presentation? = null
 
     @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
     protected lateinit var identityManager: IdentityManager
@@ -83,7 +83,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
             return
         }
 
-        favoritePlayersManager.addListener(this)
+        favoritePlayersRepository.addListener(this)
         identityManager.addListener(this)
         smashRosterSyncManager.addListener(this)
     }
@@ -91,12 +91,12 @@ class PlayerProfileItemView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        favoritePlayersManager.removeListener(this)
+        favoritePlayersRepository.removeListener(this)
         identityManager.removeListener(this)
         smashRosterSyncManager.removeListener(this)
     }
 
-    override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
         if (isAlive) {
             refresh()
         }
@@ -109,7 +109,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
             return
         }
 
-        favoritePlayersManager.addListener(this)
+        favoritePlayersRepository.addListener(this)
         identityManager.addListener(this)
         smashRosterSyncManager.addListener(this)
 
@@ -133,10 +133,10 @@ class PlayerProfileItemView @JvmOverloads constructor(
 
         favoriteOrUnfavorite.setOnClickListener {
             fullPlayer?.let { p ->
-                if (p in favoritePlayersManager) {
-                    favoritePlayersManager.removePlayer(p)
+                if (p in favoritePlayersRepository) {
+                    favoritePlayersRepository.removePlayer(p)
                 } else {
-                    favoritePlayersManager.addPlayer(p, regionManager.getRegion(context))
+                    favoritePlayersRepository.addPlayer(p, regionManager.getRegion(context))
                 }
             }
         }

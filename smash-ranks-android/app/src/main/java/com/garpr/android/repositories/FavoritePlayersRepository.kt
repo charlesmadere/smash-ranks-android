@@ -5,10 +5,10 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 
-interface FavoritePlayersManager {
+interface FavoritePlayersRepository {
 
     interface OnFavoritePlayersChangeListener {
-        fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager)
+        fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository)
     }
 
     val absPlayers: List<AbsPlayer>?

@@ -14,7 +14,7 @@ import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.features.common.IdentityFrameLayout
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.item_match.view.*
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class MatchItemView @JvmOverloads constructor(
         View.OnLongClickListener {
 
     @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -95,7 +95,7 @@ class MatchItemView @JvmOverloads constructor(
     }
 
     override fun onLongClick(v: View): Boolean {
-        return favoritePlayersManager.showAddOrRemovePlayerDialog(fragmentManager, match?.opponent,
+        return favoritePlayersRepository.showAddOrRemovePlayerDialog(fragmentManager, match?.opponent,
                 regionManager.getRegion(context))
     }
 

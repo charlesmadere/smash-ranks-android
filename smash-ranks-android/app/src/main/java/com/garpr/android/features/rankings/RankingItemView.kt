@@ -16,7 +16,7 @@ import com.garpr.android.features.common.IdentityConstraintLayout
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.PreviousRankUtils
 import com.garpr.android.misc.Timber
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.item_ranking.view.*
 import java.text.NumberFormat
@@ -31,7 +31,7 @@ class RankingItemView @JvmOverloads constructor(
     private val numberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
     protected lateinit var previousRankUtils: PreviousRankUtils
@@ -77,7 +77,7 @@ class RankingItemView @JvmOverloads constructor(
     }
 
     override fun onLongClick(v: View): Boolean {
-        return favoritePlayersManager.showAddOrRemovePlayerDialog(fragmentManager, identity,
+        return favoritePlayersRepository.showAddOrRemovePlayerDialog(fragmentManager, identity,
                 regionManager.getRegion(context))
     }
 

@@ -10,12 +10,12 @@ import com.garpr.android.extensions.truncate
 import com.garpr.android.features.player.PlayerProfileManager.Presentation
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.SmashRosterStorage
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityManager
 
 class PlayerProfileManagerImpl(
         private val application: Application,
-        private val favoritePlayersManager: FavoritePlayersManager,
+        private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityManager: IdentityManager,
         private val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper,
         private val smashRosterStorage: SmashRosterStorage
@@ -23,7 +23,7 @@ class PlayerProfileManagerImpl(
 
     override fun getPresentation(player: FullPlayer, region: AbsRegion): Presentation {
         var presentation = Presentation(
-                isAddToFavoritesVisible = !favoritePlayersManager.contains(player),
+                isAddToFavoritesVisible = player !in favoritePlayersRepository,
                 isViewYourselfVsThisOpponentVisible = identityManager.hasIdentity &&
                         !identityManager.isPlayer(player)
         )

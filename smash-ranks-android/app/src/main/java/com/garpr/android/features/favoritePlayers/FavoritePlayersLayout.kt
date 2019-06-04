@@ -15,20 +15,20 @@ import com.garpr.android.features.common.SearchableFrameLayout
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import kotlinx.android.synthetic.main.layout_favorite_players.view.*
 import javax.inject.Inject
 
 class FavoritePlayersLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SearchableFrameLayout(context, attrs), FavoritePlayersManager.OnFavoritePlayersChangeListener,
+) : SearchableFrameLayout(context, attrs), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
         Refreshable {
 
     private val adapter = FavoritePlayersAdapter()
 
     @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
 
     companion object {
@@ -47,17 +47,17 @@ class FavoritePlayersLayout @JvmOverloads constructor(
             return
         }
 
-        favoritePlayersManager.addListener(this)
+        favoritePlayersRepository.addListener(this)
         refresh()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        favoritePlayersManager.addListener(this)
+        favoritePlayersRepository.addListener(this)
     }
 
-    override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
         if (isAlive) {
             refresh()
         }
@@ -76,18 +76,18 @@ class FavoritePlayersLayout @JvmOverloads constructor(
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
-        favoritePlayersManager.addListener(this)
+        favoritePlayersRepository.addListener(this)
 
         refresh()
     }
 
     override fun refresh() {
-        if (favoritePlayersManager.isEmpty) {
+        if (favoritePlayersRepository.isEmpty) {
             adapter.clear()
             recyclerView.visibility = View.GONE
             empty.visibility = View.VISIBLE
         } else {
-            adapter.set(favoritePlayersManager.absPlayers)
+            adapter.set(favoritePlayersRepository.absPlayers)
             empty.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
@@ -102,7 +102,7 @@ class FavoritePlayersLayout @JvmOverloads constructor(
                     return
                 }
 
-                list = ListUtils.searchPlayerList(query, favoritePlayersManager.absPlayers)
+                list = ListUtils.searchPlayerList(query, favoritePlayersRepository.absPlayers)
             }
 
             override fun onUi() {

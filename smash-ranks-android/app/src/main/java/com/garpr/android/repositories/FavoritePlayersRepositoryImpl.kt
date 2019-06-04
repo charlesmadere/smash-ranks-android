@@ -8,17 +8,17 @@ import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStore
-import com.garpr.android.repositories.FavoritePlayersManager.OnFavoritePlayersChangeListener
+import com.garpr.android.repositories.FavoritePlayersRepository.OnFavoritePlayersChangeListener
 import com.garpr.android.wrappers.WeakReferenceWrapper
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import java.util.Collections
 
-class FavoritePlayersManagerImpl(
+class FavoritePlayersRepositoryImpl(
         private val keyValueStore: KeyValueStore,
         private val moshi: Moshi,
         private val timber: Timber
-) : FavoritePlayersManager {
+) : FavoritePlayersRepository {
 
     private val favoritePlayerAdapter: JsonAdapter<FavoritePlayer> by lazy {
         moshi.adapter(FavoritePlayer::class.java)
@@ -28,7 +28,7 @@ class FavoritePlayersManagerImpl(
 
 
     companion object {
-        private const val TAG = "FavoritePlayersManagerImpl"
+        private const val TAG = "FavoritePlayersRepositoryImpl"
     }
 
     override val absPlayers: List<AbsPlayer>?

@@ -58,8 +58,8 @@ import com.garpr.android.preferences.RankingsPollingPreferenceStore;
 import com.garpr.android.preferences.RankingsPollingPreferenceStoreImpl;
 import com.garpr.android.preferences.SmashRosterPreferenceStore;
 import com.garpr.android.preferences.SmashRosterPreferenceStoreImpl;
-import com.garpr.android.repositories.FavoritePlayersManager;
-import com.garpr.android.repositories.FavoritePlayersManagerImpl;
+import com.garpr.android.repositories.FavoritePlayersRepository;
+import com.garpr.android.repositories.FavoritePlayersRepositoryImpl;
 import com.garpr.android.repositories.IdentityManager;
 import com.garpr.android.repositories.IdentityManagerImpl;
 import com.garpr.android.repositories.NightModeManager;
@@ -114,9 +114,10 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    AppUpgradeManager providesAppUpgradeManager(final FavoritePlayersManager favoritePlayersManager,
+    AppUpgradeManager providesAppUpgradeManager(
+            final FavoritePlayersRepository favoritePlayersRepository,
             final GeneralPreferenceStore generalPreferenceStore, final Timber timber) {
-        return new AppUpgradeManagerImpl(favoritePlayersManager, generalPreferenceStore, timber);
+        return new AppUpgradeManagerImpl(favoritePlayersRepository, generalPreferenceStore, timber);
     }
 
     @NonNull
@@ -139,10 +140,10 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    FavoritePlayersManager providesFavoritePlayersManager(final Moshi moshi,
+    FavoritePlayersRepository providesFavoritePlayersRepository(final Moshi moshi,
             @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE) final KeyValueStore keyValueStore,
             final Timber timber) {
-        return new FavoritePlayersManagerImpl(keyValueStore, moshi, timber);
+        return new FavoritePlayersRepositoryImpl(keyValueStore, moshi, timber);
     }
 
     @NonNull
@@ -284,12 +285,12 @@ public abstract class BaseAppModule {
     @Provides
     @Singleton
     PlayerProfileManager providesPlayerProfileViewManager(
-            final FavoritePlayersManager favoritePlayersManager,
+            final FavoritePlayersRepository favoritePlayersRepository,
             final IdentityManager identityManager,
             final SmashRosterAvatarUrlHelper smashRosterAvatarUrlHelper,
             final SmashRosterStorage smashRosterStorage) {
-        return new PlayerProfileManagerImpl(mApplication, favoritePlayersManager, identityManager,
-                smashRosterAvatarUrlHelper, smashRosterStorage);
+        return new PlayerProfileManagerImpl(mApplication, favoritePlayersRepository,
+                identityManager, smashRosterAvatarUrlHelper, smashRosterStorage);
     }
 
     @NonNull

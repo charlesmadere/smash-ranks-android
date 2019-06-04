@@ -11,15 +11,15 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.features.base.BaseBottomSheetDialogFragment
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import kotlinx.android.synthetic.main.dialog_add_or_remove_player_from_favorites.*
 import javax.inject.Inject
 
 class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragment(),
-        FavoritePlayersManager.OnFavoritePlayersChangeListener, Refreshable {
+        FavoritePlayersRepository.OnFavoritePlayersChangeListener, Refreshable {
 
     @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     private val player by lazy { arguments.requireParcelable<FavoritePlayer>(KEY_PLAYER) }
 
@@ -53,10 +53,10 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
 
     override fun onDestroyView() {
         super.onDestroyView()
-        favoritePlayersManager.removeListener(this)
+        favoritePlayersRepository.removeListener(this)
     }
 
-    override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
         if (isAlive) {
             refresh()
         }
@@ -71,21 +71,21 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
         super.onViewCreated(view, savedInstanceState)
 
         dialogPositiveText.setOnClickListener {
-            if (player in favoritePlayersManager) {
-                favoritePlayersManager.removePlayer(player)
+            if (player in favoritePlayersRepository) {
+                favoritePlayersRepository.removePlayer(player)
             } else {
-                favoritePlayersManager.addPlayer(player, player.region)
+                favoritePlayersRepository.addPlayer(player, player.region)
             }
 
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             dismissAllowingStateLoss()
         }
 
-        favoritePlayersManager.addListener(this)
+        favoritePlayersRepository.addListener(this)
     }
 
     override fun refresh() {
-        if (player in favoritePlayersManager) {
+        if (player in favoritePlayersRepository) {
             dialogMessage.text = getString(R.string.remove_x_from_favorites, player.name)
             dialogPositiveText.setText(R.string.yes_remove)
             dialogPositiveText.setStartCompoundDrawableRelativeWithIntrinsicBounds(

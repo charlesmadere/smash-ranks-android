@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.SimplePreferenceView
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -16,12 +16,12 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
-        FavoritePlayersManager.OnFavoritePlayersChangeListener, View.OnClickListener {
+        FavoritePlayersRepository.OnFavoritePlayersChangeListener, View.OnClickListener {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
 
     init {
@@ -43,12 +43,12 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
             return
         }
 
-        favoritePlayersManager.addListener(this)
+        favoritePlayersRepository.addListener(this)
         refresh()
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
-        favoritePlayersManager.clear()
+        favoritePlayersRepository.clear()
     }
 
     override fun onClick(v: View) {
@@ -62,10 +62,10 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        favoritePlayersManager.removeListener(this)
+        favoritePlayersRepository.removeListener(this)
     }
 
-    override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
+    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
         if (isAlive) {
             refresh()
         }
@@ -74,7 +74,7 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
     override fun refresh() {
         super.refresh()
 
-        val size = favoritePlayersManager.size
+        val size = favoritePlayersRepository.size
         isEnabled = size != 0
         descriptionText = resources.getQuantityString(R.plurals.x_favorites, size,
                 numberFormat.format(size))

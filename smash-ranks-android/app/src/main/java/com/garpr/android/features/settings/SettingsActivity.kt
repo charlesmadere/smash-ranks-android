@@ -17,7 +17,7 @@ import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityManager
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -26,7 +26,7 @@ import javax.inject.Inject
 class SettingsActivity : BaseActivity() {
 
     @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
     protected lateinit var identityManager: IdentityManager
@@ -85,7 +85,7 @@ class SettingsActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        favoritePlayersManager.removeListener(onFavoritePlayersChangeListener)
+        favoritePlayersRepository.removeListener(onFavoritePlayersChangeListener)
         identityManager.removeListener(onIdentityChangeListener)
         regionManager.removeListener(onRegionChangeListener)
 
@@ -105,7 +105,7 @@ class SettingsActivity : BaseActivity() {
     override fun onViewsBound() {
         super.onViewsBound()
 
-        favoritePlayersManager.addListener(onFavoritePlayersChangeListener)
+        favoritePlayersRepository.addListener(onFavoritePlayersChangeListener)
         identityManager.addListener(onIdentityChangeListener)
         regionManager.addListener(onRegionChangeListener)
 
@@ -163,8 +163,8 @@ class SettingsActivity : BaseActivity() {
         smashRosterPreference.refresh()
     }
 
-    private val onFavoritePlayersChangeListener = object : FavoritePlayersManager.OnFavoritePlayersChangeListener {
-        override fun onFavoritePlayersChange(favoritePlayersManager: FavoritePlayersManager) {
+    private val onFavoritePlayersChangeListener = object : FavoritePlayersRepository.OnFavoritePlayersChangeListener {
+        override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
             refresh()
         }
     }

@@ -29,7 +29,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityManager
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_player.*
@@ -46,7 +46,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
+    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
     protected lateinit var identityManager: IdentityManager
