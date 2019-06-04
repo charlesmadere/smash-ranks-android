@@ -25,6 +25,7 @@ import com.garpr.android.features.players.PlayersActivity;
 import com.garpr.android.features.players.PlayersLayout;
 import com.garpr.android.features.rankings.RankingItemView;
 import com.garpr.android.features.rankings.RankingsActivity;
+import com.garpr.android.features.rankings.RankingsFragment;
 import com.garpr.android.features.rankings.RankingsLayout;
 import com.garpr.android.features.setIdentity.SetIdentityActivity;
 import com.garpr.android.features.setRegion.SetRegionActivity;
@@ -101,6 +102,7 @@ public interface AppComponent {
     // features/rankings
     void inject(RankingItemView view);
     void inject(RankingsActivity activity);
+    void inject(RankingsFragment fragment);
     void inject(RankingsLayout view);
 
     // features/setIdentity
