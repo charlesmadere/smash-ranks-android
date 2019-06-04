@@ -11,7 +11,7 @@ import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.features.player.PlayerProfileManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -28,7 +28,7 @@ class PlayerProfileManagerTest : BaseTest() {
     protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
     @Inject
     protected lateinit var playerProfileManager: PlayerProfileManager
@@ -252,7 +252,7 @@ class PlayerProfileManagerTest : BaseTest() {
         assertTrue(presentation.twitter.isNullOrBlank())
         assertTrue(presentation.twitch.isNullOrBlank())
 
-        identityManager.setIdentity(GAR, NORCAL)
+        identityRepository.setIdentity(GAR, NORCAL)
 
         presentation = playerProfileManager.getPresentation(GAR, NORCAL)
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -286,7 +286,7 @@ class PlayerProfileManagerTest : BaseTest() {
         assertTrue(presentation.twitter.isNullOrBlank())
         assertTrue(presentation.twitch.isNullOrBlank())
 
-        identityManager.setIdentity(CHARLEZARD, NORCAL)
+        identityRepository.setIdentity(CHARLEZARD, NORCAL)
 
         presentation = playerProfileManager.getPresentation(GAR, NORCAL)
         assertFalse(presentation.isAddToFavoritesVisible)

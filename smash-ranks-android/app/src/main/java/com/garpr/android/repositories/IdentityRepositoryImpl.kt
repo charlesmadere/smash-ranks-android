@@ -5,19 +5,19 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
-import com.garpr.android.repositories.IdentityManager.OnIdentityChangeListener
+import com.garpr.android.repositories.IdentityRepository.OnIdentityChangeListener
 import com.garpr.android.wrappers.WeakReferenceWrapper
 
-class IdentityManagerImpl(
+class IdentityRepositoryImpl(
         private val identityPreference: Preference<FavoritePlayer>,
         private val timber: Timber
-) : IdentityManager {
+) : IdentityRepository {
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnIdentityChangeListener>>()
 
 
     companion object {
-        private const val TAG = "IdentityManagerImpl"
+        private const val TAG = "IdentityRepositoryImpl"
     }
 
     override fun addListener(listener: OnIdentityChangeListener) {

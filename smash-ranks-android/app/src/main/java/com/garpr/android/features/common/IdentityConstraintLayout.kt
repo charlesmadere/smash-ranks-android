@@ -11,17 +11,17 @@ import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import javax.inject.Inject
 
 abstract class IdentityConstraintLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleConstraintLayout(context, attrs), IdentityManager.OnIdentityChangeListener,
+) : LifecycleConstraintLayout(context, attrs), IdentityRepository.OnIdentityChangeListener,
         Refreshable {
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
     private var originalBackground: Drawable? = null
     protected var identity: AbsPlayer? = null
@@ -49,13 +49,13 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
             return
         }
 
-        identityManager.addListener(this)
+        identityRepository.addListener(this)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        identityManager.removeListener(this)
+        identityRepository.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -63,20 +63,20 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
 
         if (!isInEditMode) {
             appComponent.inject(this)
-            identityManager.addListener(this)
+            identityRepository.addListener(this)
         }
 
         originalBackground = background
     }
 
-    override fun onIdentityChange(identityManager: IdentityManager) {
+    override fun onIdentityChange(identityRepository: IdentityRepository) {
         if (isAlive) {
             refresh()
         }
     }
 
     override fun refresh() {
-        if (identityManager.isPlayer(identity) || identityManager.isPlayer(identityId)) {
+        if (identityRepository.isPlayer(identity) || identityRepository.isPlayer(identityId)) {
             identityIsUser()
         } else {
             identityIsSomeoneElse()

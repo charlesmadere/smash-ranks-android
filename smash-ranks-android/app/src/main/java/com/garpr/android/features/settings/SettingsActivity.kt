@@ -18,7 +18,7 @@ import com.garpr.android.misc.ShareUtils
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class SettingsActivity : BaseActivity() {
     protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
     @Inject
     protected lateinit var rankingsPollingManager: RankingsPollingManager
@@ -86,7 +86,7 @@ class SettingsActivity : BaseActivity() {
         super.onDestroy()
 
         favoritePlayersRepository.removeListener(onFavoritePlayersChangeListener)
-        identityManager.removeListener(onIdentityChangeListener)
+        identityRepository.removeListener(onIdentityChangeListener)
         regionManager.removeListener(onRegionChangeListener)
 
         rankingsPollingPreferenceStore.chargingRequired.removeListener(onChargingRequiredChange)
@@ -106,7 +106,7 @@ class SettingsActivity : BaseActivity() {
         super.onViewsBound()
 
         favoritePlayersRepository.addListener(onFavoritePlayersChangeListener)
-        identityManager.addListener(onIdentityChangeListener)
+        identityRepository.addListener(onIdentityChangeListener)
         regionManager.addListener(onRegionChangeListener)
 
         rankingsPollingPreferenceStore.chargingRequired.addListener(onChargingRequiredChange)
@@ -169,8 +169,8 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
-    private val onIdentityChangeListener = object : IdentityManager.OnIdentityChangeListener {
-        override fun onIdentityChange(identityManager: IdentityManager) {
+    private val onIdentityChangeListener = object : IdentityRepository.OnIdentityChangeListener {
+        override fun onIdentityChange(identityRepository: IdentityRepository) {
             refresh()
         }
     }

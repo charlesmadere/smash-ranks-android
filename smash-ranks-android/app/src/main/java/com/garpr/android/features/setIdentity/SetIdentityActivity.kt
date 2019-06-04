@@ -22,7 +22,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_set_identity.*
 import javax.inject.Inject
@@ -36,7 +36,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     private val adapter = PlayersSelectionAdapter()
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -108,7 +108,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     override fun onClick(v: PlayerSelectionItemView) {
         val player = v.player
 
-        _selectedPlayer = if (player == identityManager.identity) {
+        _selectedPlayer = if (player == identityRepository.identity) {
             null
         } else {
             player
@@ -133,7 +133,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override fun onSaveClick(v: SetIdentityToolbar) {
         val selectedPlayer = _selectedPlayer ?: throw NullPointerException("_selectedPlayer is null")
-        identityManager.setIdentity(selectedPlayer, regionManager.getRegion(this))
+        identityRepository.setIdentity(selectedPlayer, regionManager.getRegion(this))
         setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
     }
@@ -180,7 +180,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         get() = toolbar.searchQuery
 
     override val selectedPlayer: AbsPlayer?
-        get() = _selectedPlayer ?: identityManager.identity
+        get() = _selectedPlayer ?: identityRepository.identity
 
     private fun showEmpty() {
         adapter.clear()

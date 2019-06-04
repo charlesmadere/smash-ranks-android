@@ -11,7 +11,7 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.SearchToolbar
 import com.garpr.android.misc.RankingCriteriaHandle
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.home_toolbar_items.view.*
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class HomeToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SearchToolbar(context, attrs), IdentityManager.OnIdentityChangeListener,
+) : SearchToolbar(context, attrs), IdentityRepository.OnIdentityChangeListener,
         RegionManager.OnRegionChangeListener {
 
     private val overflowPopupMenu: PopupMenu
@@ -29,7 +29,7 @@ class HomeToolbar @JvmOverloads constructor(
     protected lateinit var homeToolbarManager: HomeToolbarManager
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -57,7 +57,7 @@ class HomeToolbar @JvmOverloads constructor(
             return
         }
 
-        identityManager.addListener(this)
+        identityRepository.addListener(this)
         regionManager.addListener(this)
     }
 
@@ -69,7 +69,7 @@ class HomeToolbar @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        identityManager.removeListener(this)
+        identityRepository.removeListener(this)
         regionManager.removeListener(this)
     }
 
@@ -78,7 +78,7 @@ class HomeToolbar @JvmOverloads constructor(
 
         if (!isInEditMode) {
             appComponent.inject(this)
-            identityManager.addListener(this)
+            identityRepository.addListener(this)
             regionManager.addListener(this)
         }
 
@@ -87,7 +87,7 @@ class HomeToolbar @JvmOverloads constructor(
         }
     }
 
-    override fun onIdentityChange(identityManager: IdentityManager) {
+    override fun onIdentityChange(identityRepository: IdentityRepository) {
         if (isAlive) {
             refresh()
         }

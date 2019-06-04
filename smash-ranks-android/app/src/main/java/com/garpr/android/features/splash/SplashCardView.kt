@@ -15,7 +15,7 @@ import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_splash.view.*
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class SplashCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : LifecycleCardView(context, attrs), DialogInterface.OnClickListener,
-        IdentityManager.OnIdentityChangeListener, Refreshable,
+        IdentityRepository.OnIdentityChangeListener, Refreshable,
         RegionManager.OnRegionChangeListener {
 
     private var hasAnimated: Boolean = false
@@ -33,7 +33,7 @@ class SplashCardView @JvmOverloads constructor(
     protected lateinit var deviceUtils: DeviceUtils
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
     @Inject
     protected lateinit var regionManager: RegionManager
@@ -56,7 +56,7 @@ class SplashCardView @JvmOverloads constructor(
             return
         }
 
-        identityManager.addListener(this)
+        identityRepository.addListener(this)
         regionManager.addListener(this)
         refresh()
 
@@ -67,13 +67,13 @@ class SplashCardView @JvmOverloads constructor(
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
-        identityManager.removeIdentity()
+        identityRepository.removeIdentity()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        identityManager.removeListener(this)
+        identityRepository.removeListener(this)
         regionManager.removeListener(this)
     }
 
@@ -85,7 +85,7 @@ class SplashCardView @JvmOverloads constructor(
         }
 
         customizeIdentity.setOnClickListener {
-            if (identityManager.hasIdentity) {
+            if (identityRepository.hasIdentity) {
                 showDeleteIdentityConfirmationDialog()
             } else {
                 context.startActivity(SetIdentityActivity.getLaunchIntent(context))
@@ -100,12 +100,12 @@ class SplashCardView @JvmOverloads constructor(
             (activity as? Listener?)?.onStartUsingTheAppClick(this)
         }
 
-        identityManager.addListener(this)
+        identityRepository.addListener(this)
         regionManager.addListener(this)
         refresh()
     }
 
-    override fun onIdentityChange(identityManager: IdentityManager) {
+    override fun onIdentityChange(identityRepository: IdentityRepository) {
         if (isAlive) {
             refresh()
         }
@@ -133,7 +133,7 @@ class SplashCardView @JvmOverloads constructor(
     }
 
     override fun refresh() {
-        val identity = identityManager.identity
+        val identity = identityRepository.identity
 
         if (identity == null) {
             customizeIdentity.descriptionText = context.getText(

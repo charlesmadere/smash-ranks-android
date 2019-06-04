@@ -12,17 +12,17 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.SimplePreferenceView
 import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.misc.RequestCodes
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import javax.inject.Inject
 
 class IdentityPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
-        IdentityManager.OnIdentityChangeListener, View.OnClickListener {
+        IdentityRepository.OnIdentityChangeListener, View.OnClickListener {
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
 
     init {
@@ -43,16 +43,16 @@ class IdentityPreferenceView @JvmOverloads constructor(
             return
         }
 
-        identityManager.addListener(this)
+        identityRepository.addListener(this)
         refresh()
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
-        identityManager.removeIdentity()
+        identityRepository.removeIdentity()
     }
 
     override fun onClick(v: View) {
-        if (identityManager.hasIdentity) {
+        if (identityRepository.hasIdentity) {
             AlertDialog.Builder(context)
                     .setMessage(R.string.are_you_sure_you_want_to_delete_your_identity)
                     .setNegativeButton(R.string.cancel, null)
@@ -73,10 +73,10 @@ class IdentityPreferenceView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        identityManager.removeListener(this)
+        identityRepository.removeListener(this)
     }
 
-    override fun onIdentityChange(identityManager: IdentityManager) {
+    override fun onIdentityChange(identityRepository: IdentityRepository) {
         if (isAlive) {
             refresh()
         }
@@ -85,7 +85,7 @@ class IdentityPreferenceView @JvmOverloads constructor(
     override fun refresh() {
         super.refresh()
 
-        val player = identityManager.identity
+        val player = identityRepository.identity
 
         if (player == null) {
             titleText = resources.getText(R.string.identity)

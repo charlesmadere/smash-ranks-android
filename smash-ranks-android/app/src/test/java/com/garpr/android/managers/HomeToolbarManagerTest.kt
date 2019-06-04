@@ -9,7 +9,7 @@ import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.home.HomeToolbarManager
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -25,7 +25,7 @@ class HomeToolbarManagerTest : BaseTest() {
     protected lateinit var homeToolbarManager: HomeToolbarManager
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
 
     companion object {
@@ -79,7 +79,7 @@ class HomeToolbarManagerTest : BaseTest() {
 
     @Test
     fun testGetPresentationWithGoogleMtv() {
-        identityManager.removeIdentity()
+        identityRepository.removeIdentity()
 
         val presentation = homeToolbarManager.getPresentation(GOOGLE_MTV)
         assertFalse(presentation.isActivityRequirementsVisible)
@@ -88,7 +88,7 @@ class HomeToolbarManagerTest : BaseTest() {
 
     @Test
     fun testGetPresentationWithNorcalWithIdentityImyt() {
-        identityManager.setIdentity(IMYT, NORCAL)
+        identityRepository.setIdentity(IMYT, NORCAL)
 
         val presentation = homeToolbarManager.getPresentation(NORCAL)
         assertFalse(presentation.isActivityRequirementsVisible)
@@ -97,7 +97,7 @@ class HomeToolbarManagerTest : BaseTest() {
 
     @Test
     fun testGetPresentationWithNorcalWithoutIdentity() {
-        identityManager.removeIdentity()
+        identityRepository.removeIdentity()
 
         val presentation = homeToolbarManager.getPresentation(NORCAL)
         assertFalse(presentation.isActivityRequirementsVisible)
@@ -106,7 +106,7 @@ class HomeToolbarManagerTest : BaseTest() {
 
     @Test
     fun testGetPresentationWithNycWithIdentityHax() {
-        identityManager.setIdentity(HAX, NYC)
+        identityRepository.setIdentity(HAX, NYC)
 
         val presentation = homeToolbarManager.getPresentation(NYC)
         assertTrue(presentation.isActivityRequirementsVisible)
@@ -115,7 +115,7 @@ class HomeToolbarManagerTest : BaseTest() {
 
     @Test
     fun testGetPresentationWithNycWithoutIdentity() {
-        identityManager.removeIdentity()
+        identityRepository.removeIdentity()
 
         val presentation = homeToolbarManager.getPresentation(NYC)
         assertTrue(presentation.isActivityRequirementsVisible)

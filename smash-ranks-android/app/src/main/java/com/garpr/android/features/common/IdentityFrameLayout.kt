@@ -11,29 +11,34 @@ import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import javax.inject.Inject
 
 abstract class IdentityFrameLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleFrameLayout(context, attrs), IdentityManager.OnIdentityChangeListener, Refreshable {
+) : LifecycleFrameLayout(context, attrs), IdentityRepository.OnIdentityChangeListener, Refreshable {
 
-    private var originalBackground: Drawable? = null
+    protected var identity: AbsPlayer? = null
+    private val originalBackground: Drawable? = background
+    protected var identityId: String? = null
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
+
+    init {
+        if (!isInEditMode) {
+            @Suppress("LeakingThis")
+            appComponent.inject(this)
+        }
+    }
 
     protected open fun clear() {
         identity = null
         identityId = null
         refresh()
     }
-
-    protected var identity: AbsPlayer? = null
-
-    protected var identityId: String? = null
 
     protected open fun identityIsSomeoneElse() {
         ViewCompat.setBackground(this, originalBackground)
@@ -50,34 +55,23 @@ abstract class IdentityFrameLayout @JvmOverloads constructor(
             return
         }
 
-        identityManager.addListener(this)
+        identityRepository.addListener(this)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        identityManager.removeListener(this)
+        identityRepository.removeListener(this)
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            identityManager.addListener(this)
-        }
-
-        originalBackground = background
-    }
-
-    override fun onIdentityChange(identityManager: IdentityManager) {
+    override fun onIdentityChange(identityRepository: IdentityRepository) {
         if (isAlive) {
             refresh()
         }
     }
 
     override fun refresh() {
-        if (identityManager.isPlayer(identity) || identityManager.isPlayer(identityId)) {
+        if (identityRepository.isPlayer(identity) || identityRepository.isPlayer(identityId)) {
             identityIsUser()
         } else {
             identityIsSomeoneElse()

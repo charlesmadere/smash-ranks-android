@@ -74,11 +74,11 @@ class TournamentMatchItemView @JvmOverloads constructor(
     override fun refresh() {
         val match = this.match
 
-        if (match != null && identityManager.isPlayer(match.winnerId)) {
+        if (match != null && identityRepository.isPlayer(match.winnerId)) {
             styleTextViewForUser(winnerName)
             styleTextViewForSomeoneElse(loserName)
             identityIsUser()
-        } else if (match != null && identityManager.isPlayer(match.loserId)) {
+        } else if (match != null && identityRepository.isPlayer(match.loserId)) {
             styleTextViewForSomeoneElse(winnerName)
             styleTextViewForUser(loserName)
             identityIsUser()

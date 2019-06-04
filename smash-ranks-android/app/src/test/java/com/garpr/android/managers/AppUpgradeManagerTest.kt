@@ -9,7 +9,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.features.splash.AppUpgradeManager
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -33,7 +33,7 @@ class AppUpgradeManagerTest : BaseTest() {
     protected lateinit var generalPreferenceStore: GeneralPreferenceStore
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
 
     companion object {
@@ -55,36 +55,36 @@ class AppUpgradeManagerTest : BaseTest() {
     fun testUpgradeAppFrom0() {
         generalPreferenceStore.lastVersion.set(0)
         favoritePlayersRepository.addPlayer(PLAYER_1, REGION_1)
-        identityManager.setIdentity(PLAYER_2, REGION_1)
+        identityRepository.setIdentity(PLAYER_2, REGION_1)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
         assertNull(favoritePlayersRepository.absPlayers)
-        assertFalse(identityManager.hasIdentity)
+        assertFalse(identityRepository.hasIdentity)
     }
 
     @Test
     fun testUpgradeAppFromCurrentVersion() {
         generalPreferenceStore.lastVersion.set(BuildConfig.VERSION_CODE)
         favoritePlayersRepository.addPlayer(PLAYER_1, REGION_1)
-        identityManager.setIdentity(PLAYER_2, REGION_1)
+        identityRepository.setIdentity(PLAYER_2, REGION_1)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
         assertEquals(1, favoritePlayersRepository.absPlayers?.size ?: 0)
-        assertTrue(identityManager.hasIdentity)
+        assertTrue(identityRepository.hasIdentity)
     }
 
     @Test
     fun testUpgradeAppFromNull() {
         generalPreferenceStore.lastVersion.delete()
         favoritePlayersRepository.addPlayer(PLAYER_1, REGION_1)
-        identityManager.setIdentity(PLAYER_2, REGION_1)
+        identityRepository.setIdentity(PLAYER_2, REGION_1)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
         assertNull(favoritePlayersRepository.absPlayers)
-        assertFalse(identityManager.hasIdentity)
+        assertFalse(identityRepository.hasIdentity)
     }
 
 }

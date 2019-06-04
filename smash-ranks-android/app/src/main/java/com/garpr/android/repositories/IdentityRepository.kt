@@ -4,10 +4,10 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 
-interface IdentityManager {
+interface IdentityRepository {
 
     interface OnIdentityChangeListener {
-        fun onIdentityChange(identityManager: IdentityManager)
+        fun onIdentityChange(identityRepository: IdentityRepository)
     }
 
     fun addListener(listener: OnIdentityChangeListener)

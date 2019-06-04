@@ -2,10 +2,10 @@ package com.garpr.android.features.home
 
 import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.features.home.HomeToolbarManager.Presentation
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 
 class HomeToolbarManagerImpl(
-        private val identityManager: IdentityManager
+        private val identityRepository: IdentityRepository
 ) : HomeToolbarManager {
 
     override fun getPresentation(rankingCriteria: RankingCriteria?): Presentation {
@@ -13,7 +13,7 @@ class HomeToolbarManagerImpl(
                 isActivityRequirementsVisible = rankingCriteria?.rankingActivityDayLimit != null &&
                         rankingCriteria.rankingNumTourneysAttended != null &&
                         rankingCriteria.tournamentQualifiedDayLimit != null,
-                isViewYourselfVisible = identityManager.hasIdentity
+                isViewYourselfVisible = identityRepository.hasIdentity
         )
     }
 

@@ -60,8 +60,8 @@ import com.garpr.android.preferences.SmashRosterPreferenceStore;
 import com.garpr.android.preferences.SmashRosterPreferenceStoreImpl;
 import com.garpr.android.repositories.FavoritePlayersRepository;
 import com.garpr.android.repositories.FavoritePlayersRepositoryImpl;
-import com.garpr.android.repositories.IdentityManager;
-import com.garpr.android.repositories.IdentityManagerImpl;
+import com.garpr.android.repositories.IdentityRepository;
+import com.garpr.android.repositories.IdentityRepositoryImpl;
 import com.garpr.android.repositories.NightModeRepository;
 import com.garpr.android.repositories.NightModeRepositoryImpl;
 import com.garpr.android.repositories.RegionManager;
@@ -194,16 +194,16 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    HomeToolbarManager providesHomeToolbarManager(final IdentityManager identityManager) {
-        return new HomeToolbarManagerImpl(identityManager);
+    HomeToolbarManager providesHomeToolbarManager(final IdentityRepository identityRepository) {
+        return new HomeToolbarManagerImpl(identityRepository);
     }
 
     @NonNull
     @Provides
     @Singleton
-    IdentityManager providesIdentityManager(final GeneralPreferenceStore generalPreferenceStore,
-            final Timber timber) {
-        return new IdentityManagerImpl(generalPreferenceStore.getIdentity(), timber);
+    IdentityRepository providesIdentityRepository(
+            final GeneralPreferenceStore generalPreferenceStore, final Timber timber) {
+        return new IdentityRepositoryImpl(generalPreferenceStore.getIdentity(), timber);
     }
 
     @NonNull
@@ -286,11 +286,11 @@ public abstract class BaseAppModule {
     @Singleton
     PlayerProfileManager providesPlayerProfileViewManager(
             final FavoritePlayersRepository favoritePlayersRepository,
-            final IdentityManager identityManager,
+            final IdentityRepository identityRepository,
             final SmashRosterAvatarUrlHelper smashRosterAvatarUrlHelper,
             final SmashRosterStorage smashRosterStorage) {
         return new PlayerProfileManagerImpl(mApplication, favoritePlayersRepository,
-                identityManager, smashRosterAvatarUrlHelper, smashRosterStorage);
+                identityRepository, smashRosterAvatarUrlHelper, smashRosterStorage);
     }
 
     @NonNull

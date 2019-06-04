@@ -20,7 +20,7 @@ import com.garpr.android.features.tournaments.TournamentsActivityTest;
 import com.garpr.android.managers.AppUpgradeManagerTest;
 import com.garpr.android.managers.FavoritePlayersRepositoryTest;
 import com.garpr.android.managers.HomeToolbarManagerTest;
-import com.garpr.android.managers.IdentityManagerTest;
+import com.garpr.android.managers.IdentityRepositoryTest;
 import com.garpr.android.managers.NightModeRepositoryTest;
 import com.garpr.android.managers.PlayerProfileManagerTest;
 import com.garpr.android.managers.RegionManagerTest;
@@ -91,7 +91,7 @@ public interface TestAppComponent {
     void inject(AppUpgradeManagerTest test);
     void inject(FavoritePlayersRepositoryTest test);
     void inject(HomeToolbarManagerTest test);
-    void inject(IdentityManagerTest test);
+    void inject(IdentityRepositoryTest test);
     void inject(NightModeRepositoryTest test);
     void inject(PlayerProfileManagerTest test);
     void inject(RegionManagerTest test);

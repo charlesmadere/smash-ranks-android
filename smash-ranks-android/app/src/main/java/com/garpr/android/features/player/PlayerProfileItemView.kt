@@ -20,7 +20,7 @@ import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.item_player_profile.view.*
 import javax.inject.Inject
@@ -30,7 +30,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : LifecycleLinearLayout(context, attrs), BaseAdapterView<FullPlayer>, ColorListener,
         FavoritePlayersRepository.OnFavoritePlayersChangeListener,
-        IdentityManager.OnIdentityChangeListener, Refreshable,
+        IdentityRepository.OnIdentityChangeListener, Refreshable,
         SmashRosterSyncManager.OnSyncListeners {
 
     private var presentation: PlayerProfileManager.Presentation? = null
@@ -39,7 +39,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
     protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
     @Inject
     protected lateinit var playerProfileManager: PlayerProfileManager
@@ -84,7 +84,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
 
         favoritePlayersRepository.addListener(this)
-        identityManager.addListener(this)
+        identityRepository.addListener(this)
         smashRosterSyncManager.addListener(this)
     }
 
@@ -92,7 +92,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
         super.onDetachedFromWindow()
 
         favoritePlayersRepository.removeListener(this)
-        identityManager.removeListener(this)
+        identityRepository.removeListener(this)
         smashRosterSyncManager.removeListener(this)
     }
 
@@ -108,10 +108,6 @@ class PlayerProfileItemView @JvmOverloads constructor(
         if (isInEditMode) {
             return
         }
-
-        favoritePlayersRepository.addListener(this)
-        identityManager.addListener(this)
-        smashRosterSyncManager.addListener(this)
 
         avatar.colorListener = this
 
@@ -142,7 +138,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
 
         viewYourselfVsThisOpponent.setOnClickListener {
-            val identity = identityManager.identity ?: throw NullPointerException("identity is null")
+            val identity = identityRepository.identity ?: throw NullPointerException("identity is null")
             val player = fullPlayer ?: throw NullPointerException("fullPlayer is null")
             context.startActivity(HeadToHeadActivity.getLaunchIntent(context, identity, player,
                     regionManager.getRegion(context)))
@@ -153,7 +149,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
     }
 
-    override fun onIdentityChange(identityManager: IdentityManager) {
+    override fun onIdentityChange(identityRepository: IdentityRepository) {
         if (isAlive) {
             refresh()
         }

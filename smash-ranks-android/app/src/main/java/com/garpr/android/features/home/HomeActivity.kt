@@ -22,7 +22,7 @@ import com.garpr.android.misc.HomeTab
 import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
@@ -36,7 +36,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     private val adapter = HomePagerAdapter()
 
     @Inject
-    protected lateinit var identityManager: IdentityManager
+    protected lateinit var identityRepository: IdentityRepository
 
     @Inject
     protected lateinit var rankingsPollingManager: RankingsPollingManager
@@ -159,7 +159,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onViewYourselfClick(v: HomeToolbar) {
-        val identity = identityManager.identity ?: throw NullPointerException("identity is null")
+        val identity = identityRepository.identity ?: throw NullPointerException("identity is null")
         startActivity(PlayerActivity.getLaunchIntent(this, identity,
                 regionManager.getRegion(this)))
     }
