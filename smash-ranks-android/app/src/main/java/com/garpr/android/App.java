@@ -6,10 +6,10 @@ import com.garpr.android.dagger.AppModule;
 import com.garpr.android.dagger.DaggerAppComponent;
 import com.garpr.android.features.splash.AppUpgradeManager;
 import com.garpr.android.misc.Constants;
-import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.Timber;
 import com.garpr.android.repositories.NightModeRepository;
+import com.garpr.android.wrappers.CrashlyticsWrapper;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import javax.inject.Inject;

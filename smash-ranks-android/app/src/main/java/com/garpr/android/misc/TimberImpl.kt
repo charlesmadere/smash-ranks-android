@@ -1,6 +1,7 @@
 package com.garpr.android.misc
 
 import android.util.Log
+import com.garpr.android.wrappers.CrashlyticsWrapper
 
 class TimberImpl(
         isLowRamDevice: Boolean,

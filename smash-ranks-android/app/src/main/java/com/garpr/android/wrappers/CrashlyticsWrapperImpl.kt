@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.wrappers
 
 import android.app.Application
 import com.crashlytics.android.Crashlytics

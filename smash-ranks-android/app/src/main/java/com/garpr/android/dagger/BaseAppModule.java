@@ -26,7 +26,6 @@ import com.garpr.android.features.splash.SplashScreenManagerImpl;
 import com.garpr.android.features.tournament.TournamentAdapterManager;
 import com.garpr.android.features.tournament.TournamentAdapterManagerImpl;
 import com.garpr.android.misc.Constants;
-import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.FullTournamentUtils;
 import com.garpr.android.misc.FullTournamentUtilsImpl;
@@ -66,6 +65,7 @@ import com.garpr.android.sync.rankings.RankingsPollingManager;
 import com.garpr.android.sync.rankings.RankingsPollingManagerImpl;
 import com.garpr.android.sync.roster.SmashRosterSyncManager;
 import com.garpr.android.sync.roster.SmashRosterSyncManagerImpl;
+import com.garpr.android.wrappers.CrashlyticsWrapper;
 import com.garpr.android.wrappers.WorkManagerWrapper;
 import com.squareup.moshi.Moshi;
 

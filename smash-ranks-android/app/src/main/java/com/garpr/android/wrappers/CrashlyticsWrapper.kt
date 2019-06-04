@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.wrappers
 
 interface CrashlyticsWrapper {
 
