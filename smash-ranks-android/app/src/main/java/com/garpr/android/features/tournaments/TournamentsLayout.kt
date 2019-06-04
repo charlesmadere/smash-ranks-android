@@ -20,7 +20,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.layout_tournaments.view.*
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class TournamentsLayout @JvmOverloads constructor(
     private val adapter = TournamentsAdapter()
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -51,7 +51,7 @@ class TournamentsLayout @JvmOverloads constructor(
 
     private fun fetchTournamentsBundle() {
         isRefreshing = true
-        serverApi.getTournaments(regionManager.getRegion(context), ApiCall(this))
+        serverApi.getTournaments(regionRepository.getRegion(context), ApiCall(this))
     }
 
     override fun getRecyclerView(): RecyclerView? {

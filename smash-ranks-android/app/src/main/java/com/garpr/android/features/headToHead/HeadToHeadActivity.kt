@@ -21,7 +21,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_head_to_head.*
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -97,7 +97,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     private fun fetchHeadToHead() {
         refreshLayout.isRefreshing = true
-        serverApi.getHeadToHead(regionManager.getRegion(this), playerId, opponentId,
+        serverApi.getHeadToHead(regionRepository.getRegion(this), playerId, opponentId,
                 ApiCall(this))
     }
 
@@ -105,7 +105,7 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_head_to_head)
-        toolbar.subtitleText = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionRepository.getRegion(this).displayName
 
         fetchHeadToHead()
     }

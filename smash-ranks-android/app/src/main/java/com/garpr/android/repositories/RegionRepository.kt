@@ -3,10 +3,10 @@ package com.garpr.android.repositories
 import android.content.Context
 import com.garpr.android.data.models.Region
 
-interface RegionManager {
+interface RegionRepository {
 
     interface OnRegionChangeListener {
-        fun onRegionChange(regionManager: RegionManager)
+        fun onRegionChange(regionRepository: RegionRepository)
     }
 
     interface RegionHandle {

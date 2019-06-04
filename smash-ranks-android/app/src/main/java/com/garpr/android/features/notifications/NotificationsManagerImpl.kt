@@ -16,12 +16,12 @@ import com.garpr.android.extensions.notificationManagerCompat
 import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 
 class NotificationsManagerImpl(
         private val application: Application,
         private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-        private val regionManager: RegionManager,
+        private val regionRepository: RegionRepository,
         private val timber: Timber
 ) : NotificationsManager {
 
@@ -50,7 +50,7 @@ class NotificationsManagerImpl(
                 HomeActivity.getLaunchIntent(context = application, restartActivityTask = true),
                 PendingIntent.FLAG_UPDATE_CURRENT))
 
-        val regionDisplayName = regionManager.getRegion().displayName
+        val regionDisplayName = regionRepository.getRegion().displayName
         builder.setContentText(application.getString(R.string.x_rankings_have_been_updated,
                 regionDisplayName))
 

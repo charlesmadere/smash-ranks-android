@@ -5,7 +5,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -24,7 +24,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
     protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     companion object {
@@ -50,8 +50,8 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         var absPlayers = favoritePlayersRepository.absPlayers
         assertTrue(absPlayers.isNullOrEmpty())
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
 
         absPlayers = favoritePlayersRepository.absPlayers
         assertNotNull(absPlayers)
@@ -74,7 +74,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         favoritePlayersRepository.addListener(listener)
         assertNull(players)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertNotNull(players)
         assertEquals(1, players?.size)
         assertEquals(PLAYER_0, players?.get(0))
@@ -95,13 +95,13 @@ class FavoritePlayersRepositoryTest : BaseTest() {
 
         favoritePlayersRepository.addListener(listener)
         favoritePlayersRepository.addListener(listener)
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertEquals(1, count)
     }
 
     @Test
     fun testAddPlayer() {
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
 
         val players = favoritePlayersRepository.players
         assertNotNull(players)
@@ -111,8 +111,8 @@ class FavoritePlayersRepositoryTest : BaseTest() {
 
     @Test
     fun testAddPlayers() {
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
 
         val players = favoritePlayersRepository.players
         assertNotNull(players)
@@ -126,14 +126,14 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         favoritePlayersRepository.clear()
         assertTrue(favoritePlayersRepository.isEmpty)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertFalse(favoritePlayersRepository.isEmpty)
 
         favoritePlayersRepository.clear()
         assertTrue(favoritePlayersRepository.isEmpty)
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         favoritePlayersRepository.clear()
         assertTrue(favoritePlayersRepository.isEmpty)
 
@@ -146,7 +146,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertFalse(PLAYER_1 in favoritePlayersRepository)
         assertFalse(PLAYER_1.id in favoritePlayersRepository)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertTrue(PLAYER_0 in favoritePlayersRepository)
         assertTrue(PLAYER_0.id in favoritePlayersRepository)
         assertFalse(PLAYER_1 in favoritePlayersRepository)
@@ -164,13 +164,13 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertFalse(PLAYER_1 in favoritePlayersRepository)
         assertFalse(PLAYER_1.id in favoritePlayersRepository)
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
         assertFalse(PLAYER_0 in favoritePlayersRepository)
         assertFalse(PLAYER_0.id in favoritePlayersRepository)
         assertTrue(PLAYER_1 in favoritePlayersRepository)
         assertTrue(PLAYER_1.id in favoritePlayersRepository)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertTrue(PLAYER_0 in favoritePlayersRepository)
         assertTrue(PLAYER_0.id in favoritePlayersRepository)
         assertTrue(PLAYER_1 in favoritePlayersRepository)
@@ -187,7 +187,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
     fun testIsEmpty() {
         assertTrue(favoritePlayersRepository.isEmpty)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertFalse(favoritePlayersRepository.isEmpty)
 
         favoritePlayersRepository.removePlayer(PLAYER_1)
@@ -208,7 +208,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         var absPlayers = favoritePlayersRepository.absPlayers
         assertTrue(absPlayers.isNullOrEmpty())
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
         players = favoritePlayersRepository.players
         assertNotNull(players)
         assertEquals(1, players?.size)
@@ -217,7 +217,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertNotNull(absPlayers)
         assertEquals(1, absPlayers?.size)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         players = favoritePlayersRepository.players
         assertNotNull(players)
         assertEquals(2, players?.size)
@@ -226,7 +226,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertNotNull(absPlayers)
         assertEquals(2, absPlayers?.size)
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
         players = favoritePlayersRepository.players
         assertNotNull(players)
         assertEquals(2, players?.size)
@@ -265,7 +265,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         favoritePlayersRepository.addListener(listener)
         assertNull(players)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertNotNull(players)
         assertEquals(1, players?.size)
         assertEquals(PLAYER_0, players?.get(0))
@@ -279,8 +279,8 @@ class FavoritePlayersRepositoryTest : BaseTest() {
 
     @Test
     fun testRemovePlayers() {
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
 
         favoritePlayersRepository.removePlayer(PLAYER_0)
         favoritePlayersRepository.removePlayer(PLAYER_1)
@@ -288,8 +288,8 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertTrue(players.isNullOrEmpty())
         assertTrue(favoritePlayersRepository.isEmpty)
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         favoritePlayersRepository.removePlayer(PLAYER_1.id)
         favoritePlayersRepository.removePlayer(PLAYER_0.id)
         players = favoritePlayersRepository.players
@@ -300,13 +300,13 @@ class FavoritePlayersRepositoryTest : BaseTest() {
     fun testSize() {
         assertEquals(0, favoritePlayersRepository.size)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertEquals(1, favoritePlayersRepository.size)
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
         assertEquals(2, favoritePlayersRepository.size)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionManager.getRegion())
+        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertEquals(2, favoritePlayersRepository.size)
 
         favoritePlayersRepository.removePlayer(PLAYER_0)

@@ -10,14 +10,14 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.features.base.BaseBottomSheetDialogFragment
 import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.dialog_head_to_head.*
 import javax.inject.Inject
 
 class HeadToHeadDialogFragment : BaseBottomSheetDialogFragment() {
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     private val match by lazy { arguments.requireParcelable<HeadToHeadMatch>(KEY_MATCH) }
 
@@ -54,14 +54,14 @@ class HeadToHeadDialogFragment : BaseBottomSheetDialogFragment() {
         dialogFirstPlayer.text = match.player.name
         dialogFirstPlayer.setOnClickListener {
             startActivity(PlayerActivity.getLaunchIntent(requireContext(), match.player,
-                    regionManager.getRegion(requireContext())))
+                    regionRepository.getRegion(requireContext())))
             dismissAllowingStateLoss()
         }
 
         dialogSecondPlayer.text = match.opponent.name
         dialogSecondPlayer.setOnClickListener {
             startActivity(PlayerActivity.getLaunchIntent(requireContext(), match.opponent,
-                    regionManager.getRegion(requireContext())))
+                    regionRepository.getRegion(requireContext())))
             dismissAllowingStateLoss()
         }
     }

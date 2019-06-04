@@ -21,7 +21,7 @@ import com.garpr.android.misc.FullTournamentUtils
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +31,7 @@ class ServerApiImpl(
         private val garPrApi: GarPrApi,
         private val notGarPrApi: GarPrApi,
         private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-        private val regionManager: RegionManager,
+        private val regionRepository: RegionRepository,
         private val smashRosterApi: SmashRosterApi,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
@@ -247,7 +247,7 @@ class ServerApiImpl(
             timber.e(TAG, "getRankings ($region) failed (code ${response?.code()})", throwable)
             listener.failure(response?.code() ?: Constants.ERROR_CODE_UNKNOWN)
         } else {
-            if (region == regionManager.getRegion()) {
+            if (region == regionRepository.getRegion()) {
                 rankingsPollingPreferenceStore.rankingsId.set(body.id)
             }
 

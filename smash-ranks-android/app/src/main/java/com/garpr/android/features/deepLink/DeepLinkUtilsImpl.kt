@@ -14,10 +14,10 @@ import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsActivity
 import com.garpr.android.misc.HomeTab
 import com.garpr.android.misc.Timber
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 
 class DeepLinkUtilsImpl(
-        private val regionManager: RegionManager,
+        private val regionRepository: RegionRepository,
         private val timber: Timber
 ) : DeepLinkUtils {
 
@@ -97,7 +97,7 @@ class DeepLinkUtilsImpl(
             return null
         }
 
-        val sameRegion = regionId.equals(regionManager.getRegion().id, ignoreCase = true)
+        val sameRegion = regionId.equals(regionRepository.getRegion().id, ignoreCase = true)
 
         if (sameRegion && splits.size == 1) {
             return null

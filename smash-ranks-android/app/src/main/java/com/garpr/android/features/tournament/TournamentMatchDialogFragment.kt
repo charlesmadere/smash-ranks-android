@@ -11,14 +11,14 @@ import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.features.base.BaseBottomSheetDialogFragment
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.dialog_tournament_match.*
 import javax.inject.Inject
 
 class TournamentMatchDialogFragment : BaseBottomSheetDialogFragment() {
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     private val match by lazy { arguments.requireParcelable<FullTournament.Match>(KEY_MATCH) }
 
@@ -55,20 +55,20 @@ class TournamentMatchDialogFragment : BaseBottomSheetDialogFragment() {
         dialogFirstPlayer.text = match.winnerName
         dialogFirstPlayer.setOnClickListener {
             startActivity(PlayerActivity.getLaunchIntent(requireContext(), match.winnerId,
-                    regionManager.getRegion(requireContext())))
+                    regionRepository.getRegion(requireContext())))
             dismissAllowingStateLoss()
         }
 
         dialogSecondPlayer.text = match.loserName
         dialogSecondPlayer.setOnClickListener {
             startActivity(PlayerActivity.getLaunchIntent(requireContext(), match.loserId,
-                    regionManager.getRegion(requireContext())))
+                    regionRepository.getRegion(requireContext())))
             dismissAllowingStateLoss()
         }
 
         dialogHeadToHead.setOnClickListener {
             startActivity(HeadToHeadActivity.getLaunchIntent(requireContext(), match,
-                    regionManager.getRegion(requireContext())))
+                    regionRepository.getRegion(requireContext())))
             dismissAllowingStateLoss()
         }
     }

@@ -23,7 +23,7 @@ import com.garpr.android.managers.HomeToolbarManagerTest;
 import com.garpr.android.managers.IdentityRepositoryTest;
 import com.garpr.android.managers.NightModeRepositoryTest;
 import com.garpr.android.managers.PlayerProfileManagerTest;
-import com.garpr.android.managers.RegionManagerTest;
+import com.garpr.android.managers.RegionRepositoryTest;
 import com.garpr.android.managers.SmashRosterAvatarUrlHelperTest;
 import com.garpr.android.managers.SplashScreenManagerTest;
 import com.garpr.android.managers.TournamentAdapterManagerTest;
@@ -94,7 +94,7 @@ public interface TestAppComponent {
     void inject(IdentityRepositoryTest test);
     void inject(NightModeRepositoryTest test);
     void inject(PlayerProfileManagerTest test);
-    void inject(RegionManagerTest test);
+    void inject(RegionRepositoryTest test);
     void inject(SmashRosterAvatarUrlHelperTest test);
     void inject(SplashScreenManagerTest test);
     void inject(TournamentAdapterManagerTest test);

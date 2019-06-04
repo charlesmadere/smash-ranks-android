@@ -14,7 +14,7 @@ import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_tournament_info.view.*
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class TournamentInfoItemView @JvmOverloads constructor(
     private val numberFormat = NumberFormat.getIntegerInstance()
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
@@ -76,7 +76,7 @@ class TournamentInfoItemView @JvmOverloads constructor(
 
             name.text = value.name
             date.text = value.date.fullForm
-            region.text = regionManager.getRegion(context).displayName
+            region.text = regionRepository.getRegion(context).displayName
 
             val entrants = value.players?.size ?: 0
             entrantsCount.text = resources.getQuantityString(R.plurals.x_entrants, entrants,

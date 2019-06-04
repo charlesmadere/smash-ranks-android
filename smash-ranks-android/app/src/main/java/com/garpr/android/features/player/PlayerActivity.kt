@@ -31,7 +31,7 @@ import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_player.*
 import javax.inject.Inject
 
@@ -52,7 +52,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     protected lateinit var identityRepository: IdentityRepository
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -114,7 +114,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
 
     private fun fetchPlayerMatchesBundle() {
         refreshLayout.isRefreshing = true
-        serverApi.getPlayerMatches(regionManager.getRegion(this), playerId,
+        serverApi.getPlayerMatches(regionRepository.getRegion(this), playerId,
                 ApiCall(this))
     }
 
@@ -130,7 +130,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         val player = playerMatchesBundle?.fullPlayer ?: return
         val match = v.match ?: return
         startActivity(HeadToHeadActivity.getLaunchIntent(this, player, match,
-                regionManager.getRegion(this)))
+                regionRepository.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -206,7 +206,7 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
             return
         }
 
-        val region = regionManager.getRegion(this)
+        val region = regionRepository.getRegion(this)
         val smashCompetitor = smashRosterStorage.getSmashCompetitor(region, playerId)
         val title = smashCompetitor?.tag ?: playerMatchesBundle?.fullPlayer?.name
 

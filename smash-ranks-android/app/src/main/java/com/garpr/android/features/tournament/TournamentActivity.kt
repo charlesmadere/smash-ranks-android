@@ -31,7 +31,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_tournament.*
 import javax.inject.Inject
 
@@ -46,7 +46,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
     private val tournamentId: String by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -125,7 +125,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
     private fun fetchFullTournament() {
         refreshLayout.isRefreshing = true
-        serverApi.getTournament(regionManager.getRegion(this), tournamentId,
+        serverApi.getTournament(regionRepository.getRegion(this), tournamentId,
                 ApiCall(this))
     }
 
@@ -273,7 +273,7 @@ class TournamentActivity : BaseActivity(), ApiListener<FullTournament>, Searchab
 
         val tournament = fullTournament ?: return
         toolbar.titleText = tournament.name
-        toolbar.subtitleText = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionRepository.getRegion(this).displayName
     }
 
     private fun showError(errorCode: Int = Constants.ERROR_CODE_UNKNOWN) {

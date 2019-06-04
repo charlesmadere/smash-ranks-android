@@ -6,20 +6,20 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.repositories.RegionManager.OnRegionChangeListener
+import com.garpr.android.repositories.RegionRepository.OnRegionChangeListener
 import com.garpr.android.wrappers.WeakReferenceWrapper
 
-class RegionManagerImpl(
+class RegionRepositoryImpl(
         private val generalPreferenceStore: GeneralPreferenceStore,
         private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
         private val timber: Timber
-) : RegionManager {
+) : RegionRepository {
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnRegionChangeListener>>()
 
 
     companion object {
-        private const val TAG = "RegionManagerImpl"
+        private const val TAG = "RegionRepositoryImpl"
     }
 
     override fun addListener(listener: OnRegionChangeListener) {
@@ -45,18 +45,12 @@ class RegionManagerImpl(
     }
 
     override fun getRegion(context: Context?): Region {
-        if (context != null) {
-            if (context is RegionManager.RegionHandle) {
-                val region = (context as RegionManager.RegionHandle).currentRegion
+        val region = (context as? RegionRepository.RegionHandle)?.currentRegion
 
-                if (region != null) {
-                    return region
-                }
-            }
-
-            if (context is ContextWrapper) {
-                return getRegion(context.baseContext)
-            }
+        if (region != null) {
+            return region
+        } else if (context is ContextWrapper) {
+            return getRegion(context.baseContext)
         }
 
         return generalPreferenceStore.currentRegion.get() ?: throw IllegalStateException(

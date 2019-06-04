@@ -5,7 +5,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -23,7 +23,7 @@ class IdentityRepositoryTest : BaseTest() {
     protected lateinit var identityRepository: IdentityRepository
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     companion object {
@@ -60,13 +60,13 @@ class IdentityRepositoryTest : BaseTest() {
         identityRepository.addListener(listener)
         assertNull(identity)
 
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertEquals(LITE_PLAYER, identity)
 
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertEquals(LITE_PLAYER, identity)
 
-        identityRepository.setIdentity(RANKED_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(RANKED_PLAYER, regionRepository.getRegion())
         assertEquals(RANKED_PLAYER, identity)
 
         identityRepository.removeIdentity()
@@ -85,7 +85,7 @@ class IdentityRepositoryTest : BaseTest() {
 
         identityRepository.addListener(listener)
         identityRepository.addListener(listener)
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertEquals(1, count)
     }
 
@@ -98,10 +98,10 @@ class IdentityRepositoryTest : BaseTest() {
     fun testGetAndSetIdentity() {
         assertNull(identityRepository.identity)
 
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertEquals(LITE_PLAYER, identityRepository.identity)
 
-        identityRepository.setIdentity(RANKED_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(RANKED_PLAYER, regionRepository.getRegion())
         assertEquals(RANKED_PLAYER, identityRepository.identity)
 
         identityRepository.removeIdentity()
@@ -112,10 +112,10 @@ class IdentityRepositoryTest : BaseTest() {
     fun testHasIdentity() {
         assertFalse(identityRepository.hasIdentity)
 
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertTrue(identityRepository.hasIdentity)
 
-        identityRepository.setIdentity(RANKED_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(RANKED_PLAYER, regionRepository.getRegion())
         assertTrue(identityRepository.hasIdentity)
 
         identityRepository.removeIdentity()
@@ -126,7 +126,7 @@ class IdentityRepositoryTest : BaseTest() {
     fun testIsPlayerWithEmptyString() {
         assertFalse(identityRepository.isPlayer(""))
 
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertFalse(identityRepository.isPlayer(""))
 
         identityRepository.removeIdentity()
@@ -138,7 +138,7 @@ class IdentityRepositoryTest : BaseTest() {
         assertFalse(identityRepository.isPlayer(LITE_PLAYER.id))
         assertFalse(identityRepository.isPlayer(RANKED_PLAYER.id))
 
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertTrue(identityRepository.isPlayer(LITE_PLAYER.id))
         assertFalse(identityRepository.isPlayer(RANKED_PLAYER.id))
 
@@ -151,7 +151,7 @@ class IdentityRepositoryTest : BaseTest() {
     fun testIsPlayerWithNullPlayer() {
         assertFalse(identityRepository.isPlayer(null as AbsPlayer?))
 
-        identityRepository.setIdentity(RANKED_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(RANKED_PLAYER, regionRepository.getRegion())
         assertFalse(identityRepository.isPlayer(null as AbsPlayer?))
 
         identityRepository.removeIdentity()
@@ -162,7 +162,7 @@ class IdentityRepositoryTest : BaseTest() {
     fun testIsPlayerWithNullString() {
         assertFalse(identityRepository.isPlayer(null as String?))
 
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertFalse(identityRepository.isPlayer(null as String?))
 
         identityRepository.removeIdentity()
@@ -173,7 +173,7 @@ class IdentityRepositoryTest : BaseTest() {
     fun testIsPlayerWithPlayer() {
         assertFalse(identityRepository.isPlayer(LITE_PLAYER))
 
-        identityRepository.setIdentity(RANKED_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(RANKED_PLAYER, regionRepository.getRegion())
         assertFalse(identityRepository.isPlayer(LITE_PLAYER))
         assertTrue(identityRepository.isPlayer(RANKED_PLAYER))
 
@@ -186,7 +186,7 @@ class IdentityRepositoryTest : BaseTest() {
     fun testIsPlayerWithWhitespaceString() {
         assertFalse(identityRepository.isPlayer(" "))
 
-        identityRepository.setIdentity(LITE_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
         assertFalse(identityRepository.isPlayer("  "))
 
         identityRepository.removeIdentity()
@@ -204,7 +204,7 @@ class IdentityRepositoryTest : BaseTest() {
         }
 
         identityRepository.addListener(listener)
-        identityRepository.setIdentity(RANKED_PLAYER, regionManager.getRegion())
+        identityRepository.setIdentity(RANKED_PLAYER, regionRepository.getRegion())
         assertEquals(RANKED_PLAYER, identity)
 
         identityRepository.removeListener(listener)

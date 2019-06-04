@@ -21,7 +21,7 @@ import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_player_profile.view.*
 import javax.inject.Inject
 
@@ -45,7 +45,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
     protected lateinit var playerProfileManager: PlayerProfileManager
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
@@ -132,7 +132,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
                 if (p in favoritePlayersRepository) {
                     favoritePlayersRepository.removePlayer(p)
                 } else {
-                    favoritePlayersRepository.addPlayer(p, regionManager.getRegion(context))
+                    favoritePlayersRepository.addPlayer(p, regionRepository.getRegion(context))
                 }
             }
         }
@@ -141,7 +141,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
             val identity = identityRepository.identity ?: throw NullPointerException("identity is null")
             val player = fullPlayer ?: throw NullPointerException("fullPlayer is null")
             context.startActivity(HeadToHeadActivity.getLaunchIntent(context, identity, player,
-                    regionManager.getRegion(context)))
+                    regionRepository.getRegion(context)))
         }
 
         share.setOnClickListener {
@@ -175,7 +175,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
 
     override fun refresh() {
         val player = fullPlayer ?: return
-        val region = regionManager.getRegion(context)
+        val region = regionRepository.getRegion(context)
         val presentation = playerProfileManager.getPresentation(player, region)
         this.presentation = presentation
 

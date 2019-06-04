@@ -10,17 +10,17 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.SimplePreferenceView
 import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.misc.RequestCodes
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import javax.inject.Inject
 
 class RegionPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), RegionManager.OnRegionChangeListener,
+) : SimplePreferenceView(context, attrs), RegionRepository.OnRegionChangeListener,
         View.OnClickListener {
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     init {
@@ -43,7 +43,7 @@ class RegionPreferenceView @JvmOverloads constructor(
             return
         }
 
-        regionManager.addListener(this)
+        regionRepository.addListener(this)
         refresh()
     }
 
@@ -61,10 +61,10 @@ class RegionPreferenceView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        regionManager.removeListener(this)
+        regionRepository.removeListener(this)
     }
 
-    override fun onRegionChange(regionManager: RegionManager) {
+    override fun onRegionChange(regionRepository: RegionRepository) {
         if (isAlive) {
             refresh()
         }
@@ -73,7 +73,7 @@ class RegionPreferenceView @JvmOverloads constructor(
     override fun refresh() {
         super.refresh()
 
-        val region = regionManager.getRegion(context)
+        val region = regionRepository.getRegion(context)
         descriptionText = context.getString(R.string.region_endpoint_format,
                 region.displayName, context.getString(region.endpoint.title))
     }

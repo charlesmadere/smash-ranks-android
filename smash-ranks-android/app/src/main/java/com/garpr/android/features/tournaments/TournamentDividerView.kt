@@ -9,7 +9,7 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.features.tournament.TournamentActivity
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.divider_tournament.view.*
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class TournamentDividerView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs), BaseAdapterView<AbsTournament>, View.OnClickListener {
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     init {
@@ -51,7 +51,7 @@ class TournamentDividerView @JvmOverloads constructor(
     override fun onClick(v: View) {
         val tournament = this.tournament ?: return
         context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
-                regionManager.getRegion(context)))
+                regionRepository.getRegion(context)))
     }
 
     override fun setContent(content: AbsTournament) {

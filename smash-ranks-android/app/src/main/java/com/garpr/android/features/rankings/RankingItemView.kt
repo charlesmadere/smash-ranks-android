@@ -17,7 +17,7 @@ import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.PreviousRankUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_ranking.view.*
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -37,7 +37,7 @@ class RankingItemView @JvmOverloads constructor(
     protected lateinit var previousRankUtils: PreviousRankUtils
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var timber: Timber
@@ -73,12 +73,12 @@ class RankingItemView @JvmOverloads constructor(
     override fun onClick(v: View) {
         val identity = this.identity ?: return
         context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
-                regionManager.getRegion(context)))
+                regionRepository.getRegion(context)))
     }
 
     override fun onLongClick(v: View): Boolean {
         return favoritePlayersRepository.showAddOrRemovePlayerDialog(fragmentManager, identity,
-                regionManager.getRegion(context))
+                regionRepository.getRegion(context))
     }
 
     override fun refresh() {

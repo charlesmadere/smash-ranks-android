@@ -12,7 +12,7 @@ import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.SearchToolbar
 import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.home_toolbar_items.view.*
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class HomeToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SearchToolbar(context, attrs), IdentityRepository.OnIdentityChangeListener,
-        RegionManager.OnRegionChangeListener {
+        RegionRepository.OnRegionChangeListener {
 
     private val overflowPopupMenu: PopupMenu
 
@@ -32,7 +32,7 @@ class HomeToolbar @JvmOverloads constructor(
     protected lateinit var identityRepository: IdentityRepository
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     interface Listeners {
@@ -58,7 +58,7 @@ class HomeToolbar @JvmOverloads constructor(
         }
 
         identityRepository.addListener(this)
-        regionManager.addListener(this)
+        regionRepository.addListener(this)
     }
 
     override fun onCloseSearchField() {
@@ -70,7 +70,7 @@ class HomeToolbar @JvmOverloads constructor(
         super.onDetachedFromWindow()
 
         identityRepository.removeListener(this)
-        regionManager.removeListener(this)
+        regionRepository.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -79,7 +79,7 @@ class HomeToolbar @JvmOverloads constructor(
         if (!isInEditMode) {
             appComponent.inject(this)
             identityRepository.addListener(this)
-            regionManager.addListener(this)
+            regionRepository.addListener(this)
         }
 
         overflowButton.setOnClickListener {
@@ -98,7 +98,7 @@ class HomeToolbar @JvmOverloads constructor(
         overflowButton.visibility = View.GONE
     }
 
-    override fun onRegionChange(regionManager: RegionManager) {
+    override fun onRegionChange(regionRepository: RegionRepository) {
         if (isAlive) {
             refresh()
         }

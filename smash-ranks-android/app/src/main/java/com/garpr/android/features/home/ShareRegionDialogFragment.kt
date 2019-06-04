@@ -9,15 +9,15 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.base.BaseBottomSheetDialogFragment
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.dialog_share_region.*
 import javax.inject.Inject
 
 class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable,
-        RegionManager.OnRegionChangeListener {
+        RegionRepository.OnRegionChangeListener {
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
@@ -41,10 +41,10 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable,
 
     override fun onDestroyView() {
         super.onDestroyView()
-        regionManager.removeListener(this)
+        regionRepository.removeListener(this)
     }
 
-    override fun onRegionChange(regionManager: RegionManager) {
+    override fun onRegionChange(regionRepository: RegionRepository) {
         if (isAlive) {
             refresh()
         }
@@ -68,11 +68,11 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable,
             dismissAllowingStateLoss()
         }
 
-        regionManager.addListener(this)
+        regionRepository.addListener(this)
     }
 
     override fun refresh() {
-        val region = regionManager.getRegion(context)
+        val region = regionRepository.getRegion(context)
         dialogRegionRankings.text = getString(R.string.x_rankings, region.displayName)
         dialogRegionTournaments.text = getString(R.string.x_tournaments, region.displayName)
     }

@@ -10,7 +10,7 @@ import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.features.common.IdentityConstraintLayout
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_favorite_player.view.*
 import javax.inject.Inject
 
@@ -24,7 +24,7 @@ class FavoritePlayerItemView @JvmOverloads constructor(
     protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     init {
@@ -54,7 +54,7 @@ class FavoritePlayerItemView @JvmOverloads constructor(
 
     override fun onLongClick(v: View): Boolean {
         return favoritePlayersRepository.showAddOrRemovePlayerDialog(fragmentManager, identity,
-                regionManager.getRegion(context))
+                regionRepository.getRegion(context))
     }
 
     override fun setContent(content: FavoritePlayer) {

@@ -18,7 +18,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.layout_players.view.*
 import javax.inject.Inject
 
@@ -34,7 +34,7 @@ class PlayersLayout @JvmOverloads constructor(
         private set
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -51,7 +51,7 @@ class PlayersLayout @JvmOverloads constructor(
 
     private fun fetchPlayersBundle() {
         isRefreshing = true
-        serverApi.getPlayers(regionManager.getRegion(context), ApiCall(this))
+        serverApi.getPlayers(regionRepository.getRegion(context), ApiCall(this))
     }
 
     override fun getRecyclerView(): RecyclerView? {

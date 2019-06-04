@@ -23,7 +23,7 @@ import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_set_identity.*
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     protected lateinit var identityRepository: IdentityRepository
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -67,7 +67,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     private fun fetchPlayersBundle() {
         refreshLayout.isRefreshing = true
-        serverApi.getPlayers(regionManager.getRegion(this), ApiCall(this))
+        serverApi.getPlayers(regionRepository.getRegion(this), ApiCall(this))
     }
 
     override fun navigateUp() {
@@ -122,7 +122,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_set_identity)
-        toolbar.subtitleText = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionRepository.getRegion(this).displayName
 
         fetchPlayersBundle()
     }
@@ -133,7 +133,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override fun onSaveClick(v: SetIdentityToolbar) {
         val selectedPlayer = _selectedPlayer ?: throw NullPointerException("_selectedPlayer is null")
-        identityRepository.setIdentity(selectedPlayer, regionManager.getRegion(this))
+        identityRepository.setIdentity(selectedPlayer, regionRepository.getRegion(this))
         setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
     }

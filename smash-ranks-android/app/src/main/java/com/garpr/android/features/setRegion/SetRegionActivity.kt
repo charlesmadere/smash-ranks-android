@@ -17,7 +17,7 @@ import com.garpr.android.misc.ListUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_set_region.*
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     private val adapter = RegionsSelectionAdapter()
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -92,7 +92,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
 
     override fun onClick(v: RegionSelectionItemView) {
         val region = v.region
-        _selectedRegion = if (region == regionManager.getRegion()) null else region
+        _selectedRegion = if (region == regionRepository.getRegion()) null else region
         toolbar.refresh()
         adapter.notifyDataSetChanged()
     }
@@ -101,7 +101,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_set_region)
-        toolbar.subtitleText = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionRepository.getRegion(this).displayName
 
         fetchRegionsBundle()
     }
@@ -111,7 +111,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     }
 
     override fun onSaveClick(v: SetRegionToolbar) {
-        regionManager.setRegion(_selectedRegion ?: throw RuntimeException("_selectedRegion is null"))
+        regionRepository.setRegion(_selectedRegion ?: throw RuntimeException("_selectedRegion is null"))
         setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
     }
@@ -125,7 +125,7 @@ class SetRegionActivity : BaseActivity(), ApiListener<RegionsBundle>,
     }
 
     override val selectedRegion: Region?
-        get() = _selectedRegion ?: regionManager.getRegion()
+        get() = _selectedRegion ?: regionRepository.getRegion()
 
     private fun showEmpty() {
         adapter.clear()

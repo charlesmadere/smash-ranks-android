@@ -8,14 +8,14 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.base.BaseActivity
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_rankings.*
 import javax.inject.Inject
 
 class RankingsActivity : BaseActivity() {
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     companion object {
@@ -33,7 +33,7 @@ class RankingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_rankings)
-        toolbar.subtitleText = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionRepository.getRegion(this).displayName
     }
 
 }

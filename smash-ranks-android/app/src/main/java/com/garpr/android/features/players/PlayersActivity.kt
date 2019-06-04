@@ -11,7 +11,7 @@ import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.features.common.SearchToolbar
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_players.*
 import kotlinx.android.synthetic.main.layout_players.*
 import javax.inject.Inject
@@ -20,7 +20,7 @@ class PlayersActivity : BaseActivity(), PlayersLayout.Listener, Searchable, Sear
         SearchToolbar.Listener {
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     companion object {
@@ -46,7 +46,7 @@ class PlayersActivity : BaseActivity(), PlayersLayout.Listener, Searchable, Sear
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_players)
-        toolbar.subtitleText = regionManager.getRegion(this).displayName
+        toolbar.subtitleText = regionRepository.getRegion(this).displayName
     }
 
     override fun onPlayersBundleFetched(layout: PlayersLayout) {

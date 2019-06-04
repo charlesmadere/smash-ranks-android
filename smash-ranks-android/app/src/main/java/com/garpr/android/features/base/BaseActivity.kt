@@ -12,7 +12,7 @@ import com.garpr.android.extensions.optHideKeyboard
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.NightModeRepository
-import com.garpr.android.repositories.RegionManager.RegionHandle
+import com.garpr.android.repositories.RegionRepository.RegionHandle
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {

@@ -23,14 +23,14 @@ import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners,
-        RankingCriteriaHandle, RankingsLayout.Listener, RegionManager.OnRegionChangeListener,
+        RankingCriteriaHandle, RankingsLayout.Listener, RegionRepository.OnRegionChangeListener,
         Searchable, SearchQueryHandle, SearchToolbar.Listener {
 
     private val adapter = HomePagerAdapter()
@@ -42,7 +42,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     protected lateinit var rankingsPollingManager: RankingsPollingManager
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
@@ -70,7 +70,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onActivityRequirementsClick(v: HomeToolbar) {
         val rankingCriteria = this.rankingCriteria ?: return
-        val regionDisplayName = regionManager.getRegion(this).displayName
+        val regionDisplayName = regionRepository.getRegion(this).displayName
         val dialog = ActivityRequirementsDialogFragment.create(regionDisplayName, rankingCriteria)
         dialog.show(supportFragmentManager, ActivityRequirementsDialogFragment.TAG)
     }
@@ -96,12 +96,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         setInitialPosition(savedInstanceState)
         rankingsPollingManager.enableOrDisable()
         smashRosterSyncManager.enableOrDisable()
-        regionManager.addListener(this)
+        regionRepository.addListener(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        regionManager.removeListener(this)
+        regionRepository.removeListener(this)
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
@@ -124,7 +124,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         prepareMenuAndTitleAndSubtitle(layout)
     }
 
-    override fun onRegionChange(regionManager: RegionManager) {
+    override fun onRegionChange(regionRepository: RegionRepository) {
         prepareMenuAndTitleAndSubtitle(null)
         adapter.refresh()
     }
@@ -161,11 +161,11 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override fun onViewYourselfClick(v: HomeToolbar) {
         val identity = identityRepository.identity ?: throw NullPointerException("identity is null")
         startActivity(PlayerActivity.getLaunchIntent(this, identity,
-                regionManager.getRegion(this)))
+                regionRepository.getRegion(this)))
     }
 
     private fun prepareMenuAndTitleAndSubtitle(layout: RankingsLayout?) {
-        val region = regionManager.getRegion(this)
+        val region = regionRepository.getRegion(this)
         toolbar.titleText = region.displayName
 
         toolbar.subtitleText = layout?.rankingsBundle?.let {

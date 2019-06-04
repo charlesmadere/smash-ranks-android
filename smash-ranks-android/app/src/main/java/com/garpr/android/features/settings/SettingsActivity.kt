@@ -19,7 +19,7 @@ import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 
@@ -38,7 +38,7 @@ class SettingsActivity : BaseActivity() {
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var shareUtils: ShareUtils
@@ -87,7 +87,7 @@ class SettingsActivity : BaseActivity() {
 
         favoritePlayersRepository.removeListener(onFavoritePlayersChangeListener)
         identityRepository.removeListener(onIdentityChangeListener)
-        regionManager.removeListener(onRegionChangeListener)
+        regionRepository.removeListener(onRegionChangeListener)
 
         rankingsPollingPreferenceStore.chargingRequired.removeListener(onChargingRequiredChange)
         rankingsPollingPreferenceStore.enabled.removeListener(onRankingsPollingEnabledChange)
@@ -107,7 +107,7 @@ class SettingsActivity : BaseActivity() {
 
         favoritePlayersRepository.addListener(onFavoritePlayersChangeListener)
         identityRepository.addListener(onIdentityChangeListener)
-        regionManager.addListener(onRegionChangeListener)
+        regionRepository.addListener(onRegionChangeListener)
 
         rankingsPollingPreferenceStore.chargingRequired.addListener(onChargingRequiredChange)
         rankingsPollingPreferenceStore.enabled.addListener(onRankingsPollingEnabledChange)
@@ -215,8 +215,8 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
-    private val onRegionChangeListener = object : RegionManager.OnRegionChangeListener {
-        override fun onRegionChange(regionManager: RegionManager) {
+    private val onRegionChangeListener = object : RegionRepository.OnRegionChangeListener {
+        override fun onRegionChange(regionRepository: RegionRepository) {
             refresh()
         }
     }

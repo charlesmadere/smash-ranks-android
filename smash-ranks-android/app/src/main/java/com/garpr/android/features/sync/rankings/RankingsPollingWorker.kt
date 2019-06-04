@@ -10,7 +10,7 @@ import com.garpr.android.misc.RankingsNotificationsUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import javax.inject.Inject
 
 class RankingsPollingWorker(
@@ -25,7 +25,7 @@ class RankingsPollingWorker(
     protected lateinit var rankingsNotificationsUtils: RankingsNotificationsUtils
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -59,7 +59,7 @@ class RankingsPollingWorker(
 
         var info: RankingsNotificationsUtils.NotificationInfo? = null
 
-        serverApi.getRankings(regionManager.getRegion(), object : ApiListener<RankingsBundle> {
+        serverApi.getRankings(regionRepository.getRegion(), object : ApiListener<RankingsBundle> {
             override fun failure(errorCode: Int) {
                 timber.e(TAG, "error when fetching rankings ($errorCode)")
                 info = null

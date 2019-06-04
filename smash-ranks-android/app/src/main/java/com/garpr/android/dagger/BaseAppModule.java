@@ -64,8 +64,8 @@ import com.garpr.android.repositories.IdentityRepository;
 import com.garpr.android.repositories.IdentityRepositoryImpl;
 import com.garpr.android.repositories.NightModeRepository;
 import com.garpr.android.repositories.NightModeRepositoryImpl;
-import com.garpr.android.repositories.RegionManager;
-import com.garpr.android.repositories.RegionManagerImpl;
+import com.garpr.android.repositories.RegionRepository;
+import com.garpr.android.repositories.RegionRepositoryImpl;
 import com.garpr.android.wrappers.WorkManagerWrapper;
 import com.squareup.moshi.Moshi;
 
@@ -123,8 +123,8 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    DeepLinkUtils providesDeepLinkUtils(final RegionManager regionManager, final Timber timber) {
-        return new DeepLinkUtilsImpl(regionManager, timber);
+    DeepLinkUtils providesDeepLinkUtils(final RegionRepository regionRepository, final Timber timber) {
+        return new DeepLinkUtilsImpl(regionRepository, timber);
     }
 
     @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE)
@@ -268,9 +268,9 @@ public abstract class BaseAppModule {
     @Singleton
     NotificationsManager providesNotificationManager(
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final RegionManager regionManager, final Timber timber) {
+            final RegionRepository regionRepository, final Timber timber) {
         return new NotificationsManagerImpl(mApplication, rankingsPollingPreferenceStore,
-                regionManager, timber);
+                regionRepository, timber);
     }
 
     @NonNull
@@ -341,9 +341,9 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    RegionManager providesRegionManager(final GeneralPreferenceStore generalPreferenceStore,
+    RegionRepository providesRegionRepository(final GeneralPreferenceStore generalPreferenceStore,
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore, final Timber timber) {
-        return new RegionManagerImpl(generalPreferenceStore, rankingsPollingPreferenceStore, timber);
+        return new RegionRepositoryImpl(generalPreferenceStore, rankingsPollingPreferenceStore, timber);
     }
 
     @NonNull
@@ -353,19 +353,20 @@ public abstract class BaseAppModule {
             @Named(GAR_PR_API) final GarPrApi garPrApi,
             @Named(NOT_GAR_PR_API) final GarPrApi notGarPrApi,
             final RankingsPollingPreferenceStore rankingsPollingPreferenceStore,
-            final RegionManager regionManager,
+            final RegionRepository regionRepository,
             final SmashRosterApi smashRosterApi,
             final ThreadUtils threadUtils,
             final Timber timber) {
         return new ServerApiImpl(fullTournamentUtils, garPrApi, notGarPrApi,
-                rankingsPollingPreferenceStore, regionManager, smashRosterApi, threadUtils, timber);
+                rankingsPollingPreferenceStore, regionRepository, smashRosterApi, threadUtils,
+                timber);
     }
 
     @NonNull
     @Provides
     @Singleton
-    ShareUtils providesShareUtils(final RegionManager regionManager, final Timber timber) {
-        return new ShareUtilsImpl(regionManager, timber);
+    ShareUtils providesShareUtils(final RegionRepository regionRepository, final Timber timber) {
+        return new ShareUtilsImpl(regionRepository, timber);
     }
 
     @NonNull

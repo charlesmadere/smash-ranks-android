@@ -4,7 +4,7 @@ import android.app.Application
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -15,13 +15,13 @@ import org.robolectric.RobolectricTestRunner
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-class RegionManagerTest : BaseTest() {
+class RegionRepositoryTest : BaseTest() {
 
     @Inject
     protected lateinit var application: Application
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     companion object {
@@ -63,16 +63,16 @@ class RegionManagerTest : BaseTest() {
     fun testAddListener() {
         var region: Region? = null
 
-        val listener = object : RegionManager.OnRegionChangeListener {
-            override fun onRegionChange(regionManager: RegionManager) {
-                region = regionManager.getRegion()
+        val listener = object : RegionRepository.OnRegionChangeListener {
+            override fun onRegionChange(regionRepository: RegionRepository) {
+                region = regionRepository.getRegion()
             }
         }
 
-        regionManager.addListener(listener)
+        regionRepository.addListener(listener)
         assertNull(region)
 
-        regionManager.setRegion(ALABAMA)
+        regionRepository.setRegion(ALABAMA)
         assertEquals(ALABAMA, region)
     }
 
@@ -80,55 +80,55 @@ class RegionManagerTest : BaseTest() {
     fun testAddListenerTwice() {
         var count = 0
 
-        val listener = object : RegionManager.OnRegionChangeListener {
-            override fun onRegionChange(regionManager: RegionManager) {
+        val listener = object : RegionRepository.OnRegionChangeListener {
+            override fun onRegionChange(regionRepository: RegionRepository) {
                 ++count
             }
         }
 
-        regionManager.addListener(listener)
-        regionManager.addListener(listener)
-        regionManager.setRegion(ALABAMA)
+        regionRepository.addListener(listener)
+        regionRepository.addListener(listener)
+        regionRepository.setRegion(ALABAMA)
         assertEquals(1, count)
     }
 
     @Test
     fun testGetRegion() {
-        assertNotNull(regionManager.getRegion())
+        assertNotNull(regionRepository.getRegion())
     }
 
     @Test
     fun testGetRegionWithContext() {
-        assertNotNull(regionManager.getRegion(application))
+        assertNotNull(regionRepository.getRegion(application))
     }
 
     @Test
     fun testRemoveListener() {
         var region: Region? = null
 
-        val listener = object : RegionManager.OnRegionChangeListener {
-            override fun onRegionChange(regionManager: RegionManager) {
-                region = regionManager.getRegion()
+        val listener = object : RegionRepository.OnRegionChangeListener {
+            override fun onRegionChange(regionRepository: RegionRepository) {
+                region = regionRepository.getRegion()
             }
         }
 
-        regionManager.addListener(listener)
+        regionRepository.addListener(listener)
         assertNull(region)
 
-        regionManager.setRegion(NYC)
+        regionRepository.setRegion(NYC)
         assertEquals(NYC, region)
 
-        regionManager.removeListener(listener)
-        regionManager.setRegion(GEORGIA)
+        regionRepository.removeListener(listener)
+        regionRepository.setRegion(GEORGIA)
         assertEquals(NYC, region)
     }
 
     @Test
     fun testSetRegion() {
-        assertNotNull(regionManager.getRegion())
+        assertNotNull(regionRepository.getRegion())
 
-        regionManager.setRegion(GEORGIA)
-        assertEquals(GEORGIA, regionManager.getRegion())
+        regionRepository.setRegion(GEORGIA)
+        assertEquals(GEORGIA, regionRepository.getRegion())
     }
 
 }

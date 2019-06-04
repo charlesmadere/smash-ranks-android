@@ -22,7 +22,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.layout_rankings.view.*
 import javax.inject.Inject
 
@@ -41,7 +41,7 @@ class RankingsLayout @JvmOverloads constructor(
     protected lateinit var notificationsManager: NotificationsManager
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
     @Inject
     protected lateinit var serverApi: ServerApi
@@ -65,7 +65,7 @@ class RankingsLayout @JvmOverloads constructor(
 
     private fun fetchRankingsBundle() {
         isRefreshing = true
-        serverApi.getRankings(regionManager.getRegion(context), ApiCall(this))
+        serverApi.getRankings(regionRepository.getRegion(context), ApiCall(this))
     }
 
     override fun getRecyclerView(): RecyclerView? {

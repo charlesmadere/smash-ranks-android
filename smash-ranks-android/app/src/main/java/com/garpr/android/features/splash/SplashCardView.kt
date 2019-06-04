@@ -16,7 +16,7 @@ import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionManager
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_splash.view.*
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class SplashCardView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : LifecycleCardView(context, attrs), DialogInterface.OnClickListener,
         IdentityRepository.OnIdentityChangeListener, Refreshable,
-        RegionManager.OnRegionChangeListener {
+        RegionRepository.OnRegionChangeListener {
 
     private var hasAnimated: Boolean = false
 
@@ -36,7 +36,7 @@ class SplashCardView @JvmOverloads constructor(
     protected lateinit var identityRepository: IdentityRepository
 
     @Inject
-    protected lateinit var regionManager: RegionManager
+    protected lateinit var regionRepository: RegionRepository
 
 
     interface Listener {
@@ -57,7 +57,7 @@ class SplashCardView @JvmOverloads constructor(
         }
 
         identityRepository.addListener(this)
-        regionManager.addListener(this)
+        regionRepository.addListener(this)
         refresh()
 
         if (!hasAnimated && !deviceUtils.hasLowRam) {
@@ -74,7 +74,7 @@ class SplashCardView @JvmOverloads constructor(
         super.onDetachedFromWindow()
 
         identityRepository.removeListener(this)
-        regionManager.removeListener(this)
+        regionRepository.removeListener(this)
     }
 
     override fun onFinishInflate() {
@@ -101,7 +101,7 @@ class SplashCardView @JvmOverloads constructor(
         }
 
         identityRepository.addListener(this)
-        regionManager.addListener(this)
+        regionRepository.addListener(this)
         refresh()
     }
 
@@ -111,7 +111,7 @@ class SplashCardView @JvmOverloads constructor(
         }
     }
 
-    override fun onRegionChange(regionManager: RegionManager) {
+    override fun onRegionChange(regionRepository: RegionRepository) {
         if (isAlive) {
             refresh()
         }
@@ -149,7 +149,7 @@ class SplashCardView @JvmOverloads constructor(
                     R.drawable.ic_delete_white_24dp)
         }
 
-        val region = regionManager.getRegion(context)
+        val region = regionRepository.getRegion(context)
         customizeRegion.descriptionText = context.getString(R.string.region_endpoint_format,
                 region.displayName, context.getString(region.endpoint.title))
     }
