@@ -3,10 +3,10 @@ package com.garpr.android.repositories
 import android.content.Context
 import com.garpr.android.data.models.NightMode
 
-interface NightModeManager {
+interface NightModeRepository {
 
     interface OnNightModeChangeListener {
-        fun onNightModeChange(nightModeManager: NightModeManager)
+        fun onNightModeChange(nightModeRepository: NightModeRepository)
     }
 
     fun addListener(listener: OnNightModeChangeListener)

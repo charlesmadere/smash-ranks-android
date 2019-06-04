@@ -62,8 +62,8 @@ import com.garpr.android.repositories.FavoritePlayersRepository;
 import com.garpr.android.repositories.FavoritePlayersRepositoryImpl;
 import com.garpr.android.repositories.IdentityManager;
 import com.garpr.android.repositories.IdentityManagerImpl;
-import com.garpr.android.repositories.NightModeManager;
-import com.garpr.android.repositories.NightModeManagerImpl;
+import com.garpr.android.repositories.NightModeRepository;
+import com.garpr.android.repositories.NightModeRepositoryImpl;
 import com.garpr.android.repositories.RegionManager;
 import com.garpr.android.repositories.RegionManagerImpl;
 import com.garpr.android.wrappers.WorkManagerWrapper;
@@ -237,9 +237,9 @@ public abstract class BaseAppModule {
     @NonNull
     @Provides
     @Singleton
-    NightModeManager providesNightModeManager(final GeneralPreferenceStore generalPreferenceStore,
-            final Timber timber) {
-        return new NightModeManagerImpl(generalPreferenceStore, timber);
+    NightModeRepository providesNightModeRepository(
+            final GeneralPreferenceStore generalPreferenceStore, final Timber timber) {
+        return new NightModeRepositoryImpl(generalPreferenceStore, timber);
     }
 
     @Named(NOT_GAR_PR_API)

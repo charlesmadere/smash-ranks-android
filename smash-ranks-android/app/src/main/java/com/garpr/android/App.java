@@ -9,7 +9,7 @@ import com.garpr.android.misc.Constants;
 import com.garpr.android.misc.CrashlyticsWrapper;
 import com.garpr.android.misc.DeviceUtils;
 import com.garpr.android.misc.Timber;
-import com.garpr.android.repositories.NightModeManager;
+import com.garpr.android.repositories.NightModeRepository;
 import com.garpr.android.wrappers.ImageLibraryWrapper;
 
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class App extends BaseApp implements AppComponentHandle,
-        NightModeManager.OnNightModeChangeListener {
+        NightModeRepository.OnNightModeChangeListener {
 
     private static final String TAG = "App";
 
@@ -39,15 +39,15 @@ public class App extends BaseApp implements AppComponentHandle,
     ImageLibraryWrapper mImageLibraryWrapper;
 
     @Inject
-    NightModeManager mNightModeManager;
+    NightModeRepository mNightModeRepository;
 
     @Inject
     Timber mTimber;
 
 
     private void applyNightMode() {
-        AppCompatDelegate.setDefaultNightMode(mNightModeManager.getNightMode().getThemeValue());
-        mNightModeManager.addListener(this);
+        AppCompatDelegate.setDefaultNightMode(mNightModeRepository.getNightMode().getThemeValue());
+        mNightModeRepository.addListener(this);
     }
 
     @NonNull
@@ -98,8 +98,8 @@ public class App extends BaseApp implements AppComponentHandle,
     }
 
     @Override
-    public void onNightModeChange(@NonNull final NightModeManager nightModeManager) {
-        AppCompatDelegate.setDefaultNightMode(nightModeManager.getNightMode().getThemeValue());
+    public void onNightModeChange(@NonNull final NightModeRepository nightModeRepository) {
+        AppCompatDelegate.setDefaultNightMode(nightModeRepository.getNightMode().getThemeValue());
     }
 
 }

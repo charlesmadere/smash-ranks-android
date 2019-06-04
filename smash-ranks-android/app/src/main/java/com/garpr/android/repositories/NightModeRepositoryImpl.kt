@@ -4,19 +4,19 @@ import android.content.Context
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore
-import com.garpr.android.repositories.NightModeManager.OnNightModeChangeListener
+import com.garpr.android.repositories.NightModeRepository.OnNightModeChangeListener
 import com.garpr.android.wrappers.WeakReferenceWrapper
 
-class NightModeManagerImpl(
+class NightModeRepositoryImpl(
         private val generalPreferenceStore: GeneralPreferenceStore,
         private val timber: Timber
-) : NightModeManager {
+) : NightModeRepository {
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnNightModeChangeListener>>()
 
 
     companion object {
-        private const val TAG = "NightModeManagerImpl"
+        private const val TAG = "NightModeRepositoryImpl"
     }
 
     override fun addListener(listener: OnNightModeChangeListener) {

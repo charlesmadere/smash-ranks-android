@@ -11,14 +11,14 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optHideKeyboard
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Timber
-import com.garpr.android.repositories.NightModeManager
+import com.garpr.android.repositories.NightModeRepository
 import com.garpr.android.repositories.RegionManager.RegionHandle
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
     @Inject
-    protected lateinit var nightModeManager: NightModeManager
+    protected lateinit var nightModeRepository: NightModeRepository
 
     @Inject
     protected lateinit var timber: Timber
@@ -55,7 +55,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
 
-        delegate.setLocalNightMode(nightModeManager.nightMode.themeValue)
+        delegate.setLocalNightMode(nightModeRepository.nightMode.themeValue)
         super.onCreate(savedInstanceState)
         timber.d(TAG, "$activityName created")
     }
