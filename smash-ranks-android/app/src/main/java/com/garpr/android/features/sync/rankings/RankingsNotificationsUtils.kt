@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.features.sync.rankings
 
 import com.garpr.android.data.models.RankingsBundle
 
@@ -12,7 +12,7 @@ interface RankingsNotificationsUtils {
         CANCEL, NO_CHANGE, SHOW
     }
 
-    data class PollStatus constructor(
+    data class PollStatus(
             val oldRankingsId: String? = null,
             val proceed: Boolean,
             val retry: Boolean
