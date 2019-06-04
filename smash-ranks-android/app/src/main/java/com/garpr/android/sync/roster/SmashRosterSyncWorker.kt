@@ -1,4 +1,4 @@
-package com.garpr.android.features.sync.roster
+package com.garpr.android.sync.roster
 
 import android.content.Context
 import androidx.work.Worker

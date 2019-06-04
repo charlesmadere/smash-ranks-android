@@ -3,11 +3,11 @@ package com.garpr.android.misc
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.requireFromJson
-import com.garpr.android.features.sync.rankings.RankingsNotificationsUtils
-import com.garpr.android.features.sync.rankings.RankingsNotificationsUtils.NotificationInfo.CANCEL
-import com.garpr.android.features.sync.rankings.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
-import com.garpr.android.features.sync.rankings.RankingsNotificationsUtils.NotificationInfo.SHOW
-import com.garpr.android.features.sync.rankings.RankingsNotificationsUtils.PollStatus
+import com.garpr.android.sync.rankings.RankingsNotificationsUtils
+import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.CANCEL
+import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
+import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.SHOW
+import com.garpr.android.sync.rankings.RankingsNotificationsUtils.PollStatus
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals

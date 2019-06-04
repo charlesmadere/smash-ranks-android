@@ -1,4 +1,4 @@
-package com.garpr.android.activities
+package com.garpr.android.features.player
 
 import android.app.Application
 import com.garpr.android.BaseTest
@@ -8,7 +8,6 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.features.player.PlayerActivity
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

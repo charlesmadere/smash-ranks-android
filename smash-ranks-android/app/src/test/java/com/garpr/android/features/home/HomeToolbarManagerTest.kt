@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.home
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
@@ -8,7 +8,6 @@ import com.garpr.android.data.models.LiteRegion
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.home.HomeToolbarManager
 import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

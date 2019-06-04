@@ -1,13 +1,13 @@
-package com.garpr.android.features.sync.rankings
+package com.garpr.android.sync.rankings
 
 import android.text.TextUtils
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.SimpleDate
-import com.garpr.android.features.sync.rankings.RankingsNotificationsUtils.NotificationInfo
-import com.garpr.android.features.sync.rankings.RankingsNotificationsUtils.PollStatus
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo
+import com.garpr.android.sync.rankings.RankingsNotificationsUtils.PollStatus
 
 class RankingsNotificationsUtilsImpl(
         private val deviceUtils: DeviceUtils,

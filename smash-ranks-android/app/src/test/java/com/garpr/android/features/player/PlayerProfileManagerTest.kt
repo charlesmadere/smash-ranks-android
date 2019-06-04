@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.player
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Avatar
@@ -8,7 +8,6 @@ import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCharacter
 import com.garpr.android.data.models.SmashCompetitor
-import com.garpr.android.features.player.PlayerProfileManager
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository

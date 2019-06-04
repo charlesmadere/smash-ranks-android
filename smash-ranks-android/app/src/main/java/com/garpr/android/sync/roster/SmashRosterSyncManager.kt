@@ -1,4 +1,4 @@
-package com.garpr.android.features.sync.roster
+package com.garpr.android.sync.roster
 
 import androidx.annotation.AnyThread
 import com.garpr.android.data.models.SmashRosterSyncResult

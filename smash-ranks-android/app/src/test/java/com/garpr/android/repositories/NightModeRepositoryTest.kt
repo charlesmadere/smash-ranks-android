@@ -1,9 +1,8 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
 import android.app.Application
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.NightMode
-import com.garpr.android.repositories.NightModeRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull

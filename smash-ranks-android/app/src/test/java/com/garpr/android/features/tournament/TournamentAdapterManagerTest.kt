@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.tournament
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
@@ -7,7 +7,6 @@ import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.SimpleDate
-import com.garpr.android.features.tournament.TournamentAdapterManager
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -57,7 +56,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildMatchesListForFullTournament1() {
         val list = tournamentAdapterManager.buildMatchesList(FULL_TOURNAMENT_1)
         assertEquals(2, list.size)
@@ -67,7 +65,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildMatchesListForFullTournament2() {
         val list = tournamentAdapterManager.buildMatchesList(FULL_TOURNAMENT_2)
         assertEquals(2, list.size)
@@ -77,7 +74,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildMatchesListForFullTournament3() {
         val list = tournamentAdapterManager.buildMatchesList(FULL_TOURNAMENT_3)
         assertEquals(3, list.size)
@@ -88,7 +84,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildMatchesListForFullTournament4() {
         val list = tournamentAdapterManager.buildMatchesList(FULL_TOURNAMENT_4)
         assertEquals(3, list.size)
@@ -99,7 +94,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildSearchedMatchesList() {
         val list = tournamentAdapterManager.buildSearchedMatchesList(FULL_TOURNAMENT_1,
                 listOf(MATCH_1, MATCH_2))
@@ -111,16 +105,14 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildSearchedMatchesListForEmptyMatches() {
-        val list = tournamentAdapterManager.buildSearchedMatchesList(FULL_TOURNAMENT_2, listOf())
+        val list = tournamentAdapterManager.buildSearchedMatchesList(FULL_TOURNAMENT_2, emptyList())
         assertEquals(1, list.size)
 
         assertTrue(list[0] is FullTournament)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildSearchedMatchesListForNullMatches() {
         val list = tournamentAdapterManager.buildSearchedMatchesList(FULL_TOURNAMENT_3, null)
         assertEquals(1, list.size)
@@ -129,7 +121,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildPlayersListForFullTournament1() {
         val list = tournamentAdapterManager.buildPlayersList(FULL_TOURNAMENT_1)
         assertEquals(2, list.size)
@@ -139,7 +130,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildPlayersListForFullTournament2() {
         val list = tournamentAdapterManager.buildPlayersList(FULL_TOURNAMENT_2)
         assertEquals(4, list.size)
@@ -151,7 +141,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildPlayersListForFullTournament3() {
         val list = tournamentAdapterManager.buildPlayersList(FULL_TOURNAMENT_3)
         assertEquals(2, list.size)
@@ -161,7 +150,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildPlayersListForFullTournament4() {
         val list = tournamentAdapterManager.buildPlayersList(FULL_TOURNAMENT_4)
         assertEquals(4, list.size)
@@ -173,7 +161,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildSearchedPlayersList() {
         val list = tournamentAdapterManager.buildSearchedPlayersList(FULL_TOURNAMENT_1,
                 listOf(PLAYER_1, PLAYER_2, PLAYER_3))
@@ -186,16 +173,14 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildSearchedPlayersListForEmptyPlayers() {
-        val list = tournamentAdapterManager.buildSearchedPlayersList(FULL_TOURNAMENT_1, listOf())
+        val list = tournamentAdapterManager.buildSearchedPlayersList(FULL_TOURNAMENT_1, emptyList())
         assertEquals(1, list.size)
 
         assertTrue(list[0] is FullTournament)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testBuildSearchedPlayersListForNullPlayers() {
         val list = tournamentAdapterManager.buildSearchedPlayersList(FULL_TOURNAMENT_1, null)
         assertEquals(1, list.size)
@@ -204,7 +189,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemIdForFullTournaments() {
         assertEquals(Long.MIN_VALUE,
                 tournamentAdapterManager.getItemId(0, FULL_TOURNAMENT_1))
@@ -217,7 +201,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemIdForMatches() {
         assertEquals(MATCH_1.hashCode().toLong(),
                 tournamentAdapterManager.getItemId(3, MATCH_1))
@@ -226,7 +209,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemIdForPlayers() {
         assertEquals(PLAYER_1.hashCode().toLong(),
                 tournamentAdapterManager.getItemId(3, PLAYER_1))
@@ -237,7 +219,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemIdForStrings() {
         assertEquals(EMPTY.hashCode().toLong(),
                 tournamentAdapterManager.getItemId(2, EMPTY))
@@ -248,7 +229,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemViewTypeForFullTournament() {
         assertEquals(TournamentAdapterManager.ViewType.TOURNAMENT_INFO,
                 tournamentAdapterManager.getItemViewType(0, FULL_TOURNAMENT_1))
@@ -261,7 +241,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemViewTypeForMatches() {
         assertEquals(TournamentAdapterManager.ViewType.MATCH,
                 tournamentAdapterManager.getItemViewType(3, MATCH_1))
@@ -270,7 +249,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemViewTypeForPlayers() {
         assertEquals(TournamentAdapterManager.ViewType.PLAYER,
                 tournamentAdapterManager.getItemViewType(3, PLAYER_1))
@@ -281,7 +259,6 @@ class TournamentAdapterManagerTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemViewTypeForString() {
         assertEquals(TournamentAdapterManager.ViewType.MESSAGE,
                 tournamentAdapterManager.getItemViewType(2, EMPTY))

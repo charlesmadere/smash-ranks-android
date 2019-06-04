@@ -1,10 +1,9 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
 import android.app.Application
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
-import com.garpr.android.repositories.RegionRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull

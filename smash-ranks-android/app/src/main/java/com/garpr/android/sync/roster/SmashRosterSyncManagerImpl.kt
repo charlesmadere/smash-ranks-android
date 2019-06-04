@@ -1,4 +1,4 @@
-package com.garpr.android.features.sync.roster
+package com.garpr.android.sync.roster
 
 import android.annotation.SuppressLint
 import androidx.annotation.UiThread
@@ -9,12 +9,12 @@ import androidx.work.PeriodicWorkRequest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.SmashRosterSyncResult
-import com.garpr.android.features.sync.roster.SmashRosterSyncManager.OnSyncListeners
 import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
+import com.garpr.android.sync.roster.SmashRosterSyncManager.OnSyncListeners
 import com.garpr.android.wrappers.WeakReferenceWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
 import java.util.concurrent.TimeUnit

@@ -40,8 +40,6 @@ import com.garpr.android.features.settings.TestNotificationsView;
 import com.garpr.android.features.settings.ThemePreferenceView;
 import com.garpr.android.features.splash.SplashActivity;
 import com.garpr.android.features.splash.SplashCardView;
-import com.garpr.android.features.sync.rankings.RankingsPollingWorker;
-import com.garpr.android.features.sync.roster.SmashRosterSyncWorker;
 import com.garpr.android.features.tournament.TournamentActivity;
 import com.garpr.android.features.tournament.TournamentInfoItemView;
 import com.garpr.android.features.tournament.TournamentMatchDialogFragment;
@@ -49,6 +47,8 @@ import com.garpr.android.features.tournaments.TournamentDividerView;
 import com.garpr.android.features.tournaments.TournamentItemView;
 import com.garpr.android.features.tournaments.TournamentsActivity;
 import com.garpr.android.features.tournaments.TournamentsLayout;
+import com.garpr.android.sync.rankings.RankingsPollingWorker;
+import com.garpr.android.sync.roster.SmashRosterSyncWorker;
 
 import javax.inject.Singleton;
 
@@ -63,7 +63,7 @@ public interface AppComponent {
     // features/base
     void inject(BaseActivity activity);
 
-    // features/common
+    // features/common/view
     void inject(IdentityConstraintLayout view);
     void inject(IdentityFrameLayout view);
     void inject(PaletteSimpleDraweeView view);
@@ -136,10 +136,10 @@ public interface AppComponent {
     void inject(SplashActivity activity);
     void inject(SplashCardView view);
 
-    // features/sync/rankings
+    // sync/rankings
     void inject(RankingsPollingWorker worker);
 
-    // features/sync/roster
+    // sync/roster
     void inject(SmashRosterSyncWorker worker);
 
 }

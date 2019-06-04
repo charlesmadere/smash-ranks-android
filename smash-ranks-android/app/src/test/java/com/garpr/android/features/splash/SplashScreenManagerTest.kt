@@ -1,7 +1,6 @@
-package com.garpr.android.managers
+package com.garpr.android.features.splash
 
 import com.garpr.android.BaseTest
-import com.garpr.android.features.splash.SplashScreenManager
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before

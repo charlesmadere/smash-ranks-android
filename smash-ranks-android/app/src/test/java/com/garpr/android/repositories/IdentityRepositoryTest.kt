@@ -1,11 +1,9 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankedPlayer
-import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

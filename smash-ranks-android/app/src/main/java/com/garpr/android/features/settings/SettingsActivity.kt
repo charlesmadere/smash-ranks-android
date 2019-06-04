@@ -11,7 +11,6 @@ import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.logViewer.LogViewerActivity
-import com.garpr.android.features.sync.rankings.RankingsPollingManager
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.ShareUtils
@@ -20,6 +19,7 @@ import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.sync.rankings.RankingsPollingManager
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 

@@ -1,7 +1,5 @@
 package com.garpr.android.dagger;
 
-import com.garpr.android.activities.HomeActivityTest;
-import com.garpr.android.activities.PlayerActivityTest;
 import com.garpr.android.data.converters.AbsPlayerConverterTest;
 import com.garpr.android.data.converters.AbsRegionConverterTest;
 import com.garpr.android.data.converters.AbsTournamentConverterTest;
@@ -14,19 +12,15 @@ import com.garpr.android.data.models.RankingsBundleTest;
 import com.garpr.android.data.models.RegionsBundleTest;
 import com.garpr.android.data.models.SimpleDateTest;
 import com.garpr.android.data.models.SmashCharacterTest;
-import com.garpr.android.features.sync.rankings.RankingsPollingManagerTest;
-import com.garpr.android.features.sync.roster.SmashRosterSyncManagerTest;
+import com.garpr.android.features.home.HomeActivityTest;
+import com.garpr.android.features.home.HomeToolbarManagerTest;
+import com.garpr.android.features.player.PlayerActivityTest;
+import com.garpr.android.features.player.PlayerProfileManagerTest;
+import com.garpr.android.features.player.SmashRosterAvatarUrlHelperTest;
+import com.garpr.android.features.splash.AppUpgradeManagerTest;
+import com.garpr.android.features.splash.SplashScreenManagerTest;
+import com.garpr.android.features.tournament.TournamentAdapterManagerTest;
 import com.garpr.android.features.tournaments.TournamentsActivityTest;
-import com.garpr.android.managers.AppUpgradeManagerTest;
-import com.garpr.android.managers.FavoritePlayersRepositoryTest;
-import com.garpr.android.managers.HomeToolbarManagerTest;
-import com.garpr.android.managers.IdentityRepositoryTest;
-import com.garpr.android.managers.NightModeRepositoryTest;
-import com.garpr.android.managers.PlayerProfileManagerTest;
-import com.garpr.android.managers.RegionRepositoryTest;
-import com.garpr.android.managers.SmashRosterAvatarUrlHelperTest;
-import com.garpr.android.managers.SplashScreenManagerTest;
-import com.garpr.android.managers.TournamentAdapterManagerTest;
 import com.garpr.android.misc.DeepLinkUtilsTest;
 import com.garpr.android.misc.FullTournamentUtilsTest;
 import com.garpr.android.misc.ListUtilsTest;
@@ -44,6 +38,12 @@ import com.garpr.android.preferences.persistent.PersistentLongPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentMoshiPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentUriPreferenceTest;
+import com.garpr.android.repositories.FavoritePlayersRepositoryTest;
+import com.garpr.android.repositories.IdentityRepositoryTest;
+import com.garpr.android.repositories.NightModeRepositoryTest;
+import com.garpr.android.repositories.RegionRepositoryTest;
+import com.garpr.android.sync.rankings.RankingsPollingManagerTest;
+import com.garpr.android.sync.roster.SmashRosterSyncManagerTest;
 
 import javax.inject.Singleton;
 
@@ -74,35 +74,29 @@ public interface TestAppComponent {
 
     // features/home
     void inject(HomeActivityTest test);
+    void inject(HomeToolbarManagerTest test);
 
     // features/player
     void inject(PlayerActivityTest test);
+    void inject(PlayerProfileManagerTest test);
+    void inject(SmashRosterAvatarUrlHelperTest test);
 
-    // features/sync/rankings
-    void inject(RankingsPollingManagerTest test);
-
-    // features/sync/roster
-    void inject(SmashRosterSyncManagerTest test);
+    // features/splash
+    void inject(AppUpgradeManagerTest test);
+    void inject(SplashScreenManagerTest test);
 
     // features/tournaments
+    void inject(TournamentAdapterManagerTest test);
     void inject(TournamentsActivityTest test);
 
     // managers
-    void inject(AppUpgradeManagerTest test);
-    void inject(FavoritePlayersRepositoryTest test);
-    void inject(HomeToolbarManagerTest test);
-    void inject(IdentityRepositoryTest test);
-    void inject(NightModeRepositoryTest test);
-    void inject(PlayerProfileManagerTest test);
-    void inject(RegionRepositoryTest test);
-    void inject(SmashRosterAvatarUrlHelperTest test);
-    void inject(SplashScreenManagerTest test);
-    void inject(TournamentAdapterManagerTest test);
+    void inject(RankingsNotificationsUtilsTest test);
+    void inject(SmashRosterStorageTest test);
+
+    // misc
     void inject(FullTournamentUtilsTest test);
     void inject(ListUtilsTest test);
     void inject(PreviousRankUtilsTest test);
-    void inject(RankingsNotificationsUtilsTest test);
-    void inject(SmashRosterStorageTest test);
     void inject(TimberTest test);
 
     // networking
@@ -118,5 +112,17 @@ public interface TestAppComponent {
     void inject(PersistentMoshiPreferenceTest test);
     void inject(PersistentStringPreferenceTest test);
     void inject(PersistentUriPreferenceTest test);
+
+    // repositories
+    void inject(FavoritePlayersRepositoryTest test);
+    void inject(IdentityRepositoryTest test);
+    void inject(NightModeRepositoryTest test);
+    void inject(RegionRepositoryTest test);
+
+    // sync/rankings
+    void inject(RankingsPollingManagerTest test);
+
+    // sync/roster
+    void inject(SmashRosterSyncManagerTest test);
 
 }

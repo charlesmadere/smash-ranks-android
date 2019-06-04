@@ -1,7 +1,6 @@
-package com.garpr.android.managers
+package com.garpr.android.features.player
 
 import com.garpr.android.BaseTest
-import com.garpr.android.features.player.SmashRosterAvatarUrlHelper
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before

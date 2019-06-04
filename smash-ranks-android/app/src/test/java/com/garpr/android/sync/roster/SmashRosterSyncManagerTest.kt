@@ -1,4 +1,4 @@
-package com.garpr.android.features.sync.roster
+package com.garpr.android.sync.roster
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint

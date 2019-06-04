@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.splash
 
 import com.garpr.android.BaseTest
 import com.garpr.android.BuildConfig
@@ -6,7 +6,6 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.splash.AppUpgradeManager
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
