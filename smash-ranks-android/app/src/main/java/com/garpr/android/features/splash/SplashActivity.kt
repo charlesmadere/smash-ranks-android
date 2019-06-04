@@ -7,7 +7,6 @@ import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.features.home.HomeActivity
-import com.garpr.android.managers.SplashScreenManager
 import javax.inject.Inject
 
 class SplashActivity : BaseActivity(), SplashCardView.Listener {

@@ -20,9 +20,6 @@ import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.features.common.SearchToolbar
 import com.garpr.android.features.headToHead.HeadToHeadActivity
-import com.garpr.android.managers.FavoritePlayersManager
-import com.garpr.android.managers.IdentityManager
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
@@ -32,6 +29,9 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
+import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_player.*
 import javax.inject.Inject
 

@@ -14,9 +14,9 @@ import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.extensions.notificationManager
 import com.garpr.android.extensions.notificationManagerCompat
 import com.garpr.android.features.home.HomeActivity
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.repositories.RegionManager
 
 class NotificationsManagerImpl(
         private val application: Application,

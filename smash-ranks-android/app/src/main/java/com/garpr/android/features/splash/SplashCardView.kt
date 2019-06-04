@@ -12,11 +12,11 @@ import com.garpr.android.extensions.getLong
 import com.garpr.android.features.common.LifecycleCardView
 import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.features.setRegion.SetRegionActivity
-import com.garpr.android.managers.IdentityManager
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_splash.view.*
 import javax.inject.Inject
 

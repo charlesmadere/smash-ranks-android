@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.player
 
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.FullPlayer

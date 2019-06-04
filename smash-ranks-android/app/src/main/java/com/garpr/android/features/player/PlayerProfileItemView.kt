@@ -16,13 +16,12 @@ import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.features.common.LifecycleLinearLayout
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.sync.roster.SmashRosterSyncManager
-import com.garpr.android.managers.FavoritePlayersManager
-import com.garpr.android.managers.IdentityManager
-import com.garpr.android.managers.PlayerProfileManager
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
+import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.item_player_profile.view.*
 import javax.inject.Inject
 

@@ -6,6 +6,9 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
+import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.features.splash.AppUpgradeManager
 import com.garpr.android.preferences.GeneralPreferenceStore
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

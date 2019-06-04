@@ -15,8 +15,6 @@ import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.features.common.SearchToolbar
-import com.garpr.android.managers.IdentityManager
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
@@ -24,6 +22,8 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
+import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_set_identity.*
 import javax.inject.Inject
 

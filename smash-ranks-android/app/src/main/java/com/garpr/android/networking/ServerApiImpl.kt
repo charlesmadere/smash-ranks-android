@@ -16,12 +16,12 @@ import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.data.models.ServerResponse
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.data.models.TournamentsBundle
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.FullTournamentUtils
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.repositories.RegionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

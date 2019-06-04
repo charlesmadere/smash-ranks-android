@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.player
 
 import android.app.Application
 import android.text.TextUtils
@@ -7,9 +7,11 @@ import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.truncate
-import com.garpr.android.managers.PlayerProfileManager.Presentation
+import com.garpr.android.features.player.PlayerProfileManager.Presentation
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.SmashRosterStorage
+import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.IdentityManager
 
 class PlayerProfileManagerImpl(
         private val application: Application,

@@ -1,8 +1,9 @@
-package com.garpr.android.managers
+package com.garpr.android.features.splash
 
 import com.garpr.android.BuildConfig
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore
+import com.garpr.android.repositories.FavoritePlayersManager
 
 class AppUpgradeManagerImpl(
         private val favoritePlayersManager: FavoritePlayersManager,

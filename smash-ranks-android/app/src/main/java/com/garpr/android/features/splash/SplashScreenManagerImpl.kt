@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.splash
 
 import com.garpr.android.preferences.GeneralPreferenceStore
 

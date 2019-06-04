@@ -1,10 +1,10 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
 import android.content.Context
 import com.garpr.android.data.models.NightMode
-import com.garpr.android.managers.NightModeManager.OnNightModeChangeListener
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore
+import com.garpr.android.repositories.NightModeManager.OnNightModeChangeListener
 import com.garpr.android.wrappers.WeakReferenceWrapper
 
 class NightModeManagerImpl(

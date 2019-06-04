@@ -8,15 +8,16 @@ import com.garpr.android.R
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
+import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.extensions.setTintedImageResource
 import com.garpr.android.extensions.truncate
 import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.features.common.IdentityConstraintLayout
 import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.managers.FavoritePlayersManager
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.PreviousRankUtils
 import com.garpr.android.misc.Timber
+import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.item_ranking.view.*
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -76,7 +77,7 @@ class RankingItemView @JvmOverloads constructor(
     }
 
     override fun onLongClick(v: View): Boolean {
-        return favoritePlayersManager.showAddOrRemovePlayerDialog(context, identity,
+        return favoritePlayersManager.showAddOrRemovePlayerDialog(fragmentManager, identity,
                 regionManager.getRegion(context))
     }
 

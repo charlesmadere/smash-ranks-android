@@ -1,7 +1,6 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
-import android.content.Context
-
+import androidx.fragment.app.FragmentManager
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
@@ -34,7 +33,8 @@ interface FavoritePlayersManager {
 
     fun removePlayer(playerId: String)
 
-    fun showAddOrRemovePlayerDialog(context: Context, player: AbsPlayer?, region: Region): Boolean
+    fun showAddOrRemovePlayerDialog(fragmentManager: FragmentManager, player: AbsPlayer?,
+            region: Region): Boolean
 
     val size: Int
 

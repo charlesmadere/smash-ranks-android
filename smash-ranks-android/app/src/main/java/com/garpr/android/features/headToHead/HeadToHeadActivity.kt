@@ -16,12 +16,12 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.features.base.BaseActivity
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_head_to_head.*
 import javax.inject.Inject
 

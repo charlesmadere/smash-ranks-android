@@ -8,6 +8,8 @@ import com.garpr.android.data.models.LiteRegion
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
+import com.garpr.android.features.home.HomeToolbarManager
+import com.garpr.android.repositories.IdentityManager
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before

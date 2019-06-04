@@ -12,14 +12,14 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.base.BaseActivity
 import com.garpr.android.features.logViewer.LogViewerActivity
 import com.garpr.android.features.sync.rankings.RankingsPollingManager
-import com.garpr.android.managers.FavoritePlayersManager
-import com.garpr.android.managers.IdentityManager
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 

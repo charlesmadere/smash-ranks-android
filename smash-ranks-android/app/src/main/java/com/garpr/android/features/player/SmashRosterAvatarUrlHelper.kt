@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.player
 
 interface SmashRosterAvatarUrlHelper {
 

@@ -8,6 +8,9 @@ import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCharacter
 import com.garpr.android.data.models.SmashCompetitor
+import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.features.player.PlayerProfileManager
 import com.garpr.android.misc.SmashRosterStorage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

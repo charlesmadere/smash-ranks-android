@@ -9,10 +9,10 @@ import androidx.core.app.TaskStackBuilder
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optHideKeyboard
-import com.garpr.android.managers.NightModeManager
-import com.garpr.android.managers.RegionManager.RegionHandle
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Timber
+import com.garpr.android.repositories.NightModeManager
+import com.garpr.android.repositories.RegionManager.RegionHandle
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {

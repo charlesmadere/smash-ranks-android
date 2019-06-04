@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer

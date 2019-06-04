@@ -4,6 +4,8 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankedPlayer
+import com.garpr.android.repositories.IdentityManager
+import com.garpr.android.repositories.RegionManager
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

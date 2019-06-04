@@ -13,8 +13,8 @@ import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.base.BaseAdapterView
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.ShareUtils
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.item_tournament_info.view.*
 import java.text.NumberFormat
 import javax.inject.Inject

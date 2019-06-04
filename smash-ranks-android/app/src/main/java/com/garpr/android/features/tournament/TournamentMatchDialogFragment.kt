@@ -11,7 +11,7 @@ import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.features.base.BaseBottomSheetDialogFragment
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.managers.RegionManager
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.dialog_tournament_match.*
 import javax.inject.Inject
 

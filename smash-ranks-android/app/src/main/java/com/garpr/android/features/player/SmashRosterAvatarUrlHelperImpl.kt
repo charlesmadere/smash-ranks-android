@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.player
 
 class SmashRosterAvatarUrlHelperImpl(
     private val baseUrl: String

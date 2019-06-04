@@ -1,11 +1,11 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.managers.IdentityManager.OnIdentityChangeListener
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
+import com.garpr.android.repositories.IdentityManager.OnIdentityChangeListener
 import com.garpr.android.wrappers.WeakReferenceWrapper
 
 class IdentityManagerImpl(

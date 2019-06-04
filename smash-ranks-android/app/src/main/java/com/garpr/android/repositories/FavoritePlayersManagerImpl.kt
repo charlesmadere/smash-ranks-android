@@ -1,15 +1,14 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
-import android.content.Context
+import androidx.fragment.app.FragmentManager
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.requireFragmentActivity
 import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment
-import com.garpr.android.managers.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.repositories.FavoritePlayersManager.OnFavoritePlayersChangeListener
 import com.garpr.android.wrappers.WeakReferenceWrapper
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -145,15 +144,15 @@ class FavoritePlayersManagerImpl(
         notifyListeners()
     }
 
-    override fun showAddOrRemovePlayerDialog(context: Context, player: AbsPlayer?, region: Region): Boolean {
+    override fun showAddOrRemovePlayerDialog(fragmentManager: FragmentManager, player: AbsPlayer?,
+            region: Region): Boolean {
         if (player == null) {
             return false
         }
 
         val favoritePlayer = FavoritePlayer(player.id, player.name, region)
         val dialog = AddOrRemovePlayerFromFavoritesDialogFragment.create(favoritePlayer)
-        dialog.show(context.requireFragmentActivity().supportFragmentManager,
-                AddOrRemovePlayerFromFavoritesDialogFragment.TAG)
+        dialog.show(fragmentManager, AddOrRemovePlayerFromFavoritesDialogFragment.TAG)
 
         return true
     }

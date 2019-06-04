@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.garpr.android.dagger.AppComponent
 
 val View.activity: Activity?
@@ -14,6 +15,9 @@ val View.activity: Activity?
 
 val View.appComponent: AppComponent
     get() = context.appComponent
+
+val View.fragmentManager: FragmentManager
+    get() = requireFragmentActivity().supportFragmentManager
 
 val View.inputMethodManager: InputMethodManager
     get() = context.inputMethodManager

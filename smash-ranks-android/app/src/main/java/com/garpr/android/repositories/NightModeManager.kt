@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.repositories
 
 import android.content.Context
 import com.garpr.android.data.models.NightMode

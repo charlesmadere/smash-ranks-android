@@ -1,4 +1,4 @@
-package com.garpr.android.managers
+package com.garpr.android.features.home
 
 import com.garpr.android.data.models.RankingCriteria
 

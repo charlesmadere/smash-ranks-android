@@ -1,7 +1,8 @@
-package com.garpr.android.managers
+package com.garpr.android.features.home
 
 import com.garpr.android.data.models.RankingCriteria
-import com.garpr.android.managers.HomeToolbarManager.Presentation
+import com.garpr.android.features.home.HomeToolbarManager.Presentation
+import com.garpr.android.repositories.IdentityManager
 
 class HomeToolbarManagerImpl(
         private val identityManager: IdentityManager

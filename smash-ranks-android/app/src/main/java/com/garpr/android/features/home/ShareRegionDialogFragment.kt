@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.base.BaseBottomSheetDialogFragment
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.dialog_share_region.*
 import javax.inject.Inject
 

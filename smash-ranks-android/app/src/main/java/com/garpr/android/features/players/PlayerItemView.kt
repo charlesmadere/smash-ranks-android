@@ -5,11 +5,12 @@ import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.features.base.BaseAdapterView
 import com.garpr.android.features.common.IdentityFrameLayout
 import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.managers.FavoritePlayersManager
-import com.garpr.android.managers.RegionManager
+import com.garpr.android.repositories.FavoritePlayersManager
+import com.garpr.android.repositories.RegionManager
 import kotlinx.android.synthetic.main.item_player.view.*
 import javax.inject.Inject
 
@@ -52,7 +53,7 @@ class PlayerItemView @JvmOverloads constructor(
     }
 
     override fun onLongClick(v: View): Boolean {
-        return favoritePlayersManager.showAddOrRemovePlayerDialog(context, identity,
+        return favoritePlayersManager.showAddOrRemovePlayerDialog(fragmentManager, identity,
                 regionManager.getRegion(context))
     }
 

@@ -10,8 +10,8 @@ import androidx.core.view.ViewCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.managers.IdentityManager
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.repositories.IdentityManager
 import javax.inject.Inject
 
 abstract class IdentityConstraintLayout @JvmOverloads constructor(

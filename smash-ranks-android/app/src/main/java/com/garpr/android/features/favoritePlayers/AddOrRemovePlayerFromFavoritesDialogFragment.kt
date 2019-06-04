@@ -10,8 +10,8 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.features.base.BaseBottomSheetDialogFragment
-import com.garpr.android.managers.FavoritePlayersManager
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.repositories.FavoritePlayersManager
 import kotlinx.android.synthetic.main.dialog_add_or_remove_player_from_favorites.*
 import javax.inject.Inject
 

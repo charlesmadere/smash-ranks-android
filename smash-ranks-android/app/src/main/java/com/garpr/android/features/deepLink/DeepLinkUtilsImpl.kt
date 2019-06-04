@@ -12,9 +12,9 @@ import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsActivity
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsActivity
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.HomeTab
 import com.garpr.android.misc.Timber
+import com.garpr.android.repositories.RegionManager
 
 class DeepLinkUtilsImpl(
         private val regionManager: RegionManager,
