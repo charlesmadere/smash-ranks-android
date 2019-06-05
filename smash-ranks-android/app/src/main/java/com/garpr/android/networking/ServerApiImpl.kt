@@ -17,10 +17,10 @@ import com.garpr.android.data.models.ServerResponse
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.misc.Constants
-import com.garpr.android.misc.FullTournamentUtils
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.repositories.FullTournamentUtils
 import com.garpr.android.repositories.RegionRepository
 import retrofit2.Call
 import retrofit2.Callback

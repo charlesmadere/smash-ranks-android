@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.repositories
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.FullTournament

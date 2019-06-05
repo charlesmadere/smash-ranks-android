@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.repositories
 
 import androidx.annotation.UiThread
 import com.garpr.android.data.models.FullTournament

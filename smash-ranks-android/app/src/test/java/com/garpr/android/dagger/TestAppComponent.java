@@ -23,7 +23,6 @@ import com.garpr.android.features.splash.AppUpgradeManagerTest;
 import com.garpr.android.features.splash.SplashScreenManagerTest;
 import com.garpr.android.features.tournament.TournamentAdapterManagerTest;
 import com.garpr.android.features.tournaments.TournamentsActivityTest;
-import com.garpr.android.misc.FullTournamentUtilsTest;
 import com.garpr.android.misc.ListUtilsTest;
 import com.garpr.android.misc.TimberTest;
 import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
@@ -37,6 +36,7 @@ import com.garpr.android.preferences.persistent.PersistentMoshiPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest;
 import com.garpr.android.preferences.persistent.PersistentUriPreferenceTest;
 import com.garpr.android.repositories.FavoritePlayersRepositoryTest;
+import com.garpr.android.repositories.FullTournamentUtilsTest;
 import com.garpr.android.repositories.IdentityRepositoryTest;
 import com.garpr.android.repositories.NightModeRepositoryTest;
 import com.garpr.android.repositories.RegionRepositoryTest;
@@ -90,7 +90,6 @@ public interface TestAppComponent {
     void inject(TournamentsActivityTest test);
 
     // misc
-    void inject(FullTournamentUtilsTest test);
     void inject(ListUtilsTest test);
     void inject(PreviousRankUtilsTest test);
     void inject(TimberTest test);
@@ -111,6 +110,7 @@ public interface TestAppComponent {
 
     // repositories
     void inject(FavoritePlayersRepositoryTest test);
+    void inject(FullTournamentUtilsTest test);
     void inject(IdentityRepositoryTest test);
     void inject(NightModeRepositoryTest test);
     void inject(RegionRepositoryTest test);
