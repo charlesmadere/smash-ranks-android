@@ -72,6 +72,10 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
+    // Android Architecture Components ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
     // Android Architecture Component WorkManager
     // https://developer.android.com/jetpack/androidx/releases/work
     implementation "androidx.work:work-runtime:$workmanager_version"
