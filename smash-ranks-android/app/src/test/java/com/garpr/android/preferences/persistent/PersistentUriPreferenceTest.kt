@@ -3,6 +3,7 @@ package com.garpr.android.preferences.persistent
 import android.net.Uri
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.preferences.KeyValueStoreProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -17,31 +18,34 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class PersistentUriPreferenceTest : BaseTest() {
 
+    private lateinit var keyValueStore: KeyValueStore
+
     @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    protected lateinit var keyValueStoreProvider: KeyValueStoreProvider
 
 
     companion object {
         private const val AMAZON = "https://www.amazon.com/"
         private const val GOOGLE = "https://www.google.com/"
         private const val POLYGON = "http://www.polygon.com/"
+        private const val TAG = "PersistentUriPreferenceTest"
     }
 
     @Before
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGet() {
         val preference = PersistentUriPreference("test", null, keyValueStore)
         assertNull(preference.get())
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAndSet() {
         val preference = PersistentUriPreference("test", null, keyValueStore)
         assertNull(preference.get())
@@ -53,7 +57,6 @@ class PersistentUriPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAndSetAndDelete() {
         val preference = PersistentUriPreference("test", null, keyValueStore)
         assertNull(preference.get())
@@ -73,7 +76,6 @@ class PersistentUriPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAndSetAndDeleteAndExists() {
         val preference = PersistentUriPreference("test", null, keyValueStore)
         assertFalse(preference.exists)
@@ -101,7 +103,6 @@ class PersistentUriPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetDefaultValue() {
         val polygon = Uri.parse(POLYGON)
         val preference = PersistentUriPreference("test", polygon, keyValueStore)

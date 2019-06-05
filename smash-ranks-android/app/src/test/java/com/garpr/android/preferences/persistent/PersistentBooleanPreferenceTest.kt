@@ -2,6 +2,7 @@ package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.preferences.KeyValueStoreProvider
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -13,14 +14,22 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class PersistentBooleanPreferenceTest : BaseTest() {
 
-    @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    private lateinit var keyValueStore: KeyValueStore
 
+    @Inject
+    protected lateinit var keyValueStoreProvider: KeyValueStoreProvider
+
+
+    companion object {
+        private const val TAG = "PersistentBooleanPreferenceTest"
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test

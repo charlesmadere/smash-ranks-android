@@ -15,14 +15,22 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class KeyValueStoreTest : BaseTest() {
 
-    @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    private lateinit var keyValueStore: KeyValueStore
 
+    @Inject
+    protected lateinit var keyValueStoreProvider: KeyValueStoreProvider
+
+
+    companion object {
+        private const val TAG = "KeyValueStoreTest"
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test

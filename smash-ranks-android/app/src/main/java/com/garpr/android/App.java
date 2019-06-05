@@ -3,6 +3,7 @@ package com.garpr.android;
 import com.garpr.android.dagger.AppComponent;
 import com.garpr.android.dagger.AppComponentHandle;
 import com.garpr.android.dagger.AppModule;
+import com.garpr.android.dagger.ConfigModule;
 import com.garpr.android.dagger.DaggerAppComponent;
 import com.garpr.android.features.splash.AppUpgradeManager;
 import com.garpr.android.misc.Constants;
@@ -67,8 +68,9 @@ public class App extends BaseApp implements AppComponentHandle,
                 .appModule(new AppModule(
                         this,
                         Constants.INSTANCE.getDefaultRegion(),
-                        Constants.SMASH_ROSTER_BASE_PATH)
-                )
+                        Constants.SMASH_ROSTER_BASE_PATH
+                ))
+                .configModule(new ConfigModule())
                 .build();
 
         appComponent.inject(this);

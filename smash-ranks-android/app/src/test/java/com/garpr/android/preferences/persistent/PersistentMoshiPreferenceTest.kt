@@ -4,6 +4,7 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.preferences.KeyValueStoreProvider
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -18,8 +19,10 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class PersistentMoshiPreferenceTest : BaseTest() {
 
+    private lateinit var keyValueStore: KeyValueStore
+
     @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    protected lateinit var keyValueStoreProvider: KeyValueStoreProvider
 
     @Inject
     protected lateinit var moshi: Moshi
@@ -35,12 +38,16 @@ class PersistentMoshiPreferenceTest : BaseTest() {
                 id = "5877eb55d2994e15c7dea97e",
                 name = "Spark"
         )
+
+        private const val TAG = "PersistentMoshiPreferenceTest"
     }
 
     @Before
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test

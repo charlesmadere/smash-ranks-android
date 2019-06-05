@@ -2,10 +2,11 @@ package com.garpr.android;
 
 import android.app.Application;
 
+import com.garpr.android.dagger.AppModule;
+import com.garpr.android.dagger.TestConfigModule;
 import com.garpr.android.dagger.DaggerTestAppComponent;
 import com.garpr.android.dagger.TestAppComponent;
 import com.garpr.android.dagger.TestAppComponentHandle;
-import com.garpr.android.dagger.TestAppModule;
 import com.garpr.android.misc.Constants;
 
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +22,7 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
 
     @NonNull
     @Override
-    public TestAppComponent getTestAppComponent() {
+    public TestAppComponent getTestAppComponent() throws IllegalStateException {
         final TestAppComponent testAppComponent = mTestAppComponent;
 
         if (testAppComponent == null) {
@@ -34,11 +35,12 @@ public class TestApp extends BaseApp implements TestAppComponentHandle {
     private void initializeAppComponent() {
         final Application application = ApplicationProvider.getApplicationContext();
         mTestAppComponent = DaggerTestAppComponent.builder()
-                .testAppModule(new TestAppModule(
+                .appModule(new AppModule(
                         application,
                         Constants.INSTANCE.getDefaultRegion(),
-                        Constants.SMASH_ROSTER_BASE_PATH)
-                )
+                        Constants.SMASH_ROSTER_BASE_PATH
+                ))
+                .testConfigModule(new TestConfigModule())
                 .build();
     }
 

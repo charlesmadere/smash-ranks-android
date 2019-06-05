@@ -2,6 +2,7 @@ package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -17,18 +18,25 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class PersistentIntegerPreferenceTest : BaseTest() {
 
-    @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    private lateinit var keyValueStore: KeyValueStore
 
+    @Inject
+    protected lateinit var keyValueStoreProvider: KeyValueStoreProvider
+
+
+    companion object {
+        private const val TAG = "PersistentIntegerPreferenceTest"
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testAddListener() {
         val preference = PersistentIntegerPreference("integer", null, keyValueStore)
         var value: Int? = null
@@ -50,7 +58,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDelete() {
         val preference = PersistentIntegerPreference("integer", -47, keyValueStore)
         assertEquals(-47, preference.get())
@@ -66,7 +73,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithDefaultValue() {
         val preference = PersistentIntegerPreference("integer", 1989, keyValueStore)
         assertTrue(preference.exists)
@@ -76,7 +82,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithNullDefaultValue() {
         val preference = PersistentIntegerPreference("integer", null, keyValueStore)
         assertFalse(preference.exists)
@@ -92,7 +97,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAndSet() {
         val preference = PersistentIntegerPreference("integer", 900, keyValueStore)
         assertEquals(900, preference.get())
@@ -110,14 +114,12 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetKey() {
         val preference = PersistentIntegerPreference("integer", null, keyValueStore)
         assertEquals("integer", preference.key)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNonNullGetDefaultValue() {
         val preference = PersistentIntegerPreference("integer", 128, keyValueStore)
         assertEquals(128, preference.defaultValue)
@@ -127,7 +129,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullGetDefaultValue() {
         val preference = PersistentIntegerPreference("integer", null, keyValueStore)
         assertNull(preference.defaultValue)
@@ -137,7 +138,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRemoveListener() {
         val preference = PersistentIntegerPreference("integer", null, keyValueStore)
         var value: Int? = null
@@ -163,7 +163,6 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSetAndGet() {
         val preference = PersistentIntegerPreference("integer", null, keyValueStore)
 
