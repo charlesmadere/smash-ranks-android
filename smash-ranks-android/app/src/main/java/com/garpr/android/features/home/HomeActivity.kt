@@ -16,7 +16,6 @@ import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsLayout
 import com.garpr.android.features.settings.SettingsActivity
-import com.garpr.android.misc.HomeTab
 import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable

@@ -7,12 +7,12 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.features.home.HomeActivity
+import com.garpr.android.features.home.HomeTab
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsActivity
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsActivity
-import com.garpr.android.misc.HomeTab
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionRepository
 
