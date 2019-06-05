@@ -1,10 +1,10 @@
-package com.garpr.android.misc
+package com.garpr.android.features.rankings
 
 import com.garpr.android.data.models.RankedPlayer
-import com.garpr.android.misc.PreviousRankUtils.Info
-import com.garpr.android.misc.PreviousRankUtils.Info.DECREASE
-import com.garpr.android.misc.PreviousRankUtils.Info.INCREASE
-import com.garpr.android.misc.PreviousRankUtils.Info.NO_CHANGE
+import com.garpr.android.features.rankings.PreviousRankUtils.Info
+import com.garpr.android.features.rankings.PreviousRankUtils.Info.DECREASE
+import com.garpr.android.features.rankings.PreviousRankUtils.Info.INCREASE
+import com.garpr.android.features.rankings.PreviousRankUtils.Info.NO_CHANGE
 
 class PreviousRankUtilsImpl : PreviousRankUtils {
 

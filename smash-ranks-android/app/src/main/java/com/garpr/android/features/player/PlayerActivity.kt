@@ -24,7 +24,6 @@ import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.ListUtils
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.networking.ApiCall
 import com.garpr.android.networking.ApiListener
@@ -32,6 +31,7 @@ import com.garpr.android.networking.ServerApi
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.sync.roster.SmashRosterStorage
 import kotlinx.android.synthetic.main.activity_player.*
 import javax.inject.Inject
 

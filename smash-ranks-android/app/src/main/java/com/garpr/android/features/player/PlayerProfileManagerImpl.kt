@@ -9,9 +9,9 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.truncate
 import com.garpr.android.features.player.PlayerProfileManager.Presentation
 import com.garpr.android.misc.Constants
-import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
+import com.garpr.android.sync.roster.SmashRosterStorage
 
 class PlayerProfileManagerImpl(
         private val application: Application,
@@ -82,22 +82,22 @@ class PlayerProfileManagerImpl(
         }
 
         val twitch = competitor.websites?.get(Constants.TWITCH)
-        if (twitch?.isNotBlank() == true) {
+        if (!twitch.isNullOrBlank()) {
             presentation = presentation.copy(twitch = twitch)
         }
 
         val twitter = competitor.websites?.get(Constants.TWITTER)
-        if (twitter?.isNotBlank() == true) {
+        if (!twitter.isNullOrBlank()) {
             presentation = presentation.copy(twitter = twitter)
         }
 
         val youTube = competitor.websites?.get(Constants.YOUTUBE)
-        if (youTube?.isNotBlank() == true) {
+        if (!youTube.isNullOrBlank()) {
             presentation = presentation.copy(youTube = youTube)
         }
 
         val otherWebsite = competitor.websites?.get(Constants.OTHER)
-        if (otherWebsite?.isNotBlank() == true) {
+        if (!otherWebsite.isNullOrBlank()) {
             presentation = presentation.copy(otherWebsite = otherWebsite)
         }
 

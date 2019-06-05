@@ -9,7 +9,6 @@ import androidx.work.PeriodicWorkRequest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.SmashRosterSyncResult
-import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ServerApi

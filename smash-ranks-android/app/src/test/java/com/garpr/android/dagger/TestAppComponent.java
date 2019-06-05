@@ -12,21 +12,19 @@ import com.garpr.android.data.models.RankingsBundleTest;
 import com.garpr.android.data.models.RegionsBundleTest;
 import com.garpr.android.data.models.SimpleDateTest;
 import com.garpr.android.data.models.SmashCharacterTest;
+import com.garpr.android.features.deepLink.DeepLinkUtilsTest;
 import com.garpr.android.features.home.HomeActivityTest;
 import com.garpr.android.features.home.HomeToolbarManagerTest;
 import com.garpr.android.features.player.PlayerActivityTest;
 import com.garpr.android.features.player.PlayerProfileManagerTest;
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelperTest;
+import com.garpr.android.features.rankings.PreviousRankUtilsTest;
 import com.garpr.android.features.splash.AppUpgradeManagerTest;
 import com.garpr.android.features.splash.SplashScreenManagerTest;
 import com.garpr.android.features.tournament.TournamentAdapterManagerTest;
 import com.garpr.android.features.tournaments.TournamentsActivityTest;
-import com.garpr.android.misc.DeepLinkUtilsTest;
 import com.garpr.android.misc.FullTournamentUtilsTest;
 import com.garpr.android.misc.ListUtilsTest;
-import com.garpr.android.misc.PreviousRankUtilsTest;
-import com.garpr.android.misc.RankingsNotificationsUtilsTest;
-import com.garpr.android.misc.SmashRosterStorageTest;
 import com.garpr.android.misc.TimberTest;
 import com.garpr.android.networking.PlayerMatchesBundleApiCallTest;
 import com.garpr.android.networking.RegionsBundleApiCallTest;
@@ -42,7 +40,9 @@ import com.garpr.android.repositories.FavoritePlayersRepositoryTest;
 import com.garpr.android.repositories.IdentityRepositoryTest;
 import com.garpr.android.repositories.NightModeRepositoryTest;
 import com.garpr.android.repositories.RegionRepositoryTest;
+import com.garpr.android.sync.rankings.RankingsNotificationsUtilsTest;
 import com.garpr.android.sync.rankings.RankingsPollingManagerTest;
+import com.garpr.android.sync.roster.SmashRosterStorageTest;
 import com.garpr.android.sync.roster.SmashRosterSyncManagerTest;
 
 import javax.inject.Singleton;
@@ -89,10 +89,6 @@ public interface TestAppComponent {
     void inject(TournamentAdapterManagerTest test);
     void inject(TournamentsActivityTest test);
 
-    // managers
-    void inject(RankingsNotificationsUtilsTest test);
-    void inject(SmashRosterStorageTest test);
-
     // misc
     void inject(FullTournamentUtilsTest test);
     void inject(ListUtilsTest test);
@@ -120,9 +116,11 @@ public interface TestAppComponent {
     void inject(RegionRepositoryTest test);
 
     // sync/rankings
+    void inject(RankingsNotificationsUtilsTest test);
     void inject(RankingsPollingManagerTest test);
 
     // sync/roster
+    void inject(SmashRosterStorageTest test);
     void inject(SmashRosterSyncManagerTest test);
 
 }

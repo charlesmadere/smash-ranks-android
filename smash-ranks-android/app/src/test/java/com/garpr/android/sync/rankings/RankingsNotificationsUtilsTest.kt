@@ -1,10 +1,11 @@
-package com.garpr.android.misc
+package com.garpr.android.sync.rankings
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.requireFromJson
+import com.garpr.android.misc.DeviceUtils
+import com.garpr.android.misc.TestDeviceUtilsImpl
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.sync.rankings.RankingsNotificationsUtils
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.CANCEL
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.SHOW

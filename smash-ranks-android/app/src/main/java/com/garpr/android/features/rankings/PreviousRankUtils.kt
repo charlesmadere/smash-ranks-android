@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.features.rankings
 
 import com.garpr.android.data.models.RankedPlayer
 

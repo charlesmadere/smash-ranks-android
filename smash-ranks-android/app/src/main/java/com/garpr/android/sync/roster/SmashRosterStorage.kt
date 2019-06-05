@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.sync.roster
 
 import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread

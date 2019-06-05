@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.features.deepLink
 
 import android.app.Application
 import android.content.Intent
@@ -8,7 +8,6 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.extensions.requireFromJson
-import com.garpr.android.features.deepLink.DeepLinkUtils
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -25,7 +24,10 @@ import javax.inject.Inject
 class DeepLinkUtilsTest : BaseTest() {
 
     private lateinit var regionsBundle: RegionsBundle
-    private lateinit var regionsBundleEmpty: RegionsBundle
+
+    private val regionsBundleEmpty = RegionsBundle(
+            regions = emptyList()
+    )
 
     @Inject
     protected lateinit var application: Application
@@ -101,7 +103,6 @@ class DeepLinkUtilsTest : BaseTest() {
         private const val TOURNAMENTS_NYC = "https://www.notgarpr.com/#/nyc/tournaments"
 
         private const val JSON_REGIONS_BUNDLE = "{\"regions\":[{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":60,\"display_name\":\"Chicago\",\"id\":\"chicago\",\"tournament_qualified_day_limit\":999,\"endpoint\":\"not_gar_pr\"},{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":75,\"display_name\":\"Georgia\",\"id\":\"georgia\",\"tournament_qualified_day_limit\":180,\"endpoint\":\"not_gar_pr\"},{\"ranking_num_tourneys_attended\":6,\"ranking_activity_day_limit\":90,\"display_name\":\"NYC Metro Area\",\"id\":\"nyc\",\"tournament_qualified_day_limit\":99999,\"endpoint\":\"not_gar_pr\"},{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":90,\"display_name\":\"New Jersey\",\"id\":\"newjersey\",\"tournament_qualified_day_limit\":9999999,\"endpoint\":\"not_gar_pr\"},{\"ranking_num_tourneys_attended\":2,\"ranking_activity_day_limit\":30,\"display_name\":\"Norcal\",\"id\":\"norcal\",\"tournament_qualified_day_limit\":1000,\"endpoint\":\"gar_pr\"}]}"
-        private const val JSON_REGIONS_BUNDLE_EMPTY = "{\"regions\":[]}"
     }
 
     @Before
@@ -111,7 +112,6 @@ class DeepLinkUtilsTest : BaseTest() {
 
         val regionsBundleAdapter = moshi.adapter(RegionsBundle::class.java)
         regionsBundle = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE)
-        regionsBundleEmpty = regionsBundleAdapter.requireFromJson(JSON_REGIONS_BUNDLE_EMPTY)
     }
 
     @Test

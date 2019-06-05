@@ -4,7 +4,6 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.ServerResponse
 import com.garpr.android.data.models.SmashCompetitor
-import com.garpr.android.misc.SmashRosterStorage
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.AbsServerApi

@@ -1,8 +1,9 @@
-package com.garpr.android.misc
+package com.garpr.android.sync.roster
 
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
+import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi

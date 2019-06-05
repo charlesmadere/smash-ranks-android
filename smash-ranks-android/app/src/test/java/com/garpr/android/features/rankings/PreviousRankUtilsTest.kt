@@ -1,4 +1,4 @@
-package com.garpr.android.misc
+package com.garpr.android.features.rankings
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankedPlayer
@@ -67,12 +67,14 @@ class PreviousRankUtilsTest : BaseTest() {
 
     @Test
     fun testGetRankInfoWithDecreasedRank() {
-        assertEquals(PreviousRankUtils.Info.DECREASE, previousRankUtils.getRankInfo(DECREASED_RANK))
+        assertEquals(PreviousRankUtils.Info.DECREASE, previousRankUtils.getRankInfo(
+                DECREASED_RANK))
     }
 
     @Test
     fun testGetRankInfoWithIncreasedRank() {
-        assertEquals(PreviousRankUtils.Info.INCREASE, previousRankUtils.getRankInfo(INCREASED_RANK))
+        assertEquals(PreviousRankUtils.Info.INCREASE, previousRankUtils.getRankInfo(
+                INCREASED_RANK))
     }
 
     @Test
@@ -93,7 +95,8 @@ class PreviousRankUtilsTest : BaseTest() {
 
     @Test
     fun testGetRankInfoWithUnchangedRank() {
-        assertEquals(PreviousRankUtils.Info.NO_CHANGE, previousRankUtils.getRankInfo(UNCHANGED_RANK))
+        assertEquals(PreviousRankUtils.Info.NO_CHANGE, previousRankUtils.getRankInfo(
+                UNCHANGED_RANK))
     }
 
 }
