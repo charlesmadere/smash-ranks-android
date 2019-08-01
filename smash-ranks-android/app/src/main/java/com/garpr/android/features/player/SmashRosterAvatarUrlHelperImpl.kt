@@ -5,10 +5,10 @@ class SmashRosterAvatarUrlHelperImpl(
 ) : SmashRosterAvatarUrlHelper {
 
     override fun getAvatarUrl(avatarPath: String?): String? {
-        return if (avatarPath?.isNotBlank() == true) {
-            baseUrl + avatarPath
-        } else {
+        return if (avatarPath.isNullOrBlank()) {
             null
+        } else {
+            baseUrl + avatarPath
         }
     }
 

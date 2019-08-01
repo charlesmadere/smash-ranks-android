@@ -3,43 +3,61 @@ package com.garpr.android.features.player
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.core.widget.TextViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.data.models.FullPlayer
-import com.garpr.android.extensions.activity
+import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.requireActivity
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.common.views.LifecycleLinearLayout
-import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.misc.ShareUtils
-import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
-import com.garpr.android.sync.roster.SmashRosterSyncManager
 import kotlinx.android.synthetic.main.item_player_profile.view.*
 import javax.inject.Inject
 
 class PlayerProfileItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleLinearLayout(context, attrs), BaseAdapterView<FullPlayer>, ColorListener,
-        FavoritePlayersRepository.OnFavoritePlayersChangeListener,
-        IdentityRepository.OnIdentityChangeListener, Refreshable,
-        SmashRosterSyncManager.OnSyncListeners {
+) : LifecycleLinearLayout(context, attrs), ColorListener, Refreshable {
+
+    private var isFavorited: Boolean = false
+    private var player: FullPlayer? = null
+
+    val ratingVerticalPositionInWindow: Int
+        get() = rating.verticalPositionInWindow
+
+    var listeners: Listeners? = null
+
+    private val compareClickListener = OnClickListener {
+        listeners?.onCompareClick(this)
+    }
+
+    private val favoriteOrUnfavoriteClickListener = OnClickListener {
+        listeners?.onFavoriteOrUnfavoriteClick(this)
+    }
+
+    private val shareClickListener = OnClickListener {
+        listeners?.onShareClick(this)
+    }
+
+    private val twitchClickListener = OnClickListener {
+        listeners?.onUrlClick(this, presentation?.twitch)
+    }
+
+    private val twitterClickListener = OnClickListener {
+        listeners?.onUrlClick(this, presentation?.twitter)
+    }
+
+    private val youTubeClickListener = OnClickListener {
+        listeners?.onUrlClick(this, presentation?.youTube)
+    }
 
     private var presentation: PlayerProfileManager.Presentation? = null
-
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
+    private var smashCompetitor: SmashCompetitor? = null
 
     @Inject
     protected lateinit var playerProfileManager: PlayerProfileManager
@@ -47,12 +65,12 @@ class PlayerProfileItemView @JvmOverloads constructor(
     @Inject
     protected lateinit var regionRepository: RegionRepository
 
-    @Inject
-    protected lateinit var shareUtils: ShareUtils
-
-    @Inject
-    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
-
+    interface Listeners : ColorListener {
+        fun onCompareClick(v: PlayerProfileItemView)
+        fun onFavoriteOrUnfavoriteClick(v: PlayerProfileItemView)
+        fun onShareClick(v: PlayerProfileItemView)
+        fun onUrlClick(v: PlayerProfileItemView, url: String?)
+    }
 
     init {
         if (!isInEditMode) {
@@ -70,113 +88,35 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
     }
 
-    private var fullPlayer: FullPlayer? = null
-        set(value) {
-            field = value
-            refresh()
-        }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (isInEditMode) {
-            return
-        }
-
-        favoritePlayersRepository.addListener(this)
-        identityRepository.addListener(this)
-        smashRosterSyncManager.addListener(this)
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
-        favoritePlayersRepository.removeListener(this)
-        identityRepository.removeListener(this)
-        smashRosterSyncManager.removeListener(this)
-    }
-
-    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
-        }
-
         avatar.colorListener = this
-
-        twitter.setOnClickListener {
-            presentation?.let { p -> shareUtils.openUrl(context, p.twitter) }
-        }
-
-        twitch.setOnClickListener {
-            presentation?.let { p -> shareUtils.openUrl(context, p.twitch) }
-        }
-
-        youTube.setOnClickListener {
-            presentation?.let { p -> shareUtils.openUrl(context, p.youTube) }
-        }
-
-        otherWebsite.setOnClickListener {
-            presentation?.let { p -> shareUtils.openUrl(context, p.otherWebsite) }
-        }
-
-        favoriteOrUnfavorite.setOnClickListener {
-            fullPlayer?.let { p ->
-                if (p in favoritePlayersRepository) {
-                    favoritePlayersRepository.removePlayer(p)
-                } else {
-                    favoritePlayersRepository.addPlayer(p, regionRepository.getRegion(context))
-                }
-            }
-        }
-
-        viewYourselfVsThisOpponent.setOnClickListener {
-            val identity = identityRepository.identity ?: throw NullPointerException("identity is null")
-            val player = fullPlayer ?: throw NullPointerException("fullPlayer is null")
-            context.startActivity(HeadToHeadActivity.getLaunchIntent(context, identity, player,
-                    regionRepository.getRegion(context)))
-        }
-
-        share.setOnClickListener {
-            fullPlayer?.let { p -> shareUtils.sharePlayer(requireActivity(), p) }
-        }
-    }
-
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        if (isAlive) {
-            refresh()
-        }
+        twitter.setOnClickListener(twitterClickListener)
+        twitch.setOnClickListener(twitchClickListener)
+        youTube.setOnClickListener(youTubeClickListener)
+        favoriteOrUnfavorite.setOnClickListener(favoriteOrUnfavoriteClickListener)
+        compare.setOnClickListener(compareClickListener)
+        share.setOnClickListener(shareClickListener)
     }
 
     override fun onPaletteBuilt(palette: Palette?) {
-        (activity as? ColorListener?)?.onPaletteBuilt(palette)
+        if (!isAlive) {
+            return
+        }
+
+        listeners?.onPaletteBuilt(palette)
 
         repeat(childCount) {
             applyPaletteToView(palette, getChildAt(it))
         }
     }
 
-    override fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager) {
-        // intentionally empty
-    }
-
-    override fun onSmashRosterSyncComplete(smashRosterSyncManager: SmashRosterSyncManager) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
     override fun refresh() {
-        val player = fullPlayer ?: return
+        val player = this.player ?: return
         val region = regionRepository.getRegion(context)
-        val presentation = playerProfileManager.getPresentation(player, region)
+        val presentation = playerProfileManager.getPresentation(region, isFavorited,
+                player, smashCompetitor)
         this.presentation = presentation
 
         if (presentation.avatar.isNullOrBlank()) {
@@ -224,8 +164,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
 
         if (presentation.twitch?.isNotBlank() == true
                 || presentation.twitter?.isNotBlank() == true
-                || presentation.youTube?.isNotBlank() == true
-                || presentation.otherWebsite?.isNotBlank() == true) {
+                || presentation.youTube?.isNotBlank() == true) {
             if (presentation.twitch.isNullOrBlank()) {
                 twitch.visibility = View.GONE
             } else {
@@ -242,12 +181,6 @@ class PlayerProfileItemView @JvmOverloads constructor(
                 youTube.visibility = View.GONE
             } else {
                 youTube.visibility = View.VISIBLE
-            }
-
-            if (presentation.otherWebsite.isNullOrBlank()) {
-                otherWebsite.visibility = View.GONE
-            } else {
-                otherWebsite.visibility = View.VISIBLE
             }
 
             websites.visibility = View.VISIBLE
@@ -269,18 +202,18 @@ class PlayerProfileItemView @JvmOverloads constructor(
 
         favoriteOrUnfavorite.refresh()
 
-        if (presentation.isViewYourselfVsThisOpponentVisible) {
-            viewYourselfVsThisOpponent.visibility = View.VISIBLE
+        if (presentation.isCompareVisible) {
+            compare.visibility = View.VISIBLE
         } else {
-            viewYourselfVsThisOpponent.visibility = View.GONE
+            compare.visibility = View.GONE
         }
     }
 
-    val ratingVerticalPositionInWindow: Int
-        get() = rating.verticalPositionInWindow
-
-    override fun setContent(content: FullPlayer) {
-        fullPlayer = content
+    fun setContent(isFavorited: Boolean, player: FullPlayer, smashCompetitor: SmashCompetitor?) {
+        this.isFavorited = isFavorited
+        this.player = player
+        this.smashCompetitor = smashCompetitor
+        refresh()
     }
 
 }

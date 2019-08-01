@@ -3,8 +3,8 @@ package com.garpr.android.dagger
 import android.app.Application
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.DeviceUtilsImpl
-import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.misc.ThreadUtilsImpl
+import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils2Impl
 import com.garpr.android.misc.Timber
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.CrashlyticsWrapperImpl
@@ -48,16 +48,19 @@ class ConfigModule {
 
     @Provides
     @Singleton
-    fun providesThreadUtils(
+    fun providesThreadUtils2(
             deviceUtils: DeviceUtils
-    ): ThreadUtils {
-        return ThreadUtilsImpl(deviceUtils.hasLowRam)
+    ): ThreadUtils2 {
+        return ThreadUtils2Impl(deviceUtils)
     }
 
     @Provides
     @Singleton
-    fun providesWorkManagerWrapper(): WorkManagerWrapper {
-        return WorkManagerWrapperImpl()
+    fun providesWorkManagerWrapper(
+            application: Application,
+            threadUtils: ThreadUtils2
+    ): WorkManagerWrapper {
+        return WorkManagerWrapperImpl(application, threadUtils)
     }
 
 }

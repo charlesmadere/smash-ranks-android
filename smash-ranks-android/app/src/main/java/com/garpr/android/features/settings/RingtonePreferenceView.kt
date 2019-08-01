@@ -93,9 +93,8 @@ class RingtonePreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         rankingsPollingPreferenceStore.ringtone.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onPreferenceChange(preference: Preference<Uri>) {

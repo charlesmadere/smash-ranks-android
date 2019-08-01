@@ -44,8 +44,8 @@ class NightModeRepositoryImpl(
     override fun getNightModeStrings(context: Context): Array<CharSequence> {
         val items = arrayOfNulls<CharSequence>(NightMode.values().size)
 
-        for (i in 0 until NightMode.values().size) {
-            items[i] = context.getText(NightMode.values()[i].textResId)
+        NightMode.values().forEachIndexed { index, nightMode ->
+            items[index] = context.getText(nightMode.textResId)
         }
 
         @Suppress("UNCHECKED_CAST")

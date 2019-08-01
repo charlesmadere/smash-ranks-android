@@ -72,11 +72,12 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // Android Architecture Components ViewModel and LiveData
+    // Android Architecture Components - ViewModel and LiveData
+    // https://developer.android.com/jetpack/androidx/releases/lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
-    // Android Architecture Component WorkManager
+    // Android Architecture Components - WorkManager
     // https://developer.android.com/jetpack/androidx/releases/work
     implementation "androidx.work:work-runtime:$workmanager_version"
 
@@ -123,6 +124,10 @@ dependencies {
     // https://github.com/robolectric/robolectric
     testImplementation "org.robolectric:robolectric:$robolectric_version"
 
+    // RxJava
+    // https://github.com/ReactiveX/RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rx_java_version"
+
     // Square's Moshi
     // https://github.com/square/moshi
     implementation "com.squareup.moshi:moshi:$moshi_version"
@@ -135,6 +140,7 @@ dependencies {
     // Square's Retrofit
     // https://github.com/square/retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     // Fabric

@@ -77,9 +77,8 @@ class ThemePreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         nightModeRepository.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onNightModeChange(nightModeRepository: NightModeRepository) {

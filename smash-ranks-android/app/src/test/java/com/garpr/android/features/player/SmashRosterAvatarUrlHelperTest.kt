@@ -1,8 +1,8 @@
 package com.garpr.android.features.player
 
 import com.garpr.android.BaseTest
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,13 +42,13 @@ class SmashRosterAvatarUrlHelperTest : BaseTest() {
     @Test
     fun testGetAvatarUrlWithLargeAvatarPath() {
         val url = smashRosterAvatarUrlHelper.getAvatarUrl(LARGE_AVATAR_PATH)
-        assertTrue(url?.isNotBlank() == true)
+        assertFalse(url.isNullOrBlank())
     }
 
     @Test
     fun testGetAvatarUrlWithMediumAvatarPath() {
         val url = smashRosterAvatarUrlHelper.getAvatarUrl(MEDIUM_AVATAR_PATH)
-        assertTrue(url?.isNotBlank() == true)
+        assertFalse(url.isNullOrBlank())
     }
 
     @Test
@@ -59,13 +59,13 @@ class SmashRosterAvatarUrlHelperTest : BaseTest() {
     @Test
     fun testGetAvatarUrlWithOriginalAvatarPath() {
         val url = smashRosterAvatarUrlHelper.getAvatarUrl(ORIGINAL_AVATAR_PATH)
-        assertTrue(url?.isNotBlank() == true)
+        assertFalse(url.isNullOrBlank())
     }
 
     @Test
     fun testGetAvatarUrlWithSmallAvatarPath() {
         val url = smashRosterAvatarUrlHelper.getAvatarUrl(SMALL_AVATAR_PATH)
-        assertTrue(url?.isNotBlank() == true)
+        assertFalse(url.isNullOrBlank())
     }
 
 }

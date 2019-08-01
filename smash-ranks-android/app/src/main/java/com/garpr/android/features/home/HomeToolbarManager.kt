@@ -1,6 +1,6 @@
 package com.garpr.android.features.home
 
-import com.garpr.android.data.models.RankingCriteria
+import com.garpr.android.data.models.AbsRegion
 
 interface HomeToolbarManager {
 
@@ -9,6 +9,6 @@ interface HomeToolbarManager {
             val isViewYourselfVisible: Boolean = false
     )
 
-    fun getPresentation(rankingCriteria: RankingCriteria?): Presentation
+    fun getPresentation(region: AbsRegion?): Presentation
 
 }

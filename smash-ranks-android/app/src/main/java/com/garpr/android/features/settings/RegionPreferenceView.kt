@@ -59,9 +59,8 @@ class RegionPreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         regionRepository.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onRegionChange(regionRepository: RegionRepository) {

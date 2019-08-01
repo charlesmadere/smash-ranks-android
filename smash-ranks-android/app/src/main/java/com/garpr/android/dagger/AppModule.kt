@@ -24,19 +24,19 @@ import com.garpr.android.features.splash.AppUpgradeManager
 import com.garpr.android.features.splash.AppUpgradeManagerImpl
 import com.garpr.android.features.splash.SplashScreenManager
 import com.garpr.android.features.splash.SplashScreenManagerImpl
-import com.garpr.android.features.tournament.TournamentAdapterManager
-import com.garpr.android.features.tournament.TournamentAdapterManagerImpl
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.DeviceUtils
+import com.garpr.android.misc.Schedulers
+import com.garpr.android.misc.SchedulersImpl
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.misc.ShareUtilsImpl
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.ThreadUtils2
 import com.garpr.android.misc.Timber
 import com.garpr.android.misc.TimberImpl
-import com.garpr.android.networking.GarPrApi
-import com.garpr.android.networking.ServerApi
-import com.garpr.android.networking.ServerApiImpl
-import com.garpr.android.networking.SmashRosterApi
+import com.garpr.android.networking.GarPrApi2
+import com.garpr.android.networking.ServerApi2
+import com.garpr.android.networking.ServerApi2Impl
+import com.garpr.android.networking.SmashRosterApi2
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.GeneralPreferenceStoreImpl
 import com.garpr.android.preferences.KeyValueStore
@@ -48,14 +48,26 @@ import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.preferences.SmashRosterPreferenceStoreImpl
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.FavoritePlayersRepositoryImpl
-import com.garpr.android.repositories.FullTournamentUtils
-import com.garpr.android.repositories.FullTournamentUtilsImpl
+import com.garpr.android.repositories.HeadToHeadRepository
+import com.garpr.android.repositories.HeadToHeadRepositoryImpl
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.IdentityRepositoryImpl
+import com.garpr.android.repositories.MatchesRepository
+import com.garpr.android.repositories.MatchesRepositoryImpl
 import com.garpr.android.repositories.NightModeRepository
 import com.garpr.android.repositories.NightModeRepositoryImpl
+import com.garpr.android.repositories.PlayerMatchesRepository
+import com.garpr.android.repositories.PlayerMatchesRepositoryImpl
+import com.garpr.android.repositories.PlayersRepository
+import com.garpr.android.repositories.PlayersRepositoryImpl
+import com.garpr.android.repositories.RankingsRepository
+import com.garpr.android.repositories.RankingsRepositoryImpl
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionRepositoryImpl
+import com.garpr.android.repositories.RegionsRepository
+import com.garpr.android.repositories.RegionsRepositoryImpl
+import com.garpr.android.repositories.TournamentsRepository
+import com.garpr.android.repositories.TournamentsRepositoryImpl
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils
 import com.garpr.android.sync.rankings.RankingsNotificationsUtilsImpl
 import com.garpr.android.sync.rankings.RankingsPollingManager
@@ -71,7 +83,9 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -139,21 +153,13 @@ class AppModule(
         return FavoritePlayersRepositoryImpl(keyValueStore, moshi, timber)
     }
 
-    @Provides
-    @Singleton
-    fun providesFullTournamentUtils(
-            threadUtils: ThreadUtils
-    ): FullTournamentUtils {
-        return FullTournamentUtilsImpl(threadUtils)
-    }
-
     @Named(GAR_PR_API)
     @Provides
     @Singleton
-    fun providesGarPrApi(
+    fun providesGarPrApi2(
             @Named(GAR_PR_RETROFIT) retrofit: Retrofit
-    ): GarPrApi {
-        return retrofit.create(GarPrApi::class.java)
+    ): GarPrApi2 {
+        return retrofit.create()
     }
 
     @Named(GAR_PR_RETROFIT)
@@ -161,9 +167,11 @@ class AppModule(
     @Singleton
     fun providesGarPrRetrofit(
             moshiConverterFactory: MoshiConverterFactory,
-            okHttpClient: OkHttpClient
+            okHttpClient: OkHttpClient,
+            rxJava2CallAdapterFactoryFactory: RxJava2CallAdapterFactory
     ): Retrofit {
         return Retrofit.Builder()
+                .addCallAdapterFactory(rxJava2CallAdapterFactoryFactory)
                 .addConverterFactory(moshiConverterFactory)
                 .baseUrl("${Constants.GAR_PR_BASE_PATH}:${Constants.GAR_PR_API_PORT}")
                 .client(okHttpClient)
@@ -191,6 +199,15 @@ class AppModule(
 
     @Provides
     @Singleton
+    fun providesHeadToHeadRepository(
+            schedulers: Schedulers,
+            serverApi: ServerApi2
+    ): HeadToHeadRepository {
+        return HeadToHeadRepositoryImpl(schedulers, serverApi)
+    }
+
+    @Provides
+    @Singleton
     fun providesHomeToolbarManager(
             identityRepository: IdentityRepository
     ): HomeToolbarManager {
@@ -210,6 +227,15 @@ class AppModule(
     @Singleton
     fun providesKeyValueStoreProvider(application: Application): KeyValueStoreProvider {
         return KeyValueStoreProviderImpl(application)
+    }
+
+    @Provides
+    @Singleton
+    fun providesMatchesRepository(
+            schedulers: Schedulers,
+            serverApi: ServerApi2
+    ): MatchesRepository {
+        return MatchesRepositoryImpl(schedulers, serverApi)
     }
 
     @Provides
@@ -245,10 +271,10 @@ class AppModule(
     @Named(NOT_GAR_PR_API)
     @Provides
     @Singleton
-    fun providesNotGarPrApi(
+    fun providesNotGarPrApi2(
             @Named(NOT_GAR_PR_RETROFIT) retrofit: Retrofit
-    ): GarPrApi {
-        return retrofit.create(GarPrApi::class.java)
+    ): GarPrApi2 {
+        return retrofit.create()
     }
 
     @Named(NOT_GAR_PR_RETROFIT)
@@ -256,9 +282,11 @@ class AppModule(
     @Singleton
     fun providesNotGarPrRetrofit(
             moshiConverterFactory: MoshiConverterFactory,
-            okHttpClient: OkHttpClient
+            okHttpClient: OkHttpClient,
+            rxJava2CallAdapterFactoryFactory: RxJava2CallAdapterFactory
     ): Retrofit {
         return Retrofit.Builder()
+                .addCallAdapterFactory(rxJava2CallAdapterFactoryFactory)
                 .addConverterFactory(moshiConverterFactory)
                 .baseUrl("${Constants.NOT_GAR_PR_BASE_PATH}:${Constants.NOT_GAR_PR_API_PORT}")
                 .client(okHttpClient)
@@ -285,14 +313,31 @@ class AppModule(
 
     @Provides
     @Singleton
+    fun providesPlayerMatchesRepository(
+            matchesRepository: MatchesRepository,
+            playersRepository: PlayersRepository,
+            schedulers: Schedulers
+    ): PlayerMatchesRepository {
+        return PlayerMatchesRepositoryImpl(matchesRepository, playersRepository, schedulers)
+    }
+
+    @Provides
+    @Singleton
     fun providesPlayerProfileViewManager(
-            favoritePlayersRepository: FavoritePlayersRepository,
             identityRepository: IdentityRepository,
-            smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper,
-            smashRosterStorage: SmashRosterStorage
+            smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper
     ): PlayerProfileManager {
-        return PlayerProfileManagerImpl(application, favoritePlayersRepository,
-                identityRepository, smashRosterAvatarUrlHelper, smashRosterStorage)
+        return PlayerProfileManagerImpl(application, identityRepository,
+                smashRosterAvatarUrlHelper)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPlayersRepository(
+            schedulers: Schedulers,
+            serverApi: ServerApi2
+    ): PlayersRepository {
+        return PlayersRepositoryImpl(schedulers, serverApi)
     }
 
     @Provides
@@ -344,6 +389,19 @@ class AppModule(
 
     @Provides
     @Singleton
+    fun providesRankingsRepository(
+            notificationsManager: NotificationsManager,
+            rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
+            regionRepository: RegionRepository,
+            schedulers: Schedulers,
+            serverApi: ServerApi2
+    ): RankingsRepository {
+        return RankingsRepositoryImpl(notificationsManager, rankingsPollingPreferenceStore,
+                regionRepository, schedulers, serverApi)
+    }
+
+    @Provides
+    @Singleton
     fun providesRegionRepository(
             generalPreferenceStore: GeneralPreferenceStore,
             rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
@@ -354,19 +412,35 @@ class AppModule(
 
     @Provides
     @Singleton
-    fun providesServerApi(
-            fullTournamentUtils: FullTournamentUtils,
-            @Named(GAR_PR_API) garPrApi: GarPrApi,
-            @Named(NOT_GAR_PR_API) notGarPrApi: GarPrApi,
-            rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
-            regionRepository: RegionRepository,
-            smashRosterApi: SmashRosterApi,
-            threadUtils: ThreadUtils,
-            timber: Timber
-    ): ServerApi {
-        return ServerApiImpl(fullTournamentUtils, garPrApi, notGarPrApi,
-                rankingsPollingPreferenceStore, regionRepository, smashRosterApi, threadUtils,
-                timber)
+    fun providesRegionsRepository(
+            schedulers: Schedulers,
+            serverApi: ServerApi2
+    ): RegionsRepository {
+        return RegionsRepositoryImpl(schedulers, serverApi)
+    }
+
+    @Provides
+    @Singleton
+    fun providesRxJava2CallAdapterFactory(): RxJava2CallAdapterFactory {
+        return RxJava2CallAdapterFactory.create()
+    }
+
+    @Provides
+    @Singleton
+    fun providesSchedulers(
+            threadUtils: ThreadUtils2
+    ): Schedulers {
+        return SchedulersImpl(threadUtils)
+    }
+
+    @Provides
+    @Singleton
+    fun providesServerApi2(
+            @Named(GAR_PR_API) garPrApi: GarPrApi2,
+            @Named(NOT_GAR_PR_API) notGarPrApi: GarPrApi2,
+            smashRosterApi: SmashRosterApi2
+    ): ServerApi2 {
+        return ServerApi2Impl(garPrApi, notGarPrApi, smashRosterApi)
     }
 
     @Provides
@@ -380,10 +454,10 @@ class AppModule(
 
     @Provides
     @Singleton
-    fun providesSmashRosterApi(@Named(
-            SMASH_ROSTER_RETROFIT) retrofit: Retrofit
-    ): SmashRosterApi {
-        return retrofit.create(SmashRosterApi::class.java)
+    fun providesSmashRosterApi2(
+            @Named(SMASH_ROSTER_RETROFIT) retrofit: Retrofit
+    ): SmashRosterApi2 {
+        return retrofit.create()
     }
 
     @Provides
@@ -407,9 +481,11 @@ class AppModule(
     @Singleton
     fun providesSmashRosterRetrofit(
             moshiConverterFactory: MoshiConverterFactory,
-            okHttpClient: OkHttpClient
+            okHttpClient: OkHttpClient,
+            rxJava2CallAdapterFactoryFactory: RxJava2CallAdapterFactory
     ): Retrofit {
         return Retrofit.Builder()
+                .addCallAdapterFactory(rxJava2CallAdapterFactoryFactory)
                 .addConverterFactory(moshiConverterFactory)
                 .baseUrl(smashRosterBasePath)
                 .client(okHttpClient)
@@ -439,15 +515,14 @@ class AppModule(
     @Provides
     @Singleton
     fun providesSmashRosterSyncManager(
-            serverApi: ServerApi,
+            serverApi: ServerApi2,
             smashRosterPreferenceStore: SmashRosterPreferenceStore,
             smashRosterStorage: SmashRosterStorage,
-            threadUtils: ThreadUtils,
             timber: Timber,
             workManagerWrapper: WorkManagerWrapper
     ): SmashRosterSyncManager {
         return SmashRosterSyncManagerImpl(serverApi, smashRosterPreferenceStore,
-                smashRosterStorage, threadUtils, timber, workManagerWrapper)
+                smashRosterStorage, timber, workManagerWrapper)
     }
 
     @Provides
@@ -464,13 +539,16 @@ class AppModule(
             deviceUtils: DeviceUtils,
             crashlyticsWrapper: CrashlyticsWrapper
     ): Timber {
-        return TimberImpl(deviceUtils.hasLowRam, crashlyticsWrapper)
+        return TimberImpl(deviceUtils, crashlyticsWrapper)
     }
 
     @Provides
     @Singleton
-    fun providesTournamentAdapterManager(): TournamentAdapterManager {
-        return TournamentAdapterManagerImpl(application)
+    fun providesTournamentsRepository(
+            schedulers: Schedulers,
+            serverApi: ServerApi2
+    ): TournamentsRepository {
+        return TournamentsRepositoryImpl(schedulers, serverApi)
     }
 
 }

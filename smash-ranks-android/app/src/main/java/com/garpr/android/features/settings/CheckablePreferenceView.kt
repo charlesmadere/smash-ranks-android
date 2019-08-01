@@ -108,9 +108,8 @@ class CheckablePreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         preference?.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onPreferenceChange(preference: Preference<Boolean>) {

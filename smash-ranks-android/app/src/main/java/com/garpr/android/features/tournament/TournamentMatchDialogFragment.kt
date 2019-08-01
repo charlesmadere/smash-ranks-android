@@ -17,10 +17,10 @@ import javax.inject.Inject
 
 class TournamentMatchDialogFragment : BaseBottomSheetDialogFragment() {
 
+    private val match by lazy { arguments.requireParcelable<FullTournament.Match>(KEY_MATCH) }
+
     @Inject
     protected lateinit var regionRepository: RegionRepository
-
-    private val match by lazy { arguments.requireParcelable<FullTournament.Match>(KEY_MATCH) }
 
 
     companion object {

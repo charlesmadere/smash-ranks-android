@@ -16,11 +16,10 @@ import javax.inject.Inject
 
 class HeadToHeadDialogFragment : BaseBottomSheetDialogFragment() {
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
     private val match by lazy { arguments.requireParcelable<HeadToHeadMatch>(KEY_MATCH) }
 
+    @Inject
+    protected lateinit var regionRepository: RegionRepository
 
     companion object {
         const val TAG = "HeadToHeadDialogFragment"

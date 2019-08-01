@@ -22,6 +22,15 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable,
     @Inject
     protected lateinit var shareUtils: ShareUtils
 
+    private val shareRankingsClickListener = View.OnClickListener {
+        shareUtils.shareRankings(requireActivity())
+        dismissAllowingStateLoss()
+    }
+
+    private val shareTournamentsClickListener = View.OnClickListener {
+        shareUtils.shareTournaments(requireActivity())
+        dismissAllowingStateLoss()
+    }
 
     companion object {
         const val TAG = "ShareRegionDialogFragment"
@@ -40,8 +49,8 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable,
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         regionRepository.removeListener(this)
+        super.onDestroyView()
     }
 
     override fun onRegionChange(regionRepository: RegionRepository) {
@@ -58,16 +67,8 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dialogRegionRankings.setOnClickListener {
-            shareUtils.shareRankings(requireActivity())
-            dismissAllowingStateLoss()
-        }
-
-        dialogRegionTournaments.setOnClickListener {
-            shareUtils.shareTournaments(requireActivity())
-            dismissAllowingStateLoss()
-        }
-
+        dialogRegionRankings.setOnClickListener(shareRankingsClickListener)
+        dialogRegionTournaments.setOnClickListener(shareTournamentsClickListener)
         regionRepository.addListener(this)
     }
 

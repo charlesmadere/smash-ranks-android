@@ -1,63 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="android.widget.FrameLayout">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-    <LinearLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:orientation="vertical">
-
-        <Space
-            android:layout_height="?attr/actionBarSize"
-            android:layout_width="match_parent" />
-
-        <com.garpr.android.features.common.views.RefreshLayout
-            android:id="@id/refreshLayout"
-            style="@style/RefreshLayout">
-
-            <FrameLayout
-                android:layout_height="match_parent"
-                android:layout_width="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:visibility="gone"
-                    style="@style/RecyclerView" />
-
-                <com.garpr.android.features.common.views.ErrorContentLinearLayout
-                    android:id="@+id/error"
-                    app:titleText="@string/error_loading_tournament"
-                    style="@style/NoContentLinearLayout.Error" />
-
-            </FrameLayout>
-
-        </com.garpr.android.features.common.views.RefreshLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="vertical">
+        app:liftOnScroll="false">
 
-        <com.garpr.android.features.common.views.SearchToolbar
-            android:id="@+id/toolbar"
-            app:descriptionTextColor="@color/transparent"
-            app:showUpNavigation="true"
-            app:titleTextColor="@color/transparent"
-            style="@style/Toolbar" />
-
-        <com.garpr.android.features.tournament.TournamentTabsView
-            android:alpha="0"
-            android:background="?attr/colorPrimary"
-            android:elevation="@dimen/elevation"
-            android:id="@+id/toolbarTournamentTabsView"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:theme="@style/ToolbarTheme" />
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="exitUntilCollapsed|scroll"
+            app:titleEnabled="false">
 
-    </LinearLayout>
+            <com.garpr.android.features.common.views.SearchToolbar
+                android:hint="@string/search_matches_and_players_"
+                android:id="@+id/toolbar"
+                app:descriptionTextColor="@color/transparent"
+                app:layout_collapseMode="pin"
+                app:showUpNavigation="true"
+                app:titleTextColor="@color/transparent"
+                style="@style/Toolbar" />
 
-</merge>
+            <com.garpr.android.features.tournament.TournamentInfoView
+                android:background="@color/window_background"
+                android:id="@+id/tournamentInfoView"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <com.garpr.android.features.tournament.TournamentTabsView
+            android:background="@color/window_background"
+            android:id="@+id/tournamentTabsView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.garpr.android.features.common.views.RefreshLayout
+        android:id="@+id/refreshLayout"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        style="@style/RefreshLayout">
+
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <com.garpr.android.features.tournament.TournamentViewPager
+                android:id="@+id/viewPager"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.garpr.android.features.common.views.NoContentLinearLayout
+                android:id="@+id/error"
+                app:titleText="@string/error_loading_tournament"
+                style="@style/NoContentLinearLayout.Error" />
+
+        </FrameLayout>
+
+    </com.garpr.android.features.common.views.RefreshLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -60,9 +60,8 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         favoritePlayersRepository.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {

@@ -58,8 +58,7 @@ class ShareUtilsImpl(
                 .startChooser()
     }
 
-    override fun shareTournament(activity: Activity,
-            tournament: AbsTournament) {
+    override fun shareTournament(activity: Activity, tournament: AbsTournament) {
         val region = regionRepository.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)

@@ -17,7 +17,6 @@ class RegionRepositoryImpl(
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnRegionChangeListener>>()
 
-
     companion object {
         private const val TAG = "RegionRepositoryImpl"
     }

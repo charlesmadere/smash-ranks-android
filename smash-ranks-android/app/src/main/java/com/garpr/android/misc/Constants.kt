@@ -15,9 +15,6 @@ object Constants {
     const val NOT_GAR_PR_BASE_PATH = "https://www.notgarpr.com"
 
     // Miscellaneous
-    const val ERROR_CODE_BAD_REQUEST = 400
-    const val ERROR_CODE_UNKNOWN = Integer.MAX_VALUE
-    const val OTHER = "other"
     const val PLAIN_TEXT = "text/plain"
     const val TWITCH = "twitch"
     const val TWITTER = "twitter"

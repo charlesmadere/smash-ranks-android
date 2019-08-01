@@ -13,7 +13,7 @@
     <string name="back">Back</string>
     <string name="build_x_y">Build %1$d (%2$s)</string>
     <string name="cancel">Cancel</string>
-    <string name="cancel_all">Cancel all</string>
+    <string name="cancel_rankings">Cancel rankings</string>
     <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
     <string name="click_to_open_form">Click to open form</string>
@@ -78,6 +78,7 @@
     <string name="no_rankings">No rankings</string>
     <string name="no_regions">No regions</string>
     <string name="no_tournaments">No tournaments</string>
+    <string name="number">Number</string>
     <string name="ok">OK</string>
     <string name="open_bracket_link">Open bracket link</string>
     <string name="open_challonge_link">Open Challonge link</string>
@@ -93,8 +94,8 @@
     <string name="x_rankings_have_been_updated">%1$s rankings have been updated!</string>
     <string name="rankings_polling">Rankings polling</string>
     <string name="rankings_polling_description">This feature will periodically poll your region\'s GAR PR (or Not GAR PR) and let you know if its rankings have been updated. Note that the poll frequency is just an estimate, it\'s not guaranteed to run at these exact intervals.</string>
-    <string name="rankings_update_description">Notification that shows whenever your region\'s rankings have been updated.</string>
-    <string name="rankings_update_notifications">Rankings Update Notifications</string>
+    <string name="rankings_update_notifications_description">Notification that shows whenever your region\'s rankings have been updated.</string>
+    <string name="rankings_update_notifications_name">Rankings Update Notifications</string>
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
     <string name="region_endpoint_format">%1$s (%2$s)</string>
@@ -105,6 +106,9 @@
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="search_">Search…</string>
+    <string name="search_matches_">Search matches…</string>
+    <string name="search_matches_and_players_">Search matches and players…</string>
+    <string name="search_players_">Search players…</string>
     <string name="settings">Settings</string>
     <string name="set_identity">Set Identity</string>
     <string name="set_region">Set Region</string>
@@ -167,6 +171,7 @@
 
 
     <!-- Smash Characters -->
+    <string name="banjo_n_kazooie">Banjo &amp; Kazooie</string>
     <string name="bayonetta">Bayonetta</string>
     <string name="bowser">Bowser</string>
     <string name="bowser_jr">Bowser Jr.</string>
@@ -186,6 +191,7 @@
     <string name="fox">Fox</string>
     <string name="ganondorf">Ganondorf</string>
     <string name="greninja">Greninja</string>
+    <string name="hero">Hero</string>
     <string name="ice_climbers">Ice Climbers</string>
     <string name="ike">Ike</string>
     <string name="incineroar">Incineroar</string>

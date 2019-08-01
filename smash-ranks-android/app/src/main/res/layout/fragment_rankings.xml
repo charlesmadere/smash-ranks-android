@@ -2,6 +2,7 @@
 <com.garpr.android.features.common.views.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
+    app:scrollingChildId="@+id/recyclerView"
     style="@style/RefreshLayout">
 
     <FrameLayout
@@ -9,7 +10,7 @@
         android:layout_width="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@id/recyclerView"
             android:visibility="gone"
             style="@style/RecyclerView" />
 
@@ -18,7 +19,7 @@
             app:titleText="@string/no_rankings"
             style="@style/NoContentLinearLayout.Empty" />
 
-        <com.garpr.android.features.common.views.ErrorContentLinearLayout
+        <com.garpr.android.features.common.views.NoContentLinearLayout
             android:id="@+id/error"
             app:titleText="@string/error_loading_rankings"
             style="@style/NoContentLinearLayout.Error" />

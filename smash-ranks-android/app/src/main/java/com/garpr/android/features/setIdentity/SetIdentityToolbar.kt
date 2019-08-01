@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.View.OnClickListener
 import com.garpr.android.R
-import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.views.SearchToolbar
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
@@ -16,27 +15,31 @@ class SetIdentityToolbar @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SearchToolbar(context, attrs) {
 
-    private val onSaveClickListener = OnClickListener {
-        (activity as? Listeners?)?.onSaveClick(this)
+    var enableSaveIcon: Boolean
+        get() = saveButton.isEnabled
+        set(value) {
+            saveButton.isEnabled = value
+        }
+
+    var showSaveIcon: Boolean
+        get() = saveButton.visibility == View.VISIBLE
+        set(value) {
+            saveButton.visibility = if (value) View.VISIBLE else View.GONE
+        }
+
+    var listener: Listener? = null
+
+    private val saveClickListener = OnClickListener {
+        listener?.onSaveClick(this)
     }
 
-    interface Listeners {
-        val enableSaveIcon: Boolean
-        val showSaveIcon: Boolean
+    interface Listener {
         fun onSaveClick(v: SetIdentityToolbar)
     }
 
     init {
         layoutInflater.inflate(R.layout.set_identity_toolbar_items, menuExpansionContainer)
-        saveButton.setOnClickListener(onSaveClickListener)
-    }
-
-    override fun refresh() {
-        super.refresh()
-
-        val listeners = activity as? Listeners?
-        saveButton.visibility = if (listeners?.showSaveIcon == true) View.VISIBLE else View.GONE
-        saveButton.isEnabled = listeners?.enableSaveIcon == true
+        saveButton.setOnClickListener(saveClickListener)
     }
 
 }

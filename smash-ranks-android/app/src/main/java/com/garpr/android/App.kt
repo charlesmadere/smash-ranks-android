@@ -1,6 +1,7 @@
 package com.garpr.android
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.work.Configuration
 import com.garpr.android.dagger.AppComponent
 import com.garpr.android.dagger.AppComponentHandle
 import com.garpr.android.dagger.AppModule
@@ -13,9 +14,11 @@ import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.NightModeRepository
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
+import com.garpr.android.wrappers.WorkManagerWrapper
 import javax.inject.Inject
 
-class App : BaseApp(), AppComponentHandle, NightModeRepository.OnNightModeChangeListener {
+class App : BaseApp(), AppComponentHandle, Configuration.Provider,
+        NightModeRepository.OnNightModeChangeListener {
 
     private var _appComponent: AppComponent? = null
 
@@ -37,6 +40,9 @@ class App : BaseApp(), AppComponentHandle, NightModeRepository.OnNightModeChange
     @Inject
     protected lateinit var timber: Timber
 
+    @Inject
+    protected lateinit var workManagerWrapper: WorkManagerWrapper
+
 
     companion object {
         private const val TAG = "App"
@@ -45,10 +51,13 @@ class App : BaseApp(), AppComponentHandle, NightModeRepository.OnNightModeChange
     override val appComponent: AppComponent
         get() = _appComponent ?: throw IllegalStateException("_appComponent is null")
 
-
     private fun applyNightMode() {
         AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
         nightModeRepository.addListener(this)
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return workManagerWrapper.configuration
     }
 
     private fun initializeAppComponent() {

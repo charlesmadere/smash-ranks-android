@@ -4,47 +4,37 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
-import com.garpr.android.data.models.RankingCriteria
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
+import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.features.common.views.SearchToolbar
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
-import com.garpr.android.features.rankings.RankingsLayout
 import com.garpr.android.features.settings.SettingsActivity
-import com.garpr.android.misc.RankingCriteriaHandle
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
-import com.garpr.android.sync.rankings.RankingsPollingManager
-import com.garpr.android.sync.roster.SmashRosterSyncManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
-        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners,
-        RankingCriteriaHandle, RankingsLayout.Listener, RegionRepository.OnRegionChangeListener,
-        Searchable, SearchQueryHandle, SearchToolbar.Listener {
+        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners, Searchable,
+        SearchQueryHandle {
 
-    private val adapter = HomePagerAdapter()
+    private lateinit var adapter: HomeFragmentPagerAdapter
 
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    @Inject
-    protected lateinit var rankingsPollingManager: RankingsPollingManager
+    private val favoritePlayersViewModel by viewModel(this) { appComponent.favoritePlayersViewModel }
+    private val homeViewModel by viewModel(this) { appComponent.homeViewModel }
+    private val rankingsViewModel by viewModel(this) { appComponent.rankingsViewModel }
+    private val tournamentsViewModel by viewModel(this) { appComponent.tournamentsViewModel }
 
     @Inject
     protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
 
     companion object {
@@ -67,10 +57,31 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override val activityName = TAG
 
+    private fun initListeners() {
+        favoritePlayersViewModel.stateLiveData.observe(this, Observer {
+            homeViewModel.onFavoritePlayersChange(it.favoritePlayers)
+        })
+
+        homeViewModel.stateLiveData.observe(this, Observer {
+            refreshState(it)
+        })
+
+        rankingsViewModel.stateLiveData.observe(this, Observer {
+            homeViewModel.onRankingsBundleChange(regionRepository.getRegion(this),
+                    it.rankingsBundle)
+        })
+
+        tournamentsViewModel.stateLiveData.observe(this, Observer {
+            homeViewModel.onTournamentsBundleChange(it.tournamentsBundle)
+        })
+    }
+
     override fun onActivityRequirementsClick(v: HomeToolbar) {
-        val rankingCriteria = this.rankingCriteria ?: return
-        val regionDisplayName = regionRepository.getRegion(this).displayName
-        val dialog = ActivityRequirementsDialogFragment.create(regionDisplayName, rankingCriteria)
+        val rankingCriteria = rankingsViewModel.stateLiveData.value?.rankingsBundle?.rankingCriteria ?: return
+        val dialog = ActivityRequirementsDialogFragment.create(
+                rankingCriteria.rankingActivityDayLimit,
+                rankingCriteria.rankingNumTourneysAttended,
+                regionRepository.getRegion(this).displayName)
         dialog.show(supportFragmentManager, ActivityRequirementsDialogFragment.TAG)
     }
 
@@ -93,14 +104,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         appComponent.inject(this)
         setContentView(R.layout.activity_home)
         setInitialPosition(savedInstanceState)
-        rankingsPollingManager.enableOrDisable()
-        smashRosterSyncManager.enableOrDisable()
-        regionRepository.addListener(this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        regionRepository.removeListener(this)
+        initListeners()
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
@@ -117,15 +121,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             super.onPageSelected(position)
             updateSelectedBottomNavigationItem()
         }
-    }
-
-    override fun onRankingsBundleFetched(layout: RankingsLayout) {
-        prepareMenuAndTitleAndSubtitle(layout)
-    }
-
-    override fun onRegionChange(regionRepository: RegionRepository) {
-        prepareMenuAndTitleAndSubtitle(null)
-        adapter.refresh()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -149,36 +144,42 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override fun onViewsBound() {
         super.onViewsBound()
 
+        toolbar.listeners = this
+
         bottomNavigationView.setOnNavigationItemReselectedListener(this)
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
         viewPager.addOnPageChangeListener(onPageChangeListener)
         viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         viewPager.offscreenPageLimit = 3
+
+        adapter = HomeFragmentPagerAdapter(supportFragmentManager)
         viewPager.adapter = adapter
     }
 
     override fun onViewYourselfClick(v: HomeToolbar) {
-        val identity = identityRepository.identity ?: throw NullPointerException("identity is null")
+        val identity = homeViewModel.identity ?: return
         startActivity(PlayerActivity.getLaunchIntent(this, identity,
                 regionRepository.getRegion(this)))
     }
 
-    private fun prepareMenuAndTitleAndSubtitle(layout: RankingsLayout?) {
-        val region = regionRepository.getRegion(this)
-        toolbar.titleText = region.displayName
+    private fun refreshState(state: HomeViewModel.State) {
+        toolbar.titleText = state.title
 
-        toolbar.subtitleText = layout?.rankingsBundle?.let {
-            getString(R.string.updated_x, it.time.shortForm)
-        } ?: getString(region.endpoint.title)
+        toolbar.subtitleText = if (state.subtitleDate.isNullOrBlank()) {
+            null
+        } else {
+            getString(R.string.updated_x, state.subtitleDate)
+        }
 
-        toolbar.refresh()
+        toolbar.isActivityRequirementsVisible = state.showActivityRequirements
+        toolbar.isShowYourselfVisible = state.showYourself
+        toolbar.showSearchIcon = state.showSearch
     }
 
-    override val rankingCriteria: RankingCriteria?
-        get() = adapter.rankingCriteria
-
     override fun search(query: String?) {
-        adapter.search(query)
+        rankingsViewModel.search(query)
+        tournamentsViewModel.search(query)
+        favoritePlayersViewModel.search(query)
     }
 
     override val searchQuery: CharSequence?
@@ -199,9 +200,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             viewPager.currentTab = initialPosition
         }
     }
-
-    override val showSearchIcon: Boolean
-        get() = toolbar.hasSubtitleText
 
     private fun updateSelectedBottomNavigationItem() {
         val itemId = when (viewPager.currentTab) {

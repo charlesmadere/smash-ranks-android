@@ -42,9 +42,8 @@ class LastPollPreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         rankingsPollingPreferenceStore.lastPoll.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onPreferenceChange(preference: Preference<SimpleDate>) {

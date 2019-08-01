@@ -1,14 +1,13 @@
 package com.garpr.android.features.notifications
 
+import android.annotation.TargetApi
 import android.app.Application
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.extensions.notificationManager
@@ -25,26 +24,47 @@ class NotificationsManagerImpl(
         private val timber: Timber
 ) : NotificationsManager {
 
-    private val impl: Impl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        Api26Impl()
-    } else {
-        BaseImpl()
-    }
-
-
     companion object {
         private const val RANKINGS_CHANNEL = "rankings"
-        private const val RANKINGS_ID: Int = 1001
+        private const val RANKINGS_ID = 1001
         private const val TAG = "NotificationsManagerImpl"
     }
 
-    override fun cancelAll() {
-        timber.d(TAG, "canceling all notifications")
-        application.notificationManagerCompat.cancelAll()
+    init {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            initRankingsNotificationsChannel()
+        }
     }
 
-    override fun rankingsUpdated() {
-        val builder = impl.createBuilder(application)
+    override fun cancelRankingsUpdated() {
+        timber.d(TAG, "canceling rankings notifications")
+        application.notificationManagerCompat.cancel(RANKINGS_ID)
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private fun initRankingsNotificationsChannel() {
+        val notificationChannel = NotificationChannel(
+                RANKINGS_CHANNEL,
+                application.getString(R.string.rankings_update_notifications_name),
+                NotificationManager.IMPORTANCE_DEFAULT)
+
+        notificationChannel.description = application.getString(R.string.rankings_update_notifications_description)
+        notificationChannel.enableLights(true)
+        notificationChannel.lightColor = ContextCompat.getColor(application, R.color.blue)
+        notificationChannel.lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
+        notificationChannel.setShowBadge(true)
+
+        application.notificationManager.createNotificationChannel(notificationChannel)
+    }
+
+    override fun showRankingsUpdated() {
+        val builder = NotificationCompat.Builder(application, RANKINGS_CHANNEL)
+                .setAutoCancel(true)
+                .setCategory(NotificationCompat.CATEGORY_SOCIAL)
+                .setContentTitle(application.getString(R.string.gar_pr))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSmallIcon(R.drawable.ic_controller_white_24dp)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
         builder.setContentIntent(PendingIntent.getActivity(application, 0,
                 HomeActivity.getLaunchIntent(context = application, restartActivityTask = true),
@@ -68,48 +88,7 @@ class NotificationsManagerImpl(
                 "regionDisplayName = $regionDisplayName, " +
                 "time = ${SimpleDate()}")
 
-        show(RANKINGS_ID, builder)
-    }
-
-    override fun show(id: Int, notificationBuilder: NotificationCompat.Builder) {
-        show(id, notificationBuilder.build())
-    }
-
-    override fun show(id: Int, notification: Notification) {
-        application.notificationManagerCompat.notify(id, notification)
-    }
-
-    private interface Impl {
-        fun createBuilder(context: Context): NotificationCompat.Builder
-    }
-
-    private open class BaseImpl : Impl {
-        override fun createBuilder(context: Context): NotificationCompat.Builder {
-            return NotificationCompat.Builder(context, RANKINGS_CHANNEL)
-                    .setAutoCancel(true)
-                    .setCategory(NotificationCompat.CATEGORY_SOCIAL)
-                    .setContentTitle(context.getString(R.string.gar_pr))
-                    .setPriority(NotificationCompat.PRIORITY_LOW)
-                    .setSmallIcon(R.drawable.ic_controller_white_24dp)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private class Api26Impl : BaseImpl() {
-        override fun createBuilder(context: Context): NotificationCompat.Builder {
-            val notificationChannel = NotificationChannel(
-                    RANKINGS_CHANNEL,
-                    context.getString(R.string.rankings_update_notifications),
-                    NotificationManager.IMPORTANCE_LOW)
-            notificationChannel.description = context.getString(R.string.rankings_update_description)
-            notificationChannel.enableLights(true)
-            notificationChannel.lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
-            notificationChannel.setShowBadge(true)
-            context.notificationManager.createNotificationChannel(notificationChannel)
-
-            return super.createBuilder(context)
-        }
+        application.notificationManagerCompat.notify(RANKINGS_ID, builder.build())
     }
 
 }

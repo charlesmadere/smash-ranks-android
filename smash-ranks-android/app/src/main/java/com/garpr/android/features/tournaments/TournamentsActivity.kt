@@ -33,6 +33,11 @@ class TournamentsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_tournaments)
+    }
+
+    override fun onViewsBound() {
+        super.onViewsBound()
+
         toolbar.subtitleText = regionRepository.getRegion(this).displayName
     }
 

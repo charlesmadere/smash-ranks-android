@@ -1,11 +1,11 @@
 package com.garpr.android.extensions
 
 import android.app.Activity
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.garpr.android.dagger.AppComponent
@@ -39,12 +39,7 @@ fun View.requireFragmentActivity(): FragmentActivity {
 }
 
 fun <T: View> View.requireViewByIdCompat(@IdRes id: Int): T {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        requireViewById(id)
-    } else {
-        findViewById(id) ?: throw IllegalArgumentException(
-                "ID ${resources.getResourceEntryName(id)} does not reference a View inside this View")
-    }
+    return ViewCompat.requireViewById(this, id)
 }
 
 val View.verticalPositionInWindow: Int

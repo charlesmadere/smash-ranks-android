@@ -4,45 +4,38 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullTournament
-import com.garpr.android.data.models.HeadToHead
 import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
+import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.networking.ApiCall
-import com.garpr.android.networking.ApiListener
-import com.garpr.android.networking.ServerApi
+import com.garpr.android.features.common.views.StringItemView
+import com.garpr.android.features.tournaments.TournamentDividerView
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_head_to_head.*
 import javax.inject.Inject
 
-class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
-        SwipeRefreshLayout.OnRefreshListener {
+class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRefreshListener {
 
-    private var headToHead: HeadToHead? = null
-    private val adapter = HeadToHeadAdapter()
-    private var list: List<Any>? = null
-
+    private val adapter = Adapter()
     private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
+    private val viewModel by viewModel(this) { appComponent.headToHeadViewModel }
 
     @Inject
     protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var serverApi: ServerApi
-
-    @Inject
-    protected lateinit var threadUtils: ThreadUtils
 
 
     companion object {
@@ -89,29 +82,26 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
 
     override val activityName = TAG
 
-    override fun failure(errorCode: Int) {
-        headToHead = null
-        list = null
-        showError(errorCode)
+    private fun fetchHeadToHead() {
+        viewModel.fetchHeadToHead(regionRepository.getRegion(this), playerId, opponentId)
     }
 
-    private fun fetchHeadToHead() {
-        refreshLayout.isRefreshing = true
-        serverApi.getHeadToHead(regionRepository.getRegion(this), playerId, opponentId,
-                ApiCall(this))
+    private fun initListeners() {
+        viewModel.stateLiveData.observe(this, Observer {
+            refreshState(it)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_head_to_head)
-        toolbar.subtitleText = regionRepository.getRegion(this).displayName
-
+        initListeners()
         fetchHeadToHead()
     }
 
     override fun onRefresh() {
-        fetchHeadToHead()
+        refresh()
     }
 
     override fun onViewsBound() {
@@ -122,37 +112,141 @@ class HeadToHeadActivity : BaseActivity(), ApiListener<HeadToHead>,
         recyclerView.adapter = adapter
     }
 
-    private fun showData() {
-        list = ListUtils.createHeadToHeadList(this, headToHead)
-        adapter.set(list)
+    override fun refresh() {
+        fetchHeadToHead()
+    }
 
-        if (adapter.isEmpty) {
+    private fun refreshState(state: HeadToHeadViewModel.State) {
+        if (state.hasError) {
+            adapter.clear()
+            empty.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+            error.visibility = View.VISIBLE
+        } else if (state.isEmpty) {
+            adapter.clear()
             error.visibility = View.GONE
             recyclerView.visibility = View.GONE
             empty.visibility = View.VISIBLE
         } else {
+            adapter.set(state.list)
             empty.visibility = View.GONE
             error.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
 
-        refreshLayout.isRefreshing = false
-        toolbar.refresh()
+        refreshLayout.isRefreshing = state.isFetching
     }
 
-    private fun showError(errorCode: Int) {
-        adapter.clear()
-        empty.visibility = View.GONE
-        recyclerView.visibility = View.GONE
-        error.setVisibility(View.VISIBLE, errorCode)
-        refreshLayout.isRefreshing = false
-        toolbar.refresh()
+    private class Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        private val list = mutableListOf<HeadToHeadViewModel.ListItem>()
+
+        companion object {
+            private const val VIEW_TYPE_MATCH = 0
+            private const val VIEW_TYPE_NO_MATCHES = 1
+            private const val VIEW_TYPE_TOURNAMENT = 2
+            private const val VIEW_TYPE_WINS_LOSSES = 3
+        }
+
+        init {
+            setHasStableIds(true)
+        }
+
+        private fun bindMatchViewHolder(holder: MatchViewHolder, item: HeadToHeadViewModel.ListItem.Match) {
+            holder.headToHeadMatchItemView.setContent(item.match)
+        }
+
+        private fun bindTournamentViewHolder(holder: TournamentViewHolder, item: HeadToHeadViewModel.ListItem.Tournament) {
+            holder.tournamentDividerView.tournament = item.tournament
+        }
+
+        private fun bindWinsLossesViewHolder(holder: WinsLossesViewHolder, item: HeadToHeadViewModel.ListItem.WinsLosses) {
+            holder.winsLossesView.setContent(item.winsLosses)
+        }
+
+        internal fun clear() {
+            list.clear()
+            notifyDataSetChanged()
+        }
+
+        override fun getItemCount(): Int {
+            return list.size
+        }
+
+        override fun getItemId(position: Int): Long {
+            return list[position].listId
+        }
+
+        override fun getItemViewType(position: Int): Int {
+            return when (list[position]) {
+                is HeadToHeadViewModel.ListItem.Match -> VIEW_TYPE_MATCH
+                is HeadToHeadViewModel.ListItem.NoMatches -> VIEW_TYPE_NO_MATCHES
+                is HeadToHeadViewModel.ListItem.Tournament -> VIEW_TYPE_TOURNAMENT
+                is HeadToHeadViewModel.ListItem.WinsLosses -> VIEW_TYPE_WINS_LOSSES
+            }
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            when (val item = list[position]) {
+                is HeadToHeadViewModel.ListItem.Match -> bindMatchViewHolder(
+                        holder as MatchViewHolder, item)
+                is HeadToHeadViewModel.ListItem.NoMatches -> { /* intentionally empty */ }
+                is HeadToHeadViewModel.ListItem.Tournament -> bindTournamentViewHolder(
+                        holder as TournamentViewHolder, item)
+                is HeadToHeadViewModel.ListItem.WinsLosses -> bindWinsLossesViewHolder(
+                        holder as WinsLossesViewHolder, item)
+                else -> throw RuntimeException("unknown item: $item, position: $position")
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val inflater = parent.layoutInflater
+
+            return when (viewType) {
+                VIEW_TYPE_MATCH -> MatchViewHolder(inflater.inflate(
+                        R.layout.item_head_to_head_match, parent, false))
+                VIEW_TYPE_NO_MATCHES -> NoMatchesViewHolder(
+                        parent.resources.getString(R.string.no_matches),
+                        inflater.inflate(R.layout.item_string, parent, false))
+                VIEW_TYPE_TOURNAMENT -> TournamentViewHolder(inflater.inflate(
+                        R.layout.divider_tournament, parent, false))
+                VIEW_TYPE_WINS_LOSSES -> WinsLossesViewHolder(inflater.inflate(
+                        R.layout.item_wins_losses, parent, false))
+                else -> throw IllegalArgumentException("unknown viewType: $viewType")
+            }
+        }
+
+        internal fun set(list: List<HeadToHeadViewModel.ListItem>?) {
+            this.list.clear()
+
+            if (!list.isNullOrEmpty()) {
+                this.list.addAll(list)
+            }
+
+            notifyDataSetChanged()
+        }
+
     }
 
-    override fun success(`object`: HeadToHead?) {
-        headToHead = `object`
-        list = null
-        showData()
+    private class MatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val headToHeadMatchItemView: HeadToHeadMatchItemView = itemView as HeadToHeadMatchItemView
+    }
+
+    private class NoMatchesViewHolder(
+            text: String,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+        init {
+            (itemView as StringItemView).setContent(text)
+        }
+    }
+
+    private class TournamentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val tournamentDividerView: TournamentDividerView = itemView as TournamentDividerView
+    }
+
+    private class WinsLossesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val winsLossesView: WinsLossesView = itemView as WinsLossesView
     }
 
 }

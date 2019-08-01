@@ -6,34 +6,60 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import com.garpr.android.R
-import com.garpr.android.extensions.activity
-import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.addMenuItem
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.views.SearchToolbar
-import com.garpr.android.misc.RankingCriteriaHandle
-import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.home_toolbar_items.view.*
-import javax.inject.Inject
 
 class HomeToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SearchToolbar(context, attrs), IdentityRepository.OnIdentityChangeListener,
-        RegionRepository.OnRegionChangeListener {
+) : SearchToolbar(context, attrs) {
+
+    var isActivityRequirementsVisible: Boolean
+        get() = showActivityRequirements.isVisible
+        set(value) {
+            showActivityRequirements.isVisible = value
+        }
+
+    var isShowYourselfVisible: Boolean
+        get() = showYourself.isVisible
+        set(value) {
+            showYourself.isVisible = value
+        }
+
+    var listeners: Listeners? = null
+
+    private val showActivityRequirements: MenuItem
+    private val showYourself: MenuItem
+
+    private val activityRequirementsClickListener = MenuItem.OnMenuItemClickListener {
+        listeners?.onActivityRequirementsClick(this)
+        true
+    }
+
+    private val shareClickListener = MenuItem.OnMenuItemClickListener {
+        listeners?.onShareClick(this)
+        true
+    }
+
+    private val viewAllPlayersClickListener = MenuItem.OnMenuItemClickListener {
+        listeners?.onViewAllPlayersClick(this)
+        true
+    }
+
+    private val viewYourselfClickListener = MenuItem.OnMenuItemClickListener {
+        listeners?.onViewYourselfClick(this)
+        true
+    }
+
+    private val settingsClickListener = MenuItem.OnMenuItemClickListener {
+        listeners?.onSettingsClick(this)
+        true
+    }
 
     private val overflowPopupMenu: PopupMenu
-
-    @Inject
-    protected lateinit var homeToolbarManager: HomeToolbarManager
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
 
     interface Listeners {
         fun onActivityRequirementsClick(v: HomeToolbar)
@@ -47,18 +73,16 @@ class HomeToolbar @JvmOverloads constructor(
         layoutInflater.inflate(R.layout.home_toolbar_items, menuExpansionContainer)
 
         overflowPopupMenu = PopupMenu(context, overflowButton)
+        overflowButton.setOnClickListener { overflowPopupMenu.show() }
         overflowButton.setOnTouchListener(overflowPopupMenu.dragToOpenListener)
-    }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (isInEditMode) {
-            return
-        }
-
-        identityRepository.addListener(this)
-        regionRepository.addListener(this)
+        overflowPopupMenu.addMenuItem(R.string.share, shareClickListener)
+        showActivityRequirements = overflowPopupMenu.addMenuItem(R.string.activity_requirements,
+                    activityRequirementsClickListener)
+        overflowPopupMenu.addMenuItem(R.string.view_all_players, viewAllPlayersClickListener)
+        showYourself = overflowPopupMenu.addMenuItem(R.string.view_yourself,
+                viewYourselfClickListener)
+        overflowPopupMenu.addMenuItem(R.string.settings, settingsClickListener)
     }
 
     override fun onCloseSearchField() {
@@ -66,94 +90,9 @@ class HomeToolbar @JvmOverloads constructor(
         overflowButton.visibility = View.VISIBLE
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
-        identityRepository.removeListener(this)
-        regionRepository.removeListener(this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-            identityRepository.addListener(this)
-            regionRepository.addListener(this)
-        }
-
-        overflowButton.setOnClickListener {
-            overflowPopupMenu.show()
-        }
-    }
-
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
     override fun onOpenSearchField() {
         super.onOpenSearchField()
         overflowButton.visibility = View.GONE
-    }
-
-    override fun onRegionChange(regionRepository: RegionRepository) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
-    override fun refresh() {
-        super.refresh()
-
-        val presentation = homeToolbarManager.getPresentation(
-                (activity as? RankingCriteriaHandle?)?.rankingCriteria)
-
-        overflowPopupMenu.menu.clear()
-        overflowPopupMenu.menu.add(R.string.share)
-                .setOnMenuItemClickListener(shareClickListener)
-
-        if (presentation.isActivityRequirementsVisible) {
-            overflowPopupMenu.menu.add(R.string.activity_requirements)
-                    .setOnMenuItemClickListener(activityRequirementsClickListener)
-        }
-
-        overflowPopupMenu.menu.add(R.string.view_all_players)
-                .setOnMenuItemClickListener(viewAllPlayersClickListener)
-
-        if (presentation.isViewYourselfVisible) {
-            overflowPopupMenu.menu.add(R.string.view_yourself)
-                    .setOnMenuItemClickListener(viewYourselfClickListener)
-        }
-
-        overflowPopupMenu.menu.add(R.string.settings)
-                .setOnMenuItemClickListener(settingsClickListener)
-    }
-
-    private val activityRequirementsClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners?)?.onActivityRequirementsClick(this)
-        true
-    }
-
-    private val shareClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners?)?.onShareClick(this)
-        true
-    }
-
-    private val viewAllPlayersClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners?)?.onViewAllPlayersClick(this)
-        true
-    }
-
-    private val viewYourselfClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners?)?.onViewYourselfClick(this)
-        true
-    }
-
-    private val settingsClickListener = MenuItem.OnMenuItemClickListener {
-        (activity as? Listeners?)?.onSettingsClick(this)
-        true
     }
 
 }

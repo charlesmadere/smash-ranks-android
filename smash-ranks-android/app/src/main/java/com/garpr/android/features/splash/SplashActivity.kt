@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.home.HomeActivity
-import javax.inject.Inject
 
 class SplashActivity : BaseActivity(), SplashCardView.Listener {
 
-    @Inject
-    protected lateinit var splashScreenManager: SplashScreenManager
+    private val viewModel by viewModel(this) { appComponent.splashViewModel }
 
 
     companion object {
@@ -30,7 +29,7 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
 
-        if (splashScreenManager.showSplashScreen) {
+        if (viewModel.showSplashScreen) {
             timber.d(TAG, "showing $TAG...")
             setContentView(R.layout.activity_splash)
         } else {
@@ -46,7 +45,7 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
     private fun startHomeActivity() {
         timber.d(TAG, "starting ${HomeActivity.TAG}...")
 
-        splashScreenManager.setSplashScreenComplete()
+        viewModel.setSplashScreenComplete()
         startActivity(HomeActivity.getLaunchIntent(context = this))
         finish()
     }

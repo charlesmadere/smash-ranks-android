@@ -1,28 +1,25 @@
 package com.garpr.android.sync.roster
 
-import androidx.annotation.AnyThread
 import com.garpr.android.data.models.SmashRosterSyncResult
+import io.reactivex.Completable
+import io.reactivex.Observable
 
 interface SmashRosterSyncManager {
 
-    interface OnSyncListeners {
-        fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager)
-        fun onSmashRosterSyncComplete(smashRosterSyncManager: SmashRosterSyncManager)
-    }
+    var isEnabled: Boolean
 
-    fun addListener(listener: OnSyncListeners)
+    val observeSyncState: Observable<State>
+
+    val syncResult: SmashRosterSyncResult?
+
+    val syncState: State
 
     fun enableOrDisable()
 
-    var isEnabled: Boolean
+    fun sync(): Completable
 
-    val isSyncing: Boolean
-
-    fun removeListener(listener: OnSyncListeners)
-
-    @AnyThread
-    fun sync()
-
-    val syncResult: SmashRosterSyncResult?
+    enum class State {
+        NOT_SYNCING, SYNCING
+    }
 
 }

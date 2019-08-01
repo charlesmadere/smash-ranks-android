@@ -53,9 +53,8 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         identityRepository.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onFinishInflate() {

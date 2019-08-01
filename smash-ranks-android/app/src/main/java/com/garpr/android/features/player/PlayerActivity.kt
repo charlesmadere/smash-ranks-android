@@ -3,65 +3,49 @@ package com.garpr.android.features.player
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.data.models.PlayerMatchesBundle
+import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.verticalPositionInWindow
+import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.features.common.views.SearchToolbar
+import com.garpr.android.features.common.views.StringItemView
 import com.garpr.android.features.headToHead.HeadToHeadActivity
+import com.garpr.android.features.tournaments.TournamentDividerView
 import com.garpr.android.misc.ColorListener
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.networking.ApiCall
-import com.garpr.android.networking.ApiListener
-import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.IdentityRepository
+import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.RegionRepository
-import com.garpr.android.sync.roster.SmashRosterStorage
 import kotlinx.android.synthetic.main.activity_player.*
 import javax.inject.Inject
 
-class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorListener,
-        MatchItemView.OnClickListener, Searchable, SearchQueryHandle, SearchToolbar.Listener,
+class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListener,
+        PlayerProfileItemView.Listeners, Refreshable, Searchable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private var list: List<Any>? = null
-    private val adapter = PlayerAdapter()
-    private var playerMatchesBundle: PlayerMatchesBundle? = null
-
+    private val adapter = Adapter(this)
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
-
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
+    private val viewModel by viewModel(this) { appComponent.playerViewModel }
 
     @Inject
     protected lateinit var regionRepository: RegionRepository
 
     @Inject
-    protected lateinit var serverApi: ServerApi
-
-    @Inject
-    protected lateinit var smashRosterStorage: SmashRosterStorage
-
-    @Inject
-    protected lateinit var threadUtils: ThreadUtils
+    protected lateinit var shareUtils: ShareUtils
 
 
     companion object {
@@ -106,16 +90,14 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         }
     }
 
-    override fun failure(errorCode: Int) {
-        playerMatchesBundle = null
-        list = null
-        showError(errorCode)
+    private fun fetchPlayer() {
+        viewModel.fetchPlayer()
     }
 
-    private fun fetchPlayerMatchesBundle() {
-        refreshLayout.isRefreshing = true
-        serverApi.getPlayerMatches(regionRepository.getRegion(this), playerId,
-                ApiCall(this))
+    private fun initListeners() {
+        viewModel.stateLiveData.observe(this, Observer {
+            refreshState(it)
+        })
     }
 
     override fun onBackPressed() {
@@ -127,19 +109,30 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     }
 
     override fun onClick(v: MatchItemView) {
-        val player = playerMatchesBundle?.fullPlayer ?: return
+        val player = viewModel.player ?: return
         val match = v.match ?: return
         startActivity(HeadToHeadActivity.getLaunchIntent(this, player, match,
+                regionRepository.getRegion(this)))
+    }
+
+    override fun onCompareClick(v: PlayerProfileItemView) {
+        val identity = viewModel.identity ?: return
+        val player = viewModel.player ?: return
+        startActivity(HeadToHeadActivity.getLaunchIntent(this, identity, player,
                 regionRepository.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
+        viewModel.initialize(regionRepository.getRegion(this), playerId)
         setContentView(R.layout.activity_player)
+        initListeners()
+        fetchPlayer()
+    }
 
-        setTitleAndSubtitle()
-        fetchPlayerMatchesBundle()
+    override fun onFavoriteOrUnfavoriteClick(v: PlayerProfileItemView) {
+        viewModel.addOrRemoveFromFavorites()
     }
 
     override fun onPaletteBuilt(palette: Palette?) {
@@ -149,7 +142,12 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
     }
 
     override fun onRefresh() {
-        fetchPlayerMatchesBundle()
+        refresh()
+    }
+
+    override fun onShareClick(v: PlayerProfileItemView) {
+        val player = viewModel.player ?: throw IllegalStateException("player is null")
+        shareUtils.sharePlayer(this, player)
     }
 
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
@@ -164,100 +162,172 @@ class PlayerActivity : BaseActivity(), ApiListener<PlayerMatchesBundle>, ColorLi
         }
     }
 
+    override fun onUrlClick(v: PlayerProfileItemView, url: String?) {
+        shareUtils.openUrl(this, url)
+    }
+
     override fun onViewsBound() {
         super.onViewsBound()
 
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.addOnScrollListener(onScrollListener)
-
         recyclerView.adapter = adapter
     }
 
-    override fun search(query: String?) {
-        val list = this.list
-
-        if (list.isNullOrEmpty()) {
-            return
-        }
-
-        threadUtils.run(object : ThreadUtils.Task {
-            private var list: List<Any>? = null
-
-            override fun onBackground() {
-                if (isAlive && TextUtils.equals(query, searchQuery)) {
-                    this.list = ListUtils.searchPlayerMatchesList(query, list)
-                }
-            }
-
-            override fun onUi() {
-                if (isAlive && TextUtils.equals(query, searchQuery)) {
-                    adapter.set(this.list)
-                }
-            }
-        })
+    override fun refresh() {
+        fetchPlayer()
     }
 
-    override val searchQuery: CharSequence?
-        get() = toolbar.searchQuery
+    private fun refreshState(state: PlayerViewModel.State) {
+        toolbar.titleText = state.titleText
+        toolbar.subtitleText = state.subtitleText
+        toolbar.showSearchIcon = if (toolbar.isSearchFieldExpanded) false else state.showSearchIcon
 
-    private fun setTitleAndSubtitle() {
-        if (toolbar.hasTitleText && toolbar.hasSubtitleText) {
-            return
-        }
-
-        val region = regionRepository.getRegion(this)
-        val smashCompetitor = smashRosterStorage.getSmashCompetitor(region, playerId)
-        val title = smashCompetitor?.tag ?: playerMatchesBundle?.fullPlayer?.name
-
-        if (title.isNullOrBlank()) {
-            return
-        }
-
-        toolbar.titleText = title
-        toolbar.subtitleText = region.displayName
-    }
-
-    private fun showData() {
-        val bundle = playerMatchesBundle ?: throw RuntimeException("playerMatchesBundle is null")
-        val list = ListUtils.createPlayerMatchesList(this, bundle.fullPlayer,
-                bundle.matchesBundle)
-        this.list = list
-
-        error.visibility = View.GONE
-
-        if (list.isNullOrEmpty()) {
+        if (state.hasError) {
             adapter.clear()
             recyclerView.visibility = View.GONE
-            empty.visibility = View.VISIBLE
+            error.visibility = View.VISIBLE
         } else {
-            adapter.set(list)
-            empty.visibility = View.GONE
+            adapter.set(
+                    list = state.searchResults ?: state.list,
+                    isFavorited = state.isFavorited,
+                    player = viewModel.player,
+                    smashCompetitor = state.smashCompetitor
+            )
+
+            error.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
 
-        setTitleAndSubtitle()
-        toolbar.refresh()
-
-        refreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = state.isFetching
     }
 
-    private fun showError(errorCode: Int) {
-        adapter.clear()
-        recyclerView.visibility = View.GONE
-        empty.visibility = View.GONE
-        error.setVisibility(View.VISIBLE, errorCode)
-        refreshLayout.isRefreshing = false
-        toolbar.refresh()
+    override fun search(query: String?) {
+        viewModel.search(query)
     }
 
-    override val showSearchIcon: Boolean
-        get() = playerMatchesBundle?.matchesBundle?.matches?.isNotEmpty() == true
+    private class Adapter(
+            private val playerProfileItemViewListeners: PlayerProfileItemView.Listeners? = null
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun success(`object`: PlayerMatchesBundle?) {
-        playerMatchesBundle = `object`
-        list = null
-        showData()
+        private var isFavorited: Boolean = false
+        private var player: FullPlayer? = null
+        private val list = mutableListOf<PlayerViewModel.ListItem>()
+        private var smashCompetitor: SmashCompetitor? = null
+
+        companion object {
+            private const val VIEW_TYPE_MATCH = 0
+            private const val VIEW_TYPE_NO_MATCHES = 1
+            private const val VIEW_TYPE_PLAYER = 2
+            private const val VIEW_TYPE_TOURNAMENT = 3
+        }
+
+        init {
+            setHasStableIds(true)
+        }
+
+        private fun bindMatchViewHolder(holder: MatchViewHolder, item: PlayerViewModel.ListItem.Match) {
+            holder.matchItemView.match = item.match
+        }
+
+        private fun bindPlayerViewHolder(holder: PlayerViewHolder) {
+            val player = this.player ?: throw IllegalStateException("player is null")
+            holder.playerProfileItemView.setContent(isFavorited, player, smashCompetitor)
+        }
+
+        private fun bindTournamentViewHolder(holder: TournamentViewHolder, item: PlayerViewModel.ListItem.Tournament) {
+            holder.tournamentDividerView.tournament = item.tournament
+        }
+
+        internal fun clear() {
+            list.clear()
+            notifyDataSetChanged()
+        }
+
+        override fun getItemCount(): Int = list.size
+
+        override fun getItemId(position: Int): Long = list[position].listId
+
+        override fun getItemViewType(position: Int): Int {
+            return when (list[position]) {
+                is PlayerViewModel.ListItem.Match -> VIEW_TYPE_MATCH
+                is PlayerViewModel.ListItem.NoMatches -> VIEW_TYPE_NO_MATCHES
+                is PlayerViewModel.ListItem.Player -> VIEW_TYPE_PLAYER
+                is PlayerViewModel.ListItem.Tournament -> VIEW_TYPE_TOURNAMENT
+            }
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            when (val item = list[position]) {
+                is PlayerViewModel.ListItem.Match -> bindMatchViewHolder(holder as MatchViewHolder, item)
+                is PlayerViewModel.ListItem.NoMatches -> { /* intentionally empty */ }
+                is PlayerViewModel.ListItem.Player -> bindPlayerViewHolder(holder as PlayerViewHolder)
+                is PlayerViewModel.ListItem.Tournament -> bindTournamentViewHolder(holder as TournamentViewHolder, item)
+                else -> throw RuntimeException("unknown item: $item, position: $position")
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val inflater = parent.layoutInflater
+
+            return when (viewType) {
+                VIEW_TYPE_MATCH -> MatchViewHolder(inflater.inflate(R.layout.item_match, parent,
+                        false))
+                VIEW_TYPE_NO_MATCHES -> NoMatchesViewHolder(
+                        parent.context.getString(R.string.no_matches),
+                        inflater.inflate(R.layout.item_string, parent, false))
+                VIEW_TYPE_PLAYER -> PlayerViewHolder(playerProfileItemViewListeners,
+                        inflater.inflate(R.layout.item_player_profile, parent, false))
+                VIEW_TYPE_TOURNAMENT -> TournamentViewHolder(inflater.inflate(
+                        R.layout.divider_tournament, parent, false))
+                else -> throw IllegalArgumentException("unknown viewType: $viewType")
+            }
+        }
+
+        internal fun set(list: List<PlayerViewModel.ListItem>?, isFavorited: Boolean,
+                player: FullPlayer?, smashCompetitor: SmashCompetitor?) {
+            this.list.clear()
+
+            if (!list.isNullOrEmpty()) {
+                this.list.addAll(list)
+            }
+
+            this.isFavorited = isFavorited
+            this.player = player
+            this.smashCompetitor = smashCompetitor
+
+            notifyDataSetChanged()
+        }
+
+    }
+
+    private class MatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val matchItemView: MatchItemView = itemView as MatchItemView
+    }
+
+    private class NoMatchesViewHolder(
+            text: String,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+        init {
+            (itemView as StringItemView).setContent(text)
+        }
+    }
+
+    private class PlayerViewHolder(
+            playerProfileItemViewListeners: PlayerProfileItemView.Listeners?,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+        internal val playerProfileItemView: PlayerProfileItemView = itemView as PlayerProfileItemView
+
+        init {
+            playerProfileItemView.listeners = playerProfileItemViewListeners
+        }
+    }
+
+    private class TournamentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val tournamentDividerView: TournamentDividerView = itemView as TournamentDividerView
     }
 
 }

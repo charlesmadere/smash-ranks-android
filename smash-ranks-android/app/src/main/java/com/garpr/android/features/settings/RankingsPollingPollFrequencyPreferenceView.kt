@@ -66,8 +66,8 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
     override fun onClick(v: View) {
         val items = arrayOfNulls<CharSequence>(PollFrequency.values().size)
 
-        for (i in 0 until PollFrequency.values().size) {
-            items[i] = resources.getText(PollFrequency.values()[i].textResId)
+        PollFrequency.values().forEachIndexed { index, pollFrequency ->
+            items[index] = resources.getText(pollFrequency.textResId)
         }
 
         val pollFrequency = rankingsPollingManager.pollFrequency
@@ -79,9 +79,8 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         rankingsPollingPreferenceStore.pollFrequency.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onPreferenceChange(preference: Preference<PollFrequency>) {

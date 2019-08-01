@@ -5,27 +5,23 @@ import android.text.TextUtils
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.FullPlayer
-import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.truncate
 import com.garpr.android.features.player.PlayerProfileManager.Presentation
 import com.garpr.android.misc.Constants
-import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.sync.roster.SmashRosterStorage
 
 class PlayerProfileManagerImpl(
         private val application: Application,
-        private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityRepository: IdentityRepository,
-        private val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper,
-        private val smashRosterStorage: SmashRosterStorage
+        private val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper
 ) : PlayerProfileManager {
 
-    override fun getPresentation(player: FullPlayer, region: AbsRegion): Presentation {
+    override fun getPresentation(region: AbsRegion, isFavorited: Boolean, player: FullPlayer,
+            competitor: SmashCompetitor?): Presentation {
         var presentation = Presentation(
-                isAddToFavoritesVisible = player !in favoritePlayersRepository,
-                isViewYourselfVsThisOpponentVisible = identityRepository.hasIdentity &&
-                        !identityRepository.isPlayer(player)
+                isAddToFavoritesVisible = !isFavorited,
+                isCompareVisible = identityRepository.hasIdentity && !identityRepository.isPlayer(player)
         )
 
         player.ratings?.get(region.id)?.let { rating ->
@@ -37,20 +33,16 @@ class PlayerProfileManagerImpl(
         }
 
         val uniqueAliases = player.uniqueAliases
-        if (uniqueAliases?.isNotEmpty() == true) {
-            presentation = presentation.copy(aliases = application.resources.getQuantityString(
-                    R.plurals.aliases_x, uniqueAliases.size, TextUtils.join(
-                    application.getText(R.string.delimiter), uniqueAliases))
+        if (!uniqueAliases.isNullOrEmpty()) {
+            presentation = presentation.copy(
+                    aliases = application.resources.getQuantityString(
+                            R.plurals.aliases_x,
+                            uniqueAliases.size,
+                            TextUtils.join(application.getText(R.string.delimiter), uniqueAliases)
+                    )
             )
         }
 
-        val competitor = if (region is Region) {
-            smashRosterStorage.getSmashCompetitor(region, player.id)
-        } else {
-            null
-        }
-
-        @Suppress("FoldInitializerAndIfToElvis")
         if (competitor == null) {
             presentation = presentation.copy(tag = player.name)
             return presentation
@@ -62,23 +54,26 @@ class PlayerProfileManagerImpl(
         )
 
         val avatar = smashRosterAvatarUrlHelper.getAvatarUrl(
-            competitor.avatar?.largeButFallbackToMediumThenOriginalThenSmall)
+            avatarPath = competitor.avatar?.largeButFallbackToMediumThenOriginalThenSmall
+        )
 
         if (avatar?.isNotBlank() == true) {
             presentation = presentation.copy(avatar = avatar)
         }
 
         val filteredMains = competitor.filteredMains
-        if (filteredMains?.isNotEmpty() == true) {
-            val mainsStrings = mutableListOf<String>()
-
-            for (main in filteredMains) {
-                mainsStrings.add(application.getString(main.textResId))
+        if (!filteredMains.isNullOrEmpty()) {
+            val mainsStrings = filteredMains.map { main ->
+                application.getString(main.textResId)
             }
 
-            presentation = presentation.copy(mains = application.resources.getQuantityString(
-                    R.plurals.mains_x, filteredMains.size, TextUtils.join(
-                    application.getText(R.string.delimiter), mainsStrings)))
+            presentation = presentation.copy(
+                    mains = application.resources.getQuantityString(
+                            R.plurals.mains_x,
+                            filteredMains.size,
+                            TextUtils.join(application.getText(R.string.delimiter), mainsStrings)
+                    )
+            )
         }
 
         val twitch = competitor.websites?.get(Constants.TWITCH)
@@ -94,11 +89,6 @@ class PlayerProfileManagerImpl(
         val youTube = competitor.websites?.get(Constants.YOUTUBE)
         if (!youTube.isNullOrBlank()) {
             presentation = presentation.copy(youTube = youTube)
-        }
-
-        val otherWebsite = competitor.websites?.get(Constants.OTHER)
-        if (!otherWebsite.isNullOrBlank()) {
-            presentation = presentation.copy(otherWebsite = otherWebsite)
         }
 
         return presentation

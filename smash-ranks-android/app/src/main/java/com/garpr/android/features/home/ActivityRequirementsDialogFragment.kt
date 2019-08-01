@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.R
-import com.garpr.android.data.models.RankingCriteria
-import com.garpr.android.extensions.requireParcelable
+import com.garpr.android.extensions.optInt
+import com.garpr.android.extensions.optPutInt
 import com.garpr.android.extensions.requireString
 import com.garpr.android.features.common.fragments.dialogs.BaseBottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_activity_requirements.*
@@ -15,19 +15,23 @@ import java.text.NumberFormat
 class ActivityRequirementsDialogFragment : BaseBottomSheetDialogFragment() {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
-    private val rankingCriteria by lazy { arguments.requireParcelable<RankingCriteria>(KEY_RANKING_CRITERIA) }
+    private val rankingActivityDayLimit: Int? by lazy { arguments.optInt(KEY_RANKING_ACTIVITY_DAY_LIMIT) }
+    private val rankingNumTourneysAttended: Int? by lazy { arguments.optInt(KEY_RANKING_NUM_TOURNEYS_ATTENDED) }
     private val regionDisplayName by lazy { arguments.requireString(KEY_REGION_DISPLAY_NAME) }
 
 
     companion object {
         const val TAG = "ActivityRequirementsDialogFragment"
-        private const val KEY_RANKING_CRITERIA = "RankingCriteria"
+        private const val KEY_RANKING_ACTIVITY_DAY_LIMIT = "RankingActivityDayLimit"
+        private const val KEY_RANKING_NUM_TOURNEYS_ATTENDED = "RankingNumTourneysAttended"
         private const val KEY_REGION_DISPLAY_NAME = "RegionDisplayName"
 
-        fun create(regionDisplayName: String, rankingCriteria: RankingCriteria): ActivityRequirementsDialogFragment {
+        fun create(rankingActivityDayLimit: Int?, rankingNumTourneysAttended: Int?,
+                regionDisplayName: String): ActivityRequirementsDialogFragment {
             val args = Bundle()
+            args.optPutInt(KEY_RANKING_ACTIVITY_DAY_LIMIT, rankingActivityDayLimit)
+            args.optPutInt(KEY_RANKING_NUM_TOURNEYS_ATTENDED, rankingNumTourneysAttended)
             args.putString(KEY_REGION_DISPLAY_NAME, regionDisplayName)
-            args.putParcelable(KEY_RANKING_CRITERIA, rankingCriteria)
 
             val fragment = ActivityRequirementsDialogFragment()
             fragment.arguments = args
@@ -48,10 +52,10 @@ class ActivityRequirementsDialogFragment : BaseBottomSheetDialogFragment() {
         dialogActivityRequirementsHead.text = getString(R.string.x_activity_requirements,
                 regionDisplayName)
 
-        val rankingNumTourneysAttended = rankingCriteria.rankingNumTourneysAttended
-        val rankingActivityDayLimit = rankingCriteria.rankingActivityDayLimit
+        val rankingActivityDayLimit = this.rankingActivityDayLimit
+        val rankingNumTourneysAttended = this.rankingNumTourneysAttended
 
-        if (rankingNumTourneysAttended == null || rankingActivityDayLimit == null) {
+        if (rankingActivityDayLimit == null || rankingNumTourneysAttended == null) {
             dialogActivityRequirementsBody.setText(R.string.unknown_activity_requirements)
             return
         }

@@ -29,7 +29,7 @@
                 app:titleText="@string/no_regions"
                 style="@style/NoContentLinearLayout.Empty" />
 
-            <com.garpr.android.features.common.views.ErrorContentLinearLayout
+            <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/error"
                 app:titleText="@string/error_loading_regions"
                 style="@style/NoContentLinearLayout.Error" />

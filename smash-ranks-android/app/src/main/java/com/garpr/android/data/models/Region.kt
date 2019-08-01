@@ -2,6 +2,7 @@ package com.garpr.android.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readBoolean
 import com.garpr.android.extensions.readInteger
@@ -9,7 +10,6 @@ import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.util.Objects
 
 @JsonClass(generateAdapter = true)
 class Region(
@@ -52,7 +52,7 @@ class Region(
         return super.equals(other) && other is Region && endpoint == other.endpoint
     }
 
-    override fun hashCode(): Int = Objects.hash(id, endpoint)
+    override fun hashCode(): Int = ObjectsCompat.hash(id, endpoint)
 
     override val kind: Kind
         get() = Kind.FULL

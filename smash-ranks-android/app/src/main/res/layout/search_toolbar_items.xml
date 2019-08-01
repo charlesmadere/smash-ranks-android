@@ -6,7 +6,7 @@
 
     <EditText
         android:background="@null"
-        android:fontFamily="@font/nunito_regular"
+        android:fontFamily="@font/nunito_sans"
         android:gravity="center_vertical"
         android:hint="@string/search_"
         android:id="@+id/searchField"

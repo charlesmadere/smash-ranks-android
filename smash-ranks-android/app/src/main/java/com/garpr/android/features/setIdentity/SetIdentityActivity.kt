@@ -4,48 +4,33 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
-import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.appComponent
+import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.features.common.views.SearchToolbar
-import com.garpr.android.misc.ListUtils
-import com.garpr.android.misc.SearchQueryHandle
+import com.garpr.android.features.common.views.StringDividerView
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.networking.ApiCall
-import com.garpr.android.networking.ApiListener
-import com.garpr.android.networking.ServerApi
-import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_set_identity.*
 import javax.inject.Inject
 
-class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
-        PlayerSelectionItemView.Listeners, Searchable, SearchQueryHandle, SearchToolbar.Listener,
-        SetIdentityToolbar.Listeners, SwipeRefreshLayout.OnRefreshListener {
+class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListener, Refreshable,
+        Searchable, SetIdentityToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
-    private var _selectedPlayer: AbsPlayer? = null
-    private var playersBundle: PlayersBundle? = null
-    private val adapter = PlayersSelectionAdapter()
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
+    private lateinit var adapter: Adapter
+    private val viewModel by viewModel(this) { appComponent.setIdentityViewModel }
 
     @Inject
     protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var serverApi: ServerApi
-
-    @Inject
-    protected lateinit var threadUtils: ThreadUtils
 
 
     companion object {
@@ -56,22 +41,18 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
 
     override val activityName = TAG
 
-    override val enableSaveIcon: Boolean
-        get() = showSaveIcon && _selectedPlayer != null
-
-    override fun failure(errorCode: Int) {
-        _selectedPlayer = null
-        playersBundle = null
-        showError()
+    private fun fetchPlayers() {
+        viewModel.fetchPlayers(regionRepository.getRegion(this))
     }
 
-    private fun fetchPlayersBundle() {
-        refreshLayout.isRefreshing = true
-        serverApi.getPlayers(regionRepository.getRegion(this), ApiCall(this))
+    private fun initListeners() {
+        viewModel.stateLiveData.observe(this, Observer {
+            refreshState(it)
+        })
     }
 
     override fun navigateUp() {
-        if (_selectedPlayer == null) {
+        if (!viewModel.warnBeforeClose) {
             super.navigateUp()
             return
         }
@@ -91,7 +72,7 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
             return
         }
 
-        if (_selectedPlayer == null) {
+        if (!viewModel.warnBeforeClose) {
             super.onBackPressed()
             return
         }
@@ -106,34 +87,23 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     }
 
     override fun onClick(v: PlayerSelectionItemView) {
-        val player = v.player
-
-        _selectedPlayer = if (player == identityRepository.identity) {
-            null
-        } else {
-            player
-        }
-
-        toolbar.refresh()
-        adapter.notifyDataSetChanged()
+        viewModel.selectedIdentity = v.player
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContentView(R.layout.activity_set_identity)
-        toolbar.subtitleText = regionRepository.getRegion(this).displayName
-
-        fetchPlayersBundle()
+        initListeners()
+        fetchPlayers()
     }
 
     override fun onRefresh() {
-        fetchPlayersBundle()
+        refresh()
     }
 
     override fun onSaveClick(v: SetIdentityToolbar) {
-        val selectedPlayer = _selectedPlayer ?: throw NullPointerException("_selectedPlayer is null")
-        identityRepository.setIdentity(selectedPlayer, regionRepository.getRegion(this))
+        viewModel.saveSelectedIdentity(regionRepository.getRegion(this))
         setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
     }
@@ -141,91 +111,168 @@ class SetIdentityActivity : BaseActivity(), ApiListener<PlayersBundle>,
     override fun onViewsBound() {
         super.onViewsBound()
 
+        toolbar.subtitleText = regionRepository.getRegion(this).displayName
+        toolbar.listener = this
+
         refreshLayout.setOnRefreshListener(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
+        adapter = Adapter(this, getString(R.string.number),
+                getString(R.string.other))
         recyclerView.adapter = adapter
     }
 
-    override fun search(query: String?) {
-        val players = playersBundle?.players
+    override fun refresh() {
+        fetchPlayers()
+    }
 
-        if (players.isNullOrEmpty()) {
-            return
+    private fun refreshState(state: SetIdentityViewModel.State) {
+        when (state.saveIconStatus) {
+            SetIdentityViewModel.SaveIconStatus.ENABLED -> {
+                toolbar.showSaveIcon = true
+                toolbar.enableSaveIcon = true
+            }
+
+            SetIdentityViewModel.SaveIconStatus.GONE -> {
+                toolbar.showSaveIcon = false
+                toolbar.enableSaveIcon = false
+            }
+
+            SetIdentityViewModel.SaveIconStatus.VISIBLE -> {
+                toolbar.showSaveIcon = true
+                toolbar.enableSaveIcon = false
+            }
         }
 
-        threadUtils.run(object : ThreadUtils.Task {
-            private var list: List<AbsPlayer>? = null
+        toolbar.showSearchIcon = state.showSearchIcon
 
-            override fun onBackground() {
-                if (!isAlive || !TextUtils.equals(query, searchQuery)) {
-                    return
-                }
-
-                list = ListUtils.searchPlayerList(query, players)
-            }
-
-            override fun onUi() {
-                if (!isAlive || !TextUtils.equals(query, searchQuery)) {
-                    return
-                }
-
-                adapter.set(list)
-            }
-        })
-    }
-
-    override val searchQuery: CharSequence?
-        get() = toolbar.searchQuery
-
-    override val selectedPlayer: AbsPlayer?
-        get() = _selectedPlayer ?: identityRepository.identity
-
-    private fun showEmpty() {
-        adapter.clear()
-        recyclerView.visibility = View.GONE
-        error.visibility = View.GONE
-        empty.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
-        toolbar.refresh()
-    }
-
-    private fun showError() {
-        adapter.clear()
-        recyclerView.visibility = View.GONE
-        empty.visibility = View.GONE
-        error.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
-        toolbar.refresh()
-    }
-
-    private fun showPlayersBundle() {
-        adapter.set(playersBundle)
-        empty.visibility = View.GONE
-        error.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
-        refreshLayout.isRefreshing = false
-        refreshLayout.isEnabled = false
-        toolbar.refresh()
-    }
-
-    override val showSaveIcon: Boolean
-        get() = !refreshLayout.isRefreshing && empty.visibility != View.VISIBLE &&
-                error.visibility != View.VISIBLE && recyclerView.visibility == View.VISIBLE
-
-    override val showSearchIcon: Boolean
-        get() = showSaveIcon
-
-    override fun success(`object`: PlayersBundle?) {
-        _selectedPlayer = null
-        playersBundle = `object`
-
-        if (`object` != null && `object`.players?.isNotEmpty() == true) {
-            showPlayersBundle()
+        if (state.hasError) {
+            adapter.clear()
+            recyclerView.visibility = View.GONE
+            empty.visibility = View.GONE
+            error.visibility = View.VISIBLE
+        } else if (state.isEmpty) {
+            adapter.clear()
+            recyclerView.visibility = View.GONE
+            error.visibility = View.GONE
+            empty.visibility = View.VISIBLE
         } else {
-            showEmpty()
+            if (state.searchResults != null) {
+                adapter.set(state.searchResults, state.selectedIdentity)
+            } else {
+                adapter.set(state.list, state.selectedIdentity)
+            }
+
+            error.visibility = View.GONE
+            empty.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
+
+        refreshLayout.isRefreshing = state.isFetching
+        refreshLayout.isEnabled = state.isRefreshEnabled
+    }
+
+    override fun search(query: String?) {
+        viewModel.search(query)
+    }
+
+    private class Adapter(
+            private val playerClickListener: PlayerSelectionItemView.OnClickListener,
+            private val digitDividerText: String,
+            private val otherDividerText: String
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        private var selectedIdentity: AbsPlayer? = null
+        private val list = mutableListOf<SetIdentityViewModel.ListItem>()
+
+        companion object {
+            private const val VIEW_TYPE_DIVIDER = 0
+            private const val VIEW_TYPE_PLAYER = 1
+        }
+
+        init {
+            setHasStableIds(true)
+        }
+
+        private fun bindDividerViewHolder(holder: DividerViewHolder, item: SetIdentityViewModel.ListItem.Divider) {
+            val content: String = when (item) {
+                is SetIdentityViewModel.ListItem.Divider.Digit -> digitDividerText
+                is SetIdentityViewModel.ListItem.Divider.Letter -> item.letter
+                is SetIdentityViewModel.ListItem.Divider.Other -> otherDividerText
+            }
+
+            holder.stringDividerView.setContent(content)
+        }
+
+        private fun bindPlayerViewHolder(holder: PlayerViewHolder, item: SetIdentityViewModel.ListItem.Player) {
+            holder.playerSelectionItemView.setContent(Pair(item.player, item.player == selectedIdentity))
+        }
+
+        internal fun clear() {
+            list.clear()
+            selectedIdentity = null
+            notifyDataSetChanged()
+        }
+
+        override fun getItemCount(): Int {
+            return list.size
+        }
+
+        override fun getItemId(position: Int): Long {
+            return list[position].listId
+        }
+
+        override fun getItemViewType(position: Int): Int {
+            return when (list[position]) {
+                is SetIdentityViewModel.ListItem.Divider -> VIEW_TYPE_DIVIDER
+                is SetIdentityViewModel.ListItem.Player -> VIEW_TYPE_PLAYER
+            }
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            when (val item = list[position]) {
+                is SetIdentityViewModel.ListItem.Divider -> bindDividerViewHolder(
+                        holder as DividerViewHolder, item)
+                is SetIdentityViewModel.ListItem.Player -> bindPlayerViewHolder(
+                        holder as PlayerViewHolder, item)
+                else -> throw RuntimeException("unknown item: $item, position: $position")
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val inflater = parent.layoutInflater
+
+            return when (viewType) {
+                VIEW_TYPE_DIVIDER -> DividerViewHolder(inflater.inflate(R.layout.divider_string,
+                        parent, false))
+                VIEW_TYPE_PLAYER -> {
+                    val viewHolder = PlayerViewHolder(inflater.inflate(
+                            R.layout.item_player_selection, parent, false))
+                    viewHolder.playerSelectionItemView.onClickListener = playerClickListener
+                    viewHolder
+                }
+                else -> throw IllegalArgumentException("unknown viewType: $viewType")
+            }
+        }
+
+        internal fun set(list: List<SetIdentityViewModel.ListItem>?, selectedIdentity: AbsPlayer?) {
+            this.list.clear()
+
+            if (!list.isNullOrEmpty()) {
+                this.list.addAll(list)
+            }
+
+            this.selectedIdentity = selectedIdentity
+            notifyDataSetChanged()
+        }
+
+    }
+
+    private class DividerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val stringDividerView: StringDividerView = itemView as StringDividerView
+    }
+
+    private class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val playerSelectionItemView: PlayerSelectionItemView = itemView as PlayerSelectionItemView
     }
 
 }

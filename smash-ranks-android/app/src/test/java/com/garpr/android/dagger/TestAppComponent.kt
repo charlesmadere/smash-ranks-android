@@ -21,12 +21,8 @@ import com.garpr.android.features.player.SmashRosterAvatarUrlHelperTest
 import com.garpr.android.features.rankings.PreviousRankUtilsTest
 import com.garpr.android.features.splash.AppUpgradeManagerTest
 import com.garpr.android.features.splash.SplashScreenManagerTest
-import com.garpr.android.features.tournament.TournamentAdapterManagerTest
 import com.garpr.android.features.tournaments.TournamentsActivityTest
-import com.garpr.android.misc.ListUtilsTest
 import com.garpr.android.misc.TimberTest
-import com.garpr.android.networking.PlayerMatchesBundleApiCallTest
-import com.garpr.android.networking.RegionsBundleApiCallTest
 import com.garpr.android.preferences.KeyValueStoreProviderTest
 import com.garpr.android.preferences.KeyValueStoreTest
 import com.garpr.android.preferences.persistent.PersistentBooleanPreferenceTest
@@ -36,7 +32,6 @@ import com.garpr.android.preferences.persistent.PersistentMoshiPreferenceTest
 import com.garpr.android.preferences.persistent.PersistentStringPreferenceTest
 import com.garpr.android.preferences.persistent.PersistentUriPreferenceTest
 import com.garpr.android.repositories.FavoritePlayersRepositoryTest
-import com.garpr.android.repositories.FullTournamentUtilsTest
 import com.garpr.android.repositories.IdentityRepositoryTest
 import com.garpr.android.repositories.NightModeRepositoryTest
 import com.garpr.android.repositories.RegionRepositoryTest
@@ -84,17 +79,11 @@ interface TestAppComponent {
     fun inject(test: SplashScreenManagerTest)
 
     // features/tournaments
-    fun inject(test: TournamentAdapterManagerTest)
     fun inject(test: TournamentsActivityTest)
 
     // misc
-    fun inject(test: ListUtilsTest)
     fun inject(test: PreviousRankUtilsTest)
     fun inject(test: TimberTest)
-
-    // networking
-    fun inject(test: PlayerMatchesBundleApiCallTest)
-    fun inject(test: RegionsBundleApiCallTest)
 
     // preferences
     fun inject(test: KeyValueStoreProviderTest)
@@ -108,7 +97,6 @@ interface TestAppComponent {
 
     // repositories
     fun inject(test: FavoritePlayersRepositoryTest)
-    fun inject(test: FullTournamentUtilsTest)
     fun inject(test: IdentityRepositoryTest)
     fun inject(test: NightModeRepositoryTest)
     fun inject(test: RegionRepositoryTest)

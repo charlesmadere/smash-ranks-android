@@ -11,6 +11,9 @@ enum class SmashCharacter(
         @StringRes val textResId: Int
 ) : Parcelable {
 
+    @Json(name = "bnk")
+    BANJO_N_KAZOOIE(R.string.banjo_n_kazooie),
+
     @Json(name = "byo")
     BAYONETTA(R.string.bayonetta),
 
@@ -67,6 +70,9 @@ enum class SmashCharacter(
 
     @Json(name = "grn")
     GRENINJA(R.string.greninja),
+
+    @Json(name = "hro")
+    HERO(R.string.hero),
 
     @Json(name = "ics")
     ICE_CLIMBERS(R.string.ice_climbers),

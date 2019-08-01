@@ -3,12 +3,10 @@ package com.garpr.android.sync.rankings
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.notifications.NotificationsManager
 import com.garpr.android.misc.Timber
-import com.garpr.android.networking.ApiListener
-import com.garpr.android.networking.ServerApi
+import com.garpr.android.networking.ServerApi2
 import com.garpr.android.repositories.RegionRepository
 import javax.inject.Inject
 
@@ -27,7 +25,7 @@ class RankingsPollingWorker(
     protected lateinit var regionRepository: RegionRepository
 
     @Inject
-    protected lateinit var serverApi: ServerApi
+    protected lateinit var serverApi: ServerApi2
 
     @Inject
     protected lateinit var timber: Timber
@@ -58,26 +56,23 @@ class RankingsPollingWorker(
 
         var info: RankingsNotificationsUtils.NotificationInfo? = null
 
-        serverApi.getRankings(regionRepository.getRegion(), object : ApiListener<RankingsBundle> {
-            override fun failure(errorCode: Int) {
-                timber.e(TAG, "error when fetching rankings ($errorCode)")
-                info = null
-            }
+        try {
+            val rankingsBundle = serverApi
+                    .getRankings(regionRepository.getRegion())
+                    .blockingGet()
 
-            override val isAlive: Boolean = true
-
-            override fun success(`object`: RankingsBundle?) {
-                timber.d(TAG, "successfully fetched rankings")
-                info = rankingsNotificationsUtils.getNotificationInfo(pollStatus, `object`)
-            }
-        })
+            timber.d(TAG, "successfully fetched rankings")
+            info = rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle)
+        } catch (e: RuntimeException) {
+            timber.e(TAG, "error when fetching rankings", e)
+        }
 
         timber.d(TAG, "work complete")
 
         return when (info) {
             RankingsNotificationsUtils.NotificationInfo.CANCEL -> {
                 timber.d(TAG, "canceling notifications ($info)")
-                notificationsManager.cancelAll()
+                notificationsManager.cancelRankingsUpdated()
                 Result.success()
             }
 
@@ -88,7 +83,7 @@ class RankingsPollingWorker(
 
             RankingsNotificationsUtils.NotificationInfo.SHOW -> {
                 timber.d(TAG, "showing rankings updated notification ($info)")
-                notificationsManager.rankingsUpdated()
+                notificationsManager.showRankingsUpdated()
                 Result.success()
             }
 

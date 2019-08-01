@@ -11,7 +11,10 @@
         app:titleText="@string/tournaments"
         style="@style/Toolbar" />
 
-    <include
-        layout="@layout/layout_tournaments" />
+    <fragment
+        android:id="@+id/tournamentsFragment"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:name="com.garpr.android.features.tournaments.TournamentsFragment" />
 
 </LinearLayout>

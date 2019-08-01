@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.facebook.common.references.CloseableReference
 import com.facebook.datasource.DataSource
@@ -17,14 +18,15 @@ import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.DeviceUtils
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.ThreadUtils2
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class PaletteSimpleDraweeView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimpleDraweeView(context, attrs) {
+) : SimpleDraweeView(context, attrs), Heartbeat {
 
     var colorListener: ColorListener? = null
     private val selfReference by lazy { WeakReference<View>(this) }
@@ -33,14 +35,12 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
     protected lateinit var deviceUtils: DeviceUtils
 
     @Inject
-    protected lateinit var threadUtils: ThreadUtils
+    protected lateinit var threadUtils: ThreadUtils2
 
 
     private val bitmapSubscriber = object : BaseBitmapDataSubscriber() {
         override fun onFailureImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
-            threadUtils.runOnUi(Runnable {
-                notifyListener(null)
-            })
+            post { notifyListener(null) }
         }
 
         override fun onNewResultImpl(bitmap: Bitmap?) {
@@ -50,9 +50,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
                 Palette.from(bitmap).generate()
             }
 
-            threadUtils.runOnUi(Runnable {
-                notifyListener(palette)
-            })
+            post { notifyListener(palette) }
         }
     }
 
@@ -62,8 +60,13 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
         }
     }
 
+    override val isAlive: Boolean
+        get() = ViewCompat.isAttachedToWindow(this)
+
     private fun notifyListener(palette: Palette?) {
-        (colorListener ?: activity as? ColorListener?)?.onPaletteBuilt(palette)
+        if (isAlive) {
+            (colorListener ?: activity as? ColorListener?)?.onPaletteBuilt(palette)
+        }
     }
 
     override fun setImageURI(uriString: String?) {
@@ -89,7 +92,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
 
         Fresco.getImagePipeline()
                 .fetchDecodedImage(imageRequest, selfReference)
-                .subscribe(bitmapSubscriber, threadUtils.executorService)
+                .subscribe(bitmapSubscriber, threadUtils.background)
 
         controller = draweeController
     }

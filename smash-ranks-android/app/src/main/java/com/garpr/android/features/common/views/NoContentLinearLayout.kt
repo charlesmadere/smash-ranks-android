@@ -11,7 +11,7 @@ import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.layoutInflater
 import kotlinx.android.synthetic.main.no_content_linear_layout_body.view.*
 
-open class NoContentLinearLayout @JvmOverloads constructor(
+class NoContentLinearLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {

@@ -116,6 +116,12 @@
             android:name="io.fabric.ApiKey"
             android:value="bd8750ba792168bfa4d0bc52e19ad83a6fad27c3" />
 
+        <provider
+            android:authorities="${applicationId}.workmanager-init"
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            tools:ignore="ExportedContentProvider"
+            tools:node="remove" />
+
     </application>
 
 </manifest>

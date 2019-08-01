@@ -14,7 +14,6 @@ import com.garpr.android.extensions.truncate
 import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.common.views.IdentityConstraintLayout
 import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_ranking.view.*
@@ -37,9 +36,6 @@ class RankingItemView @JvmOverloads constructor(
 
     @Inject
     protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var timber: Timber
 
 
     init {

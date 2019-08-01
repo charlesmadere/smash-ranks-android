@@ -1,7 +1,7 @@
 package com.garpr.android.wrappers
 
+import androidx.core.util.ObjectsCompat
 import java.lang.ref.WeakReference
-import java.util.Objects
 
 class WeakReferenceWrapper<T>(referent: T?) : WeakReference<T?>(referent) {
 
@@ -9,6 +9,6 @@ class WeakReferenceWrapper<T>(referent: T?) : WeakReference<T?>(referent) {
         return other is WeakReference<*> && other.get() == get()
     }
 
-    override fun hashCode(): Int = Objects.hashCode(get())
+    override fun hashCode(): Int = ObjectsCompat.hashCode(get())
 
 }

@@ -36,14 +36,14 @@ class TestNotificationsView @JvmOverloads constructor(
         dialog.dismiss()
 
         when (which) {
-            0 -> notificationsManager.cancelAll()
-            1 -> notificationsManager.rankingsUpdated()
+            0 -> notificationsManager.cancelRankingsUpdated()
+            1 -> notificationsManager.showRankingsUpdated()
             else -> throw RuntimeException("illegal which: $which")
         }
     }
 
     override fun onClick(v: View) {
-        val items = arrayOf(resources.getText(R.string.cancel_all),
+        val items = arrayOf(resources.getText(R.string.cancel_rankings),
                 resources.getText(R.string.show))
 
         AlertDialog.Builder(context)

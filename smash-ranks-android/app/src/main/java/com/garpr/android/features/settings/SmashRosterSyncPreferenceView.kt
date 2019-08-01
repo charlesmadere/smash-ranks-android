@@ -7,13 +7,15 @@ import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.sync.roster.SmashRosterSyncManager
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class SmashRosterSyncPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), SmashRosterSyncManager.OnSyncListeners,
-        View.OnClickListener {
+) : SimplePreferenceView(context, attrs), View.OnClickListener {
+
+    private val disposables = CompositeDisposable()
 
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
@@ -29,6 +31,13 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
         }
     }
 
+    private fun initListeners() {
+        disposables.add(smashRosterSyncManager.observeSyncState
+                .subscribe {
+                    post { refresh() }
+                })
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
@@ -36,38 +45,25 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
             return
         }
 
-        smashRosterSyncManager.addListener(this)
+        initListeners()
         refresh()
     }
 
     override fun onClick(v: View) {
-        if (!smashRosterSyncManager.isSyncing) {
+        if (smashRosterSyncManager.syncState == SmashRosterSyncManager.State.NOT_SYNCING) {
             smashRosterSyncManager.sync()
         }
     }
 
     override fun onDetachedFromWindow() {
+        disposables.clear()
         super.onDetachedFromWindow()
-
-        smashRosterSyncManager.removeListener(this)
-    }
-
-    override fun onSmashRosterSyncBegin(smashRosterSyncManager: SmashRosterSyncManager) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
-    override fun onSmashRosterSyncComplete(smashRosterSyncManager: SmashRosterSyncManager) {
-        if (isAlive) {
-            refresh()
-        }
     }
 
     override fun refresh() {
         super.refresh()
 
-        if (smashRosterSyncManager.isSyncing) {
+        if (smashRosterSyncManager.syncState == SmashRosterSyncManager.State.SYNCING) {
             descriptionText = resources.getText(R.string.syncing_now_)
             return
         }

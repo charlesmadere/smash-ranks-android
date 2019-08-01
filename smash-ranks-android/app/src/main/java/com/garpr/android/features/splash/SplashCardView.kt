@@ -71,10 +71,9 @@ class SplashCardView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         identityRepository.removeListener(this)
         regionRepository.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onFinishInflate() {

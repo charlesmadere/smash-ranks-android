@@ -2,7 +2,7 @@
 <com.garpr.android.features.setIdentity.PlayerSelectionItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    style="@style/ListItem">
+    style="@style/ListItem.WithBackground">
 
     <TextView
         android:ellipsize="end"

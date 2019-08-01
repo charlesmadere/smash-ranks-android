@@ -71,9 +71,8 @@ class IdentityPreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
         identityRepository.removeListener(this)
+        super.onDetachedFromWindow()
     }
 
     override fun onIdentityChange(identityRepository: IdentityRepository) {

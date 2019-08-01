@@ -1,59 +1,60 @@
 package com.garpr.android.sync.roster
 
-import android.annotation.SuppressLint
-import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.PollFrequency
+import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.data.models.SmashRosterSyncResult
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.extensions.httpCode
+import com.garpr.android.extensions.message
+import com.garpr.android.extensions.requireValue
 import com.garpr.android.misc.Timber
-import com.garpr.android.networking.ServerApi
+import com.garpr.android.networking.ServerApi2
 import com.garpr.android.preferences.SmashRosterPreferenceStore
-import com.garpr.android.sync.roster.SmashRosterSyncManager.OnSyncListeners
-import com.garpr.android.wrappers.WeakReferenceWrapper
+import com.garpr.android.sync.roster.SmashRosterSyncManager.State
 import com.garpr.android.wrappers.WorkManagerWrapper
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 
 class SmashRosterSyncManagerImpl(
-        private val serverApi: ServerApi,
+        private val serverApi: ServerApi2,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
-        private val threadUtils: ThreadUtils,
         private val timber: Timber,
         private val workManagerWrapper: WorkManagerWrapper
 ) : SmashRosterSyncManager {
 
-    private val listeners = mutableSetOf<WeakReferenceWrapper<OnSyncListeners>>()
+    private var hajimeteSync: Boolean
+        get() = smashRosterPreferenceStore.hajimeteSync.get() == true
+        set(value) = smashRosterPreferenceStore.hajimeteSync.set(value)
 
+    override var isEnabled: Boolean
+        get() = smashRosterPreferenceStore.enabled.get() == true
+        set(value) {
+            smashRosterPreferenceStore.enabled.set(value)
+            enableOrDisable()
+        }
+
+    private val syncStateSubject = BehaviorSubject.createDefault(State.NOT_SYNCING)
+    override val observeSyncState: Observable<State> = syncStateSubject.hide()
+
+    override var syncResult: SmashRosterSyncResult?
+        get() = smashRosterPreferenceStore.syncResult.get()
+        set(value) = smashRosterPreferenceStore.syncResult.set(value)
+
+    override var syncState: State
+        get() = syncStateSubject.requireValue()
+        set(value) {
+            syncStateSubject.onNext(value)
+        }
 
     companion object {
         private const val TAG = "SmashRosterSyncManagerImpl"
-    }
-
-    override fun addListener(listener: OnSyncListeners) {
-        cleanListeners()
-
-        synchronized (listeners) {
-            listeners.add(WeakReferenceWrapper(listener))
-        }
-    }
-
-    private fun cleanListeners(listenerToRemove: OnSyncListeners? = null) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val listener = iterator.next().get()
-
-                if (listener == null || listener == listenerToRemove) {
-                    iterator.remove()
-                }
-            }
-        }
     }
 
     private fun disable() {
@@ -100,147 +101,62 @@ class SmashRosterSyncManagerImpl(
         }
     }
 
-    private var hajimeteSync: Boolean
-        get() = smashRosterPreferenceStore.hajimeteSync.get() == true
-        set(value) = smashRosterPreferenceStore.hajimeteSync.set(value)
-
-    override var isEnabled: Boolean
-        get() = smashRosterPreferenceStore.enabled.get() == true
-        set(value) {
-            smashRosterPreferenceStore.enabled.set(value)
-            enableOrDisable()
-        }
-
-    override var isSyncing: Boolean = false
-
-    @UiThread
-    private fun notifyListenersOfOnSyncBegin() {
-        cleanListeners()
-
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                iterator.next().get()?.onSmashRosterSyncBegin(this)
-            }
-        }
-    }
-
-    @UiThread
-    private fun notifyListenersOfOnSyncComplete() {
-        cleanListeners()
-
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                iterator.next().get()?.onSmashRosterSyncComplete(this)
-            }
-        }
-    }
-
     @WorkerThread
     private fun performSync() {
-        val garPrRosterResponse = serverApi.getSmashRoster(Endpoint.GAR_PR)
-        val notGarPrRosterResponse = serverApi.getSmashRoster(Endpoint.NOT_GAR_PR)
-
-        val garPrRoster = if (garPrRosterResponse.isSuccessful) {
-            garPrRosterResponse.body
+        if (syncState == State.SYNCING) {
+            return
         } else {
-            null
+            syncState = State.SYNCING
         }
 
-        val notGarPrRoster = if (notGarPrRosterResponse.isSuccessful) {
-            notGarPrRosterResponse.body
-        } else {
-            null
+        timber.d(TAG, "syncing now...")
+        hajimeteSync = false
+
+        var garPrRoster: Map<String, SmashCompetitor>? = null
+        var notGarPrRoster: Map<String, SmashCompetitor>? = null
+        var throwable: Throwable? = null
+
+        try {
+            garPrRoster = serverApi.getSmashRoster(Endpoint.GAR_PR)
+                    .blockingGet()
+        } catch (e: Exception) {
+            throwable = e
+            timber.e(TAG, "Exception when fetching GAR PR roster", e)
         }
 
-        val smashRosterSyncResult: SmashRosterSyncResult
+        try {
+            notGarPrRoster = serverApi.getSmashRoster(Endpoint.NOT_GAR_PR)
+                    .blockingGet()
+        } catch (e: Exception) {
+            throwable = e
+            timber.e(TAG, "Exception when fetching Not GAR PR roster", e)
+        }
 
-        if (garPrRoster == null || notGarPrRoster == null) {
+        syncResult = if (garPrRoster.isNullOrEmpty() || notGarPrRoster.isNullOrEmpty() ||
+                throwable != null) {
             smashRosterStorage.deleteFromStorage(Endpoint.GAR_PR)
             smashRosterStorage.deleteFromStorage(Endpoint.NOT_GAR_PR)
 
-            smashRosterSyncResult = SmashRosterSyncResult(
+            SmashRosterSyncResult(
                     success = false,
-                    httpCode = garPrRosterResponse.code,
-                    message = garPrRosterResponse.message
+                    httpCode = throwable.httpCode,
+                    message = throwable.message
             )
         } else {
             smashRosterStorage.writeToStorage(Endpoint.GAR_PR, garPrRoster)
             smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, notGarPrRoster)
-
-            smashRosterSyncResult = SmashRosterSyncResult(
-                    success = true,
-                    httpCode = garPrRosterResponse.code,
-                    message = garPrRosterResponse.message
-            )
+            SmashRosterSyncResult(success = true)
         }
 
-        syncResult = smashRosterSyncResult
+        timber.d(TAG, "finished sync")
+        syncState = State.NOT_SYNCING
     }
 
-    @UiThread
-    private fun performSyncFromUiThread() {
-        notifyListenersOfOnSyncBegin()
-
-        threadUtils.runOnBackground(Runnable {
+    override fun sync(): Completable {
+        return Completable.create {
             performSync()
-
-            synchronized (isSyncing) {
-                isSyncing = false
-            }
-
-            threadUtils.runOnUi(Runnable {
-                notifyListenersOfOnSyncComplete()
-            })
-        })
-    }
-
-    @WorkerThread
-    private fun performSyncFromWorkerThread() {
-        threadUtils.runOnUi(Runnable {
-            notifyListenersOfOnSyncBegin()
-        })
-
-        performSync()
-
-        synchronized (isSyncing) {
-            isSyncing = false
-        }
-
-        threadUtils.runOnUi(Runnable {
-            notifyListenersOfOnSyncComplete()
-        })
-    }
-
-    override fun removeListener(listener: OnSyncListeners) {
-        cleanListeners(listener)
-    }
-
-    @SuppressLint("WrongThread")
-    override fun sync() {
-        synchronized (isSyncing) {
-            if (isSyncing) {
-                return
-            } else {
-                isSyncing = true
-            }
-        }
-
-        hajimeteSync = false
-        timber.d(TAG, "syncing now...")
-
-        if (threadUtils.isUiThread) {
-            performSyncFromUiThread()
-        } else {
-            performSyncFromWorkerThread()
+            it.onComplete()
         }
     }
-
-    override var syncResult: SmashRosterSyncResult?
-        get() = smashRosterPreferenceStore.syncResult.get()
-        set(value) = smashRosterPreferenceStore.syncResult.set(value)
 
 }

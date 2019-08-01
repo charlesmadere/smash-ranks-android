@@ -3,32 +3,35 @@ package com.garpr.android.dagger
 import com.garpr.android.App
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.IdentityConstraintLayout
-import com.garpr.android.features.common.views.IdentityFrameLayout
 import com.garpr.android.features.common.views.PaletteSimpleDraweeView
-import com.garpr.android.features.common.views.SearchableFrameLayout
-import com.garpr.android.features.common.views.SearchableRefreshLayout
 import com.garpr.android.features.common.views.TintedImageView
 import com.garpr.android.features.deepLink.DeepLinkActivity
-import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment
+import com.garpr.android.features.deepLink.DeepLinkViewModel
+import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesViewModel
 import com.garpr.android.features.favoritePlayers.FavoritePlayerItemView
-import com.garpr.android.features.favoritePlayers.FavoritePlayersLayout
+import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.headToHead.HeadToHeadDialogFragment
+import com.garpr.android.features.headToHead.HeadToHeadViewModel
 import com.garpr.android.features.home.HomeActivity
-import com.garpr.android.features.home.HomeToolbar
+import com.garpr.android.features.home.HomeViewModel
 import com.garpr.android.features.home.ShareRegionDialogFragment
+import com.garpr.android.features.logViewer.LogViewerViewModel
 import com.garpr.android.features.player.MatchItemView
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.player.PlayerProfileItemView
+import com.garpr.android.features.player.PlayerViewModel
 import com.garpr.android.features.players.PlayerItemView
 import com.garpr.android.features.players.PlayersActivity
-import com.garpr.android.features.players.PlayersLayout
+import com.garpr.android.features.players.PlayersViewModel
 import com.garpr.android.features.rankings.RankingItemView
 import com.garpr.android.features.rankings.RankingsActivity
 import com.garpr.android.features.rankings.RankingsFragment
-import com.garpr.android.features.rankings.RankingsLayout
+import com.garpr.android.features.rankings.RankingsViewModel
 import com.garpr.android.features.setIdentity.SetIdentityActivity
+import com.garpr.android.features.setIdentity.SetIdentityViewModel
 import com.garpr.android.features.setRegion.SetRegionActivity
+import com.garpr.android.features.setRegion.SetRegionViewModel
 import com.garpr.android.features.settings.DeleteFavoritePlayersPreferenceView
 import com.garpr.android.features.settings.IdentityPreferenceView
 import com.garpr.android.features.settings.LastPollPreferenceView
@@ -41,13 +44,16 @@ import com.garpr.android.features.settings.TestNotificationsView
 import com.garpr.android.features.settings.ThemePreferenceView
 import com.garpr.android.features.splash.SplashActivity
 import com.garpr.android.features.splash.SplashCardView
+import com.garpr.android.features.splash.SplashViewModel
 import com.garpr.android.features.tournament.TournamentActivity
-import com.garpr.android.features.tournament.TournamentInfoItemView
+import com.garpr.android.features.tournament.TournamentInfoView
 import com.garpr.android.features.tournament.TournamentMatchDialogFragment
+import com.garpr.android.features.tournament.TournamentViewModel
 import com.garpr.android.features.tournaments.TournamentDividerView
 import com.garpr.android.features.tournaments.TournamentItemView
 import com.garpr.android.features.tournaments.TournamentsActivity
-import com.garpr.android.features.tournaments.TournamentsLayout
+import com.garpr.android.features.tournaments.TournamentsFragment
+import com.garpr.android.features.tournaments.TournamentsViewModel
 import com.garpr.android.sync.rankings.RankingsPollingWorker
 import com.garpr.android.sync.roster.SmashRosterSyncWorker
 import dagger.Component
@@ -64,50 +70,55 @@ interface AppComponent {
 
     // features/common/view
     fun inject(view: IdentityConstraintLayout)
-    fun inject(view: IdentityFrameLayout)
     fun inject(view: PaletteSimpleDraweeView)
-    fun inject(view: SearchableFrameLayout)
-    fun inject(view: SearchableRefreshLayout)
     fun inject(view: TintedImageView)
 
     // features/deepLink
     fun inject(activity: DeepLinkActivity)
+    val deepLinkViewModel: DeepLinkViewModel
 
     // features/favoritePlayers
-    fun inject(dialog: AddOrRemovePlayerFromFavoritesDialogFragment)
     fun inject(view: FavoritePlayerItemView)
-    fun inject(view: FavoritePlayersLayout)
+    val addOrRemovePlayerFromFavoritesViewModel: AddOrRemovePlayerFromFavoritesViewModel
+    val favoritePlayersViewModel: FavoritePlayersViewModel
 
     // features/headToHead
     fun inject(activity: HeadToHeadActivity)
     fun inject(dialog: HeadToHeadDialogFragment)
+    val headToHeadViewModel: HeadToHeadViewModel
 
     // features/home
     fun inject(activity: HomeActivity)
-    fun inject(toolbar: HomeToolbar)
     fun inject(dialog: ShareRegionDialogFragment)
+    val homeViewModel: HomeViewModel
 
-    // feature/player
+    // features/logViewer
+    val logViewerViewModel: LogViewerViewModel
+
+    // features/player
     fun inject(view: MatchItemView)
     fun inject(activity: PlayerActivity)
     fun inject(view: PlayerProfileItemView)
+    val playerViewModel: PlayerViewModel
 
     // features/players
     fun inject(view: PlayerItemView)
     fun inject(activity: PlayersActivity)
-    fun inject(view: PlayersLayout)
+    val playersViewModel: PlayersViewModel
 
     // features/rankings
     fun inject(view: RankingItemView)
     fun inject(activity: RankingsActivity)
     fun inject(fragment: RankingsFragment)
-    fun inject(view: RankingsLayout)
+    val rankingsViewModel: RankingsViewModel
 
     // features/setIdentity
     fun inject(activity: SetIdentityActivity)
+    val setIdentityViewModel: SetIdentityViewModel
 
     // features/setRegion
     fun inject(activity: SetRegionActivity)
+    val setRegionViewModel: SetRegionViewModel
 
     // features/settings
     fun inject(view: DeleteFavoritePlayersPreferenceView)
@@ -121,20 +132,23 @@ interface AppComponent {
     fun inject(view: TestNotificationsView)
     fun inject(view: ThemePreferenceView)
 
+    // features/splash
+    fun inject(activity: SplashActivity)
+    fun inject(view: SplashCardView)
+    val splashViewModel: SplashViewModel
+
     // features/tournament
     fun inject(activity: TournamentActivity)
-    fun inject(view: TournamentInfoItemView)
+    fun inject(view: TournamentInfoView)
     fun inject(dialog: TournamentMatchDialogFragment)
+    val tournamentViewModel: TournamentViewModel
 
     // features/tournaments
     fun inject(view: TournamentDividerView)
     fun inject(view: TournamentItemView)
     fun inject(activity: TournamentsActivity)
-    fun inject(view: TournamentsLayout)
-
-    // features/splash
-    fun inject(activity: SplashActivity)
-    fun inject(view: SplashCardView)
+    fun inject(fragment: TournamentsFragment)
+    val tournamentsViewModel: TournamentsViewModel
 
     // sync/rankings
     fun inject(worker: RankingsPollingWorker)

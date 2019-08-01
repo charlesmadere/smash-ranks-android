@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
@@ -26,7 +27,7 @@ class WinsLossesGraphView @JvmOverloads constructor(
 
 
     companion object {
-        private val INTERPOLATOR = OvershootInterpolator(3.8f)
+        private val INTERPOLATOR: Interpolator = OvershootInterpolator(3.8f)
     }
 
     private fun calculateRects() {

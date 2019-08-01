@@ -1,15 +1,17 @@
 package com.garpr.android.dagger
 
 import android.app.Application
+import androidx.work.Configuration
 import androidx.work.WorkRequest
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.TestDeviceUtilsImpl
-import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.misc.ThreadUtils2
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
 import dagger.Module
 import dagger.Provides
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import javax.inject.Singleton
 
@@ -66,25 +68,9 @@ class TestConfigModule {
 
     @Provides
     @Singleton
-    fun providesThreadUtils(): ThreadUtils {
-        return object : ThreadUtils {
-            override val executorService = Executors.newSingleThreadExecutor()
-
-            override val isUiThread: Boolean
-                get() = false
-
-            override fun run(task: ThreadUtils.Task) {
-                task.onBackground()
-                task.onUi()
-            }
-
-            override fun runOnBackground(task: Runnable) {
-                task.run()
-            }
-
-            override fun runOnUi(task: Runnable) {
-                task.run()
-            }
+    fun providesThreadUtils2(): ThreadUtils2 {
+        return object : ThreadUtils2 {
+            override val background: ExecutorService = Executors.newSingleThreadExecutor()
         }
     }
 
@@ -92,6 +78,9 @@ class TestConfigModule {
     @Singleton
     fun providesWorkManagerWrapper(): WorkManagerWrapper {
         return object : WorkManagerWrapper {
+            override val configuration: Configuration
+                get() = throw NotImplementedError()
+
             override fun cancelAllWorkByTag(tag: String) {
                 // intentionally empty
             }

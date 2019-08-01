@@ -13,6 +13,12 @@ data class SimpleDate(
         val date: Date = Date()
 ) : Parcelable {
 
+    val fullForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.FULL).format(date) }
+
+    val mediumForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.MEDIUM).format(date) }
+
+    val shortForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.SHORT).format(date) }
+
     companion object {
         @JvmField
         val CREATOR = createParcel { SimpleDate(Date(it.readLong())) }
@@ -30,18 +36,12 @@ data class SimpleDate(
         return other is SimpleDate && date == other.date
     }
 
-    val fullForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.FULL).format(date) }
-
     fun getRelativeDateTimeText(context: Context): CharSequence {
         return DateUtils.getRelativeDateTimeString(context, date.time, DateUtils.DAY_IN_MILLIS,
                 DateUtils.WEEK_IN_MILLIS, 0)
     }
 
     override fun hashCode(): Int = date.hashCode()
-
-    val mediumForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.MEDIUM).format(date) }
-
-    val shortForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.SHORT).format(date) }
 
     override fun toString(): String = date.toString()
 

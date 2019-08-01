@@ -11,7 +11,10 @@
         app:titleText="@string/rankings"
         style="@style/Toolbar" />
 
-    <include
-        layout="@layout/layout_rankings" />
+    <fragment
+        android:id="@+id/rankingsFragment"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:name="com.garpr.android.features.rankings.RankingsFragment" />
 
 </LinearLayout>
