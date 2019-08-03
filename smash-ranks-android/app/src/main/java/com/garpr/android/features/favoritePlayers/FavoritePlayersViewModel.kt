@@ -6,13 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
 import javax.inject.Inject
 
 class FavoritePlayersViewModel @Inject constructor(
         private val favoritePlayersRepository: FavoritePlayersRepository,
-        private val threadUtils: ThreadUtils2
+        private val threadUtils: ThreadUtils
 ) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener, Searchable {
 
     private val _stateLiveData = MutableLiveData<State>()

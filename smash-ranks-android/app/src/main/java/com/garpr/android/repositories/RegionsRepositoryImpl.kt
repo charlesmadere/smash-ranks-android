@@ -6,14 +6,14 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.networking.ServerApi2
+import com.garpr.android.networking.ServerApi
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.Collections
 
 class RegionsRepositoryImpl(
         private val schedulers: Schedulers,
-        private val serverApi: ServerApi2
+        private val serverApi: ServerApi
 ) : RegionsRepository {
 
     override fun getRegions(): Single<RegionsBundle> {

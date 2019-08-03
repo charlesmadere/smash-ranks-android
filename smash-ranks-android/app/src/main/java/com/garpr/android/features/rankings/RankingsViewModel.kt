@@ -8,14 +8,14 @@ import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RankingsRepository
 import javax.inject.Inject
 
 class RankingsViewModel @Inject constructor(
         private val rankingsRepository: RankingsRepository,
-        private val threadUtils: ThreadUtils2,
+        private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : BaseViewModel(), Searchable {
 

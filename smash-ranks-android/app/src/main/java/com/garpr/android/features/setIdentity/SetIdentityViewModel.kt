@@ -9,7 +9,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.safeEquals
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.PlayersRepository
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class SetIdentityViewModel @Inject constructor(
         private val identityRepository: IdentityRepository,
         private val playersRepository: PlayersRepository,
-        private val threadUtils: ThreadUtils2,
+        private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : BaseViewModel(), Searchable {
 

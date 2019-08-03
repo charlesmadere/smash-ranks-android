@@ -30,13 +30,13 @@ import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.SchedulersImpl
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.misc.ShareUtilsImpl
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.misc.TimberImpl
-import com.garpr.android.networking.GarPrApi2
-import com.garpr.android.networking.ServerApi2
-import com.garpr.android.networking.ServerApi2Impl
-import com.garpr.android.networking.SmashRosterApi2
+import com.garpr.android.networking.GarPrApi
+import com.garpr.android.networking.ServerApi
+import com.garpr.android.networking.ServerApiImpl
+import com.garpr.android.networking.SmashRosterApi
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.GeneralPreferenceStoreImpl
 import com.garpr.android.preferences.KeyValueStore
@@ -156,9 +156,9 @@ class AppModule(
     @Named(GAR_PR_API)
     @Provides
     @Singleton
-    fun providesGarPrApi2(
+    fun providesGarPrApi(
             @Named(GAR_PR_RETROFIT) retrofit: Retrofit
-    ): GarPrApi2 {
+    ): GarPrApi {
         return retrofit.create()
     }
 
@@ -201,7 +201,7 @@ class AppModule(
     @Singleton
     fun providesHeadToHeadRepository(
             schedulers: Schedulers,
-            serverApi: ServerApi2
+            serverApi: ServerApi
     ): HeadToHeadRepository {
         return HeadToHeadRepositoryImpl(schedulers, serverApi)
     }
@@ -233,7 +233,7 @@ class AppModule(
     @Singleton
     fun providesMatchesRepository(
             schedulers: Schedulers,
-            serverApi: ServerApi2
+            serverApi: ServerApi
     ): MatchesRepository {
         return MatchesRepositoryImpl(schedulers, serverApi)
     }
@@ -271,9 +271,9 @@ class AppModule(
     @Named(NOT_GAR_PR_API)
     @Provides
     @Singleton
-    fun providesNotGarPrApi2(
+    fun providesNotGarPrApi(
             @Named(NOT_GAR_PR_RETROFIT) retrofit: Retrofit
-    ): GarPrApi2 {
+    ): GarPrApi {
         return retrofit.create()
     }
 
@@ -335,7 +335,7 @@ class AppModule(
     @Singleton
     fun providesPlayersRepository(
             schedulers: Schedulers,
-            serverApi: ServerApi2
+            serverApi: ServerApi
     ): PlayersRepository {
         return PlayersRepositoryImpl(schedulers, serverApi)
     }
@@ -394,7 +394,7 @@ class AppModule(
             rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
             regionRepository: RegionRepository,
             schedulers: Schedulers,
-            serverApi: ServerApi2
+            serverApi: ServerApi
     ): RankingsRepository {
         return RankingsRepositoryImpl(notificationsManager, rankingsPollingPreferenceStore,
                 regionRepository, schedulers, serverApi)
@@ -414,7 +414,7 @@ class AppModule(
     @Singleton
     fun providesRegionsRepository(
             schedulers: Schedulers,
-            serverApi: ServerApi2
+            serverApi: ServerApi
     ): RegionsRepository {
         return RegionsRepositoryImpl(schedulers, serverApi)
     }
@@ -428,7 +428,7 @@ class AppModule(
     @Provides
     @Singleton
     fun providesSchedulers(
-            threadUtils: ThreadUtils2
+            threadUtils: ThreadUtils
     ): Schedulers {
         return SchedulersImpl(threadUtils)
     }
@@ -436,11 +436,11 @@ class AppModule(
     @Provides
     @Singleton
     fun providesServerApi2(
-            @Named(GAR_PR_API) garPrApi: GarPrApi2,
-            @Named(NOT_GAR_PR_API) notGarPrApi: GarPrApi2,
-            smashRosterApi: SmashRosterApi2
-    ): ServerApi2 {
-        return ServerApi2Impl(garPrApi, notGarPrApi, smashRosterApi)
+            @Named(GAR_PR_API) garPrApi: GarPrApi,
+            @Named(NOT_GAR_PR_API) notGarPrApi: GarPrApi,
+            smashRosterApi: SmashRosterApi
+    ): ServerApi {
+        return ServerApiImpl(garPrApi, notGarPrApi, smashRosterApi)
     }
 
     @Provides
@@ -454,9 +454,9 @@ class AppModule(
 
     @Provides
     @Singleton
-    fun providesSmashRosterApi2(
+    fun providesSmashRosterApi(
             @Named(SMASH_ROSTER_RETROFIT) retrofit: Retrofit
-    ): SmashRosterApi2 {
+    ): SmashRosterApi {
         return retrofit.create()
     }
 
@@ -515,7 +515,7 @@ class AppModule(
     @Provides
     @Singleton
     fun providesSmashRosterSyncManager(
-            serverApi: ServerApi2,
+            serverApi: ServerApi,
             smashRosterPreferenceStore: SmashRosterPreferenceStore,
             smashRosterStorage: SmashRosterStorage,
             timber: Timber,
@@ -546,7 +546,7 @@ class AppModule(
     @Singleton
     fun providesTournamentsRepository(
             schedulers: Schedulers,
-            serverApi: ServerApi2
+            serverApi: ServerApi
     ): TournamentsRepository {
         return TournamentsRepositoryImpl(schedulers, serverApi)
     }

@@ -5,7 +5,7 @@ import androidx.work.Configuration
 import androidx.work.WorkRequest
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.TestDeviceUtilsImpl
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
@@ -68,8 +68,8 @@ class TestConfigModule {
 
     @Provides
     @Singleton
-    fun providesThreadUtils2(): ThreadUtils2 {
-        return object : ThreadUtils2 {
+    fun providesThreadUtils2(): ThreadUtils {
+        return object : ThreadUtils {
             override val background: ExecutorService = Executors.newSingleThreadExecutor()
         }
     }

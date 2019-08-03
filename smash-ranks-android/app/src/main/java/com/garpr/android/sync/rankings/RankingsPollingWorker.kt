@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.notifications.NotificationsManager
 import com.garpr.android.misc.Timber
-import com.garpr.android.networking.ServerApi2
+import com.garpr.android.networking.ServerApi
 import com.garpr.android.repositories.RegionRepository
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class RankingsPollingWorker(
     protected lateinit var regionRepository: RegionRepository
 
     @Inject
-    protected lateinit var serverApi: ServerApi2
+    protected lateinit var serverApi: ServerApi
 
     @Inject
     protected lateinit var timber: Timber

@@ -13,7 +13,7 @@ import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.data.models.TournamentsBundle
 import io.reactivex.Single
 
-interface ServerApi2 {
+interface ServerApi {
 
     fun getHeadToHead(region: Region, playerId: String, opponentId: String): Single<HeadToHead>
 

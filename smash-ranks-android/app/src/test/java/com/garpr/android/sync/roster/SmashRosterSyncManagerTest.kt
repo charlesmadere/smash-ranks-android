@@ -9,7 +9,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCharacter
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.misc.Timber
-import com.garpr.android.networking.AbsServerApi2
+import com.garpr.android.networking.AbsServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.wrappers.WorkManagerWrapper
 import io.reactivex.Single
@@ -259,7 +259,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
     private class ServerApiOverride(
             internal var garPrSmashRoster: Map<String, SmashCompetitor> = SmashRosters.GAR_PR,
             internal var notGarPrSmashRoster: Map<String, SmashCompetitor> = SmashRosters.NOT_GAR_PR
-    ) : AbsServerApi2() {
+    ) : AbsServerApi() {
 
         override fun getSmashRoster(endpoint: Endpoint): Single<Map<String, SmashCompetitor>> {
             return Single.just(when (endpoint) {

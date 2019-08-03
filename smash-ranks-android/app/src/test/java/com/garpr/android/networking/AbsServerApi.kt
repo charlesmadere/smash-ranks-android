@@ -11,58 +11,44 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.data.models.TournamentsBundle
-import com.garpr.android.extensions.require
 import io.reactivex.Single
 
-class ServerApi2Impl(
-        garPrApi: GarPrApi2,
-        notGarPrApi: GarPrApi2,
-        private val smashRosterApi: SmashRosterApi2
-) : ServerApi2 {
+abstract class AbsServerApi : ServerApi {
 
-    private val apis = mapOf(
-            Endpoint.GAR_PR to garPrApi,
-            Endpoint.NOT_GAR_PR to notGarPrApi
-    )
-
-    override fun getHeadToHead(region: Region, playerId: String,
-            opponentId: String): Single<HeadToHead> {
-        return apis.require(region.endpoint).getHeadToHead(region.id, playerId, opponentId)
+    override fun getHeadToHead(region: Region, playerId: String, opponentId: String): Single<HeadToHead> {
+        throw NotImplementedError()
     }
 
     override fun getMatches(region: Region, playerId: String): Single<MatchesBundle> {
-        return apis.require(region.endpoint).getMatches(region.id, playerId)
+        throw NotImplementedError()
     }
 
     override fun getPlayer(region: Region, playerId: String): Single<FullPlayer> {
-        return apis.require(region.endpoint).getPlayer(region.id, playerId)
+        throw NotImplementedError()
     }
 
     override fun getPlayers(region: Region): Single<PlayersBundle> {
-        return apis.require(region.endpoint).getPlayers(region.id)
+        throw NotImplementedError()
     }
 
     override fun getRankings(region: Region): Single<RankingsBundle> {
-        return apis.require(region.endpoint).getRankings(region.id)
+        throw NotImplementedError()
     }
 
     override fun getRegions(endpoint: Endpoint): Single<RegionsBundle> {
-        return apis.require(endpoint).getRegions()
+        throw NotImplementedError()
     }
 
     override fun getSmashRoster(endpoint: Endpoint): Single<Map<String, SmashCompetitor>> {
-        return when (endpoint) {
-            Endpoint.GAR_PR -> smashRosterApi.getGarPrJson()
-            Endpoint.NOT_GAR_PR -> smashRosterApi.getNotGarPrJson()
-        }
+        throw NotImplementedError()
     }
 
     override fun getTournament(region: Region, tournamentId: String): Single<FullTournament> {
-        return apis.require(region.endpoint).getTournament(region.id, tournamentId)
+        throw NotImplementedError()
     }
 
     override fun getTournaments(region: Region): Single<TournamentsBundle> {
-        return apis.require(region.endpoint).getTournaments(region.id)
+        throw NotImplementedError()
     }
 
 }

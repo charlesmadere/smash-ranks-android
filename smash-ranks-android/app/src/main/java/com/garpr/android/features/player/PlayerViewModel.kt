@@ -12,7 +12,7 @@ import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
@@ -27,7 +27,7 @@ class PlayerViewModel @Inject constructor(
         private val playerMatchesRepository: PlayerMatchesRepository,
         private val smashRosterStorage: SmashRosterStorage,
         private val smashRosterSyncManager: SmashRosterSyncManager,
-        private val threadUtils: ThreadUtils2,
+        private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
         IdentityRepository.OnIdentityChangeListener, Refreshable, Searchable {

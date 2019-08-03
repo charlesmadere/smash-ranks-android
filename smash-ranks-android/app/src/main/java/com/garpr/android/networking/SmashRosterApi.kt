@@ -4,7 +4,7 @@ import com.garpr.android.data.models.SmashCompetitor
 import io.reactivex.Single
 import retrofit2.http.GET
 
-interface SmashRosterApi2 {
+interface SmashRosterApi {
 
     @GET("json/gar_pr.json")
     fun getGarPrJson(): Single<Map<String, SmashCompetitor>>

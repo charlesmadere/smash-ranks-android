@@ -6,11 +6,11 @@ import androidx.work.Configuration
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.garpr.android.BuildConfig
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 
 class WorkManagerWrapperImpl(
         private val application: Application,
-        private val threadUtils: ThreadUtils2
+        private val threadUtils: ThreadUtils
 ) : WorkManagerWrapper {
 
     private val workManager: WorkManager

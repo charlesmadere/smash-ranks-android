@@ -5,13 +5,13 @@ import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.networking.ServerApi2
+import com.garpr.android.networking.ServerApi
 import io.reactivex.Single
 import java.util.Collections
 
 class PlayersRepositoryImpl(
         private val schedulers: Schedulers,
-        private val serverApi: ServerApi2
+        private val serverApi: ServerApi
 ) : PlayersRepository {
 
     override fun getPlayer(region: Region, playerId: String): Single<FullPlayer> {

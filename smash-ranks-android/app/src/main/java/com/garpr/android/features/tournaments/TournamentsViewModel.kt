@@ -8,13 +8,13 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Searchable
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.TournamentsRepository
 import javax.inject.Inject
 
 class TournamentsViewModel @Inject constructor(
-        private val threadUtils: ThreadUtils2,
+        private val threadUtils: ThreadUtils,
         private val timber: Timber,
         private val tournamentsRepository: TournamentsRepository
 ) : BaseViewModel(), Searchable {

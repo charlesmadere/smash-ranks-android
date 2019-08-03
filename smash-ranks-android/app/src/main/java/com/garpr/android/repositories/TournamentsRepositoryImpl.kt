@@ -6,13 +6,13 @@ import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.networking.ServerApi2
+import com.garpr.android.networking.ServerApi
 import io.reactivex.Single
 import java.util.Collections
 
 class TournamentsRepositoryImpl(
         private val schedulers: Schedulers,
-        private val serverApi: ServerApi2
+        private val serverApi: ServerApi
 ) : TournamentsRepository {
 
     override fun getTournament(region: Region, tournamentId: String): Single<FullTournament> {

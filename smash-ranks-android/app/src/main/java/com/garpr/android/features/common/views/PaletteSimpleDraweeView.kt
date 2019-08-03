@@ -19,7 +19,7 @@ import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Heartbeat
-import com.garpr.android.misc.ThreadUtils2
+import com.garpr.android.misc.ThreadUtils
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -35,7 +35,7 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
     protected lateinit var deviceUtils: DeviceUtils
 
     @Inject
-    protected lateinit var threadUtils: ThreadUtils2
+    protected lateinit var threadUtils: ThreadUtils
 
 
     private val bitmapSubscriber = object : BaseBitmapDataSubscriber() {

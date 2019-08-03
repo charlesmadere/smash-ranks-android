@@ -12,7 +12,7 @@ import com.garpr.android.extensions.httpCode
 import com.garpr.android.extensions.message
 import com.garpr.android.extensions.requireValue
 import com.garpr.android.misc.Timber
-import com.garpr.android.networking.ServerApi2
+import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.sync.roster.SmashRosterSyncManager.State
 import com.garpr.android.wrappers.WorkManagerWrapper
@@ -22,7 +22,7 @@ import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 
 class SmashRosterSyncManagerImpl(
-        private val serverApi: ServerApi2,
+        private val serverApi: ServerApi,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
         private val timber: Timber,
