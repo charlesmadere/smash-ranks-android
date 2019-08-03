@@ -6,6 +6,7 @@ import android.view.View
 import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -16,6 +17,9 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
 ) : SimplePreferenceView(context, attrs), View.OnClickListener {
 
     private val disposables = CompositeDisposable()
+
+    @Inject
+    protected lateinit var schedulers: Schedulers
 
     @Inject
     protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
@@ -51,7 +55,9 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
 
     override fun onClick(v: View) {
         if (smashRosterSyncManager.syncState == SmashRosterSyncManager.State.NOT_SYNCING) {
-            smashRosterSyncManager.sync()
+            disposables.add(smashRosterSyncManager.sync()
+                    .subscribeOn(schedulers.background)
+                    .subscribe())
         }
     }
 

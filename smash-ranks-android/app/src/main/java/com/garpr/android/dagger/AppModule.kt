@@ -515,13 +515,14 @@ class AppModule(
     @Provides
     @Singleton
     fun providesSmashRosterSyncManager(
+            schedulers: Schedulers,
             serverApi: ServerApi,
             smashRosterPreferenceStore: SmashRosterPreferenceStore,
             smashRosterStorage: SmashRosterStorage,
             timber: Timber,
             workManagerWrapper: WorkManagerWrapper
     ): SmashRosterSyncManager {
-        return SmashRosterSyncManagerImpl(serverApi, smashRosterPreferenceStore,
+        return SmashRosterSyncManagerImpl(schedulers, serverApi, smashRosterPreferenceStore,
                 smashRosterStorage, timber, workManagerWrapper)
     }
 

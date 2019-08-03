@@ -11,6 +11,7 @@ import com.garpr.android.data.models.SmashRosterSyncResult
 import com.garpr.android.extensions.httpCode
 import com.garpr.android.extensions.message
 import com.garpr.android.extensions.requireValue
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
@@ -22,6 +23,7 @@ import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 
 class SmashRosterSyncManagerImpl(
+        private val schedulers: Schedulers,
         private val serverApi: ServerApi,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
         private val smashRosterStorage: SmashRosterStorage,
@@ -89,7 +91,7 @@ class SmashRosterSyncManagerImpl(
 
         if (hajimeteSync) {
             timber.d(TAG, "hajimete sync")
-            sync()
+            sync().subscribeOn(schedulers.background).subscribe()
         }
     }
 
