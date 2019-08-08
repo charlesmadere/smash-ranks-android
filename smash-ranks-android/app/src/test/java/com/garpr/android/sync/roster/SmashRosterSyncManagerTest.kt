@@ -8,6 +8,7 @@ import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCharacter
 import com.garpr.android.data.models.SmashCompetitor
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.AbsServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
@@ -26,6 +27,9 @@ import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SmashRosterSyncManagerTest : BaseTest() {
+
+    @Inject
+    protected lateinit var schedulers: Schedulers
 
     @Inject
     protected lateinit var smashRosterPreferenceStore: SmashRosterPreferenceStore
@@ -196,7 +200,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        smashRosterSyncManager = SmashRosterSyncManagerImpl(serverApiOverride,
+        smashRosterSyncManager = SmashRosterSyncManagerImpl(schedulers, serverApiOverride,
                 smashRosterPreferenceStore, smashRosterStorage, timber, workManagerWrapper)
     }
 
