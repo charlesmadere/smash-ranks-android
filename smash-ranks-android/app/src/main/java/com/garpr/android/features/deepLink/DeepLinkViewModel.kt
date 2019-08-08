@@ -173,7 +173,7 @@ class DeepLinkViewModel @Inject constructor(
         val region = this.region
         val url = this.url
 
-        if (region == null || url == null) {
+        if (region == null) {
             throw IllegalStateException("initialize() hasn't been called!")
         }
 
