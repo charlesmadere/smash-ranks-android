@@ -1,6 +1,8 @@
 package com.garpr.android.data.models
 
 import com.garpr.android.BaseTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,24 +12,47 @@ import org.robolectric.RobolectricTestRunner
 class FullPlayerTest : BaseTest() {
 
     companion object {
-        private val FULL_PLAYER_1 = FullPlayer("1", "Imyt",
-                listOf("imyt", "IMYT", "Dr. Mario"), null, null)
-        private val FULL_PLAYER_2 = FullPlayer("2", "Charlezard",
-                listOf("charlezard"), null, null)
-        private val FULL_PLAYER_3 = FullPlayer("3", "gaR",
-                listOf("retired", "RETIRED", "ripgarpr", "ivan"), null, null)
-        private val FULL_PLAYER_4 = FullPlayer("4", "mikkuz",
-                listOf(), null, null)
-        private val FULL_PLAYER_5 = FullPlayer("5", "grandma Dan",
-                null, null, null)
-        private val FULL_PLAYER_6 = FullPlayer("6", "Any%",
-                listOf(""), null, null)
+        private val FULL_PLAYER_1 = FullPlayer(
+                id = "1",
+                name = "Imyt",
+                aliases = listOf("imyt", "IMYT", "Dr. Mario")
+        )
+
+        private val FULL_PLAYER_2 = FullPlayer(
+                id = "2",
+                name = "Charlezard",
+                aliases = listOf("charlezard")
+        )
+
+        private val FULL_PLAYER_3 = FullPlayer(
+                id = "3",
+                name = "gaR",
+                aliases = listOf("retired", "RETIRED", "ripgarpr", "ivan")
+        )
+
+        private val FULL_PLAYER_4 = FullPlayer(
+                id = "4",
+                name = "mikkuz",
+                aliases = emptyList()
+        )
+
+        private val FULL_PLAYER_5 = FullPlayer(
+                id = "5",
+                name = "grandma Dan"
+        )
+
+        private val FULL_PLAYER_6 = FullPlayer(
+                id = "6",
+                name = "Oatsngoats",
+                aliases = listOf("")
+        )
     }
 
     @Test
     fun testUniqueAliasesWithFullPlayer1() {
         val uniqueAliases = FULL_PLAYER_1.uniqueAliases
-        assertTrue(uniqueAliases != null && uniqueAliases.size == 1)
+        assertNotNull(uniqueAliases)
+        assertEquals(1, uniqueAliases?.size)
     }
 
     @Test
@@ -39,7 +64,8 @@ class FullPlayerTest : BaseTest() {
     @Test
     fun testUniqueAliasesWithFullPlayer3() {
         val uniqueAliases = FULL_PLAYER_3.uniqueAliases
-        assertTrue(uniqueAliases != null && uniqueAliases.size == 3)
+        assertNotNull(uniqueAliases)
+        assertEquals(3, uniqueAliases?.size)
     }
 
     @Test

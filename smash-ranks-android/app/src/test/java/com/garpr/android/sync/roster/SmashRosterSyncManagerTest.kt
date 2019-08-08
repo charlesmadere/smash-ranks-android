@@ -61,7 +61,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
             val GAR = FullPlayer(
                     id = "4",
                     name = "gaR",
-                    aliases = listOf(),
+                    aliases = emptyList(),
                     ratings = mapOf(
                             "norcal" to Rating(20f, 1.5f),
                             "googlemtv" to Rating(25f, 1f)
@@ -86,86 +86,6 @@ class SmashRosterSyncManagerTest : BaseTest() {
             val JAREBAIR = FullPlayer(
                     id = "5",
                     name = "jarebair"
-            )
-        }
-
-        private object Regions {
-            val ATLANTA = Region(
-                    displayName = "Atlanta",
-                    id = "atlanta",
-                    endpoint = Endpoint.NOT_GAR_PR
-            )
-
-            val NORCAL = Region(
-                    displayName = "Norcal",
-                    id = "norcal",
-                    endpoint = Endpoint.GAR_PR
-            )
-
-            val NYC = Region(
-                    displayName = "New York City",
-                    id = "nyc",
-                    endpoint = Endpoint.NOT_GAR_PR
-            )
-        }
-
-        private object SmashCompetitors {
-            val CHARLEZARD = SmashCompetitor(
-                    mains = listOf(
-                            SmashCharacter.SHEIK
-                    ),
-                    websites = mapOf(
-                            "twitch" to "https://www.twitch.tv/chillinwithcharles",
-                            "twitter" to "https://twitter.com/charlesmadere"
-                    ),
-                    id = Players.CHARLEZARD.id,
-                    name = "Charles Madere",
-                    tag = Players.CHARLEZARD.name
-            )
-
-            val HAX = SmashCompetitor(
-                    mains = listOf(
-                            SmashCharacter.FOX
-                    ),
-                    websites = mapOf(
-                            "twitter" to "https://twitter.com/ssbmhax",
-                            "youtube" to "https://www.youtube.com/channel/UCVJOIYcecIVO96ktK0qDKhQ"
-                    ),
-                    id = Players.HAX.id,
-                    name = "Aziz Al-Yami",
-                    tag = Players.HAX.name
-            )
-
-            val IMYT = SmashCompetitor(
-                    mains = listOf(
-                            SmashCharacter.SHEIK,
-                            SmashCharacter.FOX
-                    ),
-                    websites = mapOf(
-                            "twitch" to "https://www.twitch.tv/imyt",
-                            "twitter" to "https://twitter.com/OnlyImyt"
-                    ),
-                    id = Players.IMYT.id,
-                    name = "Declan Doyle",
-                    tag = Players.IMYT.name
-            )
-
-            val JAREBAIR = SmashCompetitor(
-                    avatar = Avatar(
-                            original = "original.jpg"
-                    ),
-                    mains = listOf(
-                            SmashCharacter.FALCO,
-                            SmashCharacter.FOX
-                    ),
-                    id = Players.JAREBAIR.id,
-                    name = "Jared",
-                    tag = Players.JAREBAIR.name,
-                    websites = mapOf(
-                            "twitch" to "https://www.twitch.tv/prozd",
-                            "twitter" to "https://twitter.com/prozdkp",
-                            "youtube" to "https://www.youtube.com/user/ProZD"
-                    )
             )
         }
 

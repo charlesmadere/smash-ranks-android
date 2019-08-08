@@ -43,7 +43,7 @@ class PlayerProfileManagerTest : BaseTest() {
             val GAR = FullPlayer(
                     id = "4",
                     name = "gaR",
-                    aliases = listOf(),
+                    aliases = emptyList(),
                     ratings = mapOf(
                             "norcal" to Rating(20f, 1.5f),
                             "googlemtv" to Rating(25f, 1f)
