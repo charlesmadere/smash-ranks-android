@@ -3,8 +3,10 @@ package com.garpr.android.features.deepLink
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionsRepository
+import io.reactivex.Single
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -17,9 +19,7 @@ import javax.inject.Inject
 class DeepLinkViewModelTest : BaseTest() {
 
     private lateinit var viewModel: DeepLinkViewModel
-
-    @Inject
-    protected lateinit var regionsRepository: RegionsRepository
+    private val regionsRepository = RegionsRepositoryOverride()
 
     @Inject
     protected lateinit var timber: Timber
@@ -36,6 +36,10 @@ class DeepLinkViewModelTest : BaseTest() {
                 displayName = "NYC Metro Area",
                 id = "nyc",
                 endpoint = Endpoint.NOT_GAR_PR
+        )
+
+        private val REGIONS_BUNDLE = RegionsBundle(
+                regions = listOf(NORCAL, NYC)
         )
 
         private const val PLAYER_GINGER = "https://www.notgarpr.com/#/chicago/players/57983b42e592573cf1845ff2"
@@ -108,6 +112,16 @@ class DeepLinkViewModelTest : BaseTest() {
         assertNull(urlParseError)
         assertNull(networkError)
         assertNotNull(breadcrumbs)
+    }
+
+    private class RegionsRepositoryOverride(
+            internal var regionsBundle: RegionsBundle = REGIONS_BUNDLE
+    ) : RegionsRepository {
+
+        override fun getRegions(): Single<RegionsBundle> {
+            return Single.just(regionsBundle)
+        }
+
     }
 
 }
