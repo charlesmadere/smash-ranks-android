@@ -1,12 +1,9 @@
 package com.garpr.android.sync.roster
 
 import com.garpr.android.BaseTest
-import com.garpr.android.data.models.Avatar
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.Rating
-import com.garpr.android.data.models.Region
-import com.garpr.android.data.models.SmashCharacter
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
@@ -28,6 +25,9 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class SmashRosterSyncManagerTest : BaseTest() {
 
+    private val serverApi = ServerApiOverride()
+    private lateinit var smashRosterSyncManager: SmashRosterSyncManager
+
     @Inject
     protected lateinit var schedulers: Schedulers
 
@@ -43,8 +43,6 @@ class SmashRosterSyncManagerTest : BaseTest() {
     @Inject
     protected lateinit var workManagerWrapper: WorkManagerWrapper
 
-    private val serverApiOverride = ServerApiOverride()
-    private lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
     companion object {
 
@@ -120,7 +118,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
         super.setUp()
         testAppComponent.inject(this)
 
-        smashRosterSyncManager = SmashRosterSyncManagerImpl(schedulers, serverApiOverride,
+        smashRosterSyncManager = SmashRosterSyncManagerImpl(schedulers, serverApi,
                 smashRosterPreferenceStore, smashRosterStorage, timber, workManagerWrapper)
     }
 
@@ -163,18 +161,18 @@ class SmashRosterSyncManagerTest : BaseTest() {
         assertNotNull(smashRosterSyncManager.syncResult)
         assertTrue(smashRosterSyncManager.syncResult?.success == true)
 
-        serverApiOverride.garPrSmashRoster = emptyMap()
+        serverApi.garPrSmashRoster = emptyMap()
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
         assertTrue(smashRosterSyncManager.syncResult?.success == false)
 
-        serverApiOverride.notGarPrSmashRoster = emptyMap()
+        serverApi.notGarPrSmashRoster = emptyMap()
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
         assertTrue(smashRosterSyncManager.syncResult?.success == false)
 
-        serverApiOverride.garPrSmashRoster = SmashRosters.GAR_PR
-        serverApiOverride.notGarPrSmashRoster = SmashRosters.NOT_GAR_PR
+        serverApi.garPrSmashRoster = SmashRosters.GAR_PR
+        serverApi.notGarPrSmashRoster = SmashRosters.NOT_GAR_PR
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
         assertTrue(smashRosterSyncManager.syncResult?.success == true)
