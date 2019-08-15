@@ -4,14 +4,13 @@ import androidx.work.Configuration
 import androidx.work.WorkRequest
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.TestDeviceUtilsImpl
+import com.garpr.android.misc.TestThreadUtilsImpl
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
 import dagger.Module
 import dagger.Provides
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module
@@ -66,9 +65,7 @@ class TestConfigModule {
     @Provides
     @Singleton
     fun providesThreadUtils2(): ThreadUtils {
-        return object : ThreadUtils {
-            override val background: ExecutorService = Executors.newSingleThreadExecutor()
-        }
+        return TestThreadUtilsImpl()
     }
 
     @Provides
