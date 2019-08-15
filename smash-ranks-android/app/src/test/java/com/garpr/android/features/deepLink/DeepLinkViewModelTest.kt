@@ -4,9 +4,12 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.extensions.require
+import com.garpr.android.features.deepLink.DeepLinkViewModel.Breadcrumb
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionsRepository
 import io.reactivex.Single
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -42,8 +45,10 @@ class DeepLinkViewModelTest : BaseTest() {
                 regions = listOf(NORCAL, NYC)
         )
 
+        private const val PLAYER_SFAT_ID = "588852e8d2994e3bbfa52d88"
+
         private const val PLAYER_GINGER = "https://www.notgarpr.com/#/chicago/players/57983b42e592573cf1845ff2"
-        private const val PLAYER_SFAT = "https://www.garpr.com/#/norcal/players/588852e8d2994e3bbfa52d88"
+        private const val PLAYER_SFAT = "https://www.garpr.com/#/norcal/players/$PLAYER_SFAT_ID"
         private const val PLAYER_SWEDISH_DELIGHT = "https://www.notgarpr.com/#/nyc/players/545b240b8ab65f7a95f74940"
 
         private const val PLAYERS_GEORGIA = "https://www.notgarpr.com/#/georgia/players"
@@ -63,55 +68,93 @@ class DeepLinkViewModelTest : BaseTest() {
     }
 
     @Test
-    fun testBreadcrumbsWithNorcalAndNull() {
-        viewModel.initialize(NORCAL, null)
+    fun testBreadcrumbsWithNorcalAndEmptyString() {
+        viewModel.initialize(NORCAL, "")
 
-        var urlParseError: Unit? = null
+        var breadcrumbs: List<Breadcrumb>? = null
         var networkError: Unit? = null
-        var breadcrumbs: List<DeepLinkViewModel.Breadcrumb>? = null
+        var urlParseError: Unit? = null
 
-        viewModel.urlParseErrorLiveData.observeForever {
-            urlParseError = it
+        viewModel.breadcrumbsLiveData.observeForever {
+            breadcrumbs = it
         }
 
         viewModel.networkErrorLiveData.observeForever {
             networkError = it
         }
 
+        viewModel.urlParseErrorLiveData.observeForever {
+            urlParseError = it
+        }
+
+        viewModel.fetchBreadcrumbs()
+        assertNull(breadcrumbs)
+        assertNull(networkError)
+        assertNotNull(urlParseError)
+    }
+
+    @Test
+    fun testBreadcrumbsWithNorcalAndNull() {
+        viewModel.initialize(NORCAL, null)
+
+        var breadcrumbs: List<Breadcrumb>? = null
+        var networkError: Unit? = null
+        var urlParseError: Unit? = null
+
         viewModel.breadcrumbsLiveData.observeForever {
             breadcrumbs = it
         }
 
+        viewModel.networkErrorLiveData.observeForever {
+            networkError = it
+        }
+
+        viewModel.urlParseErrorLiveData.observeForever {
+            urlParseError = it
+        }
+
         viewModel.fetchBreadcrumbs()
-        assertNotNull(urlParseError)
-        assertNull(networkError)
         assertNull(breadcrumbs)
+        assertNull(networkError)
+        assertNotNull(urlParseError)
     }
 
     @Test
     fun testBreadcrumbsWithNorcalAndSfat() {
         viewModel.initialize(NORCAL, PLAYER_SFAT)
 
-        var urlParseError: Unit? = null
+        var breadcrumbs: List<Breadcrumb>? = null
         var networkError: Unit? = null
-        var breadcrumbs: List<DeepLinkViewModel.Breadcrumb>? = null
+        var urlParseError: Unit? = null
 
-        viewModel.urlParseErrorLiveData.observeForever {
-            urlParseError = it
+        viewModel.breadcrumbsLiveData.observeForever {
+            breadcrumbs = it
         }
 
         viewModel.networkErrorLiveData.observeForever {
             networkError = it
         }
 
-        viewModel.breadcrumbsLiveData.observeForever {
-            breadcrumbs = it
+        viewModel.urlParseErrorLiveData.observeForever {
+            urlParseError = it
         }
 
         viewModel.fetchBreadcrumbs()
-        assertNull(urlParseError)
-        assertNull(networkError)
         assertNotNull(breadcrumbs)
+        assertNull(networkError)
+        assertNull(urlParseError)
+
+        assertEquals(3, breadcrumbs?.size)
+
+        val home = breadcrumbs.require(0) as Breadcrumb.Home
+        assertNull(home.initialPosition)
+
+        val players = breadcrumbs.require(1) as Breadcrumb.Players
+        assertNull(players.region)
+
+        val player = breadcrumbs.require(2) as Breadcrumb.Player
+        assertNull(player.region)
+        assertEquals(PLAYER_SFAT_ID, player.playerId)
     }
 
     private class RegionsRepositoryOverride(
