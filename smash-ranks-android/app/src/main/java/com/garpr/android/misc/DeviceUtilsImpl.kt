@@ -5,7 +5,7 @@ import androidx.core.app.ActivityManagerCompat
 import com.garpr.android.extensions.activityManager
 import com.garpr.android.extensions.connectivityManager
 
-open class DeviceUtilsImpl(
+class DeviceUtilsImpl(
         private val application: Application
 ) : DeviceUtils {
 

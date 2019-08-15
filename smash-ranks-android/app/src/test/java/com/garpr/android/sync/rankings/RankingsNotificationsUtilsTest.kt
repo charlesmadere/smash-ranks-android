@@ -26,7 +26,7 @@ import javax.inject.Inject
 class RankingsNotificationsUtilsTest : BaseTest() {
 
     @Inject
-    protected lateinit var deviceUtils: DeviceUtils
+    protected lateinit var _deviceUtils: DeviceUtils
 
     @Inject
     protected lateinit var moshi: Moshi
@@ -38,6 +38,7 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
 
     private lateinit var rankingsBundle: RankingsBundle
+    private lateinit var deviceUtils: TestDeviceUtilsImpl
 
 
     companion object {
@@ -52,6 +53,7 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         testAppComponent.inject(this)
+        deviceUtils = _deviceUtils as TestDeviceUtilsImpl
 
         val rankingsBundleAdapter = moshi.adapter(RankingsBundle::class.java)
         rankingsBundle = rankingsBundleAdapter.requireFromJson(JSON_RANKINGS_BUNDLE)
@@ -59,7 +61,7 @@ class RankingsNotificationsUtilsTest : BaseTest() {
 
     @Test
     fun testGetNotificationInfo() {
-        setHasNetworkConnection(true)
+        deviceUtils.hasNetworkConnection = true
         rankingsPollingPreferenceStore.enabled.set(true)
         rankingsPollingPreferenceStore.rankingsId.delete()
 
@@ -99,7 +101,7 @@ class RankingsNotificationsUtilsTest : BaseTest() {
 
     @Test
     fun testGetPollStatus() {
-        setHasNetworkConnection(false)
+        deviceUtils.hasNetworkConnection = false
         rankingsPollingPreferenceStore.enabled.set(false)
         rankingsPollingPreferenceStore.lastPoll.delete()
         rankingsPollingPreferenceStore.rankingsId.delete()
@@ -124,21 +126,13 @@ class RankingsNotificationsUtilsTest : BaseTest() {
         assertFalse(pollStatus.proceed)
         assertTrue(pollStatus.retry)
 
-        setHasNetworkConnection(true)
+        deviceUtils.hasNetworkConnection = true
 
         pollStatus = rankingsNotificationsUtils.getPollStatus()
         assertNotNull(pollStatus.oldRankingsId)
         assertEquals(RANKINGS_ID_1, pollStatus.oldRankingsId)
         assertTrue(pollStatus.proceed)
         assertTrue(pollStatus.retry)
-    }
-
-    private fun setHasNetworkConnection(hasNetworkConnection: Boolean) {
-        if (deviceUtils is TestDeviceUtilsImpl) {
-            (deviceUtils as TestDeviceUtilsImpl).setHasNetworkConnection(hasNetworkConnection)
-        } else {
-            throw IllegalStateException("deviceUtils ($deviceUtils) is not a TestDeviceUtilsImpl")
-        }
     }
 
 }

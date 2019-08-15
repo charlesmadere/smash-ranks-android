@@ -1,6 +1,5 @@
 package com.garpr.android.dagger
 
-import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkRequest
 import com.garpr.android.misc.DeviceUtils
@@ -50,10 +49,8 @@ class TestConfigModule {
 
     @Provides
     @Singleton
-    fun providesDeviceUtils(
-            application: Application
-    ): DeviceUtils {
-        return TestDeviceUtilsImpl(application)
+    fun providesDeviceUtils(): DeviceUtils {
+        return TestDeviceUtilsImpl()
     }
 
     @Provides
