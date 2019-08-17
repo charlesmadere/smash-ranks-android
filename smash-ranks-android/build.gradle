@@ -19,7 +19,7 @@ buildscript {
     ext.robolectric_version = '4.3'
     ext.rx_java_version = '2.2.11'
     ext.testcore_version = '1.2.0'
-    ext.workmanager_version = '2.1.0'
+    ext.workmanager_version = '2.2.0'
 
     repositories {
         google()
