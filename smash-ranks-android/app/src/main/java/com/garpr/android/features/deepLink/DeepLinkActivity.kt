@@ -9,6 +9,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.deepLink.DeepLinkViewModel.Breadcrumb
 import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
@@ -64,19 +65,19 @@ class DeepLinkActivity : BaseActivity() {
         fetchBreadcrumbs()
     }
 
-    private fun processBreadcrumbs(breadcrumbs: List<DeepLinkViewModel.Breadcrumb>) {
+    private fun processBreadcrumbs(breadcrumbs: List<Breadcrumb>) {
         val intents = mutableListOf<Intent>()
 
         breadcrumbs.forEach {
             intents.add(when (it) {
-                is DeepLinkViewModel.Breadcrumb.Home -> {
+                is Breadcrumb.Home -> {
                     HomeActivity.getLaunchIntent(
                             context = this,
                             initialPosition = it.initialPosition
                     )
                 }
 
-                is DeepLinkViewModel.Breadcrumb.Player -> {
+                is Breadcrumb.Player -> {
                     PlayerActivity.getLaunchIntent(
                             context = this,
                             playerId = it.playerId,
@@ -84,21 +85,21 @@ class DeepLinkActivity : BaseActivity() {
                     )
                 }
 
-                is DeepLinkViewModel.Breadcrumb.Players -> {
+                is Breadcrumb.Players -> {
                     PlayersActivity.getLaunchIntent(
                             context = this,
                             region = it.region
                     )
                 }
 
-                is DeepLinkViewModel.Breadcrumb.Rankings -> {
+                is Breadcrumb.Rankings -> {
                     RankingsActivity.getLaunchIntent(
                             context = this,
                             region = it.region
                     )
                 }
 
-                is DeepLinkViewModel.Breadcrumb.Tournament -> {
+                is Breadcrumb.Tournament -> {
                     TournamentActivity.getLaunchIntent(
                             context = this,
                             tournamentId = it.tournamentId,
@@ -106,7 +107,7 @@ class DeepLinkActivity : BaseActivity() {
                     )
                 }
 
-                is DeepLinkViewModel.Breadcrumb.Tournaments -> {
+                is Breadcrumb.Tournaments -> {
                     TournamentsActivity.getLaunchIntent(
                             context = this,
                             region = it.region
