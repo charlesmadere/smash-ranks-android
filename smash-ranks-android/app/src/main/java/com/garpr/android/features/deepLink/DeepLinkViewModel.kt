@@ -123,7 +123,14 @@ class DeepLinkViewModel @Inject constructor(
     }
 
     @WorkerThread
-    private fun createBreadcrumbs(region: Region, url: String, regions: List<Region>): List<Breadcrumb> {
+    private fun createBreadcrumbs(regions: List<Region>): List<Breadcrumb> {
+        val currentRegion = this.region ?: throw IllegalStateException("initialize() hasn't been called!")
+
+        val url = this.url
+        if (url.isNullOrBlank()) {
+            throw IllegalStateException("url can't be null or blank")
+        }
+
         if (regions.isEmpty()) {
             throw IllegalArgumentException("regions can't be empty")
         }
@@ -149,9 +156,13 @@ class DeepLinkViewModel @Inject constructor(
             return emptyList()
         }
 
-        val sameRegion = regionId.equals(region.id, ignoreCase = true)
+        val sameRegion = regionId.equals(currentRegion.id, ignoreCase = true)
+        val region = regions.find { it.id.equals(regionId, ignoreCase = true) }
 
         if (sameRegion && splits.size == 1) {
+            return emptyList()
+        } else if (region == null) {
+            timber.w(TAG, "unable to find a region with ID \"$regionId\".")
             return emptyList()
         }
 
@@ -170,9 +181,6 @@ class DeepLinkViewModel @Inject constructor(
     }
 
     fun fetchBreadcrumbs() {
-        val region = this.region
-        val url = this.url
-
         if (region == null) {
             throw IllegalStateException("initialize() hasn't been called!")
         }
@@ -191,7 +199,7 @@ class DeepLinkViewModel @Inject constructor(
                     if (regions.isNullOrEmpty()) {
                         _networkErrorLiveData.postValue(Unit)
                     } else {
-                        val breadcrumbs = createBreadcrumbs(region, url, regions)
+                        val breadcrumbs = createBreadcrumbs(regions)
                         _breadcrumbsLiveData.postValue(breadcrumbs)
                     }
                 }, {

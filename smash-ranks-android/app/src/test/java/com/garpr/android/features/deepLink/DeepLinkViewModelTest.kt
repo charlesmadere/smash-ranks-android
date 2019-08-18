@@ -29,6 +29,12 @@ class DeepLinkViewModelTest : BaseTest() {
 
 
     companion object {
+        private val CHICAGO = Region(
+                displayName = "Chicago",
+                id = "chicago",
+                endpoint = Endpoint.NOT_GAR_PR
+        )
+
         private val NORCAL = Region(
                 displayName = "Norcal",
                 id = "norcal",
@@ -42,14 +48,16 @@ class DeepLinkViewModelTest : BaseTest() {
         )
 
         private val REGIONS_BUNDLE = RegionsBundle(
-                regions = listOf(NORCAL, NYC)
+                regions = listOf(CHICAGO, NORCAL, NYC)
         )
 
+        private const val PLAYER_GINGER_ID = "57983b42e592573cf1845ff2"
         private const val PLAYER_SFAT_ID = "588852e8d2994e3bbfa52d88"
+        private const val PLAYER_SWEDISH_DELIGHT_ID = "545b240b8ab65f7a95f74940"
 
-        private const val PLAYER_GINGER = "https://www.notgarpr.com/#/chicago/players/57983b42e592573cf1845ff2"
+        private const val PLAYER_GINGER = "https://www.notgarpr.com/#/chicago/players/$PLAYER_GINGER_ID"
         private const val PLAYER_SFAT = "https://www.garpr.com/#/norcal/players/$PLAYER_SFAT_ID"
-        private const val PLAYER_SWEDISH_DELIGHT = "https://www.notgarpr.com/#/nyc/players/545b240b8ab65f7a95f74940"
+        private const val PLAYER_SWEDISH_DELIGHT = "https://www.notgarpr.com/#/nyc/players/$PLAYER_SWEDISH_DELIGHT_ID"
 
         private const val PLAYERS_GEORGIA = "https://www.notgarpr.com/#/georgia/players"
         private const val PLAYERS_NORCAL = "https://www.garpr.com/#/norcal/players"
@@ -120,6 +128,44 @@ class DeepLinkViewModelTest : BaseTest() {
     }
 
     @Test
+    fun testBreadcrumbsWithNorcalAndGinger() {
+        viewModel.initialize(NORCAL, PLAYER_GINGER)
+
+        var breadcrumbs: List<Breadcrumb>? = null
+        var networkError: Unit? = null
+        var urlParseError: Unit? = null
+
+        viewModel.breadcrumbsLiveData.observeForever {
+            breadcrumbs = it
+        }
+
+        viewModel.networkErrorLiveData.observeForever {
+            networkError = it
+        }
+
+        viewModel.urlParseErrorLiveData.observeForever {
+            urlParseError = it
+        }
+
+        viewModel.fetchBreadcrumbs()
+        assertNotNull(breadcrumbs)
+        assertNull(networkError)
+        assertNull(urlParseError)
+
+        assertEquals(3, breadcrumbs?.size)
+
+        val home = breadcrumbs.require(0) as Breadcrumb.Home
+        assertNull(home.initialPosition)
+
+        val players = breadcrumbs.require(1) as Breadcrumb.Players
+        assertEquals(CHICAGO, players.region)
+
+        val player = breadcrumbs.require(2) as Breadcrumb.Player
+        assertEquals(CHICAGO, player.region)
+        assertEquals(PLAYER_GINGER_ID, player.playerId)
+    }
+
+    @Test
     fun testBreadcrumbsWithNorcalAndSfat() {
         viewModel.initialize(NORCAL, PLAYER_SFAT)
 
@@ -158,11 +204,17 @@ class DeepLinkViewModelTest : BaseTest() {
     }
 
     private class RegionsRepositoryOverride(
-            internal var regionsBundle: RegionsBundle = REGIONS_BUNDLE
+            internal var regionsBundle: RegionsBundle? = REGIONS_BUNDLE
     ) : RegionsRepository {
 
         override fun getRegions(): Single<RegionsBundle> {
-            return Single.just(regionsBundle)
+            val bundle = regionsBundle
+
+            return if (bundle == null) {
+                Single.error(NullPointerException())
+            } else {
+                Single.just(regionsBundle)
+            }
         }
 
     }
