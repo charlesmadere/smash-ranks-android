@@ -5,7 +5,6 @@ import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.IdentityConstraintLayout
 import com.garpr.android.features.common.views.PaletteSimpleDraweeView
 import com.garpr.android.features.common.views.TintedImageView
-import com.garpr.android.features.deepLink.DeepLinkActivity
 import com.garpr.android.features.deepLink.DeepLinkViewModel
 import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesViewModel
 import com.garpr.android.features.favoritePlayers.FavoritePlayerItemView
@@ -74,7 +73,6 @@ interface AppComponent {
     fun inject(view: TintedImageView)
 
     // features/deepLink
-    fun inject(activity: DeepLinkActivity)
     val deepLinkViewModel: DeepLinkViewModel
 
     // features/favoritePlayers

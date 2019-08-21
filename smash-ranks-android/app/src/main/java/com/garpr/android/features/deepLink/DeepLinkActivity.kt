@@ -16,15 +16,10 @@ import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsActivity
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsActivity
-import com.garpr.android.repositories.RegionRepository
-import javax.inject.Inject
 
 class DeepLinkActivity : BaseActivity() {
 
     private val viewModel by viewModel(this) { appComponent.deepLinkViewModel }
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
 
     companion object {
         private const val TAG = "DeepLinkActivity"
@@ -59,7 +54,7 @@ class DeepLinkActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
-        viewModel.initialize(regionRepository.getRegion(this), intent?.data?.toString())
+        viewModel.initialize(intent?.dataString)
         setContentView(R.layout.activity_deep_link)
         initListeners()
         fetchBreadcrumbs()

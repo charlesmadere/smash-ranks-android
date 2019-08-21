@@ -8,16 +8,18 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.features.home.HomeTab
 import com.garpr.android.misc.Timber
+import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionsRepository
 import okhttp3.internal.toImmutableList
 import javax.inject.Inject
 
 class DeepLinkViewModel @Inject constructor(
+        private val regionRepository: RegionRepository,
         private val regionsRepository: RegionsRepository,
         private val timber: Timber
 ) : BaseViewModel() {
 
-    private var region: Region? = null
+    private var initialized: Boolean = false
     private var url: String? = null
 
     private val _breadcrumbsLiveData = MutableLiveData<List<Breadcrumb>>()
@@ -124,7 +126,7 @@ class DeepLinkViewModel @Inject constructor(
 
     @WorkerThread
     private fun createBreadcrumbs(regions: List<Region>): List<Breadcrumb> {
-        val currentRegion = this.region ?: throw IllegalStateException("initialize() hasn't been called!")
+        val currentRegion = regionRepository.getRegion()
 
         val url = this.url
         if (url.isNullOrBlank()) {
@@ -181,7 +183,7 @@ class DeepLinkViewModel @Inject constructor(
     }
 
     fun fetchBreadcrumbs() {
-        if (region == null) {
+        if (!initialized) {
             throw IllegalStateException("initialize() hasn't been called!")
         }
 
@@ -208,9 +210,9 @@ class DeepLinkViewModel @Inject constructor(
                 }))
     }
 
-    fun initialize(region: Region, url: String?) {
-        this.region = region
+    fun initialize(url: String?) {
         this.url = url?.trim()
+        initialized = true
     }
 
     sealed class Breadcrumb {
