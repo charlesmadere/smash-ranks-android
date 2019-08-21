@@ -130,7 +130,7 @@ class DeepLinkViewModel @Inject constructor(
 
         val url = this.url
         if (url.isNullOrBlank()) {
-            throw IllegalStateException("url can't be null or blank")
+            return emptyList()
         }
 
         if (regions.isEmpty()) {
