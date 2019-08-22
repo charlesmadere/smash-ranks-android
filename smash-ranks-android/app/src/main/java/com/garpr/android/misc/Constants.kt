@@ -6,7 +6,7 @@ import com.garpr.android.data.models.Region
 object Constants {
 
     // Defaults
-    val DefaultRegion = Region(displayName = "Norcal", id = "norcal", endpoint = Endpoint.GAR_PR)
+    val DEFAULT_REGION = Region(displayName = "Norcal", id = "norcal", endpoint = Endpoint.GAR_PR)
 
     // GAR PR and Not GAR PR Paths
     const val GAR_PR_API_PORT = 3001

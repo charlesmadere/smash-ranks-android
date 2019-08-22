@@ -1,5 +1,6 @@
 package com.garpr.android
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.Configuration
 import com.garpr.android.dagger.AppComponent
@@ -17,7 +18,7 @@ import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
 import javax.inject.Inject
 
-class App : BaseApp(), AppComponentHandle, Configuration.Provider,
+class App : Application(), AppComponentHandle, Configuration.Provider,
         NightModeRepository.OnNightModeChangeListener {
 
     private var _appComponent: AppComponent? = null
@@ -62,8 +63,7 @@ class App : BaseApp(), AppComponentHandle, Configuration.Provider,
 
     private fun initializeAppComponent() {
         val appComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this, Constants.DefaultRegion,
-                        Constants.SMASH_ROSTER_BASE_PATH))
+                .appModule(AppModule(this, Constants.DEFAULT_REGION, Constants.SMASH_ROSTER_BASE_PATH))
                 .configModule(ConfigModule())
                 .build()
 
