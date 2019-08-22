@@ -48,7 +48,7 @@ class ConfigModule {
 
     @Provides
     @Singleton
-    fun providesThreadUtils2(
+    fun providesThreadUtils(
             deviceUtils: DeviceUtils
     ): ThreadUtils {
         return ThreadUtilsImpl(deviceUtils)

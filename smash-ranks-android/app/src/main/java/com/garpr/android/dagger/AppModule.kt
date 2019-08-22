@@ -8,8 +8,6 @@ import com.garpr.android.data.converters.MatchConverter
 import com.garpr.android.data.converters.RankedPlayerConverter
 import com.garpr.android.data.converters.SimpleDateConverter
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.deepLink.DeepLinkUtils
-import com.garpr.android.features.deepLink.DeepLinkUtilsImpl
 import com.garpr.android.features.home.HomeToolbarManager
 import com.garpr.android.features.home.HomeToolbarManagerImpl
 import com.garpr.android.features.notifications.NotificationsManager
@@ -122,15 +120,6 @@ class AppModule(
             timber: Timber
     ): AppUpgradeManager {
         return AppUpgradeManagerImpl(favoritePlayersRepository, generalPreferenceStore, timber)
-    }
-
-    @Provides
-    @Singleton
-    fun providesDeepLinkUtils(
-            regionRepository: RegionRepository,
-            timber: Timber
-    ): DeepLinkUtils {
-        return DeepLinkUtilsImpl(regionRepository, timber)
     }
 
     @Named(FAVORITE_PLAYERS_KEY_VALUE_STORE)

@@ -12,7 +12,6 @@ import com.garpr.android.data.models.RankingsBundleTest
 import com.garpr.android.data.models.RegionsBundleTest
 import com.garpr.android.data.models.SimpleDateTest
 import com.garpr.android.data.models.SmashCharacterTest
-import com.garpr.android.features.deepLink.DeepLinkUtilsTest
 import com.garpr.android.features.deepLink.DeepLinkViewModelTest
 import com.garpr.android.features.home.HomeActivityTest
 import com.garpr.android.features.home.HomeToolbarManagerTest
@@ -64,7 +63,6 @@ interface TestAppComponent {
     fun inject(test: SmashCharacterTest)
 
     // features/deepLink
-    fun inject(test: DeepLinkUtilsTest)
     fun inject(test: DeepLinkViewModelTest)
 
     // features/home
