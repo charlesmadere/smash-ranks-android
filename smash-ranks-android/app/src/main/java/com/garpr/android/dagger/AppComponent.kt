@@ -43,7 +43,7 @@ import com.garpr.android.features.settings.TestNotificationsView
 import com.garpr.android.features.settings.ThemePreferenceView
 import com.garpr.android.features.splash.SplashActivity
 import com.garpr.android.features.splash.SplashCardView
-import com.garpr.android.features.splash.SplashViewModel
+import com.garpr.android.features.splash.SplashScreenViewModel
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournament.TournamentInfoView
 import com.garpr.android.features.tournament.TournamentMatchDialogFragment
@@ -133,7 +133,7 @@ interface AppComponent {
     // features/splash
     fun inject(activity: SplashActivity)
     fun inject(view: SplashCardView)
-    val splashViewModel: SplashViewModel
+    val splashScreenViewModel: SplashScreenViewModel
 
     // features/tournament
     fun inject(activity: TournamentActivity)

@@ -11,7 +11,7 @@ import com.garpr.android.features.home.HomeActivity
 
 class SplashActivity : BaseActivity(), SplashCardView.Listener {
 
-    private val viewModel by viewModel(this) { appComponent.splashViewModel }
+    private val viewModel by viewModel(this) { appComponent.splashScreenViewModel }
 
 
     companion object {

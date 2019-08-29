@@ -20,8 +20,6 @@ import com.garpr.android.features.rankings.PreviousRankUtils
 import com.garpr.android.features.rankings.PreviousRankUtilsImpl
 import com.garpr.android.features.splash.AppUpgradeManager
 import com.garpr.android.features.splash.AppUpgradeManagerImpl
-import com.garpr.android.features.splash.SplashScreenManager
-import com.garpr.android.features.splash.SplashScreenManagerImpl
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Schedulers
@@ -513,14 +511,6 @@ class AppModule(
     ): SmashRosterSyncManager {
         return SmashRosterSyncManagerImpl(schedulers, serverApi, smashRosterPreferenceStore,
                 smashRosterStorage, timber, workManagerWrapper)
-    }
-
-    @Provides
-    @Singleton
-    fun providesSplashScreenManager(
-            generalPreferenceStore: GeneralPreferenceStore
-    ): SplashScreenManager {
-        return SplashScreenManagerImpl(generalPreferenceStore)
     }
 
     @Provides

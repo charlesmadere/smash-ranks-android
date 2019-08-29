@@ -20,7 +20,7 @@ import com.garpr.android.features.player.PlayerProfileManagerTest
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelperTest
 import com.garpr.android.features.rankings.PreviousRankUtilsTest
 import com.garpr.android.features.splash.AppUpgradeManagerTest
-import com.garpr.android.features.splash.SplashScreenManagerTest
+import com.garpr.android.features.splash.SplashScreenViewModelTest
 import com.garpr.android.features.tournaments.TournamentsActivityTest
 import com.garpr.android.misc.TimberTest
 import com.garpr.android.preferences.KeyValueStoreProviderTest
@@ -76,7 +76,7 @@ interface TestAppComponent {
 
     // features/splash
     fun inject(test: AppUpgradeManagerTest)
-    fun inject(test: SplashScreenManagerTest)
+    fun inject(test: SplashScreenViewModelTest)
 
     // features/tournaments
     fun inject(test: TournamentsActivityTest)

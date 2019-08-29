@@ -4,7 +4,7 @@ import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.preferences.GeneralPreferenceStore
 import javax.inject.Inject
 
-class SplashViewModel @Inject constructor(
+class SplashScreenViewModel @Inject constructor(
         private val generalPreferenceStore: GeneralPreferenceStore
 )  : BaseViewModel() {
 
