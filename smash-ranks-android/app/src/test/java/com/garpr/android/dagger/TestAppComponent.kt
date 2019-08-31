@@ -9,7 +9,6 @@ import com.garpr.android.data.converters.SimpleDateConverterTest
 import com.garpr.android.data.models.AbsTournamentTest
 import com.garpr.android.data.models.AvatarTest
 import com.garpr.android.data.models.RankingsBundleTest
-import com.garpr.android.data.models.RegionsBundleTest
 import com.garpr.android.data.models.SimpleDateTest
 import com.garpr.android.data.models.SmashCharacterTest
 import com.garpr.android.features.deepLink.DeepLinkViewModelTest
@@ -17,6 +16,7 @@ import com.garpr.android.features.home.HomeActivityTest
 import com.garpr.android.features.home.HomeToolbarManagerTest
 import com.garpr.android.features.player.PlayerActivityTest
 import com.garpr.android.features.player.PlayerProfileManagerTest
+import com.garpr.android.features.player.PlayerViewModelTest
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelperTest
 import com.garpr.android.features.rankings.PreviousRankUtilsTest
 import com.garpr.android.features.splash.AppUpgradeManagerTest
@@ -58,7 +58,6 @@ interface TestAppComponent {
     fun inject(test: AbsTournamentTest)
     fun inject(test: AvatarTest)
     fun inject(test: RankingsBundleTest)
-    fun inject(test: RegionsBundleTest)
     fun inject(test: SimpleDateTest)
     fun inject(test: SmashCharacterTest)
 
@@ -72,6 +71,7 @@ interface TestAppComponent {
     // features/player
     fun inject(test: PlayerActivityTest)
     fun inject(test: PlayerProfileManagerTest)
+    fun inject(test: PlayerViewModelTest)
     fun inject(test: SmashRosterAvatarUrlHelperTest)
 
     // features/splash
