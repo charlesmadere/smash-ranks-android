@@ -165,7 +165,7 @@ class SetIdentityViewModel @Inject constructor(
     }
 
     fun saveSelectedIdentity(region: Region) {
-        val identity = selectedIdentity ?: throw IllegalStateException("selectedIdentity can't be null")
+        val identity = requireNotNull(selectedIdentity)
         identityRepository.setIdentity(identity, region)
     }
 

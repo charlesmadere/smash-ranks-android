@@ -133,9 +133,7 @@ class DeepLinkViewModel @Inject constructor(
             return emptyList()
         }
 
-        if (regions.isEmpty()) {
-            throw IllegalArgumentException("regions can't be empty")
-        }
+        require(regions.isNotEmpty()) { "regions can't be empty" }
 
         val endpoint = Endpoint.values()
                 .firstOrNull { url.startsWith(it.basePath) } ?: return emptyList()
@@ -183,9 +181,7 @@ class DeepLinkViewModel @Inject constructor(
     }
 
     fun fetchBreadcrumbs() {
-        if (!initialized) {
-            throw IllegalStateException("initialize() hasn't been called!")
-        }
+        check(initialized) { "initialize() hasn't been called!" }
 
         if (url.isNullOrBlank()) {
             _urlParseErrorLiveData.postValue(Unit)

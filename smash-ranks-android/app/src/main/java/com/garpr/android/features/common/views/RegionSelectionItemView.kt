@@ -18,7 +18,7 @@ class RegionSelectionItemView @JvmOverloads constructor(
     private var _region: Region? = null
 
     val region: Region
-        get() = _region ?: throw IllegalStateException("_region is null")
+        get() = requireNotNull(_region)
 
     interface OnClickListener {
         fun onClick(v: RegionSelectionItemView)

@@ -54,8 +54,7 @@ class NightModeRepositoryImpl(
 
     override var nightMode: NightMode
         get() {
-            return generalPreferenceStore.nightMode.get() ?: throw IllegalStateException(
-                    "nightMode preference is null!")
+            return requireNotNull(generalPreferenceStore.nightMode.get())
         }
         set(value) {
             timber.d(TAG, "Theme was \"${generalPreferenceStore.nightMode.get()}\"," +

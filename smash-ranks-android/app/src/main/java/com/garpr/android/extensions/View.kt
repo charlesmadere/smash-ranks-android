@@ -38,7 +38,7 @@ fun View.requireFragmentActivity(): FragmentActivity {
     return context.requireFragmentActivity()
 }
 
-fun <T: View> View.requireViewByIdCompat(@IdRes id: Int): T {
+fun <T : View> View.requireViewByIdCompat(@IdRes id: Int): T {
     return ViewCompat.requireViewById(this, id)
 }
 

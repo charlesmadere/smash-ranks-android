@@ -67,9 +67,7 @@ class TournamentViewModel @Inject constructor(
         val region = this.region
         val tournamentId = this.tournamentId
 
-        if (region == null || tournamentId == null) {
-            throw IllegalStateException("initialize() hasn't been called!")
-        }
+        check(region != null && tournamentId != null) { "initialize() hasn't been called!" }
 
         disposables.add(tournamentsRepository.getTournament(region, tournamentId)
                 .subscribe({

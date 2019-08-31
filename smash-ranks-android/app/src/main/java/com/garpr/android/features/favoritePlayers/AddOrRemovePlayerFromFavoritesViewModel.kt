@@ -28,7 +28,7 @@ class AddOrRemovePlayerFromFavoritesViewModel @Inject constructor(
     }
 
     fun addToFavorites() {
-        val player = this.player ?: throw IllegalStateException("initialize() was not called")
+        val player = requireNotNull(this.player) { "initialize() was not called" }
         favoritePlayersRepository.addPlayer(player, player.region)
     }
 
@@ -59,7 +59,7 @@ class AddOrRemovePlayerFromFavoritesViewModel @Inject constructor(
     }
 
     fun removeFromFavorites() {
-        val player = this.player ?: throw IllegalStateException("initialize() was not called")
+        val player = requireNotNull(this.player) { "initialize() was not called" }
         favoritePlayersRepository.removePlayer(player)
     }
 

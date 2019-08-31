@@ -50,7 +50,7 @@ class App : Application(), AppComponentHandle, Configuration.Provider,
     }
 
     override val appComponent: AppComponent
-        get() = _appComponent ?: throw IllegalStateException("_appComponent is null")
+        get() = requireNotNull(_appComponent)
 
     private fun applyNightMode() {
         AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)

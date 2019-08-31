@@ -60,8 +60,8 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun addOrRemoveFromFavorites() {
-        val player = this.player ?: throw IllegalStateException("player can't be null")
-        val region = this.region ?: throw IllegalStateException("initialize() hasn't been called!")
+        val player = requireNotNull(this.player)
+        val region = requireNotNull(this.region) { "initialize() hasn't been called!" }
 
         if (player in favoritePlayersRepository) {
             favoritePlayersRepository.removePlayer(player)
@@ -106,9 +106,7 @@ class PlayerViewModel @Inject constructor(
         val region = this.region
         val playerId = this.playerId
 
-        if (region == null || playerId == null) {
-            throw IllegalStateException("initialize() hasn't been called!")
-        }
+        check(region != null && playerId != null) { "initialize() hasn't been called!" }
 
         disposables.add(playerMatchesRepository.getPlayerAndMatches(region, playerId)
                 .subscribe({ bundle ->

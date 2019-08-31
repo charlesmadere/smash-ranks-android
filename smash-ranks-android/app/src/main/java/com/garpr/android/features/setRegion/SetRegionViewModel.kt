@@ -127,8 +127,8 @@ class SetRegionViewModel @Inject constructor(
     fun saveSelectedRegion() {
         val region = selectedRegion
 
-        if (region == regionRepository.getRegion()) {
-            throw IllegalStateException("region is the same as the user's current region!")
+        check(region != regionRepository.getRegion()) {
+            "region is the same as the user's current region!"
         }
 
         regionRepository.setRegion(region)

@@ -52,8 +52,7 @@ class RegionRepositoryImpl(
             return getRegion(context.baseContext)
         }
 
-        return generalPreferenceStore.currentRegion.get() ?: throw IllegalStateException(
-                "currentRegion preference is null!")
+        return requireNotNull(generalPreferenceStore.currentRegion.get())
     }
 
     private fun notifyListeners() {

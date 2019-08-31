@@ -23,7 +23,7 @@ inline fun <reified T : Parcelable> createParcel(
         }
 
 fun Parcel.readAbsPlayer(): AbsPlayer {
-    return readOptionalAbsPlayer() ?: throw NullPointerException()
+    return requireNotNull(readOptionalAbsPlayer())
 }
 
 fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
@@ -77,7 +77,7 @@ fun Parcel.writeAbsPlayerList(list: List<AbsPlayer>?, flags: Int) {
 }
 
 fun Parcel.readAbsRegion(): AbsRegion {
-    return readOptionalAbsRegion() ?: throw NullPointerException()
+    return requireNotNull(readOptionalAbsRegion())
 }
 
 fun Parcel.readOptionalAbsRegion(): AbsRegion? {
@@ -129,7 +129,7 @@ fun Parcel.writeAbsRegionList(list: List<AbsRegion>?, flags: Int) {
 }
 
 fun Parcel.readAbsTournament(): AbsTournament {
-    return readOptionalAbsTournament() ?: throw NullPointerException()
+    return requireNotNull(readOptionalAbsTournament())
 }
 
 fun Parcel.readOptionalAbsTournament(): AbsTournament? {
@@ -181,7 +181,7 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
 }
 
 fun Parcel.requireBoolean(): Boolean {
-    return readBoolean() ?: throw NullPointerException()
+    return requireNotNull(readBoolean())
 }
 
 fun Parcel.readBoolean(): Boolean? {
@@ -201,11 +201,8 @@ fun Parcel.writeInteger(integer: Int?) {
 }
 
 fun <T : Parcelable> Parcel.requireParcelable(loader: ClassLoader?): T {
-    if (loader == null) {
-        throw NullPointerException("ClassLoader is null")
-    }
-
-    return readParcelable(loader) ?: throw NullPointerException()
+    checkNotNull(loader) { "loader is null" }
+    return requireNotNull(readParcelable(loader))
 }
 
 fun Parcel.readRatingsMap(): Map<String, Rating>? {
@@ -235,7 +232,7 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
 }
 
 fun Parcel.requireString(): String {
-    return readString() ?: throw NullPointerException()
+    return requireNotNull(readString())
 }
 
 fun Parcel.readStringMap(): Map<String, String>? {

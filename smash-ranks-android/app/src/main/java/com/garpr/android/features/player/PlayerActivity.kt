@@ -146,7 +146,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
     }
 
     override fun onShareClick(v: PlayerProfileItemView) {
-        val player = viewModel.player ?: throw IllegalStateException("player is null")
+        val player = requireNotNull(viewModel.player)
         shareUtils.sharePlayer(this, player)
     }
 
@@ -232,7 +232,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
         }
 
         private fun bindPlayerViewHolder(holder: PlayerViewHolder) {
-            val player = this.player ?: throw IllegalStateException("player is null")
+            val player = requireNotNull(this.player)
             holder.playerProfileItemView.setContent(isFavorited, player, smashCompetitor)
         }
 

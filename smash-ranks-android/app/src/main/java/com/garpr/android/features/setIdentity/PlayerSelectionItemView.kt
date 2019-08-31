@@ -16,7 +16,7 @@ class PlayerSelectionItemView @JvmOverloads constructor(
     private var _player: AbsPlayer? = null
 
     val player: AbsPlayer
-        get() = _player ?: throw IllegalStateException("_player is null")
+        get() = requireNotNull(_player)
 
     var onClickListener: OnClickListener? = null
 
