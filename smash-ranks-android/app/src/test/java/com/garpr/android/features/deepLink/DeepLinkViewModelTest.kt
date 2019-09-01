@@ -541,7 +541,7 @@ class DeepLinkViewModelTest : BaseTest() {
             return if (bundle == null) {
                 Single.error(NullPointerException("regionsBundle is null"))
             } else {
-                Single.just(regionsBundle)
+                Single.just(bundle)
             }
         }
 
