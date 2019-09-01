@@ -2,13 +2,18 @@ package com.garpr.android.features.player
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.LiteTournament
+import com.garpr.android.data.models.Match
+import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.MatchesBundle
 import com.garpr.android.data.models.PlayerMatchesBundle
 import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.FavoritePlayersRepository
@@ -24,6 +29,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.util.Date
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
@@ -58,6 +64,39 @@ class PlayerViewModelTest : BaseTest() {
                 name = "Charlezard"
         )
 
+        private val ABS_PLAYER_JOEJOE: AbsPlayer = LitePlayer(
+                id = "588999c5d2994e713ad63c7b",
+                name = "joejoe"
+        )
+
+        private val ABS_PLAYER_IMYT: AbsPlayer = LitePlayer(
+                id = "5877eb55d2994e15c7dea98b",
+                name = "Imyt"
+        )
+
+        private val ABS_PLAYER_PIMP_JONG_ILLEST: AbsPlayer = LitePlayer(
+                id = "588999c5d2994e713ad63c6f",
+                name = "Pimp Jong Illest"
+        )
+
+        private val TOURNAMENT_MADE_112: AbsTournament = LiteTournament(
+                date = SimpleDate(Date(1567148400000)),
+                id = "5d6a1784d2994e1a9c3dd665",
+                name = "Melee @ the Made #112"
+        )
+
+        private val TOURNAMENT_PEOPLES_TUESDAYS_14: AbsTournament = LiteTournament(
+                date = SimpleDate(Date(1565679600000)),
+                id = "5d53bd4ed2994e22acc95a92",
+                name = "The People's Tuesdays #14"
+        )
+
+        private val TOURNAMENT_PEOPLES_TUESDAYS_16: AbsTournament = LiteTournament(
+                date = SimpleDate(Date(1566889200000)),
+                id = "5d661e33d2994e1a9c3dd64f",
+                name = "The People's Tuesdays #16"
+        )
+
         private val FULL_PLAYER_CHARLEZARD = FullPlayer(
                 id = ABS_PLAYER_CHARLEZARD.id,
                 name = ABS_PLAYER_CHARLEZARD.name,
@@ -84,10 +123,44 @@ class PlayerViewModelTest : BaseTest() {
                 fullPlayer = FULL_PLAYER_CHARLEZARD,
                 matchesBundle = MatchesBundle(
                         player = ABS_PLAYER_CHARLEZARD,
-                        wins = 2,
-                        losses = 3,
+                        wins = 1,
+                        losses = 4,
                         matches = listOf(
-
+                                Match(
+                                        result = MatchResult.LOSE,
+                                        opponent = ABS_PLAYER_IMYT,
+                                        tournament = TOURNAMENT_MADE_112
+                                ),
+                                Match(
+                                        result = MatchResult.WIN,
+                                        opponent = ABS_PLAYER_PIMP_JONG_ILLEST,
+                                        tournament = TOURNAMENT_MADE_112
+                                ),
+                                Match(
+                                        result = MatchResult.LOSE,
+                                        opponent = ABS_PLAYER_JOEJOE,
+                                        tournament = TOURNAMENT_MADE_112
+                                ),
+                                Match(
+                                        result = MatchResult.EXCLUDED,
+                                        opponent = ABS_PLAYER_IMYT,
+                                        tournament = TOURNAMENT_PEOPLES_TUESDAYS_16
+                                ),
+                                Match(
+                                        result = MatchResult.EXCLUDED,
+                                        opponent = ABS_PLAYER_PIMP_JONG_ILLEST,
+                                        tournament = TOURNAMENT_PEOPLES_TUESDAYS_16
+                                ),
+                                Match(
+                                        result = MatchResult.LOSE,
+                                        opponent = ABS_PLAYER_JOEJOE,
+                                        tournament = TOURNAMENT_PEOPLES_TUESDAYS_14
+                                ),
+                                Match(
+                                        result = MatchResult.LOSE,
+                                        opponent = ABS_PLAYER_IMYT,
+                                        tournament = TOURNAMENT_PEOPLES_TUESDAYS_14
+                                )
                         )
                 )
         )
