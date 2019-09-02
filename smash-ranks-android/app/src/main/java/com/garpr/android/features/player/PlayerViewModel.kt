@@ -230,7 +230,6 @@ class PlayerViewModel @Inject constructor(
         val results = mutableListOf<ListItem>()
         val trimmedQuery = query.trim()
         var addedNoMatches = false
-        var addedPlayer = false
 
         for (i in list.indices) {
             val objectI = list[i]
@@ -238,11 +237,6 @@ class PlayerViewModel @Inject constructor(
             if (objectI is ListItem.NoMatches) {
                 if (!addedNoMatches) {
                     addedNoMatches = true
-                    results.add(objectI)
-                }
-            } else if (objectI is ListItem.Player) {
-                if (!addedPlayer) {
-                    addedPlayer = true
                     results.add(objectI)
                 }
             } else if (objectI is ListItem.Tournament) {
