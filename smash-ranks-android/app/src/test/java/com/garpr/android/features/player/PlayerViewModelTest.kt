@@ -24,7 +24,6 @@ import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.Single
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -205,12 +204,7 @@ class PlayerViewModelTest : BaseTest() {
 
     @Test
     fun testFetchPlayerWithoutInitializingThrowsException() {
-        var state: PlayerViewModel.State? = null
         var throwable: Throwable? = null
-
-        viewModel.stateLiveData.observeForever {
-            state = it
-        }
 
         try {
             viewModel.fetchPlayer()
@@ -218,7 +212,6 @@ class PlayerViewModelTest : BaseTest() {
             throwable = t
         }
 
-        assertTrue(state?.list.isNullOrEmpty())
         assertNotNull(throwable)
     }
 
