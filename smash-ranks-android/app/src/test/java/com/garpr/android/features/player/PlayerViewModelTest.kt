@@ -223,21 +223,51 @@ class PlayerViewModelTest : BaseTest() {
     }
 
     @Test
+    fun testSearch() {
+        viewModel.initialize(NORCAL, CHARLEZARD_ID)
+
+        var state: PlayerViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.fetchPlayer()
+        viewModel.search("imyt")
+
+        assertNotNull(state?.searchResults)
+    }
+
+    @Test
     fun testSearchWithEmptyString() {
         viewModel.initialize(NORCAL, CHARLEZARD_ID)
 
-        viewModel.stateLiveData.observeForever {
+        var state: PlayerViewModel.State? = null
 
+        viewModel.stateLiveData.observeForever {
+            state = it
         }
 
+        viewModel.fetchPlayer()
         viewModel.search("")
+
+        assertNull(state?.searchResults)
     }
 
     @Test
     fun testSearchWithNullString() {
         viewModel.initialize(NORCAL, CHARLEZARD_ID)
 
+        var state: PlayerViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.fetchPlayer()
         viewModel.search(null)
+
+        assertNull(state?.searchResults)
     }
 
     private class PlayerMatchesRepositoryOverride(
