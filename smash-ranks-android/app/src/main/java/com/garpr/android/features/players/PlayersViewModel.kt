@@ -71,7 +71,7 @@ class PlayersViewModel @Inject constructor(
     @WorkerThread
     private fun search(query: String?, players: List<AbsPlayer>?): List<AbsPlayer>? {
         if (query.isNullOrBlank() || players.isNullOrEmpty()) {
-            return players
+            return null
         }
 
         val trimmedQuery = query.trim()

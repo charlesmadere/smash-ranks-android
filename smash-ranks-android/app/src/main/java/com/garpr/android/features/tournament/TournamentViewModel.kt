@@ -129,7 +129,7 @@ class TournamentViewModel @Inject constructor(
     @WorkerThread
     private fun searchMatches(query: String?, list: List<MatchListItem>?): List<MatchListItem>? {
         if (query.isNullOrBlank() || list.isNullOrEmpty()) {
-            return list
+            return null
         }
 
         val trimmedQuery = query.trim()
@@ -144,7 +144,7 @@ class TournamentViewModel @Inject constructor(
     @WorkerThread
     private fun searchPlayers(query: String?, list: List<PlayerListItem>?): List<PlayerListItem>? {
         if (query.isNullOrBlank() || list.isNullOrEmpty()) {
-            return list
+            return null
         }
 
         val trimmedQuery = query.trim()

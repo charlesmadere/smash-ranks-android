@@ -224,7 +224,7 @@ class PlayerViewModel @Inject constructor(
     @WorkerThread
     private fun search(query: String?, list: List<ListItem>?): List<ListItem>? {
         if (query.isNullOrBlank() || list.isNullOrEmpty()) {
-            return list
+            return null
         }
 
         val results = mutableListOf<ListItem>()

@@ -67,7 +67,7 @@ class RankingsViewModel @Inject constructor(
     @WorkerThread
     private fun search(query: String?, rankings: List<RankedPlayer>?): List<RankedPlayer>? {
         if (query.isNullOrBlank() || rankings.isNullOrEmpty()) {
-            return rankings
+            return null
         }
 
         val trimmedQuery = query.trim()
