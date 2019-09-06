@@ -2,17 +2,17 @@
 
 buildscript {
 
-    ext.appcompat_version = '1.0.2'
+    ext.appcompat_version = '1.1.0'
     ext.cardview_version = '1.0.0'
     ext.constraintlayout_version = '1.1.3'
     ext.crashlytics_version = '2.10.1'
     ext.dagger_version = '2.24'
     ext.fresco_version = '2.0.0'
     ext.kotlin_version = '1.3.50'
-    ext.lifecycle_version = '2.0.0'
+    ext.lifecycle_version = '2.1.0'
     ext.material_design_version = '1.0.0'
     ext.moshi_version = '1.8.0'
-    ext.okhttp_version = '4.1.0'
+    ext.okhttp_version = '4.1.1'
     ext.palette_version = '1.0.0'
     ext.recyclerview_version = '1.0.0'
     ext.retrofit_version = '2.6.1'
@@ -36,6 +36,7 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+
 }
 
 allprojects {
