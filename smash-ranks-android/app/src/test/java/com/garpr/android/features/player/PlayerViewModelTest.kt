@@ -195,7 +195,7 @@ class PlayerViewModelTest : BaseTest() {
         }
 
         viewModel.fetchPlayer()
-        assertTrue(state?.isFavorited == false)
+        assertFalse(state?.isFavorited == true)
         assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
 
         viewModel.addOrRemoveFromFavorites()
@@ -203,7 +203,7 @@ class PlayerViewModelTest : BaseTest() {
         assertTrue(CHARLEZARD_ID in favoritePlayersRepository)
 
         viewModel.addOrRemoveFromFavorites()
-        assertTrue(state?.isFavorited == false)
+        assertFalse(state?.isFavorited == true)
         assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
 
         favoritePlayersRepository.addPlayer(ABS_PLAYER_CHARLEZARD, NORCAL)
@@ -211,7 +211,7 @@ class PlayerViewModelTest : BaseTest() {
         assertTrue(CHARLEZARD_ID in favoritePlayersRepository)
 
         favoritePlayersRepository.removePlayer(ABS_PLAYER_CHARLEZARD)
-        assertTrue(state?.isFavorited == false)
+        assertFalse(state?.isFavorited == true)
         assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
     }
 
@@ -234,6 +234,29 @@ class PlayerViewModelTest : BaseTest() {
 
         assertNotNull(state)
         assertNull(throwable)
+    }
+
+    @Test
+    fun testFetchPlayerWithNetworkError() {
+        playerMatchesRepository.playerMatchesBundle = null
+        viewModel.initialize(NORCAL, CHARLEZARD_ID)
+
+        var state: PlayerViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.fetchPlayer()
+
+        assertNotNull(state)
+        assertTrue(state?.hasError == true)
+
+        playerMatchesRepository.playerMatchesBundle = PLAYER_MATCHES_BUNDLE
+        viewModel.fetchPlayer()
+
+        assertNotNull(state)
+        assertFalse(state?.hasError == true)
     }
 
     @Test
