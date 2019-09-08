@@ -124,6 +124,7 @@ class SetRegionViewModel @Inject constructor(
                 }))
     }
 
+    @Throws(IllegalStateException::class)
     fun saveSelectedRegion() {
         val region = selectedRegion
 

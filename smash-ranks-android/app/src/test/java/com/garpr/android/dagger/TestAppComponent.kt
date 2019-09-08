@@ -19,6 +19,7 @@ import com.garpr.android.features.player.PlayerProfileManagerTest
 import com.garpr.android.features.player.PlayerViewModelTest
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelperTest
 import com.garpr.android.features.rankings.PreviousRankUtilsTest
+import com.garpr.android.features.setRegion.SetRegionViewModelTest
 import com.garpr.android.features.splash.AppUpgradeManagerTest
 import com.garpr.android.features.splash.SplashScreenViewModelTest
 import com.garpr.android.features.tournaments.TournamentsActivityTest
@@ -73,6 +74,9 @@ interface TestAppComponent {
     fun inject(test: PlayerProfileManagerTest)
     fun inject(test: PlayerViewModelTest)
     fun inject(test: SmashRosterAvatarUrlHelperTest)
+
+    // features/setRegion
+    fun inject(test: SetRegionViewModelTest)
 
     // features/splash
     fun inject(test: AppUpgradeManagerTest)
