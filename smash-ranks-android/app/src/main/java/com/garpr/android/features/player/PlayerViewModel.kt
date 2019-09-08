@@ -60,8 +60,8 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun addOrRemoveFromFavorites() {
-        val player = requireNotNull(this.player)
         val region = requireNotNull(this.region) { "initialize() hasn't been called!" }
+        val player = requireNotNull(this.player) { "player hasn't been fetched!" }
 
         if (player in favoritePlayersRepository) {
             favoritePlayersRepository.removePlayer(player)
