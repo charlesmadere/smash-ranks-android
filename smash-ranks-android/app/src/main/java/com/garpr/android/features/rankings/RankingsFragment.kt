@@ -33,7 +33,6 @@ class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionCh
     @Inject
     protected lateinit var regionRepository: RegionRepository
 
-
     companion object {
         fun create() = RankingsFragment()
     }
