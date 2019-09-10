@@ -1,4 +1,4 @@
-package com.garpr.android.features.splash
+package com.garpr.android.managers
 
 import com.garpr.android.BuildConfig
 import com.garpr.android.misc.Timber

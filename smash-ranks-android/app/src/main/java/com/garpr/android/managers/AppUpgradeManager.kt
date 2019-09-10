@@ -1,4 +1,4 @@
-package com.garpr.android.features.splash
+package com.garpr.android.managers
 
 interface AppUpgradeManager {
 

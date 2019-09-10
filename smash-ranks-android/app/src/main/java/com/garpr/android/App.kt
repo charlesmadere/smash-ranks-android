@@ -8,7 +8,7 @@ import com.garpr.android.dagger.AppComponentHandle
 import com.garpr.android.dagger.AppModule
 import com.garpr.android.dagger.ConfigModule
 import com.garpr.android.dagger.DaggerAppComponent
-import com.garpr.android.features.splash.AppUpgradeManager
+import com.garpr.android.managers.AppUpgradeManager
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Timber

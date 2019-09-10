@@ -20,9 +20,9 @@ import com.garpr.android.features.player.PlayerViewModelTest
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelperTest
 import com.garpr.android.features.rankings.PreviousRankUtilsTest
 import com.garpr.android.features.setRegion.SetRegionViewModelTest
-import com.garpr.android.features.splash.AppUpgradeManagerTest
 import com.garpr.android.features.splash.SplashScreenViewModelTest
 import com.garpr.android.features.tournaments.TournamentsActivityTest
+import com.garpr.android.managers.AppUpgradeManagerTest
 import com.garpr.android.misc.TimberTest
 import com.garpr.android.preferences.KeyValueStoreProviderTest
 import com.garpr.android.preferences.KeyValueStoreTest

@@ -18,8 +18,8 @@ import com.garpr.android.features.player.SmashRosterAvatarUrlHelper
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelperImpl
 import com.garpr.android.features.rankings.PreviousRankUtils
 import com.garpr.android.features.rankings.PreviousRankUtilsImpl
-import com.garpr.android.features.splash.AppUpgradeManager
-import com.garpr.android.features.splash.AppUpgradeManagerImpl
+import com.garpr.android.managers.AppUpgradeManager
+import com.garpr.android.managers.AppUpgradeManagerImpl
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Schedulers
