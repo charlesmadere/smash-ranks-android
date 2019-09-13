@@ -8,8 +8,6 @@ import com.garpr.android.data.converters.MatchConverter
 import com.garpr.android.data.converters.RankedPlayerConverter
 import com.garpr.android.data.converters.SimpleDateConverter
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.home.HomeToolbarManager
-import com.garpr.android.features.home.HomeToolbarManagerImpl
 import com.garpr.android.features.notifications.NotificationsManager
 import com.garpr.android.features.notifications.NotificationsManagerImpl
 import com.garpr.android.features.player.PlayerProfileManager
@@ -191,14 +189,6 @@ class AppModule(
             serverApi: ServerApi
     ): HeadToHeadRepository {
         return HeadToHeadRepositoryImpl(schedulers, serverApi)
-    }
-
-    @Provides
-    @Singleton
-    fun providesHomeToolbarManager(
-            identityRepository: IdentityRepository
-    ): HomeToolbarManager {
-        return HomeToolbarManagerImpl(identityRepository)
     }
 
     @Provides

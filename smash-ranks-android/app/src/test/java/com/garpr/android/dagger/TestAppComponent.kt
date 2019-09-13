@@ -13,7 +13,6 @@ import com.garpr.android.data.models.SimpleDateTest
 import com.garpr.android.data.models.SmashCharacterTest
 import com.garpr.android.features.deepLink.DeepLinkViewModelTest
 import com.garpr.android.features.home.HomeActivityTest
-import com.garpr.android.features.home.HomeToolbarManagerTest
 import com.garpr.android.features.player.PlayerActivityTest
 import com.garpr.android.features.player.PlayerProfileManagerTest
 import com.garpr.android.features.player.PlayerViewModelTest
@@ -67,7 +66,6 @@ interface TestAppComponent {
 
     // features/home
     fun inject(test: HomeActivityTest)
-    fun inject(test: HomeToolbarManagerTest)
 
     // features/player
     fun inject(test: PlayerActivityTest)

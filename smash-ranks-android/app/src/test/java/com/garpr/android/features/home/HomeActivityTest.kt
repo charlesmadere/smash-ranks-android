@@ -24,8 +24,7 @@ class HomeActivityTest : BaseTest() {
     companion object {
         private val EXTRA_INITIAL_POSITION: String by lazy {
             val c = HomeActivity.Companion::class
-            val property = c.declaredMemberProperties
-                    .first { it.name == "EXTRA_INITIAL_POSITION" }
+            val property = c.declaredMemberProperties.first { it.name == "EXTRA_INITIAL_POSITION" }
             property.isAccessible = true
             property.get(HomeActivity.Companion) as String
         }
