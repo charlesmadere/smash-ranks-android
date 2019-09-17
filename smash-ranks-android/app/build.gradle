@@ -81,10 +81,6 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/work
     implementation "androidx.work:work-runtime:$workmanager_version"
 
-    // AndroidX Activity
-    // https://developer.android.com/jetpack/androidx/releases/activity
-    implementation "androidx.activity:activity-ktx:$activity_version"
-
     // AndroidX AppCompat
     // https://developer.android.com/jetpack/androidx/releases/appcompat
     implementation "androidx.appcompat:appcompat:$appcompat_version"
@@ -96,10 +92,6 @@ dependencies {
     // AndroidX ConstraintLayout
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-
-    // AndroidX Fragment
-    // https://developer.android.com/jetpack/androidx/releases/fragment
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // AndroidX Palette
     // https://developer.android.com/jetpack/androidx/releases/palette
