@@ -28,9 +28,6 @@ open class SearchToolbar @JvmOverloads constructor(
     val isSearchFieldExpanded: Boolean
         get() = searchField.visibility == View.VISIBLE
 
-    override val searchQuery: CharSequence?
-        get() = searchField.text
-
     var showSearchIcon: Boolean
         get() = searchIcon.visibility == View.VISIBLE
         set(value) {
@@ -38,6 +35,9 @@ open class SearchToolbar @JvmOverloads constructor(
         }
 
     private val wasShowingUpNavigation = showUpNavigation
+
+    override val searchQuery: CharSequence?
+        get() = searchField.text
 
     private val searchIconClickListener = OnClickListener {
         openSearchField()
