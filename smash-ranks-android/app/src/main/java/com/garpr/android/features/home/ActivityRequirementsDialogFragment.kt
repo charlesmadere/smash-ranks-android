@@ -19,7 +19,6 @@ class ActivityRequirementsDialogFragment : BaseBottomSheetDialogFragment() {
     private val rankingNumTourneysAttended: Int? by lazy { arguments.optInt(KEY_RANKING_NUM_TOURNEYS_ATTENDED) }
     private val regionDisplayName by lazy { arguments.requireString(KEY_REGION_DISPLAY_NAME) }
 
-
     companion object {
         const val TAG = "ActivityRequirementsDialogFragment"
         private const val KEY_RANKING_ACTIVITY_DAY_LIMIT = "RankingActivityDayLimit"

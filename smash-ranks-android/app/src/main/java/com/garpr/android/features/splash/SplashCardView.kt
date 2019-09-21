@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.getLong
 import com.garpr.android.features.common.views.LifecycleCardView
 import com.garpr.android.features.setIdentity.SetIdentityActivity
@@ -18,35 +17,24 @@ import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_splash.view.*
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class SplashCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : LifecycleCardView(context, attrs), DialogInterface.OnClickListener,
-        IdentityRepository.OnIdentityChangeListener, Refreshable,
+        IdentityRepository.OnIdentityChangeListener, KoinComponent, Refreshable,
         RegionRepository.OnRegionChangeListener {
 
     private var hasAnimated: Boolean = false
 
-    @Inject
-    protected lateinit var deviceUtils: DeviceUtils
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val deviceUtils: DeviceUtils by inject()
+    protected val identityRepository: IdentityRepository by inject()
+    protected val regionRepository: RegionRepository by inject()
 
     interface Listener {
         fun onStartUsingTheAppClick(v: SplashCardView)
-    }
-
-    init {
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     override fun onAttachedToWindow() {

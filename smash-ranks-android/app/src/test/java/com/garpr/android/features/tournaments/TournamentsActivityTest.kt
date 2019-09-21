@@ -9,18 +9,15 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class TournamentsActivityTest : BaseTest() {
 
-    @Inject
-    protected lateinit var application: Application
-
+    protected val application: Application by inject()
 
     companion object {
         private val GOOGLE_MTV = Region(
@@ -28,12 +25,6 @@ class TournamentsActivityTest : BaseTest() {
                 id = "googlemtv",
                 endpoint = Endpoint.GAR_PR
         )
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

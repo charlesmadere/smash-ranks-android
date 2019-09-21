@@ -13,9 +13,8 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.PlayersRepository
-import javax.inject.Inject
 
-class SetIdentityViewModel @Inject constructor(
+class SetIdentityViewModel(
         private val identityRepository: IdentityRepository,
         private val playersRepository: PlayersRepository,
         private val threadUtils: ThreadUtils,

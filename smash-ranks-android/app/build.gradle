@@ -110,15 +110,15 @@ dependencies {
     implementation "com.facebook.fresco:fresco:$fresco_version"
     implementation "com.facebook.fresco:imagepipeline-okhttp3:$fresco_version"
 
-    // Google's Dagger
-    // https://github.com/google/dagger
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kaptTest "com.google.dagger:dagger-compiler:$dagger_version"
-
     // Google's Material Design Library
     // https://material.io/develop/android/
     implementation "com.google.android.material:material:$material_design_version"
+
+    // Koin
+    // https://github.com/InsertKoinIO/koin
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    testImplementation "org.koin:koin-test:$koin_version"
 
     // Robolectric
     // https://github.com/robolectric/robolectric

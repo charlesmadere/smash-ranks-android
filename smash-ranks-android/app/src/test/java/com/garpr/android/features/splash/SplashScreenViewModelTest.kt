@@ -7,22 +7,19 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SplashScreenViewModelTest : BaseTest() {
 
     private lateinit var viewModel: SplashScreenViewModel
 
-    @Inject
-    protected lateinit var generalPreferenceStore: GeneralPreferenceStore
-
+    protected val generalPreferenceStore: GeneralPreferenceStore by inject()
 
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         viewModel = SplashScreenViewModel(generalPreferenceStore)
     }

@@ -7,7 +7,6 @@ import android.widget.LinearLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.BracketSource
 import com.garpr.android.data.models.FullTournament
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
@@ -15,21 +14,19 @@ import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_tournament_info.view.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.text.NumberFormat
-import javax.inject.Inject
 
 class TournamentInfoView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LinearLayout(context, attrs) {
+) : LinearLayout(context, attrs), KoinComponent {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var shareUtils: ShareUtils
+    protected val regionRepository: RegionRepository by inject()
+    protected val shareUtils: ShareUtils by inject()
 
     var tournament: FullTournament? = null
         set(value) {
@@ -73,10 +70,6 @@ class TournamentInfoView @JvmOverloads constructor(
 
         @Suppress("LeakingThis")
         layoutInflater.inflate(R.layout.item_tournament_info, this)
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
 
         openLink.setOnClickListener {
             tournament?.let { t -> shareUtils.openUrl(context, t.url) }

@@ -4,15 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.home.HomeActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SplashActivity : BaseActivity(), SplashCardView.Listener {
 
-    private val viewModel by viewModel(this) { appComponent.splashScreenViewModel }
-
+    private val viewModel: SplashScreenViewModel by viewModel()
 
     companion object {
         private const val TAG = "SplashActivity"
@@ -27,7 +25,6 @@ class SplashActivity : BaseActivity(), SplashCardView.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
 
         if (viewModel.showSplashScreen) {
             timber.d(TAG, "showing $TAG...")

@@ -10,18 +10,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import java.util.Date
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SimpleDateConverterTest : BaseTest() {
 
-    @Inject
-    protected lateinit var moshi: Moshi
+    private val moshi: Moshi by inject()
 
     private lateinit var simpleDateAdapter: JsonAdapter<SimpleDate>
-
 
     companion object {
         private const val JSON_NUMBER_0 = "0"
@@ -36,7 +34,6 @@ class SimpleDateConverterTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         simpleDateAdapter = moshi.adapter(SimpleDate::class.java)
     }

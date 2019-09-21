@@ -19,8 +19,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SmashRosterSyncManagerTest : BaseTest() {
@@ -28,21 +28,11 @@ class SmashRosterSyncManagerTest : BaseTest() {
     private val serverApi = ServerApiOverride()
     private lateinit var smashRosterSyncManager: SmashRosterSyncManager
 
-    @Inject
-    protected lateinit var schedulers: Schedulers
-
-    @Inject
-    protected lateinit var smashRosterPreferenceStore: SmashRosterPreferenceStore
-
-    @Inject
-    protected lateinit var smashRosterStorage: SmashRosterStorage
-
-    @Inject
-    protected lateinit var timber: Timber
-
-    @Inject
-    protected lateinit var workManagerWrapper: WorkManagerWrapper
-
+    protected val schedulers: Schedulers by inject()
+    protected val smashRosterPreferenceStore: SmashRosterPreferenceStore by inject()
+    protected val smashRosterStorage: SmashRosterStorage by inject()
+    protected val timber: Timber by inject()
+    protected val workManagerWrapper: WorkManagerWrapper by inject()
 
     companion object {
 
@@ -116,7 +106,6 @@ class SmashRosterSyncManagerTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         smashRosterSyncManager = SmashRosterSyncManagerImpl(schedulers, serverApi,
                 smashRosterPreferenceStore, smashRosterStorage, timber, workManagerWrapper)
@@ -179,15 +168,21 @@ class SmashRosterSyncManagerTest : BaseTest() {
     }
 
     private class ServerApiOverride(
-            internal var garPrSmashRoster: Map<String, SmashCompetitor> = SmashRosters.GAR_PR,
-            internal var notGarPrSmashRoster: Map<String, SmashCompetitor> = SmashRosters.NOT_GAR_PR
+            internal var garPrSmashRoster: Map<String, SmashCompetitor>? = SmashRosters.GAR_PR,
+            internal var notGarPrSmashRoster: Map<String, SmashCompetitor>? = SmashRosters.NOT_GAR_PR
     ) : AbsServerApi() {
 
         override fun getSmashRoster(endpoint: Endpoint): Single<Map<String, SmashCompetitor>> {
-            return Single.just(when (endpoint) {
+            val roster = when (endpoint) {
                 Endpoint.GAR_PR -> garPrSmashRoster
                 Endpoint.NOT_GAR_PR -> notGarPrSmashRoster
-            })
+            }
+
+            return if (roster == null) {
+                Single.error(NullPointerException())
+            } else {
+                Single.just(roster)
+            }
         }
 
     }

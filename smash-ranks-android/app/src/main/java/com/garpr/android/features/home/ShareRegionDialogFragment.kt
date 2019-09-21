@@ -5,22 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.fragments.dialogs.BaseBottomSheetDialogFragment
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.dialog_share_region.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable,
         RegionRepository.OnRegionChangeListener {
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var shareUtils: ShareUtils
+    protected val regionRepository: RegionRepository by inject()
+    protected val shareUtils: ShareUtils by inject()
 
     private val shareRankingsClickListener = View.OnClickListener {
         shareUtils.shareRankings(requireActivity())
@@ -35,11 +31,6 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable,
     companion object {
         const val TAG = "ShareRegionDialogFragment"
         fun create() = ShareRegionDialogFragment()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -14,10 +14,9 @@ import java.lang.ref.WeakReference
 
 class HomeFragmentPagerAdapter(
         fm: FragmentManager
-) : FragmentStatePagerAdapter(fm) {
+) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val pages = mutableMapOf<HomeTab, WeakReference<BaseFragment?>?>()
-
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         super.destroyItem(container, position, `object`)

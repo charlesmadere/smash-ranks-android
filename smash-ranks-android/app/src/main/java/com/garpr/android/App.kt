@@ -3,54 +3,40 @@ package com.garpr.android
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.Configuration
-import com.garpr.android.dagger.AppComponent
-import com.garpr.android.dagger.AppComponentHandle
-import com.garpr.android.dagger.AppModule
-import com.garpr.android.dagger.ConfigModule
-import com.garpr.android.dagger.DaggerAppComponent
+import com.garpr.android.koin.configModule
+import com.garpr.android.koin.managersModule
+import com.garpr.android.koin.miscModule
+import com.garpr.android.koin.networkingModule
+import com.garpr.android.koin.preferencesModule
+import com.garpr.android.koin.repositoriesModule
+import com.garpr.android.koin.syncModule
+import com.garpr.android.koin.viewModelsModule
 import com.garpr.android.managers.AppUpgradeManager
-import com.garpr.android.misc.Constants
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.NightModeRepository
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
-class App : Application(), AppComponentHandle, Configuration.Provider,
-        NightModeRepository.OnNightModeChangeListener {
+class App : Application(), Configuration.Provider, NightModeRepository.OnNightModeChangeListener {
 
-    private var _appComponent: AppComponent? = null
-
-    @Inject
-    protected lateinit var appUpgradeManager: AppUpgradeManager
-
-    @Inject
-    protected lateinit var crashlyticsWrapper: CrashlyticsWrapper
-
-    @Inject
-    protected lateinit var deviceUtils: DeviceUtils
-
-    @Inject
-    protected lateinit var imageLibraryWrapper: ImageLibraryWrapper
-
-    @Inject
-    protected lateinit var nightModeRepository: NightModeRepository
-
-    @Inject
-    protected lateinit var timber: Timber
-
-    @Inject
-    protected lateinit var workManagerWrapper: WorkManagerWrapper
-
+    protected val appUpgradeManager: AppUpgradeManager by inject()
+    protected val crashlyticsWrapper: CrashlyticsWrapper by inject()
+    protected val deviceUtils: DeviceUtils by inject()
+    protected val imageLibraryWrapper: ImageLibraryWrapper by inject()
+    protected val nightModeRepository: NightModeRepository by inject()
+    protected val timber: Timber by inject()
+    protected val workManagerWrapper: WorkManagerWrapper by inject()
 
     companion object {
         private const val TAG = "App"
     }
-
-    override val appComponent: AppComponent
-        get() = requireNotNull(_appComponent)
 
     private fun applyNightMode() {
         AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
@@ -61,27 +47,25 @@ class App : Application(), AppComponentHandle, Configuration.Provider,
         return workManagerWrapper.configuration
     }
 
-    private fun initializeAppComponent() {
-        val appComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this, Constants.DEFAULT_REGION, Constants.SMASH_ROSTER_BASE_PATH))
-                .configModule(ConfigModule())
-                .build()
-
-        appComponent.inject(this)
-        _appComponent = appComponent
-    }
-
     private fun initializeCrashlytics() {
         crashlyticsWrapper.initialize(BuildConfig.DEBUG)
         crashlyticsWrapper.setBool("low_ram_device", deviceUtils.hasLowRam)
+    }
+
+    private fun initializeKoin() {
+        startKoin {
+            androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
+            androidContext(this@App)
+            modules(listOf(configModule, managersModule, miscModule, networkingModule,
+                    preferencesModule, repositoriesModule, syncModule, viewModelsModule))
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
 
         // The order of the following lines is important!
-
-        initializeAppComponent()
+        initializeKoin()
         initializeCrashlytics()
 
         timber.d(TAG, "App created", null)

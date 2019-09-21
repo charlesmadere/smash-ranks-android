@@ -18,8 +18,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SetRegionViewModelTest : BaseTest() {
@@ -27,11 +27,8 @@ class SetRegionViewModelTest : BaseTest() {
     private val regionsRepository = RegionsRepositoryOverride()
     private lateinit var viewModel: SetRegionViewModel
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var timber: Timber
+    protected val regionRepository: RegionRepository by inject()
+    protected val timber: Timber by inject()
 
     companion object {
         private val CHICAGO = Region(
@@ -78,7 +75,6 @@ class SetRegionViewModelTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         viewModel = SetRegionViewModel(regionRepository, regionsRepository, timber)
     }
@@ -272,7 +268,7 @@ class SetRegionViewModelTest : BaseTest() {
             val bundle = regionsBundle
 
             return if (bundle == null) {
-                Single.error(NullPointerException("regionsBundle is null"))
+                Single.error(NullPointerException())
             } else {
                 Single.just(bundle)
             }

@@ -11,7 +11,6 @@ import com.garpr.android.R
 import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
 import com.garpr.android.extensions.activity
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.extensions.getAttrColor
@@ -21,13 +20,15 @@ import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_match.view.*
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class MatchItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleFrameLayout(context, attrs), IdentityRepository.OnIdentityChangeListener, Refreshable,
-        View.OnClickListener, View.OnLongClickListener {
+) : LifecycleFrameLayout(context, attrs), KoinComponent,
+        IdentityRepository.OnIdentityChangeListener, Refreshable, View.OnClickListener,
+        View.OnLongClickListener {
 
     private val originalBackground: Drawable? = background
 
@@ -37,15 +38,9 @@ class MatchItemView @JvmOverloads constructor(
             refresh()
         }
 
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val identityRepository: IdentityRepository by inject()
+    protected val regionRepository: RegionRepository by inject()
 
     interface OnClickListener {
         fun onClick(v: MatchItemView)
@@ -54,10 +49,6 @@ class MatchItemView @JvmOverloads constructor(
     init {
         setOnClickListener(this)
         setOnLongClickListener(this)
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     override fun onAttachedToWindow() {

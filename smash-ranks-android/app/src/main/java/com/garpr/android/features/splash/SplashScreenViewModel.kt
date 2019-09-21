@@ -2,9 +2,8 @@ package com.garpr.android.features.splash
 
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.preferences.GeneralPreferenceStore
-import javax.inject.Inject
 
-class SplashScreenViewModel @Inject constructor(
+class SplashScreenViewModel (
         private val generalPreferenceStore: GeneralPreferenceStore
 )  : BaseViewModel() {
 

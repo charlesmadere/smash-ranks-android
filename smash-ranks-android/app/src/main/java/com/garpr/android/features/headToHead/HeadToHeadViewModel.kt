@@ -11,9 +11,8 @@ import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.HeadToHeadRepository
-import javax.inject.Inject
 
-class HeadToHeadViewModel @Inject constructor(
+class HeadToHeadViewModel(
         private val headToHeadRepository: HeadToHeadRepository,
         private val timber: Timber
 ) : BaseViewModel() {

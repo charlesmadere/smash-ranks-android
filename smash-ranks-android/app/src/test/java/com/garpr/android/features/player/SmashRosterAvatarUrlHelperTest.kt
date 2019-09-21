@@ -3,30 +3,21 @@ package com.garpr.android.features.player
 import com.garpr.android.BaseTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SmashRosterAvatarUrlHelperTest : BaseTest() {
 
-    @Inject
-    protected lateinit var smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper
-
+    protected val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper by inject()
 
     companion object {
         private const val LARGE_AVATAR_PATH = "avatars/587a951dd2994e15c7dea9fe/large.jpg"
         private const val MEDIUM_AVATAR_PATH = "avatars/588999c5d2994e713ad63c6f/medium.jpg"
         private const val ORIGINAL_AVATAR_PATH = "avatars/588999c5d2994e713ad63b35/original.jpg"
         private const val SMALL_AVATAR_PATH = "avatars/5877eb55d2994e15c7dea98b/small.jpg"
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

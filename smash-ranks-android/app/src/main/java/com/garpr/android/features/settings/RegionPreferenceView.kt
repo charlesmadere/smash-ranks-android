@@ -6,22 +6,20 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.repositories.RegionRepository
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class RegionPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), RegionRepository.OnRegionChangeListener,
+) : SimplePreferenceView(context, attrs), KoinComponent, RegionRepository.OnRegionChangeListener,
         View.OnClickListener {
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val regionRepository: RegionRepository by inject()
 
     init {
         titleText = context.getText(R.string.region)
@@ -31,8 +29,6 @@ class RegionPreferenceView @JvmOverloads constructor(
         if (isInEditMode) {
             descriptionText = context.getString(R.string.region_endpoint_format,
                     context.getString(R.string.norcal), context.getString(R.string.gar_pr))
-        } else {
-            appComponent.inject(this)
         }
     }
 

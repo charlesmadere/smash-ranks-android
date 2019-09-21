@@ -8,15 +8,14 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.garpr.android.R
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.fragments.dialogs.BaseBottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_add_or_remove_player_from_favorites.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragment() {
 
-    private val viewModel by viewModel(this) { appComponent.addOrRemovePlayerFromFavoritesViewModel }
+    private val viewModel: AddOrRemovePlayerFromFavoritesViewModel by viewModel()
     private val player by lazy { arguments.requireParcelable<FavoritePlayer>(KEY_PLAYER) }
 
     private val addPlayerClickListener = View.OnClickListener {

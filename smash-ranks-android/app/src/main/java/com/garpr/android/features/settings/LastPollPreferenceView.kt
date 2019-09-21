@@ -4,20 +4,19 @@ import android.content.Context
 import android.util.AttributeSet
 import com.garpr.android.R
 import com.garpr.android.data.models.SimpleDate
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class LastPollPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), Preference.OnPreferenceChangeListener<SimpleDate> {
+) : SimplePreferenceView(context, attrs), KoinComponent,
+        Preference.OnPreferenceChangeListener<SimpleDate> {
 
-    @Inject
-    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
-
+    protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
 
     init {
         isEnabled = false
@@ -25,8 +24,6 @@ class LastPollPreferenceView @JvmOverloads constructor(
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.poll_has_yet_to_occur)
-        } else {
-            appComponent.inject(this)
         }
     }
 

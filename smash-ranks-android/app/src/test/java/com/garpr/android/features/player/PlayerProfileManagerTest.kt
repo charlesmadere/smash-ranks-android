@@ -12,21 +12,16 @@ import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class PlayerProfileManagerTest : BaseTest() {
 
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    @Inject
-    protected lateinit var playerProfileManager: PlayerProfileManager
-
+    protected val identityRepository: IdentityRepository by inject()
+    protected val playerProfileManager: PlayerProfileManager by inject()
 
     companion object {
 
@@ -151,12 +146,6 @@ class PlayerProfileManagerTest : BaseTest() {
             )
         }
 
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

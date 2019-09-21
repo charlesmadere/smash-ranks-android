@@ -4,25 +4,22 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class SmashRosterSyncPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), View.OnClickListener {
+) : SimplePreferenceView(context, attrs), KoinComponent, View.OnClickListener {
 
     private val disposables = CompositeDisposable()
 
-    @Inject
-    protected lateinit var schedulers: Schedulers
-
-    @Inject
-    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
+    protected val schedulers: Schedulers by inject()
+    protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
 
     init {
         titleText = context.getText(R.string.smash_roster_sync_status)
@@ -30,8 +27,6 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.sync_has_yet_to_occur)
-        } else {
-            appComponent.inject(this)
         }
     }
 

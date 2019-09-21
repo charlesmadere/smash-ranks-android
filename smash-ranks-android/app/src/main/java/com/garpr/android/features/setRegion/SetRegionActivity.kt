@@ -12,25 +12,22 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.RegionSelectionItemView
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_set_region.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.OnClickListener,
         SetRegionToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter(this)
-    private val viewModel by viewModel(this) { appComponent.setRegionViewModel }
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val regionRepository: RegionRepository by inject()
+    private val viewModel: SetRegionViewModel by viewModel()
 
     companion object {
         private const val TAG = "SetRegionActivity"
@@ -86,7 +83,6 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         setContentView(R.layout.activity_set_region)
         initListeners()
         fetchRegions()

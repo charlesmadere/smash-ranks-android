@@ -7,17 +7,15 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SmashCharacterTest : BaseTest() {
 
+    protected val moshi: Moshi by inject()
+
     private lateinit var smashCharacterAdapter: JsonAdapter<SmashCharacter>
-
-    @Inject
-    protected lateinit var moshi: Moshi
-
 
     companion object {
         private const val JSON_BANJO_N_KAZOOIE = "\"bnk\""
@@ -104,7 +102,6 @@ class SmashCharacterTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         smashCharacterAdapter = moshi.adapter(SmashCharacter::class.java)
     }

@@ -18,8 +18,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class DeepLinkViewModelTest : BaseTest() {
@@ -27,12 +27,8 @@ class DeepLinkViewModelTest : BaseTest() {
     private lateinit var viewModel: DeepLinkViewModel
     private val regionsRepository = RegionsRepositoryOverride()
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var timber: Timber
-
+    protected val regionRepository: RegionRepository by inject()
+    protected val timber: Timber by inject()
 
     companion object {
         private val CHICAGO = Region(
@@ -84,7 +80,6 @@ class DeepLinkViewModelTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         viewModel = DeepLinkViewModel(regionRepository, regionsRepository, timber)
     }

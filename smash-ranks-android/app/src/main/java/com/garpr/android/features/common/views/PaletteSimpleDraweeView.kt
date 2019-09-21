@@ -15,28 +15,23 @@ import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber
 import com.facebook.imagepipeline.image.CloseableImage
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.garpr.android.extensions.activity
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.ThreadUtils
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.lang.ref.WeakReference
-import javax.inject.Inject
 
 class PaletteSimpleDraweeView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimpleDraweeView(context, attrs), Heartbeat {
+) : SimpleDraweeView(context, attrs), Heartbeat, KoinComponent {
 
     var colorListener: ColorListener? = null
+    protected val deviceUtils: DeviceUtils by inject()
+    protected val threadUtils: ThreadUtils by inject()
     private val selfReference by lazy { WeakReference<View>(this) }
-
-    @Inject
-    protected lateinit var deviceUtils: DeviceUtils
-
-    @Inject
-    protected lateinit var threadUtils: ThreadUtils
-
 
     private val bitmapSubscriber = object : BaseBitmapDataSubscriber() {
         override fun onFailureImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
@@ -51,12 +46,6 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
             }
 
             post { notifyListener(palette) }
-        }
-    }
-
-    init {
-        if (!isInEditMode) {
-            appComponent.inject(this)
         }
     }
 

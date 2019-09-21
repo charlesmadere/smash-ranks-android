@@ -29,7 +29,6 @@ class TournamentMatchItemView @JvmOverloads constructor(
     @ColorInt
     private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
-
     init {
         setOnClickListener(this)
     }

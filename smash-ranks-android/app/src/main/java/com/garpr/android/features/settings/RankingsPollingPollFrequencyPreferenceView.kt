@@ -7,25 +7,21 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
 import com.garpr.android.data.models.PollFrequency
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.rankings.RankingsPollingManager
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
+) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, KoinComponent,
         Preference.OnPreferenceChangeListener<PollFrequency>, View.OnClickListener {
 
-    @Inject
-    protected lateinit var rankingsPollingManager: RankingsPollingManager
-
-    @Inject
-    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
-
+    protected val rankingsPollingManager: RankingsPollingManager by inject()
+    protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
 
     init {
         titleText = context.getText(R.string.poll_frequency)
@@ -33,8 +29,6 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.every_3_days)
-        } else {
-            appComponent.inject(this)
         }
     }
 

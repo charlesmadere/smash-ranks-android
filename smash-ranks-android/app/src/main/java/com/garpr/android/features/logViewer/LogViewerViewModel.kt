@@ -6,9 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
-import javax.inject.Inject
 
-class LogViewerViewModel @Inject constructor(
+class LogViewerViewModel(
         private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : BaseViewModel() {

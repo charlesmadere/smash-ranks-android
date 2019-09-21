@@ -25,7 +25,6 @@ class WinsLossesGraphView @JvmOverloads constructor(
     private val rect = RectF()
     private var winsLosses: WinsLosses? = null
 
-
     companion object {
         private val INTERPOLATOR: Interpolator = OvershootInterpolator(3.8f)
     }

@@ -6,9 +6,8 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.FavoritePlayersRepository
-import javax.inject.Inject
 
-class AddOrRemovePlayerFromFavoritesViewModel @Inject constructor(
+class AddOrRemovePlayerFromFavoritesViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository
 ) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener, Refreshable {
 

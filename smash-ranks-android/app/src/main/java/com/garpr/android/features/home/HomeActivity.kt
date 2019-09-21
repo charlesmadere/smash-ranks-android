@@ -7,20 +7,22 @@ import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
+import com.garpr.android.features.rankings.RankingsViewModel
 import com.garpr.android.features.settings.SettingsActivity
+import com.garpr.android.features.tournaments.TournamentsViewModel
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners, Searchable,
@@ -28,14 +30,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     private lateinit var adapter: HomeFragmentPagerAdapter
 
-    private val favoritePlayersViewModel by viewModel(this) { appComponent.favoritePlayersViewModel }
-    private val homeViewModel by viewModel(this) { appComponent.homeViewModel }
-    private val rankingsViewModel by viewModel(this) { appComponent.rankingsViewModel }
-    private val tournamentsViewModel by viewModel(this) { appComponent.tournamentsViewModel }
+    private val favoritePlayersViewModel: FavoritePlayersViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModel()
+    private val rankingsViewModel: RankingsViewModel by viewModel()
+    private val tournamentsViewModel: TournamentsViewModel by viewModel()
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         const val TAG = "HomeActivity"
@@ -101,7 +101,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         setContentView(R.layout.activity_home)
         setInitialPosition(savedInstanceState)
         initListeners()

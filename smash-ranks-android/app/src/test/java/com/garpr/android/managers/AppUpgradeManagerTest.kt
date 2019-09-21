@@ -13,27 +13,18 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class AppUpgradeManagerTest : BaseTest() {
 
-    @Inject
-    protected lateinit var appUpgradeManager: AppUpgradeManager
-
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var generalPreferenceStore: GeneralPreferenceStore
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
+    protected val appUpgradeManager: AppUpgradeManager by inject()
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val generalPreferenceStore: GeneralPreferenceStore by inject()
+    protected val identityRepository: IdentityRepository by inject()
 
     companion object {
         private val PLAYER_1: AbsPlayer = LitePlayer("1", "Charlezard")
@@ -44,12 +35,6 @@ class AppUpgradeManagerTest : BaseTest() {
                 id = "norcal",
                 endpoint = Endpoint.GAR_PR
         )
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

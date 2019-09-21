@@ -10,9 +10,8 @@ import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
-import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
         private val identityRepository: IdentityRepository,
         rankingsPollingManager: RankingsPollingManager,
         smashRosterSyncManager: SmashRosterSyncManager

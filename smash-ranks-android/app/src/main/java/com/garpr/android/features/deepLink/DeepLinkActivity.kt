@@ -6,8 +6,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.deepLink.DeepLinkViewModel.Breadcrumb
 import com.garpr.android.features.home.HomeActivity
@@ -16,10 +14,11 @@ import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsActivity
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DeepLinkActivity : BaseActivity() {
 
-    private val viewModel by viewModel(this) { appComponent.deepLinkViewModel }
+    private val viewModel: DeepLinkViewModel by viewModel()
 
     companion object {
         private const val TAG = "DeepLinkActivity"
@@ -53,9 +52,8 @@ class DeepLinkActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
-        viewModel.initialize(intent?.dataString)
         setContentView(R.layout.activity_deep_link)
+        viewModel.initialize(intent?.dataString)
         initListeners()
         fetchBreadcrumbs()
     }

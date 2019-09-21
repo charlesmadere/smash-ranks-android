@@ -14,29 +14,26 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.StringItemView
 import com.garpr.android.features.tournaments.TournamentDividerView
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_head_to_head.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter()
     private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
-    private val viewModel by viewModel(this) { appComponent.headToHeadViewModel }
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    private val viewModel: HeadToHeadViewModel by viewModel()
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         private const val TAG = "HeadToHeadActivity"
@@ -94,7 +91,6 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         setContentView(R.layout.activity_head_to_head)
         initListeners()
         fetchHeadToHead()

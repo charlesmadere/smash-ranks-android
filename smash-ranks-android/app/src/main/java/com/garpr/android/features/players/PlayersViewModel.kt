@@ -11,9 +11,8 @@ import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.PlayersRepository
-import javax.inject.Inject
 
-class PlayersViewModel @Inject constructor(
+class PlayersViewModel(
         private val playersRepository: PlayersRepository,
         private val threadUtils: ThreadUtils,
         private val timber: Timber

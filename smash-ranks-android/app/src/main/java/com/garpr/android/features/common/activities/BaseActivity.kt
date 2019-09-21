@@ -7,22 +7,17 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.TaskStackBuilder
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.optHideKeyboard
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.NightModeRepository
 import com.garpr.android.repositories.RegionRepository.RegionHandle
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
-    @Inject
-    protected lateinit var nightModeRepository: NightModeRepository
-
-    @Inject
-    protected lateinit var timber: Timber
-
+    protected val nightModeRepository: NightModeRepository by inject()
+    protected val timber: Timber by inject()
 
     companion object {
         private const val TAG = "BaseActivity"
@@ -53,9 +48,7 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
-
-        delegate.setLocalNightMode(nightModeRepository.nightMode.themeValue)
+        delegate.localNightMode = nightModeRepository.nightMode.themeValue
         super.onCreate(savedInstanceState)
         timber.d(TAG, "$activityName created")
     }

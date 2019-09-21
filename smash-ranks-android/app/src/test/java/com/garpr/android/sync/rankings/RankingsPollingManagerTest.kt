@@ -5,24 +5,15 @@ import com.garpr.android.data.models.PollFrequency
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class RankingsPollingManagerTest : BaseTest() {
 
-    @Inject
-    protected lateinit var rankingsPollingManager: RankingsPollingManager
-
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
-    }
+    protected val rankingsPollingManager: RankingsPollingManager by inject()
 
     @Test
     fun testIsChargingRequired() {

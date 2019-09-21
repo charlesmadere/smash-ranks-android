@@ -10,26 +10,22 @@ import android.view.View
 import android.widget.Toast
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class RingtonePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), Preference.OnPreferenceChangeListener<Uri>,
-        View.OnClickListener {
+) : SimplePreferenceView(context, attrs), KoinComponent,
+        Preference.OnPreferenceChangeListener<Uri>, View.OnClickListener {
 
-    @Inject
-    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
-
-    @Inject
-    protected lateinit var timber: Timber
-
+    protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
+    protected val timber: Timber by inject()
 
     companion object {
         private const val TAG = "RingtonePreferenceView"
@@ -41,8 +37,6 @@ class RingtonePreferenceView @JvmOverloads constructor(
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.none)
-        } else {
-            appComponent.inject(this)
         }
     }
 

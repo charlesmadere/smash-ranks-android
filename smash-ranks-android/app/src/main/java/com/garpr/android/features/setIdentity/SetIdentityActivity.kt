@@ -12,26 +12,24 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.StringDividerView
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_set_identity.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListener, Refreshable,
         Searchable, SetIdentityToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: Adapter
-    private val viewModel by viewModel(this) { appComponent.setIdentityViewModel }
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
+    private val viewModel: SetIdentityViewModel by viewModel()
 
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         private const val TAG = "SetIdentityActivity"
@@ -92,7 +90,6 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         setContentView(R.layout.activity_set_identity)
         initListeners()
         fetchPlayers()

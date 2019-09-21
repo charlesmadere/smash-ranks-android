@@ -4,12 +4,12 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.misc.Timber
-import com.garpr.android.preferences.Preference
+import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.repositories.IdentityRepository.OnIdentityChangeListener
 import com.garpr.android.wrappers.WeakReferenceWrapper
 
 class IdentityRepositoryImpl(
-        private val identityPreference: Preference<FavoritePlayer>,
+        private val generalPreferenceStore: GeneralPreferenceStore,
         private val timber: Timber
 ) : IdentityRepository {
 
@@ -43,10 +43,10 @@ class IdentityRepositoryImpl(
     }
 
     override val identity: FavoritePlayer?
-        get() = identityPreference.get()
+        get() = generalPreferenceStore.identity.get()
 
     override val hasIdentity: Boolean
-        get() = identityPreference.exists
+        get() = generalPreferenceStore.identity.exists
 
     override fun isPlayer(player: AbsPlayer?): Boolean {
         return player != null && identity == player
@@ -70,7 +70,7 @@ class IdentityRepositoryImpl(
 
     override fun removeIdentity() {
         timber.d(TAG, "identity is being removed, hasIdentity: $hasIdentity")
-        identityPreference.delete()
+        generalPreferenceStore.identity.delete()
         notifyListeners()
     }
 
@@ -80,7 +80,7 @@ class IdentityRepositoryImpl(
 
     override fun setIdentity(player: AbsPlayer, region: Region) {
         timber.d(TAG, "identity is being set, hasIdentity: $hasIdentity")
-        identityPreference.set(FavoritePlayer(player.id, player.name, region))
+        generalPreferenceStore.identity.set(FavoritePlayer(player.id, player.name, region))
         notifyListeners()
     }
 

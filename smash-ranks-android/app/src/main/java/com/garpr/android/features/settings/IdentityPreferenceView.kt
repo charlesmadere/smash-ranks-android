@@ -8,32 +8,26 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.activity
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.repositories.IdentityRepository
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class IdentityPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
-        IdentityRepository.OnIdentityChangeListener, View.OnClickListener {
+        IdentityRepository.OnIdentityChangeListener, KoinComponent, View.OnClickListener {
 
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
+    protected val identityRepository: IdentityRepository by inject()
 
     init {
         titleText = context.getText(R.string.identity)
         descriptionText = context.getText(R.string.easily_find_yourself_throughout_the_app)
         imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_face_white_24dp)
         setOnClickListener(this)
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     override fun onAttachedToWindow() {

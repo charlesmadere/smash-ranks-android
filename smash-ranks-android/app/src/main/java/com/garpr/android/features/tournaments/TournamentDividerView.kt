@@ -5,28 +5,22 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.data.models.AbsTournament
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.divider_tournament.view.*
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class TournamentDividerView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs), View.OnClickListener {
+) : ConstraintLayout(context, attrs), KoinComponent, View.OnClickListener {
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val regionRepository: RegionRepository by inject()
 
     init {
         setOnClickListener(this)
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     var tournament: AbsTournament? = null

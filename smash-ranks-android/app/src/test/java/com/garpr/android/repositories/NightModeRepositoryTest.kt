@@ -7,27 +7,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class NightModeRepositoryTest : BaseTest() {
 
-    @Inject
-    protected lateinit var application: Application
-
-    @Inject
-    protected lateinit var nightModeRepository: NightModeRepository
-
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
-    }
+    protected val application: Application by inject()
+    protected val nightModeRepository: NightModeRepository by inject()
 
     @Test
     fun testAddListener() {

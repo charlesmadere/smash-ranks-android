@@ -12,10 +12,9 @@ import java.lang.ref.WeakReference
 
 class TournamentFragmentPagerAdapter(
         fm: FragmentManager
-) : FragmentPagerAdapter(fm) {
+) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val pages = mutableMapOf<TournamentMode, WeakReference<BaseFragment?>?>()
-
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         super.destroyItem(container, position, `object`)

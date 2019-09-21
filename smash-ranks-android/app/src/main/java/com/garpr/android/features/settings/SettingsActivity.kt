@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.widget.Toast
 import com.garpr.android.R
 import com.garpr.android.data.models.PollFrequency
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.logViewer.LogViewerActivity
 import com.garpr.android.misc.Constants
@@ -21,28 +20,16 @@ import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import kotlinx.android.synthetic.main.activity_settings.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class SettingsActivity : BaseActivity() {
 
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    @Inject
-    protected lateinit var rankingsPollingManager: RankingsPollingManager
-
-    @Inject
-    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var shareUtils: ShareUtils
-
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val identityRepository: IdentityRepository by inject()
+    protected val rankingsPollingManager: RankingsPollingManager by inject()
+    protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
+    protected val regionRepository: RegionRepository by inject()
+    protected val shareUtils: ShareUtils by inject()
 
     companion object {
         private const val TAG = "SettingsActivity"
@@ -78,7 +65,6 @@ class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         setContentView(R.layout.activity_settings)
     }
 

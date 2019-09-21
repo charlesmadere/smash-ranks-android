@@ -12,21 +12,17 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SmashRosterStorageTest : BaseTest() {
 
-    @Inject
-    protected lateinit var moshi: Moshi
-
-    @Inject
-    protected lateinit var smashRosterStorage: SmashRosterStorage
-
     private lateinit var garPrSmashRoster: Map<String, SmashCompetitor>
     private lateinit var notGarPrSmashRoster: Map<String, SmashCompetitor>
 
+    protected val moshi: Moshi by inject()
+    protected val smashRosterStorage: SmashRosterStorage by inject()
 
     companion object {
         private const val PLAYER_ID_CHARLEZARD = "587a951dd2994e15c7dea9fe"
@@ -43,7 +39,6 @@ class SmashRosterStorageTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         val smashRosterAdapter: JsonAdapter<Map<String, SmashCompetitor>> = moshi.adapter(
                 Types.newParameterizedType(Map::class.java, String::class.java,

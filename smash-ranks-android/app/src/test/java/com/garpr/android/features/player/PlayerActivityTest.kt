@@ -12,26 +12,22 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.isAccessible
 
 @RunWith(RobolectricTestRunner::class)
 class PlayerActivityTest : BaseTest() {
 
-    @Inject
-    protected lateinit var application: Application
-
+    protected val application: Application by inject()
 
     companion object {
         private val EXTRA_PLAYER_ID: String by lazy {
             val c = PlayerActivity.Companion::class
-            val property = c.declaredMemberProperties
-                    .first { it.name == "EXTRA_PLAYER_ID" }
+            val property = c.declaredMemberProperties.first { it.name == "EXTRA_PLAYER_ID" }
             property.isAccessible = true
             property.get(PlayerActivity.Companion) as String
         }
@@ -58,12 +54,6 @@ class PlayerActivityTest : BaseTest() {
                 name = ABS_PLAYER.name,
                 region = NORCAL
         )
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

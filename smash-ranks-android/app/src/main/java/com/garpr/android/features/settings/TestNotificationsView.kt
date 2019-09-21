@@ -7,29 +7,24 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.garpr.android.BuildConfig
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.features.notifications.NotificationsManager
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class TestNotificationsView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, View.OnClickListener {
+) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, KoinComponent,
+        View.OnClickListener {
 
-    @Inject
-    protected lateinit var notificationsManager: NotificationsManager
-
+    protected val notificationsManager: NotificationsManager by inject()
 
     init {
         titleText = context.getText(R.string.show_test_notification)
         descriptionText = context.getText(R.string.debug_only)
         visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
         setOnClickListener(this)
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {

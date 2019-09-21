@@ -8,9 +8,8 @@ import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
-import javax.inject.Inject
 
-class FavoritePlayersViewModel @Inject constructor(
+class FavoritePlayersViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
         private val threadUtils: ThreadUtils
 ) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener, Searchable {

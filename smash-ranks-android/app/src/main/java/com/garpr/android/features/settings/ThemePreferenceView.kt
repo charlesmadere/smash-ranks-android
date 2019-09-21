@@ -8,21 +8,19 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.NightMode
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.repositories.NightModeRepository
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class ThemePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
+) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, KoinComponent,
         NightModeRepository.OnNightModeChangeListener, View.OnClickListener {
 
-    @Inject
-    protected lateinit var nightModeRepository: NightModeRepository
-
+    protected val nightModeRepository: NightModeRepository by inject()
 
     init {
         titleText = context.getText(R.string.theme)
@@ -31,8 +29,6 @@ class ThemePreferenceView @JvmOverloads constructor(
 
         if (isInEditMode) {
             descriptionText = context.getText(R.string.auto)
-        } else {
-            appComponent.inject(this)
         }
     }
 

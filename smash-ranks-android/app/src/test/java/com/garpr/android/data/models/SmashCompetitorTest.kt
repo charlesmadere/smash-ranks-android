@@ -22,9 +22,7 @@ class SmashCompetitorTest : BaseTest() {
                 id = "2",
                 name = "Declan",
                 tag = "Imyt",
-                mains = listOf(SmashCharacter.SHEIK,
-                        SmashCharacter.FALCO,
-                        SmashCharacter.FOX)
+                mains = listOf(SmashCharacter.SHEIK, SmashCharacter.FALCO, SmashCharacter.FOX)
         )
 
         private val SMASH_COMPETITOR_3 = SmashCompetitor(
@@ -38,9 +36,7 @@ class SmashCompetitorTest : BaseTest() {
                 id = "4",
                 name = "Justin",
                 tag = "mikkuz",
-                mains = listOf(SmashCharacter.FOX,
-                        SmashCharacter.FOX,
-                        SmashCharacter.CPTN_FALCON, null)
+                mains = listOf(SmashCharacter.FOX, SmashCharacter.FOX, SmashCharacter.CPTN_FALCON, null)
         )
     }
 

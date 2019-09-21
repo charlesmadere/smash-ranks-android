@@ -12,27 +12,23 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_players.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayersActivity : BaseActivity(), Refreshable, Searchable,
         SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter()
 
-    private val viewModel by viewModel(this) { appComponent.playersViewModel }
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val viewModel: PlayersViewModel by viewModel()
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         private const val TAG = "PlayersActivity"
@@ -65,7 +61,6 @@ class PlayersActivity : BaseActivity(), Refreshable, Searchable,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         setContentView(R.layout.activity_players)
         initListeners()
         fetchPlayers()

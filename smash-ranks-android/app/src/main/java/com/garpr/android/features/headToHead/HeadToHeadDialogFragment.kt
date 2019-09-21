@@ -6,20 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import com.garpr.android.R
 import com.garpr.android.data.models.HeadToHeadMatch
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.features.common.fragments.dialogs.BaseBottomSheetDialogFragment
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.dialog_head_to_head.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class HeadToHeadDialogFragment : BaseBottomSheetDialogFragment() {
 
     private val match by lazy { arguments.requireParcelable<HeadToHeadMatch>(KEY_MATCH) }
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         const val TAG = "HeadToHeadDialogFragment"
@@ -34,11 +32,6 @@ class HeadToHeadDialogFragment : BaseBottomSheetDialogFragment() {
 
             return fragment
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

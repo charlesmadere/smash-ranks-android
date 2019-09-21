@@ -9,22 +9,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.garpr.android.R
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import kotlinx.android.synthetic.main.fragment_favorite_players.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FavoritePlayersFragment : BaseFragment(), ListLayout, Refreshable {
 
     private val adapter = Adapter()
 
-    private val viewModel by lazy {
-        viewModel(this) { appComponent.favoritePlayersViewModel }.value
-    }
-
+    private val viewModel: FavoritePlayersViewModel by sharedViewModel()
 
     companion object {
         fun create() = FavoritePlayersFragment()

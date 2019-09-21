@@ -9,20 +9,16 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class FavoritePlayersRepositoryTest : BaseTest() {
 
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val regionRepository: RegionRepository by inject()
 
 
     companion object {
@@ -35,12 +31,6 @@ class FavoritePlayersRepositoryTest : BaseTest() {
                 id = "5877eb55d2994e15c7dea97e",
                 name = "Spark"
         )
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

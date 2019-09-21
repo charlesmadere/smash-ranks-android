@@ -6,20 +6,17 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.isAccessible
 
 @RunWith(RobolectricTestRunner::class)
 class HomeActivityTest : BaseTest() {
 
-    @Inject
-    protected lateinit var application: Application
-
+    protected val application: Application by inject()
 
     companion object {
         private val EXTRA_INITIAL_POSITION: String by lazy {
@@ -28,12 +25,6 @@ class HomeActivityTest : BaseTest() {
             property.isAccessible = true
             property.get(HomeActivity.Companion) as String
         }
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

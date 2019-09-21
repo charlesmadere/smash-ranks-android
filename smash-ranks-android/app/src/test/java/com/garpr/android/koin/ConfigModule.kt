@@ -1,4 +1,4 @@
-package com.garpr.android.dagger
+package com.garpr.android.koin
 
 import androidx.work.Configuration
 import androidx.work.WorkRequest
@@ -9,17 +9,12 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-class TestConfigModule {
+val configModule = module {
 
-    @Provides
-    @Singleton
-    fun providesCrashlyticsWrapper(): CrashlyticsWrapper {
-        return object : CrashlyticsWrapper {
+    single<CrashlyticsWrapper> {
+        object : CrashlyticsWrapper {
             override fun initialize(disabled: Boolean) {
                 // intentionally empty
             }
@@ -46,32 +41,20 @@ class TestConfigModule {
         }
     }
 
-    @Provides
-    @Singleton
-    fun providesDeviceUtils(): DeviceUtils {
-        return TestDeviceUtilsImpl()
-    }
+    single<DeviceUtils> { TestDeviceUtilsImpl() }
 
-    @Provides
-    @Singleton
-    fun providesImageLibraryWrapper(): ImageLibraryWrapper {
-        return object : ImageLibraryWrapper {
+    single<ImageLibraryWrapper> {
+        object : ImageLibraryWrapper {
             override fun initialize() {
                 // intentionally empty
             }
         }
     }
 
-    @Provides
-    @Singleton
-    fun providesThreadUtils2(): ThreadUtils {
-        return TestThreadUtilsImpl()
-    }
+    single<ThreadUtils> { TestThreadUtilsImpl() }
 
-    @Provides
-    @Singleton
-    fun providesWorkManagerWrapper(): WorkManagerWrapper {
-        return object : WorkManagerWrapper {
+    single<WorkManagerWrapper> {
+        object : WorkManagerWrapper {
             override val configuration: Configuration
                 get() = throw NotImplementedError()
 

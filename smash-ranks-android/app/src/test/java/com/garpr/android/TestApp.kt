@@ -1,33 +1,31 @@
 package com.garpr.android
 
 import android.app.Application
-import androidx.test.core.app.ApplicationProvider
-import com.garpr.android.dagger.AppModule
-import com.garpr.android.dagger.DaggerTestAppComponent
-import com.garpr.android.dagger.TestAppComponent
-import com.garpr.android.dagger.TestAppComponentHandle
-import com.garpr.android.dagger.TestConfigModule
-import com.garpr.android.misc.Constants
+import com.garpr.android.koin.configModule
+import com.garpr.android.koin.managersModule
+import com.garpr.android.koin.miscModule
+import com.garpr.android.koin.networkingModule
+import com.garpr.android.koin.preferencesModule
+import com.garpr.android.koin.repositoriesModule
+import com.garpr.android.koin.syncModule
+import com.garpr.android.koin.viewModelsModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-class TestApp : Application(), TestAppComponentHandle {
+class TestApp : Application() {
 
-    private var _testAppComponent: TestAppComponent? = null
-
-
-    override val testAppComponent: TestAppComponent
-        get() = _testAppComponent ?: throw IllegalStateException("_testAppComponent is null")
-
-    private fun initializeAppComponent() {
-        val application = ApplicationProvider.getApplicationContext<Application>()
-        _testAppComponent = DaggerTestAppComponent.builder()
-                .appModule(AppModule(application, Constants.DEFAULT_REGION, Constants.SMASH_ROSTER_BASE_PATH))
-                .testConfigModule(TestConfigModule())
-                .build()
+    private fun initializeKoin() {
+        startKoin {
+            androidContext(this@TestApp)
+            modules(listOf(configModule, managersModule, miscModule, networkingModule,
+                    preferencesModule, repositoriesModule, syncModule, viewModelsModule))
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
-        initializeAppComponent()
+
+        initializeKoin()
     }
 
 }

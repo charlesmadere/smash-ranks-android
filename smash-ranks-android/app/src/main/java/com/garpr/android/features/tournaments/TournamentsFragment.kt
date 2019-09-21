@@ -10,28 +10,22 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsTournament
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.fragment_tournaments.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionChangeListener,
         Refreshable, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter()
 
-    private val viewModel by lazy {
-        viewModel(requireActivity()) { appComponent.tournamentsViewModel }.value
-    }
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val regionRepository: RegionRepository by inject()
+    private val viewModel: TournamentsViewModel by sharedViewModel()
 
     companion object {
         fun create() = TournamentsFragment()
@@ -59,11 +53,6 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

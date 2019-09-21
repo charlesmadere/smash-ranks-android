@@ -7,21 +7,16 @@ import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class RegionRepositoryTest : BaseTest() {
 
-    @Inject
-    protected lateinit var application: Application
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val application: Application by inject()
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         private val ALABAMA = Region(
@@ -50,12 +45,6 @@ class RegionRepositoryTest : BaseTest() {
                 rankingNumTourneysAttended = 6,
                 tournamentQualifiedDayLimit = 999
         )
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

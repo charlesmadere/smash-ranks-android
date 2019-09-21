@@ -10,28 +10,23 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.RankedPlayer
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.fragment_rankings.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionChangeListener,
         Refreshable, Searchable, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter()
 
-    private val viewModel by lazy {
-        viewModel(requireActivity()) { appComponent.rankingsViewModel }.value
-    }
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
+    private val viewModel: RankingsViewModel by sharedViewModel()
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         fun create() = RankingsFragment()
@@ -59,11 +54,6 @@ class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionCh
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

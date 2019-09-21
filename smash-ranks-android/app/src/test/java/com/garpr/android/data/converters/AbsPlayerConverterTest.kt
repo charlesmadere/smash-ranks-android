@@ -17,17 +17,15 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class AbsPlayerConverterTest : BaseTest() {
 
-    @Inject
-    protected lateinit var moshi: Moshi
+    protected val moshi: Moshi by inject()
 
     private lateinit var playerAdapter: JsonAdapter<AbsPlayer>
-
 
     companion object {
         private const val JSON_FAVORITE_PLAYER = "{\"region\":{\"endpoint\":\"gar_pr\",\"display_name\":\"Norcal\",\"id\":\"norcal\"},\"id\":\"583a4a15d2994e0577b05c74\",\"name\":\"mikkuz\"}"
@@ -72,7 +70,6 @@ class AbsPlayerConverterTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         playerAdapter = moshi.adapter(AbsPlayer::class.java)
     }

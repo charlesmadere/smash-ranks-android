@@ -8,13 +8,9 @@ import androidx.annotation.IdRes
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import com.garpr.android.dagger.AppComponent
 
 val View.activity: Activity?
     get() = context.activity
-
-val View.appComponent: AppComponent
-    get() = context.appComponent
 
 val View.fragmentManager: FragmentManager
     get() = requireFragmentActivity().supportFragmentManager

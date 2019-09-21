@@ -5,29 +5,24 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.data.models.AbsTournament
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_tournament.view.*
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class TournamentItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs), BaseAdapterView<AbsTournament>, View.OnClickListener {
+) : ConstraintLayout(context, attrs), BaseAdapterView<AbsTournament>, KoinComponent,
+        View.OnClickListener {
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val regionRepository: RegionRepository by inject()
 
     init {
         setOnClickListener(this)
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     private fun clear() {

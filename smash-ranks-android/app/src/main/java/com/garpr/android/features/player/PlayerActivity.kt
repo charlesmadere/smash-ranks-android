@@ -15,12 +15,10 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.StringItemView
 import com.garpr.android.features.headToHead.HeadToHeadActivity
@@ -31,7 +29,8 @@ import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_player.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListener,
         PlayerProfileItemView.Listeners, Refreshable, Searchable,
@@ -39,14 +38,10 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
 
     private val adapter = Adapter(this)
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
-    private val viewModel by viewModel(this) { appComponent.playerViewModel }
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var shareUtils: ShareUtils
-
+    private val viewModel: PlayerViewModel by viewModel()
+    protected val regionRepository: RegionRepository by inject()
+    protected val shareUtils: ShareUtils by inject()
 
     companion object {
         private const val TAG = "PlayerActivity"
@@ -124,7 +119,6 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         viewModel.initialize(regionRepository.getRegion(this), playerId)
         setContentView(R.layout.activity_player)
         initListeners()

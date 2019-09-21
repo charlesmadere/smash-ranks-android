@@ -6,7 +6,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.RankedPlayer
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.extensions.setTintedImageResource
@@ -17,8 +16,8 @@ import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_ranking.view.*
+import org.koin.core.inject
 import java.text.NumberFormat
-import javax.inject.Inject
 
 class RankingItemView @JvmOverloads constructor(
         context: Context,
@@ -28,23 +27,13 @@ class RankingItemView @JvmOverloads constructor(
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var previousRankUtils: PreviousRankUtils
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val previousRankUtils: PreviousRankUtils by inject()
+    protected val regionRepository: RegionRepository by inject()
 
     init {
         setOnClickListener(this)
         setOnLongClickListener(this)
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     override fun clear() {

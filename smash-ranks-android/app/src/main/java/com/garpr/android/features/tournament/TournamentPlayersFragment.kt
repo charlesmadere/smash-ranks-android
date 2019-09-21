@@ -8,22 +8,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.players.PlayerItemView
 import com.garpr.android.misc.ListLayout
 import kotlinx.android.synthetic.main.fragment_tournament_players.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TournamentPlayersFragment : BaseFragment(), ListLayout {
 
     private val adapter = Adapter()
 
-    private val viewModel by lazy {
-        viewModel(requireActivity()) { appComponent.tournamentViewModel }.value
-    }
-
+    private val viewModel: TournamentViewModel by viewModel()
 
     companion object {
         fun create(): TournamentPlayersFragment = TournamentPlayersFragment()

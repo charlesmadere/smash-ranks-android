@@ -20,7 +20,6 @@ class WinsLossesView @JvmOverloads constructor(
     private var hasAnimated = false
     private val numberFormat = NumberFormat.getIntegerInstance()
 
-
     init {
         if (isInEditMode) {
             hasAnimated = true

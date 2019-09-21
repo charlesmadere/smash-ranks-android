@@ -13,17 +13,15 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class AbsRegionConverterTest : BaseTest() {
 
-    @Inject
-    protected lateinit var moshi: Moshi
+    protected val moshi: Moshi by inject()
 
     private lateinit var regionAdapter: JsonAdapter<AbsRegion>
-
 
     companion object {
         private const val JSON_LITE_REGION = "{\"ranking_activity_day_limit\":90,\"display_name\":\"New Jersey\",\"id\":\"newjersey\",\"tournament_qualified_day_limit\":9999999}"
@@ -44,7 +42,6 @@ class AbsRegionConverterTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         regionAdapter = moshi.adapter(AbsRegion::class.java)
     }

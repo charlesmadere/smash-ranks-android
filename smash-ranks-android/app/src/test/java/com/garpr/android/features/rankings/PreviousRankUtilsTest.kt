@@ -4,18 +4,15 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankedPlayer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class PreviousRankUtilsTest : BaseTest() {
 
-    @Inject
-    protected lateinit var previousRankUtils: PreviousRankUtils
-
+    protected val previousRankUtils: PreviousRankUtils by inject()
 
     companion object {
         private val DECREASED_RANK = RankedPlayer(
@@ -57,12 +54,6 @@ class PreviousRankUtilsTest : BaseTest() {
                 name = "PewPewU",
                 id = "588852e8d2994e3bbfa52da7"
         )
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

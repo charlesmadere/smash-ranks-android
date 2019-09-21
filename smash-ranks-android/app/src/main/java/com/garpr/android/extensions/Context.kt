@@ -12,8 +12,6 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentActivity
-import com.garpr.android.dagger.AppComponent
-import com.garpr.android.dagger.AppComponentHandle
 
 val Context.activity: Activity?
     get() {
@@ -38,33 +36,6 @@ val Context.activity: Activity?
 
 val Context.activityManager: ActivityManager
     get() = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-
-val Context.appComponent: AppComponent
-    get() {
-        if (this is AppComponentHandle) {
-            return appComponent
-        }
-
-        if (this is ContextWrapper) {
-            var c = this
-
-            do {
-                c = (c as ContextWrapper).baseContext
-
-                if (c is AppComponentHandle) {
-                    return c.appComponent
-                }
-            } while (c is ContextWrapper)
-        }
-
-        val applicationContext = applicationContext
-
-        if (applicationContext is AppComponentHandle) {
-            return applicationContext.appComponent
-        }
-
-        throw RuntimeException("Context ($this) has no AppComponentHandle")
-    }
 
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

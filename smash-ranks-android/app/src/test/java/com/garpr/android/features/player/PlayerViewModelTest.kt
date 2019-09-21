@@ -30,9 +30,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import java.util.Date
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class PlayerViewModelTest : BaseTest() {
@@ -40,23 +40,12 @@ class PlayerViewModelTest : BaseTest() {
     private val playerMatchesRepository = PlayerMatchesRepositoryOverride()
     private lateinit var viewModel: PlayerViewModel
 
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    @Inject
-    protected lateinit var smashRosterStorage: SmashRosterStorage
-
-    @Inject
-    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
-
-    @Inject
-    protected lateinit var threadUtils: ThreadUtils
-
-    @Inject
-    protected lateinit var timber: Timber
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val identityRepository: IdentityRepository by inject()
+    protected val smashRosterStorage: SmashRosterStorage by inject()
+    protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
+    protected val threadUtils: ThreadUtils by inject()
+    protected val timber: Timber by inject()
 
     companion object {
         private const val CHARLEZARD_ID = "587a951dd2994e15c7dea9fe"
@@ -177,7 +166,6 @@ class PlayerViewModelTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         viewModel = PlayerViewModel(favoritePlayersRepository, identityRepository,
                 playerMatchesRepository, smashRosterStorage, smashRosterSyncManager,

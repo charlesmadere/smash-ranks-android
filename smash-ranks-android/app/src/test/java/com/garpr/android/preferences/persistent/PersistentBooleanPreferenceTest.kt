@@ -8,17 +8,15 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class PersistentBooleanPreferenceTest : BaseTest() {
 
+    protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
+
     private lateinit var keyValueStore: KeyValueStore
-
-    @Inject
-    protected lateinit var keyValueStoreProvider: KeyValueStoreProvider
-
 
     companion object {
         private const val TAG = "PersistentBooleanPreferenceTest"
@@ -27,7 +25,6 @@ class PersistentBooleanPreferenceTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }

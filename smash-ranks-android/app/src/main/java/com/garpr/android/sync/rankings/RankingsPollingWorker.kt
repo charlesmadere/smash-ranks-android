@@ -3,40 +3,26 @@ package com.garpr.android.sync.rankings
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.notifications.NotificationsManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.repositories.RegionRepository
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class RankingsPollingWorker(
         context: Context,
         workerParams: WorkerParameters
-) : Worker(context, workerParams) {
+) : Worker(context, workerParams), KoinComponent {
 
-    @Inject
-    protected lateinit var notificationsManager: NotificationsManager
-
-    @Inject
-    protected lateinit var rankingsNotificationsUtils: RankingsNotificationsUtils
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
-    @Inject
-    protected lateinit var serverApi: ServerApi
-
-    @Inject
-    protected lateinit var timber: Timber
-
+    protected val notificationsManager: NotificationsManager by inject()
+    protected val rankingsNotificationsUtils: RankingsNotificationsUtils by inject()
+    protected val regionRepository: RegionRepository by inject()
+    protected val serverApi: ServerApi by inject()
+    protected val timber: Timber by inject()
 
     companion object {
         private const val TAG = "RankingsPollingWorker"
-    }
-
-    init {
-        context.appComponent.inject(this)
     }
 
     override fun doWork(): Result {

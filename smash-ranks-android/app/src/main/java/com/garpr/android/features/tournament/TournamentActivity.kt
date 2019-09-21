@@ -11,18 +11,17 @@ import com.garpr.android.R
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_tournament.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener, Refreshable,
         Searchable, SwipeRefreshLayout.OnRefreshListener, TournamentTabsView.OnTabClickListener,
@@ -30,11 +29,9 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
 
     private val tournamentId: String by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
     private lateinit var adapter: TournamentFragmentPagerAdapter
-    private val viewModel by viewModel(this) { appComponent.tournamentViewModel }
 
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val regionRepository: RegionRepository by inject()
+    private val viewModel: TournamentViewModel by viewModel()
 
     companion object {
         private const val TAG = "TournamentActivity"
@@ -90,7 +87,6 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         viewModel.initialize(regionRepository.getRegion(this), tournamentId)
         setContentView(R.layout.activity_tournament)
         initListeners()

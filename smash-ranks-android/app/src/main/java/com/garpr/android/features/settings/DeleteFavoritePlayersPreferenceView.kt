@@ -6,23 +6,22 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.features.common.views.SimplePreferenceView
 import com.garpr.android.repositories.FavoritePlayersRepository
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.text.NumberFormat
-import javax.inject.Inject
 
 class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
-        FavoritePlayersRepository.OnFavoritePlayersChangeListener, View.OnClickListener {
+        FavoritePlayersRepository.OnFavoritePlayersChangeListener, KoinComponent,
+        View.OnClickListener {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
 
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
 
     init {
         titleText = context.getText(R.string.delete_all_favorite_players)
@@ -31,8 +30,6 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         if (isInEditMode) {
             descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
                     numberFormat.format(8))
-        } else {
-            appComponent.inject(this)
         }
     }
 

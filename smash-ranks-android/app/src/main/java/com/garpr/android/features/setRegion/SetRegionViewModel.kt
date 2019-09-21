@@ -12,9 +12,8 @@ import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionsRepository
 import java.util.Collections
-import javax.inject.Inject
 
-class SetRegionViewModel @Inject constructor(
+class SetRegionViewModel constructor(
         private val regionRepository: RegionRepository,
         private val regionsRepository: RegionsRepository,
         private val timber: Timber

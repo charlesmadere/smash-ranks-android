@@ -19,27 +19,21 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class RankingsNotificationsUtilsTest : BaseTest() {
 
-    @Inject
-    protected lateinit var _deviceUtils: DeviceUtils
-
-    @Inject
-    protected lateinit var moshi: Moshi
-
-    @Inject
-    protected lateinit var rankingsNotificationsUtils: RankingsNotificationsUtils
-
-    @Inject
-    protected lateinit var rankingsPollingPreferenceStore: RankingsPollingPreferenceStore
-
     private lateinit var rankingsBundle: RankingsBundle
-    private lateinit var deviceUtils: TestDeviceUtilsImpl
 
+    private val deviceUtils: TestDeviceUtilsImpl
+        get() = _deviceUtils as TestDeviceUtilsImpl
+
+    protected val _deviceUtils: DeviceUtils by inject()
+    protected val moshi: Moshi by inject()
+    protected val rankingsNotificationsUtils: RankingsNotificationsUtils by inject()
+    protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
 
     companion object {
         private const val RANKINGS_ID_1 = "5ae78567d2994e288f49cdc8"
@@ -52,8 +46,6 @@ class RankingsNotificationsUtilsTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
-        deviceUtils = _deviceUtils as TestDeviceUtilsImpl
 
         val rankingsBundleAdapter = moshi.adapter(RankingsBundle::class.java)
         rankingsBundle = rankingsBundleAdapter.requireFromJson(JSON_RANKINGS_BUNDLE)

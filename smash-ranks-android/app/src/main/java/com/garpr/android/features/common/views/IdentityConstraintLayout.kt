@@ -9,24 +9,22 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.IdentityRepository
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 abstract class IdentityConstraintLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : LifecycleConstraintLayout(context, attrs), IdentityRepository.OnIdentityChangeListener,
-        Refreshable {
+        KoinComponent, Refreshable {
 
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    private var originalBackground: Drawable? = null
     protected var identity: AbsPlayer? = null
+    private var originalBackground: Drawable? = null
     protected var identityId: String? = null
 
+    protected val identityRepository: IdentityRepository by inject()
 
     protected open fun clear() {
         identity = null
@@ -61,7 +59,6 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
         super.onFinishInflate()
 
         if (!isInEditMode) {
-            appComponent.inject(this)
             identityRepository.addListener(this)
         }
 

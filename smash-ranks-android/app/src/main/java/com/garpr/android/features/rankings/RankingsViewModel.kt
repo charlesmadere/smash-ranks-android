@@ -11,9 +11,8 @@ import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RankingsRepository
-import javax.inject.Inject
 
-class RankingsViewModel @Inject constructor(
+class RankingsViewModel(
         private val rankingsRepository: RankingsRepository,
         private val threadUtils: ThreadUtils,
         private val timber: Timber

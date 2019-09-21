@@ -19,9 +19,8 @@ import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.PlayerMatchesRepository
 import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
-import javax.inject.Inject
 
-class PlayerViewModel @Inject constructor(
+class PlayerViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityRepository: IdentityRepository,
         private val playerMatchesRepository: PlayerMatchesRepository,

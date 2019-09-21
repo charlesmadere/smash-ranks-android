@@ -8,21 +8,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class IdentityRepositoryTest : BaseTest() {
 
-    @Inject
-    protected lateinit var identityRepository: IdentityRepository
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val identityRepository: IdentityRepository by inject()
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         private val LITE_PLAYER = LitePlayer(
@@ -37,12 +32,6 @@ class IdentityRepositoryTest : BaseTest() {
                 rank = 3,
                 previousRank = 3
         )
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

@@ -4,28 +4,20 @@ import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.garpr.android.data.models.SmashRosterSyncResult
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.misc.Timber
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class SmashRosterSyncWorker(
         context: Context,
         workerParams: WorkerParameters
-) : Worker(context, workerParams) {
+) : Worker(context, workerParams), KoinComponent {
 
-    @Inject
-    protected lateinit var smashRosterSyncManager: SmashRosterSyncManager
-
-    @Inject
-    protected lateinit var timber: Timber
-
+    protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
+    protected val timber: Timber by inject()
 
     companion object {
         private const val TAG = "SmashRosterSyncWorker"
-    }
-
-    init {
-        context.appComponent.inject(this)
     }
 
     override fun doWork(): Result {

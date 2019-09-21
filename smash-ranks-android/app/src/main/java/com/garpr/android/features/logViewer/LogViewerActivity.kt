@@ -10,20 +10,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.extensions.viewModel
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Timber
 import kotlinx.android.synthetic.main.activity_log_viewer.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LogViewerActivity : BaseActivity(), LogViewerToolbar.Listener, Refreshable,
         SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter()
-    private val viewModel by viewModel(this) { appComponent.logViewerViewModel }
 
+    private val viewModel: LogViewerViewModel by viewModel()
 
     companion object {
         private const val TAG = "LogViewerActivity"

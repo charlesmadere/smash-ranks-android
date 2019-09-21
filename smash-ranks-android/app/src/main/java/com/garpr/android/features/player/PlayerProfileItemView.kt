@@ -10,19 +10,19 @@ import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.SmashCompetitor
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.common.views.LifecycleLinearLayout
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_player_profile.view.*
-import javax.inject.Inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class PlayerProfileItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleLinearLayout(context, attrs), ColorListener, Refreshable {
+) : LifecycleLinearLayout(context, attrs), ColorListener, KoinComponent, Refreshable {
 
     private var isFavorited: Boolean = false
     private var player: FullPlayer? = null
@@ -59,23 +59,14 @@ class PlayerProfileItemView @JvmOverloads constructor(
     private var presentation: PlayerProfileManager.Presentation? = null
     private var smashCompetitor: SmashCompetitor? = null
 
-    @Inject
-    protected lateinit var playerProfileManager: PlayerProfileManager
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
+    protected val playerProfileManager: PlayerProfileManager by inject()
+    protected val regionRepository: RegionRepository by inject()
 
     interface Listeners : ColorListener {
         fun onCompareClick(v: PlayerProfileItemView)
         fun onFavoriteOrUnfavoriteClick(v: PlayerProfileItemView)
         fun onShareClick(v: PlayerProfileItemView)
         fun onUrlClick(v: PlayerProfileItemView, url: String?)
-    }
-
-    init {
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     private fun applyPaletteToView(palette: Palette?, view: View?) {

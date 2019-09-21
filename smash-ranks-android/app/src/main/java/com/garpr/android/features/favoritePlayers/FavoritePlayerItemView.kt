@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.common.views.IdentityConstraintLayout
@@ -12,7 +11,7 @@ import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_favorite_player.view.*
-import javax.inject.Inject
+import org.koin.core.inject
 
 class FavoritePlayerItemView @JvmOverloads constructor(
         context: Context,
@@ -20,20 +19,12 @@ class FavoritePlayerItemView @JvmOverloads constructor(
 ) : IdentityConstraintLayout(context, attrs), BaseAdapterView<FavoritePlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
-    @Inject
-    protected lateinit var favoritePlayersRepository: FavoritePlayersRepository
-
-    @Inject
-    protected lateinit var regionRepository: RegionRepository
-
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val regionRepository: RegionRepository by inject()
 
     init {
         setOnClickListener(this)
         setOnLongClickListener(this)
-
-        if (!isInEditMode) {
-            appComponent.inject(this)
-        }
     }
 
     override fun identityIsSomeoneElse() {
