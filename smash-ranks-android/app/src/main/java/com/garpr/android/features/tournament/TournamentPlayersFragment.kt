@@ -13,13 +13,13 @@ import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.players.PlayerItemView
 import com.garpr.android.misc.ListLayout
 import kotlinx.android.synthetic.main.fragment_tournament_players.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class TournamentPlayersFragment : BaseFragment(), ListLayout {
 
     private val adapter = Adapter()
 
-    private val viewModel: TournamentViewModel by viewModel()
+    private val viewModel: TournamentViewModel by sharedViewModel()
 
     companion object {
         fun create(): TournamentPlayersFragment = TournamentPlayersFragment()
@@ -63,8 +63,6 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout {
         } else {
             if (state.playersSearchResults != null) {
                 adapter.set(state.playersSearchResults)
-            } else if (state.players.isNullOrEmpty()) {
-                adapter.clear()
             } else {
                 adapter.set(state.players)
             }

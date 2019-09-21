@@ -62,8 +62,6 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout {
         } else {
             if (state.matchesSearchResults != null) {
                 adapter.set(state.matchesSearchResults)
-            } else if (state.matches.isNullOrEmpty()) {
-                adapter.clear()
             } else {
                 adapter.set(state.matches)
             }
