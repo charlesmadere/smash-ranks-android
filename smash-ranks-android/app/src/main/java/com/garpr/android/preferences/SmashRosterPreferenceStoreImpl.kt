@@ -18,7 +18,7 @@ class SmashRosterPreferenceStoreImpl(
             true, keyValueStore) }
 
     override val pollFrequency by lazy { PersistentMoshiPreference("POLL_FREQUENCY",
-            PollFrequency.EVERY_10_DAYS, keyValueStore, moshi, PollFrequency::class.java) }
+            PollFrequency.EVERY_2_WEEKS, keyValueStore, moshi, PollFrequency::class.java) }
 
     override val syncResult by lazy { PersistentMoshiPreference<SmashRosterSyncResult>(
             "SYNC_RESULT", null, keyValueStore, moshi,
