@@ -15,17 +15,34 @@ import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.sync.rankings.RankingsPollingManager
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class RingtonePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), KoinComponent,
-        Preference.OnPreferenceChangeListener<Uri>, View.OnClickListener {
+) : SimplePreferenceView(context, attrs), KoinComponent, View.OnClickListener {
 
+    protected val rankingsPollingManager: RankingsPollingManager by inject()
     protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
     protected val timber: Timber by inject()
+
+    private val enabledChangeListener = object : Preference.OnPreferenceChangeListener<Boolean> {
+        override fun onPreferenceChange(preference: Preference<Boolean>) {
+            if (isAlive) {
+                refresh()
+            }
+        }
+    }
+
+    private val ringtoneChangeListener = object : Preference.OnPreferenceChangeListener<Uri> {
+        override fun onPreferenceChange(preference: Preference<Uri>) {
+            if (isAlive) {
+                refresh()
+            }
+        }
+    }
 
     companion object {
         private const val TAG = "RingtonePreferenceView"
@@ -57,7 +74,8 @@ class RingtonePreferenceView @JvmOverloads constructor(
             return
         }
 
-        rankingsPollingPreferenceStore.ringtone.addListener(this)
+        rankingsPollingPreferenceStore.enabled.addListener(enabledChangeListener)
+        rankingsPollingPreferenceStore.ringtone.addListener(ringtoneChangeListener)
         refresh()
     }
 
@@ -81,20 +99,14 @@ class RingtonePreferenceView @JvmOverloads constructor(
             }
         } catch (e: ActivityNotFoundException) {
             timber.e(TAG, "Unable to start ringtone picker Activity", e)
-            Toast.makeText(context, R.string.unable_to_launch_ringtone_picker, Toast.LENGTH_LONG)
-                    .show()
+            Toast.makeText(context, R.string.unable_to_launch_ringtone_picker, Toast.LENGTH_LONG).show()
         }
     }
 
     override fun onDetachedFromWindow() {
-        rankingsPollingPreferenceStore.ringtone.removeListener(this)
+        rankingsPollingPreferenceStore.enabled.removeListener(enabledChangeListener)
+        rankingsPollingPreferenceStore.ringtone.removeListener(ringtoneChangeListener)
         super.onDetachedFromWindow()
-    }
-
-    override fun onPreferenceChange(preference: Preference<Uri>) {
-        if (isAlive) {
-            refresh()
-        }
     }
 
     override fun refresh() {
@@ -109,6 +121,8 @@ class RingtonePreferenceView @JvmOverloads constructor(
         } else {
             ringtone.getTitle(context)
         }
+
+        isEnabled = rankingsPollingManager.isEnabled
     }
 
 }

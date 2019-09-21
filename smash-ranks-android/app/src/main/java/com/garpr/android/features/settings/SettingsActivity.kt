@@ -11,6 +11,7 @@ import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.logViewer.LogViewerActivity
 import com.garpr.android.misc.Constants
+import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.preferences.Preference
@@ -22,7 +23,7 @@ import com.garpr.android.sync.rankings.RankingsPollingManager
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.koin.android.ext.android.inject
 
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : BaseActivity(), Refreshable {
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val identityRepository: IdentityRepository by inject()
@@ -132,7 +133,7 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
-    private fun refresh() {
+    override fun refresh() {
         regionPreference.refresh()
         themePreference.refresh()
         identityPreference.refresh()
@@ -145,6 +146,16 @@ class SettingsActivity : BaseActivity() {
         mustBeOnWifiPreference.refresh()
         mustBeChargingPreference.refresh()
         lastPollPreference.refresh()
+
+        if (rankingsPollingManager.isEnabled) {
+            vibratePreference.isEnabled = true
+            mustBeOnWifiPreference.isEnabled = true
+            mustBeChargingPreference.isEnabled = true
+        } else {
+            vibratePreference.isEnabled = false
+            mustBeOnWifiPreference.isEnabled = false
+            mustBeChargingPreference.isEnabled = false
+        }
 
         smashRosterPreference.refresh()
     }

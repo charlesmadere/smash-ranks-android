@@ -18,10 +18,26 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, KoinComponent,
-        Preference.OnPreferenceChangeListener<PollFrequency>, View.OnClickListener {
+        View.OnClickListener {
 
     protected val rankingsPollingManager: RankingsPollingManager by inject()
     protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
+
+    private val enabledChangeListener = object : Preference.OnPreferenceChangeListener<Boolean> {
+        override fun onPreferenceChange(preference: Preference<Boolean>) {
+            if (isAlive) {
+                refresh()
+            }
+        }
+    }
+
+    private val pollFrequencyChangeListener = object : Preference.OnPreferenceChangeListener<PollFrequency> {
+        override fun onPreferenceChange(preference: Preference<PollFrequency>) {
+            if (isAlive) {
+                refresh()
+            }
+        }
+    }
 
     init {
         titleText = context.getText(R.string.poll_frequency)
@@ -39,7 +55,8 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
             return
         }
 
-        rankingsPollingPreferenceStore.pollFrequency.addListener(this)
+        rankingsPollingPreferenceStore.enabled.addListener(enabledChangeListener)
+        rankingsPollingPreferenceStore.pollFrequency.addListener(pollFrequencyChangeListener)
         refresh()
     }
 
@@ -73,14 +90,9 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        rankingsPollingPreferenceStore.pollFrequency.removeListener(this)
+        rankingsPollingPreferenceStore.enabled.removeListener(enabledChangeListener)
+        rankingsPollingPreferenceStore.pollFrequency.removeListener(pollFrequencyChangeListener)
         super.onDetachedFromWindow()
-    }
-
-    override fun onPreferenceChange(preference: Preference<PollFrequency>) {
-        if (isAlive) {
-            refresh()
-        }
     }
 
     override fun refresh() {
@@ -88,6 +100,7 @@ class RankingsPollingPollFrequencyPreferenceView @JvmOverloads constructor(
 
         val pollFrequency = rankingsPollingManager.pollFrequency
         descriptionText = context.getText(pollFrequency.textResId)
+        isEnabled = rankingsPollingManager.isEnabled
     }
 
 }
