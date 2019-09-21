@@ -172,7 +172,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         toolbar.isActivityRequirementsVisible = state.showActivityRequirements
         toolbar.isShowYourselfVisible = state.showYourself
-        toolbar.showSearchIcon = state.showSearch
+        toolbar.showSearchIcon = if (toolbar.isSearchFieldExpanded) false else state.showSearch
     }
 
     override fun search(query: String?) {
