@@ -36,7 +36,7 @@
         android:textColor="@color/lose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/winnerName"
+        app:layout_constraintStart_toEndOf="@+id/winnerName"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="gaR" />
 

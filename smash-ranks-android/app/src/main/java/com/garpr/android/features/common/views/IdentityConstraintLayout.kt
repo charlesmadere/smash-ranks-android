@@ -20,11 +20,21 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
 ) : LifecycleConstraintLayout(context, attrs), IdentityRepository.OnIdentityChangeListener,
         KoinComponent, Refreshable {
 
+    private val originalBackground: Drawable?
+
     protected var identity: AbsPlayer? = null
-    private var originalBackground: Drawable? = null
     protected var identityId: String? = null
 
     protected val identityRepository: IdentityRepository by inject()
+
+    init {
+        if (!isInEditMode) {
+            @Suppress("LeakingThis")
+            identityRepository.addListener(this)
+        }
+
+        originalBackground = background
+    }
 
     protected open fun clear() {
         identity = null
@@ -48,21 +58,12 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
         }
 
         identityRepository.addListener(this)
+        refresh()
     }
 
     override fun onDetachedFromWindow() {
         identityRepository.removeListener(this)
         super.onDetachedFromWindow()
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        if (!isInEditMode) {
-            identityRepository.addListener(this)
-        }
-
-        originalBackground = background
     }
 
     override fun onIdentityChange(identityRepository: IdentityRepository) {
