@@ -2,9 +2,7 @@ package com.garpr.android.features.common.views
 
 import android.content.Context
 import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
@@ -16,6 +14,7 @@ import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.hideKeyboard
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requestFocusAndOpenKeyboard
+import com.garpr.android.misc.AbstractTextWatcher
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
@@ -24,7 +23,7 @@ import kotlinx.android.synthetic.main.search_toolbar_items.view.*
 open class SearchToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : GarToolbar(context, attrs), SearchQueryHandle, TextView.OnEditorActionListener, TextWatcher {
+) : GarToolbar(context, attrs), SearchQueryHandle {
 
     val isSearchFieldExpanded: Boolean
         get() = searchField.visibility == View.VISIBLE
@@ -44,6 +43,21 @@ open class SearchToolbar @JvmOverloads constructor(
         openSearchField()
     }
 
+    private val searchFieldActionListener = TextView.OnEditorActionListener { v, actionId, event ->
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            (activity as? Searchable?)?.search(searchQuery?.toString())
+            activity?.hideKeyboard()
+        }
+
+        false
+    }
+
+    private val searchFieldTextWatcher = object : AbstractTextWatcher() {
+        override fun afterTextChanged(s: Editable?) {
+            (activity as? Searchable?)?.search(searchQuery?.toString())
+        }
+    }
+
     init {
         layoutInflater.inflate(R.layout.search_toolbar_items, menuExpansionContainer)
         searchIcon.setOnClickListener(searchIconClickListener)
@@ -56,19 +70,8 @@ open class SearchToolbar @JvmOverloads constructor(
 
         ta.recycle()
 
-        @Suppress("LeakingThis")
-        searchField.addTextChangedListener(this)
-
-        @Suppress("LeakingThis")
-        searchField.setOnEditorActionListener(this)
-    }
-
-    override fun afterTextChanged(s: Editable?) {
-        (activity as? Searchable?)?.search(searchQuery?.toString())
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        // intentionally empty
+        searchField.addTextChangedListener(searchFieldTextWatcher)
+        searchField.setOnEditorActionListener(searchFieldActionListener)
     }
 
     fun closeSearchField() {
@@ -91,15 +94,6 @@ open class SearchToolbar @JvmOverloads constructor(
         showTitleContainer = true
     }
 
-    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            (activity as? Searchable?)?.search(searchQuery?.toString())
-            activity?.hideKeyboard()
-        }
-
-        return false
-    }
-
     protected open fun onOpenSearchField() {
         showTitleContainer = false
         showSearchIcon = false
@@ -118,10 +112,6 @@ open class SearchToolbar @JvmOverloads constructor(
         if (!isSearchFieldExpanded) {
             onOpenSearchField()
         }
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        // intentionally empty
     }
 
     override fun upNavigate() {
