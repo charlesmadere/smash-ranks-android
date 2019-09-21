@@ -2,8 +2,6 @@ package com.garpr.android.koin
 
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.DeviceUtilsImpl
-import com.garpr.android.misc.Schedulers
-import com.garpr.android.misc.SchedulersImpl
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.ThreadUtilsImpl
 import com.garpr.android.wrappers.CrashlyticsWrapper
