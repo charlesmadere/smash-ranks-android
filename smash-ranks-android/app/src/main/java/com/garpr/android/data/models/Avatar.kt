@@ -27,13 +27,13 @@ data class Avatar(
     }
 
     val largeButFallbackToMediumThenOriginalThenSmall: String?
-        get() = if (large?.isNotBlank() == true) {
+        get() = if (!large.isNullOrBlank()) {
                     large
-                } else if (medium?.isNotBlank() == true) {
+                } else if (!medium.isNullOrBlank()) {
                     medium
-                } else if (original?.isNotBlank() == true) {
+                } else if (!original.isNullOrBlank()) {
                     original
-                } else if (small?.isNotBlank() == true) {
+                } else if (!small.isNullOrBlank()) {
                    small
                 } else {
                     null
