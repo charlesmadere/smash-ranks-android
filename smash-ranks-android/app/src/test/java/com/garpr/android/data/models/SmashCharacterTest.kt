@@ -88,6 +88,7 @@ class SmashCharacterTest : BaseTest() {
         private const val JSON_SNAKE = "\"snk\""
         private const val JSON_SQUIRTLE = "\"sqt\""
         private const val JSON_SONIC = "\"snc\""
+        private const val JSON_TERRY_BOGARD = "\"tbg\""
         private const val JSON_TOON_LINK = "\"tlk\""
         private const val JSON_VILLAGER = "\"vlg\""
         private const val JSON_WARIO = "\"war\""
@@ -524,6 +525,12 @@ class SmashCharacterTest : BaseTest() {
     fun testSquirtle() {
         assertEquals(JSON_SQUIRTLE, smashCharacterAdapter.toJson(SmashCharacter.SQUIRTLE))
         assertEquals(SmashCharacter.SQUIRTLE, smashCharacterAdapter.fromJson(JSON_SQUIRTLE))
+    }
+
+    @Test
+    fun testTerryBogard() {
+        assertEquals(JSON_TERRY_BOGARD, smashCharacterAdapter.toJson(SmashCharacter.TERRY_BOGARD))
+        assertEquals(SmashCharacter.TERRY_BOGARD, smashCharacterAdapter.fromJson(JSON_TERRY_BOGARD))
     }
 
     @Test

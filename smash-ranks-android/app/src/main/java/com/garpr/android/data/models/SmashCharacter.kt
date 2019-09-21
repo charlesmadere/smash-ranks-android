@@ -221,6 +221,9 @@ enum class SmashCharacter(
     @Json(name = "sqt")
     SQUIRTLE(R.string.squirtle),
 
+    @Json(name = "tbg")
+    TERRY_BOGARD(R.string.terry_bogard),
+
     @Json(name = "tlk")
     TOON_LINK(R.string.toon_link),
 
