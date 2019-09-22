@@ -13,6 +13,16 @@ class TimberImpl(
     private val maxSize: Int = if (deviceUtils.hasLowRam) 64 else 256
     private val _entries: MutableList<Timber.Entry> = LinkedList()
 
+    override val entries: List<Timber.Entry>
+        get() {
+            val list = mutableListOf<Timber.Entry>()
+
+            synchronized (_entries) {
+                list.addAll(_entries)
+            }
+
+            return Collections.unmodifiableList(list)
+        }
 
     private fun addEntry(entry: Timber.Entry) {
         synchronized (_entries) {
@@ -47,17 +57,6 @@ class TimberImpl(
             crashlyticsWrapper.logException(tr)
         }
     }
-
-    override val entries: List<Timber.Entry>
-        get() {
-            val list = mutableListOf<Timber.Entry>()
-
-            synchronized (_entries) {
-                list.addAll(_entries)
-            }
-
-            return Collections.unmodifiableList(list)
-        }
 
     override fun w(tag: String, msg: String, tr: Throwable?) {
         addEntry(Timber.WarnEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))

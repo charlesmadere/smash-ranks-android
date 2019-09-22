@@ -6,16 +6,15 @@ import com.garpr.android.R
 
 interface Timber {
 
+    val entries: List<Entry>
+
     fun clearEntries()
 
     fun d(tag: String, msg: String, tr: Throwable? = null)
 
     fun e(tag: String, msg: String, tr: Throwable? = null)
 
-    val entries: List<Entry>
-
     fun w(tag: String, msg: String, tr: Throwable? = null)
-
 
     abstract class Entry protected constructor(
             @AttrRes val color: Int,
