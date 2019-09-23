@@ -1,18 +1,18 @@
 package com.garpr.android.misc
 
-import android.app.Application
+import android.content.Context
 import androidx.core.app.ActivityManagerCompat
 import com.garpr.android.extensions.activityManager
 import com.garpr.android.extensions.connectivityManager
 
 class DeviceUtilsImpl(
-        private val application: Application
+        private val context: Context
 ) : DeviceUtils {
 
     override val hasLowRam: Boolean
-        get() = ActivityManagerCompat.isLowRamDevice(application.activityManager)
+        get() = ActivityManagerCompat.isLowRamDevice(context.activityManager)
 
     override val hasNetworkConnection: Boolean
-        get() = application.connectivityManager.activeNetworkInfo?.isConnected == true
+        get() = context.connectivityManager.activeNetworkInfo?.isConnected == true
 
 }

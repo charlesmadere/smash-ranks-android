@@ -1,6 +1,6 @@
 package com.garpr.android.wrappers
 
-import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.work.Configuration
 import androidx.work.WorkManager
@@ -9,12 +9,12 @@ import com.garpr.android.BuildConfig
 import com.garpr.android.misc.ThreadUtils
 
 class WorkManagerWrapperImpl(
-        private val application: Application,
+        private val context: Context,
         private val threadUtils: ThreadUtils
 ) : WorkManagerWrapper {
 
     private val workManager: WorkManager
-        get() = WorkManager.getInstance(application)
+        get() = WorkManager.getInstance(context)
 
     override val configuration: Configuration
         get() = Configuration.Builder()

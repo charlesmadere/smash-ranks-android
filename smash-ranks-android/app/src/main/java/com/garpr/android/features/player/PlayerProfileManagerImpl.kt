@@ -1,6 +1,6 @@
 package com.garpr.android.features.player
 
-import android.app.Application
+import android.content.Context
 import android.text.TextUtils
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsRegion
@@ -12,7 +12,7 @@ import com.garpr.android.misc.Constants
 import com.garpr.android.repositories.IdentityRepository
 
 class PlayerProfileManagerImpl(
-        private val application: Application,
+        private val context: Context,
         private val identityRepository: IdentityRepository,
         private val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper
 ) : PlayerProfileManager {
@@ -26,19 +26,22 @@ class PlayerProfileManagerImpl(
 
         player.ratings?.get(region.id)?.let { rating ->
             presentation = presentation.copy(
-                    rating = application.getString(R.string.rating_x, rating.rating.truncate()),
-                    unadjustedRating = application.getString(R.string.unadjusted_x_y,
-                            rating.mu.truncate(), rating.sigma.truncate())
+                    rating = context.getString(R.string.rating_x, rating.rating.truncate()),
+                    unadjustedRating = context.getString(
+                            R.string.unadjusted_x_y,
+                            rating.mu.truncate(),
+                            rating.sigma.truncate()
+                    )
             )
         }
 
         val uniqueAliases = player.uniqueAliases
         if (!uniqueAliases.isNullOrEmpty()) {
             presentation = presentation.copy(
-                    aliases = application.resources.getQuantityString(
+                    aliases = context.resources.getQuantityString(
                             R.plurals.aliases_x,
                             uniqueAliases.size,
-                            TextUtils.join(application.getText(R.string.delimiter), uniqueAliases)
+                            TextUtils.join(context.getText(R.string.delimiter), uniqueAliases)
                     )
             )
         }
@@ -64,14 +67,14 @@ class PlayerProfileManagerImpl(
         val filteredMains = competitor.filteredMains
         if (!filteredMains.isNullOrEmpty()) {
             val mainsStrings = filteredMains.map { main ->
-                application.getString(main.textResId)
+                context.getString(main.textResId)
             }
 
             presentation = presentation.copy(
-                    mains = application.resources.getQuantityString(
+                    mains = context.resources.getQuantityString(
                             R.plurals.mains_x,
                             filteredMains.size,
-                            TextUtils.join(application.getText(R.string.delimiter), mainsStrings)
+                            TextUtils.join(context.getText(R.string.delimiter), mainsStrings)
                     )
             )
         }

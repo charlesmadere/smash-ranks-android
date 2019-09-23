@@ -1,6 +1,6 @@
 package com.garpr.android.features.home
 
-import android.app.Application
+import android.content.Context
 import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -16,7 +16,7 @@ import kotlin.reflect.jvm.isAccessible
 @RunWith(RobolectricTestRunner::class)
 class HomeActivityTest : BaseTest() {
 
-    protected val application: Application by inject()
+    protected val context: Context by inject()
 
     companion object {
         private val EXTRA_INITIAL_POSITION: String by lazy {
@@ -30,7 +30,7 @@ class HomeActivityTest : BaseTest() {
     @Test
     fun testGetLaunchIntentWithInitialPosition() {
         val intent = HomeActivity.getLaunchIntent(
-                context = application,
+                context = context,
                 initialPosition = HomeTab.TOURNAMENTS
         )
         assertTrue(intent.hasExtra(EXTRA_INITIAL_POSITION))
@@ -40,7 +40,7 @@ class HomeActivityTest : BaseTest() {
     @Test
     fun testGetLaunchIntentWithInitialPositionAndRestartActivityTask() {
         val intent = HomeActivity.getLaunchIntent(
-                context = application,
+                context = context,
                 initialPosition = HomeTab.FAVORITE_PLAYERS,
                 restartActivityTask = true
         )
@@ -50,7 +50,7 @@ class HomeActivityTest : BaseTest() {
 
     @Test
     fun testGetLaunchIntentWithNoInitialPosition() {
-        val intent = HomeActivity.getLaunchIntent(application)
+        val intent = HomeActivity.getLaunchIntent(context)
         assertFalse(intent.hasExtra(EXTRA_INITIAL_POSITION))
         assertNull(intent.getParcelableExtra(EXTRA_INITIAL_POSITION))
     }

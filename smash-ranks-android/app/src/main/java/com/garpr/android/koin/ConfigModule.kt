@@ -10,14 +10,15 @@ import com.garpr.android.wrappers.FacebookFrescoWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
 import com.garpr.android.wrappers.WorkManagerWrapperImpl
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val configModule = module {
 
-    single<CrashlyticsWrapper> { CrashlyticsWrapperImpl(get()) }
-    single<DeviceUtils> { DeviceUtilsImpl(get()) }
-    single<ImageLibraryWrapper> { FacebookFrescoWrapper(get(), get(), get()) }
+    single<CrashlyticsWrapper> { CrashlyticsWrapperImpl(androidContext()) }
+    single<DeviceUtils> { DeviceUtilsImpl(androidContext()) }
+    single<ImageLibraryWrapper> { FacebookFrescoWrapper(androidContext(), get(), get()) }
     single<ThreadUtils> { ThreadUtilsImpl(get()) }
-    single<WorkManagerWrapper> { WorkManagerWrapperImpl(get(), get()) }
+    single<WorkManagerWrapper> { WorkManagerWrapperImpl(androidContext(), get()) }
 
 }

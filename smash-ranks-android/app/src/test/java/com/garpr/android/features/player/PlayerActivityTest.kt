@@ -1,6 +1,6 @@
 package com.garpr.android.features.player
 
-import android.app.Application
+import android.content.Context
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
@@ -22,7 +22,7 @@ import kotlin.reflect.jvm.isAccessible
 @RunWith(RobolectricTestRunner::class)
 class PlayerActivityTest : BaseTest() {
 
-    protected val application: Application by inject()
+    protected val context: Context by inject()
 
     companion object {
         private val EXTRA_PLAYER_ID: String by lazy {
@@ -59,7 +59,7 @@ class PlayerActivityTest : BaseTest() {
     @Test
     fun testGetLaunchIntentWithAbsPlayer() {
         val intent = PlayerActivity.getLaunchIntent(
-                context = application,
+                context = context,
                 player = ABS_PLAYER
         )
 
@@ -73,7 +73,7 @@ class PlayerActivityTest : BaseTest() {
     @Test
     fun testGetLaunchIntentWithAbsPlayerAndRegion() {
         val intent = PlayerActivity.getLaunchIntent(
-                context = application,
+                context = context,
                 player = ABS_PLAYER,
                 region = NORCAL
         )
@@ -88,7 +88,7 @@ class PlayerActivityTest : BaseTest() {
     @Test
     fun testGetLaunchIntentWithFavPlayer() {
         val intent = PlayerActivity.getLaunchIntent(
-                context = application,
+                context = context,
                 player = FAV_PLAYER
         )
 
@@ -102,7 +102,7 @@ class PlayerActivityTest : BaseTest() {
     @Test
     fun testGetLaunchIntentWithFavPlayerAndRegion() {
         val intent = PlayerActivity.getLaunchIntent(
-                context = application,
+                context = context,
                 player = FAV_PLAYER,
                 region = NYC
         )
@@ -117,7 +117,7 @@ class PlayerActivityTest : BaseTest() {
     @Test
     fun testGetLaunchIntentWithPlayerId() {
         val intent = PlayerActivity.getLaunchIntent(
-                context = application,
+                context = context,
                 playerId = ABS_PLAYER.id
         )
 
@@ -131,7 +131,7 @@ class PlayerActivityTest : BaseTest() {
     @Test
     fun testGetLaunchIntentWithPlayerIdAndRegion() {
         val intent = PlayerActivity.getLaunchIntent(
-                context = application,
+                context = context,
                 playerId = ABS_PLAYER.id,
                 region = NORCAL
         )

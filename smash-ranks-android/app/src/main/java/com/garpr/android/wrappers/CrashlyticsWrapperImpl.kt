@@ -1,16 +1,15 @@
 package com.garpr.android.wrappers
 
-import android.app.Application
+import android.content.Context
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import io.fabric.sdk.android.Fabric
 
 class CrashlyticsWrapperImpl(
-        private val application: Application
+        private val context: Context
 ) : CrashlyticsWrapper {
 
     private lateinit var crashlytics: Crashlytics
-
 
     override fun initialize(disabled: Boolean) {
         val crashlyticsCore = CrashlyticsCore.Builder()
@@ -21,7 +20,7 @@ class CrashlyticsWrapperImpl(
                 .core(crashlyticsCore)
                 .build()
 
-        Fabric.with(application, crashlytics)
+        Fabric.with(context, crashlytics)
         this.crashlytics = Crashlytics.getInstance()
     }
 

@@ -1,6 +1,6 @@
 package com.garpr.android.repositories
 
-import android.app.Application
+import android.content.Context
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
@@ -15,7 +15,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class RegionRepositoryTest : BaseTest() {
 
-    protected val application: Application by inject()
+    protected val context: Context by inject()
     protected val regionRepository: RegionRepository by inject()
 
     companion object {
@@ -87,7 +87,7 @@ class RegionRepositoryTest : BaseTest() {
 
     @Test
     fun testGetRegionWithContext() {
-        assertNotNull(regionRepository.getRegion(application))
+        assertNotNull(regionRepository.getRegion(context))
     }
 
     @Test

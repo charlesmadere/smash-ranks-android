@@ -1,6 +1,6 @@
 package com.garpr.android.features.tournaments
 
-import android.app.Application
+import android.content.Context
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
@@ -17,7 +17,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class TournamentsActivityTest : BaseTest() {
 
-    protected val application: Application by inject()
+    protected val context: Context by inject()
 
     companion object {
         private val GOOGLE_MTV = Region(
@@ -29,14 +29,19 @@ class TournamentsActivityTest : BaseTest() {
 
     @Test
     fun testGetLaunchIntentWithNoRegion() {
-        val intent = TournamentsActivity.getLaunchIntent(application)
+        val intent = TournamentsActivity.getLaunchIntent(
+                context = context
+        )
         assertFalse(intent.hasExtra(BaseActivity.EXTRA_REGION))
         assertNull(intent.getParcelableExtra(BaseActivity.EXTRA_REGION))
     }
 
     @Test
     fun testGetLaunchIntentWithRegion() {
-        val intent = TournamentsActivity.getLaunchIntent(application, GOOGLE_MTV)
+        val intent = TournamentsActivity.getLaunchIntent(
+                context = context,
+                region = GOOGLE_MTV
+        )
         assertTrue(intent.hasExtra(BaseActivity.EXTRA_REGION))
         assertEquals(GOOGLE_MTV, intent.getParcelableExtra(BaseActivity.EXTRA_REGION))
     }
