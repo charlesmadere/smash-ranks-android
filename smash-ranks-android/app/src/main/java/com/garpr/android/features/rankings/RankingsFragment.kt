@@ -26,6 +26,7 @@ class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionCh
     private val adapter = Adapter()
 
     private val viewModel: RankingsViewModel by sharedViewModel()
+
     protected val regionRepository: RegionRepository by inject()
 
     companion object {

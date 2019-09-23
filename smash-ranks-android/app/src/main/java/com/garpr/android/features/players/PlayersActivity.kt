@@ -27,7 +27,8 @@ class PlayersActivity : BaseActivity(), Refreshable, Searchable,
 
     private val adapter = Adapter()
 
-    protected val viewModel: PlayersViewModel by viewModel()
+    private val viewModel: PlayersViewModel by viewModel()
+
     protected val regionRepository: RegionRepository by inject()
 
     companion object {

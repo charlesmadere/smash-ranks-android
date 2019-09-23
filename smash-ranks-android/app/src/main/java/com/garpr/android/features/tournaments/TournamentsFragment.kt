@@ -24,8 +24,9 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
 
     private val adapter = Adapter()
 
-    protected val regionRepository: RegionRepository by inject()
     private val viewModel: TournamentsViewModel by sharedViewModel()
+
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         fun create() = TournamentsFragment()

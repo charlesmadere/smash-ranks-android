@@ -15,8 +15,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragment() {
 
-    private val viewModel: AddOrRemovePlayerFromFavoritesViewModel by viewModel()
     private val player by lazy { arguments.requireParcelable<FavoritePlayer>(KEY_PLAYER) }
+
+    private val viewModel: AddOrRemovePlayerFromFavoritesViewModel by viewModel()
 
     private val addPlayerClickListener = View.OnClickListener {
         viewModel.addToFavorites()
