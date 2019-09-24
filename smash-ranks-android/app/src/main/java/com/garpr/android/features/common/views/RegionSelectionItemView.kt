@@ -14,7 +14,6 @@ class RegionSelectionItemView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs), BaseAdapterView<Pair<Region, Boolean>>, View.OnClickListener {
 
     var onClickListener: OnClickListener? = null
-
     private var _region: Region? = null
 
     val region: Region

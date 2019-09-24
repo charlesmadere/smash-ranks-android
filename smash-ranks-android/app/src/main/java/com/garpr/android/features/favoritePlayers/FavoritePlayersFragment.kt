@@ -11,14 +11,16 @@ import com.garpr.android.R
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import kotlinx.android.synthetic.main.fragment_favorite_players.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class FavoritePlayersFragment : BaseFragment(), ListLayout, Refreshable {
+class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners, ListLayout,
+        Refreshable {
 
-    private val adapter = Adapter()
+    private val adapter = Adapter(this)
 
     private val viewModel: FavoritePlayersViewModel by sharedViewModel()
 
@@ -47,10 +49,19 @@ class FavoritePlayersFragment : BaseFragment(), ListLayout, Refreshable {
         recyclerView.adapter = adapter
     }
 
+    override fun onClick(v: FavoritePlayerItemView) {
+        val player = v.favoritePlayer
+        startActivity(PlayerActivity.getLaunchIntent(requireContext(), player, player.region))
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_favorite_players, container, false)
+    }
+
+    override fun onLongClick(v: FavoritePlayerItemView) {
+        viewModel.onFavoritePlayerLongClick(childFragmentManager, v.favoritePlayer)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,7 +93,9 @@ class FavoritePlayersFragment : BaseFragment(), ListLayout, Refreshable {
         }
     }
 
-    private class Adapter : RecyclerView.Adapter<FavoritePlayerViewHolder>() {
+    private class Adapter(
+            private val favoritePlayerListeners: FavoritePlayerItemView.Listeners
+    ) : RecyclerView.Adapter<FavoritePlayerViewHolder>() {
 
         private val list = mutableListOf<FavoritePlayer>()
 
@@ -109,8 +122,10 @@ class FavoritePlayersFragment : BaseFragment(), ListLayout, Refreshable {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritePlayerViewHolder {
             val inflater = parent.layoutInflater
-            return FavoritePlayerViewHolder(inflater.inflate(R.layout.item_favorite_player, parent,
-                    false))
+            val viewHolder = FavoritePlayerViewHolder(inflater.inflate(
+                    R.layout.item_favorite_player, parent, false))
+            viewHolder.favoritePlayerItemView.listeners = favoritePlayerListeners
+            return viewHolder
         }
 
         internal fun set(list: List<FavoritePlayer>?) {

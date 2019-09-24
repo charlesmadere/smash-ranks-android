@@ -4,14 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.common.views.IdentityConstraintLayout
-import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_favorite_player.view.*
-import org.koin.core.inject
 
 class FavoritePlayerItemView @JvmOverloads constructor(
         context: Context,
@@ -19,8 +14,15 @@ class FavoritePlayerItemView @JvmOverloads constructor(
 ) : IdentityConstraintLayout(context, attrs), BaseAdapterView<FavoritePlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
-    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
-    protected val regionRepository: RegionRepository by inject()
+    val favoritePlayer: FavoritePlayer
+        get() = requireNotNull(identity as FavoritePlayer)
+
+    var listeners: Listeners? = null
+
+    interface Listeners {
+        fun onClick(v: FavoritePlayerItemView)
+        fun onLongClick(v: FavoritePlayerItemView)
+    }
 
     init {
         setOnClickListener(this)
@@ -38,14 +40,12 @@ class FavoritePlayerItemView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        val identity = this.identity ?: return
-        context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
-                (identity as FavoritePlayer).region))
+        listeners?.onClick(this)
     }
 
     override fun onLongClick(v: View): Boolean {
-        return favoritePlayersRepository.showAddOrRemovePlayerDialog(fragmentManager, identity,
-                regionRepository.getRegion(context))
+        listeners?.onLongClick(this)
+        return true
     }
 
     override fun setContent(content: FavoritePlayer) {

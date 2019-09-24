@@ -1,6 +1,7 @@
 package com.garpr.android.features.favoritePlayers
 
 import androidx.annotation.WorkerThread
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
@@ -43,6 +44,10 @@ class FavoritePlayersViewModel(
 
     override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
         fetchFavoritePlayers()
+    }
+
+    fun onFavoritePlayerLongClick(fragmentManager: FragmentManager, player: FavoritePlayer) {
+        favoritePlayersRepository.showAddOrRemovePlayerDialog(fragmentManager, player, player.region)
     }
 
     override fun search(query: String?) {
