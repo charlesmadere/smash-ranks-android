@@ -14,7 +14,7 @@ enum class NightMode constructor(
 ) : Parcelable {
 
     @Json(name = "auto")
-    AUTO(R.string.auto, AppCompatDelegate.MODE_NIGHT_AUTO),
+    AUTO(R.string.auto, AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
 
     @Json(name = "night_no")
     NIGHT_NO(R.string.day, AppCompatDelegate.MODE_NIGHT_NO),
