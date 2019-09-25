@@ -53,9 +53,7 @@ class NightModeRepositoryImpl(
     }
 
     override var nightMode: NightMode
-        get() {
-            return requireNotNull(generalPreferenceStore.nightMode.get())
-        }
+        get() = requireNotNull(generalPreferenceStore.nightMode.get())
         set(value) {
             timber.d(TAG, "Theme was \"${generalPreferenceStore.nightMode.get()}\"," +
                     " is now being changed to \"$value\".")
