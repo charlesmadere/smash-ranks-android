@@ -26,20 +26,22 @@ import kotlinx.android.synthetic.main.activity_head_to_head.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRefreshListener {
+class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Refreshable,
+        SwipeRefreshLayout.OnRefreshListener {
 
-    private val adapter = Adapter()
+    private val adapter = Adapter(this)
     private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     private val viewModel: HeadToHeadViewModel by viewModel()
+
     protected val regionRepository: RegionRepository by inject()
 
     companion object {
         private const val TAG = "HeadToHeadActivity"
         private val CNAME = HeadToHeadActivity::class.java.canonicalName
-        private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
         private val EXTRA_OPPONENT_ID = "$CNAME.OpponentId"
+        private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
 
         fun getLaunchIntent(context: Context, player: AbsPlayer, opponent: AbsPlayer,
                 region: Region? = null): Intent {
@@ -89,6 +91,11 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
         })
     }
 
+    override fun onClick(v: HeadToHeadMatchItemView) {
+        val dialog = HeadToHeadDialogFragment.create(v.headToHeadMatch)
+        dialog.show(supportFragmentManager, HeadToHeadDialogFragment.TAG)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_head_to_head)
@@ -133,7 +140,9 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
         refreshLayout.isRefreshing = state.isFetching
     }
 
-    private class Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private class Adapter(
+            private val headToHeadMatchListener: HeadToHeadMatchItemView.Listener
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val list = mutableListOf<HeadToHeadViewModel.ListItem>()
 
@@ -148,15 +157,18 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
             setHasStableIds(true)
         }
 
-        private fun bindMatchViewHolder(holder: MatchViewHolder, item: HeadToHeadViewModel.ListItem.Match) {
+        private fun bindMatchViewHolder(holder: HeadToHeadMatchViewHolder,
+                item: HeadToHeadViewModel.ListItem.Match) {
             holder.headToHeadMatchItemView.setContent(item.match)
         }
 
-        private fun bindTournamentViewHolder(holder: TournamentViewHolder, item: HeadToHeadViewModel.ListItem.Tournament) {
+        private fun bindTournamentViewHolder(holder: TournamentViewHolder,
+                item: HeadToHeadViewModel.ListItem.Tournament) {
             holder.tournamentDividerView.tournament = item.tournament
         }
 
-        private fun bindWinsLossesViewHolder(holder: WinsLossesViewHolder, item: HeadToHeadViewModel.ListItem.WinsLosses) {
+        private fun bindWinsLossesViewHolder(holder: WinsLossesViewHolder,
+                item: HeadToHeadViewModel.ListItem.WinsLosses) {
             holder.winsLossesView.setContent(item.winsLosses)
         }
 
@@ -185,7 +197,7 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
                 is HeadToHeadViewModel.ListItem.Match -> bindMatchViewHolder(
-                        holder as MatchViewHolder, item)
+                        holder as HeadToHeadMatchViewHolder, item)
                 is HeadToHeadViewModel.ListItem.NoMatches -> { /* intentionally empty */ }
                 is HeadToHeadViewModel.ListItem.Tournament -> bindTournamentViewHolder(
                         holder as TournamentViewHolder, item)
@@ -199,8 +211,8 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
             val inflater = parent.layoutInflater
 
             return when (viewType) {
-                VIEW_TYPE_MATCH -> MatchViewHolder(inflater.inflate(
-                        R.layout.item_head_to_head_match, parent, false))
+                VIEW_TYPE_MATCH -> HeadToHeadMatchViewHolder(headToHeadMatchListener,
+                        inflater.inflate(R.layout.item_head_to_head_match, parent, false))
                 VIEW_TYPE_NO_MATCHES -> NoMatchesViewHolder(
                         parent.resources.getString(R.string.no_matches),
                         inflater.inflate(R.layout.item_string, parent, false))
@@ -224,8 +236,15 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
 
     }
 
-    private class MatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class HeadToHeadMatchViewHolder(
+            headToHeadMatchListener: HeadToHeadMatchItemView.Listener,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         internal val headToHeadMatchItemView: HeadToHeadMatchItemView = itemView as HeadToHeadMatchItemView
+
+        init {
+            headToHeadMatchItemView.listener = headToHeadMatchListener
+        }
     }
 
     private class NoMatchesViewHolder(

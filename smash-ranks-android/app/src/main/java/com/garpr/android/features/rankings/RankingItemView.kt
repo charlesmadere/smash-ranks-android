@@ -7,14 +7,10 @@ import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.extensions.clear
-import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.extensions.setTintedImageResource
 import com.garpr.android.extensions.truncate
 import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.common.views.IdentityConstraintLayout
-import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_ranking.view.*
 import org.koin.core.inject
 import java.text.NumberFormat
@@ -25,11 +21,18 @@ class RankingItemView @JvmOverloads constructor(
 ) : IdentityConstraintLayout(context, attrs), BaseAdapterView<RankedPlayer>,
         View.OnClickListener, View.OnLongClickListener {
 
+    var listeners: Listeners? = null
     private val numberFormat = NumberFormat.getIntegerInstance()
 
-    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    val rankedPlayer: RankedPlayer
+        get() = requireNotNull(identity as RankedPlayer)
+
     protected val previousRankUtils: PreviousRankUtils by inject()
-    protected val regionRepository: RegionRepository by inject()
+
+    interface Listeners {
+        fun onClick(v: RankingItemView)
+        fun onLongClick(v: RankingItemView)
+    }
 
     init {
         setOnClickListener(this)
@@ -55,14 +58,12 @@ class RankingItemView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        val identity = this.identity ?: return
-        context.startActivity(PlayerActivity.getLaunchIntent(context, identity,
-                regionRepository.getRegion(context)))
+        listeners?.onClick(this)
     }
 
     override fun onLongClick(v: View): Boolean {
-        return favoritePlayersRepository.showAddOrRemovePlayerDialog(fragmentManager, identity,
-                regionRepository.getRegion(context))
+        listeners?.onLongClick(this)
+        return true
     }
 
     override fun refresh() {

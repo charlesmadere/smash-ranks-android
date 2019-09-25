@@ -34,9 +34,9 @@ class TournamentMatchItemView @JvmOverloads constructor(
     }
 
     override fun clear() {
+        super.clear()
         loserName.clear()
         winnerName.clear()
-        super.clear()
     }
 
     private var match: FullTournament.Match? = null

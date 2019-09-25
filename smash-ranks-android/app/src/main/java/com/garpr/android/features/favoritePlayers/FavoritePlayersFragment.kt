@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.garpr.android.R
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.fragment_favorite_players.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners, ListLayout,
@@ -23,6 +26,8 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
     private val adapter = Adapter(this)
 
     private val viewModel: FavoritePlayersViewModel by sharedViewModel()
+
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         fun create() = FavoritePlayersFragment()
@@ -61,7 +66,8 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
     }
 
     override fun onLongClick(v: FavoritePlayerItemView) {
-        viewModel.onFavoritePlayerLongClick(childFragmentManager, v.favoritePlayer)
+        childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.favoritePlayer,
+                regionRepository.getRegion(requireContext()))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

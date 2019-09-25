@@ -1,11 +1,9 @@
 package com.garpr.android.repositories
 
-import androidx.fragment.app.FragmentManager
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.requireFromJson
-import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.repositories.FavoritePlayersRepository.OnFavoritePlayersChangeListener
@@ -25,7 +23,6 @@ class FavoritePlayersRepositoryImpl(
     }
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnFavoritePlayersChangeListener>>()
-
 
     companion object {
         private const val TAG = "FavoritePlayersRepositoryImpl"
@@ -142,19 +139,6 @@ class FavoritePlayersRepositoryImpl(
         timber.d(TAG, "Removing favorite (there are currently $size)")
         keyValueStore.remove(playerId)
         notifyListeners()
-    }
-
-    override fun showAddOrRemovePlayerDialog(fragmentManager: FragmentManager, player: AbsPlayer?,
-            region: Region): Boolean {
-        if (player == null) {
-            return false
-        }
-
-        val favoritePlayer = FavoritePlayer(player.id, player.name, region)
-        val dialog = AddOrRemovePlayerFromFavoritesDialogFragment.create(favoritePlayer)
-        dialog.show(fragmentManager, AddOrRemovePlayerFromFavoritesDialogFragment.TAG)
-
-        return true
     }
 
     override val size: Int

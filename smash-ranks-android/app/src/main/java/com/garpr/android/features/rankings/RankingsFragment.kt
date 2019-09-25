@@ -11,7 +11,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.extensions.layoutInflater
+import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
@@ -20,10 +22,11 @@ import kotlinx.android.synthetic.main.fragment_rankings.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionChangeListener,
-        Refreshable, Searchable, SwipeRefreshLayout.OnRefreshListener {
+class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
+        RegionRepository.OnRegionChangeListener, Refreshable, Searchable,
+        SwipeRefreshLayout.OnRefreshListener {
 
-    private val adapter = Adapter()
+    private val adapter = Adapter(this)
 
     private val viewModel: RankingsViewModel by sharedViewModel()
 
@@ -57,6 +60,16 @@ class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionCh
         recyclerView.adapter = adapter
     }
 
+    override fun onClick(v: RankingItemView) {
+        val intent = PlayerActivity.getLaunchIntent(
+                context = requireContext(),
+                player = v.rankedPlayer,
+                region = regionRepository.getRegion(requireContext())
+        )
+
+        startActivity(intent)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -66,6 +79,11 @@ class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionCh
     override fun onDestroyView() {
         regionRepository.removeListener(this)
         super.onDestroyView()
+    }
+
+    override fun onLongClick(v: RankingItemView) {
+        childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.rankedPlayer,
+                regionRepository.getRegion(requireContext()))
     }
 
     override fun onRefresh() {
@@ -129,7 +147,9 @@ class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionCh
         recyclerView.visibility = View.VISIBLE
     }
 
-    private class Adapter : RecyclerView.Adapter<RankingViewHolder>() {
+    private class Adapter(
+            private val rankingItemListeners: RankingItemView.Listeners
+    ) : RecyclerView.Adapter<RankingViewHolder>() {
 
         private val list = mutableListOf<RankedPlayer>()
 
@@ -156,8 +176,10 @@ class RankingsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionCh
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankingViewHolder {
             val inflater = parent.layoutInflater
-            return RankingViewHolder(inflater.inflate(R.layout.item_ranking, parent,
-                    false))
+            val viewHolder = RankingViewHolder(inflater.inflate(
+                    R.layout.item_ranking, parent, false))
+            viewHolder.rankingItemView.listeners = rankingItemListeners
+            return viewHolder
         }
 
         internal fun set(list: List<RankedPlayer>?) {

@@ -14,7 +14,9 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
+import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
@@ -22,10 +24,10 @@ import kotlinx.android.synthetic.main.activity_players.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayersActivity : BaseActivity(), Refreshable, Searchable,
+class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, Searchable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private val adapter = Adapter()
+    private val adapter = Adapter(this)
 
     private val viewModel: PlayersViewModel by viewModel()
 
@@ -60,11 +62,26 @@ class PlayersActivity : BaseActivity(), Refreshable, Searchable,
         }
     }
 
+    override fun onClick(v: PlayerItemView) {
+        val intent = PlayerActivity.getLaunchIntent(
+                context = this,
+                player = v.player,
+                region = regionRepository.getRegion(this)
+        )
+
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_players)
         initListeners()
         fetchPlayers()
+    }
+
+    override fun onLongClick(v: PlayerItemView) {
+        supportFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.player,
+                regionRepository.getRegion(this))
     }
 
     override fun onRefresh() {
@@ -119,7 +136,9 @@ class PlayersActivity : BaseActivity(), Refreshable, Searchable,
         viewModel.search(query)
     }
 
-    private class Adapter : RecyclerView.Adapter<PlayerViewHolder>() {
+    private class Adapter(
+            private val playerItemViewListeners: PlayerItemView.Listeners
+    ) : RecyclerView.Adapter<PlayerViewHolder>() {
 
         private val list = mutableListOf<AbsPlayer>()
 
@@ -141,13 +160,13 @@ class PlayersActivity : BaseActivity(), Refreshable, Searchable,
         }
 
         override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
-            holder.playerItemView.player = list[position]
+            holder.playerItemView.setContent(list[position])
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
             val inflater = parent.layoutInflater
-            return PlayerViewHolder(inflater.inflate(R.layout.item_player, parent,
-                    false))
+            return PlayerViewHolder(playerItemViewListeners,
+                    inflater.inflate(R.layout.item_player, parent, false))
         }
 
         internal fun set(list: List<AbsPlayer>?) {
@@ -162,8 +181,15 @@ class PlayersActivity : BaseActivity(), Refreshable, Searchable,
 
     }
 
-    private class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class PlayerViewHolder(
+            playerItemViewListeners: PlayerItemView.Listeners,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         internal val playerItemView: PlayerItemView = itemView as PlayerItemView
+
+        init {
+            playerItemView.listeners = playerItemViewListeners
+        }
     }
 
 }

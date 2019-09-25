@@ -18,6 +18,7 @@ import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
+import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.StringItemView
@@ -32,14 +33,15 @@ import kotlinx.android.synthetic.main.activity_player.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListener,
+class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         PlayerProfileItemView.Listeners, Refreshable, Searchable,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private val adapter = Adapter(this)
+    private val adapter = Adapter(this, this)
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     private val viewModel: PlayerViewModel by viewModel()
+
     protected val regionRepository: RegionRepository by inject()
     protected val shareUtils: ShareUtils by inject()
 
@@ -105,9 +107,16 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
 
     override fun onClick(v: MatchItemView) {
         val player = viewModel.player ?: return
-        val match = v.match ?: return
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, player, match,
-                regionRepository.getRegion(this)))
+        val match = v.match
+
+        val intent = HeadToHeadActivity.getLaunchIntent(
+                context = this,
+                player = player,
+                match = match,
+                region = regionRepository.getRegion(this)
+        )
+
+        startActivity(intent)
     }
 
     override fun onCompareClick(v: PlayerProfileItemView) {
@@ -127,6 +136,11 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
 
     override fun onFavoriteOrUnfavoriteClick(v: PlayerProfileItemView) {
         viewModel.addOrRemoveFromFavorites()
+    }
+
+    override fun onLongClick(v: MatchItemView) {
+        supportFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.match.opponent,
+                regionRepository.getRegion(this))
     }
 
     override fun onPaletteBuilt(palette: Palette?) {
@@ -202,7 +216,8 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
     }
 
     private class Adapter(
-            private val playerProfileItemViewListeners: PlayerProfileItemView.Listeners? = null
+            private val matchItemViewListeners: MatchItemView.Listeners,
+            private val playerProfileItemViewListeners: PlayerProfileItemView.Listeners
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var isFavorited: Boolean = false
@@ -221,8 +236,9 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
             setHasStableIds(true)
         }
 
-        private fun bindMatchViewHolder(holder: MatchViewHolder, item: PlayerViewModel.ListItem.Match) {
-            holder.matchItemView.match = item.match
+        private fun bindMatchViewHolder(holder: MatchViewHolder,
+                item: PlayerViewModel.ListItem.Match) {
+            holder.matchItemView.setContent(item.match)
         }
 
         private fun bindPlayerViewHolder(holder: PlayerViewHolder) {
@@ -230,7 +246,8 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
             holder.playerProfileItemView.setContent(isFavorited, player, smashCompetitor)
         }
 
-        private fun bindTournamentViewHolder(holder: TournamentViewHolder, item: PlayerViewModel.ListItem.Tournament) {
+        private fun bindTournamentViewHolder(holder: TournamentViewHolder,
+                item: PlayerViewModel.ListItem.Tournament) {
             holder.tournamentDividerView.tournament = item.tournament
         }
 
@@ -266,8 +283,8 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
             val inflater = parent.layoutInflater
 
             return when (viewType) {
-                VIEW_TYPE_MATCH -> MatchViewHolder(inflater.inflate(R.layout.item_match, parent,
-                        false))
+                VIEW_TYPE_MATCH -> MatchViewHolder(matchItemViewListeners,
+                        inflater.inflate(R.layout.item_match, parent, false))
                 VIEW_TYPE_NO_MATCHES -> NoMatchesViewHolder(
                         parent.context.getString(R.string.no_matches),
                         inflater.inflate(R.layout.item_string, parent, false))
@@ -296,8 +313,15 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
 
     }
 
-    private class MatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class MatchViewHolder(
+            matchItemViewListeners: MatchItemView.Listeners,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         internal val matchItemView: MatchItemView = itemView as MatchItemView
+
+        init {
+            matchItemView.listeners = matchItemViewListeners
+        }
     }
 
     private class NoMatchesViewHolder(
@@ -310,7 +334,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.OnClickListe
     }
 
     private class PlayerViewHolder(
-            playerProfileItemViewListeners: PlayerProfileItemView.Listeners?,
+            playerProfileItemViewListeners: PlayerProfileItemView.Listeners,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         internal val playerProfileItemView: PlayerProfileItemView = itemView as PlayerProfileItemView

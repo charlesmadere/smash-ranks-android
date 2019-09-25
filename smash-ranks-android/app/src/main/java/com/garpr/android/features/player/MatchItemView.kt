@@ -5,20 +5,18 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
-import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.clear
-import com.garpr.android.extensions.fragmentManager
 import com.garpr.android.extensions.getAttrColor
+import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.common.views.LifecycleFrameLayout
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_match.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -26,24 +24,35 @@ import org.koin.core.inject
 class MatchItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleFrameLayout(context, attrs), KoinComponent,
-        IdentityRepository.OnIdentityChangeListener, Refreshable, View.OnClickListener,
-        View.OnLongClickListener {
+) : LifecycleFrameLayout(context, attrs), BaseAdapterView<Match>,
+        IdentityRepository.OnIdentityChangeListener, KoinComponent, Refreshable,
+        View.OnClickListener, View.OnLongClickListener {
 
     private val originalBackground: Drawable? = background
 
-    var match: Match? = null
-        set(value) {
-            field = value
-            refresh()
-        }
+    @ColorInt
+    private val cardBackgroundColor: Int = ContextCompat.getColor(context, R.color.card_background)
 
-    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    @ColorInt
+    private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
+
+    @ColorInt
+    private val loseColor: Int = ContextCompat.getColor(context, R.color.lose)
+
+    @ColorInt
+    private val winColor: Int = ContextCompat.getColor(context, R.color.win)
+
+    var listeners: Listeners? = null
+    private var _match: Match? = null
+
+    val match: Match
+        get() = requireNotNull(_match)
+
     protected val identityRepository: IdentityRepository by inject()
-    protected val regionRepository: RegionRepository by inject()
 
-    interface OnClickListener {
+    interface Listeners {
         fun onClick(v: MatchItemView)
+        fun onLongClick(v: MatchItemView)
     }
 
     init {
@@ -63,16 +72,7 @@ class MatchItemView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        val match = this.match ?: return
-        val activity = this.activity
-
-        if (activity is OnClickListener) {
-            activity.onClick(this)
-        } else {
-            val opponent = match.opponent
-            context.startActivity(PlayerActivity.getLaunchIntent(context, opponent.id,
-                    regionRepository.getRegion(context)))
-        }
+        listeners?.onClick(this)
     }
 
     override fun onDetachedFromWindow() {
@@ -87,33 +87,38 @@ class MatchItemView @JvmOverloads constructor(
     }
 
     override fun onLongClick(v: View): Boolean {
-        return favoritePlayersRepository.showAddOrRemovePlayerDialog(fragmentManager,
-                match?.opponent, regionRepository.getRegion(context))
+        listeners?.onLongClick(this)
+        return true
     }
 
     override fun refresh() {
-        val match = this.match
-
-        if (identityRepository.isPlayer(match?.opponent)) {
-            name.typeface = Typeface.DEFAULT_BOLD
-            setBackgroundColor(ContextCompat.getColor(context, R.color.card_background))
-        } else {
-            name.typeface = Typeface.DEFAULT
-            ViewCompat.setBackground(this, originalBackground)
-        }
+        val match = _match
 
         if (match == null) {
             name.clear()
             return
         }
 
+        if (identityRepository.isPlayer(match.opponent)) {
+            name.typeface = Typeface.DEFAULT_BOLD
+            setBackgroundColor(cardBackgroundColor)
+        } else {
+            name.typeface = Typeface.DEFAULT
+            ViewCompat.setBackground(this, originalBackground)
+        }
+
         name.text = match.opponent.name
 
         name.setTextColor(when (match.result) {
-            MatchResult.EXCLUDED -> context.getAttrColor(android.R.attr.textColorSecondary)
-            MatchResult.LOSE -> ContextCompat.getColor(context, R.color.lose)
-            MatchResult.WIN -> ContextCompat.getColor(context, R.color.win)
+            MatchResult.EXCLUDED -> exclusionColor
+            MatchResult.LOSE -> loseColor
+            MatchResult.WIN -> winColor
         })
+    }
+
+    override fun setContent(content: Match) {
+        _match = content
+        refresh()
     }
 
 }
