@@ -39,7 +39,6 @@ abstract class IdentityConstraintLayout @JvmOverloads constructor(
     protected open fun clear() {
         identity = null
         identityId = null
-        refresh()
     }
 
     protected open fun identityIsSomeoneElse() {
