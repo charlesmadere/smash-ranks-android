@@ -23,7 +23,7 @@ val viewModelsModule = module {
     viewModel { DeepLinkViewModel(get(), get(), get()) }
     viewModel { FavoritePlayersViewModel(get(), get()) }
     viewModel { HeadToHeadViewModel(get(), get()) }
-    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get()) }
     viewModel { LogViewerViewModel(get(), get()) }
     viewModel { PlayerViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { PlayersViewModel(get(), get(), get()) }

@@ -7,37 +7,44 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 
 class HomeViewModel(
+        private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityRepository: IdentityRepository,
         rankingsPollingManager: RankingsPollingManager,
         smashRosterSyncManager: SmashRosterSyncManager
-) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener {
+) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
+        IdentityRepository.OnIdentityChangeListener {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
 
-    private var state: State = State(showYourself = identityRepository.hasIdentity)
+    private var state = State(
+            showYourself = identityRepository.hasIdentity
+    )
 
     val identity: FavoritePlayer?
         get() = identityRepository.identity
 
     init {
+        favoritePlayersRepository.addListener(this)
+        identityRepository.addListener(this)
         rankingsPollingManager.enableOrDisable()
         smashRosterSyncManager.enableOrDisable()
-        identityRepository.addListener(this)
     }
 
     override fun onCleared() {
+        favoritePlayersRepository.removeListener(this)
         identityRepository.removeListener(this)
         super.onCleared()
     }
 
-    fun onFavoritePlayersChange(favoritePlayers: List<FavoritePlayer>?) {
-        state = state.copy(hasFavoritePlayers = favoritePlayers?.isNotEmpty() == true)
+    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
+        state = state.copy(hasFavoritePlayers = !favoritePlayersRepository.isEmpty)
         refreshState()
     }
 

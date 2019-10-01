@@ -58,10 +58,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override val activityName = TAG
 
     private fun initListeners() {
-        favoritePlayersViewModel.stateLiveData.observe(this, Observer {
-            homeViewModel.onFavoritePlayersChange(it.favoritePlayers)
-        })
-
         homeViewModel.stateLiveData.observe(this, Observer {
             refreshState(it)
         })
