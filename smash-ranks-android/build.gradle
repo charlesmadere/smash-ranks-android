@@ -12,7 +12,7 @@ buildscript {
     ext.lifecycle_version = '2.1.0'
     ext.material_design_version = '1.0.0'
     ext.moshi_version = '1.8.0'
-    ext.okhttp_version = '4.2.0'
+    ext.okhttp_version = '4.2.1'
     ext.palette_version = '1.0.0'
     ext.recyclerview_version = '1.0.0'
     ext.retrofit_version = '2.6.2'
