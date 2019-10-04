@@ -15,8 +15,8 @@ import java.text.NumberFormat
 class ActivityRequirementsDialogFragment : BaseBottomSheetDialogFragment() {
 
     private val numberFormat = NumberFormat.getIntegerInstance()
-    private val rankingActivityDayLimit: Int? by lazy { arguments.optInt(KEY_RANKING_ACTIVITY_DAY_LIMIT) }
-    private val rankingNumTourneysAttended: Int? by lazy { arguments.optInt(KEY_RANKING_NUM_TOURNEYS_ATTENDED) }
+    private val rankingActivityDayLimit by lazy { arguments.optInt(KEY_RANKING_ACTIVITY_DAY_LIMIT) }
+    private val rankingNumTourneysAttended by lazy { arguments.optInt(KEY_RANKING_NUM_TOURNEYS_ATTENDED) }
     private val regionDisplayName by lazy { arguments.requireString(KEY_REGION_DISPLAY_NAME) }
 
     companion object {

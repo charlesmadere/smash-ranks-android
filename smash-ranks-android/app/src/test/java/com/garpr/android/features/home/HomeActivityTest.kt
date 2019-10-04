@@ -19,7 +19,7 @@ class HomeActivityTest : BaseTest() {
     protected val context: Context by inject()
 
     companion object {
-        private val EXTRA_INITIAL_POSITION: String by lazy {
+        private val EXTRA_INITIAL_POSITION by lazy {
             val c = HomeActivity.Companion::class
             val property = c.declaredMemberProperties.first { it.name == "EXTRA_INITIAL_POSITION" }
             property.isAccessible = true

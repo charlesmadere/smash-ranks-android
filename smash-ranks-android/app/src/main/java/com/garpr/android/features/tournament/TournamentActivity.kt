@@ -27,10 +27,11 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         Searchable, SwipeRefreshLayout.OnRefreshListener, TournamentTabsView.OnTabClickListener,
         ViewPager.OnPageChangeListener {
 
-    private val tournamentId: String by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
     private lateinit var adapter: TournamentFragmentPagerAdapter
+    private val tournamentId by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
 
     protected val regionRepository: RegionRepository by inject()
+
     private val viewModel: TournamentViewModel by viewModel()
 
     companion object {

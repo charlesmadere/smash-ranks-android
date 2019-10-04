@@ -30,8 +30,8 @@ class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Ref
         SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter(this)
-    private val opponentId: String by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
-    private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
+    private val opponentId by lazy { intent.requireStringExtra(EXTRA_OPPONENT_ID) }
+    private val playerId by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
 
     private val viewModel: HeadToHeadViewModel by viewModel()
 

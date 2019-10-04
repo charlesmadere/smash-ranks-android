@@ -25,7 +25,7 @@ class PlayerActivityTest : BaseTest() {
     protected val context: Context by inject()
 
     companion object {
-        private val EXTRA_PLAYER_ID: String by lazy {
+        private val EXTRA_PLAYER_ID by lazy {
             val c = PlayerActivity.Companion::class
             val property = c.declaredMemberProperties.first { it.name == "EXTRA_PLAYER_ID" }
             property.isAccessible = true

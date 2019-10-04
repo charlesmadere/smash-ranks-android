@@ -29,9 +29,10 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
 ) : SimpleDraweeView(context, attrs), Heartbeat, KoinComponent {
 
     var colorListener: ColorListener? = null
+    private val selfReference by lazy { WeakReference<View>(this) }
+
     protected val deviceUtils: DeviceUtils by inject()
     protected val threadUtils: ThreadUtils by inject()
-    private val selfReference by lazy { WeakReference<View>(this) }
 
     private val bitmapSubscriber = object : BaseBitmapDataSubscriber() {
         override fun onFailureImpl(dataSource: DataSource<CloseableReference<CloseableImage>>) {
