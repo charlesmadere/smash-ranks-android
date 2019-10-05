@@ -7,12 +7,15 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,6 +51,8 @@ class HomeViewModelTest : BaseTest() {
                 id = "6f1ed002ab5595859014ebf0951522d9",
                 region = "norcal"
         )
+
+        private val EMPTY_TOURNAMENTS_BUNDLE = TournamentsBundle()
     }
 
     @Before
@@ -75,6 +80,17 @@ class HomeViewModelTest : BaseTest() {
         favoritePlayersRepository.clear()
         assertEquals(false, state?.hasFavoritePlayers)
     }
+    
+    @Test
+     fun testIdentity() {
+        assertNull(viewModel.identity)
+
+        identityRepository.setIdentity(CHARLEZARD, NORCAL)
+        assertNotNull(viewModel.identity)
+
+        identityRepository.removeIdentity()
+        assertNull(viewModel.identity)
+    }
 
     @Test
     fun testOnRankingsBundleChangeWithEmptyRankingsBundle() {
@@ -85,13 +101,22 @@ class HomeViewModelTest : BaseTest() {
         }
 
         viewModel.onRankingsBundleChange(NORCAL, EMPTY_RANKINGS_BUNDLE)
-        assertEquals(false, state?.hasFavoritePlayers)
         assertEquals(false, state?.hasRankings)
-        assertEquals(false, state?.hasTournaments)
         assertEquals(false, state?.showActivityRequirements)
-        assertEquals(false, state?.showYourself)
         assertFalse(state?.subtitleDate.isNullOrBlank())
         assertFalse(state?.title.isNullOrBlank())
+    }
+
+    @Test
+    fun testOnTournamentBundleChange() {
+        var state: HomeViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.onTournamentsBundleChange(EMPTY_TOURNAMENTS_BUNDLE)
+        assertEquals(false, state?.hasTournaments)
     }
 
     @Test
