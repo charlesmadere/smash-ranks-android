@@ -17,6 +17,7 @@ import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
+import com.garpr.android.misc.ShareUtils
 import com.garpr.android.repositories.RegionRepository
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_tournament.*
@@ -24,13 +25,14 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener, Refreshable,
-        Searchable, SwipeRefreshLayout.OnRefreshListener, TournamentTabsView.OnTabClickListener,
-        ViewPager.OnPageChangeListener {
+        Searchable, SwipeRefreshLayout.OnRefreshListener, TournamentInfoView.Listeners,
+        TournamentTabsView.OnTabClickListener, ViewPager.OnPageChangeListener {
 
     private lateinit var adapter: TournamentFragmentPagerAdapter
     private val tournamentId by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
 
     protected val regionRepository: RegionRepository by inject()
+    protected val shareUtils: ShareUtils by inject()
 
     private val viewModel: TournamentViewModel by viewModel()
 
@@ -98,16 +100,8 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         checkNameAndDateViewScrollStates()
     }
 
-    override fun onRefresh() {
-        refresh()
-    }
-
-    override fun onTabClick(v: TournamentTabsView) {
-        if (viewPager.currentTab == tournamentTabsView.tournamentMode) {
-            adapter.onNavigationItemReselected(tournamentTabsView.tournamentMode)
-        } else {
-            viewPager.currentTab = tournamentTabsView.tournamentMode
-        }
+    override fun onOpenLinkClick(v: TournamentInfoView) {
+        shareUtils.openUrl(this, v.tournament.url)
     }
 
     override fun onPageScrollStateChanged(state: Int) {
@@ -122,10 +116,27 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         tournamentTabsView.tournamentMode = viewPager.currentTab
     }
 
+    override fun onRefresh() {
+        refresh()
+    }
+
+    override fun onShareClick(v: TournamentInfoView) {
+        shareUtils.shareTournament(this, v.tournament)
+    }
+
+    override fun onTabClick(v: TournamentTabsView) {
+        if (viewPager.currentTab == tournamentTabsView.tournamentMode) {
+            adapter.onNavigationItemReselected(tournamentTabsView.tournamentMode)
+        } else {
+            viewPager.currentTab = tournamentTabsView.tournamentMode
+        }
+    }
+
     override fun onViewsBound() {
         super.onViewsBound()
 
         appBarLayout.addOnOffsetChangedListener(this)
+        tournamentInfoView.listeners = this
         tournamentTabsView.onTabClickListener = this
         viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
         viewPager.addOnPageChangeListener(this)
@@ -143,14 +154,14 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         toolbar.showSearchIcon = state.showSearchIcon
 
         if (state.hasError) {
-            tournamentInfoView.tournament = null
+            tournamentInfoView.setContent(null)
             tournamentInfoView.visibility = View.GONE
             tournamentTabsView.visibility = View.GONE
             viewPager.visibility = View.GONE
             error.visibility = View.VISIBLE
         } else {
             error.visibility = View.GONE
-            tournamentInfoView.tournament = state.tournament
+            tournamentInfoView.setContent(state.tournament)
             tournamentInfoView.visibility = View.VISIBLE
             tournamentTabsView.visibility = View.VISIBLE
             viewPager.visibility = View.VISIBLE
