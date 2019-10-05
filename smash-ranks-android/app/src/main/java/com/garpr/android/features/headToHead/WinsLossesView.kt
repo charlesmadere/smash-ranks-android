@@ -18,7 +18,10 @@ class WinsLossesView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs), BaseAdapterView<WinsLosses> {
 
     private var hasAnimated = false
-    private val numberFormat = NumberFormat.getIntegerInstance()
+
+    companion object {
+        private val NUMBER_FORMAT = NumberFormat.getIntegerInstance()
+    }
 
     init {
         if (isInEditMode) {
@@ -40,10 +43,10 @@ class WinsLossesView @JvmOverloads constructor(
 
     override fun setContent(content: WinsLosses) {
         playerName.text = content.player.name
-        playerWins.text = numberFormat.format(content.playerWins)
+        playerWins.text = NUMBER_FORMAT.format(content.playerWins)
 
         opponentName.text = content.opponent.name
-        opponentWins.text = numberFormat.format(content.opponentWins)
+        opponentWins.text = NUMBER_FORMAT.format(content.opponentWins)
 
         winsLossesGraph.setContent(Pair(content, hasAnimated))
 

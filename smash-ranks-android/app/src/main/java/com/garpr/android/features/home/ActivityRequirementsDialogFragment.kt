@@ -14,12 +14,12 @@ import java.text.NumberFormat
 
 class ActivityRequirementsDialogFragment : BaseBottomSheetDialogFragment() {
 
-    private val numberFormat = NumberFormat.getIntegerInstance()
     private val rankingActivityDayLimit by lazy { arguments.optInt(KEY_RANKING_ACTIVITY_DAY_LIMIT) }
     private val rankingNumTourneysAttended by lazy { arguments.optInt(KEY_RANKING_NUM_TOURNEYS_ATTENDED) }
     private val regionDisplayName by lazy { arguments.requireString(KEY_REGION_DISPLAY_NAME) }
 
     companion object {
+        private val NUMBER_FORMAT = NumberFormat.getIntegerInstance()
         const val TAG = "ActivityRequirementsDialogFragment"
         private const val KEY_RANKING_ACTIVITY_DAY_LIMIT = "RankingActivityDayLimit"
         private const val KEY_RANKING_NUM_TOURNEYS_ATTENDED = "RankingNumTourneysAttended"
@@ -60,9 +60,9 @@ class ActivityRequirementsDialogFragment : BaseBottomSheetDialogFragment() {
         }
 
         val tournaments = resources.getQuantityString(R.plurals.x_tournaments,
-                rankingNumTourneysAttended, numberFormat.format(rankingNumTourneysAttended))
+                rankingNumTourneysAttended, NUMBER_FORMAT.format(rankingNumTourneysAttended))
         val days = resources.getQuantityString(R.plurals.x_days, rankingActivityDayLimit,
-                numberFormat.format(rankingActivityDayLimit))
+                NUMBER_FORMAT.format(rankingActivityDayLimit))
         dialogActivityRequirementsBody.text = getString(R.string.x_within_the_last_y, tournaments,
                 days)
     }

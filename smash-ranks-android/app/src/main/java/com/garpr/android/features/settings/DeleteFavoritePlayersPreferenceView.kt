@@ -19,9 +19,11 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         FavoritePlayersRepository.OnFavoritePlayersChangeListener, KoinComponent,
         View.OnClickListener {
 
-    private val numberFormat = NumberFormat.getIntegerInstance()
-
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+
+    companion object {
+        private val NUMBER_FORMAT = NumberFormat.getIntegerInstance()
+    }
 
     init {
         titleText = context.getText(R.string.delete_all_favorite_players)
@@ -29,7 +31,7 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
 
         if (isInEditMode) {
             descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
-                    numberFormat.format(8))
+                    NUMBER_FORMAT.format(8))
         }
     }
 
@@ -73,7 +75,7 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         val size = favoritePlayersRepository.size
         isEnabled = size != 0
         descriptionText = resources.getQuantityString(R.plurals.x_favorites, size,
-                numberFormat.format(size))
+                NUMBER_FORMAT.format(size))
     }
 
 }

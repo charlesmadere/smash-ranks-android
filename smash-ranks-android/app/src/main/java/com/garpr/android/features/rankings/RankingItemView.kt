@@ -22,16 +22,14 @@ class RankingItemView @JvmOverloads constructor(
         View.OnClickListener, View.OnLongClickListener {
 
     var listeners: Listeners? = null
-    private val numberFormat = NumberFormat.getIntegerInstance()
 
     val rankedPlayer: RankedPlayer
         get() = requireNotNull(identity as RankedPlayer)
 
     protected val previousRankUtils: PreviousRankUtils by inject()
 
-    interface Listeners {
-        fun onClick(v: RankingItemView)
-        fun onLongClick(v: RankingItemView)
+    companion object {
+        private val NUMBER_FORMAT = NumberFormat.getIntegerInstance()
     }
 
     init {
@@ -80,7 +78,7 @@ class RankingItemView @JvmOverloads constructor(
 
         if (rankInfo == null) {
             previousRankView.clear()
-            previousRankView.visibility = View.GONE
+            previousRankView.visibility = GONE
         } else {
             when (rankInfo) {
                 PreviousRankUtils.Info.DECREASE -> {
@@ -98,10 +96,10 @@ class RankingItemView @JvmOverloads constructor(
                 }
             }
 
-            previousRankView.visibility = View.VISIBLE
+            previousRankView.visibility = VISIBLE
         }
 
-        rank.text = numberFormat.format(player.rank)
+        rank.text = NUMBER_FORMAT.format(player.rank)
         name.text = player.name
         rating.text = player.rating.truncate()
     }
@@ -109,6 +107,11 @@ class RankingItemView @JvmOverloads constructor(
     override fun setContent(content: RankedPlayer) {
         identity = content
         refresh()
+    }
+
+    interface Listeners {
+        fun onClick(v: RankingItemView)
+        fun onLongClick(v: RankingItemView)
     }
 
 }

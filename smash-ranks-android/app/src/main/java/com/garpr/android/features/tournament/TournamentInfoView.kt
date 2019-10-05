@@ -23,8 +23,6 @@ class TournamentInfoView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs), KoinComponent {
 
-    private val numberFormat = NumberFormat.getIntegerInstance()
-
     protected val regionRepository: RegionRepository by inject()
     protected val shareUtils: ShareUtils by inject()
 
@@ -47,7 +45,7 @@ class TournamentInfoView @JvmOverloads constructor(
 
             val entrants = value.players?.size ?: 0
             entrantsCount.text = resources.getQuantityString(R.plurals.x_entrants, entrants,
-                    numberFormat.format(entrants))
+                    NUMBER_FORMAT.format(entrants))
 
             if (value.url.isNullOrBlank()) {
                 actionButtons.visibility = View.GONE
@@ -64,6 +62,10 @@ class TournamentInfoView @JvmOverloads constructor(
 
     val dateVerticalPositionInWindow: Int
         get() = date.verticalPositionInWindow
+
+    companion object {
+        private val NUMBER_FORMAT = NumberFormat.getIntegerInstance()
+    }
 
     init {
         orientation = VERTICAL
