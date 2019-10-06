@@ -14,7 +14,6 @@ import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
@@ -86,7 +85,7 @@ class HomeViewModelTest : BaseTest() {
         assertNull(viewModel.identity)
 
         identityRepository.setIdentity(CHARLEZARD, NORCAL)
-        assertNotNull(viewModel.identity)
+        assertEquals(CHARLEZARD, viewModel.identity)
 
         identityRepository.removeIdentity()
         assertNull(viewModel.identity)
