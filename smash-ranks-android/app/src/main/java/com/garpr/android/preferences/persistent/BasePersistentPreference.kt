@@ -6,7 +6,7 @@ import com.garpr.android.preferences.KeyValueStore
 abstract class BasePersistentPreference<T>(
         key: String,
         defaultValue: T?,
-        val keyValueStore: KeyValueStore
+        protected val keyValueStore: KeyValueStore
 ) : BasePreference<T>(
         key,
         defaultValue
