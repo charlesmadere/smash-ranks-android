@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationManagerCompat
-import androidx.fragment.app.FragmentActivity
 
 val Context.activity: Activity?
     get() {
@@ -39,9 +38,6 @@ val Context.activityManager: ActivityManager
 
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-val Context.fragmentActivity: FragmentActivity?
-    get() = activity as? FragmentActivity?
 
 @ColorInt
 @Throws(Resources.NotFoundException::class)
@@ -72,8 +68,4 @@ val Context.notificationManagerCompat: NotificationManagerCompat
 
 fun Context.requireActivity(): Activity {
     return activity ?: throw NullPointerException("Context ($this) is not attached to an Activity")
-}
-
-fun Context.requireFragmentActivity(): FragmentActivity {
-    return fragmentActivity ?: throw RuntimeException("Context ($this) is not attached to a FragmentActivity")
 }

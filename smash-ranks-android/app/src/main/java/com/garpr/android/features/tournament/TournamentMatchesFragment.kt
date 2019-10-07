@@ -14,9 +14,9 @@ import com.garpr.android.misc.ListLayout
 import kotlinx.android.synthetic.main.fragment_tournament_matches.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class TournamentMatchesFragment : BaseFragment(), ListLayout {
+class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchItemView.Listener {
 
-    private val adapter = Adapter()
+    private val adapter = Adapter(this)
 
     private val viewModel: TournamentViewModel by sharedViewModel()
 
@@ -39,6 +39,11 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout {
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
+    }
+
+    override fun onClick(v: TournamentMatchItemView) {
+        val dialog = TournamentMatchDialogFragment.create(v.match)
+        dialog.show(childFragmentManager, TournamentMatchDialogFragment.TAG)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +76,9 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout {
         }
     }
 
-    private class Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private class Adapter(
+            private val tournamentMatchItemViewListener: TournamentMatchItemView.Listener
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val list = mutableListOf<TournamentViewModel.MatchListItem>()
 
@@ -118,8 +125,13 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout {
             val inflater = parent.layoutInflater
 
             return when (viewType) {
-                VIEW_TYPE_MATCH -> TournamentMatchViewHolder(inflater.inflate(
-                        R.layout.item_tournament_match, parent, false))
+                VIEW_TYPE_MATCH -> {
+                    val viewHolder = TournamentMatchViewHolder(inflater.inflate(
+                            R.layout.item_tournament_match, parent, false))
+                    viewHolder.tournamentMatchItemView.listener = tournamentMatchItemViewListener
+                    viewHolder
+                }
+
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
         }

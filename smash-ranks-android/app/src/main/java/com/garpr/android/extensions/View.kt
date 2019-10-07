@@ -6,14 +6,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 
 val View.activity: Activity?
     get() = context.activity
-
-val View.fragmentManager: FragmentManager
-    get() = requireFragmentActivity().supportFragmentManager
 
 val View.inputMethodManager: InputMethodManager
     get() = context.inputMethodManager
@@ -28,10 +23,6 @@ fun View.requestFocusAndOpenKeyboard() {
 
 fun View.requireActivity(): Activity {
     return context.requireActivity()
-}
-
-fun View.requireFragmentActivity(): FragmentActivity {
-    return context.requireFragmentActivity()
 }
 
 fun <T : View> View.requireViewByIdCompat(@IdRes id: Int): T {
