@@ -148,7 +148,7 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
     }
 
     private class Adapter(
-            private val rankingItemListeners: RankingItemView.Listeners
+            private val rankingItemViewListeners: RankingItemView.Listeners
     ) : RecyclerView.Adapter<RankingViewHolder>() {
 
         private val list = mutableListOf<RankedPlayer>()
@@ -178,7 +178,7 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
             val inflater = parent.layoutInflater
             val viewHolder = RankingViewHolder(inflater.inflate(
                     R.layout.item_ranking, parent, false))
-            viewHolder.rankingItemView.listeners = rankingItemListeners
+            viewHolder.rankingItemView.listeners = rankingItemViewListeners
             return viewHolder
         }
 

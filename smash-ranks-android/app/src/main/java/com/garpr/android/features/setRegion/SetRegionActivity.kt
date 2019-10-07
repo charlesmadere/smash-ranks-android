@@ -26,8 +26,9 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
 
     private val adapter = Adapter(this)
 
-    protected val regionRepository: RegionRepository by inject()
     private val viewModel: SetRegionViewModel by viewModel()
+
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         private const val TAG = "SetRegionActivity"
