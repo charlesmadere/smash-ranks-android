@@ -16,7 +16,7 @@ buildscript {
     ext.palette_version = '1.0.0'
     ext.recyclerview_version = '1.0.0'
     ext.retrofit_version = '2.6.2'
-    ext.robolectric_version = '4.3'
+    ext.robolectric_version = '4.3.1'
     ext.rx_java_version = '2.2.13'
     ext.testcore_version = '1.2.0'
     ext.workmanager_version = '2.2.0'
