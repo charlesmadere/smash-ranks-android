@@ -71,7 +71,6 @@ class App : Application(), Configuration.Provider, NightModeRepository.OnNightMo
         timber.d(TAG, "App created", null)
 
         applyNightMode()
-
         imageLibraryWrapper.initialize()
         appUpgradeManager.upgradeApp()
     }
