@@ -79,7 +79,7 @@ class HomeViewModelTest : BaseTest() {
         favoritePlayersRepository.clear()
         assertEquals(false, state?.hasFavoritePlayers)
     }
-    
+
     @Test
      fun testIdentity() {
         assertNull(viewModel.identity)

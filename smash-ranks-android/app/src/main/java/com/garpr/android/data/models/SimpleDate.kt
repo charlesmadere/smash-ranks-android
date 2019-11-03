@@ -5,10 +5,12 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.format.DateUtils
 import com.garpr.android.extensions.createParcel
+import com.squareup.moshi.JsonClass
 import java.text.DateFormat
 import java.util.Comparator
 import java.util.Date
 
+@JsonClass(generateAdapter = false)
 data class SimpleDate(
         val date: Date = Date()
 ) : Parcelable {

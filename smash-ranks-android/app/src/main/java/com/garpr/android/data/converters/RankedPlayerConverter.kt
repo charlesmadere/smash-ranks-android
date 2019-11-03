@@ -18,7 +18,9 @@ object RankedPlayerConverter {
 
 
     @FromJson
-    fun fromJson(reader: JsonReader): RankedPlayer? {
+    fun fromJson(
+            reader: JsonReader
+    ): RankedPlayer? {
         val json = reader.readJsonValueMap() ?: return null
 
         val previousRank: Int? = if (PREVIOUS_RANK in json) {

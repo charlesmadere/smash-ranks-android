@@ -13,7 +13,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.Comparator
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = false)
 class Match(
         @Json(name = "result") result: MatchResult,
         @Json(name = "opponent") val opponent: AbsPlayer,

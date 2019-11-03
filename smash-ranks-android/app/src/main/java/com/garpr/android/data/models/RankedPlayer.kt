@@ -7,7 +7,9 @@ import com.garpr.android.extensions.readInteger
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeInteger
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = false)
 class RankedPlayer(
         @Json(name = "id") id: String,
         @Json(name = "name") name: String,
