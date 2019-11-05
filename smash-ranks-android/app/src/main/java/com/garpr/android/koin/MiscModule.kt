@@ -18,6 +18,7 @@ import com.garpr.android.misc.ShareUtilsImpl
 import com.garpr.android.misc.Timber
 import com.garpr.android.misc.TimberImpl
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.dsl.module
 
 val miscModule = module {
@@ -30,6 +31,7 @@ val miscModule = module {
                 .add(MatchConverter)
                 .add(RankedPlayerConverter)
                 .add(SimpleDateConverter)
+                .add(KotlinJsonAdapterFactory()) // this has to be at the end
                 .build()
     }
 
