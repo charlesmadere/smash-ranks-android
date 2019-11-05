@@ -26,6 +26,7 @@ class RegionsRepositoryImpl(
                 .subscribeOn(schedulers.background)
     }
 
+    @Throws(FailedToFetchRegionsException::class)
     private fun mergeResponses(garPr: RegionsBundle, notGarPr: RegionsBundle): RegionsBundle {
         val regionsSet = mutableSetOf<Region>()
         garPr.regions
