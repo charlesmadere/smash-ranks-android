@@ -47,7 +47,7 @@ class FavoritePlayersViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = search(query, state.favoritePlayers)
+            val results = search(query, favoritePlayersRepository.players)
             state = state.copy(searchResults = results)
         }
     }
