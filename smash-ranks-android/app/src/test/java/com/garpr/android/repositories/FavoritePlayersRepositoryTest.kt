@@ -20,7 +20,6 @@ class FavoritePlayersRepositoryTest : BaseTest() {
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val regionRepository: RegionRepository by inject()
 
-
     companion object {
         private val PLAYER_0: AbsPlayer = LitePlayer(
                 id = "583a4a15d2994e0577b05c74",
@@ -35,13 +34,13 @@ class FavoritePlayersRepositoryTest : BaseTest() {
 
     @Test
     fun testAbsPlayers() {
-        var absPlayers = favoritePlayersRepository.absPlayers
+        var absPlayers = favoritePlayersRepository.players
         assertTrue(absPlayers.isNullOrEmpty())
 
         favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
         favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
 
-        absPlayers = favoritePlayersRepository.absPlayers
+        absPlayers = favoritePlayersRepository.players
         assertNotNull(absPlayers)
         assertEquals(2, absPlayers?.size)
 
@@ -193,7 +192,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         var players = favoritePlayersRepository.players
         assertTrue(players.isNullOrEmpty())
 
-        var absPlayers = favoritePlayersRepository.absPlayers
+        var absPlayers = favoritePlayersRepository.players
         assertTrue(absPlayers.isNullOrEmpty())
 
         favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
@@ -201,7 +200,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertNotNull(players)
         assertEquals(1, players?.size)
 
-        absPlayers = favoritePlayersRepository.absPlayers
+        absPlayers = favoritePlayersRepository.players
         assertNotNull(absPlayers)
         assertEquals(1, absPlayers?.size)
 
@@ -210,7 +209,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertNotNull(players)
         assertEquals(2, players?.size)
 
-        absPlayers = favoritePlayersRepository.absPlayers
+        absPlayers = favoritePlayersRepository.players
         assertNotNull(absPlayers)
         assertEquals(2, absPlayers?.size)
 
@@ -219,7 +218,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertNotNull(players)
         assertEquals(2, players?.size)
 
-        absPlayers = favoritePlayersRepository.absPlayers
+        absPlayers = favoritePlayersRepository.players
         assertNotNull(absPlayers)
         assertEquals(2, absPlayers?.size)
 
@@ -228,7 +227,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         assertNotNull(players)
         assertEquals(1, players?.size)
 
-        absPlayers = favoritePlayersRepository.absPlayers
+        absPlayers = favoritePlayersRepository.players
         assertNotNull(absPlayers)
         assertEquals(1, absPlayers?.size)
 
@@ -236,7 +235,7 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         players = favoritePlayersRepository.players
         assertTrue(players.isNullOrEmpty())
 
-        absPlayers = favoritePlayersRepository.absPlayers
+        absPlayers = favoritePlayersRepository.players
         assertTrue(absPlayers.isNullOrEmpty())
     }
 

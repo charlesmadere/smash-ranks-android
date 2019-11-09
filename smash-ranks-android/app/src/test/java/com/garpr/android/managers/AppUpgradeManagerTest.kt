@@ -45,7 +45,7 @@ class AppUpgradeManagerTest : BaseTest() {
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertNull(favoritePlayersRepository.absPlayers)
+        assertNull(favoritePlayersRepository.players)
         assertFalse(identityRepository.hasIdentity)
     }
 
@@ -57,7 +57,7 @@ class AppUpgradeManagerTest : BaseTest() {
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertEquals(1, favoritePlayersRepository.absPlayers?.size ?: 0)
+        assertEquals(1, favoritePlayersRepository.players?.size ?: 0)
         assertTrue(identityRepository.hasIdentity)
     }
 
@@ -69,7 +69,7 @@ class AppUpgradeManagerTest : BaseTest() {
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertNull(favoritePlayersRepository.absPlayers)
+        assertNull(favoritePlayersRepository.players)
         assertFalse(identityRepository.hasIdentity)
     }
 

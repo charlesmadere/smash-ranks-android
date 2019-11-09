@@ -28,20 +28,6 @@ class FavoritePlayersRepositoryImpl(
         private const val TAG = "FavoritePlayersRepositoryImpl"
     }
 
-    override val absPlayers: List<AbsPlayer>?
-        get() {
-            val players = this.players
-
-            if (players.isNullOrEmpty()) {
-                return null
-            }
-
-            val list = mutableListOf<AbsPlayer>()
-            list.addAll(players)
-
-            return list
-        }
-
     override fun addListener(listener: OnFavoritePlayersChangeListener) {
         cleanListeners()
 

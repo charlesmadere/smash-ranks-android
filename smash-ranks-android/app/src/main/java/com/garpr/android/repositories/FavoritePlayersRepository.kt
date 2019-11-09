@@ -10,8 +10,6 @@ interface FavoritePlayersRepository {
         fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository)
     }
 
-    val absPlayers: List<AbsPlayer>?
-
     fun addListener(listener: OnFavoritePlayersChangeListener)
 
     fun addPlayer(player: AbsPlayer, region: Region)
