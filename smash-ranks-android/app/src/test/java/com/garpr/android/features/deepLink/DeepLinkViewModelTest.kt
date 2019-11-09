@@ -534,7 +534,7 @@ class DeepLinkViewModelTest : BaseTest() {
             val bundle = regionsBundle
 
             return if (bundle == null) {
-                Single.error(NullPointerException("regionsBundle is null"))
+                Single.error(NullPointerException())
             } else {
                 Single.just(bundle)
             }

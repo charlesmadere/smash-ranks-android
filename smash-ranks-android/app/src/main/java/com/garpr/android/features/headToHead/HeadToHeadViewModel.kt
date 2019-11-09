@@ -37,8 +37,12 @@ class HeadToHeadViewModel(
         }
 
         val list = mutableListOf<ListItem>()
-        list.add(ListItem.WinsLosses(WinsLosses(headToHead.player, headToHead.wins,
-                headToHead.opponent, headToHead.losses)))
+        list.add(ListItem.WinsLosses(WinsLosses(
+                player = headToHead.player,
+                playerWins = headToHead.wins,
+                opponent = headToHead.opponent,
+                opponentWins = headToHead.losses
+        )))
 
         if (headToHead.matches.isNullOrEmpty()) {
             list.add(ListItem.NoMatches)
