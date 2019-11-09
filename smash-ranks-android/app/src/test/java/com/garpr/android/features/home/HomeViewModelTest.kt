@@ -46,7 +46,7 @@ class HomeViewModelTest : BaseTest() {
 
         private val EMPTY_RANKINGS_BUNDLE = RankingsBundle(
                 rankingCriteria = NORCAL,
-                time = SimpleDate(Date(1569903086L)),
+                time = SimpleDate(Date(1477897200000L)),
                 id = "6f1ed002ab5595859014ebf0951522d9",
                 region = "norcal"
         )

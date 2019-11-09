@@ -71,19 +71,19 @@ class PlayerViewModelTest : BaseTest() {
         )
 
         private val TOURNAMENT_MADE_112: AbsTournament = LiteTournament(
-                date = SimpleDate(Date(1567148400000)),
+                date = SimpleDate(Date(1567148400000L)),
                 id = "5d6a1784d2994e1a9c3dd665",
                 name = "Melee @ the Made #112"
         )
 
         private val TOURNAMENT_PEOPLES_TUESDAYS_14: AbsTournament = LiteTournament(
-                date = SimpleDate(Date(1565679600000)),
+                date = SimpleDate(Date(1565679600000L)),
                 id = "5d53bd4ed2994e22acc95a92",
                 name = "The People's Tuesdays #14"
         )
 
         private val TOURNAMENT_PEOPLES_TUESDAYS_16: AbsTournament = LiteTournament(
-                date = SimpleDate(Date(1566889200000)),
+                date = SimpleDate(Date(1566889200000L)),
                 id = "5d661e33d2994e1a9c3dd64f",
                 name = "The People's Tuesdays #16"
         )
