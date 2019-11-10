@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
@@ -25,14 +26,10 @@
                 style="@style/RecyclerView.WithSections" />
 
             <com.garpr.android.features.common.views.NoContentLinearLayout
-                android:id="@+id/empty"
-                app:descriptionText="@string/head_to_head_swipe_to_refresh_and_check_again"
-                app:titleText="@string/no_head_to_head_data"
-                style="@style/NoContentLinearLayout.Empty" />
-
-            <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/error"
+                app:descriptionText="@string/error_loading_head_to_head_description"
                 app:titleText="@string/error_loading_head_to_head"
+                tools:visibility="visible"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>

@@ -75,18 +75,16 @@ class HeadToHeadViewModel(
                     val list = createList(it)
 
                     state = state.copy(
-                            isEmpty = list.isNullOrEmpty(),
+                            hasError = list.isNullOrEmpty(),
                             isFetching = false,
-                            hasError = false,
                             list = list
                     )
                 }, {
                     timber.e(TAG, "Error fetching head to head", it)
 
                     state = state.copy(
-                            isEmpty = false,
-                            isFetching = false,
                             hasError = true,
+                            isFetching = false,
                             list = null
                     )
                 }))
@@ -119,9 +117,8 @@ class HeadToHeadViewModel(
     }
 
     data class State(
-            val isEmpty: Boolean = false,
-            val isFetching: Boolean = false,
             val hasError: Boolean = false,
+            val isFetching: Boolean = false,
             val list: List<ListItem>? = null
     )
 

@@ -122,17 +122,10 @@ class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Ref
     private fun refreshState(state: HeadToHeadViewModel.State) {
         if (state.hasError) {
             adapter.clear()
-            empty.visibility = View.GONE
             recyclerView.visibility = View.GONE
             error.visibility = View.VISIBLE
-        } else if (state.isEmpty) {
-            adapter.clear()
-            error.visibility = View.GONE
-            recyclerView.visibility = View.GONE
-            empty.visibility = View.VISIBLE
         } else {
             adapter.set(state.list)
-            empty.visibility = View.GONE
             error.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }

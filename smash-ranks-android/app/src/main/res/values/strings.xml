@@ -34,6 +34,7 @@
     <string name="easily_find_yourself_throughout_the_app">Easily find yourself throughout the app</string>
     <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
+    <string name="error_loading_head_to_head_description">There are a few possibilities for this error. It could mean that you don\'t currently have a functional network connection. Or it could mean that these two players have never played in tournament before. Or it could mean that these players are from two different regions. But, you can swipe down to refresh and try again.</string>
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
@@ -70,7 +71,6 @@
     <string name="not_gar_pr" translatable="false">Not GAR PR</string>
     <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
-    <string name="no_head_to_head_data">No head to head data</string>
     <string name="no_log_entries">No log entries</string>
     <string name="no_matches">No matches</string>
     <string name="no_player_data">No player data</string>
