@@ -79,7 +79,7 @@ class TournamentViewModel(
                             isRefreshEnabled = false,
                             showMatchesEmpty = matches.isNullOrEmpty(),
                             showPlayersEmpty = players.isNullOrEmpty(),
-                            showSearchIcon = true,
+                            showSearchIcon = !matches.isNullOrEmpty() || !players.isNullOrEmpty(),
                             titleText = it.name,
                             tournament = it,
                             matches = matches,
@@ -133,11 +133,11 @@ class TournamentViewModel(
 
         val trimmedQuery = query.trim()
 
-        return list.filter {
-            it is MatchListItem.Match &&
-                    (it.match.winnerName.contains(trimmedQuery, true) ||
-                            it.match.loserName.contains(trimmedQuery, true))
-        }
+        return list.filterIsInstance(MatchListItem.Match::class.java)
+                .filter {
+                    it.match.winnerName.contains(trimmedQuery, true) ||
+                            it.match.loserName.contains(trimmedQuery, true)
+                }
     }
 
     @WorkerThread
@@ -148,10 +148,8 @@ class TournamentViewModel(
 
         val trimmedQuery = query.trim()
 
-        return list.filter {
-            it is PlayerListItem.Player &&
-                    it.player.name.contains(trimmedQuery, true)
-        }
+        return list.filterIsInstance(PlayerListItem.Player::class.java)
+                .filter { it.player.name.contains(trimmedQuery, true) }
     }
 
     sealed class MatchListItem {
