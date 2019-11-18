@@ -5,7 +5,6 @@
     <string name="x_activity_requirements">%1$s Activity Requirements</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
-    <string name="app_restarted_to_apply_theme">App restarted to apply theme</string>
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
@@ -24,7 +23,6 @@
     <string name="customize_identity_description">None currently selected</string>
     <string name="customize_region">Customize region</string>
     <string name="customize_region_description">The default is Norcal (GAR PR)</string>
-    <string name="customize_theme">Customize theme</string>
     <string name="daily">Daily</string>
     <string name="day">Day</string>
     <string name="debug_only">Debug only</string>
@@ -53,7 +51,6 @@
     <string name="gar_twitter_url" translatable="false">twitter.com/garsh0p</string>
     <string name="germ_website_url" translatable="false">germroverso.com</string>
     <string name="head_to_head">Head to Head</string>
-    <string name="head_to_head_swipe_to_refresh_and_check_again">This probably means that these two competitors have never played in tournament before. But, you can swipe down to refresh and check again</string>
     <string name="identity">Identity</string>
     <string name="identity_region_format">%1$s (%2$s)</string>
     <string name="identity_saved_">Identity saved!</string>
@@ -69,7 +66,6 @@
     <string name="none">None</string>
     <string name="norcal" translatable="false">Norcal</string>
     <string name="not_gar_pr" translatable="false">Not GAR PR</string>
-    <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
     <string name="no_log_entries">No log entries</string>
     <string name="no_matches">No matches</string>
@@ -99,7 +95,6 @@
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
     <string name="region_endpoint_format">%1$s (%2$s)</string>
-    <string name="region_mismatch_error">A region or GAR PR server endpoint mismatch error may have occurred. This is not a resolvable error, sorry!</string>
     <string name="region_saved_">Region saved!</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>
     <string name="ringtone">Ringtone</string>
@@ -138,8 +133,6 @@
     <string name="theme">Theme</string>
     <string name="the_app_will_now_restart">The app will now restart.</string>
     <string name="these_two_competitors_have_never_played_in_tournament_before">These two competitors have never played in tournament before.</string>
-    <string name="this_tournament_has_no_matches">This tournament has no matches</string>
-    <string name="this_tournament_has_no_players">This tournament has no players</string>
     <string name="tournaments">Tournaments</string>
     <string name="x_tournaments">%1$s Tournaments</string>
     <string name="twitch">Twitch</string>
