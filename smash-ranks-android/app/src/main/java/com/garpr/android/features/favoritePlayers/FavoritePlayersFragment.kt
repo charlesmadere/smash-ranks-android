@@ -33,10 +33,6 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
         fun create() = FavoritePlayersFragment()
     }
 
-    private fun fetchFavoritePlayers() {
-        viewModel.fetchFavoritePlayers()
-    }
-
     override fun getRecyclerView(): RecyclerView? {
         return recyclerView
     }
@@ -75,32 +71,33 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
 
         initViews()
         initListeners()
-        fetchFavoritePlayers()
+        refresh()
     }
 
     override fun refresh() {
-        fetchFavoritePlayers()
+        viewModel.refresh()
     }
 
     private fun refreshState(state: FavoritePlayersViewModel.State) {
-        if (state.favoritePlayers.isNullOrEmpty()) {
-            adapter.clear()
-            recyclerView.visibility = View.GONE
-            empty.visibility = View.VISIBLE
-        } else {
-            if (state.searchResults != null) {
-                adapter.set(state.searchResults)
+        if (state.searchResults == null) {
+            if (state.favoritePlayers.isNullOrEmpty()) {
+                adapter.clear()
+                recyclerView.visibility = View.GONE
+                empty.visibility = View.VISIBLE
             } else {
                 adapter.set(state.favoritePlayers)
+                empty.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
             }
-
+        } else {
+            adapter.set(state.searchResults)
             empty.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
     }
 
     private class Adapter(
-            private val favoritePlayerListeners: FavoritePlayerItemView.Listeners
+            private val favoritePlayerViewListeners: FavoritePlayerItemView.Listeners
     ) : RecyclerView.Adapter<FavoritePlayerViewHolder>() {
 
         private val list = mutableListOf<FavoritePlayer>()
@@ -128,10 +125,8 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritePlayerViewHolder {
             val inflater = parent.layoutInflater
-            val viewHolder = FavoritePlayerViewHolder(inflater.inflate(
+            return FavoritePlayerViewHolder(favoritePlayerViewListeners, inflater.inflate(
                     R.layout.item_favorite_player, parent, false))
-            viewHolder.favoritePlayerItemView.listeners = favoritePlayerListeners
-            return viewHolder
         }
 
         internal fun set(list: List<FavoritePlayer>?) {
@@ -146,8 +141,15 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
 
     }
 
-    private class FavoritePlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class FavoritePlayerViewHolder(
+            listeners: FavoritePlayerItemView.Listeners,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         internal val favoritePlayerItemView: FavoritePlayerItemView = itemView as FavoritePlayerItemView
+
+        init {
+            favoritePlayerItemView.listeners = listeners
+        }
     }
 
 }
