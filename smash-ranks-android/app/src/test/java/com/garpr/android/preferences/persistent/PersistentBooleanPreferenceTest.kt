@@ -3,8 +3,8 @@ package com.garpr.android.preferences.persistent
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,10 +32,10 @@ class PersistentBooleanPreferenceTest : BaseTest() {
     @Test
     fun testNonNullGetDefaultValue() {
         val preference = PersistentBooleanPreference("boolean",false, keyValueStore)
-        assertTrue(preference.defaultValue == false)
+        assertEquals(false, preference.defaultValue)
 
         preference.set(true)
-        assertTrue(preference.defaultValue == false)
+        assertEquals(false, preference.defaultValue)
     }
 
     @Test
