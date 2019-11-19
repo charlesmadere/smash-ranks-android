@@ -1,5 +1,7 @@
 package com.garpr.android.sync.roster
 
+import androidx.work.Configuration
+import androidx.work.WorkRequest
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
@@ -27,79 +29,83 @@ class SmashRosterSyncManagerTest : BaseTest() {
 
     private val serverApi = ServerApiOverride()
     private lateinit var smashRosterSyncManager: SmashRosterSyncManager
+    private val workManagerWrapper = WorkManagerWrapperOverride()
 
     protected val schedulers: Schedulers by inject()
     protected val smashRosterPreferenceStore: SmashRosterPreferenceStore by inject()
     protected val smashRosterStorage: SmashRosterStorage by inject()
     protected val timber: Timber by inject()
-    protected val workManagerWrapper: WorkManagerWrapper by inject()
 
     companion object {
 
-        private object Players {
-            val CHARLEZARD = FullPlayer(
-                    id = "2",
-                    name = "Charlezard",
-                    aliases = listOf("charles"),
-                    ratings = mapOf(
-                            "norcal" to Rating(10f, 2f)
-                    )
-            )
+        private val CHARLEZARD = FullPlayer(
+                id = "2",
+                name = "Charlezard",
+                aliases = listOf("charles"),
+                ratings = mapOf(
+                        "norcal" to Rating(10f, 2f)
+                )
+        )
 
-            val GAR = FullPlayer(
-                    id = "4",
-                    name = "gaR",
-                    aliases = emptyList(),
-                    ratings = mapOf(
-                            "norcal" to Rating(20f, 1.5f),
-                            "googlemtv" to Rating(25f, 1f)
-                    )
-            )
+        private val GAR = FullPlayer(
+                id = "4",
+                name = "gaR",
+                ratings = mapOf(
+                        "norcal" to Rating(20f, 1.5f),
+                        "googlemtv" to Rating(25f, 1f)
+                )
+        )
 
-            val HAX = FullPlayer(
-                    id = "3",
-                    name = "Hax",
-                    aliases = listOf("hax$"),
-                    ratings = mapOf(
-                            "norcal" to Rating(20f, 1.5f),
-                            "nyc" to Rating(25f, 1f)
-                    )
-            )
+        private val HAX = FullPlayer(
+                id = "3",
+                name = "Hax",
+                aliases = listOf("hax$"),
+                ratings = mapOf(
+                        "norcal" to Rating(20f, 1.5f),
+                        "nyc" to Rating(25f, 1f)
+                )
+        )
 
-            val IMYT = FullPlayer(
-                    id = "1",
-                    name = "Imyt"
-            )
+        private val IMYT = FullPlayer(
+                id = "1",
+                name = "Imyt"
+        )
 
-            val JAREBAIR = FullPlayer(
-                    id = "5",
-                    name = "jarebair"
-            )
-        }
+        private val JAREBAIR = FullPlayer(
+                id = "5",
+                name = "jarebair"
+        )
 
-        private object SmashRosters {
-            val GAR_PR = mapOf(
-                    Players.CHARLEZARD.id to SmashCompetitor(
-                            id = Players.CHARLEZARD.id,
-                            name = "Charles Madere",
-                            tag = "Charlezard"
-                    ),
+        private val GAR_PR = mapOf(
+                CHARLEZARD.id to SmashCompetitor(
+                        id = CHARLEZARD.id,
+                        name = "Charles",
+                        tag = CHARLEZARD.name
+                ),
+                GAR.id to SmashCompetitor(
+                        id = GAR.id,
+                        name = "Ivan",
+                        tag = GAR.name
+                ),
+                IMYT.id to SmashCompetitor(
+                        id = IMYT.id,
+                        name = "Declan",
+                        tag = IMYT.name
+                ),
+                JAREBAIR.id to SmashCompetitor(
+                        id = JAREBAIR.id,
+                        name = "Jared",
+                        tag = JAREBAIR.name
+                )
+        )
 
-                    Players.GAR.id to SmashCompetitor(
-                            id = Players.GAR.id,
-                            name = "Ivan Van",
-                            tag = "gaR"
-                    )
-            )
-
-            val NOT_GAR_PR = mapOf(
-                    Players.HAX.id to SmashCompetitor(
-                            id = Players.HAX.id,
-                            name = "Aziz",
-                            tag = "Hax"
-                    )
-            )
-        }
+        private val NOT_GAR_PR = mapOf(
+                HAX.id to SmashCompetitor(
+                        id = HAX.id,
+                        name = "Aziz",
+                        tag = HAX.name
+                )
+        )
 
     }
 
@@ -112,10 +118,24 @@ class SmashRosterSyncManagerTest : BaseTest() {
     }
 
     @Test
+    fun testEnableOrDisable() {
+        assertNull(workManagerWrapper.status)
+
+        smashRosterSyncManager.enableOrDisable()
+        assertEquals(true, workManagerWrapper.status)
+
+        smashRosterSyncManager.isEnabled = false
+        assertEquals(false, workManagerWrapper.status)
+
+        smashRosterSyncManager.isEnabled = true
+        assertEquals(true, workManagerWrapper.status)
+    }
+
+    @Test
     fun testHajimeteSync() {
-        assertTrue(smashRosterPreferenceStore.hajimeteSync.get() == true)
+        assertEquals(true, smashRosterPreferenceStore.hajimeteSync.get())
         smashRosterSyncManager.sync().blockingAwait()
-        assertTrue(smashRosterPreferenceStore.hajimeteSync.get() == false)
+        assertEquals(false, smashRosterPreferenceStore.hajimeteSync.get())
     }
 
     @Test
@@ -148,28 +168,28 @@ class SmashRosterSyncManagerTest : BaseTest() {
     fun testSync() {
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
-        assertTrue(smashRosterSyncManager.syncResult?.success == true)
+        assertEquals(true, smashRosterSyncManager.syncResult?.success)
 
         serverApi.garPrSmashRoster = emptyMap()
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
-        assertTrue(smashRosterSyncManager.syncResult?.success == false)
+        assertEquals(false, smashRosterSyncManager.syncResult?.success)
 
         serverApi.notGarPrSmashRoster = emptyMap()
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
-        assertTrue(smashRosterSyncManager.syncResult?.success == false)
+        assertEquals(false, smashRosterSyncManager.syncResult?.success)
 
-        serverApi.garPrSmashRoster = SmashRosters.GAR_PR
-        serverApi.notGarPrSmashRoster = SmashRosters.NOT_GAR_PR
+        serverApi.garPrSmashRoster = GAR_PR
+        serverApi.notGarPrSmashRoster = NOT_GAR_PR
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
-        assertTrue(smashRosterSyncManager.syncResult?.success == true)
+        assertEquals(true, smashRosterSyncManager.syncResult?.success)
     }
 
     private class ServerApiOverride(
-            internal var garPrSmashRoster: Map<String, SmashCompetitor>? = SmashRosters.GAR_PR,
-            internal var notGarPrSmashRoster: Map<String, SmashCompetitor>? = SmashRosters.NOT_GAR_PR
+            internal var garPrSmashRoster: Map<String, SmashCompetitor>? = GAR_PR,
+            internal var notGarPrSmashRoster: Map<String, SmashCompetitor>? = NOT_GAR_PR
     ) : AbsServerApi() {
 
         override fun getSmashRoster(endpoint: Endpoint): Single<Map<String, SmashCompetitor>> {
@@ -183,6 +203,22 @@ class SmashRosterSyncManagerTest : BaseTest() {
             } else {
                 Single.just(roster)
             }
+        }
+
+    }
+
+    private class WorkManagerWrapperOverride : WorkManagerWrapper {
+        internal var status: Boolean? = null
+
+        override val configuration: Configuration
+            get() = throw NotImplementedError()
+
+        override fun cancelAllWorkByTag(tag: String) {
+            status = false
+        }
+
+        override fun enqueue(workRequest: WorkRequest) {
+            status = true
         }
 
     }
