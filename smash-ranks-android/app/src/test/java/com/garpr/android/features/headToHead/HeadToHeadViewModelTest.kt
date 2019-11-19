@@ -11,11 +11,12 @@ import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.features.headToHead.HeadToHeadViewModel.ListItem
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.HeadToHeadRepository
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,9 +27,9 @@ import java.util.Date
 @RunWith(RobolectricTestRunner::class)
 class HeadToHeadViewModelTest : BaseTest() {
 
+    private val headToHeadRepository = HeadToHeadRepositoryOverride()
     private lateinit var viewModel: HeadToHeadViewModel
 
-    private val headToHeadRepository = HeadToHeadRepositoryOverride()
     protected val timber: Timber by inject()
 
     companion object {
@@ -116,19 +117,57 @@ class HeadToHeadViewModelTest : BaseTest() {
             state = it
         }
 
-        viewModel.fetchHeadToHead(NORCAL, CHARLEZARD.id, IMYT.id)
+        viewModel.fetchHeadToHead(NORCAL, SNAP.id, MIKKUZ.id)
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isFetching)
-        assertEquals(2, state?.list?.size)
+        assertEquals(6, state?.list?.size)
 
-        val winsLosses = state?.list?.get(0) as? HeadToHeadViewModel.ListItem.WinsLosses
-        assertNotNull(winsLosses)
-        assertEquals(CHARLEZARD, winsLosses?.winsLosses?.player)
-        assertEquals(0, winsLosses?.winsLosses?.playerWins)
-        assertEquals(IMYT, winsLosses?.winsLosses?.opponent)
-        assertEquals(0, winsLosses?.winsLosses?.opponentWins)
+        assertTrue(state?.list?.get(0) is ListItem.WinsLosses)
+        val winsLosses = state?.list?.get(0) as ListItem.WinsLosses
+        assertEquals(SNAP, winsLosses.winsLosses.player)
+        assertEquals(1, winsLosses.winsLosses.playerWins)
+        assertEquals(MIKKUZ, winsLosses.winsLosses.opponent)
+        assertEquals(2, winsLosses.winsLosses.opponentWins)
 
-        assertTrue(state?.list?.get(1) is HeadToHeadViewModel.ListItem.NoMatches)
+        assertTrue(state?.list?.get(1) is ListItem.Tournament)
+        var tournament = state?.list?.get(1) as ListItem.Tournament
+        assertEquals(MELEE_AT_THE_MADE_100, tournament.tournament)
+
+        assertTrue(state?.list?.get(2) is ListItem.Match)
+        var match = state?.list?.get(2) as ListItem.Match
+        assertEquals(MatchResult.LOSE, match.match.result)
+        assertEquals(SNAP, match.match.player)
+        assertEquals(MIKKUZ, match.match.opponent)
+
+        assertTrue(state?.list?.get(3) is ListItem.Match)
+        match = state?.list?.get(3) as ListItem.Match
+        assertEquals(MatchResult.LOSE, match.match.result)
+        assertEquals(SNAP, match.match.player)
+        assertEquals(MIKKUZ, match.match.opponent)
+
+        assertTrue(state?.list?.get(4) is ListItem.Tournament)
+        tournament = state?.list?.get(4) as ListItem.Tournament
+        assertEquals(SUPER_GATOR_GAMES, tournament.tournament)
+
+        assertTrue(state?.list?.get(5) is ListItem.Match)
+        match = state?.list?.get(5) as ListItem.Match
+        assertEquals(MatchResult.WIN, match.match.result)
+        assertEquals(SNAP, match.match.player)
+        assertEquals(MIKKUZ, match.match.opponent)
+    }
+
+    @Test
+    fun testFetchHeadToHeadProperlyUpdatesIsFetching() {
+        val isFetchingList = mutableListOf<Boolean>()
+
+        viewModel.stateLiveData.observeForever {
+            isFetchingList.add(it.isFetching)
+        }
+
+        viewModel.fetchHeadToHead(NORCAL, CHARLEZARD.id, IMYT.id)
+        assertEquals(2, isFetchingList.size)
+        assertTrue(isFetchingList[0])
+        assertFalse(isFetchingList[1])
     }
 
     @Test
@@ -140,43 +179,34 @@ class HeadToHeadViewModelTest : BaseTest() {
         }
 
         headToHeadRepository.headToHead = EMPTY_HEAD_TO_HEAD
-        viewModel.fetchHeadToHead(NORCAL, SNAP.id, MIKKUZ.id)
+        viewModel.fetchHeadToHead(NORCAL, CHARLEZARD.id, IMYT.id)
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isFetching)
-        assertEquals(4, state?.list?.size)
+        assertEquals(2, state?.list?.size)
 
-        val winsLosses = state?.list?.get(0) as? HeadToHeadViewModel.ListItem.WinsLosses
-        assertNotNull(winsLosses)
-        assertEquals(SNAP, winsLosses?.winsLosses?.player)
-        assertEquals(1, winsLosses?.winsLosses?.playerWins)
-        assertEquals(MIKKUZ, winsLosses?.winsLosses?.opponent)
-        assertEquals(2, winsLosses?.winsLosses?.opponentWins)
+        assertTrue(state?.list?.get(0) is ListItem.WinsLosses)
+        val winsLosses = state?.list?.get(0) as ListItem.WinsLosses
+        assertEquals(CHARLEZARD, winsLosses.winsLosses.player)
+        assertEquals(0, winsLosses.winsLosses.playerWins)
+        assertEquals(IMYT, winsLosses.winsLosses.opponent)
+        assertEquals(0, winsLosses.winsLosses.opponentWins)
 
-        var tournament = state?.list?.get(1) as? HeadToHeadViewModel.ListItem.Tournament
-        assertNotNull(tournament)
-        assertEquals(MELEE_AT_THE_MADE_100, tournament)
+        assertTrue(state?.list?.get(1) is ListItem.NoMatches)
+    }
 
-        var match = state?.list?.get(2) as? HeadToHeadViewModel.ListItem.Match
-        assertNotNull(match)
-        assertEquals(MatchResult.LOSE, match?.match?.result)
-        assertEquals(SNAP, match?.match?.player)
-        assertEquals(MIKKUZ, match?.match?.opponent)
+    @Test
+    fun testFetchHeadToHeadWithNullHeadToHead() {
+        var state: HeadToHeadViewModel.State? = null
 
-        match = state?.list?.get(3) as? HeadToHeadViewModel.ListItem.Match
-        assertNotNull(match)
-        assertEquals(MatchResult.LOSE, match?.match?.result)
-        assertEquals(SNAP, match?.match?.player)
-        assertEquals(MIKKUZ, match?.match?.opponent)
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
 
-        tournament = state?.list?.get(4) as? HeadToHeadViewModel.ListItem.Tournament
-        assertNotNull(tournament)
-        assertEquals(SUPER_GATOR_GAMES, tournament)
-
-        match = state?.list?.get(5) as? HeadToHeadViewModel.ListItem.Match
-        assertNotNull(match)
-        assertEquals(MatchResult.WIN, match?.match?.result)
-        assertEquals(SNAP, match?.match?.player)
-        assertEquals(MIKKUZ, match?.match?.opponent)
+        headToHeadRepository.headToHead = null
+        viewModel.fetchHeadToHead(NORCAL, CHARLEZARD.id, IMYT.id)
+        assertEquals(true, state?.hasError)
+        assertEquals(false, state?.isFetching)
+        assertEquals(true, state?.list.isNullOrEmpty())
     }
 
     private class HeadToHeadRepositoryOverride(
