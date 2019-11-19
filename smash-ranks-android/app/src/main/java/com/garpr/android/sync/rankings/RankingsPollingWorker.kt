@@ -3,7 +3,7 @@ package com.garpr.android.sync.rankings
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.garpr.android.features.notifications.NotificationsManager
+import com.garpr.android.managers.NotificationsManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.repositories.RegionRepository

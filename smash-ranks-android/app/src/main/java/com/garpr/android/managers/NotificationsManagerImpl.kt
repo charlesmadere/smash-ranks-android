@@ -1,4 +1,4 @@
-package com.garpr.android.features.notifications
+package com.garpr.android.managers
 
 import android.annotation.TargetApi
 import android.app.NotificationChannel

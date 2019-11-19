@@ -2,7 +2,7 @@ package com.garpr.android.repositories
 
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.notifications.NotificationsManager
+import com.garpr.android.managers.NotificationsManager
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
