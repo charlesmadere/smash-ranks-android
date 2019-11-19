@@ -26,8 +26,9 @@ class SetIdentityViewModel(
         set(value) {
             val saveIconStatus = if (state.list.isNullOrEmpty()) {
                 SaveIconStatus.GONE
-            } else if (identityRepository.isPlayer(value)) {
-                SaveIconStatus.VISIBLE
+            } else if (identityRepository.hasIdentity && identityRepository.isPlayer(value)
+                    || !identityRepository.hasIdentity && value == null) {
+                SaveIconStatus.DISABLED
             } else {
                 SaveIconStatus.ENABLED
             }
@@ -64,30 +65,29 @@ class SetIdentityViewModel(
 
         val list = mutableListOf<ListItem>()
         var previousChar: Char? = null
-        var letterDividerListId: Long = Long.MIN_VALUE + 1L
+        var letterDividerListId = Long.MIN_VALUE + 1L
 
         ////////////////////////
         // add letter players //
         ////////////////////////
 
-        players.forEach {
-            val char = it.name.first()
+        players.filter { it.name.first().isLetter() }
+                .forEach {
+                    val char = it.name.first()
 
-            if (char.isLetter()) {
-                if (!char.safeEquals(previousChar, true)) {
-                    previousChar = char
+                    if (!char.safeEquals(previousChar, true)) {
+                        previousChar = char
 
-                    list.add(ListItem.Divider.Letter(
-                            letter = char.toUpperCase().toString(),
-                            listId = letterDividerListId
-                    ))
+                        list.add(ListItem.Divider.Letter(
+                                letter = char.toUpperCase().toString(),
+                                listId = letterDividerListId
+                        ))
 
-                    ++letterDividerListId
+                        ++letterDividerListId
+                    }
+
+                    list.add(ListItem.Player(it))
                 }
-
-                list.add(ListItem.Player(it))
-            }
-        }
 
         ///////////////////////
         // add digit players //
@@ -95,18 +95,19 @@ class SetIdentityViewModel(
 
         var addedDigitDivider = false
 
-        players.forEach {
-            val char = it.name.first()
+        players.filter { it.name.first().isDigit() }
+                .forEach {
+                    val char = it.name.first()
 
-            if (char.isDigit()) {
-                if (!addedDigitDivider) {
-                    addedDigitDivider = true
-                    list.add(ListItem.Divider.Digit)
+                    if (char.isDigit()) {
+                        if (!addedDigitDivider) {
+                            addedDigitDivider = true
+                            list.add(ListItem.Divider.Digit)
+                        }
+
+                        list.add(ListItem.Player(it))
+                    }
                 }
-
-                list.add(ListItem.Player(it))
-            }
-        }
 
         ///////////////////////
         // add other players //
@@ -114,18 +115,19 @@ class SetIdentityViewModel(
 
         var addedOtherDivider = false
 
-        players.forEach {
-            val char = it.name.first()
+        players.filter { !it.name.first().isLetterOrDigit() }
+                .forEach {
+                    val char = it.name.first()
 
-            if (!char.isLetterOrDigit()) {
-                if (!addedOtherDivider) {
-                    addedOtherDivider = true
-                    list.add(ListItem.Divider.Other)
+                    if (!char.isLetterOrDigit()) {
+                        if (!addedOtherDivider) {
+                            addedOtherDivider = true
+                            list.add(ListItem.Divider.Other)
+                        }
+
+                        list.add(ListItem.Player(it))
+                    }
                 }
-
-                list.add(ListItem.Player(it))
-            }
-        }
 
         return list
     }
@@ -138,23 +140,25 @@ class SetIdentityViewModel(
                     val list = createList(it)
 
                     state = state.copy(
+                            selectedIdentity = null,
+                            hasError = false,
                             isEmpty = list.isNullOrEmpty(),
                             isFetching = false,
-                            isRefreshEnabled = false,
-                            hasError = false,
-                            showSearchIcon = true,
+                            isRefreshEnabled = list.isNullOrEmpty(),
+                            showSearchIcon = !list.isNullOrEmpty(),
                             list = list,
                             searchResults = null,
-                            saveIconStatus = SaveIconStatus.VISIBLE
+                            saveIconStatus = SaveIconStatus.DISABLED
                     )
                 }, {
                     timber.e(TAG, "Error fetching players", it)
 
                     state = state.copy(
                             selectedIdentity = null,
+                            hasError = true,
+                            isEmpty = true,
                             isFetching = false,
                             isRefreshEnabled = true,
-                            hasError = true,
                             showSearchIcon = false,
                             list = null,
                             searchResults = null,
@@ -184,12 +188,10 @@ class SetIdentityViewModel(
         val results = mutableListOf<ListItem>()
         val trimmedQuery = query.trim()
 
-        for (i in list.indices) {
-            val objectI = list[i]
-
-            if (objectI is ListItem.Divider) {
+        list.forEachIndexed { index, listItem ->
+            if (listItem is ListItem.Divider) {
                 var addedDivider = false
-                var j = i + 1
+                var j = index + 1
 
                 while (j < list.size) {
                     val objectJ = list[j]
@@ -198,7 +200,7 @@ class SetIdentityViewModel(
                         if (objectJ.player.name.contains(trimmedQuery, true)) {
                             if (!addedDivider) {
                                 addedDivider = true
-                                results.add(objectI)
+                                results.add(listItem)
                             }
 
                             results.add(objectJ)
@@ -242,10 +244,10 @@ class SetIdentityViewModel(
 
     data class State(
             val selectedIdentity: AbsPlayer? = null,
+            val hasError: Boolean = false,
             val isEmpty: Boolean = false,
             val isFetching: Boolean = false,
             val isRefreshEnabled: Boolean = true,
-            val hasError: Boolean = false,
             val showSearchIcon: Boolean = false,
             val list: List<ListItem>? = null,
             val searchResults: List<ListItem>? = null,
@@ -253,7 +255,7 @@ class SetIdentityViewModel(
     )
 
     enum class SaveIconStatus {
-        GONE, VISIBLE, ENABLED
+        DISABLED, ENABLED, GONE
     }
 
 }

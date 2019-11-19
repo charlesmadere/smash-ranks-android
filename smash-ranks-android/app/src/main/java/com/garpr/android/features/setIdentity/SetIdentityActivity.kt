@@ -15,6 +15,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.StringDividerView
+import com.garpr.android.features.setIdentity.SetIdentityViewModel.ListItem
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
@@ -25,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListener, Refreshable,
         Searchable, SetIdentityToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var adapter: Adapter
+    private val adapter = Adapter(this)
 
     private val viewModel: SetIdentityViewModel by viewModel()
 
@@ -113,8 +114,6 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
 
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
-        adapter = Adapter(this, getString(R.string.number),
-                getString(R.string.other))
         recyclerView.adapter = adapter
     }
 
@@ -124,6 +123,11 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
 
     private fun refreshState(state: SetIdentityViewModel.State) {
         when (state.saveIconStatus) {
+            SetIdentityViewModel.SaveIconStatus.DISABLED -> {
+                toolbar.showSaveIcon = true
+                toolbar.enableSaveIcon = false
+            }
+
             SetIdentityViewModel.SaveIconStatus.ENABLED -> {
                 toolbar.showSaveIcon = true
                 toolbar.enableSaveIcon = true
@@ -131,11 +135,6 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
 
             SetIdentityViewModel.SaveIconStatus.GONE -> {
                 toolbar.showSaveIcon = false
-                toolbar.enableSaveIcon = false
-            }
-
-            SetIdentityViewModel.SaveIconStatus.VISIBLE -> {
-                toolbar.showSaveIcon = true
                 toolbar.enableSaveIcon = false
             }
         }
@@ -173,13 +172,11 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
     }
 
     private class Adapter(
-            private val playerClickListener: PlayerSelectionItemView.OnClickListener,
-            private val digitDividerText: String,
-            private val otherDividerText: String
+            private val playerClickListener: PlayerSelectionItemView.OnClickListener
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var selectedIdentity: AbsPlayer? = null
-        private val list = mutableListOf<SetIdentityViewModel.ListItem>()
+        private val list = mutableListOf<ListItem>()
 
         companion object {
             private const val VIEW_TYPE_DIVIDER = 0
@@ -190,18 +187,18 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
             setHasStableIds(true)
         }
 
-        private fun bindDividerViewHolder(holder: DividerViewHolder, item: SetIdentityViewModel.ListItem.Divider) {
+        private fun bindDividerViewHolder(holder: DividerViewHolder, item: ListItem.Divider) {
             val content: String = when (item) {
-                is SetIdentityViewModel.ListItem.Divider.Digit -> digitDividerText
-                is SetIdentityViewModel.ListItem.Divider.Letter -> item.letter
-                is SetIdentityViewModel.ListItem.Divider.Other -> otherDividerText
+                is ListItem.Divider.Digit -> holder.dividerItemView.resources.getString(R.string.number)
+                is ListItem.Divider.Letter -> item.letter
+                is ListItem.Divider.Other -> holder.dividerItemView.resources.getString(R.string.other)
             }
 
-            holder.stringDividerView.setContent(content)
+            holder.dividerItemView.setContent(content)
         }
 
-        private fun bindPlayerViewHolder(holder: PlayerViewHolder, item: SetIdentityViewModel.ListItem.Player) {
-            holder.playerSelectionItemView.setContent(Pair(item.player, item.player == selectedIdentity))
+        private fun bindPlayerViewHolder(holder: PlayerViewHolder, item: ListItem.Player) {
+            holder.playerItemView.setContent(Pair(item.player, item.player == selectedIdentity))
         }
 
         internal fun clear() {
@@ -220,16 +217,16 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
-                is SetIdentityViewModel.ListItem.Divider -> VIEW_TYPE_DIVIDER
-                is SetIdentityViewModel.ListItem.Player -> VIEW_TYPE_PLAYER
+                is ListItem.Divider -> VIEW_TYPE_DIVIDER
+                is ListItem.Player -> VIEW_TYPE_PLAYER
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is SetIdentityViewModel.ListItem.Divider -> bindDividerViewHolder(
+                is ListItem.Divider -> bindDividerViewHolder(
                         holder as DividerViewHolder, item)
-                is SetIdentityViewModel.ListItem.Player -> bindPlayerViewHolder(
+                is ListItem.Player -> bindPlayerViewHolder(
                         holder as PlayerViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
@@ -241,17 +238,13 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
             return when (viewType) {
                 VIEW_TYPE_DIVIDER -> DividerViewHolder(inflater.inflate(R.layout.divider_string,
                         parent, false))
-                VIEW_TYPE_PLAYER -> {
-                    val viewHolder = PlayerViewHolder(inflater.inflate(
-                            R.layout.item_player_selection, parent, false))
-                    viewHolder.playerSelectionItemView.onClickListener = playerClickListener
-                    viewHolder
-                }
+                VIEW_TYPE_PLAYER -> PlayerViewHolder(inflater.inflate(R.layout.item_player_selection,
+                            parent, false), playerClickListener)
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
         }
 
-        internal fun set(list: List<SetIdentityViewModel.ListItem>?, selectedIdentity: AbsPlayer?) {
+        internal fun set(list: List<ListItem>?, selectedIdentity: AbsPlayer?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {
@@ -265,11 +258,18 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
     }
 
     private class DividerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal val stringDividerView: StringDividerView = itemView as StringDividerView
+        internal val dividerItemView: StringDividerView = itemView as StringDividerView
     }
 
-    private class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal val playerSelectionItemView: PlayerSelectionItemView = itemView as PlayerSelectionItemView
+    private class PlayerViewHolder(
+            itemView: View,
+            onClickListener: PlayerSelectionItemView.OnClickListener
+    ) : RecyclerView.ViewHolder(itemView) {
+        internal val playerItemView: PlayerSelectionItemView = itemView as PlayerSelectionItemView
+
+        init {
+            playerItemView.onClickListener = onClickListener
+        }
     }
 
 }
