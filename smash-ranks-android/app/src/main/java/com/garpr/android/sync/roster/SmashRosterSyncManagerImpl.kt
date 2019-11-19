@@ -51,9 +51,7 @@ class SmashRosterSyncManagerImpl(
 
     override var syncState: State
         get() = syncStateSubject.requireValue()
-        set(value) {
-            syncStateSubject.onNext(value)
-        }
+        set(value) = syncStateSubject.onNext(value)
 
     companion object {
         private const val TAG = "SmashRosterSyncManagerImpl"

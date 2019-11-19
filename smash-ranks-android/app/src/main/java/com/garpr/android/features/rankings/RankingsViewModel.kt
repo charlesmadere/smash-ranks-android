@@ -37,9 +37,9 @@ class RankingsViewModel(
         disposables.add(rankingsRepository.getRankings(region)
                 .subscribe({
                     state = state.copy(
+                            hasError = false,
                             isEmpty = it.rankings.isNullOrEmpty(),
                             isFetching = false,
-                            hasError = false,
                             searchResults = null,
                             rankingsBundle = it
                     )
@@ -47,9 +47,9 @@ class RankingsViewModel(
                     timber.e(TAG, "Error fetching rankings", it)
 
                     state = state.copy(
+                            hasError = true,
                             isEmpty = false,
                             isFetching = false,
-                            hasError = true,
                             searchResults = null,
                             rankingsBundle = null
                     )
@@ -77,9 +77,9 @@ class RankingsViewModel(
     }
 
     data class State(
+            val hasError: Boolean = false,
             val isEmpty: Boolean = false,
             val isFetching: Boolean = false,
-            val hasError: Boolean = false,
             val searchResults: List<RankedPlayer>? = null,
             val rankingsBundle: RankingsBundle? = null
     )
