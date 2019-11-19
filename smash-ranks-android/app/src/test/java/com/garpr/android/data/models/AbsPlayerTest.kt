@@ -7,6 +7,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.util.Collections
+import java.util.Objects
 
 @RunWith(RobolectricTestRunner::class)
 class AbsPlayerTest : BaseTest() {
@@ -32,6 +33,12 @@ class AbsPlayerTest : BaseTest() {
 
         private val FAVORITE_PLAYER_2: AbsPlayer = FavoritePlayer(
                 region = REGION_GEORGIA,
+                id = "583a4a15d2994e0577b05c86",
+                name = "druggedfox"
+        )
+
+        private val FAVORITE_PLAYER_3: AbsPlayer = FavoritePlayer(
+                region = REGION_NORCAL,
                 id = "583a4a15d2994e0577b05c86",
                 name = "druggedfox"
         )
@@ -75,16 +82,17 @@ class AbsPlayerTest : BaseTest() {
     @Test
     fun testComparatorAlphabeticalOrder() {
         val list = listOf(FULL_PLAYER_1, LITE_PLAYER_2, LITE_PLAYER_1, FAVORITE_PLAYER_2,
-                RANKED_PLAYER_1, FAVORITE_PLAYER_1, RANKED_PLAYER_2)
+                RANKED_PLAYER_1, FAVORITE_PLAYER_1, RANKED_PLAYER_2, FAVORITE_PLAYER_3)
         Collections.sort(list, AbsPlayer.ALPHABETICAL_ORDER)
 
-        assertEquals(FAVORITE_PLAYER_2, list[0])
-        assertEquals(FULL_PLAYER_1, list[1])
-        assertEquals(RANKED_PLAYER_2, list[2])
-        assertEquals(LITE_PLAYER_1, list[3])
-        assertEquals(FAVORITE_PLAYER_1, list[4])
-        assertEquals(LITE_PLAYER_2, list[5])
-        assertEquals(RANKED_PLAYER_1, list[6])
+        assertEquals(FAVORITE_PLAYER_3, list[0])
+        assertEquals(FAVORITE_PLAYER_2, list[1])
+        assertEquals(FULL_PLAYER_1, list[2])
+        assertEquals(RANKED_PLAYER_2, list[3])
+        assertEquals(LITE_PLAYER_1, list[4])
+        assertEquals(FAVORITE_PLAYER_1, list[5])
+        assertEquals(LITE_PLAYER_2, list[6])
+        assertEquals(RANKED_PLAYER_1, list[7])
     }
 
     @Test
@@ -92,6 +100,7 @@ class AbsPlayerTest : BaseTest() {
         assertEquals(FAVORITE_PLAYER_1, FAVORITE_PLAYER_1)
         assertEquals(FAVORITE_PLAYER_2, FAVORITE_PLAYER_2)
         assertNotEquals(FAVORITE_PLAYER_1, FAVORITE_PLAYER_2)
+        assertNotEquals(FAVORITE_PLAYER_2, FAVORITE_PLAYER_3)
 
         assertEquals(FULL_PLAYER_1, FULL_PLAYER_1)
         assertNotEquals(FULL_PLAYER_1, LITE_PLAYER_1)
@@ -108,8 +117,9 @@ class AbsPlayerTest : BaseTest() {
 
     @Test
     fun testHashCode() {
-        assertEquals(FAVORITE_PLAYER_1.id.hashCode(), FAVORITE_PLAYER_1.hashCode())
-        assertEquals(FAVORITE_PLAYER_2.id.hashCode(), FAVORITE_PLAYER_2.hashCode())
+        assertEquals(Objects.hash(FAVORITE_PLAYER_1.id, REGION_NORCAL.endpoint), FAVORITE_PLAYER_1.hashCode())
+        assertEquals(Objects.hash(FAVORITE_PLAYER_2.id, REGION_GEORGIA.endpoint), FAVORITE_PLAYER_2.hashCode())
+        assertEquals(Objects.hash(FAVORITE_PLAYER_3.id, REGION_NORCAL.endpoint), FAVORITE_PLAYER_3.hashCode())
         assertEquals(FULL_PLAYER_1.id.hashCode(), FULL_PLAYER_1.hashCode())
         assertEquals(LITE_PLAYER_1.id.hashCode(), LITE_PLAYER_1.hashCode())
         assertEquals(LITE_PLAYER_2.id.hashCode(), LITE_PLAYER_2.hashCode())
@@ -121,6 +131,7 @@ class AbsPlayerTest : BaseTest() {
     fun testKind() {
         assertEquals(AbsPlayer.Kind.FAVORITE, FAVORITE_PLAYER_1.kind)
         assertEquals(AbsPlayer.Kind.FAVORITE, FAVORITE_PLAYER_2.kind)
+        assertEquals(AbsPlayer.Kind.FAVORITE, FAVORITE_PLAYER_3.kind)
         assertEquals(AbsPlayer.Kind.FULL, FULL_PLAYER_1.kind)
         assertEquals(AbsPlayer.Kind.LITE, LITE_PLAYER_1.kind)
         assertEquals(AbsPlayer.Kind.LITE, LITE_PLAYER_2.kind)
