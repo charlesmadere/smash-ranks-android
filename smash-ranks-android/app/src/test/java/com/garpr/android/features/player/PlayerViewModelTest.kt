@@ -14,6 +14,7 @@ import com.garpr.android.data.models.PlayerMatchesBundle
 import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.features.player.PlayerViewModel.ListItem
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.FavoritePlayersRepository
@@ -89,7 +90,7 @@ class PlayerViewModelTest : BaseTest() {
         )
 
         private val FULL_PLAYER_CHARLEZARD = FullPlayer(
-                id = ABS_PLAYER_CHARLEZARD.id,
+                id = CHARLEZARD_ID,
                 name = ABS_PLAYER_CHARLEZARD.name,
                 aliases = listOf(
                         "Charles"
@@ -106,8 +107,7 @@ class PlayerViewModelTest : BaseTest() {
         )
 
         private val EMPTY_PLAYER_MATCHES_BUNDLE = PlayerMatchesBundle(
-                fullPlayer = FULL_PLAYER_CHARLEZARD,
-                matchesBundle = null
+                fullPlayer = FULL_PLAYER_CHARLEZARD
         )
 
         private val PLAYER_MATCHES_BUNDLE = PlayerMatchesBundle(
@@ -183,49 +183,127 @@ class PlayerViewModelTest : BaseTest() {
         }
 
         viewModel.fetchPlayer()
-        assertFalse(state?.isFavorited == true)
+        assertEquals(false, state?.isFavorited)
         assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
 
         viewModel.addOrRemoveFromFavorites()
-        assertTrue(state?.isFavorited == true)
+        assertEquals(true, state?.isFavorited)
         assertTrue(CHARLEZARD_ID in favoritePlayersRepository)
 
         viewModel.addOrRemoveFromFavorites()
-        assertFalse(state?.isFavorited == true)
+        assertEquals(false, state?.isFavorited)
         assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
 
         favoritePlayersRepository.addPlayer(ABS_PLAYER_CHARLEZARD, NORCAL)
-        assertTrue(state?.isFavorited == true)
+        assertEquals(true, state?.isFavorited)
         assertTrue(CHARLEZARD_ID in favoritePlayersRepository)
 
         favoritePlayersRepository.removePlayer(ABS_PLAYER_CHARLEZARD)
-        assertFalse(state?.isFavorited == true)
+        assertEquals(false, state?.isFavorited)
         assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
     }
 
     @Test
-    fun testFetchPlayerWithInitializingDoesNotThrowException() {
+    fun testFetchPlayer() {
         viewModel.initialize(NORCAL, CHARLEZARD_ID)
 
         var state: PlayerViewModel.State? = null
-        var throwable: Throwable? = null
 
         viewModel.stateLiveData.observeForever {
             state = it
         }
 
-        try {
-            viewModel.fetchPlayer()
-        } catch (t: Throwable) {
-            throwable = t
-        }
+        viewModel.fetchPlayer()
+        assertEquals(false, state?.hasError)
+        assertEquals(false, state?.isFavorited)
+        assertEquals(false, state?.isFetching)
+        assertEquals(true, state?.showSearchIcon)
+        assertFalse(state?.subtitleText.isNullOrBlank())
+        assertFalse(state?.titleText.isNullOrBlank())
+        assertEquals(11, state?.list?.size)
+        assertNull(state?.searchResults)
+        assertEquals(PLAYER_MATCHES_BUNDLE, state?.bundle)
+        assertNull(state?.smashCompetitor)
 
-        assertNotNull(state)
-        assertNull(throwable)
+        assertTrue(state?.list?.get(0) is ListItem.Player)
+
+        assertTrue(state?.list?.get(1) is ListItem.Tournament)
+        var tournament = state?.list?.get(1) as ListItem.Tournament
+        assertEquals(TOURNAMENT_MADE_112, tournament.tournament)
+
+        assertTrue(state?.list?.get(2) is ListItem.Match)
+        var match = state?.list?.get(2) as ListItem.Match
+        assertEquals(ABS_PLAYER_IMYT, match.match.opponent)
+        assertEquals(TOURNAMENT_MADE_112, match.match.tournament)
+
+        assertTrue(state?.list?.get(3) is ListItem.Match)
+        match = state?.list?.get(3) as ListItem.Match
+        assertEquals(ABS_PLAYER_PIMP_JONG_ILLEST, match.match.opponent)
+        assertEquals(TOURNAMENT_MADE_112, match.match.tournament)
+
+        assertTrue(state?.list?.get(4) is ListItem.Match)
+        match = state?.list?.get(4) as ListItem.Match
+        assertEquals(ABS_PLAYER_JOEJOE, match.match.opponent)
+        assertEquals(TOURNAMENT_MADE_112, match.match.tournament)
+
+        assertTrue(state?.list?.get(5) is ListItem.Tournament)
+        tournament = state?.list?.get(5) as ListItem.Tournament
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_16, tournament.tournament)
+
+        assertTrue(state?.list?.get(6) is ListItem.Match)
+        match = state?.list?.get(6) as ListItem.Match
+        assertEquals(ABS_PLAYER_IMYT, match.match.opponent)
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_16, match.match.tournament)
+
+        assertTrue(state?.list?.get(7) is ListItem.Match)
+        match = state?.list?.get(7) as ListItem.Match
+        assertEquals(ABS_PLAYER_PIMP_JONG_ILLEST, match.match.opponent)
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_16, match.match.tournament)
+
+        assertTrue(state?.list?.get(8) is ListItem.Tournament)
+        tournament = state?.list?.get(8) as ListItem.Tournament
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14, tournament.tournament)
+
+        assertTrue(state?.list?.get(9) is ListItem.Match)
+        match = state?.list?.get(9) as ListItem.Match
+        assertEquals(ABS_PLAYER_JOEJOE, match.match.opponent)
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14, match.match.tournament)
+
+        assertTrue(state?.list?.get(10) is ListItem.Match)
+        match = state?.list?.get(10) as ListItem.Match
+        assertEquals(ABS_PLAYER_IMYT, match.match.opponent)
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14, match.match.tournament)
     }
 
     @Test
-    fun testFetchPlayerWithNetworkError() {
+    fun testFetchPlayerWithEmptyBundle() {
+        playerMatchesRepository.playerMatchesBundle = EMPTY_PLAYER_MATCHES_BUNDLE
+        viewModel.initialize(NORCAL, CHARLEZARD_ID)
+
+        var state: PlayerViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.fetchPlayer()
+        assertEquals(false, state?.hasError)
+        assertEquals(false, state?.isFavorited)
+        assertEquals(false, state?.isFetching)
+        assertEquals(false, state?.showSearchIcon)
+        assertFalse(state?.subtitleText.isNullOrBlank())
+        assertFalse(state?.titleText.isNullOrBlank())
+        assertEquals(2, state?.list?.size)
+        assertNull(state?.searchResults)
+        assertEquals(EMPTY_PLAYER_MATCHES_BUNDLE, state?.bundle)
+        assertNull(state?.smashCompetitor)
+
+        assertTrue(state?.list?.get(0) is ListItem.Player)
+        assertTrue(state?.list?.get(1) is ListItem.NoMatches)
+    }
+
+    @Test
+    fun testFetchPlayerWithNullBundle() {
         playerMatchesRepository.playerMatchesBundle = null
         viewModel.initialize(NORCAL, CHARLEZARD_ID)
 
@@ -236,20 +314,26 @@ class PlayerViewModelTest : BaseTest() {
         }
 
         viewModel.fetchPlayer()
-
-        assertNotNull(state)
-        assertTrue(state?.hasError == true)
-
-        playerMatchesRepository.playerMatchesBundle = PLAYER_MATCHES_BUNDLE
-        viewModel.fetchPlayer()
-
-        assertNotNull(state)
-        assertFalse(state?.hasError == true)
+        assertEquals(true, state?.hasError)
+        assertEquals(false, state?.isFavorited)
+        assertEquals(false, state?.isFetching)
+        assertEquals(false, state?.showSearchIcon)
+        assertFalse(state?.subtitleText.isNullOrBlank())
+        assertTrue(state?.titleText.isNullOrBlank())
+        assertNull(state?.list)
+        assertNull(state?.searchResults)
+        assertNull(state?.bundle)
+        assertNull(state?.smashCompetitor)
     }
 
     @Test
-    fun testFetchPlayerWithoutInitializingThrowsException() {
+    fun testFetchPlayerWithoutInitializeDoesThrowException() {
+        var state: PlayerViewModel.State? = null
         var throwable: Throwable? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
 
         try {
             viewModel.fetchPlayer()
@@ -257,7 +341,39 @@ class PlayerViewModelTest : BaseTest() {
             throwable = t
         }
 
+        assertNull(state)
         assertNotNull(throwable)
+    }
+
+    @Test
+    fun testInitialize() {
+        var state: PlayerViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.initialize(NORCAL, CHARLEZARD_ID)
+        assertEquals(false, state?.isFavorited)
+        assertFalse(state?.subtitleText.isNullOrBlank())
+        assertTrue(state?.titleText.isNullOrBlank())
+        assertNull(state?.smashCompetitor)
+    }
+
+    @Test
+    fun testSearchWithBlankString() {
+        viewModel.initialize(NORCAL, CHARLEZARD_ID)
+
+        var state: PlayerViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.fetchPlayer()
+        viewModel.search(" ")
+
+        assertNull(state?.searchResults)
     }
 
     @Test
@@ -292,26 +408,26 @@ class PlayerViewModelTest : BaseTest() {
         assertNotNull(state?.searchResults)
         assertEquals(6, state?.searchResults?.size)
 
-        var tournament = state?.searchResults?.get(0) as PlayerViewModel.ListItem.Tournament
-        assertEquals(TOURNAMENT_MADE_112.id, tournament.tournament.id)
+        var tournament = state?.searchResults?.get(0) as ListItem.Tournament
+        assertEquals(TOURNAMENT_MADE_112, tournament.tournament)
 
-        var match = state?.searchResults?.get(1) as PlayerViewModel.ListItem.Match
-        assertEquals(ABS_PLAYER_IMYT.id, match.match.opponent.id)
-        assertEquals(TOURNAMENT_MADE_112.id, match.match.tournament.id)
+        var match = state?.searchResults?.get(1) as ListItem.Match
+        assertEquals(ABS_PLAYER_IMYT, match.match.opponent)
+        assertEquals(TOURNAMENT_MADE_112, match.match.tournament)
 
-        tournament = state?.searchResults?.get(2) as PlayerViewModel.ListItem.Tournament
-        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_16.id, tournament.tournament.id)
+        tournament = state?.searchResults?.get(2) as ListItem.Tournament
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_16, tournament.tournament)
 
-        match = state?.searchResults?.get(3) as PlayerViewModel.ListItem.Match
-        assertEquals(ABS_PLAYER_IMYT.id, match.match.opponent.id)
-        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_16.id, match.match.tournament.id)
+        match = state?.searchResults?.get(3) as ListItem.Match
+        assertEquals(ABS_PLAYER_IMYT, match.match.opponent)
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_16, match.match.tournament)
 
-        tournament = state?.searchResults?.get(4) as PlayerViewModel.ListItem.Tournament
-        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14.id, tournament.tournament.id)
+        tournament = state?.searchResults?.get(4) as ListItem.Tournament
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14, tournament.tournament)
 
-        match = state?.searchResults?.get(5) as PlayerViewModel.ListItem.Match
-        assertEquals(ABS_PLAYER_IMYT.id, match.match.opponent.id)
-        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14.id, tournament.tournament.id)
+        match = state?.searchResults?.get(5) as ListItem.Match
+        assertEquals(ABS_PLAYER_IMYT, match.match.opponent)
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14, tournament.tournament)
     }
 
     @Test
@@ -330,19 +446,19 @@ class PlayerViewModelTest : BaseTest() {
         assertNotNull(state?.searchResults)
         assertEquals(4, state?.searchResults?.size)
 
-        var tournament = state?.searchResults?.get(0) as PlayerViewModel.ListItem.Tournament
-        assertEquals(TOURNAMENT_MADE_112.id, tournament.tournament.id)
+        var tournament = state?.searchResults?.get(0) as ListItem.Tournament
+        assertEquals(TOURNAMENT_MADE_112, tournament.tournament)
 
-        var match = state?.searchResults?.get(1) as PlayerViewModel.ListItem.Match
-        assertEquals(ABS_PLAYER_JOEJOE.id, match.match.opponent.id)
-        assertEquals(TOURNAMENT_MADE_112.id, match.match.tournament.id)
+        var match = state?.searchResults?.get(1) as ListItem.Match
+        assertEquals(ABS_PLAYER_JOEJOE, match.match.opponent)
+        assertEquals(TOURNAMENT_MADE_112, match.match.tournament)
 
-        tournament = state?.searchResults?.get(2) as PlayerViewModel.ListItem.Tournament
-        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14.id, tournament.tournament.id)
+        tournament = state?.searchResults?.get(2) as ListItem.Tournament
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14, tournament.tournament)
 
-        match = state?.searchResults?.get(3) as PlayerViewModel.ListItem.Match
-        assertEquals(ABS_PLAYER_JOEJOE.id, match.match.opponent.id)
-        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14.id, match.match.tournament.id)
+        match = state?.searchResults?.get(3) as ListItem.Match
+        assertEquals(ABS_PLAYER_JOEJOE, match.match.opponent)
+        assertEquals(TOURNAMENT_PEOPLES_TUESDAYS_14, match.match.tournament)
     }
 
     @Test
@@ -366,12 +482,12 @@ class PlayerViewModelTest : BaseTest() {
     ) : PlayerMatchesRepository {
 
         override fun getPlayerAndMatches(region: Region, playerId: String): Single<PlayerMatchesBundle> {
-            val bundle = playerMatchesBundle
+            val playerMatchesBundle = this.playerMatchesBundle
 
-            return if (bundle == null) {
-                Single.error(NullPointerException("playerMatchesBundle is null"))
+            return if (playerMatchesBundle == null) {
+                Single.error(NullPointerException())
             } else {
-                Single.just(bundle)
+                Single.just(playerMatchesBundle)
             }
         }
 

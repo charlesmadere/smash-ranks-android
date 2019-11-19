@@ -87,7 +87,7 @@ class PlayerViewModel(
 
         var tournamentId: String? = null
 
-        for (match in matches) {
+        matches.forEach { match ->
             if (match.tournament.id != tournamentId) {
                 tournamentId = match.tournament.id
                 list.add(ListItem.Tournament(match.tournament))
@@ -100,21 +100,20 @@ class PlayerViewModel(
     }
 
     fun fetchPlayer() {
-        state = state.copy(isFetching = true)
-
         val region = this.region
         val playerId = this.playerId
-
         check(region != null && playerId != null) { "initialize() hasn't been called!" }
+
+        state = state.copy(isFetching = true)
 
         disposables.add(playerMatchesRepository.getPlayerAndMatches(region, playerId)
                 .subscribe({ bundle ->
                     val list = createList(bundle)
-                    val showSearchIcon = list?.any { it is ListItem.Match } != null
+                    val showSearchIcon = list?.any { it is ListItem.Match } == true
 
                     state = state.copy(
-                            isFetching = false,
                             hasError = false,
+                            isFetching = false,
                             showSearchIcon = showSearchIcon,
                             list = list,
                             searchResults = null,
@@ -126,8 +125,8 @@ class PlayerViewModel(
                     timber.e(TAG, "Error fetching player", it)
 
                     state = state.copy(
-                            isFetching = false,
                             hasError = true,
+                            isFetching = false,
                             showSearchIcon = false,
                             list = null,
                             searchResults = null,
@@ -207,8 +206,8 @@ class PlayerViewModel(
 
             state = state.copy(
                     isFavorited = isFavorited,
-                    smashCompetitor = smashCompetitor,
-                    titleText = titleText
+                    titleText = titleText,
+                    smashCompetitor = smashCompetitor
             )
         }
     }
@@ -230,17 +229,15 @@ class PlayerViewModel(
         val trimmedQuery = query.trim()
         var addedNoMatches = false
 
-        for (i in list.indices) {
-            val objectI = list[i]
-
-            if (objectI is ListItem.NoMatches) {
+        list.forEachIndexed { index, listItem ->
+            if (listItem is ListItem.NoMatches) {
                 if (!addedNoMatches) {
                     addedNoMatches = true
-                    results.add(objectI)
+                    results.add(listItem)
                 }
-            } else if (objectI is ListItem.Tournament) {
+            } else if (listItem is ListItem.Tournament) {
                 var addedTournament = false
-                var j = i + 1
+                var j = index + 1
 
                 while (j < list.size) {
                     val objectJ = list[j]
@@ -249,7 +246,7 @@ class PlayerViewModel(
                         if (objectJ.match.opponent.name.contains(trimmedQuery, true)) {
                             if (!addedTournament) {
                                 addedTournament = true
-                                results.add(objectI)
+                                results.add(listItem)
                             }
 
                             results.add(objectJ)
