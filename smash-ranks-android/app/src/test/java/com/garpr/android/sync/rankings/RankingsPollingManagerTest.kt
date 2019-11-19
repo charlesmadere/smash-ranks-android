@@ -42,13 +42,13 @@ class RankingsPollingManagerTest : BaseTest() {
         assertNull(workManagerWrapper.status)
 
         rankingsPollingManager.enableOrDisable()
-        assertTrue(workManagerWrapper.status == true)
+        assertEquals(true, workManagerWrapper.status)
 
         rankingsPollingManager.isEnabled = false
-        assertTrue(workManagerWrapper.status == false)
+        assertEquals(false, workManagerWrapper.status)
 
         rankingsPollingManager.isEnabled = true
-        assertTrue(workManagerWrapper.status == true)
+        assertEquals(true, workManagerWrapper.status)
     }
 
     @Test
