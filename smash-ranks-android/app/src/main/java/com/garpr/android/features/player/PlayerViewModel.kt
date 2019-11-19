@@ -35,7 +35,7 @@ class PlayerViewModel(
         get() = identityRepository.identity
 
     val player: FullPlayer?
-        get() = state.bundle?.fullPlayer
+        get() = state.playerMatchesBundle?.fullPlayer
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -117,7 +117,7 @@ class PlayerViewModel(
                             showSearchIcon = showSearchIcon,
                             list = list,
                             searchResults = null,
-                            bundle = bundle
+                            playerMatchesBundle = bundle
                     )
 
                     refresh()
@@ -130,7 +130,7 @@ class PlayerViewModel(
                             showSearchIcon = false,
                             list = null,
                             searchResults = null,
-                            bundle = null
+                            playerMatchesBundle = null
                     )
 
                     refresh()
@@ -296,7 +296,7 @@ class PlayerViewModel(
             val titleText: CharSequence? = null,
             val list: List<ListItem>? = null,
             val searchResults: List<ListItem>? = null,
-            val bundle: PlayerMatchesBundle? = null,
+            val playerMatchesBundle: PlayerMatchesBundle? = null,
             val smashCompetitor: SmashCompetitor? = null
     )
 

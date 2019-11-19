@@ -222,7 +222,7 @@ class PlayerViewModelTest : BaseTest() {
         assertFalse(state?.titleText.isNullOrBlank())
         assertEquals(11, state?.list?.size)
         assertNull(state?.searchResults)
-        assertEquals(PLAYER_MATCHES_BUNDLE, state?.bundle)
+        assertEquals(PLAYER_MATCHES_BUNDLE, state?.playerMatchesBundle)
         assertNull(state?.smashCompetitor)
 
         assertTrue(state?.list?.get(0) is ListItem.Player)
@@ -295,7 +295,7 @@ class PlayerViewModelTest : BaseTest() {
         assertFalse(state?.titleText.isNullOrBlank())
         assertEquals(2, state?.list?.size)
         assertNull(state?.searchResults)
-        assertEquals(EMPTY_PLAYER_MATCHES_BUNDLE, state?.bundle)
+        assertEquals(EMPTY_PLAYER_MATCHES_BUNDLE, state?.playerMatchesBundle)
         assertNull(state?.smashCompetitor)
 
         assertTrue(state?.list?.get(0) is ListItem.Player)
@@ -322,7 +322,7 @@ class PlayerViewModelTest : BaseTest() {
         assertTrue(state?.titleText.isNullOrBlank())
         assertNull(state?.list)
         assertNull(state?.searchResults)
-        assertNull(state?.bundle)
+        assertNull(state?.playerMatchesBundle)
         assertNull(state?.smashCompetitor)
     }
 
