@@ -2,12 +2,12 @@ package com.garpr.android.features.rankings
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.PreviousRank
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.features.rankings.RankingsViewModel.ListItem
-import com.garpr.android.features.rankings.RankingsViewModel.ListItem.Player.PreviousRank
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository

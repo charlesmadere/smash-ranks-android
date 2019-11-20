@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.PreviousRank
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.truncate
@@ -57,14 +58,14 @@ class RankingsViewModel(
                 }
 
                 if (player.rank == player.previousRank || player.previousRank == Int.MIN_VALUE) {
-                    ListItem.Player.PreviousRank.INVISIBLE
+                    PreviousRank.INVISIBLE
                 } else if (player.rank < player.previousRank) {
-                    ListItem.Player.PreviousRank.INCREASE
+                    PreviousRank.INCREASE
                 } else {
-                    ListItem.Player.PreviousRank.DECREASE
+                    PreviousRank.DECREASE
                 }
             } else {
-                ListItem.Player.PreviousRank.GONE
+                PreviousRank.GONE
             }
 
             ListItem.Player(
@@ -148,10 +149,6 @@ class RankingsViewModel(
                 val rating: String
         ) : ListItem() {
             override val listId: Long = player.hashCode().toLong()
-
-            enum class PreviousRank {
-                DECREASE, GONE, INCREASE, INVISIBLE
-            }
         }
     }
 

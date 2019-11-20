@@ -11,8 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.PreviousRank
 import com.garpr.android.extensions.setTintedImageResource
-import com.garpr.android.features.rankings.RankingsViewModel.ListItem
 import kotlinx.android.synthetic.main.item_ranking.view.*
 
 class RankingItemView @JvmOverloads constructor(
@@ -55,7 +55,7 @@ class RankingItemView @JvmOverloads constructor(
     fun setContent(
             player: AbsPlayer,
             isIdentity: Boolean,
-            previousRank: ListItem.Player.PreviousRank,
+            previousRank: PreviousRank,
             rank: String,
             rating: String
     ) {
@@ -71,21 +71,21 @@ class RankingItemView @JvmOverloads constructor(
         }
 
         when (previousRank) {
-            ListItem.Player.PreviousRank.DECREASE -> {
+            PreviousRank.DECREASE -> {
                 previousRankView.setTintedImageResource(R.drawable.ic_arrow_downward_white_18dp, loseColor)
                 previousRankView.visibility = VISIBLE
             }
 
-            ListItem.Player.PreviousRank.GONE -> {
+            PreviousRank.GONE -> {
                 previousRankView.visibility = GONE
             }
 
-            ListItem.Player.PreviousRank.INCREASE -> {
+            PreviousRank.INCREASE -> {
                 previousRankView.setTintedImageResource(R.drawable.ic_arrow_upward_white_18dp, winColor)
                 previousRankView.visibility = VISIBLE
             }
 
-            ListItem.Player.PreviousRank.INVISIBLE -> {
+            PreviousRank.INVISIBLE -> {
                 previousRankView.visibility = INVISIBLE
             }
         }
