@@ -37,10 +37,6 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
 
     var listener: Listener? = null
 
-    interface Listener {
-        fun onClick(v: HeadToHeadMatchItemView)
-    }
-
     init {
         setOnClickListener(this)
 
@@ -94,6 +90,10 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
     override fun setContent(content: HeadToHeadMatch) {
         _headToHeadMatch = content
         refresh()
+    }
+
+    interface Listener {
+        fun onClick(v: HeadToHeadMatchItemView)
     }
 
 }

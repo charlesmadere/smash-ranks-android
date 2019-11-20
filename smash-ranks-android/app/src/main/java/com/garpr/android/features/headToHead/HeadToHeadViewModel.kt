@@ -51,7 +51,7 @@ class HeadToHeadViewModel(
 
         var tournamentId: String? = null
 
-        for (match in headToHead.matches) {
+        headToHead.matches.forEach { match ->
             if (match.tournament.id != tournamentId) {
                 tournamentId = match.tournament.id
                 list.add(ListItem.Tournament(match.tournament))
