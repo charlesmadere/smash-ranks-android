@@ -13,6 +13,7 @@ import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayerItemView
+import com.garpr.android.features.tournament.TournamentViewModel.PlayerListItem
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.fragment_tournament_players.*
@@ -97,7 +98,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
             private val playerItemViewListeners: PlayerItemView.Listeners
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val list = mutableListOf<TournamentViewModel.PlayerListItem>()
+        private val list = mutableListOf<PlayerListItem>()
 
         companion object {
             private const val VIEW_TYPE_PLAYER = 0
@@ -107,8 +108,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
             setHasStableIds(true)
         }
 
-        private fun bindPlayerViewHolder(holder: PlayerViewHolder,
-                item: TournamentViewModel.PlayerListItem.Player) {
+        private fun bindPlayer(holder: PlayerViewHolder, item: PlayerListItem.Player) {
             holder.playerItemView.setContent(item.player)
         }
 
@@ -127,14 +127,13 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
-                is TournamentViewModel.PlayerListItem.Player -> VIEW_TYPE_PLAYER
+                is PlayerListItem.Player -> VIEW_TYPE_PLAYER
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is TournamentViewModel.PlayerListItem.Player -> bindPlayerViewHolder(
-                        holder as PlayerViewHolder, item)
+                is PlayerListItem.Player -> bindPlayer(holder as PlayerViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -149,7 +148,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
             }
         }
 
-        internal fun set(list: List<TournamentViewModel.PlayerListItem>?) {
+        internal fun set(list: List<PlayerListItem>?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {

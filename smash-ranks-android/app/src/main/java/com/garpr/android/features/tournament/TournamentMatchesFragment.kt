@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.garpr.android.R
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.tournament.TournamentViewModel.MatchListItem
 import com.garpr.android.misc.ListLayout
 import kotlinx.android.synthetic.main.fragment_tournament_matches.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -80,7 +81,7 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
             private val tournamentMatchItemViewListener: TournamentMatchItemView.Listener
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val list = mutableListOf<TournamentViewModel.MatchListItem>()
+        private val list = mutableListOf<MatchListItem>()
 
         companion object {
             private const val VIEW_TYPE_MATCH = 0
@@ -90,7 +91,7 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
             setHasStableIds(true)
         }
 
-        private fun bindMatch(holder: TournamentMatchViewHolder, item: TournamentViewModel.MatchListItem.Match) {
+        private fun bindMatch(holder: TournamentMatchViewHolder, item: MatchListItem.Match) {
             holder.tournamentMatchItemView.setContent(item.match)
         }
 
@@ -109,14 +110,13 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
-                is TournamentViewModel.MatchListItem.Match -> VIEW_TYPE_MATCH
+                is MatchListItem.Match -> VIEW_TYPE_MATCH
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is TournamentViewModel.MatchListItem.Match -> bindMatch(
-                        holder as TournamentMatchViewHolder, item)
+                is MatchListItem.Match -> bindMatch(holder as TournamentMatchViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -125,18 +125,13 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
             val inflater = parent.layoutInflater
 
             return when (viewType) {
-                VIEW_TYPE_MATCH -> {
-                    val viewHolder = TournamentMatchViewHolder(inflater.inflate(
-                            R.layout.item_tournament_match, parent, false))
-                    viewHolder.tournamentMatchItemView.listener = tournamentMatchItemViewListener
-                    viewHolder
-                }
-
+                VIEW_TYPE_MATCH -> TournamentMatchViewHolder(tournamentMatchItemViewListener,
+                        inflater.inflate(R.layout.item_tournament_match, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
         }
 
-        internal fun set(list: List<TournamentViewModel.MatchListItem>?) {
+        internal fun set(list: List<MatchListItem>?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {
@@ -148,8 +143,15 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
 
     }
 
-    private class TournamentMatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class TournamentMatchViewHolder(
+            listener: TournamentMatchItemView.Listener,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         internal val tournamentMatchItemView: TournamentMatchItemView = itemView as TournamentMatchItemView
+
+        init {
+            tournamentMatchItemView.listener = listener
+        }
     }
 
 }
