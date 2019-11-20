@@ -48,7 +48,7 @@ class WinsLossesView @JvmOverloads constructor(
         opponentName.text = content.opponent.name
         opponentWins.text = NUMBER_FORMAT.format(content.opponentWins)
 
-        winsLossesGraph.setContent(Pair(content, hasAnimated))
+        winsLossesGraph.setContent(content, hasAnimated)
 
         if (hasAnimated) {
             alpha = 1f

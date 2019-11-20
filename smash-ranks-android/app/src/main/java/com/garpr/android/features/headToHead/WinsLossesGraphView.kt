@@ -13,15 +13,14 @@ import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.extensions.getLong
-import com.garpr.android.features.common.adapters.BaseAdapterView
 
 class WinsLossesGraphView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : View(context, attrs), BaseAdapterView<Pair<WinsLosses, Boolean>> {
+) : View(context, attrs) {
 
-    private val playerPalette = GraphPalette(R.color.win_background, R.color.win)
-    private val opponentPalette = GraphPalette(R.color.lose_background, R.color.lose)
+    private val playerPalette = GraphPalette(context, R.color.win_background, R.color.win)
+    private val opponentPalette = GraphPalette(context, R.color.lose_background, R.color.lose)
     private val rect = RectF()
     private var winsLosses: WinsLosses? = null
 
@@ -92,10 +91,10 @@ class WinsLossesGraphView @JvmOverloads constructor(
                 .start()
     }
 
-    override fun setContent(content: Pair<WinsLosses, Boolean>) {
-        this.winsLosses = content.first
+    fun setContent(winsLosses: WinsLosses, hasAnimated: Boolean) {
+        this.winsLosses = winsLosses
 
-        if (content.second) {
+        if (hasAnimated) {
             scaleX = 1f
             scaleY = 1f
             calculateRects()
@@ -104,7 +103,8 @@ class WinsLossesGraphView @JvmOverloads constructor(
         }
     }
 
-    private inner class GraphPalette(
+    private class GraphPalette(
+            context: Context,
             @ColorRes private val fillColorResId: Int,
             @ColorRes private val strokeColorResId: Int
     ) {
@@ -119,7 +119,7 @@ class WinsLossesGraphView @JvmOverloads constructor(
 
             strokePaint.color = ContextCompat.getColor(context, strokeColorResId)
             strokePaint.isAntiAlias = true
-            strokePaint.strokeWidth = resources.getDimension(R.dimen.root_padding_eighth)
+            strokePaint.strokeWidth = context.resources.getDimension(R.dimen.root_padding_eighth)
             strokePaint.style = Paint.Style.STROKE
         }
     }
