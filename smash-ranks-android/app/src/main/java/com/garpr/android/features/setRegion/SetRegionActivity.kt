@@ -15,13 +15,14 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.RegionSelectionItemView
+import com.garpr.android.features.setRegion.SetRegionViewModel.ListItem
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_set_region.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.OnClickListener,
+class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.Listener,
         SetRegionToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter(this)
@@ -116,6 +117,11 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
 
     private fun refreshState(state: SetRegionViewModel.State) {
         when (state.saveIconStatus) {
+            SetRegionViewModel.SaveIconStatus.DISABLED -> {
+                toolbar.showSaveIcon = true
+                toolbar.enableSaveIcon = false
+            }
+
             SetRegionViewModel.SaveIconStatus.ENABLED -> {
                 toolbar.showSaveIcon = true
                 toolbar.enableSaveIcon = true
@@ -123,11 +129,6 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
 
             SetRegionViewModel.SaveIconStatus.GONE -> {
                 toolbar.showSaveIcon = false
-                toolbar.enableSaveIcon = false
-            }
-
-            SetRegionViewModel.SaveIconStatus.VISIBLE -> {
-                toolbar.showSaveIcon = true
                 toolbar.enableSaveIcon = false
             }
         }
@@ -147,10 +148,10 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
     }
 
     private class Adapter(
-            private val regionClickListener: RegionSelectionItemView.OnClickListener
+            private val regionItemViewListener: RegionSelectionItemView.Listener
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val list = mutableListOf<SetRegionViewModel.ListItem>()
+        private val list = mutableListOf<ListItem>()
         private var selectedRegion: Region? = null
 
         companion object {
@@ -162,12 +163,12 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
             setHasStableIds(true)
         }
 
-        private fun bindEndpointViewHolder(holder: EndpointViewHolder, item: SetRegionViewModel.ListItem.Endpoint) {
+        private fun bindEndpointViewHolder(holder: EndpointViewHolder, item: ListItem.Endpoint) {
             holder.endpointDividerView.setContent(item.endpoint)
         }
 
-        private fun bindRegionViewHolder(holder: RegionViewHolder, item: SetRegionViewModel.ListItem.Region) {
-            holder.regionSelectionItemView.setContent(Pair(item.region, item.region == selectedRegion))
+        private fun bindRegionViewHolder(holder: RegionViewHolder, item: ListItem.Region) {
+            holder.regionSelectionItemView.setContent(item.region, item.region == selectedRegion)
         }
 
         internal fun clear() {
@@ -186,17 +187,15 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
-                is SetRegionViewModel.ListItem.Endpoint -> VIEW_TYPE_ENDPOINT
-                is SetRegionViewModel.ListItem.Region -> VIEW_TYPE_REGION
+                is ListItem.Endpoint -> VIEW_TYPE_ENDPOINT
+                is ListItem.Region -> VIEW_TYPE_REGION
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is SetRegionViewModel.ListItem.Endpoint -> bindEndpointViewHolder(
-                        holder as EndpointViewHolder, item)
-                is SetRegionViewModel.ListItem.Region -> bindRegionViewHolder(
-                        holder as RegionViewHolder, item)
+                is ListItem.Endpoint -> bindEndpointViewHolder(holder as EndpointViewHolder, item)
+                is ListItem.Region -> bindRegionViewHolder(holder as RegionViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -207,17 +206,13 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
             return when (viewType) {
                 VIEW_TYPE_ENDPOINT -> EndpointViewHolder(inflater.inflate(
                         R.layout.divider_endpoint, parent, false))
-                VIEW_TYPE_REGION -> {
-                    val viewHolder = RegionViewHolder(inflater.inflate(
-                            R.layout.item_region_selection, parent, false))
-                    viewHolder.regionSelectionItemView.onClickListener = regionClickListener
-                    viewHolder
-                }
+                VIEW_TYPE_REGION -> RegionViewHolder(regionItemViewListener,
+                        inflater.inflate(R.layout.item_region_selection, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
         }
 
-        internal fun set(list: List<SetRegionViewModel.ListItem>?, selectedRegion: Region?) {
+        internal fun set(list: List<ListItem>?, selectedRegion: Region?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {
@@ -234,8 +229,15 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.O
         internal val endpointDividerView: EndpointDividerView = itemView as EndpointDividerView
     }
 
-    private class RegionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class RegionViewHolder(
+            listener: RegionSelectionItemView.Listener,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         internal val regionSelectionItemView: RegionSelectionItemView = itemView as RegionSelectionItemView
+
+        init {
+            regionSelectionItemView.listener = listener
+        }
     }
 
 }

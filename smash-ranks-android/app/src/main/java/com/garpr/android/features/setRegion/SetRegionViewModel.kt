@@ -13,7 +13,7 @@ import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionsRepository
 import java.util.Collections
 
-class SetRegionViewModel constructor(
+class SetRegionViewModel(
         private val regionRepository: RegionRepository,
         private val regionsRepository: RegionsRepository,
         private val timber: Timber
@@ -28,7 +28,7 @@ class SetRegionViewModel constructor(
             val saveIconStatus = if (state.list.isNullOrEmpty()) {
                 SaveIconStatus.GONE
             } else if (value == regionRepository.getRegion()) {
-                SaveIconStatus.VISIBLE
+                SaveIconStatus.DISABLED
             } else {
                 SaveIconStatus.ENABLED
             }
@@ -68,7 +68,7 @@ class SetRegionViewModel constructor(
                         .filter { it.isActive }
         )
 
-        if (regionsCopy.isNullOrEmpty()) {
+        if (regionsCopy.isEmpty()) {
             return null
         }
 
@@ -91,9 +91,9 @@ class SetRegionViewModel constructor(
 
     private fun errorState() {
         state = state.copy(
+                hasError = true,
                 isFetching = false,
                 isRefreshEnabled = true,
-                hasError = true,
                 list = null,
                 selectedRegion = null,
                 saveIconStatus = SaveIconStatus.GONE
@@ -112,12 +112,12 @@ class SetRegionViewModel constructor(
                         errorState()
                     } else {
                         state = state.copy(
+                                hasError = false,
                                 isFetching = false,
                                 isRefreshEnabled = false,
-                                hasError = false,
                                 list = list,
                                 selectedRegion = regionRepository.getRegion(),
-                                saveIconStatus = SaveIconStatus.VISIBLE
+                                saveIconStatus = SaveIconStatus.DISABLED
                         )
                     }
                 }, {
@@ -126,7 +126,6 @@ class SetRegionViewModel constructor(
                 }))
     }
 
-    @Throws(IllegalStateException::class)
     fun saveSelectedRegion() {
         val region = selectedRegion
 
@@ -154,16 +153,16 @@ class SetRegionViewModel constructor(
     }
 
     data class State(
+            val hasError: Boolean = false,
             val isFetching: Boolean = false,
             val isRefreshEnabled: Boolean = true,
-            val hasError: Boolean = false,
             val list: List<ListItem>? = null,
             val selectedRegion: Region? = null,
             val saveIconStatus: SaveIconStatus = SaveIconStatus.GONE
     )
 
     enum class SaveIconStatus {
-        GONE, VISIBLE, ENABLED
+        DISABLED, ENABLED, GONE
     }
 
 }

@@ -171,7 +171,7 @@ class SetRegionViewModelTest : BaseTest() {
         assertTrue(state == null || state?.saveIconStatus == SaveIconStatus.GONE)
 
         viewModel.fetchRegions()
-        assertEquals(SaveIconStatus.VISIBLE, state?.saveIconStatus)
+        assertEquals(SaveIconStatus.DISABLED, state?.saveIconStatus)
 
         viewModel.selectedRegion = GOOGLE_MTV
         assertEquals(SaveIconStatus.ENABLED, state?.saveIconStatus)
@@ -180,7 +180,7 @@ class SetRegionViewModelTest : BaseTest() {
         assertEquals(SaveIconStatus.ENABLED, state?.saveIconStatus)
 
         viewModel.selectedRegion = NORCAL
-        assertEquals(SaveIconStatus.VISIBLE, state?.saveIconStatus)
+        assertEquals(SaveIconStatus.DISABLED, state?.saveIconStatus)
     }
 
     @Test
