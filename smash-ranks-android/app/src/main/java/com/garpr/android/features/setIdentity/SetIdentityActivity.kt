@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_set_identity.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListener, Refreshable,
+class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Refreshable,
         Searchable, SetIdentityToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter(this)
@@ -172,7 +172,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
     }
 
     private class Adapter(
-            private val playerClickListener: PlayerSelectionItemView.OnClickListener
+            private val playerItemViewListener: PlayerSelectionItemView.Listener
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var selectedIdentity: AbsPlayer? = null
@@ -198,7 +198,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
         }
 
         private fun bindPlayerViewHolder(holder: PlayerViewHolder, item: ListItem.Player) {
-            holder.playerItemView.setContent(Pair(item.player, item.player == selectedIdentity))
+            holder.playerItemView.setContent(item.player, item.player == selectedIdentity)
         }
 
         internal fun clear() {
@@ -224,10 +224,8 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is ListItem.Divider -> bindDividerViewHolder(
-                        holder as DividerViewHolder, item)
-                is ListItem.Player -> bindPlayerViewHolder(
-                        holder as PlayerViewHolder, item)
+                is ListItem.Divider -> bindDividerViewHolder(holder as DividerViewHolder, item)
+                is ListItem.Player -> bindPlayerViewHolder(holder as PlayerViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -238,8 +236,8 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
             return when (viewType) {
                 VIEW_TYPE_DIVIDER -> DividerViewHolder(inflater.inflate(R.layout.divider_string,
                         parent, false))
-                VIEW_TYPE_PLAYER -> PlayerViewHolder(inflater.inflate(R.layout.item_player_selection,
-                            parent, false), playerClickListener)
+                VIEW_TYPE_PLAYER -> PlayerViewHolder(playerItemViewListener,
+                        inflater.inflate(R.layout.item_player_selection, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
         }
@@ -262,13 +260,13 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.OnClickListe
     }
 
     private class PlayerViewHolder(
-            itemView: View,
-            onClickListener: PlayerSelectionItemView.OnClickListener
+            listener: PlayerSelectionItemView.Listener,
+            itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         internal val playerItemView: PlayerSelectionItemView = itemView as PlayerSelectionItemView
 
         init {
-            playerItemView.onClickListener = onClickListener
+            playerItemView.listener = listener
         }
     }
 

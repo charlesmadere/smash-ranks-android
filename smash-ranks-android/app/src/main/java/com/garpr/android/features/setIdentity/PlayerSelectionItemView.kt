@@ -5,37 +5,36 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import com.garpr.android.data.models.AbsPlayer
-import com.garpr.android.features.common.adapters.BaseAdapterView
 import kotlinx.android.synthetic.main.item_player_selection.view.*
 
 class PlayerSelectionItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LinearLayout(context, attrs), BaseAdapterView<Pair<AbsPlayer, Boolean>>, View.OnClickListener {
+) : LinearLayout(context, attrs), View.OnClickListener {
 
     private var _player: AbsPlayer? = null
 
     val player: AbsPlayer
         get() = requireNotNull(_player)
 
-    var onClickListener: OnClickListener? = null
-
-    interface OnClickListener {
-        fun onClick(v: PlayerSelectionItemView)
-    }
+    var listener: Listener? = null
 
     init {
         setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        onClickListener?.onClick(this)
+        listener?.onClick(this)
     }
 
-    override fun setContent(content: Pair<AbsPlayer, Boolean>) {
-        _player = content.first
-        name.text = content.first.name
-        radioButton.isChecked = content.second
+    fun setContent(player: AbsPlayer, isChecked: Boolean) {
+        _player = player
+        name.text = player.name
+        radioButton.isChecked = isChecked
+    }
+
+    interface Listener {
+        fun onClick(v: PlayerSelectionItemView)
     }
 
 }

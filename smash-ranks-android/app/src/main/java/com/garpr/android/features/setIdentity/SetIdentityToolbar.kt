@@ -33,13 +33,13 @@ class SetIdentityToolbar @JvmOverloads constructor(
         listener?.onSaveClick(this)
     }
 
-    interface Listener {
-        fun onSaveClick(v: SetIdentityToolbar)
-    }
-
     init {
         layoutInflater.inflate(R.layout.set_identity_toolbar_items, menuExpansionContainer)
         saveButton.setOnClickListener(saveClickListener)
+    }
+
+    interface Listener {
+        fun onSaveClick(v: SetIdentityToolbar)
     }
 
 }
