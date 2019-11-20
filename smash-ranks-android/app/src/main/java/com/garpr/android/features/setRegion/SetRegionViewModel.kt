@@ -61,9 +61,12 @@ class SetRegionViewModel constructor(
         }
 
         val regionsCopy = mutableListOf<Region>()
-        regionsCopy.addAll(regions
-                .filterIsInstance(Region::class.java)
-                .filter { it.isActive })
+
+        regionsCopy.addAll(
+                regions
+                        .filterIsInstance(Region::class.java)
+                        .filter { it.isActive }
+        )
 
         if (regionsCopy.isNullOrEmpty()) {
             return null
