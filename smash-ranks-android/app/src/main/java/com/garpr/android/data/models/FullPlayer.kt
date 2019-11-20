@@ -45,22 +45,21 @@ class FullPlayer(
 
             val uniqueAliases = mutableListOf<String>()
 
-            for (alias in aliases) {
-                if (alias.isNotBlank() && !alias.equals(name, true)) {
-                    var add = true
+            aliases.filter { it.isNotBlank() && !it.equals(name, true) }
+                    .forEach { alias ->
+                        var add = true
 
-                    for (uniqueAlias in uniqueAliases) {
-                        if (alias.equals(uniqueAlias, true)) {
-                            add = false
-                            break
+                        for (uniqueAlias in uniqueAliases) {
+                            if (alias.equals(uniqueAlias, true)) {
+                                add = false
+                                break
+                            }
+                        }
+
+                        if (add) {
+                            uniqueAliases.add(alias)
                         }
                     }
-
-                    if (add) {
-                        uniqueAliases.add(alias)
-                    }
-                }
-            }
 
             return if (uniqueAliases.isEmpty()) {
                 null
