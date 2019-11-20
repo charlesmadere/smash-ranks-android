@@ -97,7 +97,7 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
     }
 
     private class Adapter(
-            private val favoritePlayerViewListeners: FavoritePlayerItemView.Listeners
+            private val favoritePlayerItemViewListeners: FavoritePlayerItemView.Listeners
     ) : RecyclerView.Adapter<FavoritePlayerViewHolder>() {
 
         private val list = mutableListOf<FavoritePlayer>()
@@ -125,7 +125,7 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritePlayerViewHolder {
             val inflater = parent.layoutInflater
-            return FavoritePlayerViewHolder(favoritePlayerViewListeners, inflater.inflate(
+            return FavoritePlayerViewHolder(favoritePlayerItemViewListeners, inflater.inflate(
                     R.layout.item_favorite_player, parent, false))
         }
 
