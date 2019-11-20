@@ -99,7 +99,7 @@ class HomeViewModelTest : BaseTest() {
             state = it
         }
 
-        viewModel.onRankingsBundleChange(NORCAL, EMPTY_RANKINGS_BUNDLE)
+        viewModel.onRankingsBundleChange(EMPTY_RANKINGS_BUNDLE, true)
         assertEquals(false, state?.hasRankings)
         assertEquals(false, state?.showActivityRequirements)
         assertFalse(state?.subtitleDate.isNullOrBlank())
@@ -114,7 +114,7 @@ class HomeViewModelTest : BaseTest() {
             state = it
         }
 
-        viewModel.onTournamentsBundleChange(EMPTY_TOURNAMENTS_BUNDLE)
+        viewModel.onTournamentsBundleChange(true)
         assertEquals(false, state?.hasTournaments)
     }
 

@@ -1,58 +1,46 @@
 package com.garpr.android.features.rankings
 
 import android.content.Context
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.garpr.android.R
-import com.garpr.android.data.models.RankedPlayer
-import com.garpr.android.extensions.clear
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.setTintedImageResource
-import com.garpr.android.extensions.truncate
-import com.garpr.android.features.common.adapters.BaseAdapterView
-import com.garpr.android.features.common.views.IdentityConstraintLayout
+import com.garpr.android.features.rankings.RankingsViewModel.ListItem
 import kotlinx.android.synthetic.main.item_ranking.view.*
-import org.koin.core.inject
-import java.text.NumberFormat
 
 class RankingItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : IdentityConstraintLayout(context, attrs), BaseAdapterView<RankedPlayer>,
-        View.OnClickListener, View.OnLongClickListener {
+) : ConstraintLayout(context, attrs), View.OnClickListener, View.OnLongClickListener {
+
+    private var _player: AbsPlayer? = null
+
+    val player: AbsPlayer
+        get() = requireNotNull(_player)
+
+    private val originalBackground: Drawable? = background
+
+    @ColorInt
+    private val cardBackgroundColor: Int = ContextCompat.getColor(context, R.color.card_background)
+
+    @ColorInt
+    private val loseColor: Int = ContextCompat.getColor(context, R.color.lose)
+
+    @ColorInt
+    private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
     var listeners: Listeners? = null
-
-    val rankedPlayer: RankedPlayer
-        get() = requireNotNull(identity as RankedPlayer)
-
-    protected val previousRankUtils: PreviousRankUtils by inject()
-
-    companion object {
-        private val NUMBER_FORMAT = NumberFormat.getIntegerInstance()
-    }
 
     init {
         setOnClickListener(this)
         setOnLongClickListener(this)
-    }
-
-    override fun clear() {
-        super.clear()
-        previousRankView.clear()
-        rank.clear()
-        name.clear()
-        rating.clear()
-    }
-
-    override fun identityIsSomeoneElse() {
-        super.identityIsSomeoneElse()
-        styleTextViewForSomeoneElse(name)
-    }
-
-    override fun identityIsUser() {
-        super.identityIsUser()
-        styleTextViewForUser(name)
     }
 
     override fun onClick(v: View) {
@@ -64,49 +52,46 @@ class RankingItemView @JvmOverloads constructor(
         return true
     }
 
-    override fun refresh() {
-        super.refresh()
+    fun setContent(
+            player: AbsPlayer,
+            isIdentity: Boolean,
+            previousRank: ListItem.Player.PreviousRank,
+            rank: String,
+            rating: String
+    ) {
+        _player = player
+        name.text = player.name
 
-        val player = identity as? RankedPlayer
-
-        if (player == null) {
-            clear()
-            return
+        if (isIdentity) {
+            name.typeface = Typeface.DEFAULT_BOLD
+            setBackgroundColor(cardBackgroundColor)
+        } else {
+            name.typeface = Typeface.DEFAULT
+            ViewCompat.setBackground(this, originalBackground)
         }
 
-        val rankInfo = previousRankUtils.getRankInfo(player)
-
-        if (rankInfo == null) {
-            previousRankView.clear()
-            previousRankView.visibility = GONE
-        } else {
-            when (rankInfo) {
-                PreviousRankUtils.Info.DECREASE -> {
-                    previousRankView.setTintedImageResource(R.drawable.ic_arrow_downward_white_18dp,
-                            ContextCompat.getColor(context, R.color.lose))
-                }
-
-                PreviousRankUtils.Info.INCREASE -> {
-                    previousRankView.setTintedImageResource(R.drawable.ic_arrow_upward_white_18dp,
-                            ContextCompat.getColor(context, R.color.win))
-                }
-
-                PreviousRankUtils.Info.NO_CHANGE -> {
-                    previousRankView.clear()
-                }
+        when (previousRank) {
+            ListItem.Player.PreviousRank.DECREASE -> {
+                previousRankView.setTintedImageResource(R.drawable.ic_arrow_downward_white_18dp, loseColor)
+                previousRankView.visibility = VISIBLE
             }
 
-            previousRankView.visibility = VISIBLE
+            ListItem.Player.PreviousRank.GONE -> {
+                previousRankView.visibility = GONE
+            }
+
+            ListItem.Player.PreviousRank.INCREASE -> {
+                previousRankView.setTintedImageResource(R.drawable.ic_arrow_upward_white_18dp, winColor)
+                previousRankView.visibility = VISIBLE
+            }
+
+            ListItem.Player.PreviousRank.INVISIBLE -> {
+                previousRankView.visibility = INVISIBLE
+            }
         }
 
-        rank.text = NUMBER_FORMAT.format(player.rank)
-        name.text = player.name
-        rating.text = player.rating.truncate()
-    }
-
-    override fun setContent(content: RankedPlayer) {
-        identity = content
-        refresh()
+        this.rank.text = rank
+        this.rating.text = rating
     }
 
     interface Listeners {

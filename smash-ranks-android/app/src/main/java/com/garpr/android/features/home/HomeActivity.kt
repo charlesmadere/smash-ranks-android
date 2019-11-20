@@ -63,12 +63,11 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         })
 
         rankingsViewModel.stateLiveData.observe(this, Observer {
-            homeViewModel.onRankingsBundleChange(regionRepository.getRegion(this),
-                    it.rankingsBundle)
+            homeViewModel.onRankingsBundleChange(it.rankingsBundle, it.isEmpty)
         })
 
         tournamentsViewModel.stateLiveData.observe(this, Observer {
-            homeViewModel.onTournamentsBundleChange(it.tournamentsBundle)
+            homeViewModel.onTournamentsBundleChange(it.isEmpty)
         })
     }
 

@@ -2,10 +2,8 @@ package com.garpr.android.features.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.RankingsBundle
-import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
@@ -38,8 +36,8 @@ class HomeViewModel(
     }
 
     override fun onCleared() {
-        favoritePlayersRepository.removeListener(this)
         identityRepository.removeListener(this)
+        favoritePlayersRepository.removeListener(this)
         super.onCleared()
     }
 
@@ -53,22 +51,22 @@ class HomeViewModel(
         refreshState()
     }
 
-    fun onRankingsBundleChange(region: AbsRegion, bundle: RankingsBundle?) {
+    fun onRankingsBundleChange(bundle: RankingsBundle?, isEmpty: Boolean) {
         state = state.copy(
-                hasRankings = bundle?.rankings?.isNotEmpty() == true,
+                hasRankings = !isEmpty,
                 showActivityRequirements =
                         bundle?.rankingCriteria?.rankingActivityDayLimit != null &&
                         bundle.rankingCriteria.rankingNumTourneysAttended != null &&
                         bundle.rankingCriteria.tournamentQualifiedDayLimit != null,
-                title = region.displayName,
+                title = bundle?.rankingCriteria?.displayName,
                 subtitleDate = bundle?.time?.shortForm
         )
 
         refreshState()
     }
 
-    fun onTournamentsBundleChange(bundle: TournamentsBundle?) {
-        state = state.copy(hasTournaments = bundle?.tournaments?.isNotEmpty() == true)
+    fun onTournamentsBundleChange(isEmpty: Boolean) {
+        state = state.copy(hasTournaments = !isEmpty)
         refreshState()
     }
 

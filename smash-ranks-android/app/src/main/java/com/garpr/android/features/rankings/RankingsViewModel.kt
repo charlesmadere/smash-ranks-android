@@ -3,20 +3,24 @@ package com.garpr.android.features.rankings
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.garpr.android.data.models.RankedPlayer
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.truncate
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RankingsRepository
+import java.text.NumberFormat
 
 class RankingsViewModel(
+        private val identityRepository: IdentityRepository,
         private val rankingsRepository: RankingsRepository,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), Searchable {
+) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener, Searchable {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -29,19 +33,64 @@ class RankingsViewModel(
 
     companion object {
         private const val TAG = "RankingsViewModel"
+        private val NUMBER_FORMAT = NumberFormat.getInstance()
+    }
+
+    init {
+        identityRepository.addListener(this)
+    }
+
+    @WorkerThread
+    private fun createList(bundle: RankingsBundle?): List<ListItem>? {
+        val rankings = bundle?.rankings
+
+        if (rankings.isNullOrEmpty()) {
+            return null
+        }
+
+        val previousRankSupported = rankings.any { it.previousRank != null }
+
+        return bundle.rankings.map { player ->
+            val previousRank = if (previousRankSupported) {
+                checkNotNull(player.previousRank) {
+                    "This is impossible here if RankedPlayerConverter does its job correctly."
+                }
+
+                if (player.rank == player.previousRank || player.previousRank == Int.MIN_VALUE) {
+                    ListItem.Player.PreviousRank.INVISIBLE
+                } else if (player.rank < player.previousRank) {
+                    ListItem.Player.PreviousRank.INCREASE
+                } else {
+                    ListItem.Player.PreviousRank.DECREASE
+                }
+            } else {
+                ListItem.Player.PreviousRank.GONE
+            }
+
+            ListItem.Player(
+                    player = player,
+                    isIdentity = identityRepository.isPlayer(player),
+                    previousRank = previousRank,
+                    rank = NUMBER_FORMAT.format(player.rank),
+                    rating = player.rating.truncate()
+            )
+        }
     }
 
     fun fetchRankings(region: Region) {
         state = state.copy(isFetching = true)
 
         disposables.add(rankingsRepository.getRankings(region)
-                .subscribe({
+                .subscribe({ bundle ->
+                    val list = createList(bundle)
+
                     state = state.copy(
                             hasError = false,
-                            isEmpty = it.rankings.isNullOrEmpty(),
+                            isEmpty = list.isNullOrEmpty(),
                             isFetching = false,
+                            list = list,
                             searchResults = null,
-                            rankingsBundle = it
+                            rankingsBundle = bundle
                     )
                 }, {
                     timber.e(TAG, "Error fetching rankings", it)
@@ -50,29 +99,59 @@ class RankingsViewModel(
                             hasError = true,
                             isEmpty = false,
                             isFetching = false,
+                            list = null,
                             searchResults = null,
                             rankingsBundle = null
                     )
                 }))
     }
 
+    override fun onCleared() {
+        identityRepository.removeListener(this)
+        super.onCleared()
+    }
+
+    override fun onIdentityChange(identityRepository: IdentityRepository) {
+        threadUtils.background.submit {
+            val list = createList(state.rankingsBundle)
+            state = state.copy(list = list)
+        }
+    }
+
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = search(query, state.rankingsBundle?.rankings)
+            val results = search(query, state.list)
             state = state.copy(searchResults = results)
         }
     }
 
     @WorkerThread
-    private fun search(query: String?, rankings: List<RankedPlayer>?): List<RankedPlayer>? {
-        if (query.isNullOrBlank() || rankings.isNullOrEmpty()) {
+    private fun search(query: String?, list: List<ListItem>?): List<ListItem>? {
+        if (query.isNullOrBlank() || list.isNullOrEmpty()) {
             return null
         }
 
         val trimmedQuery = query.trim()
 
-        return rankings.filter { player ->
-            player.name.contains(trimmedQuery, true)
+        return list.filterIsInstance(ListItem.Player::class.java)
+                .filter { it.player.name.contains(trimmedQuery, true) }
+    }
+
+    sealed class ListItem {
+        abstract val listId: Long
+
+        class Player(
+                val player: AbsPlayer,
+                val isIdentity: Boolean,
+                val previousRank: PreviousRank,
+                val rank: String,
+                val rating: String
+        ) : ListItem() {
+            override val listId: Long = player.hashCode().toLong()
+
+            enum class PreviousRank {
+                DECREASE, GONE, INCREASE, INVISIBLE
+            }
         }
     }
 
@@ -80,7 +159,8 @@ class RankingsViewModel(
             val hasError: Boolean = false,
             val isEmpty: Boolean = false,
             val isFetching: Boolean = false,
-            val searchResults: List<RankedPlayer>? = null,
+            val list: List<ListItem>? = null,
+            val searchResults: List<ListItem>? = null,
             val rankingsBundle: RankingsBundle? = null
     )
 

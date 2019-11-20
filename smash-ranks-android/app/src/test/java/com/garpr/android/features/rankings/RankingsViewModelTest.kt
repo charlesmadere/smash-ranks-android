@@ -6,8 +6,11 @@ import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.features.rankings.RankingsViewModel.ListItem
+import com.garpr.android.features.rankings.RankingsViewModel.ListItem.Player.PreviousRank
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RankingsRepository
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
@@ -26,10 +29,19 @@ class RankingsViewModelTest : BaseTest() {
 
     private lateinit var viewModel: RankingsViewModel
 
+    protected val identityRepository: IdentityRepository by inject()
     protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
 
     companion object {
+        private val AERIUS = RankedPlayer(
+                id = "597d28bed2994e34028b4cbe",
+                name = "Aerius",
+                rank = 36,
+                rating = 32.437035049106726f,
+                previousRank = 38
+        )
+
         private val CAPTAIN_SMUCKERS = RankedPlayer(
                 id = "545b23548ab65f7a95f7487b",
                 name = "Captain Smuckers",
@@ -42,7 +54,7 @@ class RankingsViewModelTest : BaseTest() {
                 name = "Charlezard",
                 rating = 25.019734920402804f,
                 rank = 91,
-                previousRank = 92
+                previousRank = 91
         )
 
         private val HAX = RankedPlayer(
@@ -118,7 +130,7 @@ class RankingsViewModelTest : BaseTest() {
         )
 
         private val NORCAL_RANKINGS_BUNDLE = RankingsBundle(
-                rankings = listOf(SNAP, IMYT, CHARLEZARD),
+                rankings = listOf(SNAP, IMYT, AERIUS, CHARLEZARD),
                 rankingCriteria = NORCAL,
                 time = SimpleDate(Date(1574121600000L)),
                 id = "5dd24219d2994e6b6ca25860",
@@ -138,7 +150,8 @@ class RankingsViewModelTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        viewModel = RankingsViewModel(RankingsRepositoryOverride(), threadUtils, timber)
+        viewModel = RankingsViewModel(identityRepository, RankingsRepositoryOverride(),
+                threadUtils, timber)
     }
 
     @Test
@@ -167,6 +180,7 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(true, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
+        assertNull(state?.list)
         assertNull(state?.searchResults)
         assertNull(state?.rankingsBundle)
     }
@@ -183,6 +197,7 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(false, state?.hasError)
         assertEquals(true, state?.isEmpty)
         assertEquals(false, state?.isFetching)
+        assertTrue(state?.list.isNullOrEmpty())
         assertNull(state?.searchResults)
         assertEquals(GOOGLE_MTV_RANKINGS_BUNDLE, state?.rankingsBundle)
     }
@@ -195,12 +210,43 @@ class RankingsViewModelTest : BaseTest() {
             state = it
         }
 
+        identityRepository.setIdentity(CHARLEZARD, NORCAL)
+
         viewModel.fetchRankings(NORCAL)
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
+        assertEquals(4, state?.list?.size)
         assertNull(state?.searchResults)
         assertEquals(NORCAL_RANKINGS_BUNDLE, state?.rankingsBundle)
+
+        var player = state?.list?.get(0) as ListItem.Player
+        assertEquals(SNAP, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.INCREASE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
+
+        player = state?.list?.get(1) as ListItem.Player
+        assertEquals(IMYT, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.DECREASE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
+
+        player = state?.list?.get(2) as ListItem.Player
+        assertEquals(AERIUS, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.INCREASE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
+
+        player = state?.list?.get(3) as ListItem.Player
+        assertEquals(CHARLEZARD, player.player)
+        assertEquals(true, player.isIdentity)
+        assertEquals(PreviousRank.INVISIBLE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
     }
 
     @Test
@@ -211,12 +257,36 @@ class RankingsViewModelTest : BaseTest() {
             state = it
         }
 
+        identityRepository.setIdentity(CHARLEZARD, NORCAL)
+
         viewModel.fetchRankings(NYC)
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
+        assertEquals(3, state?.list?.size)
         assertNull(state?.searchResults)
         assertEquals(NYC_RANKINGS_BUNDLE, state?.rankingsBundle)
+
+        var player = state?.list?.get(0) as ListItem.Player
+        assertEquals(SWEDISH_DELIGHT, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.GONE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
+
+        player = state?.list?.get(1) as ListItem.Player
+        assertEquals(HAX, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.GONE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
+
+        player = state?.list?.get(2) as ListItem.Player
+        assertEquals(CAPTAIN_SMUCKERS, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.GONE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
     }
 
     @Test
@@ -232,11 +302,17 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
-        assertEquals(2, state?.searchResults?.size)
+        assertEquals(3, state?.searchResults?.size)
         assertEquals(NORCAL_RANKINGS_BUNDLE, state?.rankingsBundle)
 
-        assertEquals(SNAP, state?.searchResults?.get(0))
-        assertEquals(CHARLEZARD, state?.searchResults?.get(1))
+        var player = state?.searchResults?.get(0) as ListItem.Player
+        assertEquals(SNAP, player.player)
+
+        player = state?.searchResults?.get(1) as ListItem.Player
+        assertEquals(AERIUS, player.player)
+
+        player = state?.searchResults?.get(2) as ListItem.Player
+        assertEquals(CHARLEZARD, player.player)
     }
 
     @Test
@@ -374,7 +450,8 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(1, state?.searchResults?.size)
         assertEquals(NYC_RANKINGS_BUNDLE, state?.rankingsBundle)
 
-        assertEquals(HAX, state?.searchResults?.get(0))
+        val player = state?.searchResults?.get(0) as ListItem.Player
+        assertEquals(HAX, player.player)
     }
 
     private class RankingsRepositoryOverride : RankingsRepository {
@@ -384,7 +461,7 @@ class RankingsViewModelTest : BaseTest() {
                 GOOGLE_MTV -> Single.just(GOOGLE_MTV_RANKINGS_BUNDLE)
                 NORCAL -> Single.just(NORCAL_RANKINGS_BUNDLE)
                 NYC -> Single.just(NYC_RANKINGS_BUNDLE)
-                else -> Single.error(IllegalArgumentException())
+                else -> Single.error(NoSuchElementException())
             }
         }
 

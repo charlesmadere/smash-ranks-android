@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.player.PlayerActivity
+import com.garpr.android.features.rankings.RankingsViewModel.ListItem
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
@@ -63,7 +63,7 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
     override fun onClick(v: RankingItemView) {
         val intent = PlayerActivity.getLaunchIntent(
                 context = requireContext(),
-                player = v.rankedPlayer,
+                player = v.player,
                 region = regionRepository.getRegion(requireContext())
         )
 
@@ -82,7 +82,7 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
     }
 
     override fun onLongClick(v: RankingItemView) {
-        childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.rankedPlayer,
+        childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.player,
                 regionRepository.getRegion(requireContext()))
     }
 
@@ -114,9 +114,9 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
         } else if (state.isEmpty) {
             showEmpty()
         } else if (state.searchResults != null) {
-            showRankings(state.searchResults)
+            showList(state.searchResults)
         } else {
-            showRankings(state.rankingsBundle?.rankings)
+            showList(state.list)
         }
 
         refreshLayout.isRefreshing = state.isFetching
@@ -140,8 +140,8 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
         error.visibility = View.VISIBLE
     }
 
-    private fun showRankings(rankings: List<RankedPlayer>?) {
-        adapter.set(rankings)
+    private fun showList(list: List<ListItem>?) {
+        adapter.set(list)
         empty.visibility = View.GONE
         error.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
@@ -149,12 +149,21 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
 
     private class Adapter(
             private val rankingItemViewListeners: RankingItemView.Listeners
-    ) : RecyclerView.Adapter<RankingViewHolder>() {
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val list = mutableListOf<RankedPlayer>()
+        private val list = mutableListOf<ListItem>()
+
+        companion object {
+            private const val VIEW_TYPE_PLAYER = 0
+        }
 
         init {
             setHasStableIds(true)
+        }
+
+        private fun bindPlayer(holder: PlayerViewHolder, item: ListItem.Player) {
+            holder.rankingItemView.setContent(item.player, item.isIdentity, item.previousRank,
+                    item.rank, item.rating)
         }
 
         internal fun clear() {
@@ -167,22 +176,33 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
         }
 
         override fun getItemId(position: Int): Long {
-            return list[position].hashCode().toLong()
+            return list[position].listId
         }
 
-        override fun onBindViewHolder(holder: RankingViewHolder, position: Int) {
-            holder.rankingItemView.setContent(list[position])
+        override fun getItemViewType(position: Int): Int {
+            return when (list[position]) {
+                is ListItem.Player -> VIEW_TYPE_PLAYER
+            }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankingViewHolder {
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            when (val item = list[position]) {
+                is ListItem.Player -> bindPlayer(holder as PlayerViewHolder, item)
+                else -> throw RuntimeException("unknown item: $item, position: $position")
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val inflater = parent.layoutInflater
-            val viewHolder = RankingViewHolder(inflater.inflate(
-                    R.layout.item_ranking, parent, false))
-            viewHolder.rankingItemView.listeners = rankingItemViewListeners
-            return viewHolder
+
+            return when (viewType) {
+                VIEW_TYPE_PLAYER -> PlayerViewHolder(rankingItemViewListeners,
+                        inflater.inflate(R.layout.item_ranking, parent, false))
+                else -> throw IllegalArgumentException("unknown viewType: $viewType")
+            }
         }
 
-        internal fun set(list: List<RankedPlayer>?) {
+        internal fun set(list: List<ListItem>?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {
@@ -194,8 +214,15 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
 
     }
 
-    private class RankingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class PlayerViewHolder(
+            listeners: RankingItemView.Listeners,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         internal val rankingItemView: RankingItemView = itemView as RankingItemView
+
+        init {
+            rankingItemView.listeners = listeners
+        }
     }
 
 }
