@@ -105,6 +105,10 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/test
     testImplementation "androidx.test:core:$testcore_version"
 
+    // AndroidX ViewPager2
+    // https://developer.android.com/jetpack/androidx/releases/viewpager2
+    implementation "androidx.viewpager2:viewpager2:$viewpager_version"
+
     // Facebook's Fresco
     // https://github.com/facebook/fresco
     implementation "com.facebook.fresco:fresco:$fresco_version"

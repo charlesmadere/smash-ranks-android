@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         style="@style/Toolbar" />
 
-    <com.garpr.android.features.home.HomeViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_height="0dp"
         android:layout_weight="1"

@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.TournamentMode
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.verticalPositionInWindow
@@ -26,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener, Refreshable,
         Searchable, SwipeRefreshLayout.OnRefreshListener, TournamentInfoView.Listeners,
-        TournamentTabsView.OnTabClickListener, ViewPager.OnPageChangeListener {
+        TournamentTabsView.OnTabClickListener {
 
     private lateinit var adapter: TournamentFragmentPagerAdapter
     private val tournamentId by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
@@ -35,6 +37,19 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
     protected val shareUtils: ShareUtils by inject()
 
     private val viewModel: TournamentViewModel by viewModel()
+
+    private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            tournamentTabsView.tournamentMode = currentPage
+        }
+    }
+
+    private var currentPage: TournamentMode
+        get() = TournamentMode.values()[viewPager.currentItem]
+        set(value) {
+            viewPager.currentItem = value.ordinal
+        }
 
     companion object {
         private const val TAG = "TournamentActivity"
@@ -104,18 +119,6 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         shareUtils.openUrl(this, v.tournament.url)
     }
 
-    override fun onPageScrollStateChanged(state: Int) {
-        // intentionally empty
-    }
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        // intentionally empty
-    }
-
-    override fun onPageSelected(position: Int) {
-        tournamentTabsView.tournamentMode = viewPager.currentTab
-    }
-
     override fun onRefresh() {
         refresh()
     }
@@ -125,10 +128,10 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
     }
 
     override fun onTabClick(v: TournamentTabsView) {
-        if (viewPager.currentTab == tournamentTabsView.tournamentMode) {
+        if (currentPage == tournamentTabsView.tournamentMode) {
             adapter.onNavigationItemReselected(tournamentTabsView.tournamentMode)
         } else {
-            viewPager.currentTab = tournamentTabsView.tournamentMode
+            currentPage = tournamentTabsView.tournamentMode
         }
     }
 
@@ -138,9 +141,9 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         appBarLayout.addOnOffsetChangedListener(this)
         tournamentInfoView.listeners = this
         tournamentTabsView.onTabClickListener = this
-        viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
-        viewPager.addOnPageChangeListener(this)
-        adapter = TournamentFragmentPagerAdapter(supportFragmentManager)
+        viewPager.setPageTransformer(MarginPageTransformer(resources.getDimensionPixelSize(R.dimen.root_padding)))
+        viewPager.registerOnPageChangeCallback(onPageChangeCallback)
+        adapter = TournamentFragmentPagerAdapter(this)
         viewPager.adapter = adapter
     }
 

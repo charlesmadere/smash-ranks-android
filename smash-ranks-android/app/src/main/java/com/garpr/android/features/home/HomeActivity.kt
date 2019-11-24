@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.garpr.android.R
 import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
@@ -36,6 +36,19 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     private val tournamentsViewModel: TournamentsViewModel by viewModel()
 
     protected val regionRepository: RegionRepository by inject()
+
+    private var currentPage: HomeTab
+        get() = HomeTab.values()[viewPager.currentItem]
+        set(value) {
+            viewPager.setCurrentItem(value.ordinal, false)
+        }
+
+    private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            updateSelectedBottomNavigationItem()
+        }
+    }
 
     companion object {
         const val TAG = "HomeActivity"
@@ -86,8 +99,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             return
         }
 
-        if (viewPager.currentTab != HomeTab.RANKINGS) {
-            viewPager.currentTab = HomeTab.RANKINGS
+        if (currentPage != HomeTab.RANKINGS) {
+            currentPage = HomeTab.RANKINGS
             return
         }
 
@@ -106,20 +119,13 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        viewPager.currentTab = item.itemIdAsHomeTab
+        currentPage = item.itemIdAsHomeTab
         return true
-    }
-
-    private val onPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            updateSelectedBottomNavigationItem()
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_CURRENT_POSITION, viewPager.currentTab)
+        outState.putParcelable(KEY_CURRENT_POSITION, currentPage)
     }
 
     override fun onSettingsClick(v: HomeToolbar) {
@@ -142,11 +148,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         bottomNavigationView.setOnNavigationItemReselectedListener(this)
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
-        viewPager.addOnPageChangeListener(onPageChangeListener)
-        viewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.root_padding)
-        viewPager.offscreenPageLimit = 3
+        viewPager.registerOnPageChangeCallback(onPageChangeCallback)
+        viewPager.offscreenPageLimit = HomeTab.values().size - 1
 
-        adapter = HomeFragmentPagerAdapter(supportFragmentManager)
+        adapter = HomeFragmentPagerAdapter(this)
         viewPager.adapter = adapter
     }
 
@@ -191,12 +196,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
         if (initialPosition != null) {
-            viewPager.currentTab = initialPosition
+            currentPage = initialPosition
         }
     }
 
     private fun updateSelectedBottomNavigationItem() {
-        val itemId = when (viewPager.currentTab) {
+        val itemId = when (currentPage) {
             HomeTab.RANKINGS -> R.id.actionRankings
             HomeTab.TOURNAMENTS -> R.id.actionTournaments
             HomeTab.FAVORITE_PLAYERS -> R.id.actionFavoritePlayers

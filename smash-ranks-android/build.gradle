@@ -19,6 +19,7 @@ buildscript {
     ext.robolectric_version = '4.3.1'
     ext.rx_java_version = '2.2.14'
     ext.testcore_version = '1.2.0'
+    ext.viewpager_version = '1.0.0'
     ext.workmanager_version = '2.2.0'
 
     repositories {

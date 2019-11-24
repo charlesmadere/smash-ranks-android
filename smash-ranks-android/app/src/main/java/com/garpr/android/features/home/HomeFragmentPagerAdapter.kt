@@ -1,9 +1,8 @@
 package com.garpr.android.features.home
 
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.favoritePlayers.FavoritePlayersFragment
 import com.garpr.android.features.rankings.RankingsFragment
@@ -13,19 +12,12 @@ import com.garpr.android.misc.ListLayout
 import java.lang.ref.WeakReference
 
 class HomeFragmentPagerAdapter(
-        fm: FragmentManager
-) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        activity: FragmentActivity
+) : FragmentStateAdapter(activity) {
 
     private val pages = mutableMapOf<HomeTab, WeakReference<BaseFragment?>?>()
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        super.destroyItem(container, position, `object`)
-        pages.remove(HomeTab.values()[position])
-    }
-
-    override fun getCount(): Int = HomeTab.values().size
-
-    override fun getItem(position: Int): Fragment {
+    override fun createFragment(position: Int): Fragment {
         val homeTab = HomeTab.values()[position]
 
         val fragment: BaseFragment = when (homeTab) {
@@ -38,20 +30,7 @@ class HomeFragmentPagerAdapter(
         return fragment
     }
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val item = super.instantiateItem(container, position)
-
-        val homeTab = HomeTab.values()[position]
-        val fragment = item as? BaseFragment?
-
-        if (fragment == null) {
-            pages.remove(homeTab)
-        } else {
-            pages[homeTab] = WeakReference(fragment)
-        }
-
-        return item
-    }
+    override fun getItemCount(): Int = HomeTab.values().size
 
     fun onNavigationItemReselected(homeTab: HomeTab) {
         val fragment = pages[homeTab]?.get()

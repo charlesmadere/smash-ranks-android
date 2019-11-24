@@ -57,7 +57,7 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent">
 
-            <com.garpr.android.features.tournament.TournamentViewPager
+            <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
