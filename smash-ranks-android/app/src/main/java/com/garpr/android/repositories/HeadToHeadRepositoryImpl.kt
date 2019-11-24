@@ -1,10 +1,12 @@
 package com.garpr.android.repositories
 
 import com.garpr.android.data.models.HeadToHead
+import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.ServerApi
 import io.reactivex.Single
+import java.util.Collections
 
 class HeadToHeadRepositoryImpl(
         private val schedulers: Schedulers,
@@ -15,6 +17,11 @@ class HeadToHeadRepositoryImpl(
             opponentId: String): Single<HeadToHead> {
         return serverApi.getHeadToHead(region, playerId, opponentId)
                 .subscribeOn(schedulers.background)
+                .doOnSuccess {
+                    if (!it.matches.isNullOrEmpty()) {
+                        Collections.sort(it.matches, Match.REVERSE_CHRONOLOGICAL_ORDER)
+                    }
+                }
     }
 
 }
