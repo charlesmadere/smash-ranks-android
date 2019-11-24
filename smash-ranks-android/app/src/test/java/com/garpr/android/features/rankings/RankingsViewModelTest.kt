@@ -290,6 +290,58 @@ class RankingsViewModelTest : BaseTest() {
     }
 
     @Test
+    fun testIdentityChangeDoesUpdateListAndSearchResults() {
+        var state: RankingsViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.fetchRankings(NORCAL)
+
+        var list = state?.list
+        assertEquals(4, list?.size)
+        state?.list?.filterIsInstance(ListItem.Player::class.java)
+                ?.forEach { assertFalse(it.isIdentity) }
+
+        var searchResults = state?.searchResults
+        assertNull(searchResults)
+
+        identityRepository.setIdentity(CHARLEZARD, NORCAL)
+        viewModel.search("r")
+
+        list = state?.list
+        assertEquals(4, list?.size)
+
+        var player = list?.get(0) as ListItem.Player
+        assertEquals(SNAP, player.player)
+        assertFalse(player.isIdentity)
+
+        player = list[1] as ListItem.Player
+        assertEquals(IMYT, player.player)
+        assertFalse(player.isIdentity)
+
+        player = list[2] as ListItem.Player
+        assertEquals(AERIUS, player.player)
+        assertFalse(player.isIdentity)
+
+        player = list[3] as ListItem.Player
+        assertEquals(CHARLEZARD, player.player)
+        assertTrue(player.isIdentity)
+
+        searchResults = state?.searchResults
+        assertEquals(2, searchResults?.size)
+
+        player = searchResults?.get(0) as ListItem.Player
+        assertEquals(AERIUS, player.player)
+        assertFalse(player.isIdentity)
+
+        player = searchResults[1] as ListItem.Player
+        assertEquals(CHARLEZARD, player.player)
+        assertTrue(player.isIdentity)
+    }
+
+    @Test
     fun testSearchNorcalWithA() {
         var state: RankingsViewModel.State? = null
 

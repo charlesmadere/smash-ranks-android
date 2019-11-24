@@ -114,9 +114,48 @@ class RankingsViewModel(
 
     override fun onIdentityChange(identityRepository: IdentityRepository) {
         threadUtils.background.submit {
-            val list = createList(state.rankingsBundle)
-            state = state.copy(list = list)
+            refreshListItems()
         }
+    }
+
+    @WorkerThread
+    private fun refreshListItems() {
+        val list: List<ListItem>? = if (state.list.isNullOrEmpty()) {
+            state.list
+        } else {
+            val list = mutableListOf<ListItem>()
+
+            state.list?.mapTo(list) {
+                if (it is ListItem.Player) {
+                    it.copy(isIdentity = identityRepository.isPlayer(it.player))
+                } else {
+                    it
+                }
+            }
+
+            list
+        }
+
+        val searchResults: List<ListItem>? = if (state.searchResults.isNullOrEmpty()) {
+            state.searchResults
+        } else {
+            val searchResults = mutableListOf<ListItem>()
+
+            state.searchResults?.mapTo(searchResults) {
+                if (it is ListItem.Player) {
+                    it.copy(isIdentity = identityRepository.isPlayer(it.player))
+                } else {
+                    it
+                }
+            }
+
+            searchResults
+        }
+
+        state = state.copy(
+                list = list,
+                searchResults = searchResults
+        )
     }
 
     override fun search(query: String?) {
@@ -141,7 +180,7 @@ class RankingsViewModel(
     sealed class ListItem {
         abstract val listId: Long
 
-        class Player(
+        data class Player(
                 val player: AbsPlayer,
                 val isIdentity: Boolean,
                 val previousRank: PreviousRank,
