@@ -83,7 +83,7 @@ class HeadToHeadRepositoryTest : BaseTest() {
                 tournament = MELEE_AT_THE_MADE_100
         )
 
-        private val HEAD_TO_HEAD = HeadToHead(
+        private val CHARLEZARD_VS_IMYT = HeadToHead(
                 opponent = IMYT,
                 player = CHARLEZARD,
                 losses = 2,
@@ -91,7 +91,7 @@ class HeadToHeadRepositoryTest : BaseTest() {
                 matches = listOf(MATCH_0, MATCH_1)
         )
 
-        private val EMPTY_HEAD_TO_HEAD = HeadToHead(
+        private val SNAP_VS_AERIUS = HeadToHead(
                 opponent = AERIUS,
                 player = SNAP,
                 losses = 0,
@@ -107,7 +107,8 @@ class HeadToHeadRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun testGetHeadToHead() {
+    fun testGetHeadToHeadWithCharlezardVsImyt() {
+        serverApi.headToHead = CHARLEZARD_VS_IMYT
         val headToHead = headToHeadRepository.getHeadToHead(NORCAL, CHARLEZARD.id, IMYT.id)
                 .blockingGet()
 
@@ -123,9 +124,9 @@ class HeadToHeadRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun testGetHeadToHeadWithEmptyHeadToHead() {
-        serverApi.headToHead = EMPTY_HEAD_TO_HEAD
-        val headToHead = headToHeadRepository.getHeadToHead(NORCAL, CHARLEZARD.id, IMYT.id)
+    fun testGetHeadToHeadWithSnapVsAerius() {
+        serverApi.headToHead = SNAP_VS_AERIUS
+        val headToHead = headToHeadRepository.getHeadToHead(NORCAL, SNAP.id, AERIUS.id)
                 .blockingGet()
 
         assertNotNull(headToHead)
@@ -137,7 +138,7 @@ class HeadToHeadRepositoryTest : BaseTest() {
     }
 
     private class ServerApiOverride(
-            internal var headToHead: HeadToHead? = HEAD_TO_HEAD
+            internal var headToHead: HeadToHead? = null
     ) : AbsServerApi() {
         override fun getHeadToHead(region: Region, playerId: String,
                 opponentId: String): Single<HeadToHead> {
