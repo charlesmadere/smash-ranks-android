@@ -35,31 +35,19 @@ class TournamentViewModel(
     }
 
     private fun createMatchesList(tournament: FullTournament): List<MatchListItem>? {
-        if (tournament.matches.isNullOrEmpty()) {
-            return null
+        return if (tournament.matches.isNullOrEmpty()) {
+            null
+        } else {
+            tournament.matches.map { MatchListItem.Match(it) }
         }
-
-        val list = mutableListOf<MatchListItem>()
-
-        tournament.matches.forEach {
-            list.add(MatchListItem.Match(it))
-        }
-
-        return list
     }
 
     private fun createPlayersList(tournament: FullTournament): List<PlayerListItem>? {
-        if (tournament.players.isNullOrEmpty()) {
-            return null
+        return if (tournament.players.isNullOrEmpty()) {
+            null
+        } else {
+            tournament.players.map { PlayerListItem.Player(it) }
         }
-
-        val list = mutableListOf<PlayerListItem>()
-
-        tournament.players.forEach {
-            list.add(PlayerListItem.Player(it))
-        }
-
-        return list
     }
 
     fun fetchTournament() {
