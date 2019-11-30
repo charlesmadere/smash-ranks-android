@@ -49,9 +49,9 @@ class SmashCompetitorTest : BaseTest() {
     fun testFilteredMains2() {
         val filteredMains = SMASH_COMPETITOR_2.filteredMains
         assertEquals(3, filteredMains?.size)
-        assertTrue(filteredMains?.contains(SmashCharacter.SHEIK) == true)
-        assertTrue(filteredMains?.contains(SmashCharacter.FALCO) == true)
-        assertTrue(filteredMains?.contains(SmashCharacter.FOX) == true)
+        assertEquals(true, filteredMains?.contains(SmashCharacter.SHEIK))
+        assertEquals(true, filteredMains?.contains(SmashCharacter.FALCO))
+        assertEquals(true, filteredMains?.contains(SmashCharacter.FOX))
     }
 
     @Test
@@ -63,8 +63,8 @@ class SmashCompetitorTest : BaseTest() {
     fun testFilteredMains4() {
         val filteredMains = SMASH_COMPETITOR_4.filteredMains
         assertEquals(2, filteredMains?.size)
-        assertTrue(filteredMains?.contains(SmashCharacter.FOX) == true)
-        assertTrue(filteredMains?.contains(SmashCharacter.CPTN_FALCON) == true)
+        assertEquals(true, filteredMains?.contains(SmashCharacter.FOX))
+        assertEquals(true, filteredMains?.contains(SmashCharacter.CPTN_FALCON))
     }
 
 }

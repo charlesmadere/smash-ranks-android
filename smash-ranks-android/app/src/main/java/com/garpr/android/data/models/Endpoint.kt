@@ -58,7 +58,7 @@ enum class Endpoint(
         val stringBuilder = StringBuilder(basePath)
                 .append("/#/")
 
-        if (regionId?.isNotBlank() == true) {
+        if (!regionId.isNullOrBlank()) {
             stringBuilder.append(regionId)
         }
 

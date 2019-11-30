@@ -59,9 +59,7 @@ class SetRegionViewModelTest : BaseTest() {
                 regions = listOf(CHICAGO, GOOGLE_MTV, NORCAL, NEW_YORK_CITY)
         )
 
-        private val EMPTY_REGIONS_BUNDLE = RegionsBundle(
-                regions = null
-        )
+        private val EMPTY_REGIONS_BUNDLE = RegionsBundle()
 
         private val GAR_PR_REGIONS_BUNDLE = RegionsBundle(
                 regions = listOf(GOOGLE_MTV, NORCAL)
@@ -224,7 +222,7 @@ class SetRegionViewModelTest : BaseTest() {
         regionsRepository.regionsBundle = EMPTY_REGIONS_BUNDLE
         viewModel.fetchRegions()
 
-        assertTrue(state?.hasError == true)
+        assertEquals(true, state?.hasError)
         assertTrue(state?.list.isNullOrEmpty())
     }
 
@@ -239,7 +237,7 @@ class SetRegionViewModelTest : BaseTest() {
         regionsRepository.regionsBundle = null
         viewModel.fetchRegions()
 
-        assertTrue(state?.hasError == true)
+        assertEquals(true, state?.hasError)
         assertTrue(state?.list.isNullOrEmpty())
     }
 
@@ -265,12 +263,12 @@ class SetRegionViewModelTest : BaseTest() {
     ) : RegionsRepository {
 
         override fun getRegions(): Single<RegionsBundle> {
-            val bundle = regionsBundle
+            val regionsBundle = this.regionsBundle
 
-            return if (bundle == null) {
+            return if (regionsBundle == null) {
                 Single.error(NullPointerException())
             } else {
-                Single.just(bundle)
+                Single.just(regionsBundle)
             }
         }
 

@@ -60,7 +60,7 @@ class PlayerProfileManagerImpl(
             avatarPath = competitor.avatar?.largeButFallbackToMediumThenOriginalThenSmall
         )
 
-        if (avatar?.isNotBlank() == true) {
+        if (!avatar.isNullOrBlank()) {
             presentation = presentation.copy(avatar = avatar)
         }
 
