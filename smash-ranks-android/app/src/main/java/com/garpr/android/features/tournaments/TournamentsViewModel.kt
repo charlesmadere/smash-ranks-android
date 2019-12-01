@@ -77,9 +77,9 @@ class TournamentsViewModel(
     }
 
     data class State(
+            val hasError: Boolean = false,
             val isEmpty: Boolean = false,
             val isFetching: Boolean = false,
-            val hasError: Boolean = false,
             val searchResults: List<AbsTournament>? = null,
             val tournamentsBundle: TournamentsBundle? = null
     )
