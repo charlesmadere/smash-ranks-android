@@ -97,16 +97,12 @@ class SetIdentityViewModel(
 
         players.filter { it.name.first().isDigit() }
                 .forEach {
-                    val char = it.name.first()
-
-                    if (char.isDigit()) {
-                        if (!addedDigitDivider) {
-                            addedDigitDivider = true
-                            list.add(ListItem.Divider.Digit)
-                        }
-
-                        list.add(ListItem.Player(it))
+                    if (!addedDigitDivider) {
+                        addedDigitDivider = true
+                        list.add(ListItem.Divider.Digit)
                     }
+
+                    list.add(ListItem.Player(it))
                 }
 
         ///////////////////////
@@ -117,16 +113,12 @@ class SetIdentityViewModel(
 
         players.filter { !it.name.first().isLetterOrDigit() }
                 .forEach {
-                    val char = it.name.first()
-
-                    if (!char.isLetterOrDigit()) {
-                        if (!addedOtherDivider) {
-                            addedOtherDivider = true
-                            list.add(ListItem.Divider.Other)
-                        }
-
-                        list.add(ListItem.Player(it))
+                    if (!addedOtherDivider) {
+                        addedOtherDivider = true
+                        list.add(ListItem.Divider.Other)
                     }
+
+                    list.add(ListItem.Player(it))
                 }
 
         return list
