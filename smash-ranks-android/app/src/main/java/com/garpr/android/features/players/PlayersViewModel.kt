@@ -1,12 +1,10 @@
 package com.garpr.android.features.players
 
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.garpr.android.data.models.AbsPlayer
-import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.PlayerList
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -36,57 +34,44 @@ class PlayersViewModel(
 
         disposables.add(playersRepository.getPlayers(region)
                 .subscribe({
-                    val isEmpty = it.players.isNullOrEmpty()
+                    val list = PlayerList.createList(it)
 
                     state = state.copy(
-                            isEmpty = isEmpty,
-                            isFetching = false,
                             hasError = false,
-                            showSearchIcon = !isEmpty,
-                            searchResults = null,
-                            playersBundle = it
+                            isEmpty = list.isNullOrEmpty(),
+                            isFetching = false,
+                            showSearchIcon = !list.isNullOrEmpty(),
+                            list = list,
+                            searchResults = null
                     )
                 }, {
                     timber.e(TAG, "Error fetching players", it)
 
                     state = state.copy(
+                            hasError = true,
                             isEmpty = false,
                             isFetching = false,
-                            hasError = true,
                             showSearchIcon = false,
-                            searchResults = null,
-                            playersBundle = null
+                            list = null,
+                            searchResults = null
                     )
                 }))
     }
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = search(query, state.playersBundle?.players)
+            val results = PlayerList.search(query, state.list)
             state = state.copy(searchResults = results)
         }
     }
 
-    @WorkerThread
-    private fun search(query: String?, players: List<AbsPlayer>?): List<AbsPlayer>? {
-        if (query.isNullOrBlank() || players.isNullOrEmpty()) {
-            return null
-        }
-
-        val trimmedQuery = query.trim()
-
-        return players.filter { player ->
-            player.name.contains(trimmedQuery, true)
-        }
-    }
-
     data class State(
+            val hasError: Boolean = false,
             val isEmpty: Boolean = false,
             val isFetching: Boolean = false,
-            val hasError: Boolean = false,
             val showSearchIcon: Boolean = false,
-            val searchResults: List<AbsPlayer>? = null,
-            val playersBundle: PlayersBundle? = null
+            val list: List<PlayerList.Item>? = null,
+            val searchResults: List<PlayerList.Item>? = null
     )
 
 }

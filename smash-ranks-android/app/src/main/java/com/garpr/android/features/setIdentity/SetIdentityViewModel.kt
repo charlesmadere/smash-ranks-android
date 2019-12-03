@@ -1,13 +1,11 @@
 package com.garpr.android.features.setIdentity
 
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
-import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.safeEquals
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.PlayerList
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -55,81 +53,12 @@ class SetIdentityViewModel(
         private const val TAG = "SetIdentityViewModel"
     }
 
-    @WorkerThread
-    private fun createList(bundle: PlayersBundle?): List<ListItem>? {
-        val players = bundle?.players
-
-        if (players.isNullOrEmpty()) {
-            return null
-        }
-
-        val list = mutableListOf<ListItem>()
-        var previousChar: Char? = null
-        var letterDividerListId = Long.MIN_VALUE + 1L
-
-        ////////////////////////
-        // add letter players //
-        ////////////////////////
-
-        players.filter { it.name.first().isLetter() }
-                .forEach {
-                    val char = it.name.first()
-
-                    if (!char.safeEquals(previousChar, true)) {
-                        previousChar = char
-
-                        list.add(ListItem.Divider.Letter(
-                                letter = char.toUpperCase().toString(),
-                                listId = letterDividerListId
-                        ))
-
-                        ++letterDividerListId
-                    }
-
-                    list.add(ListItem.Player(it))
-                }
-
-        ///////////////////////
-        // add digit players //
-        ///////////////////////
-
-        var addedDigitDivider = false
-
-        players.filter { it.name.first().isDigit() }
-                .forEach {
-                    if (!addedDigitDivider) {
-                        addedDigitDivider = true
-                        list.add(ListItem.Divider.Digit)
-                    }
-
-                    list.add(ListItem.Player(it))
-                }
-
-        ///////////////////////
-        // add other players //
-        ///////////////////////
-
-        var addedOtherDivider = false
-
-        players.filter { !it.name.first().isLetterOrDigit() }
-                .forEach {
-                    if (!addedOtherDivider) {
-                        addedOtherDivider = true
-                        list.add(ListItem.Divider.Other)
-                    }
-
-                    list.add(ListItem.Player(it))
-                }
-
-        return list
-    }
-
     fun fetchPlayers(region: Region) {
         state = state.copy(isFetching = true)
 
         disposables.add(playersRepository.getPlayers(region)
                 .subscribe({
-                    val list = createList(it)
+                    val list = PlayerList.createList(it)
 
                     state = state.copy(
                             selectedIdentity = null,
@@ -166,71 +95,8 @@ class SetIdentityViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = search(query, state.list)
+            val results = PlayerList.search(query, state.list)
             state = state.copy(searchResults = results)
-        }
-    }
-
-    @WorkerThread
-    private fun search(query: String?, list: List<ListItem>?): List<ListItem>? {
-        if (query.isNullOrBlank() || list.isNullOrEmpty()) {
-            return null
-        }
-
-        val results = mutableListOf<ListItem>()
-        val trimmedQuery = query.trim()
-
-        list.forEachIndexed { index, listItem ->
-            if (listItem is ListItem.Divider) {
-                var addedDivider = false
-                var j = index + 1
-
-                while (j < list.size) {
-                    val objectJ = list[j]
-
-                    if (objectJ is ListItem.Player) {
-                        if (objectJ.player.name.contains(trimmedQuery, true)) {
-                            if (!addedDivider) {
-                                addedDivider = true
-                                results.add(listItem)
-                            }
-
-                            results.add(objectJ)
-                        }
-
-                        ++j
-                    } else {
-                        j = list.size
-                    }
-                }
-            }
-        }
-
-        return results
-    }
-
-    sealed class ListItem {
-        abstract val listId: Long
-
-        sealed class Divider : ListItem() {
-            object Digit : Divider() {
-                override val listId: Long = Long.MAX_VALUE - 1L
-            }
-
-            class Letter(
-                    override val listId: Long,
-                    val letter: String
-            ) : Divider()
-
-            object Other : Divider() {
-                override val listId: Long = Long.MAX_VALUE - 2L
-            }
-        }
-
-        class Player(
-                val player: AbsPlayer
-        ) : ListItem() {
-            override val listId: Long = player.hashCode().toLong()
         }
     }
 
@@ -241,8 +107,8 @@ class SetIdentityViewModel(
             val isFetching: Boolean = false,
             val isRefreshEnabled: Boolean = true,
             val showSearchIcon: Boolean = false,
-            val list: List<ListItem>? = null,
-            val searchResults: List<ListItem>? = null,
+            val list: List<PlayerList.Item>? = null,
+            val searchResults: List<PlayerList.Item>? = null,
             val saveIconStatus: SaveIconStatus = SaveIconStatus.GONE
     )
 

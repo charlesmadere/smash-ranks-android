@@ -7,6 +7,7 @@ import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
+import com.garpr.android.misc.PlayerList
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.PlayersRepository
@@ -14,6 +15,7 @@ import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -79,12 +81,14 @@ class PlayersViewModelTest : BaseTest() {
         }
 
         viewModel.fetchPlayers(NORCAL)
+        assertEquals(false, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
-        assertEquals(false, state?.hasError)
         assertEquals(true, state?.showSearchIcon)
+        assertNotNull(state?.list)
         assertNull(state?.searchResults)
-        assertEquals(PLAYERS_BUNDLE, state?.playersBundle)
+
+        // TODO
     }
 
     @Test
@@ -97,12 +101,12 @@ class PlayersViewModelTest : BaseTest() {
         }
 
         viewModel.fetchPlayers(NORCAL)
+        assertEquals(false, state?.hasError)
         assertEquals(true, state?.isEmpty)
         assertEquals(false, state?.isFetching)
-        assertEquals(false, state?.hasError)
         assertEquals(false, state?.showSearchIcon)
+        assertNull(state?.list)
         assertNull(state?.searchResults)
-        assertEquals(EMPTY_PLAYERS_BUNDLE, state?.playersBundle)
     }
 
     @Test
@@ -117,9 +121,23 @@ class PlayersViewModelTest : BaseTest() {
         viewModel.search("a")
 
         assertNotNull(state?.searchResults)
-        assertEquals(2, state?.searchResults?.size)
-        assertEquals(CHARLEZARD, state?.searchResults?.get(0))
-        assertEquals(SNAP, state?.searchResults?.get(1))
+        assertEquals(4, state?.searchResults?.size)
+
+        assertTrue(state?.searchResults?.get(0) is PlayerList.Item.Divider.Letter)
+        var letter = state?.searchResults?.get(0) as PlayerList.Item.Divider.Letter
+        assertEquals(CHARLEZARD.name.substring(0, 1), letter.letter)
+
+        assertTrue(state?.searchResults?.get(1) is PlayerList.Item.Player)
+        var player = state?.searchResults?.get(1) as PlayerList.Item.Player
+        assertEquals(CHARLEZARD, player.player)
+
+        assertTrue(state?.searchResults?.get(2) is PlayerList.Item.Divider.Letter)
+        letter = state?.searchResults?.get(2) as PlayerList.Item.Divider.Letter
+        assertEquals(SNAP.name.substring(0, 1), letter.letter)
+
+        assertTrue(state?.searchResults?.get(3) is PlayerList.Item.Player)
+        player = state?.searchResults?.get(3) as PlayerList.Item.Player
+        assertEquals(SNAP, player.player)
     }
 
     @Test
