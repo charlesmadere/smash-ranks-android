@@ -57,9 +57,9 @@ class SmashRosterStorageImpl(
 
         val keyValueStoreEditor = getKeyValueStore(endpoint).batchEdit().clear()
 
-        for (entry in smashRoster) {
-            val json = smashCompetitorAdapter.toJson(entry.value)
-            keyValueStoreEditor.putString(entry.key, json)
+        smashRoster.forEach { (key, value) ->
+            val json = smashCompetitorAdapter.toJson(value)
+            keyValueStoreEditor.putString(key, json)
         }
 
         keyValueStoreEditor.apply()

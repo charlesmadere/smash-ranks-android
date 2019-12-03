@@ -43,7 +43,7 @@ object SimpleDateConverter {
             JsonReader.Token.STRING -> {
                 val timeString = reader.nextString()
 
-                for (threadLocal in FORMATS) {
+                FORMATS.forEach { threadLocal ->
                     val format = threadLocal.require()
 
                     try {
