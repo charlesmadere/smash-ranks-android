@@ -104,6 +104,7 @@ class SmashRosterSyncManagerImpl(
     @WorkerThread
     private fun performSync() {
         if (syncState == State.SYNCING) {
+            timber.w(TAG, "sync already in progress, canceling requested sync...")
             return
         } else {
             syncState = State.SYNCING
