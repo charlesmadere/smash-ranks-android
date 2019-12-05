@@ -76,7 +76,12 @@ class PlayersViewModel(
     }
 
     override fun onIdentityChange(identityRepository: IdentityRepository) {
-
+        threadUtils.background.submit {
+            state = state.copy(
+                    list = playerListBuilder.refresh(state.list),
+                    searchResults = playerListBuilder.refresh(state.searchResults)
+            )
+        }
     }
 
     override fun search(query: String?) {
