@@ -50,6 +50,9 @@ class PlayerItemView @JvmOverloads constructor(
     }
 
     fun setContent(player: AbsPlayer, isIdentity: Boolean) {
+        _player = player
+        name.text = player.name
+
         if (isIdentity) {
             name.typeface = Typeface.DEFAULT_BOLD
             setBackgroundColor(cardBackgroundColor)
@@ -57,8 +60,6 @@ class PlayerItemView @JvmOverloads constructor(
             name.typeface = Typeface.DEFAULT
             ViewCompat.setBackground(this, originalBackground)
         }
-
-        name.text = player.name
     }
 
 }
