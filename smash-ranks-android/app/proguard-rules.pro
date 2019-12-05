@@ -162,6 +162,33 @@
 }
 
 
+##############################################################
+## Additional reflection-specific rules for Square's Moshi. ##
+##############################################################
+
+-keep class kotlin.reflect.jvm.internal.impl.builtins.BuiltInsLoaderImpl
+
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+
+
+#######################################################################
+## Even more reflection-specific rules for Square's Moshi.           ##
+## https://github.com/square/moshi/issues/402#issuecomment-517021981 ##
+#######################################################################
+
+# https://github.com/square/moshi/issues/402#issuecomment-517021981
+
+-keep class kotlin.reflect.jvm.internal.impl.builtins.BuiltInsLoader
+-keep class kotlin.reflect.jvm.internal.impl.serialization.deserialization.builtins.BuiltInsLoaderImpl
+-keep class kotlin.reflect.jvm.internal.impl.load.java.FieldOverridabilityCondition
+-keep class kotlin.reflect.jvm.internal.impl.load.java.ErasedOverridabilityCondition
+-keep class kotlin.reflect.jvm.internal.impl.load.java.JavaIncompatibilityRulesOverridabilityCondition
+
+-keep class kotlin.Metadata
+
+
 #####################
 ## Square's OkHttp ##
 #####################
@@ -176,13 +203,6 @@
 
 # OkHttp platform used only on JVM and when Conscrypt dependency is available.
 -dontwarn okhttp3.internal.platform.ConscryptPlatform
-
-
-###################
-## Square's Okio ##
-###################
-# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
--dontwarn org.codehaus.mojo.animal_sniffer.*
 
 
 #######################
