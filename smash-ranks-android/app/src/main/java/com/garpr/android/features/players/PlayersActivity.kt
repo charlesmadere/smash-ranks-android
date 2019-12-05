@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
@@ -95,8 +94,6 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
         toolbar.subtitleText = regionRepository.getRegion(this).displayName
 
         refreshLayout.setOnRefreshListener(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
     }
