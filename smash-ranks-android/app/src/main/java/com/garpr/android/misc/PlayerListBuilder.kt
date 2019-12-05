@@ -16,7 +16,6 @@ interface PlayerListBuilder {
     fun search(query: String?, list: List<PlayerListItem>?): List<PlayerListItem>?
 
     sealed class PlayerListItem {
-
         abstract val listId: Long
 
         sealed class Divider : PlayerListItem() {
@@ -40,7 +39,6 @@ interface PlayerListBuilder {
         ) : PlayerListItem() {
             override val listId: Long = player.hashCode().toLong()
         }
-
     }
 
 }
