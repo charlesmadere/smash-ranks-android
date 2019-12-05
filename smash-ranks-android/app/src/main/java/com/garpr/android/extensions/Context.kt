@@ -67,5 +67,5 @@ val Context.notificationManagerCompat: NotificationManagerCompat
     get() = NotificationManagerCompat.from(this)
 
 fun Context.requireActivity(): Activity {
-    return activity ?: throw NullPointerException("Context ($this) is not attached to an Activity")
+    return checkNotNull(activity) { "Context ($this) is not attached to an Activity" }
 }
