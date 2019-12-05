@@ -13,17 +13,15 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class RankedPlayerConverterTest : BaseTest() {
 
-    @Inject
-    protected lateinit var moshi: Moshi
+    protected val moshi: Moshi by inject()
 
     private lateinit var rankedPlayerAdapter: JsonAdapter<RankedPlayer>
-
 
     companion object {
         private const val JSON_PLAYER_0 = "{\"rating\":40.54488107578405,\"name\":\"Kevbot\",\"rank\":10,\"previous_rank\":8,\"id\":\"588852e8d2994e3bbfa52dbd\"}"
@@ -49,7 +47,6 @@ class RankedPlayerConverterTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         rankedPlayerAdapter = moshi.adapter(RankedPlayer::class.java)
     }

@@ -14,7 +14,6 @@ object AbsRegionConverter {
 
     private const val ENDPOINT = "endpoint"
 
-
     @FromJson
     fun fromJson(
             reader: JsonReader,

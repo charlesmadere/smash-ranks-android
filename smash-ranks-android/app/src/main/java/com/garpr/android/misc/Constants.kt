@@ -6,7 +6,7 @@ import com.garpr.android.data.models.Region
 object Constants {
 
     // Defaults
-    val DefaultRegion = Region(displayName = "Norcal", id = "norcal", endpoint = Endpoint.GAR_PR)
+    val DEFAULT_REGION = Region(displayName = "Norcal", id = "norcal", endpoint = Endpoint.GAR_PR)
 
     // GAR PR and Not GAR PR Paths
     const val GAR_PR_API_PORT = 3001
@@ -15,9 +15,6 @@ object Constants {
     const val NOT_GAR_PR_BASE_PATH = "https://www.notgarpr.com"
 
     // Miscellaneous
-    const val ERROR_CODE_BAD_REQUEST = 400
-    const val ERROR_CODE_UNKNOWN = Integer.MAX_VALUE
-    const val OTHER = "other"
     const val PLAIN_TEXT = "text/plain"
     const val TWITCH = "twitch"
     const val TWITTER = "twitter"

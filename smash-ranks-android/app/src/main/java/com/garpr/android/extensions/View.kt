@@ -1,19 +1,14 @@
 package com.garpr.android.extensions
 
 import android.app.Activity
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
-import androidx.fragment.app.FragmentActivity
-import com.garpr.android.dagger.AppComponent
+import androidx.core.view.ViewCompat
 
 val View.activity: Activity?
     get() = context.activity
-
-val View.appComponent: AppComponent
-    get() = context.appComponent
 
 val View.inputMethodManager: InputMethodManager
     get() = context.inputMethodManager
@@ -30,17 +25,8 @@ fun View.requireActivity(): Activity {
     return context.requireActivity()
 }
 
-fun View.requireFragmentActivity(): FragmentActivity {
-    return context.requireFragmentActivity()
-}
-
-fun <T: View> View.requireViewByIdCompat(@IdRes id: Int): T {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        requireViewById(id)
-    } else {
-        findViewById(id) ?: throw IllegalArgumentException(
-                "ID ${resources.getResourceEntryName(id)} does not reference a View inside this View")
-    }
+fun <T : View> View.requireViewByIdCompat(@IdRes id: Int): T {
+    return ViewCompat.requireViewById(this, id)
 }
 
 val View.verticalPositionInWindow: Int

@@ -2,34 +2,40 @@ package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.preferences.KeyValueStoreProvider
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class PersistentBooleanPreferenceTest : BaseTest() {
 
-    @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 
+    private lateinit var keyValueStore: KeyValueStore
+
+    companion object {
+        private const val TAG = "PersistentBooleanPreferenceTest"
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test
     fun testNonNullGetDefaultValue() {
         val preference = PersistentBooleanPreference("boolean",false, keyValueStore)
-        assertTrue(preference.defaultValue == false)
+        assertEquals(false, preference.defaultValue)
 
         preference.set(true)
-        assertTrue(preference.defaultValue == false)
+        assertEquals(false, preference.defaultValue)
     }
 
     @Test

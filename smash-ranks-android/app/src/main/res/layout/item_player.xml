@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.PlayerItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.features.players.PlayerItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@null"
-    android:foreground="?attr/selectableItemBackground"
-    style="@style/ListItem">
+    style="@style/ListItem.WithBackground">
 
     <TextView
         android:ellipsize="end"
@@ -17,4 +15,4 @@
         android:textSize="@dimen/text_size_large"
         tools:text="Charlezard" />
 
-</com.garpr.android.views.PlayerItemView>
+</com.garpr.android.features.players.PlayerItemView>

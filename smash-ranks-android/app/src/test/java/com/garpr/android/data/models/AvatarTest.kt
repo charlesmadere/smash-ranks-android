@@ -3,7 +3,6 @@ package com.garpr.android.data.models
 import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -18,12 +17,6 @@ class AvatarTest : BaseTest() {
         private val AVATAR_4 = Avatar(" ", null, "", "small")
         private val AVATAR_5 = Avatar("", " ", "original", null)
         private val AVATAR_6 = Avatar()
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

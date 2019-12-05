@@ -3,13 +3,11 @@
 
     <dimen name="avatar_size">112dp</dimen>
     <dimen name="bottom_navigation_view_height">56dp</dimen>
-    <dimen name="divider_height">3dp</dimen>
     <dimen name="divider_item_height">32dp</dimen>
     <dimen name="elevation">8dp</dimen>
     <dimen name="elevation_half">4dp</dimen>
     <dimen name="elevation_quarter">2dp</dimen>
     <dimen name="list_item_height">48dp</dimen>
-    <dimen name="one_line_item_height">24dp</dimen>
     <dimen name="previous_rank_view_size">18dp</dimen>
     <dimen name="root_padding">16dp</dimen>
     <dimen name="root_padding_double">32dp</dimen>

@@ -7,7 +7,7 @@
     tools:minHeight="@dimen/list_item_height"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.garpr.android.views.TintedImageView
+    <com.garpr.android.features.common.views.TintedImageView
         android:id="@+id/icon"
         android:importantForAccessibility="no"
         tools:srcCompat="@drawable/ic_date_range_white_24dp"

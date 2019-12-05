@@ -11,9 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationManagerCompat
-import androidx.fragment.app.FragmentActivity
-import com.garpr.android.dagger.AppComponent
-import com.garpr.android.dagger.AppComponentHandle
 
 val Context.activity: Activity?
     get() {
@@ -39,38 +36,8 @@ val Context.activity: Activity?
 val Context.activityManager: ActivityManager
     get() = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
-val Context.appComponent: AppComponent
-    get() {
-        if (this is AppComponentHandle) {
-            return appComponent
-        }
-
-        if (this is ContextWrapper) {
-            var c = this
-
-            do {
-                c = (c as ContextWrapper).baseContext
-
-                if (c is AppComponentHandle) {
-                    return c.appComponent
-                }
-            } while (c is ContextWrapper)
-        }
-
-        val applicationContext = applicationContext
-
-        if (applicationContext is AppComponentHandle) {
-            return applicationContext.appComponent
-        }
-
-        throw RuntimeException("Context ($this) has no AppComponentHandle")
-    }
-
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-val Context.fragmentActivity: FragmentActivity?
-    get() = activity as? FragmentActivity?
 
 @ColorInt
 @Throws(Resources.NotFoundException::class)
@@ -100,9 +67,5 @@ val Context.notificationManagerCompat: NotificationManagerCompat
     get() = NotificationManagerCompat.from(this)
 
 fun Context.requireActivity(): Activity {
-    return activity ?: throw NullPointerException("Context ($this) is not attached to an Activity")
-}
-
-fun Context.requireFragmentActivity(): FragmentActivity {
-    return fragmentActivity ?: throw RuntimeException("Context ($this) is not attached to a FragmentActivity")
+    return checkNotNull(activity) { "Context ($this) is not attached to an Activity" }
 }

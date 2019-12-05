@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.features.common.views.StringDividerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DividerItem">
+
+    <TextView
+        android:id="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="A"
+        style="@style/DividerItemTitle" />
+
+</com.garpr.android.features.common.views.StringDividerView>

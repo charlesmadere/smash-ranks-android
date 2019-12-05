@@ -2,6 +2,7 @@ package com.garpr.android.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
@@ -27,6 +28,22 @@ class FavoritePlayer(
                     it.requireParcelable(Region::class.java.classLoader)
             )
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (super.equals(other)) {
+            if (other is FavoritePlayer) {
+                region.endpoint == other.region.endpoint
+            } else {
+                true
+            }
+        } else {
+            false
+        }
+    }
+
+    override fun hashCode(): Int {
+        return ObjectsCompat.hash(id, region.endpoint)
     }
 
     override val kind: Kind

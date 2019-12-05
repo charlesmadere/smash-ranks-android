@@ -24,8 +24,9 @@
         <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
-            android:name=".activities.DeepLinkActivity"
+            android:name=".features.deepLink.DeepLinkActivity"
             android:noHistory="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -35,72 +36,77 @@
                 <data android:host="notgarpr.com" android:scheme="https" />
                 <data android:host="www.notgarpr.com" android:scheme="https" />
             </intent-filter>
+
         </activity>
 
         <activity
             android:label="@string/head_to_head"
-            android:name=".activities.HeadToHeadActivity" />
+            android:name=".features.headToHead.HeadToHeadActivity" />
 
         <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
-            android:name=".activities.HomeActivity"
+            android:name=".features.home.HomeActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:label="@string/log_viewer"
-            android:name=".activities.LogViewerActivity"
-            android:parentActivityName=".activities.SettingsActivity">
+            android:name=".features.logViewer.LogViewerActivity"
+            android:parentActivityName=".features.settings.SettingsActivity">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SettingsActivity" />
+                android:value=".features.settings.SettingsActivity" />
+
         </activity>
 
         <activity
             android:label=""
-            android:name=".activities.PlayerActivity" />
+            android:name=".features.player.PlayerActivity" />
 
         <activity
             android:label="@string/players"
-            android:name=".activities.PlayersActivity" />
+            android:name=".features.players.PlayersActivity" />
 
         <activity
             android:label="@string/rankings"
-            android:name=".activities.RankingsActivity" />
+            android:name=".features.rankings.RankingsActivity" />
 
         <activity
             android:label="@string/set_identity"
             android:launchMode="singleTop"
-            android:name=".activities.SetIdentityActivity" />
+            android:name=".features.setIdentity.SetIdentityActivity" />
 
         <activity
             android:label="@string/set_region"
             android:launchMode="singleTop"
-            android:name=".activities.SetRegionActivity" />
+            android:name=".features.setRegion.SetRegionActivity" />
 
         <activity
             android:label="@string/settings"
             android:launchMode="singleTop"
-            android:name=".activities.SettingsActivity" />
+            android:name=".features.settings.SettingsActivity" />
 
         <activity
             android:label="@string/gar_pr"
             android:launchMode="singleTop"
-            android:name=".activities.SplashActivity"
+            android:name=".features.splash.SplashActivity"
             android:theme="@style/SplashTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity
             android:label=""
-            android:name=".activities.TournamentActivity" />
+            android:name=".features.tournament.TournamentActivity" />
 
         <activity
             android:label="@string/tournaments"
-            android:name=".activities.TournamentsActivity" />
+            android:name=".features.tournaments.TournamentsActivity" />
 
         <meta-data
             android:name="android.max_aspect"
@@ -109,6 +115,12 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="bd8750ba792168bfa4d0bc52e19ad83a6fad27c3" />
+
+        <provider
+            android:authorities="${applicationId}.workmanager-init"
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            tools:ignore="ExportedContentProvider"
+            tools:node="remove" />
 
     </application>
 

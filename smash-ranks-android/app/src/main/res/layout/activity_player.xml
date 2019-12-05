@@ -5,14 +5,15 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.SearchToolbar
+    <com.garpr.android.features.common.views.SearchToolbar
+        android:hint="@string/search_matches_"
         android:id="@+id/toolbar"
         app:descriptionTextColor="@color/transparent"
         app:showUpNavigation="true"
         app:titleTextColor="@color/transparent"
         style="@style/Toolbar" />
 
-    <com.garpr.android.views.RefreshLayout
+    <com.garpr.android.features.common.views.RefreshLayout
         android:id="@+id/refreshLayout"
         style="@style/RefreshLayout">
 
@@ -25,18 +26,18 @@
                 android:visibility="gone"
                 style="@style/RecyclerView.WithSections" />
 
-            <com.garpr.android.views.NoContentLinearLayout
+            <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/empty"
                 app:titleText="@string/no_player_data"
                 style="@style/NoContentLinearLayout.Empty" />
 
-            <com.garpr.android.views.ErrorContentLinearLayout
+            <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/error"
                 app:titleText="@string/error_loading_player"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>
 
-    </com.garpr.android.views.RefreshLayout>
+    </com.garpr.android.features.common.views.RefreshLayout>
 
 </LinearLayout>

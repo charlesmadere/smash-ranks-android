@@ -1,13 +1,12 @@
 package com.garpr.android.preferences
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.garpr.android.preferences.KeyValueStore.BatchEditor
 import java.util.Collections
 
 class KeyValueStoreImpl(
-        private val application: Application,
+        private val context: Context,
         private val name: String
 ) : KeyValueStore {
 
@@ -21,6 +20,9 @@ class KeyValueStoreImpl(
                 Collections.unmodifiableMap(map)
             }
         }
+
+    private val sharedPreferences: SharedPreferences
+        get() = context.getSharedPreferences(name, Context.MODE_PRIVATE)
 
     override fun batchEdit(): BatchEditor {
         return BatchEditorImpl(sharedPreferences.edit())
@@ -84,10 +86,6 @@ class KeyValueStoreImpl(
                 .putString(key, value)
                 .apply()
     }
-
-    private val sharedPreferences: SharedPreferences
-        get() = application.getSharedPreferences(name, Context.MODE_PRIVATE)
-
 
     class BatchEditorImpl(
             private val sharedPreferencesEditor: SharedPreferences.Editor

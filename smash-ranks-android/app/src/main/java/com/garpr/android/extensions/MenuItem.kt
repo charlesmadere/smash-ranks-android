@@ -2,7 +2,7 @@ package com.garpr.android.extensions
 
 import android.view.MenuItem
 import com.garpr.android.R
-import com.garpr.android.misc.HomeTab
+import com.garpr.android.features.home.HomeTab
 
 val MenuItem.itemIdAsHomeTab: HomeTab
     get() = when (itemId) {

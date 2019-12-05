@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.PlayerProfileItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.features.player.PlayerProfileItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
@@ -10,7 +10,7 @@
     android:paddingStart="@dimen/root_padding"
     android:paddingTop="@dimen/root_padding_half">
 
-    <com.garpr.android.views.PaletteSimpleDraweeView
+    <com.garpr.android.features.common.views.PaletteSimpleDraweeView
         android:contentDescription="@string/avatar"
         android:elevation="@dimen/elevation_half"
         android:id="@+id/avatar"
@@ -30,7 +30,7 @@
 
     <TextView
         android:ellipsize="end"
-        android:fontFamily="@font/nunito_bold"
+        android:fontFamily="@font/nunito_sans"
         android:gravity="center"
         android:id="@+id/playerTag"
         android:layout_height="64dp"
@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:lineSpacingExtra="-4dp"
         android:textColor="?android:attr/textColorPrimary"
+        android:textStyle="bold"
         app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
         app:autoSizeMinTextSize="@dimen/text_size_xlarge"
         app:autoSizeTextType="uniform"
@@ -47,6 +48,7 @@
 
     <TextView
         android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:id="@+id/name"
         android:layout_gravity="center_horizontal"
@@ -57,8 +59,7 @@
         android:textSize="@dimen/text_size_large"
         android:visibility="gone"
         tools:text="Joseph Marquez"
-        tools:visibility="visible"
-        style="@style/MediumOrBoldText" />
+        tools:visibility="visible" />
 
     <TextView
         android:ellipsize="end"
@@ -93,7 +94,7 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.views.TintedTextView
             android:drawableTop="@drawable/ic_twitter_24dp"
             android:id="@+id/twitter"
             android:text="@string/twitter"
@@ -101,7 +102,7 @@
             tools:visibility="visible"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.views.TintedTextView
             android:drawableTop="@drawable/ic_twitch_24dp"
             android:id="@+id/twitch"
             android:text="@string/twitch"
@@ -109,18 +110,10 @@
             tools:visibility="visible"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.views.TintedTextView
             android:drawableTop="@drawable/ic_youtube_24dp"
             android:id="@+id/youTube"
             android:text="@string/youtube"
-            android:visibility="gone"
-            tools:visibility="visible"
-            style="@style/TextButton" />
-
-        <com.garpr.android.views.TintedTextView
-            android:drawableTop="@drawable/ic_web_24dp"
-            android:id="@+id/otherWebsite"
-            android:text="@string/other"
             android:visibility="gone"
             tools:visibility="visible"
             style="@style/TextButton" />
@@ -138,14 +131,14 @@
 
     <TextView
         android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
         android:id="@+id/region"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/root_padding"
         android:layout_width="wrap_content"
         android:maxLines="2"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="Norcal"
-        style="@style/MediumOrBoldText" />
+        tools:text="Norcal" />
 
     <TextView
         android:id="@+id/rating"
@@ -169,21 +162,21 @@
         android:layout_width="match_parent"
         android:orientation="horizontal">
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.views.TintedTextView
             android:drawableTop="@drawable/ic_favorite_white_24dp"
             android:id="@+id/favoriteOrUnfavorite"
             android:text="@string/favorite"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.views.TintedTextView
             android:drawableTop="@drawable/ic_crossed_swords_white_24dp"
-            android:id="@+id/viewYourselfVsThisOpponent"
+            android:id="@+id/compare"
             android:text="@string/compare"
             android:visibility="gone"
             tools:visibility="visible"
             style="@style/TextButton" />
 
-        <com.garpr.android.views.TintedTextView
+        <com.garpr.android.features.common.views.TintedTextView
             android:drawableTop="@drawable/ic_share_white_24dp"
             android:id="@+id/share"
             android:text="@string/share"
@@ -191,4 +184,4 @@
 
     </LinearLayout>
 
-</com.garpr.android.views.PlayerProfileItemView>
+</com.garpr.android.features.player.PlayerProfileItemView>

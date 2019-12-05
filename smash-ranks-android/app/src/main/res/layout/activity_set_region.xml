@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.SetRegionToolbar
+    <com.garpr.android.features.setRegion.SetRegionToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:titleText="@string/set_region"
         style="@style/Toolbar" />
 
-    <com.garpr.android.views.RefreshLayout
+    <com.garpr.android.features.common.views.RefreshLayout
         android:id="@+id/refreshLayout"
         style="@style/RefreshLayout">
 
@@ -24,18 +24,18 @@
                 android:visibility="gone"
                 style="@style/RecyclerView.WithSections" />
 
-            <com.garpr.android.views.NoContentLinearLayout
+            <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/empty"
                 app:titleText="@string/no_regions"
                 style="@style/NoContentLinearLayout.Empty" />
 
-            <com.garpr.android.views.ErrorContentLinearLayout
+            <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/error"
                 app:titleText="@string/error_loading_regions"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>
 
-    </com.garpr.android.views.RefreshLayout>
+    </com.garpr.android.features.common.views.RefreshLayout>
 
 </LinearLayout>

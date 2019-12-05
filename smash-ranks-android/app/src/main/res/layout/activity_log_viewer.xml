@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.LogViewerToolbar
+    <com.garpr.android.features.logViewer.LogViewerToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:titleText="@string/log_viewer"
         style="@style/Toolbar" />
 
-    <com.garpr.android.views.RefreshLayout
+    <com.garpr.android.features.common.views.RefreshLayout
         android:id="@+id/refreshLayout"
         style="@style/RefreshLayout">
 
@@ -25,13 +25,13 @@
                 android:visibility="gone"
                 style="@style/RecyclerView" />
 
-            <com.garpr.android.views.NoContentLinearLayout
+            <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/empty"
                 app:titleText="@string/no_log_entries"
                 style="@style/NoContentLinearLayout.Empty" />
 
         </FrameLayout>
 
-    </com.garpr.android.views.RefreshLayout>
+    </com.garpr.android.features.common.views.RefreshLayout>
 
 </LinearLayout>

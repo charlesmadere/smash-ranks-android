@@ -1,5 +1,6 @@
 package com.garpr.android.wrappers
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
@@ -7,7 +8,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class WeakReferenceWrapperTest {
+class WeakReferenceWrapperTest : BaseTest() {
 
     @Test
     fun testEqualsForIntegers() {

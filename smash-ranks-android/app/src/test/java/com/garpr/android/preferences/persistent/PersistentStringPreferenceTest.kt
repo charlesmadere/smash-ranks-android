@@ -2,6 +2,7 @@ package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.preferences.KeyValueStoreProvider
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -9,24 +10,28 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class PersistentStringPreferenceTest : BaseTest() {
 
-    @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 
+    private lateinit var keyValueStore: KeyValueStore
+
+    companion object {
+        private const val TAG = "PersistentStringPreferenceTest"
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDeleteWithDefaultValue() {
         val preference = PersistentStringPreference("string", "hello", keyValueStore)
         preference.delete()
@@ -40,7 +45,6 @@ class PersistentStringPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDeleteWithNullDefaultValue() {
         val preference = PersistentStringPreference("string", null, keyValueStore)
         preference.delete()
@@ -54,7 +58,6 @@ class PersistentStringPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithDefaultValue() {
         val preference = PersistentStringPreference("string", "hello", keyValueStore)
         assertTrue(preference.exists)
@@ -64,7 +67,6 @@ class PersistentStringPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithEmptyDefaultValue() {
         val preference = PersistentStringPreference("string", "", keyValueStore)
         assertTrue(preference.exists)
@@ -74,7 +76,6 @@ class PersistentStringPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithNullDefaultValue() {
         val preference = PersistentStringPreference("string", null, keyValueStore)
         assertFalse(preference.exists)
@@ -84,7 +85,6 @@ class PersistentStringPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithWhitespaceDefaultValue() {
         val preference = PersistentStringPreference("string", "   ", keyValueStore)
         assertTrue(preference.exists)

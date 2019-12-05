@@ -5,13 +5,21 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.format.DateUtils
 import com.garpr.android.extensions.createParcel
+import com.squareup.moshi.JsonClass
 import java.text.DateFormat
 import java.util.Comparator
 import java.util.Date
 
+@JsonClass(generateAdapter = false)
 data class SimpleDate(
         val date: Date = Date()
 ) : Parcelable {
+
+    val fullForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.FULL).format(date) }
+
+    val mediumForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.MEDIUM).format(date) }
+
+    val shortForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.SHORT).format(date) }
 
     companion object {
         @JvmField
@@ -30,18 +38,12 @@ data class SimpleDate(
         return other is SimpleDate && date == other.date
     }
 
-    val fullForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.FULL).format(date) }
-
     fun getRelativeDateTimeText(context: Context): CharSequence {
         return DateUtils.getRelativeDateTimeString(context, date.time, DateUtils.DAY_IN_MILLIS,
                 DateUtils.WEEK_IN_MILLIS, 0)
     }
 
     override fun hashCode(): Int = date.hashCode()
-
-    val mediumForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.MEDIUM).format(date) }
-
-    val shortForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.SHORT).format(date) }
 
     override fun toString(): String = date.toString()
 

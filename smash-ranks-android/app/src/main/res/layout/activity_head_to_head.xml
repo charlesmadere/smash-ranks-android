@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.garpr.android.views.toolbars.GarToolbar
+    <com.garpr.android.features.common.views.GarToolbar
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:titleText="@string/head_to_head"
         style="@style/Toolbar" />
 
-    <com.garpr.android.views.RefreshLayout
+    <com.garpr.android.features.common.views.RefreshLayout
         android:id="@+id/refreshLayout"
         style="@style/RefreshLayout">
 
@@ -24,19 +25,15 @@
                 android:visibility="gone"
                 style="@style/RecyclerView.WithSections" />
 
-            <com.garpr.android.views.NoContentLinearLayout
-                android:id="@+id/empty"
-                app:descriptionText="@string/head_to_head_swipe_to_refresh_and_check_again"
-                app:titleText="@string/no_head_to_head_data"
-                style="@style/NoContentLinearLayout.Empty" />
-
-            <com.garpr.android.views.ErrorContentLinearLayout
+            <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/error"
+                app:descriptionText="@string/error_loading_head_to_head_description"
                 app:titleText="@string/error_loading_head_to_head"
+                tools:visibility="visible"
                 style="@style/NoContentLinearLayout.Error" />
 
         </FrameLayout>
 
-    </com.garpr.android.views.RefreshLayout>
+    </com.garpr.android.features.common.views.RefreshLayout>
 
 </LinearLayout>

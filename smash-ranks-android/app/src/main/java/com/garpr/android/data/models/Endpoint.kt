@@ -19,7 +19,6 @@ enum class Endpoint(
     @Json(name = "not_gar_pr")
     NOT_GAR_PR(Constants.NOT_GAR_PR_BASE_PATH, R.string.not_gar_pr);
 
-
     companion object {
         @JvmField
         val CREATOR = createParcel { values()[it.readInt()] }
@@ -59,7 +58,7 @@ enum class Endpoint(
         val stringBuilder = StringBuilder(basePath)
                 .append("/#/")
 
-        if (regionId?.isNotBlank() == true) {
+        if (!regionId.isNullOrBlank()) {
             stringBuilder.append(regionId)
         }
 

@@ -1,11 +1,11 @@
 package com.garpr.android.preferences
 
-import android.app.Application
+import android.content.Context
 
 class KeyValueStoreProviderImpl(
-        private val application: Application
+        private val context: Context
 ) : KeyValueStoreProvider {
 
-    override fun getKeyValueStore(name: String) = KeyValueStoreImpl(application, name)
+    override fun getKeyValueStore(name: String) = KeyValueStoreImpl(context, name)
 
 }

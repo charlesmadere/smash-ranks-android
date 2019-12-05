@@ -38,8 +38,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 20000
-        versionName "2.0.0"
+        versionCode 21000
+        versionName "2.1.0"
     }
 
     buildTypes {
@@ -72,7 +72,12 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // Android Architecture Component WorkManager
+    // Android Architecture Components - ViewModel and LiveData
+    // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    // Android Architecture Components - WorkManager
     // https://developer.android.com/jetpack/androidx/releases/work
     implementation "androidx.work:work-runtime:$workmanager_version"
 
@@ -100,28 +105,36 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/test
     testImplementation "androidx.test:core:$testcore_version"
 
+    // AndroidX ViewPager2
+    // https://developer.android.com/jetpack/androidx/releases/viewpager2
+    implementation "androidx.viewpager2:viewpager2:$viewpager_version"
+
     // Facebook's Fresco
     // https://github.com/facebook/fresco
     implementation "com.facebook.fresco:fresco:$fresco_version"
     implementation "com.facebook.fresco:imagepipeline-okhttp3:$fresco_version"
 
-    // Google's Dagger
-    // https://github.com/google/dagger
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kaptTest "com.google.dagger:dagger-compiler:$dagger_version"
-
     // Google's Material Design Library
     // https://material.io/develop/android/
     implementation "com.google.android.material:material:$material_design_version"
+
+    // Koin
+    // https://github.com/InsertKoinIO/koin
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    testImplementation "org.koin:koin-test:$koin_version"
 
     // Robolectric
     // https://github.com/robolectric/robolectric
     testImplementation "org.robolectric:robolectric:$robolectric_version"
 
+    // RxJava
+    // https://github.com/ReactiveX/RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rx_java_version"
+
     // Square's Moshi
     // https://github.com/square/moshi
-    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     // Square's OkHttp
@@ -131,6 +144,7 @@ dependencies {
     // Square's Retrofit
     // https://github.com/square/retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     // Fabric
@@ -138,7 +152,4 @@ dependencies {
     implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics_version@aar") {
         transitive = true
     }
-
-    // Annoying fix for compile error: "error cannot access nullable"
-    implementation "com.google.code.findbugs:jsr305:3.0.2"
 }

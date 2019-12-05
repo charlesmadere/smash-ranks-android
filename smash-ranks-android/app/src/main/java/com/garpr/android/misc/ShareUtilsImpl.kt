@@ -10,11 +10,11 @@ import androidx.core.app.ShareCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
-import com.garpr.android.managers.RegionManager
 import com.garpr.android.misc.Constants.PLAIN_TEXT
+import com.garpr.android.repositories.RegionRepository
 
 class ShareUtilsImpl(
-        private val regionManager: RegionManager,
+        private val regionRepository: RegionRepository,
         private val timber: Timber
 ) : ShareUtils {
 
@@ -39,7 +39,7 @@ class ShareUtilsImpl(
     }
 
     override fun sharePlayer(activity: Activity, player: AbsPlayer) {
-        val region = regionManager.getRegion(activity)
+        val region = regionRepository.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_x, player.name))
@@ -49,7 +49,7 @@ class ShareUtilsImpl(
     }
 
     override fun shareRankings(activity: Activity) {
-        val region = regionManager.getRegion(activity)
+        val region = regionRepository.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_rankings))
@@ -58,9 +58,8 @@ class ShareUtilsImpl(
                 .startChooser()
     }
 
-    override fun shareTournament(activity: Activity,
-            tournament: AbsTournament) {
-        val region = regionManager.getRegion(activity)
+    override fun shareTournament(activity: Activity, tournament: AbsTournament) {
+        val region = regionRepository.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_x, tournament.name))
@@ -70,7 +69,7 @@ class ShareUtilsImpl(
     }
 
     override fun shareTournaments(activity: Activity) {
-        val region = regionManager.getRegion(activity)
+        val region = regionRepository.getRegion(activity)
 
         ShareCompat.IntentBuilder.from(activity)
                 .setChooserTitle(activity.getString(R.string.share_tournaments))

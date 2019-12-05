@@ -2,6 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="?attr/actionBarSize"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <ImageButton
@@ -44,7 +45,7 @@
 
         <TextView
             android:ellipsize="end"
-            android:fontFamily="@font/nunito_bold"
+            android:fontFamily="@font/nunito_sans"
             android:gravity="center_vertical"
             android:id="@+id/titleView"
             android:layout_height="wrap_content"
@@ -52,11 +53,12 @@
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="@dimen/text_size_xlarge"
+            android:textStyle="bold"
             tools:text="@string/rankings" />
 
         <TextView
             android:ellipsize="end"
-            android:fontFamily="@font/nunito_semibold"
+            android:fontFamily="@font/nunito_sans_semibold"
             android:gravity="center_vertical"
             android:id="@+id/subtitleView"
             android:layout_height="wrap_content"

@@ -9,37 +9,43 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class WinsLossesTest : BaseTest() {
 
-    private val player0: AbsPlayer = LitePlayer("1234", "Imyt")
-    private val player1: AbsPlayer = LitePlayer("5678", "gaR")
-
-
     companion object {
+        private val PLAYER_0: AbsPlayer = LitePlayer(
+                id = "1234",
+                name = "Imyt"
+        )
+
+        private val PLAYER_1: AbsPlayer = LitePlayer(
+                id = "5678",
+                name = "gaR"
+        )
+
         private const val DELTA: Float = 0.001f
     }
 
     @Test
     fun testWinLossPercentages() {
-        var percentages = WinsLosses(player0, 1, player1, 2)
+        var percentages = WinsLosses(PLAYER_0, 1, PLAYER_1, 2)
                 .winLossPercentages
         assertEquals(1f / 3f, percentages[0], DELTA)
         assertEquals(2f / 3f, percentages[1], DELTA)
 
-        percentages = WinsLosses(player1, 3, player0, 5)
+        percentages = WinsLosses(PLAYER_1, 3, PLAYER_0, 5)
                 .winLossPercentages
         assertEquals(3f / 8f, percentages[0], DELTA)
         assertEquals(5f / 8f, percentages[1], DELTA)
 
-        percentages = WinsLosses(player1, 10, player0, 1)
+        percentages = WinsLosses(PLAYER_1, 10, PLAYER_0, 1)
                 .winLossPercentages
         assertEquals(10f / 11f, percentages[0], DELTA)
         assertEquals(1f / 11f, percentages[1], DELTA)
 
-        percentages = WinsLosses(player1, 16, player0, 16)
+        percentages = WinsLosses(PLAYER_1, 16, PLAYER_0, 16)
                 .winLossPercentages
         assertEquals(16f / 32f, percentages[0], DELTA)
         assertEquals(16f / 32f, percentages[1], DELTA)
 
-        percentages = WinsLosses(player1, 1, player0, 1)
+        percentages = WinsLosses(PLAYER_1, 1, PLAYER_0, 1)
                 .winLossPercentages
         assertEquals(1f / 2f, percentages[0], DELTA)
         assertEquals(1f / 2f, percentages[1], DELTA)
@@ -47,17 +53,17 @@ class WinsLossesTest : BaseTest() {
 
     @Test
     fun testWinLossPercentagesEqualPlayerAndOpponentWins() {
-        var percentages = WinsLosses(player1, 16, player0, 16)
+        var percentages = WinsLosses(PLAYER_1, 16, PLAYER_0, 16)
                 .winLossPercentages
         assertEquals(0.5f, percentages[0])
         assertEquals(0.5f, percentages[1])
 
-        percentages = WinsLosses(player1, 1, player0, 1)
+        percentages = WinsLosses(PLAYER_1, 1, PLAYER_0, 1)
                 .winLossPercentages
         assertEquals(0.5f, percentages[0])
         assertEquals(0.5f, percentages[1])
 
-        percentages = WinsLosses(player1, 3, player0, 3)
+        percentages = WinsLosses(PLAYER_1, 3, PLAYER_0, 3)
                 .winLossPercentages
         assertEquals(0.5f, percentages[0])
         assertEquals(0.5f, percentages[1])
@@ -65,12 +71,12 @@ class WinsLossesTest : BaseTest() {
 
     @Test
     fun testWinLossPercentagesNoOpponentWins() {
-        var percentages = WinsLosses(player0, 36, player1, 0)
+        var percentages = WinsLosses(PLAYER_0, 36, PLAYER_1, 0)
                 .winLossPercentages
         assertEquals(1f, percentages[0])
         assertEquals(0f, percentages[1])
 
-        percentages = WinsLosses(player1, 3, player0, 0)
+        percentages = WinsLosses(PLAYER_1, 3, PLAYER_0, 0)
                 .winLossPercentages
         assertEquals(1f, percentages[0])
         assertEquals(0f, percentages[1])
@@ -78,12 +84,12 @@ class WinsLossesTest : BaseTest() {
 
     @Test
     fun testWinLossPercentagesNoPlayerWins() {
-        var percentages = WinsLosses(player0, 0, player1, 21)
+        var percentages = WinsLosses(PLAYER_0, 0, PLAYER_1, 21)
                 .winLossPercentages
         assertEquals(0f, percentages[0])
         assertEquals(1f, percentages[1])
 
-        percentages = WinsLosses(player1, 0, player0, 9)
+        percentages = WinsLosses(PLAYER_1, 0, PLAYER_0, 9)
                 .winLossPercentages
         assertEquals(0f, percentages[0])
         assertEquals(1f, percentages[1])
@@ -91,12 +97,12 @@ class WinsLossesTest : BaseTest() {
 
     @Test
     fun testWinLossPercentagesNoPlayerWinsNoOpponentWins() {
-        var percentages = WinsLosses(player0, 0, player1, 0)
+        var percentages = WinsLosses(PLAYER_0, 0, PLAYER_1, 0)
                 .winLossPercentages
         assertEquals(0f, percentages[0])
         assertEquals(0f, percentages[1])
 
-        percentages = WinsLosses(player1, 0, player0, 0)
+        percentages = WinsLosses(PLAYER_1, 0, PLAYER_0, 0)
                 .winLossPercentages
         assertEquals(0f, percentages[0])
         assertEquals(0f, percentages[1])

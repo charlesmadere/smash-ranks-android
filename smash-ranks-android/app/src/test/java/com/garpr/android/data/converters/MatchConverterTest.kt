@@ -15,17 +15,15 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class MatchConverterTest : BaseTest() {
 
-    @Inject
-    protected lateinit var moshi: Moshi
+    protected val moshi: Moshi by inject()
 
     private lateinit var matchAdapter: JsonAdapter<Match>
-
 
     companion object {
         private const val JSON_MATCH_0 = "{\"opponent_name\":\"Mao\",\"tournament_name\":\"Norcal Validated 1\",\"result\":\"win\",\"opponent_id\":\"588852e8d2994e3bbfa52dca\",\"tournament_id\":\"588850d5d2994e3bbfa52d67\",\"tournament_date\":\"01/14/17\"}"
@@ -75,7 +73,6 @@ class MatchConverterTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         matchAdapter = moshi.adapter(Match::class.java)
     }

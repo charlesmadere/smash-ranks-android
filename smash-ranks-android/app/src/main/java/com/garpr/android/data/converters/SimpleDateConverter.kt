@@ -21,7 +21,9 @@ object SimpleDateConverter {
     })
 
     @FromJson
-    fun fromJson(reader: JsonReader): SimpleDate? {
+    fun fromJson(
+            reader: JsonReader
+    ): SimpleDate? {
         if (!reader.hasNext()) {
             return null
         }
@@ -41,7 +43,7 @@ object SimpleDateConverter {
             JsonReader.Token.STRING -> {
                 val timeString = reader.nextString()
 
-                for (threadLocal in FORMATS) {
+                FORMATS.forEach { threadLocal ->
                     val format = threadLocal.require()
 
                     try {
@@ -61,7 +63,10 @@ object SimpleDateConverter {
     }
 
     @ToJson
-    fun toJson(writer: JsonWriter, value: SimpleDate?) {
+    fun toJson(
+            writer: JsonWriter,
+            value: SimpleDate?
+    ) {
         if (value != null) {
             writer.value(value.date.time)
         }

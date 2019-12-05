@@ -13,7 +13,17 @@ abstract class AbsPlayer(
 
     companion object {
         val ALPHABETICAL_ORDER = Comparator<AbsPlayer> { o1, o2 ->
-            o1.name.compareTo(o2.name, ignoreCase = true)
+            var result = 0
+
+            if (o1 is FavoritePlayer && o2 is FavoritePlayer) {
+                result = AbsRegion.ENDPOINT_ORDER.compare(o1.region, o2.region)
+            }
+
+            if (result == 0) {
+                result = o1.name.compareTo(o2.name, ignoreCase = true)
+            }
+
+            result
         }
     }
 

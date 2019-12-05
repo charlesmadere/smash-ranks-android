@@ -3,43 +3,26 @@ package com.garpr.android.sync.rankings
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.garpr.android.data.models.RankingsBundle
-import com.garpr.android.extensions.appComponent
 import com.garpr.android.managers.NotificationsManager
-import com.garpr.android.managers.RegionManager
-import com.garpr.android.misc.RankingsNotificationsUtils
 import com.garpr.android.misc.Timber
-import com.garpr.android.networking.ApiListener
 import com.garpr.android.networking.ServerApi
-import javax.inject.Inject
+import com.garpr.android.repositories.RegionRepository
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class RankingsPollingWorker(
         context: Context,
         workerParams: WorkerParameters
-) : Worker(context, workerParams) {
+) : Worker(context, workerParams), KoinComponent {
 
-    @Inject
-    protected lateinit var notificationsManager: NotificationsManager
-
-    @Inject
-    protected lateinit var rankingsNotificationsUtils: RankingsNotificationsUtils
-
-    @Inject
-    protected lateinit var regionManager: RegionManager
-
-    @Inject
-    protected lateinit var serverApi: ServerApi
-
-    @Inject
-    protected lateinit var timber: Timber
-
+    protected val notificationsManager: NotificationsManager by inject()
+    protected val rankingsNotificationsUtils: RankingsNotificationsUtils by inject()
+    protected val regionRepository: RegionRepository by inject()
+    protected val serverApi: ServerApi by inject()
+    protected val timber: Timber by inject()
 
     companion object {
         private const val TAG = "RankingsPollingWorker"
-    }
-
-    init {
-        context.appComponent.inject(this)
     }
 
     override fun doWork(): Result {
@@ -59,26 +42,23 @@ class RankingsPollingWorker(
 
         var info: RankingsNotificationsUtils.NotificationInfo? = null
 
-        serverApi.getRankings(regionManager.getRegion(), object : ApiListener<RankingsBundle> {
-            override fun failure(errorCode: Int) {
-                timber.e(TAG, "error when fetching rankings ($errorCode)")
-                info = null
-            }
+        try {
+            val rankingsBundle = serverApi
+                    .getRankings(regionRepository.getRegion())
+                    .blockingGet()
 
-            override val isAlive: Boolean = true
-
-            override fun success(`object`: RankingsBundle?) {
-                timber.d(TAG, "successfully fetched rankings")
-                info = rankingsNotificationsUtils.getNotificationInfo(pollStatus, `object`)
-            }
-        })
+            timber.d(TAG, "successfully fetched rankings")
+            info = rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle)
+        } catch (e: RuntimeException) {
+            timber.e(TAG, "error when fetching rankings", e)
+        }
 
         timber.d(TAG, "work complete")
 
         return when (info) {
             RankingsNotificationsUtils.NotificationInfo.CANCEL -> {
                 timber.d(TAG, "canceling notifications ($info)")
-                notificationsManager.cancelAll()
+                notificationsManager.cancelRankingsUpdated()
                 Result.success()
             }
 
@@ -89,7 +69,7 @@ class RankingsPollingWorker(
 
             RankingsNotificationsUtils.NotificationInfo.SHOW -> {
                 timber.d(TAG, "showing rankings updated notification ($info)")
-                notificationsManager.rankingsUpdated()
+                notificationsManager.showRankingsUpdated()
                 Result.success()
             }
 

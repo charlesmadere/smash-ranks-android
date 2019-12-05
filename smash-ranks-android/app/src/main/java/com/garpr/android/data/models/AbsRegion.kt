@@ -10,12 +10,12 @@ import java.util.Comparator
 
 abstract class AbsRegion(
         val activeTf: Boolean? = null,
-        override val rankingActivityDayLimit: Int? = null,
-        override val rankingNumTourneysAttended: Int? = null,
-        override val tournamentQualifiedDayLimit: Int? = null,
+        val rankingActivityDayLimit: Int? = null,
+        val rankingNumTourneysAttended: Int? = null,
+        val tournamentQualifiedDayLimit: Int? = null,
         val displayName: String,
         val id: String
-) : Parcelable, RankingCriteria {
+) : Parcelable {
 
     companion object {
         val ALPHABETICAL_ORDER = Comparator<AbsRegion> { o1, o2 ->
@@ -50,7 +50,7 @@ abstract class AbsRegion(
 
     override fun hashCode(): Int = id.hashCode()
 
-    override val isActive: Boolean
+    val isActive: Boolean
         get() = activeTf ?: true
 
     abstract val kind: Kind

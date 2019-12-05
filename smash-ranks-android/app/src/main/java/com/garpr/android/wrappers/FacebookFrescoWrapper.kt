@@ -1,13 +1,13 @@
 package com.garpr.android.wrappers
 
-import android.app.Application
+import android.content.Context
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
 import com.garpr.android.misc.Timber
 import okhttp3.OkHttpClient
 
 class FacebookFrescoWrapper(
-        private val application: Application,
+        private val context: Context,
         private val okHttpClient: OkHttpClient,
         private val timber: Timber
 ) : ImageLibraryWrapper {
@@ -25,10 +25,10 @@ class FacebookFrescoWrapper(
         timber.d(TAG, "Initializing Fresco...")
 
         val config = OkHttpImagePipelineConfigFactory
-                .newBuilder(application, okHttpClient)
+                .newBuilder(context, okHttpClient)
                 .build()
 
-        Fresco.initialize(application, config)
+        Fresco.initialize(context, config)
 
         timber.d(TAG, "Fresco has been initialized")
     }

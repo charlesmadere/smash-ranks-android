@@ -7,81 +7,70 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
+import com.garpr.android.repositories.FavoritePlayersRepository
+import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class AppUpgradeManagerTest : BaseTest() {
 
-    @Inject
-    protected lateinit var appUpgradeManager: AppUpgradeManager
-
-    @Inject
-    protected lateinit var favoritePlayersManager: FavoritePlayersManager
-
-    @Inject
-    protected lateinit var generalPreferenceStore: GeneralPreferenceStore
-
-    @Inject
-    protected lateinit var identityManager: IdentityManager
-
+    protected val appUpgradeManager: AppUpgradeManager by inject()
+    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val generalPreferenceStore: GeneralPreferenceStore by inject()
+    protected val identityRepository: IdentityRepository by inject()
 
     companion object {
         private val PLAYER_1: AbsPlayer = LitePlayer("1", "Charlezard")
         private val PLAYER_2: AbsPlayer = LitePlayer("2", "Imyt")
 
-        private val REGION_1 = Region(null, null,
-                null, null,
-                "Norcal", "norcal", Endpoint.GAR_PR)
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
+        private val NORCAL = Region(
+                displayName = "Norcal",
+                id = "norcal",
+                endpoint = Endpoint.GAR_PR
+        )
     }
 
     @Test
     fun testUpgradeAppFrom0() {
         generalPreferenceStore.lastVersion.set(0)
-        favoritePlayersManager.addPlayer(PLAYER_1, REGION_1)
-        identityManager.setIdentity(PLAYER_2, REGION_1)
+        favoritePlayersRepository.addPlayer(PLAYER_1, NORCAL)
+        identityRepository.setIdentity(PLAYER_2, NORCAL)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertNull(favoritePlayersManager.absPlayers)
-        assertFalse(identityManager.hasIdentity)
+        assertNull(favoritePlayersRepository.players)
+        assertFalse(identityRepository.hasIdentity)
     }
 
     @Test
     fun testUpgradeAppFromCurrentVersion() {
         generalPreferenceStore.lastVersion.set(BuildConfig.VERSION_CODE)
-        favoritePlayersManager.addPlayer(PLAYER_1, REGION_1)
-        identityManager.setIdentity(PLAYER_2, REGION_1)
+        favoritePlayersRepository.addPlayer(PLAYER_1, NORCAL)
+        identityRepository.setIdentity(PLAYER_2, NORCAL)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertEquals(1, favoritePlayersManager.absPlayers?.size ?: 0)
-        assertTrue(identityManager.hasIdentity)
+        assertEquals(1, favoritePlayersRepository.players?.size ?: 0)
+        assertTrue(identityRepository.hasIdentity)
     }
 
     @Test
     fun testUpgradeAppFromNull() {
         generalPreferenceStore.lastVersion.delete()
-        favoritePlayersManager.addPlayer(PLAYER_1, REGION_1)
-        identityManager.setIdentity(PLAYER_2, REGION_1)
+        favoritePlayersRepository.addPlayer(PLAYER_1, NORCAL)
+        identityRepository.setIdentity(PLAYER_2, NORCAL)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertNull(favoritePlayersManager.absPlayers)
-        assertFalse(identityManager.hasIdentity)
+        assertNull(favoritePlayersRepository.players)
+        assertFalse(identityRepository.hasIdentity)
     }
 
 }

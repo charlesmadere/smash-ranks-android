@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.EndpointDividerView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.features.setRegion.EndpointDividerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/DividerItem">
@@ -10,4 +10,4 @@
         tools:text="Not GAR PR"
         style="@style/DividerItemTitle" />
 
-</com.garpr.android.views.EndpointDividerView>
+</com.garpr.android.features.setRegion.EndpointDividerView>

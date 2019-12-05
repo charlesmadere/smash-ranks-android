@@ -9,20 +9,25 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class KeyValueStoreTest : BaseTest() {
 
-    @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 
+    private lateinit var keyValueStore: KeyValueStore
+
+    companion object {
+        private const val TAG = "KeyValueStoreTest"
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test
@@ -141,15 +146,16 @@ class KeyValueStoreTest : BaseTest() {
 
     @Test
     fun testFallbackValue() {
-        assertEquals(keyValueStore.getBoolean("bool", false), false)
-        assertEquals(keyValueStore.getBoolean("bool", true), true)
-        assertEquals(keyValueStore.getFloat("float", Float.MAX_VALUE), Float.MAX_VALUE)
-        assertEquals(keyValueStore.getFloat("float", Float.MIN_VALUE), Float.MIN_VALUE)
-        assertEquals(keyValueStore.getInteger("int", Integer.MAX_VALUE), Integer.MAX_VALUE)
-        assertEquals(keyValueStore.getInteger("int", Integer.MIN_VALUE), Integer.MIN_VALUE)
-        assertEquals(keyValueStore.getLong("long", Long.MAX_VALUE), Long.MAX_VALUE)
-        assertEquals(keyValueStore.getLong("long", Long.MIN_VALUE), Long.MIN_VALUE)
-        assertEquals(keyValueStore.getString("string", "blah"), "blah")
+        assertEquals(false, keyValueStore.getBoolean("bool", false))
+        assertEquals(true, keyValueStore.getBoolean("bool", true))
+        assertEquals(Float.MAX_VALUE, keyValueStore.getFloat("float", Float.MAX_VALUE))
+        assertEquals(Float.MIN_VALUE, keyValueStore.getFloat("float", Float.MIN_VALUE))
+        assertEquals(Integer.MAX_VALUE, keyValueStore.getInteger("int", Integer.MAX_VALUE))
+        assertEquals(Integer.MIN_VALUE, keyValueStore.getInteger("int", Integer.MIN_VALUE))
+        assertEquals(Long.MAX_VALUE, keyValueStore.getLong("long", Long.MAX_VALUE))
+        assertEquals(Long.MIN_VALUE, keyValueStore.getLong("long", Long.MIN_VALUE))
+        assertEquals("blah", keyValueStore.getString("string", "blah"))
+        assertNull(keyValueStore.getString("string", null))
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
 import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -11,24 +12,28 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class PersistentLongPreferenceTest : BaseTest() {
 
-    @Inject
-    protected lateinit var keyValueStore: KeyValueStore
+    protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 
+    private lateinit var keyValueStore: KeyValueStore
+
+    companion object {
+        private const val TAG = "PersistentLongPreferenceTest"
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
+
+        keyValueStore = keyValueStoreProvider.getKeyValueStore(TAG)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testAddListener() {
         val preference = PersistentLongPreference("long", null, keyValueStore)
         var value: Long? = null
@@ -50,7 +55,6 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDelete() {
         val preference = PersistentLongPreference("long", -127L, keyValueStore)
         assertEquals(-127L, preference.get())
@@ -66,7 +70,6 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithDefaultValue() {
         val preference = PersistentLongPreference("long", 1989L, keyValueStore)
         assertTrue(preference.exists)
@@ -76,7 +79,6 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testExistsWithNullDefaultValue() {
         val preference = PersistentLongPreference("long", null, keyValueStore)
         assertFalse(preference.exists)
@@ -92,7 +94,6 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAndSet() {
         val preference = PersistentLongPreference("long", 863L, keyValueStore)
         assertEquals(863L, preference.get())
@@ -110,14 +111,12 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetKey() {
         val preference = PersistentLongPreference("long", null, keyValueStore)
         assertEquals("long", preference.key)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNonNullGetDefaultValue() {
         val preference = PersistentLongPreference("long", 130L, keyValueStore)
         assertEquals(130L, preference.defaultValue)
@@ -127,7 +126,6 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testNullGetDefaultValue() {
         val preference = PersistentLongPreference("long", null, keyValueStore)
         assertNull(preference.defaultValue)
@@ -137,7 +135,6 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testRemoveListener() {
         val preference = PersistentLongPreference("long", null, keyValueStore)
         var value: Long? = null
@@ -163,7 +160,6 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testSetAndGet() {
         val preference = PersistentLongPreference("long", null, keyValueStore)
 

@@ -1,5 +1,6 @@
 package com.garpr.android.preferences
 
+import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.SmashRosterSyncResult
 import com.garpr.android.preferences.persistent.PersistentBooleanPreference
 import com.garpr.android.preferences.persistent.PersistentMoshiPreference
@@ -15,6 +16,9 @@ class SmashRosterPreferenceStoreImpl(
 
     override val hajimeteSync by lazy { PersistentBooleanPreference("HAJIMETE_SYNC",
             true, keyValueStore) }
+
+    override val pollFrequency by lazy { PersistentMoshiPreference("POLL_FREQUENCY",
+            PollFrequency.EVERY_2_WEEKS, keyValueStore, moshi, PollFrequency::class.java) }
 
     override val syncResult by lazy { PersistentMoshiPreference<SmashRosterSyncResult>(
             "SYNC_RESULT", null, keyValueStore, moshi,

@@ -5,7 +5,6 @@
     <string name="x_activity_requirements">%1$s Activity Requirements</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
-    <string name="app_restarted_to_apply_theme">App restarted to apply theme</string>
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
@@ -13,7 +12,7 @@
     <string name="back">Back</string>
     <string name="build_x_y">Build %1$d (%2$s)</string>
     <string name="cancel">Cancel</string>
-    <string name="cancel_all">Cancel all</string>
+    <string name="cancel_rankings">Cancel rankings</string>
     <string name="charles_twitter_url" translatable="false">twitter.com/charlesmadere</string>
     <string name="clear">Clear</string>
     <string name="click_to_open_form">Click to open form</string>
@@ -24,7 +23,6 @@
     <string name="customize_identity_description">None currently selected</string>
     <string name="customize_region">Customize region</string>
     <string name="customize_region_description">The default is Norcal (GAR PR)</string>
-    <string name="customize_theme">Customize theme</string>
     <string name="daily">Daily</string>
     <string name="day">Day</string>
     <string name="debug_only">Debug only</string>
@@ -34,6 +32,7 @@
     <string name="easily_find_yourself_throughout_the_app">Easily find yourself throughout the app</string>
     <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
+    <string name="error_loading_head_to_head_description">There are a few possibilities for this error. It could mean that you don\'t currently have a functional network connection. Or it could mean that these two players have never played in tournament before. Or it could mean that these players are from two different regions. But, you can swipe down to refresh and try again.</string>
     <string name="error_loading_player">Error loading player!</string>
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
@@ -52,7 +51,6 @@
     <string name="gar_twitter_url" translatable="false">twitter.com/garsh0p</string>
     <string name="germ_website_url" translatable="false">germroverso.com</string>
     <string name="head_to_head">Head to Head</string>
-    <string name="head_to_head_swipe_to_refresh_and_check_again">This probably means that these two competitors have never played in tournament before. But, you can swipe down to refresh and check again</string>
     <string name="identity">Identity</string>
     <string name="identity_region_format">%1$s (%2$s)</string>
     <string name="identity_saved_">Identity saved!</string>
@@ -68,9 +66,7 @@
     <string name="none">None</string>
     <string name="norcal" translatable="false">Norcal</string>
     <string name="not_gar_pr" translatable="false">Not GAR PR</string>
-    <string name="not_yet_set">Not yet set</string>
     <string name="no_favorite_players">No favorite players</string>
-    <string name="no_head_to_head_data">No head to head data</string>
     <string name="no_log_entries">No log entries</string>
     <string name="no_matches">No matches</string>
     <string name="no_player_data">No player data</string>
@@ -78,6 +74,7 @@
     <string name="no_rankings">No rankings</string>
     <string name="no_regions">No regions</string>
     <string name="no_tournaments">No tournaments</string>
+    <string name="number">Number</string>
     <string name="ok">OK</string>
     <string name="open_bracket_link">Open bracket link</string>
     <string name="open_challonge_link">Open Challonge link</string>
@@ -93,18 +90,20 @@
     <string name="x_rankings_have_been_updated">%1$s rankings have been updated!</string>
     <string name="rankings_polling">Rankings polling</string>
     <string name="rankings_polling_description">This feature will periodically poll your region\'s GAR PR (or Not GAR PR) and let you know if its rankings have been updated. Note that the poll frequency is just an estimate, it\'s not guaranteed to run at these exact intervals.</string>
-    <string name="rankings_update_description">Notification that shows whenever your region\'s rankings have been updated.</string>
-    <string name="rankings_update_notifications">Rankings Update Notifications</string>
+    <string name="rankings_update_notifications_description">Notification that shows whenever your region\'s rankings have been updated.</string>
+    <string name="rankings_update_notifications_name">Rankings Update Notifications</string>
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
     <string name="region_endpoint_format">%1$s (%2$s)</string>
-    <string name="region_mismatch_error">A region or GAR PR server endpoint mismatch error may have occurred. This is not a resolvable error, sorry!</string>
     <string name="region_saved_">Region saved!</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>
     <string name="ringtone">Ringtone</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="search_">Search…</string>
+    <string name="search_matches_">Search matches…</string>
+    <string name="search_matches_and_players_">Search matches and players…</string>
+    <string name="search_players_">Search players…</string>
     <string name="settings">Settings</string>
     <string name="set_identity">Set Identity</string>
     <string name="set_region">Set Region</string>
@@ -134,8 +133,6 @@
     <string name="theme">Theme</string>
     <string name="the_app_will_now_restart">The app will now restart.</string>
     <string name="these_two_competitors_have_never_played_in_tournament_before">These two competitors have never played in tournament before.</string>
-    <string name="this_tournament_has_no_matches">This tournament has no matches</string>
-    <string name="this_tournament_has_no_players">This tournament has no players</string>
     <string name="tournaments">Tournaments</string>
     <string name="x_tournaments">%1$s Tournaments</string>
     <string name="twitch">Twitch</string>
@@ -167,6 +164,7 @@
 
 
     <!-- Smash Characters -->
+    <string name="banjo_n_kazooie">Banjo &amp; Kazooie</string>
     <string name="bayonetta">Bayonetta</string>
     <string name="bowser">Bowser</string>
     <string name="bowser_jr">Bowser Jr.</string>
@@ -186,6 +184,7 @@
     <string name="fox">Fox</string>
     <string name="ganondorf">Ganondorf</string>
     <string name="greninja">Greninja</string>
+    <string name="hero">Hero</string>
     <string name="ice_climbers">Ice Climbers</string>
     <string name="ike">Ike</string>
     <string name="incineroar">Incineroar</string>
@@ -235,6 +234,7 @@
     <string name="snake">Snake</string>
     <string name="sonic">Sonic</string>
     <string name="squirtle">Squirtle</string>
+    <string name="terry_bogard">Terry Bogard</string>
     <string name="toon_link">Toon Link</string>
     <string name="villager">Villager</string>
     <string name="wario">Wario</string>

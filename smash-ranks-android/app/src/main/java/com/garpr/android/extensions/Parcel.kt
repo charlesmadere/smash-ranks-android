@@ -23,7 +23,7 @@ inline fun <reified T : Parcelable> createParcel(
         }
 
 fun Parcel.readAbsPlayer(): AbsPlayer {
-    return readOptionalAbsPlayer() ?: throw NullPointerException()
+    return requireNotNull(readOptionalAbsPlayer())
 }
 
 fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
@@ -47,7 +47,7 @@ fun Parcel.readAbsPlayerList(): MutableList<AbsPlayer>? {
 
     val list = mutableListOf<AbsPlayer>()
 
-    for (i in 0 until size) {
+    repeat(size) {
         list.add(readAbsPlayer())
     }
 
@@ -71,13 +71,13 @@ fun Parcel.writeAbsPlayerList(list: List<AbsPlayer>?, flags: Int) {
         return
     }
 
-    for (i in 0 until size) {
-        writeAbsPlayer(list.require(i), flags)
+    repeat(size) { index ->
+        writeAbsPlayer(list.require(index), flags)
     }
 }
 
 fun Parcel.readAbsRegion(): AbsRegion {
-    return readOptionalAbsRegion() ?: throw NullPointerException()
+    return requireNotNull(readOptionalAbsRegion())
 }
 
 fun Parcel.readOptionalAbsRegion(): AbsRegion? {
@@ -99,7 +99,7 @@ fun Parcel.readAbsRegionList(): List<AbsRegion>? {
 
     val list = mutableListOf<AbsRegion>()
 
-    for (i in 0 until size) {
+    repeat(size) {
         list.add(readAbsRegion())
     }
 
@@ -123,13 +123,13 @@ fun Parcel.writeAbsRegionList(list: List<AbsRegion>?, flags: Int) {
         return
     }
 
-    for (i in 0 until size) {
-        writeAbsRegion(list.require(i), flags)
+    repeat(size) { index ->
+        writeAbsRegion(list.require(index), flags)
     }
 }
 
 fun Parcel.readAbsTournament(): AbsTournament {
-    return readOptionalAbsTournament() ?: throw NullPointerException()
+    return requireNotNull(readOptionalAbsTournament())
 }
 
 fun Parcel.readOptionalAbsTournament(): AbsTournament? {
@@ -151,7 +151,7 @@ fun Parcel.readAbsTournamentList(): MutableList<AbsTournament>? {
 
     val list = mutableListOf<AbsTournament>()
 
-    for (i in 0 until size) {
+    repeat(size) {
         list.add(readAbsTournament())
     }
 
@@ -175,13 +175,13 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
         return
     }
 
-    for (i in 0 until size) {
-        writeAbsTournament(list.require(i), flags)
+    repeat(size) { index ->
+        writeAbsTournament(list.require(index), flags)
     }
 }
 
 fun Parcel.requireBoolean(): Boolean {
-    return readBoolean() ?: throw NullPointerException()
+    return requireNotNull(readBoolean())
 }
 
 fun Parcel.readBoolean(): Boolean? {
@@ -201,18 +201,15 @@ fun Parcel.writeInteger(integer: Int?) {
 }
 
 fun <T : Parcelable> Parcel.requireParcelable(loader: ClassLoader?): T {
-    if (loader == null) {
-        throw NullPointerException("ClassLoader is null")
-    }
-
-    return readParcelable(loader) ?: throw NullPointerException()
+    requireNotNull(loader) { "loader is null" }
+    return requireNotNull(readParcelable(loader))
 }
 
 fun Parcel.readRatingsMap(): Map<String, Rating>? {
     val bundle = readBundle(Rating::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, Rating>()
 
-    for (key in bundle.keySet()) {
+    bundle.keySet().forEach { key ->
         map[key] = bundle.requireParcelable(key)
     }
 
@@ -235,14 +232,14 @@ fun Parcel.writeRatingsMap(map: Map<String, Rating>?) {
 }
 
 fun Parcel.requireString(): String {
-    return readString() ?: throw NullPointerException()
+    return requireNotNull(readString())
 }
 
 fun Parcel.readStringMap(): Map<String, String>? {
     val bundle = readBundle(String::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, String>()
 
-    for (key in bundle.keySet()) {
+    bundle.keySet().forEach { key ->
         map[key] = bundle.requireString(key)
     }
 

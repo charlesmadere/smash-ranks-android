@@ -4,28 +4,19 @@ import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 import kotlin.random.Random
 
 @RunWith(RobolectricTestRunner::class)
 class TimberTest : BaseTest() {
 
-    @Inject
-    protected lateinit var timber: Timber
-
+    protected val timber: Timber by inject()
 
     companion object {
         private const val TAG = "TimberTest"
-    }
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        testAppComponent.inject(this)
     }
 
     @Test

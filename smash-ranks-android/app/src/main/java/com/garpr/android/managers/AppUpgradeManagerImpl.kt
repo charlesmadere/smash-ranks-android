@@ -3,9 +3,10 @@ package com.garpr.android.managers
 import com.garpr.android.BuildConfig
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore
+import com.garpr.android.repositories.FavoritePlayersRepository
 
 class AppUpgradeManagerImpl(
-        private val favoritePlayersManager: FavoritePlayersManager,
+        private val favoritePlayersRepository: FavoritePlayersRepository,
         private val generalPreferenceStore: GeneralPreferenceStore,
         private val timber: Timber
 ) : AppUpgradeManager {
@@ -37,7 +38,7 @@ class AppUpgradeManagerImpl(
             generalPreferenceStore.identity.delete()
 
             // used to be a list of AbsPlayer, is now a list of FavoritePlayer
-            favoritePlayersManager.clear()
+            favoritePlayersRepository.clear()
         }
     }
 

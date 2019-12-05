@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.garpr.android.views.FavoritePlayerItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.features.favoritePlayers.FavoritePlayerItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/ConstraintListItem">
@@ -38,4 +38,4 @@
     <include
         layout="@layout/view_constraint_layout_foreground" />
 
-</com.garpr.android.views.FavoritePlayerItemView>
+</com.garpr.android.features.favoritePlayers.FavoritePlayerItemView>

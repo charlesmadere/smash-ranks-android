@@ -40,11 +40,6 @@ data class RankingsBundle(
 
     override fun hashCode(): Int = id.hashCode()
 
-    fun hasPreviousRank(): Boolean {
-        return rankings?.asSequence()
-                ?.firstOrNull { it.previousRank != null } != null
-    }
-
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

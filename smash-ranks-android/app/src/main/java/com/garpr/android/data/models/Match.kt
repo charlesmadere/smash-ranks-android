@@ -2,6 +2,7 @@ package com.garpr.android.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.readAbsPlayer
 import com.garpr.android.extensions.readAbsTournament
@@ -11,9 +12,8 @@ import com.garpr.android.extensions.writeAbsTournament
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.Comparator
-import java.util.Objects
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = false)
 class Match(
         @Json(name = "result") result: MatchResult,
         @Json(name = "opponent") val opponent: AbsPlayer,
@@ -46,7 +46,7 @@ class Match(
                 && tournament == other.tournament
     }
 
-    override fun hashCode(): Int = Objects.hash(result, opponent, tournament)
+    override fun hashCode(): Int = ObjectsCompat.hash(result, opponent, tournament)
 
     override fun describeContents(): Int = 0
 

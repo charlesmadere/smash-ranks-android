@@ -2,6 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <TextView
@@ -20,14 +21,20 @@
         style="@style/TextViewTab" />
 
     <View
+        android:background="?android:attr/listDivider"
+        android:layout_height="1dp"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
         android:background="?attr/colorAccent"
         android:id="@+id/indicatorLine"
-        android:layout_height="@dimen/divider_height"
+        android:layout_height="3dp"
         android:layout_width="0dp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/matchesTab"
-        app:layout_constraintStart_toStartOf="@+id/matchesTab"
-        tools:visibility="visible" />
+        app:layout_constraintStart_toStartOf="@+id/matchesTab" />
 
 </merge>

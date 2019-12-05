@@ -7,19 +7,18 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class SmashCharacterTest : BaseTest() {
 
+    protected val moshi: Moshi by inject()
+
     private lateinit var smashCharacterAdapter: JsonAdapter<SmashCharacter>
 
-    @Inject
-    protected lateinit var moshi: Moshi
-
-
     companion object {
+        private const val JSON_BANJO_N_KAZOOIE = "\"bnk\""
         private const val JSON_BAYONETTA = "\"byo\""
         private const val JSON_BOWSER = "\"bow\""
         private const val JSON_BOWSER_JR = "\"bjr\""
@@ -39,6 +38,7 @@ class SmashCharacterTest : BaseTest() {
         private const val JSON_FOX = "\"fox\""
         private const val JSON_GANONDORF = "\"gnn\""
         private const val JSON_GRENINJA = "\"grn\""
+        private const val JSON_HERO = "\"hro\""
         private const val JSON_ICE_CLIMBERS = "\"ics\""
         private const val JSON_IKE = "\"ike\""
         private const val JSON_INCINEROAR = "\"inc\""
@@ -88,6 +88,7 @@ class SmashCharacterTest : BaseTest() {
         private const val JSON_SNAKE = "\"snk\""
         private const val JSON_SQUIRTLE = "\"sqt\""
         private const val JSON_SONIC = "\"snc\""
+        private const val JSON_TERRY_BOGARD = "\"tbg\""
         private const val JSON_TOON_LINK = "\"tlk\""
         private const val JSON_VILLAGER = "\"vlg\""
         private const val JSON_WARIO = "\"war\""
@@ -102,9 +103,14 @@ class SmashCharacterTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        testAppComponent.inject(this)
 
         smashCharacterAdapter = moshi.adapter(SmashCharacter::class.java)
+    }
+
+    @Test
+    fun testBanjoAndKazooie() {
+        assertEquals(JSON_BANJO_N_KAZOOIE, smashCharacterAdapter.toJson(SmashCharacter.BANJO_N_KAZOOIE))
+        assertEquals(SmashCharacter.BANJO_N_KAZOOIE, smashCharacterAdapter.fromJson(JSON_BANJO_N_KAZOOIE))
     }
 
     @Test
@@ -219,6 +225,12 @@ class SmashCharacterTest : BaseTest() {
     fun testGreninja() {
         assertEquals(JSON_GRENINJA, smashCharacterAdapter.toJson(SmashCharacter.GRENINJA))
         assertEquals(SmashCharacter.GRENINJA, smashCharacterAdapter.fromJson(JSON_GRENINJA))
+    }
+
+    @Test
+    fun testHero() {
+        assertEquals(JSON_HERO, smashCharacterAdapter.toJson(SmashCharacter.HERO))
+        assertEquals(SmashCharacter.HERO, smashCharacterAdapter.fromJson(JSON_HERO))
     }
 
     @Test
@@ -513,6 +525,12 @@ class SmashCharacterTest : BaseTest() {
     fun testSquirtle() {
         assertEquals(JSON_SQUIRTLE, smashCharacterAdapter.toJson(SmashCharacter.SQUIRTLE))
         assertEquals(SmashCharacter.SQUIRTLE, smashCharacterAdapter.fromJson(JSON_SQUIRTLE))
+    }
+
+    @Test
+    fun testTerryBogard() {
+        assertEquals(JSON_TERRY_BOGARD, smashCharacterAdapter.toJson(SmashCharacter.TERRY_BOGARD))
+        assertEquals(SmashCharacter.TERRY_BOGARD, smashCharacterAdapter.fromJson(JSON_TERRY_BOGARD))
     }
 
     @Test
