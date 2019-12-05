@@ -52,7 +52,9 @@ class RegionRepositoryImpl(
             return getRegion(context.baseContext)
         }
 
-        return requireNotNull(generalPreferenceStore.currentRegion.get())
+        return checkNotNull(generalPreferenceStore.currentRegion.get()) {
+            "The user's current region preference is null, this should be impossible."
+        }
     }
 
     private fun notifyListeners() {

@@ -30,7 +30,7 @@ class TournamentInfoView @JvmOverloads constructor(
         }
 
     val tournament: FullTournament
-        get() = requireNotNull(_tournament)
+        get() = checkNotNull(_tournament)
 
     val dateVerticalPositionInWindow: Int
         get() = date.verticalPositionInWindow

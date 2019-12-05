@@ -12,7 +12,6 @@ import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.player.PlayerActivity
-import com.garpr.android.features.players.PlayerItemView
 import com.garpr.android.features.tournament.TournamentViewModel.PlayerListItem
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.repositories.RegionRepository
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_tournament_players.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Listeners {
+class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerItemView.Listeners {
 
     private val adapter = Adapter(this)
 
@@ -49,7 +48,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
         recyclerView.adapter = adapter
     }
 
-    override fun onClick(v: PlayerItemView) {
+    override fun onClick(v: TournamentPlayerItemView) {
         val intent = PlayerActivity.getLaunchIntent(
                 context = requireContext(),
                 player = v.player,
@@ -65,7 +64,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
         return inflater.inflate(R.layout.fragment_tournament_players, container, false)
     }
 
-    override fun onLongClick(v: PlayerItemView) {
+    override fun onLongClick(v: TournamentPlayerItemView) {
         childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.player,
                 regionRepository.getRegion(requireContext()))
     }
@@ -95,7 +94,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
     }
 
     private class Adapter(
-            private val playerItemViewListeners: PlayerItemView.Listeners
+            private val tournamentPlayerItemViewListeners: TournamentPlayerItemView.Listeners
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val list = mutableListOf<PlayerListItem>()
@@ -108,8 +107,8 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
             setHasStableIds(true)
         }
 
-        private fun bindPlayer(holder: PlayerViewHolder, item: PlayerListItem.Player) {
-            holder.playerItemView.setContent(item.player)
+        private fun bindPlayer(holder: TournamentPlayerViewHolder, item: PlayerListItem.Player) {
+            holder.tournamentPlayerItemView.setContent(item.player)
         }
 
         internal fun clear() {
@@ -133,7 +132,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is PlayerListItem.Player -> bindPlayer(holder as PlayerViewHolder, item)
+                is PlayerListItem.Player -> bindPlayer(holder as TournamentPlayerViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -142,8 +141,8 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
             val inflater = parent.layoutInflater
 
             return when (viewType) {
-                VIEW_TYPE_PLAYER -> PlayerViewHolder(playerItemViewListeners,
-                        inflater.inflate(R.layout.item_player, parent, false))
+                VIEW_TYPE_PLAYER -> TournamentPlayerViewHolder(tournamentPlayerItemViewListeners,
+                        inflater.inflate(R.layout.item_tournament_player, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
         }
@@ -160,14 +159,14 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, PlayerItemView.Lis
 
     }
 
-    private class PlayerViewHolder(
-            playerItemViewListeners: PlayerItemView.Listeners,
+    private class TournamentPlayerViewHolder(
+            listeners: TournamentPlayerItemView.Listeners,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
-        internal val playerItemView: PlayerItemView = itemView as PlayerItemView
+        internal val tournamentPlayerItemView: TournamentPlayerItemView = itemView as TournamentPlayerItemView
 
         init {
-            playerItemView.listeners = playerItemViewListeners
+            tournamentPlayerItemView.listeners = listeners
         }
     }
 

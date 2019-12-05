@@ -24,7 +24,7 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
     private var _headToHeadMatch: HeadToHeadMatch? = null
 
     val headToHeadMatch: HeadToHeadMatch
-        get() = requireNotNull(_headToHeadMatch)
+        get() = checkNotNull(_headToHeadMatch)
 
     @ColorInt
     private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)

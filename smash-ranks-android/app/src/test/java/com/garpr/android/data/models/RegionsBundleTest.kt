@@ -46,7 +46,7 @@ class RegionsBundleTest : BaseTest() {
 
     @Test
     fun testComparatorAlphabeticalOrder() {
-        val regions = requireNotNull(REGIONS_BUNDLE.regions)
+        val regions = checkNotNull(REGIONS_BUNDLE.regions)
         Collections.sort(regions, AbsRegion.ALPHABETICAL_ORDER)
 
         assertEquals("alabama", regions[0].id)
@@ -59,7 +59,7 @@ class RegionsBundleTest : BaseTest() {
 
     @Test
     fun testComparatorEndpointOrder() {
-        val regions = requireNotNull(REGIONS_BUNDLE.regions)
+        val regions = checkNotNull(REGIONS_BUNDLE.regions)
         Collections.sort(regions, AbsRegion.ENDPOINT_ORDER)
 
         assertEquals("norcal", regions[0].id)

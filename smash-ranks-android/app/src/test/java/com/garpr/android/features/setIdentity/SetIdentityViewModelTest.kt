@@ -8,7 +8,8 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.setIdentity.SetIdentityViewModel.SaveIconStatus
-import com.garpr.android.misc.PlayerList
+import com.garpr.android.misc.PlayerListBuilder
+import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
@@ -32,6 +33,7 @@ class SetIdentityViewModelTest : BaseTest() {
     private lateinit var viewModel: SetIdentityViewModel
 
     protected val identityRepository: IdentityRepository by inject()
+    protected val playerListBuilder: PlayerListBuilder by inject()
     protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
 
@@ -78,7 +80,8 @@ class SetIdentityViewModelTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        viewModel = SetIdentityViewModel(identityRepository, playersRepository, threadUtils, timber)
+       viewModel = SetIdentityViewModel(identityRepository, playerListBuilder, playersRepository,
+                threadUtils, timber)
     }
 
     @Test
@@ -100,36 +103,36 @@ class SetIdentityViewModelTest : BaseTest() {
         assertNull(state?.searchResults)
         assertEquals(SaveIconStatus.DISABLED, state?.saveIconStatus)
 
-        assertTrue(state?.list?.get(0) is PlayerList.Item.Divider.Letter)
-        var letter = state?.list?.get(0) as PlayerList.Item.Divider.Letter
+        assertTrue(state?.list?.get(0) is PlayerListItem.Divider.Letter)
+        var letter = state?.list?.get(0) as PlayerListItem.Divider.Letter
         assertEquals(CHARLEZARD.name.substring(0, 1), letter.letter)
 
-        assertTrue(state?.list?.get(1) is PlayerList.Item.Player)
-        var player = state?.list?.get(1) as PlayerList.Item.Player
+        assertTrue(state?.list?.get(1) is PlayerListItem.Player)
+        var player = state?.list?.get(1) as PlayerListItem.Player
         assertEquals(CHARLEZARD, player.player)
 
-        assertTrue(state?.list?.get(2) is PlayerList.Item.Divider.Letter)
-        letter = state?.list?.get(2) as PlayerList.Item.Divider.Letter
+        assertTrue(state?.list?.get(2) is PlayerListItem.Divider.Letter)
+        letter = state?.list?.get(2) as PlayerListItem.Divider.Letter
         assertEquals(IMYT.name.substring(0, 1), letter.letter)
 
-        assertTrue(state?.list?.get(3) is PlayerList.Item.Player)
-        player = state?.list?.get(3) as PlayerList.Item.Player
+        assertTrue(state?.list?.get(3) is PlayerListItem.Player)
+        player = state?.list?.get(3) as PlayerListItem.Player
         assertEquals(IMYT, player.player)
 
-        assertTrue(state?.list?.get(4) is PlayerList.Item.Player)
-        player = state?.list?.get(4) as PlayerList.Item.Player
+        assertTrue(state?.list?.get(4) is PlayerListItem.Player)
+        player = state?.list?.get(4) as PlayerListItem.Player
         assertEquals(INSTANT, player.player)
 
-        assertTrue(state?.list?.get(5) is PlayerList.Item.Divider.Digit)
+        assertTrue(state?.list?.get(5) is PlayerListItem.Divider.Digit)
 
-        assertTrue(state?.list?.get(6) is PlayerList.Item.Player)
-        player = state?.list?.get(6) as PlayerList.Item.Player
+        assertTrue(state?.list?.get(6) is PlayerListItem.Player)
+        player = state?.list?.get(6) as PlayerListItem.Player
         assertEquals(WEEDLORD, player.player)
 
-        assertTrue(state?.list?.get(7) is PlayerList.Item.Divider.Other)
+        assertTrue(state?.list?.get(7) is PlayerListItem.Divider.Other)
 
-        assertTrue(state?.list?.get(8) is PlayerList.Item.Player)
-        player = state?.list?.get(8) as PlayerList.Item.Player
+        assertTrue(state?.list?.get(8) is PlayerListItem.Player)
+        player = state?.list?.get(8) as PlayerListItem.Player
         assertEquals(KIM, player.player)
     }
 
@@ -294,20 +297,20 @@ class SetIdentityViewModelTest : BaseTest() {
         assertEquals(9, state?.list?.size)
         assertEquals(4, state?.searchResults?.size)
 
-        assertTrue(state?.searchResults?.get(0) is PlayerList.Item.Divider.Letter)
-        var letter = state?.searchResults?.get(0) as PlayerList.Item.Divider.Letter
+        assertTrue(state?.searchResults?.get(0) is PlayerListItem.Divider.Letter)
+        var letter = state?.searchResults?.get(0) as PlayerListItem.Divider.Letter
         assertEquals(CHARLEZARD.name.substring(0, 1), letter.letter)
 
-        assertTrue(state?.searchResults?.get(1) is PlayerList.Item.Player)
-        var player = state?.searchResults?.get(1) as PlayerList.Item.Player
+        assertTrue(state?.searchResults?.get(1) is PlayerListItem.Player)
+        var player = state?.searchResults?.get(1) as PlayerListItem.Player
         assertEquals(CHARLEZARD, player.player)
 
-        assertTrue(state?.searchResults?.get(2) is PlayerList.Item.Divider.Letter)
-        letter = state?.searchResults?.get(2) as PlayerList.Item.Divider.Letter
+        assertTrue(state?.searchResults?.get(2) is PlayerListItem.Divider.Letter)
+        letter = state?.searchResults?.get(2) as PlayerListItem.Divider.Letter
         assertEquals(INSTANT.name.substring(0, 1), letter.letter)
 
-        assertTrue(state?.searchResults?.get(3) is PlayerList.Item.Player)
-        player = state?.searchResults?.get(3) as PlayerList.Item.Player
+        assertTrue(state?.searchResults?.get(3) is PlayerListItem.Player)
+        player = state?.searchResults?.get(3) as PlayerListItem.Player
         assertEquals(INSTANT, player.player)
     }
 
@@ -352,22 +355,22 @@ class SetIdentityViewModelTest : BaseTest() {
         assertEquals(9, state?.list?.size)
         assertEquals(5, state?.searchResults?.size)
 
-        assertTrue(state?.searchResults?.get(0) is PlayerList.Item.Divider.Letter)
-        val letter = state?.searchResults?.get(0) as PlayerList.Item.Divider.Letter
+        assertTrue(state?.searchResults?.get(0) is PlayerListItem.Divider.Letter)
+        val letter = state?.searchResults?.get(0) as PlayerListItem.Divider.Letter
         assertEquals(IMYT.name.substring(0, 1), letter.letter)
 
-        assertTrue(state?.searchResults?.get(1) is PlayerList.Item.Player)
-        var player = state?.searchResults?.get(1) as PlayerList.Item.Player
+        assertTrue(state?.searchResults?.get(1) is PlayerListItem.Player)
+        var player = state?.searchResults?.get(1) as PlayerListItem.Player
         assertEquals(IMYT, player.player)
 
-        assertTrue(state?.searchResults?.get(2) is PlayerList.Item.Player)
-        player = state?.searchResults?.get(2) as PlayerList.Item.Player
+        assertTrue(state?.searchResults?.get(2) is PlayerListItem.Player)
+        player = state?.searchResults?.get(2) as PlayerListItem.Player
         assertEquals(INSTANT, player.player)
 
-        assertTrue(state?.searchResults?.get(3) is PlayerList.Item.Divider.Other)
+        assertTrue(state?.searchResults?.get(3) is PlayerListItem.Divider.Other)
 
-        assertTrue(state?.searchResults?.get(4) is PlayerList.Item.Player)
-        player = state?.searchResults?.get(4) as PlayerList.Item.Player
+        assertTrue(state?.searchResults?.get(4) is PlayerListItem.Player)
+        player = state?.searchResults?.get(4) as PlayerListItem.Player
         assertEquals(KIM, player.player)
     }
 
@@ -384,18 +387,18 @@ class SetIdentityViewModelTest : BaseTest() {
         assertEquals(9, state?.list?.size)
         assertEquals(4, state?.searchResults?.size)
 
-        assertTrue(state?.searchResults?.get(0) is PlayerList.Item.Divider.Letter)
-        val letter = state?.searchResults?.get(0) as PlayerList.Item.Divider.Letter
+        assertTrue(state?.searchResults?.get(0) is PlayerListItem.Divider.Letter)
+        val letter = state?.searchResults?.get(0) as PlayerListItem.Divider.Letter
         assertEquals(IMYT.name.substring(0, 1), letter.letter)
 
-        assertTrue(state?.searchResults?.get(1) is PlayerList.Item.Player)
-        var player = state?.searchResults?.get(1) as PlayerList.Item.Player
+        assertTrue(state?.searchResults?.get(1) is PlayerListItem.Player)
+        var player = state?.searchResults?.get(1) as PlayerListItem.Player
         assertEquals(IMYT, player.player)
 
-        assertTrue(state?.searchResults?.get(2) is PlayerList.Item.Divider.Other)
+        assertTrue(state?.searchResults?.get(2) is PlayerListItem.Divider.Other)
 
-        assertTrue(state?.searchResults?.get(3) is PlayerList.Item.Player)
-        player = state?.searchResults?.get(3) as PlayerList.Item.Player
+        assertTrue(state?.searchResults?.get(3) is PlayerListItem.Player)
+        player = state?.searchResults?.get(3) as PlayerListItem.Player
         assertEquals(KIM, player.player)
     }
 

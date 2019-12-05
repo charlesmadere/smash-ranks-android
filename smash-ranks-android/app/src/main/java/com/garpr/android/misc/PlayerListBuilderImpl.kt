@@ -1,21 +1,22 @@
 package com.garpr.android.misc
 
-import androidx.annotation.WorkerThread
-import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.safeEquals
+import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
+import com.garpr.android.repositories.IdentityRepository
 
-object PlayerList {
+class PlayerListBuilderImpl(
+        private val identityRepository: IdentityRepository
+) : PlayerListBuilder {
 
-    @WorkerThread
-    fun createList(bundle: PlayersBundle?): List<Item>? {
+    override fun create(bundle: PlayersBundle?): List<PlayerListItem>? {
         val players = bundle?.players
 
         if (players.isNullOrEmpty()) {
             return null
         }
 
-        val list = mutableListOf<Item>()
+        val list = mutableListOf<PlayerListItem>()
         var previousChar: Char? = null
         var letterDividerListId = Long.MIN_VALUE + 1L
 
@@ -30,7 +31,7 @@ object PlayerList {
                     if (!char.safeEquals(previousChar, true)) {
                         previousChar = char
 
-                        list.add(Item.Divider.Letter(
+                        list.add(PlayerListItem.Divider.Letter(
                                 letter = char.toUpperCase().toString(),
                                 listId = letterDividerListId
                         ))
@@ -38,7 +39,10 @@ object PlayerList {
                         ++letterDividerListId
                     }
 
-                    list.add(Item.Player(it))
+                    list.add(PlayerListItem.Player(
+                            player = it,
+                            isIdentity = identityRepository.isPlayer(it)
+                    ))
                 }
 
         ///////////////////////
@@ -51,10 +55,13 @@ object PlayerList {
                 .forEach {
                     if (!addedDigitDivider) {
                         addedDigitDivider = true
-                        list.add(Item.Divider.Digit)
+                        list.add(PlayerListItem.Divider.Digit)
                     }
 
-                    list.add(Item.Player(it))
+                    list.add(PlayerListItem.Player(
+                            player = it,
+                            isIdentity = identityRepository.isPlayer(it)
+                    ))
                 }
 
 
@@ -68,40 +75,60 @@ object PlayerList {
                 .forEach {
                     if (!addedOtherDivider) {
                         addedOtherDivider = true
-                        list.add(Item.Divider.Other)
+                        list.add(PlayerListItem.Divider.Other)
                     }
 
-                    list.add(Item.Player(it))
+                    list.add(PlayerListItem.Player(
+                            player = it,
+                            isIdentity = identityRepository.isPlayer(it)
+                    ))
                 }
 
         return list
     }
 
-    @WorkerThread
-    fun search(query: String?, list: List<Item>?): List<Item>? {
+    override fun refresh(list: List<PlayerListItem>?): List<PlayerListItem>? {
+        return if (list.isNullOrEmpty()) {
+            list
+        } else {
+            list.map { listItem ->
+                when (listItem) {
+                    is PlayerListItem.Divider -> listItem
+                    is PlayerListItem.Player -> {
+                        PlayerListItem.Player(
+                                player = listItem.player,
+                                isIdentity = identityRepository.isPlayer(listItem.player)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    override fun search(query: String?, list: List<PlayerListItem>?): List<PlayerListItem>? {
         if (query.isNullOrBlank() || list.isNullOrEmpty()) {
             return null
         }
 
-        val results = mutableListOf<Item>()
+        val results = mutableListOf<PlayerListItem>()
         val trimmedQuery = query.trim()
 
-        list.forEachIndexed { index, item ->
-            if (item is Item.Divider) {
+        list.forEachIndexed { index, listItem ->
+            if (listItem is PlayerListItem.Divider) {
                 var addedDivider = false
                 var j = index + 1
 
                 while (j < list.size) {
-                    val objectJ = list[j]
+                    val current = list[j]
 
-                    if (objectJ is Item.Player) {
-                        if (objectJ.player.name.contains(trimmedQuery, true)) {
+                    if (current is PlayerListItem.Player) {
+                        if (current.player.name.contains(trimmedQuery, true)) {
                             if (!addedDivider) {
                                 addedDivider = true
-                                results.add(item)
+                                results.add(listItem)
                             }
 
-                            results.add(objectJ)
+                            results.add(current)
                         }
 
                         ++j
@@ -113,31 +140,6 @@ object PlayerList {
         }
 
         return results
-    }
-
-    sealed class Item {
-        abstract val listId: Long
-
-        sealed class Divider : Item() {
-            object Digit : Divider() {
-                override val listId: Long = Long.MAX_VALUE - 1L
-            }
-
-            class Letter(
-                    override val listId: Long,
-                    val letter: String
-            ) : Divider()
-
-            object Other : Divider() {
-                override val listId: Long = Long.MAX_VALUE - 2L
-            }
-        }
-
-        class Player(
-                val player: AbsPlayer
-        ) : Item() {
-            override val listId: Long = player.hashCode().toLong()
-        }
     }
 
 }

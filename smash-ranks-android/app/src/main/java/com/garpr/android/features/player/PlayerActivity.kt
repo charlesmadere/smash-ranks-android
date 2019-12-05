@@ -154,7 +154,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     }
 
     override fun onShareClick(v: PlayerProfileItemView) {
-        val player = requireNotNull(viewModel.player)
+        val player = checkNotNull(viewModel.player)
         shareUtils.sharePlayer(this, player)
     }
 
@@ -242,7 +242,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         }
 
         private fun bindPlayerViewHolder(holder: PlayerViewHolder) {
-            val player = requireNotNull(this.player)
+            val player = checkNotNull(this.player)
             holder.playerProfileItemView.setContent(isFavorited, player, smashCompetitor)
         }
 

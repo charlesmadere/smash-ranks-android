@@ -8,13 +8,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:visibility="gone"
+        tools:listitem="@layout/item_favorite_player"
+        tools:visibility="visible"
         style="@style/RecyclerView" />
 
     <com.garpr.android.features.common.views.NoContentLinearLayout
         android:id="@+id/empty"
         app:descriptionText="@string/you_can_add_a_player_to_your_favorites"
         app:titleText="@string/no_favorite_players"
-        tools:visibility="visible"
         style="@style/NoContentLinearLayout.Empty" />
 
 </FrameLayout>

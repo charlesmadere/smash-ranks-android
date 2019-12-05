@@ -19,6 +19,7 @@ import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.PlayerMatchesRepository
 import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
+import com.garpr.android.data.models.Match as GarPrMatch
 
 class PlayerViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
@@ -59,8 +60,8 @@ class PlayerViewModel(
     }
 
     fun addOrRemoveFromFavorites() {
-        val region = requireNotNull(this.region) { "initialize() hasn't been called!" }
-        val player = requireNotNull(this.player) { "player hasn't been fetched!" }
+        val region = checkNotNull(this.region) { "initialize() hasn't been called!" }
+        val player = checkNotNull(this.player) { "player hasn't been fetched!" }
 
         if (player in favoritePlayersRepository) {
             favoritePlayersRepository.removePlayer(player)
@@ -267,7 +268,7 @@ class PlayerViewModel(
         abstract val listId: Long
 
         class Match(
-                val match: com.garpr.android.data.models.Match
+                val match: GarPrMatch
         ) : ListItem() {
             override val listId: Long = match.hashCode().toLong()
         }

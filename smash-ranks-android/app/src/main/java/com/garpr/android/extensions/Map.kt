@@ -4,7 +4,7 @@ fun <K, V: Any> Map<K, V?>?.require(key: K): V {
     checkNotNull(this) { "map itself is null" }
 
     if (key in this) {
-        return requireNotNull(get(key)) { "item at key $key is null" }
+        return get(key) ?: throw NullPointerException("item at key $key is null")
     }
 
     throw NoSuchElementException("no item with key $key exists")

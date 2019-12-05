@@ -27,7 +27,7 @@ class AddOrRemovePlayerFromFavoritesViewModel(
     }
 
     fun addToFavorites() {
-        val player = requireNotNull(this.player) { "initialize() was not called" }
+        val player = checkNotNull(this.player) { "initialize() was not called" }
         favoritePlayersRepository.addPlayer(player, player.region)
     }
 
@@ -58,7 +58,7 @@ class AddOrRemovePlayerFromFavoritesViewModel(
     }
 
     fun removeFromFavorites() {
-        val player = requireNotNull(this.player) { "initialize() was not called" }
+        val player = checkNotNull(this.player) { "initialize() was not called" }
         favoritePlayersRepository.removePlayer(player)
     }
 

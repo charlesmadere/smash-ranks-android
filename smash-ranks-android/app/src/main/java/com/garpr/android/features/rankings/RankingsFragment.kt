@@ -162,8 +162,13 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
         }
 
         private fun bindPlayer(holder: PlayerViewHolder, item: ListItem.Player) {
-            holder.rankingItemView.setContent(item.player, item.isIdentity, item.previousRank,
-                    item.rank, item.rating)
+            holder.rankingItemView.setContent(
+                    player = item.player,
+                    isIdentity = item.isIdentity,
+                    previousRank = item.previousRank,
+                    rank = item.rank,
+                    rating = item.rating
+            )
         }
 
         internal fun clear() {

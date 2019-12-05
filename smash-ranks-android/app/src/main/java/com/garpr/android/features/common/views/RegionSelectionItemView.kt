@@ -17,7 +17,7 @@ class RegionSelectionItemView @JvmOverloads constructor(
     private var _region: Region? = null
 
     val region: Region
-        get() = requireNotNull(_region)
+        get() = checkNotNull(_region)
 
     init {
         setOnClickListener(this)

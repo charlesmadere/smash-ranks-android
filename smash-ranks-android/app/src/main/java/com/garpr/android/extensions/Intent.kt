@@ -15,7 +15,8 @@ fun Intent?.requireStringExtra(name: String): String {
     checkNotNull(this) { "Intent is null" }
 
     if (hasExtra(name)) {
-        return requireNotNull(getStringExtra(name)) { "Intent String extra is null: \"$name\"" }
+        return getStringExtra(name) ?: throw NullPointerException(
+                "Intent String extra is null: \"$name\"")
     }
 
     throw NoSuchElementException("Intent does not have String extra: \"$name\"")

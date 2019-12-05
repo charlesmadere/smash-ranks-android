@@ -201,7 +201,7 @@ fun Parcel.writeInteger(integer: Int?) {
 }
 
 fun <T : Parcelable> Parcel.requireParcelable(loader: ClassLoader?): T {
-    checkNotNull(loader) { "loader is null" }
+    requireNotNull(loader) { "loader is null" }
     return requireNotNull(readParcelable(loader))
 }
 

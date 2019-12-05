@@ -26,9 +26,9 @@ val viewModelsModule = module {
     viewModel { HomeViewModel(get(), get(), get(), get()) }
     viewModel { LogViewerViewModel(get(), get()) }
     viewModel { PlayerViewModel(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { PlayersViewModel(get(), get(), get()) }
+    viewModel { PlayersViewModel(get(), get(), get(), get(), get()) }
     viewModel { RankingsViewModel(get(), get(), get(), get()) }
-    viewModel { SetIdentityViewModel(get(), get(), get(), get()) }
+    viewModel { SetIdentityViewModel(get(), get(), get(), get(), get()) }
     viewModel { SetRegionViewModel(get(), get(), get()) }
     viewModel { SplashScreenViewModel(get()) }
     viewModel { TournamentViewModel(get(), get(), get()) }

@@ -23,7 +23,7 @@ class RankingItemView @JvmOverloads constructor(
     private var _player: AbsPlayer? = null
 
     val player: AbsPlayer
-        get() = requireNotNull(_player)
+        get() = checkNotNull(_player)
 
     private val originalBackground: Drawable? = background
 
@@ -37,6 +37,11 @@ class RankingItemView @JvmOverloads constructor(
     private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
     var listeners: Listeners? = null
+
+    interface Listeners {
+        fun onClick(v: RankingItemView)
+        fun onLongClick(v: RankingItemView)
+    }
 
     init {
         setOnClickListener(this)
@@ -92,11 +97,6 @@ class RankingItemView @JvmOverloads constructor(
 
         this.rank.text = rank
         this.rating.text = rating
-    }
-
-    interface Listeners {
-        fun onClick(v: RankingItemView)
-        fun onLongClick(v: RankingItemView)
     }
 
 }

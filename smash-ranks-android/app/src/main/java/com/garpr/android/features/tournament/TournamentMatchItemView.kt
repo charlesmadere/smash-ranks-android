@@ -22,7 +22,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
     private var _match: FullTournament.Match? = null
 
     val match: FullTournament.Match
-        get() = requireNotNull(_match)
+        get() = checkNotNull(_match)
 
     @ColorInt
     private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)

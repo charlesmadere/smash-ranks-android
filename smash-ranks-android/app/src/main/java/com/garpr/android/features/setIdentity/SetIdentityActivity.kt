@@ -15,7 +15,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.StringDividerView
-import com.garpr.android.misc.PlayerList
+import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
@@ -176,7 +176,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var selectedIdentity: AbsPlayer? = null
-        private val list = mutableListOf<PlayerList.Item>()
+        private val list = mutableListOf<PlayerListItem>()
 
         companion object {
             private const val VIEW_TYPE_DIVIDER = 0
@@ -187,18 +187,18 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
             setHasStableIds(true)
         }
 
-        private fun bindDividerViewHolder(holder: DividerViewHolder, item: PlayerList.Item.Divider) {
+        private fun bindDividerViewHolder(holder: DividerViewHolder, item: PlayerListItem.Divider) {
             val content: String = when (item) {
-                is PlayerList.Item.Divider.Digit -> holder.dividerItemView.resources.getString(R.string.number)
-                is PlayerList.Item.Divider.Letter -> item.letter
-                is PlayerList.Item.Divider.Other -> holder.dividerItemView.resources.getString(R.string.other)
+                is PlayerListItem.Divider.Digit -> holder.dividerItemView.resources.getString(R.string.number)
+                is PlayerListItem.Divider.Letter -> item.letter
+                is PlayerListItem.Divider.Other -> holder.dividerItemView.resources.getString(R.string.other)
             }
 
             holder.dividerItemView.setContent(content)
         }
 
-        private fun bindPlayerViewHolder(holder: PlayerViewHolder, item: PlayerList.Item.Player) {
-            holder.playerItemView.setContent(item.player, item.player == selectedIdentity)
+        private fun bindPlayerViewHolder(holder: PlayerViewHolder, item: PlayerListItem.Player) {
+            holder.playerSelectionItemView.setContent(item.player, item.player == selectedIdentity)
         }
 
         internal fun clear() {
@@ -217,15 +217,15 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
-                is PlayerList.Item.Divider -> VIEW_TYPE_DIVIDER
-                is PlayerList.Item.Player -> VIEW_TYPE_PLAYER
+                is PlayerListItem.Divider -> VIEW_TYPE_DIVIDER
+                is PlayerListItem.Player -> VIEW_TYPE_PLAYER
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is PlayerList.Item.Divider -> bindDividerViewHolder(holder as DividerViewHolder, item)
-                is PlayerList.Item.Player -> bindPlayerViewHolder(holder as PlayerViewHolder, item)
+                is PlayerListItem.Divider -> bindDividerViewHolder(holder as DividerViewHolder, item)
+                is PlayerListItem.Player -> bindPlayerViewHolder(holder as PlayerViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -242,7 +242,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
             }
         }
 
-        internal fun set(list: List<PlayerList.Item>?, selectedIdentity: AbsPlayer?) {
+        internal fun set(list: List<PlayerListItem>?, selectedIdentity: AbsPlayer?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {
@@ -263,10 +263,10 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
             listener: PlayerSelectionItemView.Listener,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
-        internal val playerItemView: PlayerSelectionItemView = itemView as PlayerSelectionItemView
+        internal val playerSelectionItemView: PlayerSelectionItemView = itemView as PlayerSelectionItemView
 
         init {
-            playerItemView.listener = listener
+            playerSelectionItemView.listener = listener
         }
     }
 

@@ -16,7 +16,7 @@ class FavoritePlayerItemView @JvmOverloads constructor(
         View.OnClickListener, View.OnLongClickListener {
 
     val favoritePlayer: FavoritePlayer
-        get() = requireNotNull(identity as FavoritePlayer)
+        get() = checkNotNull(identity as FavoritePlayer)
 
     var listeners: Listeners? = null
 

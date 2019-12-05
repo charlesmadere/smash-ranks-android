@@ -1,4 +1,4 @@
-package com.garpr.android.features.player
+package com.garpr.android.features.tournament
 
 import android.content.Context
 import android.graphics.Typeface
@@ -9,50 +9,40 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
-import com.garpr.android.data.models.Match
-import com.garpr.android.data.models.MatchResult
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.extensions.clear
-import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.features.common.views.LifecycleFrameLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.IdentityRepository
-import kotlinx.android.synthetic.main.item_match.view.*
+import kotlinx.android.synthetic.main.item_tournament_player.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class MatchItemView @JvmOverloads constructor(
+class TournamentPlayerItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleFrameLayout(context, attrs), BaseAdapterView<Match>,
+) : LifecycleFrameLayout(context, attrs), BaseAdapterView<AbsPlayer>,
         IdentityRepository.OnIdentityChangeListener, KoinComponent, Refreshable,
         View.OnClickListener, View.OnLongClickListener {
+
+    private var _player: AbsPlayer? = null
+
+    val player: AbsPlayer
+        get() = checkNotNull(_player)
 
     private val originalBackground: Drawable? = background
 
     @ColorInt
     private val cardBackgroundColor: Int = ContextCompat.getColor(context, R.color.card_background)
 
-    @ColorInt
-    private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
-
-    @ColorInt
-    private val loseColor: Int = ContextCompat.getColor(context, R.color.lose)
-
-    @ColorInt
-    private val winColor: Int = ContextCompat.getColor(context, R.color.win)
-
     var listeners: Listeners? = null
-    private var _match: Match? = null
-
-    val match: Match
-        get() = checkNotNull(_match)
 
     protected val identityRepository: IdentityRepository by inject()
 
     interface Listeners {
-        fun onClick(v: MatchItemView)
-        fun onLongClick(v: MatchItemView)
+        fun onClick(v: TournamentPlayerItemView)
+        fun onLongClick(v: TournamentPlayerItemView)
     }
 
     init {
@@ -92,14 +82,14 @@ class MatchItemView @JvmOverloads constructor(
     }
 
     override fun refresh() {
-        val match = _match
+        val player = _player
 
-        if (match == null) {
+        if (player == null) {
             name.clear()
             return
         }
 
-        if (identityRepository.isPlayer(match.opponent)) {
+        if (identityRepository.isPlayer(player)) {
             name.typeface = Typeface.DEFAULT_BOLD
             setBackgroundColor(cardBackgroundColor)
         } else {
@@ -107,17 +97,11 @@ class MatchItemView @JvmOverloads constructor(
             ViewCompat.setBackground(this, originalBackground)
         }
 
-        name.text = match.opponent.name
-
-        name.setTextColor(when (match.result) {
-            MatchResult.EXCLUDED -> exclusionColor
-            MatchResult.LOSE -> loseColor
-            MatchResult.WIN -> winColor
-        })
+        name.text = player.name
     }
 
-    override fun setContent(content: Match) {
-        _match = content
+    override fun setContent(content: AbsPlayer) {
+        _player = content
         refresh()
     }
 

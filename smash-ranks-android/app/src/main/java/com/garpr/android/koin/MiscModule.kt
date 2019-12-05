@@ -11,6 +11,8 @@ import com.garpr.android.features.player.SmashRosterAvatarUrlHelperImpl
 import com.garpr.android.features.rankings.PreviousRankUtils
 import com.garpr.android.features.rankings.PreviousRankUtilsImpl
 import com.garpr.android.misc.Constants
+import com.garpr.android.misc.PlayerListBuilder
+import com.garpr.android.misc.PlayerListBuilderImpl
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.SchedulersImpl
 import com.garpr.android.misc.ShareUtils
@@ -35,6 +37,7 @@ val miscModule = module {
                 .build()
     }
 
+    single<PlayerListBuilder> { PlayerListBuilderImpl(get()) }
     single<PreviousRankUtils> { PreviousRankUtilsImpl() }
     single<Schedulers> { SchedulersImpl(get()) }
     single<ShareUtils> { ShareUtilsImpl(get(), get()) }

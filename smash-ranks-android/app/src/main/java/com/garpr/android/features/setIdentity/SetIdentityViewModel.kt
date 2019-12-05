@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
-import com.garpr.android.misc.PlayerList
+import com.garpr.android.misc.PlayerListBuilder
+import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -14,6 +15,7 @@ import com.garpr.android.repositories.PlayersRepository
 
 class SetIdentityViewModel(
         private val identityRepository: IdentityRepository,
+        private val playerListBuilder: PlayerListBuilder,
         private val playersRepository: PlayersRepository,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
@@ -58,7 +60,7 @@ class SetIdentityViewModel(
 
         disposables.add(playersRepository.getPlayers(region)
                 .subscribe({
-                    val list = PlayerList.createList(it)
+                    val list = playerListBuilder.create(it)
 
                     state = state.copy(
                             selectedIdentity = null,
@@ -89,13 +91,13 @@ class SetIdentityViewModel(
     }
 
     fun saveSelectedIdentity(region: Region) {
-        val identity = requireNotNull(selectedIdentity)
+        val identity = checkNotNull(selectedIdentity)
         identityRepository.setIdentity(identity, region)
     }
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = PlayerList.search(query, state.list)
+            val results = playerListBuilder.search(query, state.list)
             state = state.copy(searchResults = results)
         }
     }
@@ -107,8 +109,8 @@ class SetIdentityViewModel(
             val isFetching: Boolean = false,
             val isRefreshEnabled: Boolean = true,
             val showSearchIcon: Boolean = false,
-            val list: List<PlayerList.Item>? = null,
-            val searchResults: List<PlayerList.Item>? = null,
+            val list: List<PlayerListItem>? = null,
+            val searchResults: List<PlayerListItem>? = null,
             val saveIconStatus: SaveIconStatus = SaveIconStatus.GONE
     )
 

@@ -5,31 +5,23 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
-import com.garpr.android.extensions.clear
-import com.garpr.android.features.common.adapters.BaseAdapterView
-import com.garpr.android.features.common.views.LifecycleFrameLayout
-import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.IdentityRepository
 import kotlinx.android.synthetic.main.item_player.view.*
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
 class PlayerItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleFrameLayout(context, attrs), BaseAdapterView<AbsPlayer>,
-        IdentityRepository.OnIdentityChangeListener, KoinComponent, Refreshable,
-        View.OnClickListener, View.OnLongClickListener {
+) : FrameLayout(context, attrs), View.OnClickListener, View.OnLongClickListener {
 
     private var _player: AbsPlayer? = null
 
     val player: AbsPlayer
-        get() = requireNotNull(_player)
+        get() = checkNotNull(_player)
 
     private val originalBackground: Drawable? = background
 
@@ -37,8 +29,6 @@ class PlayerItemView @JvmOverloads constructor(
     private val cardBackgroundColor: Int = ContextCompat.getColor(context, R.color.card_background)
 
     var listeners: Listeners? = null
-
-    protected val identityRepository: IdentityRepository by inject()
 
     interface Listeners {
         fun onClick(v: PlayerItemView)
@@ -50,30 +40,8 @@ class PlayerItemView @JvmOverloads constructor(
         setOnLongClickListener(this)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (isInEditMode) {
-            return
-        }
-
-        identityRepository.addListener(this)
-        refresh()
-    }
-
     override fun onClick(v: View) {
         listeners?.onClick(this)
-    }
-
-    override fun onDetachedFromWindow() {
-        identityRepository.removeListener(this)
-        super.onDetachedFromWindow()
-    }
-
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        if (isAlive) {
-            refresh()
-        }
     }
 
     override fun onLongClick(v: View): Boolean {
@@ -81,15 +49,8 @@ class PlayerItemView @JvmOverloads constructor(
         return true
     }
 
-    override fun refresh() {
-        val player = _player
-
-        if (player == null) {
-            name.clear()
-            return
-        }
-
-        if (identityRepository.isPlayer(player)) {
+    fun setContent(player: AbsPlayer, isIdentity: Boolean) {
+        if (isIdentity) {
             name.typeface = Typeface.DEFAULT_BOLD
             setBackgroundColor(cardBackgroundColor)
         } else {
@@ -98,11 +59,6 @@ class PlayerItemView @JvmOverloads constructor(
         }
 
         name.text = player.name
-    }
-
-    override fun setContent(content: AbsPlayer) {
-        _player = content
-        refresh()
     }
 
 }

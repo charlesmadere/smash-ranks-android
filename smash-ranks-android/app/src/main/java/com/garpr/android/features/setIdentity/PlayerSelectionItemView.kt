@@ -15,9 +15,13 @@ class PlayerSelectionItemView @JvmOverloads constructor(
     private var _player: AbsPlayer? = null
 
     val player: AbsPlayer
-        get() = requireNotNull(_player)
+        get() = checkNotNull(_player)
 
     var listener: Listener? = null
+
+    interface Listener {
+        fun onClick(v: PlayerSelectionItemView)
+    }
 
     init {
         setOnClickListener(this)
@@ -31,10 +35,6 @@ class PlayerSelectionItemView @JvmOverloads constructor(
         _player = player
         name.text = player.name
         radioButton.isChecked = isChecked
-    }
-
-    interface Listener {
-        fun onClick(v: PlayerSelectionItemView)
     }
 
 }
