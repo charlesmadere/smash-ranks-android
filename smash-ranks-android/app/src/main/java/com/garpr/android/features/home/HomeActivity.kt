@@ -149,6 +149,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         bottomNavigationView.setOnNavigationItemReselectedListener(this)
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
         viewPager.registerOnPageChangeCallback(onPageChangeCallback)
+        viewPager.isUserInputEnabled = false
         viewPager.offscreenPageLimit = HomeTab.values().size - 1
 
         adapter = HomeFragmentPagerAdapter(this)
