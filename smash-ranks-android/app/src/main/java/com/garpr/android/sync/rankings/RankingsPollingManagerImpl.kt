@@ -19,46 +19,6 @@ class RankingsPollingManagerImpl(
         private const val TAG = "RankingsPollingManagerImpl"
     }
 
-    private fun disable() {
-        timber.d(TAG, "disabling polling...")
-        workManagerWrapper.cancelAllWorkByTag(TAG)
-        timber.d(TAG, "polling has been disabled")
-    }
-
-    private fun enable() {
-        timber.d(TAG, "enabling polling...")
-
-        val constraints = Constraints.Builder()
-                .setRequiresBatteryNotLow(true)
-                .setRequiresCharging(isChargingRequired)
-
-        if (isWifiRequired) {
-            constraints.setRequiredNetworkType(NetworkType.UNMETERED)
-        } else {
-            constraints.setRequiredNetworkType(NetworkType.CONNECTED)
-        }
-
-        val periodicRequest = PeriodicWorkRequest.Builder(
-                RankingsPollingWorker::class.java,
-                pollFrequency.timeInSeconds,
-                TimeUnit.SECONDS
-        )
-        .addTag(TAG)
-        .setConstraints(constraints.build())
-        .build()
-
-        workManagerWrapper.enqueue(periodicRequest)
-        timber.d(TAG, "polling has been enabled")
-    }
-
-    override fun enableOrDisable() {
-        if (isEnabled) {
-            enable()
-        } else {
-            disable()
-        }
-    }
-
     override var isChargingRequired: Boolean
         get() = rankingsPollingPreferenceStore.chargingRequired.get() == true
         set(value) {
@@ -86,5 +46,45 @@ class RankingsPollingManagerImpl(
             rankingsPollingPreferenceStore.pollFrequency.set(value)
             enableOrDisable()
         }
+
+    private fun disable() {
+        timber.d(TAG, "disabling polling...")
+        workManagerWrapper.cancelAllWorkByTag(TAG)
+        timber.d(TAG, "polling has been disabled")
+    }
+
+    private fun enable() {
+        timber.d(TAG, "enabling polling...")
+
+        val constraints = Constraints.Builder()
+                .setRequiredNetworkType(if (isWifiRequired) {
+                    NetworkType.UNMETERED
+                } else {
+                    NetworkType.CONNECTED
+                })
+                .setRequiresBatteryNotLow(true)
+                .setRequiresCharging(isChargingRequired)
+                .build()
+
+        val periodicRequest = PeriodicWorkRequest.Builder(
+                RankingsPollingWorker::class.java,
+                pollFrequency.timeInSeconds,
+                TimeUnit.SECONDS
+        )
+                .addTag(TAG)
+                .setConstraints(constraints)
+                .build()
+
+        workManagerWrapper.enqueue(periodicRequest)
+        timber.d(TAG, "polling has been enabled")
+    }
+
+    override fun enableOrDisable() {
+        if (isEnabled) {
+            enable()
+        } else {
+            disable()
+        }
+    }
 
 }

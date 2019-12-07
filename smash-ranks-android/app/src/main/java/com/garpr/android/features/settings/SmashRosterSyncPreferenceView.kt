@@ -31,7 +31,7 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
     }
 
     private fun initListeners() {
-        disposables.add(smashRosterSyncManager.observeSyncState
+        disposables.add(smashRosterSyncManager.observeIsSyncing
                 .subscribe {
                     post { refresh() }
                 })
@@ -49,7 +49,7 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
     }
 
     override fun onClick(v: View) {
-        if (smashRosterSyncManager.syncState == SmashRosterSyncManager.State.NOT_SYNCING) {
+        if (!smashRosterSyncManager.isSyncing) {
             disposables.add(smashRosterSyncManager.sync()
                     .subscribeOn(schedulers.background)
                     .subscribe())
@@ -64,7 +64,7 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
     override fun refresh() {
         super.refresh()
 
-        if (smashRosterSyncManager.syncState == SmashRosterSyncManager.State.SYNCING) {
+        if (smashRosterSyncManager.isSyncing) {
             descriptionText = resources.getText(R.string.syncing_now_)
             return
         }

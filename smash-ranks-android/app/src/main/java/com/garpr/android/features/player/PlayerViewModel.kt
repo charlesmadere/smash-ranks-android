@@ -151,8 +151,8 @@ class PlayerViewModel(
         favoritePlayersRepository.addListener(this)
         identityRepository.addListener(this)
 
-        disposables.add(smashRosterSyncManager.observeSyncState
-                .filter { state -> state == SmashRosterSyncManager.State.NOT_SYNCING }
+        disposables.add(smashRosterSyncManager.observeIsSyncing
+                .filter { isSyncing -> !isSyncing }
                 .subscribe({
                     refresh()
                 }, {
