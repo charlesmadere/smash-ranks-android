@@ -15,7 +15,7 @@ import java.util.Collections
 @RunWith(RobolectricTestRunner::class)
 class AbsTournamentTest : BaseTest() {
 
-    private val moshi: Moshi by inject()
+    protected val moshi: Moshi by inject()
 
     private lateinit var fullTournament: AbsTournament
 
