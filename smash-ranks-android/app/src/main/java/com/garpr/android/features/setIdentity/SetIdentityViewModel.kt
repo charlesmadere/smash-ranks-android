@@ -97,8 +97,8 @@ class SetIdentityViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = playerListBuilder.search(query, state.list)
-            state = state.copy(searchResults = results)
+            val searchResults = playerListBuilder.search(query, state.list)
+            state = state.copy(searchResults = searchResults)
         }
     }
 
