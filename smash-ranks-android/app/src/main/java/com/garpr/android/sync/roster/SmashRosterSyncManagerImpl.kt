@@ -1,5 +1,6 @@
 package com.garpr.android.sync.roster
 
+import android.annotation.SuppressLint
 import androidx.annotation.WorkerThread
 import androidx.work.Constraints
 import androidx.work.NetworkType
@@ -89,8 +90,7 @@ class SmashRosterSyncManagerImpl(
         timber.d(TAG, "sync has been enabled")
 
         if (hajimeteSync) {
-            timber.d(TAG, "hajimete sync")
-            sync().subscribeOn(schedulers.background).subscribe()
+            hajimeteSync()
         }
     }
 
@@ -100,6 +100,19 @@ class SmashRosterSyncManagerImpl(
         } else {
             disable()
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun hajimeteSync() {
+        hajimeteSync = false
+        timber.d(TAG, "performing hajimete sync...")
+
+        sync().subscribeOn(schedulers.background)
+                .subscribe({
+                    timber.d(TAG, "successfully finished hajimete sync")
+                }, {
+                    timber.e(TAG, "Exception when performing hajimete sync", it)
+                })
     }
 
     @WorkerThread
@@ -112,7 +125,6 @@ class SmashRosterSyncManagerImpl(
         }
 
         timber.d(TAG, "syncing now...")
-        hajimeteSync = false
 
         var garPrRoster: Map<String, SmashCompetitor>? = null
         var notGarPrRoster: Map<String, SmashCompetitor>? = null
