@@ -10,6 +10,12 @@ interface FavoritePlayersRepository {
         fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository)
     }
 
+    val isEmpty: Boolean
+
+    val players: List<FavoritePlayer>?
+
+    val size: Int
+
     fun addListener(listener: OnFavoritePlayersChangeListener)
 
     fun addPlayer(player: AbsPlayer, region: Region)
@@ -20,16 +26,10 @@ interface FavoritePlayersRepository {
 
     operator fun contains(playerId: String): Boolean
 
-    val isEmpty: Boolean
-
-    val players: List<FavoritePlayer>?
-
     fun removeListener(listener: OnFavoritePlayersChangeListener?)
 
     fun removePlayer(player: AbsPlayer)
 
     fun removePlayer(playerId: String)
-
-    val size: Int
 
 }

@@ -8,10 +8,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.garpr.android.R
-import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel.ListItem
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
@@ -51,8 +51,7 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
     }
 
     override fun onClick(v: FavoritePlayerItemView) {
-        val player = v.favoritePlayer
-        startActivity(PlayerActivity.getLaunchIntent(requireContext(), player, player.region))
+        startActivity(PlayerActivity.getLaunchIntent(requireContext(), v.player, v.player.region))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -62,8 +61,7 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
     }
 
     override fun onLongClick(v: FavoritePlayerItemView) {
-        childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.favoritePlayer,
-                regionRepository.getRegion(requireContext()))
+        childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.player)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,18 +77,17 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
     }
 
     private fun refreshState(state: FavoritePlayersViewModel.State) {
-        if (state.searchResults == null) {
-            if (state.favoritePlayers.isNullOrEmpty()) {
-                adapter.clear()
-                recyclerView.visibility = View.GONE
-                empty.visibility = View.VISIBLE
-            } else {
-                adapter.set(state.favoritePlayers)
-                empty.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
-            }
+        if (state.isEmpty) {
+            adapter.clear()
+            recyclerView.visibility = View.GONE
+            empty.visibility = View.VISIBLE
         } else {
-            adapter.set(state.searchResults)
+            if (state.searchResults != null) {
+                adapter.set(state.searchResults)
+            } else {
+                adapter.set(state.list)
+            }
+
             empty.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
@@ -98,12 +95,21 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
 
     private class Adapter(
             private val favoritePlayerItemViewListeners: FavoritePlayerItemView.Listeners
-    ) : RecyclerView.Adapter<FavoritePlayerViewHolder>() {
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val list = mutableListOf<FavoritePlayer>()
+        private val list = mutableListOf<ListItem>()
+
+        companion object {
+            private const val VIEW_TYPE_FAVORITE_PLAYER = 0
+        }
 
         init {
             setHasStableIds(true)
+        }
+
+        private fun bindFavoritePlayerViewHolder(holder: FavoritePlayerViewHolder,
+                item: ListItem.FavoritePlayer) {
+            holder.favoritePlayerItemView.setContent(item.player, item.isIdentity)
         }
 
         internal fun clear() {
@@ -119,17 +125,30 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
             return list[position].hashCode().toLong()
         }
 
-        override fun onBindViewHolder(holder: FavoritePlayerViewHolder, position: Int) {
-            holder.favoritePlayerItemView.setContent(list[position])
+        override fun getItemViewType(position: Int): Int {
+            return when (list[position]) {
+                is ListItem.FavoritePlayer -> VIEW_TYPE_FAVORITE_PLAYER
+            }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritePlayerViewHolder {
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            when (val item = list[position]) {
+                is ListItem.FavoritePlayer -> bindFavoritePlayerViewHolder(
+                        holder as FavoritePlayerViewHolder, item)
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val inflater = parent.layoutInflater
-            return FavoritePlayerViewHolder(favoritePlayerItemViewListeners, inflater.inflate(
-                    R.layout.item_favorite_player, parent, false))
+
+            return when (viewType) {
+                VIEW_TYPE_FAVORITE_PLAYER -> FavoritePlayerViewHolder(favoritePlayerItemViewListeners,
+                        inflater.inflate(R.layout.item_favorite_player, parent, false))
+                else -> throw IllegalArgumentException("unknown viewType: $viewType")
+            }
         }
 
-        internal fun set(list: List<FavoritePlayer>?) {
+        internal fun set(list: List<ListItem>?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {

@@ -24,6 +24,32 @@ class FavoritePlayersRepositoryImpl(
 
     private val listeners = mutableSetOf<WeakReferenceWrapper<OnFavoritePlayersChangeListener>>()
 
+    override val isEmpty: Boolean
+        get() = keyValueStore.all.isNullOrEmpty()
+
+    override val players: List<FavoritePlayer>?
+        get() {
+            val all = keyValueStore.all
+
+            if (all.isNullOrEmpty()) {
+                return null
+            }
+
+            val players = mutableListOf<FavoritePlayer>()
+
+            for ((key, value) in all) {
+                val json = value as String
+                val player = favoritePlayerAdapter.requireFromJson(json)
+                players.add(player)
+            }
+
+            Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
+            return players
+        }
+
+    override val size: Int
+        get() = keyValueStore.all?.size ?: 0
+
     companion object {
         private const val TAG = "FavoritePlayersRepositoryImpl"
     }
@@ -78,9 +104,6 @@ class FavoritePlayersRepositoryImpl(
         return playerId in keyValueStore
     }
 
-    override val isEmpty: Boolean
-        get() = keyValueStore.all.isNullOrEmpty()
-
     private fun notifyListeners() {
         cleanListeners()
 
@@ -92,26 +115,6 @@ class FavoritePlayersRepositoryImpl(
             }
         }
     }
-
-    override val players: List<FavoritePlayer>?
-        get() {
-            val all = keyValueStore.all
-
-            if (all.isNullOrEmpty()) {
-                return null
-            }
-
-            val players = mutableListOf<FavoritePlayer>()
-
-            for ((key, value) in all) {
-                val json = value as String
-                val player = favoritePlayerAdapter.requireFromJson(json)
-                players.add(player)
-            }
-
-            Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
-            return players
-        }
 
     override fun removeListener(listener: OnFavoritePlayersChangeListener?) {
         cleanListeners(listener)
@@ -126,8 +129,5 @@ class FavoritePlayersRepositoryImpl(
         keyValueStore.remove(playerId)
         notifyListeners()
     }
-
-    override val size: Int
-        get() = keyValueStore.all?.size ?: 0
 
 }

@@ -3,18 +3,20 @@ package com.garpr.android.features.favoritePlayers
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
+import com.garpr.android.repositories.IdentityRepository
+import com.garpr.android.data.models.FavoritePlayer as GarPrFavoritePlayer
 
 class FavoritePlayersViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
+        private val identityRepository: IdentityRepository,
         private val threadUtils: ThreadUtils
-) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener, Refreshable,
-        Searchable {
+) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
+        IdentityRepository.OnIdentityChangeListener, Refreshable, Searchable {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -26,12 +28,32 @@ class FavoritePlayersViewModel(
         }
 
     init {
-        favoritePlayersRepository.addListener(this)
+        initListeners()
         refresh()
+    }
+
+    @WorkerThread
+    private fun createList(players: List<GarPrFavoritePlayer>?): List<ListItem>? {
+        return if (players.isNullOrEmpty()) {
+            null
+        } else {
+            players.map { player ->
+                ListItem.FavoritePlayer(
+                        isIdentity = identityRepository.isPlayer(player),
+                        player = player
+                )
+            }
+        }
+    }
+
+    private fun initListeners() {
+        favoritePlayersRepository.addListener(this)
+        identityRepository.addListener(this)
     }
 
     override fun onCleared() {
         favoritePlayersRepository.removeListener(this)
+        identityRepository.removeListener(this)
         super.onCleared()
     }
 
@@ -39,10 +61,16 @@ class FavoritePlayersViewModel(
         refresh()
     }
 
+    override fun onIdentityChange(identityRepository: IdentityRepository) {
+        refresh()
+    }
+
     override fun refresh() {
         threadUtils.background.submit {
+            val list = createList(favoritePlayersRepository.players)
+
             state = state.copy(
-                    favoritePlayers = favoritePlayersRepository.players,
+                    list = list,
                     searchResults = null
             )
         }
@@ -50,25 +78,38 @@ class FavoritePlayersViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = search(query, favoritePlayersRepository.players)
-            state = state.copy(searchResults = results)
+            val searchResults = search(query, state.list)
+            state = state.copy(searchResults = searchResults)
         }
     }
 
     @WorkerThread
-    private fun search(query: String?, favoritePlayers: List<FavoritePlayer>?): List<FavoritePlayer>? {
-        if (query.isNullOrBlank() || favoritePlayers.isNullOrEmpty()) {
+    private fun search(query: String?, list: List<ListItem>?): List<ListItem>? {
+        if (query.isNullOrBlank() || list.isNullOrEmpty()) {
             return null
         }
 
         val trimmedQuery = query.trim()
 
-        return favoritePlayers.filter { it.name.contains(trimmedQuery, true) }
+        return list.filterIsInstance(ListItem.FavoritePlayer::class.java)
+                .filter { it.player.name.contains(trimmedQuery, true) }
     }
 
     data class State(
-            val favoritePlayers: List<FavoritePlayer>? = null,
-            val searchResults: List<FavoritePlayer>? = null
+            val isEmpty: Boolean = true,
+            val list: List<ListItem>? = null,
+            val searchResults: List<ListItem>? = null
     )
+
+    sealed class ListItem {
+        abstract val listId: Long
+
+        class FavoritePlayer(
+                val isIdentity: Boolean,
+                val player: GarPrFavoritePlayer
+        ) : ListItem() {
+            override val listId: Long = player.hashCode().toLong()
+        }
+    }
 
 }

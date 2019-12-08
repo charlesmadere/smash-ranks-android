@@ -1,22 +1,32 @@
 package com.garpr.android.features.favoritePlayers
 
 import android.content.Context
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import com.garpr.android.R
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.extensions.clear
-import com.garpr.android.features.common.adapters.BaseAdapterView
-import com.garpr.android.features.common.views.IdentityConstraintLayout
 import kotlinx.android.synthetic.main.item_favorite_player.view.*
 
 class FavoritePlayerItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : IdentityConstraintLayout(context, attrs), BaseAdapterView<FavoritePlayer>,
-        View.OnClickListener, View.OnLongClickListener {
+) : ConstraintLayout(context, attrs), View.OnClickListener, View.OnLongClickListener {
 
-    val favoritePlayer: FavoritePlayer
-        get() = checkNotNull(identity as FavoritePlayer)
+    private val originalBackground: Drawable? = background
+
+    private var _player: FavoritePlayer? = null
+
+    val player: FavoritePlayer
+        get() = checkNotNull(_player)
+
+    @ColorInt
+    private val cardBackgroundColor: Int = ContextCompat.getColor(context, R.color.card_background)
 
     var listeners: Listeners? = null
 
@@ -30,22 +40,6 @@ class FavoritePlayerItemView @JvmOverloads constructor(
         setOnLongClickListener(this)
     }
 
-    override fun clear() {
-        super.clear()
-        name.clear()
-        region.clear()
-    }
-
-    override fun identityIsSomeoneElse() {
-        super.identityIsSomeoneElse()
-        styleTextViewForSomeoneElse(name)
-    }
-
-    override fun identityIsUser() {
-        super.identityIsUser()
-        styleTextViewForUser(name)
-    }
-
     override fun onClick(v: View) {
         listeners?.onClick(this)
     }
@@ -55,23 +49,18 @@ class FavoritePlayerItemView @JvmOverloads constructor(
         return true
     }
 
-    override fun refresh() {
-        super.refresh()
-
-        val player = identity as? FavoritePlayer
-
-        if (player == null) {
-            clear()
-            return
-        }
-
+    fun setContent(player: FavoritePlayer, isIdentity: Boolean) {
+        _player = player
         name.text = player.name
         region.text = player.region.displayName
-    }
 
-    override fun setContent(content: FavoritePlayer) {
-        identity = content
-        refresh()
+        if (isIdentity) {
+            name.typeface = Typeface.DEFAULT_BOLD
+            setBackgroundColor(cardBackgroundColor)
+        } else {
+            name.typeface = Typeface.DEFAULT
+            ViewCompat.setBackground(this, originalBackground)
+        }
     }
 
 }

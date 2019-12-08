@@ -5,9 +5,12 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
+import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel.ListItem
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
+import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
@@ -21,6 +24,7 @@ class FavoritePlayersViewModelTest : BaseTest() {
     private lateinit var viewModel: FavoritePlayersViewModel
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val identityRepository: IdentityRepository by inject()
     protected val threadUtils: ThreadUtils by inject()
 
     companion object {
@@ -66,7 +70,8 @@ class FavoritePlayersViewModelTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        viewModel = FavoritePlayersViewModel(favoritePlayersRepository, threadUtils)
+        viewModel = FavoritePlayersViewModel(favoritePlayersRepository, identityRepository,
+                threadUtils)
     }
 
     @Test
@@ -78,8 +83,11 @@ class FavoritePlayersViewModelTest : BaseTest() {
         }
 
         favoritePlayersRepository.addPlayer(MIKKUZ, NORCAL)
-        assertEquals(1, state?.favoritePlayers?.size)
-        assertEquals(true, state?.favoritePlayers?.contains(MIKKUZ))
+        assertEquals(1, state?.list?.size)
+
+        val player = state?.list?.get(0) as ListItem.FavoritePlayer
+        assertFalse(player.isIdentity)
+        assertEquals(MIKKUZ, player.player)
     }
 
     @Test
@@ -91,18 +99,26 @@ class FavoritePlayersViewModelTest : BaseTest() {
         }
 
         favoritePlayersRepository.addPlayer(IMYT, NORCAL)
-        assertEquals(1, state?.favoritePlayers?.size)
-        assertEquals(true, state?.favoritePlayers?.contains(IMYT))
+        assertEquals(1, state?.list?.size)
+
+        var player = state?.list?.get(0) as ListItem.FavoritePlayer
+        assertFalse(player.isIdentity)
+        assertEquals(IMYT, player.player)
 
         favoritePlayersRepository.addPlayer(SNAP, NORCAL)
-        assertEquals(2, state?.favoritePlayers?.size)
-        assertEquals(true, state?.favoritePlayers?.contains(IMYT))
-        assertEquals(true, state?.favoritePlayers?.contains(SNAP))
+        assertEquals(2, state?.list?.size)
+
+        player = state?.list?.get(0) as ListItem.FavoritePlayer
+        assertEquals(IMYT, player.player)
+
+        player = state?.list?.get(1) as ListItem.FavoritePlayer
+        assertEquals(SNAP, player.player)
 
         favoritePlayersRepository.removePlayer(IMYT)
-        assertEquals(1, state?.favoritePlayers?.size)
-        assertEquals(true, state?.favoritePlayers?.contains(SNAP))
-        assertEquals(false, state?.favoritePlayers?.contains(IMYT))
+        assertEquals(1, state?.list?.size)
+
+        player = state?.list?.get(0) as ListItem.FavoritePlayer
+        assertEquals(SNAP, player.player)
     }
 
     @Test
@@ -121,11 +137,15 @@ class FavoritePlayersViewModelTest : BaseTest() {
 
         viewModel.search("i")
         assertEquals(3, state?.searchResults?.size)
-        assertEquals(false, state?.searchResults?.contains(CHARLEZARD))
-        assertEquals(true, state?.searchResults?.contains(IMYT))
-        assertEquals(true, state?.searchResults?.contains(MIKKUZ))
-        assertEquals(false, state?.searchResults?.contains(SNAP))
-        assertEquals(true, state?.searchResults?.contains(TWO_SAINT))
+
+        var player = state?.searchResults?.get(0) as ListItem.FavoritePlayer
+        assertEquals(IMYT, player.player)
+
+        player = state?.searchResults?.get(1) as ListItem.FavoritePlayer
+        assertEquals(MIKKUZ, player.player)
+
+        player = state?.searchResults?.get(2) as ListItem.FavoritePlayer
+        assertEquals(TWO_SAINT, player.player)
     }
 
     @Test

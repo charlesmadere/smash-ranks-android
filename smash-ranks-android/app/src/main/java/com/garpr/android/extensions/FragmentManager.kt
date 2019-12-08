@@ -13,6 +13,10 @@ fun FragmentManager.showAddOrRemoveFavoritePlayerDialog(player: AbsPlayer, regio
             region = region
     )
 
-    val dialog = AddOrRemovePlayerFromFavoritesDialogFragment.create(favoritePlayer)
+    showAddOrRemoveFavoritePlayerDialog(favoritePlayer)
+}
+
+fun FragmentManager.showAddOrRemoveFavoritePlayerDialog(player: FavoritePlayer) {
+    val dialog = AddOrRemovePlayerFromFavoritesDialogFragment.create(player)
     dialog.show(this, AddOrRemovePlayerFromFavoritesDialogFragment.TAG)
 }
