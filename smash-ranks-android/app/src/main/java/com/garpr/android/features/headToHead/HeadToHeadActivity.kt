@@ -19,6 +19,7 @@ import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.StringItemView
+import com.garpr.android.features.headToHead.HeadToHeadViewModel.ListItem
 import com.garpr.android.features.tournaments.TournamentDividerView
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
@@ -137,7 +138,7 @@ class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Ref
             private val headToHeadMatchListener: HeadToHeadMatchItemView.Listener
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val list = mutableListOf<HeadToHeadViewModel.ListItem>()
+        private val list = mutableListOf<ListItem>()
 
         companion object {
             private const val VIEW_TYPE_MATCH = 0
@@ -150,18 +151,21 @@ class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Ref
             setHasStableIds(true)
         }
 
-        private fun bindMatchViewHolder(holder: HeadToHeadMatchViewHolder,
-                item: HeadToHeadViewModel.ListItem.Match) {
-            holder.headToHeadMatchItemView.setContent(item.match)
+        private fun bindMatchViewHolder(holder: HeadToHeadMatchViewHolder, item: ListItem.Match) {
+            holder.headToHeadMatchItemView.setContent(
+                    match = item.match,
+                    playerIsIdentity = item.playerIsIdentity,
+                    opponentIsIdentity = item.opponentIsIdentity
+            )
         }
 
         private fun bindTournamentViewHolder(holder: TournamentViewHolder,
-                item: HeadToHeadViewModel.ListItem.Tournament) {
+                item: ListItem.Tournament) {
             holder.tournamentDividerView.tournament = item.tournament
         }
 
         private fun bindWinsLossesViewHolder(holder: WinsLossesViewHolder,
-                item: HeadToHeadViewModel.ListItem.WinsLosses) {
+                item: ListItem.WinsLosses) {
             holder.winsLossesView.setContent(item.winsLosses)
         }
 
@@ -180,22 +184,19 @@ class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Ref
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
-                is HeadToHeadViewModel.ListItem.Match -> VIEW_TYPE_MATCH
-                is HeadToHeadViewModel.ListItem.NoMatches -> VIEW_TYPE_NO_MATCHES
-                is HeadToHeadViewModel.ListItem.Tournament -> VIEW_TYPE_TOURNAMENT
-                is HeadToHeadViewModel.ListItem.WinsLosses -> VIEW_TYPE_WINS_LOSSES
+                is ListItem.Match -> VIEW_TYPE_MATCH
+                is ListItem.NoMatches -> VIEW_TYPE_NO_MATCHES
+                is ListItem.Tournament -> VIEW_TYPE_TOURNAMENT
+                is ListItem.WinsLosses -> VIEW_TYPE_WINS_LOSSES
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is HeadToHeadViewModel.ListItem.Match -> bindMatchViewHolder(
-                        holder as HeadToHeadMatchViewHolder, item)
-                is HeadToHeadViewModel.ListItem.NoMatches -> { /* intentionally empty */ }
-                is HeadToHeadViewModel.ListItem.Tournament -> bindTournamentViewHolder(
-                        holder as TournamentViewHolder, item)
-                is HeadToHeadViewModel.ListItem.WinsLosses -> bindWinsLossesViewHolder(
-                        holder as WinsLossesViewHolder, item)
+                is ListItem.Match -> bindMatchViewHolder(holder as HeadToHeadMatchViewHolder, item)
+                is ListItem.NoMatches -> { /* intentionally empty */ }
+                is ListItem.Tournament -> bindTournamentViewHolder(holder as TournamentViewHolder, item)
+                is ListItem.WinsLosses -> bindWinsLossesViewHolder(holder as WinsLossesViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -217,7 +218,7 @@ class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Ref
             }
         }
 
-        internal fun set(list: List<HeadToHeadViewModel.ListItem>?) {
+        internal fun set(list: List<ListItem>?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {

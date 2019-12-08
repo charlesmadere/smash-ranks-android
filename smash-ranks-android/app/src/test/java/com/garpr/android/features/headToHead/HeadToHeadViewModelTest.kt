@@ -14,6 +14,7 @@ import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.features.headToHead.HeadToHeadViewModel.ListItem
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.HeadToHeadRepository
+import com.garpr.android.repositories.IdentityRepository
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -30,6 +31,7 @@ class HeadToHeadViewModelTest : BaseTest() {
     private val headToHeadRepository = HeadToHeadRepositoryOverride()
     private lateinit var viewModel: HeadToHeadViewModel
 
+    protected val identityRepository: IdentityRepository by inject()
     protected val timber: Timber by inject()
 
     companion object {
@@ -106,7 +108,7 @@ class HeadToHeadViewModelTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        viewModel = HeadToHeadViewModel(headToHeadRepository, timber)
+        viewModel = HeadToHeadViewModel(headToHeadRepository, identityRepository, timber)
     }
 
     @Test
