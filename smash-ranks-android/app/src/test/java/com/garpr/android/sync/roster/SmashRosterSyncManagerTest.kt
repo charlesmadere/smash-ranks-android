@@ -134,7 +134,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
     @Test
     fun testHajimeteSync() {
         assertEquals(true, smashRosterPreferenceStore.hajimeteSync.get())
-        smashRosterSyncManager.sync().blockingAwait()
+        smashRosterSyncManager.enableOrDisable()
         assertEquals(false, smashRosterPreferenceStore.hajimeteSync.get())
     }
 
