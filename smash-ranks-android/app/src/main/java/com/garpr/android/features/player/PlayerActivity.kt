@@ -23,6 +23,7 @@ import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.StringItemView
 import com.garpr.android.features.headToHead.HeadToHeadActivity
+import com.garpr.android.features.player.PlayerViewModel.ListItem
 import com.garpr.android.features.tournaments.TournamentDividerView
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
@@ -222,7 +223,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
         private var isFavorited: Boolean = false
         private var player: FullPlayer? = null
-        private val list = mutableListOf<PlayerViewModel.ListItem>()
+        private val list = mutableListOf<ListItem>()
         private var smashCompetitor: SmashCompetitor? = null
 
         companion object {
@@ -236,9 +237,11 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             setHasStableIds(true)
         }
 
-        private fun bindMatchViewHolder(holder: MatchViewHolder,
-                item: PlayerViewModel.ListItem.Match) {
-            holder.matchItemView.setContent(item.match)
+        private fun bindMatchViewHolder(holder: MatchViewHolder, item: ListItem.Match) {
+            holder.matchItemView.setContent(
+                    match = item.match,
+                    isIdentity = item.isIdentity
+            )
         }
 
         private fun bindPlayerViewHolder(holder: PlayerViewHolder) {
@@ -247,7 +250,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         }
 
         private fun bindTournamentViewHolder(holder: TournamentViewHolder,
-                item: PlayerViewModel.ListItem.Tournament) {
+                item: ListItem.Tournament) {
             holder.tournamentDividerView.tournament = item.tournament
         }
 
@@ -262,19 +265,19 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
-                is PlayerViewModel.ListItem.Match -> VIEW_TYPE_MATCH
-                is PlayerViewModel.ListItem.NoMatches -> VIEW_TYPE_NO_MATCHES
-                is PlayerViewModel.ListItem.Player -> VIEW_TYPE_PLAYER
-                is PlayerViewModel.ListItem.Tournament -> VIEW_TYPE_TOURNAMENT
+                is ListItem.Match -> VIEW_TYPE_MATCH
+                is ListItem.NoMatches -> VIEW_TYPE_NO_MATCHES
+                is ListItem.Player -> VIEW_TYPE_PLAYER
+                is ListItem.Tournament -> VIEW_TYPE_TOURNAMENT
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is PlayerViewModel.ListItem.Match -> bindMatchViewHolder(holder as MatchViewHolder, item)
-                is PlayerViewModel.ListItem.NoMatches -> { /* intentionally empty */ }
-                is PlayerViewModel.ListItem.Player -> bindPlayerViewHolder(holder as PlayerViewHolder)
-                is PlayerViewModel.ListItem.Tournament -> bindTournamentViewHolder(holder as TournamentViewHolder, item)
+                is ListItem.Match -> bindMatchViewHolder(holder as MatchViewHolder, item)
+                is ListItem.NoMatches -> { /* intentionally empty */ }
+                is ListItem.Player -> bindPlayerViewHolder(holder as PlayerViewHolder)
+                is ListItem.Tournament -> bindTournamentViewHolder(holder as TournamentViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -296,7 +299,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             }
         }
 
-        internal fun set(list: List<PlayerViewModel.ListItem>?, isFavorited: Boolean,
+        internal fun set(list: List<ListItem>?, isFavorited: Boolean,
                 player: FullPlayer?, smashCompetitor: SmashCompetitor?) {
             this.list.clear()
 

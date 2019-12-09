@@ -94,7 +94,10 @@ class PlayerViewModel(
                 list.add(ListItem.Tournament(match.tournament))
             }
 
-            list.add(ListItem.Match(match))
+            list.add(ListItem.Match(
+                    isIdentity = identityRepository.isPlayer(match.opponent),
+                    match = match
+            ))
         }
 
         return list
@@ -268,6 +271,7 @@ class PlayerViewModel(
         abstract val listId: Long
 
         class Match(
+                val isIdentity: Boolean,
                 val match: GarPrMatch
         ) : ListItem() {
             override val listId: Long = match.hashCode().toLong()
