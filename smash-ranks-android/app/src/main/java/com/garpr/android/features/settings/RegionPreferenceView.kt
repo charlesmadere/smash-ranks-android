@@ -21,7 +21,7 @@ class RegionPreferenceView @JvmOverloads constructor(
 
     init {
         titleText = context.getText(R.string.region)
-        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_location_on_white_24dp)
+        setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_location_on_white_24dp))
         setOnClickListener(this)
 
         if (isInEditMode) {

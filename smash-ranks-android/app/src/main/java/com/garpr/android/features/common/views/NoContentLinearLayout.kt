@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.View
 import android.widget.LinearLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
@@ -22,18 +21,6 @@ class NoContentLinearLayout @JvmOverloads constructor(
             description.text = value
         }
 
-    var imageDrawable: Drawable?
-        get() = image.drawable
-        set(value) {
-            if (value == null) {
-                image.clear()
-                image.visibility = View.GONE
-            } else {
-                image.setImageDrawable(value)
-                image.visibility = View.VISIBLE
-            }
-        }
-
     var titleText: CharSequence?
         get() = title.text
         set(value) {
@@ -45,7 +32,7 @@ class NoContentLinearLayout @JvmOverloads constructor(
         layoutInflater.inflate(R.layout.no_content_linear_layout_body, this)
 
         var ta = context.obtainStyledAttributes(attrs, R.styleable.NoContentLinearLayout)
-        imageDrawable = ta.getDrawable(R.styleable.NoContentLinearLayout_android_src)
+        setImageDrawable(ta.getDrawable(R.styleable.NoContentLinearLayout_android_src))
         ta.recycle()
 
         @SuppressLint("CustomViewStyleable")
@@ -53,6 +40,16 @@ class NoContentLinearLayout @JvmOverloads constructor(
         titleText = ta.getText(R.styleable.View_titleText)
         descriptionText = ta.getText(R.styleable.View_descriptionText)
         ta.recycle()
+    }
+
+    fun setImageDrawable(drawable: Drawable?) {
+        if (drawable == null) {
+            image.clear()
+            image.visibility = GONE
+        } else {
+            image.setImageDrawable(drawable)
+            image.visibility = VISIBLE
+        }
     }
 
 }

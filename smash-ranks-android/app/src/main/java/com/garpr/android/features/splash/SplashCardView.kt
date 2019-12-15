@@ -126,14 +126,14 @@ class SplashCardView @JvmOverloads constructor(
             customizeIdentity.descriptionText = context.getText(
                     R.string.customize_identity_description)
             customizeIdentity.titleText = context.getText(R.string.customize_identity)
-            customizeIdentity.imageDrawable = ContextCompat.getDrawable(context,
-                    R.drawable.ic_chevron_right_white_24dp)
+            customizeIdentity.setImageDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.ic_chevron_right_white_24dp))
         } else {
             customizeIdentity.descriptionText = context.getString(R.string.identity_region_format,
                     identity.name, identity.region.displayName)
             customizeIdentity.titleText = context.getText(R.string.delete_identity)
-            customizeIdentity.imageDrawable = ContextCompat.getDrawable(context,
-                    R.drawable.ic_delete_white_24dp)
+            customizeIdentity.setImageDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.ic_delete_white_24dp))
         }
 
         val region = regionRepository.getRegion(context)

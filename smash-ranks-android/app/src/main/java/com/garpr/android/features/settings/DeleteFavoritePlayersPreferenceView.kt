@@ -25,13 +25,8 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
     }
 
     init {
-        titleText = context.getText(R.string.loading_favorite_players_)
+        setLoading()
         setOnClickListener(this)
-
-        if (isInEditMode) {
-            descriptionText = resources.getQuantityString(R.plurals.x_favorites, 8,
-                    NUMBER_FORMAT.format(8))
-        }
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {

@@ -35,9 +35,8 @@ class IdentityPreferenceView @JvmOverloads constructor(
     }
 
     init {
-        titleText = context.getText(R.string.identity)
-        descriptionText = context.getText(R.string.easily_find_yourself_throughout_the_app)
-        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_face_white_24dp)
+        setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_face_white_24dp))
+        setLoading()
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {

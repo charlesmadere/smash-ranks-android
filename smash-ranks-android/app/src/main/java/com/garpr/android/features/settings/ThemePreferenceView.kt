@@ -24,7 +24,7 @@ class ThemePreferenceView @JvmOverloads constructor(
 
     init {
         titleText = context.getText(R.string.theme)
-        imageDrawable = ContextCompat.getDrawable(context, R.drawable.ic_format_paint_white_24dp)
+        setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_format_paint_white_24dp))
         setOnClickListener(this)
 
         if (isInEditMode) {
