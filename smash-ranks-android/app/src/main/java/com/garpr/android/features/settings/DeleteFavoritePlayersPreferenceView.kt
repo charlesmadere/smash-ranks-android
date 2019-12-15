@@ -7,26 +7,25 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.garpr.android.R
 import com.garpr.android.features.common.views.SimplePreferenceView
-import com.garpr.android.repositories.FavoritePlayersRepository
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.text.NumberFormat
 
 class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener,
-        FavoritePlayersRepository.OnFavoritePlayersChangeListener, KoinComponent,
-        View.OnClickListener {
+) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, View.OnClickListener {
 
-    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    var listener: Listener? = null
+
+    interface Listener {
+        fun onDeleteFavoritePlayersClick(v: DeleteFavoritePlayersPreferenceView)
+    }
 
     companion object {
         private val NUMBER_FORMAT = NumberFormat.getIntegerInstance()
     }
 
     init {
-        titleText = context.getText(R.string.delete_all_favorite_players)
+        titleText = context.getText(R.string.loading_favorite_players_)
         setOnClickListener(this)
 
         if (isInEditMode) {
@@ -35,19 +34,8 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (isInEditMode) {
-            return
-        }
-
-        favoritePlayersRepository.addListener(this)
-        refresh()
-    }
-
     override fun onClick(dialog: DialogInterface, which: Int) {
-        favoritePlayersRepository.clear()
+        listener?.onDeleteFavoritePlayersClick(this)
     }
 
     override fun onClick(v: View) {
@@ -58,24 +46,17 @@ class DeleteFavoritePlayersPreferenceView @JvmOverloads constructor(
                 .show()
     }
 
-    override fun onDetachedFromWindow() {
-        favoritePlayersRepository.removeListener(this)
-        super.onDetachedFromWindow()
-    }
-
-    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
-    override fun refresh() {
-        super.refresh()
-
-        val size = favoritePlayersRepository.size
-        isEnabled = size != 0
+    fun setContent(size: Int) {
+        isEnabled = size >= 1
+        titleText = resources.getText(R.string.delete_all_favorite_players)
         descriptionText = resources.getQuantityString(R.plurals.x_favorites, size,
                 NUMBER_FORMAT.format(size))
+    }
+
+    fun setLoading() {
+        isEnabled = false
+        titleText = resources.getText(R.string.loading_favorite_players_)
+        descriptionText = resources.getText(R.string.please_wait_)
     }
 
 }

@@ -9,18 +9,18 @@ import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.features.common.views.SimplePreferenceView
-import com.garpr.android.features.home.HomeActivity
-import com.garpr.android.repositories.NightModeRepository
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
 class ThemePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, KoinComponent,
-        NightModeRepository.OnNightModeChangeListener, View.OnClickListener {
+) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, View.OnClickListener {
 
-    protected val nightModeRepository: NightModeRepository by inject()
+    var listener: Listener? = null
+    private var nightMode: NightMode? = null
+
+    interface Listener {
+        fun onNightModeChange(v: ThemePreferenceView, nightMode: NightMode)
+    }
 
     init {
         titleText = context.getText(R.string.theme)
@@ -32,22 +32,11 @@ class ThemePreferenceView @JvmOverloads constructor(
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (isInEditMode) {
-            return
-        }
-
-        nightModeRepository.addListener(this)
-        refresh()
-    }
-
     override fun onClick(dialog: DialogInterface, which: Int) {
         dialog.dismiss()
 
         val selected = NightMode.values()[which]
-        if (nightModeRepository.nightMode == selected) {
+        if (checkNotNull(nightMode) == selected) {
             return
         }
 
@@ -55,16 +44,17 @@ class ThemePreferenceView @JvmOverloads constructor(
                 .setMessage(R.string.the_app_will_now_restart)
                 .setNeutralButton(R.string.ok, null)
                 .setOnDismissListener {
-                    nightModeRepository.nightMode = selected
-                    context.startActivity(HomeActivity.getLaunchIntent(context = context,
-                            restartActivityTask = true))
+                    listener?.onNightModeChange(this@ThemePreferenceView, selected)
                 }
                 .show()
     }
 
     override fun onClick(v: View) {
-        val items = nightModeRepository.getNightModeStrings(context)
-        val checkedItem = nightModeRepository.nightMode.ordinal
+        val items = NightMode.values()
+                .map { resources.getText(it.textResId) }
+                .toTypedArray()
+
+        val checkedItem = checkNotNull(nightMode).ordinal
 
         AlertDialog.Builder(context)
                 .setSingleChoiceItems(items, checkedItem, this)
@@ -72,21 +62,9 @@ class ThemePreferenceView @JvmOverloads constructor(
                 .show()
     }
 
-    override fun onDetachedFromWindow() {
-        nightModeRepository.removeListener(this)
-        super.onDetachedFromWindow()
-    }
-
-    override fun onNightModeChange(nightModeRepository: NightModeRepository) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
-    override fun refresh() {
-        super.refresh()
-
-        descriptionText = resources.getText(nightModeRepository.nightMode.textResId)
+    fun setContent(nightMode: NightMode) {
+        this.nightMode = nightMode
+        descriptionText = resources.getText(nightMode.textResId)
     }
 
 }

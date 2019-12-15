@@ -1,35 +1,40 @@
 package com.garpr.android.features.settings
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.garpr.android.R
+import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.features.logViewer.LogViewerActivity
+import com.garpr.android.features.setIdentity.SetIdentityActivity
+import com.garpr.android.features.setRegion.SetRegionActivity
+import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
+import com.garpr.android.features.settings.SettingsViewModel.IdentityState
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.ShareUtils
 import com.garpr.android.preferences.Preference
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : BaseActivity(), Refreshable {
+class SettingsActivity : BaseActivity(), DeleteFavoritePlayersPreferenceView.Listener,
+        IdentityPreferenceView.Listeners, ThemePreferenceView.Listener, Refreshable,
+        RegionPreferenceView.Listener {
 
-    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
-    protected val identityRepository: IdentityRepository by inject()
+    private val viewModel: SettingsViewModel by viewModel()
+
     protected val rankingsPollingManager: RankingsPollingManager by inject()
     protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
-    protected val regionRepository: RegionRepository by inject()
     protected val shareUtils: ShareUtils by inject()
 
     companion object {
@@ -40,18 +45,31 @@ class SettingsActivity : BaseActivity(), Refreshable {
 
     override val activityName = TAG
 
+    private fun initListeners() {
+        viewModel.stateLiveData.observe(this, Observer {
+            refreshState(it)
+        })
+
+        rankingsPollingPreferenceStore.chargingRequired.addListener(onChargingRequiredChange)
+        rankingsPollingPreferenceStore.enabled.addListener(onRankingsPollingEnabledChange)
+        rankingsPollingPreferenceStore.pollFrequency.addListener(onPollFrequencyChange)
+        rankingsPollingPreferenceStore.ringtone.addListener(onRingtoneChange)
+        rankingsPollingPreferenceStore.vibrationEnabled.addListener(onVibrationEnabledChange)
+        rankingsPollingPreferenceStore.wifiRequired.addListener(onWifiRequiredChange)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
             RequestCodes.CHANGE_IDENTITY.value -> {
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show()
                 }
             }
 
             RequestCodes.CHANGE_REGION.value -> {
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
                 }
             }
@@ -64,17 +82,27 @@ class SettingsActivity : BaseActivity(), Refreshable {
         refresh()
     }
 
+    override fun onClick(v: RegionPreferenceView) {
+        startActivityForResult(SetRegionActivity.getLaunchIntent(this),
+                RequestCodes.CHANGE_REGION.value)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        initListeners()
+    }
+
+    override fun onDeleteFavoritePlayersClick(v: DeleteFavoritePlayersPreferenceView) {
+        viewModel.deleteFavoritePlayers()
+    }
+
+    override fun onDeleteIdentityClick() {
+        viewModel.deleteIdentity()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
-        favoritePlayersRepository.removeListener(onFavoritePlayersChangeListener)
-        identityRepository.removeListener(onIdentityChangeListener)
-        regionRepository.removeListener(onRegionChangeListener)
 
         rankingsPollingPreferenceStore.chargingRequired.removeListener(onChargingRequiredChange)
         rankingsPollingPreferenceStore.enabled.removeListener(onRankingsPollingEnabledChange)
@@ -84,24 +112,32 @@ class SettingsActivity : BaseActivity(), Refreshable {
         rankingsPollingPreferenceStore.wifiRequired.removeListener(onWifiRequiredChange)
     }
 
+    override fun onNightModeChange(v: ThemePreferenceView, nightMode: NightMode) {
+        viewModel.setNightMode(nightMode)
+
+        startActivity(HomeActivity.getLaunchIntent(
+                context = this,
+                restartActivityTask = true
+        ))
+    }
+
     override fun onResume() {
         super.onResume()
         refresh()
     }
 
+    override fun onSetIdentityClick() {
+        startActivityForResult(SetIdentityActivity.getLaunchIntent(this),
+                RequestCodes.CHANGE_IDENTITY.value)
+    }
+
     override fun onViewsBound() {
         super.onViewsBound()
 
-        favoritePlayersRepository.addListener(onFavoritePlayersChangeListener)
-        identityRepository.addListener(onIdentityChangeListener)
-        regionRepository.addListener(onRegionChangeListener)
-
-        rankingsPollingPreferenceStore.chargingRequired.addListener(onChargingRequiredChange)
-        rankingsPollingPreferenceStore.enabled.addListener(onRankingsPollingEnabledChange)
-        rankingsPollingPreferenceStore.pollFrequency.addListener(onPollFrequencyChange)
-        rankingsPollingPreferenceStore.ringtone.addListener(onRingtoneChange)
-        rankingsPollingPreferenceStore.vibrationEnabled.addListener(onVibrationEnabledChange)
-        rankingsPollingPreferenceStore.wifiRequired.addListener(onWifiRequiredChange)
+        regionPreference.listener = this
+        identityPreference.listeners = this
+        themePreference.listener = this
+        deleteFavoritePlayersPreference.listener = this
 
         useRankingsPolling.preference = rankingsPollingPreferenceStore.enabled
         vibratePreference.preference = rankingsPollingPreferenceStore.vibrationEnabled
@@ -134,9 +170,6 @@ class SettingsActivity : BaseActivity(), Refreshable {
     }
 
     override fun refresh() {
-        regionPreference.refresh()
-        themePreference.refresh()
-        identityPreference.refresh()
         deleteFavoritePlayersPreference.refresh()
 
         useRankingsPolling.refresh()
@@ -160,16 +193,25 @@ class SettingsActivity : BaseActivity(), Refreshable {
         smashRosterPreference.refresh()
     }
 
-    private val onFavoritePlayersChangeListener = object : FavoritePlayersRepository.OnFavoritePlayersChangeListener {
-        override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-            refresh()
-        }
-    }
+    private fun refreshState(state: SettingsViewModel.State) {
+        regionPreference.setContent(state.region)
 
-    private val onIdentityChangeListener = object : IdentityRepository.OnIdentityChangeListener {
-        override fun onIdentityChange(identityRepository: IdentityRepository) {
-            refresh()
+        when (state.identityState) {
+            is IdentityState.Fetched -> identityPreference.setContent(state.identityState.identity)
+            is IdentityState.Fetching -> identityPreference.setLoading()
         }
+
+        themePreference.setContent(state.nightMode)
+
+        when (state.favoritePlayersState) {
+            is FavoritePlayersState.Fetched -> {
+                deleteFavoritePlayersPreference.setContent(state.favoritePlayersState.size)
+            }
+
+            is FavoritePlayersState.Fetching -> deleteFavoritePlayersPreference.setLoading()
+        }
+
+        // TODO
     }
 
     private val onChargingRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
@@ -208,12 +250,6 @@ class SettingsActivity : BaseActivity(), Refreshable {
     private val onWifiRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
         override fun onPreferenceChange(preference: Preference<Boolean>) {
             rankingsPollingManager.enableOrDisable()
-            refresh()
-        }
-    }
-
-    private val onRegionChangeListener = object : RegionRepository.OnRegionChangeListener {
-        override fun onRegionChange(regionRepository: RegionRepository) {
             refresh()
         }
     }
