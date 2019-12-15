@@ -38,18 +38,18 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
 
     private val viewModel: TournamentViewModel by viewModel()
 
+    private var currentPage: TournamentMode
+        get() = TournamentMode.values()[viewPager.currentItem]
+        set(value) {
+            viewPager.currentItem = value.ordinal
+        }
+
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             tournamentTabsView.tournamentMode = currentPage
         }
     }
-
-    private var currentPage: TournamentMode
-        get() = TournamentMode.values()[viewPager.currentItem]
-        set(value) {
-            viewPager.currentItem = value.ordinal
-        }
 
     companion object {
         private const val TAG = "TournamentActivity"

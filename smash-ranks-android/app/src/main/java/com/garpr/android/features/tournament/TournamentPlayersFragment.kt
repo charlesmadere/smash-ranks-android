@@ -108,7 +108,10 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
         }
 
         private fun bindPlayer(holder: TournamentPlayerViewHolder, item: PlayerListItem.Player) {
-            holder.tournamentPlayerItemView.setContent(item.player)
+            holder.tournamentPlayerItemView.setContent(
+                    player = item.player,
+                    isIdentity = item.isIdentity
+            )
         }
 
         internal fun clear() {

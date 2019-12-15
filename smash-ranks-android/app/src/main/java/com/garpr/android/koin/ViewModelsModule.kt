@@ -31,7 +31,7 @@ val viewModelsModule = module {
     viewModel { SetIdentityViewModel(get(), get(), get(), get(), get()) }
     viewModel { SetRegionViewModel(get(), get(), get()) }
     viewModel { SplashScreenViewModel(get()) }
-    viewModel { TournamentViewModel(get(), get(), get()) }
+    viewModel { TournamentViewModel(get(), get(), get(), get()) }
     viewModel { TournamentsViewModel(get(), get(), get()) }
 
 }

@@ -1,28 +1,25 @@
 package com.garpr.android.features.tournament
 
 import android.content.Context
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.garpr.android.R
-import com.garpr.android.data.models.FullTournament
-import com.garpr.android.extensions.clear
+import com.garpr.android.data.models.FullTournament.Match
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.features.common.adapters.BaseAdapterView
-import com.garpr.android.features.common.views.IdentityConstraintLayout
 import kotlinx.android.synthetic.main.item_tournament_match.view.*
 
 class TournamentMatchItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : IdentityConstraintLayout(context, attrs), BaseAdapterView<FullTournament.Match>,
-        View.OnClickListener {
+) : ConstraintLayout(context, attrs), View.OnClickListener {
 
-    private var _match: FullTournament.Match? = null
-
-    val match: FullTournament.Match
-        get() = checkNotNull(_match)
+    private val originalBackground: Drawable? = background
 
     @ColorInt
     private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
@@ -35,27 +32,25 @@ class TournamentMatchItemView @JvmOverloads constructor(
 
     var listener: Listener? = null
 
-    init {
-        setOnClickListener(this)
+    private var _match: Match? = null
+
+    val match: Match
+        get() = checkNotNull(_match)
+
+    interface Listener {
+        fun onClick(v: TournamentMatchItemView)
     }
 
-    override fun clear() {
-        super.clear()
-        loserName.clear()
-        winnerName.clear()
+    init {
+        setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
         listener?.onClick(this)
     }
 
-    override fun refresh() {
-        val match = _match
-
-        if (match == null) {
-            clear()
-            return
-        }
+    fun setContent(match: Match, winnerIsIdentity: Boolean, loserIsIdentity: Boolean) {
+        _match = match
 
         loserName.text = match.loserName
         winnerName.text = match.winnerName
@@ -68,28 +63,19 @@ class TournamentMatchItemView @JvmOverloads constructor(
             winnerName.setTextColor(winColor)
         }
 
-        if (identityRepository.isPlayer(match.winnerId)) {
-            styleTextViewForUser(winnerName)
-            styleTextViewForSomeoneElse(loserName)
-            identityIsUser()
-        } else if (identityRepository.isPlayer(match.loserId)) {
-            styleTextViewForSomeoneElse(winnerName)
-            styleTextViewForUser(loserName)
-            identityIsUser()
+        if (winnerIsIdentity) {
+            winnerName.typeface = Typeface.DEFAULT_BOLD
+            loserName.typeface = Typeface.DEFAULT
+            setBackgroundColor(ContextCompat.getColor(context, R.color.card_background))
+        } else if (loserIsIdentity) {
+            winnerName.typeface = Typeface.DEFAULT
+            loserName.typeface = Typeface.DEFAULT_BOLD
+            setBackgroundColor(ContextCompat.getColor(context, R.color.card_background))
         } else {
-            styleTextViewForSomeoneElse(winnerName)
-            styleTextViewForSomeoneElse(loserName)
-            identityIsSomeoneElse()
+            winnerName.typeface = Typeface.DEFAULT
+            loserName.typeface = Typeface.DEFAULT
+            ViewCompat.setBackground(this, originalBackground)
         }
-    }
-
-    override fun setContent(content: FullTournament.Match) {
-        _match = content
-        refresh()
-    }
-
-    interface Listener {
-        fun onClick(v: TournamentMatchItemView)
     }
 
 }
