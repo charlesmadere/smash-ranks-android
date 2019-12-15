@@ -162,7 +162,7 @@ class SettingsViewModelTest : BaseTest() {
         assertEquals(4, (state?.favoritePlayersState as FavoritePlayersState.Fetched).size)
         assertEquals(nightModeRepository.nightMode, state?.nightMode)
         assertEquals(regionRepository.getRegion(), state?.region)
-        assertEquals(SmashRosterState.NotYetSynced, state?.smashRosterState)
+        assertNull((state?.smashRosterState as SmashRosterState.Fetched).result)
     }
 
     @Test
@@ -178,7 +178,7 @@ class SettingsViewModelTest : BaseTest() {
         assertEquals(0, (state?.favoritePlayersState as FavoritePlayersState.Fetched).size)
         assertEquals(nightModeRepository.nightMode, state?.nightMode)
         assertEquals(regionRepository.getRegion(), state?.region)
-        assertEquals(SmashRosterState.NotYetSynced, state?.smashRosterState)
+        assertNull((state?.smashRosterState as SmashRosterState.Fetched).result)
     }
 
 }

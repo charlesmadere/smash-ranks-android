@@ -129,12 +129,7 @@ class SettingsViewModel(
             state.copy(smashRosterState = SmashRosterState.IsSyncing)
         } else {
             val result = smashRosterSyncManager.syncResult
-
-            if (result == null) {
-                state.copy(smashRosterState = SmashRosterState.NotYetSynced)
-            } else {
-                state.copy(smashRosterState = SmashRosterState.Synced(result))
-            }
+            state.copy(smashRosterState = SmashRosterState.Fetched(result))
         }
     }
 
@@ -176,13 +171,12 @@ class SettingsViewModel(
     }
 
     sealed class SmashRosterState {
+        class Fetched(
+                val result: SmashRosterSyncResult?
+        ) : SmashRosterState()
+
         object Fetching : SmashRosterState()
         object IsSyncing : SmashRosterState()
-        object NotYetSynced : SmashRosterState()
-
-        class Synced(
-                val result: SmashRosterSyncResult
-        ) : SmashRosterState()
     }
 
     data class State(

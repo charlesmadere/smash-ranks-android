@@ -59,6 +59,7 @@
     <string name="loading_deep_link_">Loading deep link…</string>
     <string name="loading_favorite_players_">Loading favorite players…</string>
     <string name="loading_identity_">Loading identity…</string>
+    <string name="loading_sync_status_">Loading sync status…</string>
     <string name="log_viewer">Log Viewer</string>
     <string name="matches">Matches</string>
     <string name="more">More</string>

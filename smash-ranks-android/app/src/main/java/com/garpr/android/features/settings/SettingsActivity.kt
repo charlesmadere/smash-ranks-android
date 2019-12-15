@@ -16,6 +16,7 @@ import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
 import com.garpr.android.features.settings.SettingsViewModel.IdentityState
+import com.garpr.android.features.settings.SettingsViewModel.SmashRosterState
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.RequestCodes
@@ -29,7 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : BaseActivity(), DeleteFavoritePlayersPreferenceView.Listener,
         IdentityPreferenceView.Listeners, ThemePreferenceView.Listener, Refreshable,
-        RegionPreferenceView.Listener {
+        RegionPreferenceView.Listener, SmashRosterSyncPreferenceView.Listener {
 
     private val viewModel: SettingsViewModel by viewModel()
 
@@ -85,6 +86,10 @@ class SettingsActivity : BaseActivity(), DeleteFavoritePlayersPreferenceView.Lis
     override fun onClick(v: RegionPreferenceView) {
         startActivityForResult(SetRegionActivity.getLaunchIntent(this),
                 RequestCodes.CHANGE_REGION.value)
+    }
+
+    override fun onClick(v: SmashRosterSyncPreferenceView) {
+        viewModel.syncSmashRoster()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -170,8 +175,6 @@ class SettingsActivity : BaseActivity(), DeleteFavoritePlayersPreferenceView.Lis
     }
 
     override fun refresh() {
-        deleteFavoritePlayersPreference.refresh()
-
         useRankingsPolling.refresh()
         rankingsPollingFrequencyPreference.refresh()
         ringtonePreference.refresh()
@@ -211,7 +214,14 @@ class SettingsActivity : BaseActivity(), DeleteFavoritePlayersPreferenceView.Lis
             is FavoritePlayersState.Fetching -> deleteFavoritePlayersPreference.setLoading()
         }
 
-        // TODO
+        when (state.smashRosterState) {
+            is SmashRosterState.Fetched -> {
+                smashRosterPreference.setContent(state.smashRosterState.result)
+            }
+
+            is SmashRosterState.Fetching -> smashRosterPreference.setLoading()
+            is SmashRosterState.IsSyncing -> smashRosterPreference.setSyncing()
+        }
     }
 
     private val onChargingRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
