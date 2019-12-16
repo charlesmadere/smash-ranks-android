@@ -16,6 +16,7 @@ import com.garpr.android.features.setIdentity.SetIdentityActivity
 import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
 import com.garpr.android.features.settings.SettingsViewModel.IdentityState
+import com.garpr.android.features.settings.SettingsViewModel.RankingsPollingState
 import com.garpr.android.features.settings.SettingsViewModel.SmashRosterState
 import com.garpr.android.misc.Constants
 import com.garpr.android.misc.Refreshable
@@ -47,6 +48,10 @@ class SettingsActivity : BaseActivity(), DeleteFavoritePlayersPreferenceView.Lis
     override val activityName = TAG
 
     private fun initListeners() {
+        viewModel.rankingsPollingStateLiveData.observe(this, Observer {
+            refreshRankingsPollingState(it)
+        })
+
         viewModel.stateLiveData.observe(this, Observer {
             refreshState(it)
         })
@@ -194,6 +199,10 @@ class SettingsActivity : BaseActivity(), DeleteFavoritePlayersPreferenceView.Lis
         }
 
         smashRosterPreference.refresh()
+    }
+
+    private fun refreshRankingsPollingState(state: RankingsPollingState) {
+        // TODO
     }
 
     private fun refreshState(state: SettingsViewModel.State) {

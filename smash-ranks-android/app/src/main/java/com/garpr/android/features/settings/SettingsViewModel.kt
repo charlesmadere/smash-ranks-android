@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.NightMode
+import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashRosterSyncResult
 import com.garpr.android.features.common.viewModels.BaseViewModel
@@ -16,12 +17,14 @@ import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.NightModeRepository
 import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 
 class SettingsViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityRepository: IdentityRepository,
         private val nightModeRepository: NightModeRepository,
+        private val rankingsPollingManager: RankingsPollingManager,
         private val regionRepository: RegionRepository,
         private val schedulers: Schedulers,
         private val smashRosterSyncManager: SmashRosterSyncManager,
@@ -31,8 +34,22 @@ class SettingsViewModel(
         IdentityRepository.OnIdentityChangeListener, NightModeRepository.OnNightModeChangeListener,
         Refreshable, RegionRepository.OnRegionChangeListener {
 
+    private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>()
+    val rankingsPollingStateLiveData: LiveData<RankingsPollingState> = _rankingsPollingStateLiveData
+
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
+
+    private var rankingsPollingState: RankingsPollingState = RankingsPollingState(
+            isChargingRequired = rankingsPollingManager.isChargingRequired,
+            isEnabled = rankingsPollingManager.isEnabled,
+            isWifiRequired = rankingsPollingManager.isWifiRequired,
+            pollFrequency = rankingsPollingManager.pollFrequency
+    )
+        set(value) {
+            field = value
+            _rankingsPollingStateLiveData.postValue(value)
+        }
 
     private var state: State = State(
             nightMode = nightModeRepository.nightMode,
@@ -133,6 +150,22 @@ class SettingsViewModel(
         }
     }
 
+    fun setRankingsPollingIsChargingRequired(isChargingRequired: Boolean) {
+        rankingsPollingManager.isChargingRequired = isChargingRequired
+    }
+
+    fun setRankingsPollingIsEnabled(isEnabled: Boolean) {
+        rankingsPollingManager.isEnabled = isEnabled
+    }
+
+    fun setRankingsPollingIsWifiRequired(isWifiRequired: Boolean) {
+        rankingsPollingManager.isWifiRequired = isWifiRequired
+    }
+
+    fun setRankingsPollingPollFrequency(pollFrequency: PollFrequency) {
+        rankingsPollingManager.pollFrequency = pollFrequency
+    }
+
     fun setNightMode(nightMode: NightMode) {
         nightModeRepository.nightMode = nightMode
     }
@@ -169,6 +202,13 @@ class SettingsViewModel(
 
         object Fetching : IdentityState()
     }
+
+    data class RankingsPollingState(
+            val isChargingRequired: Boolean,
+            val isEnabled: Boolean,
+            val isWifiRequired: Boolean,
+            val pollFrequency: PollFrequency
+    )
 
     sealed class SmashRosterState {
         class Fetched(
