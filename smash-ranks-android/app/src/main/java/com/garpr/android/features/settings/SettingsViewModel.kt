@@ -150,6 +150,10 @@ class SettingsViewModel(
         }
     }
 
+    fun setNightMode(nightMode: NightMode) {
+        nightModeRepository.nightMode = nightMode
+    }
+
     fun setRankingsPollingIsChargingRequired(isChargingRequired: Boolean) {
         rankingsPollingManager.isChargingRequired = isChargingRequired
     }
@@ -164,10 +168,6 @@ class SettingsViewModel(
 
     fun setRankingsPollingPollFrequency(pollFrequency: PollFrequency) {
         rankingsPollingManager.pollFrequency = pollFrequency
-    }
-
-    fun setNightMode(nightMode: NightMode) {
-        nightModeRepository.nightMode = nightMode
     }
 
     fun syncSmashRoster() {
