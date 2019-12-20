@@ -6,54 +6,53 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.View
+import android.widget.Checkable
 import android.widget.CompoundButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
-import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.layoutInflater
-import com.garpr.android.extensions.requireViewByIdCompat
-import com.garpr.android.features.common.views.LifecycleConstraintLayout
-import com.garpr.android.misc.Refreshable
-import com.garpr.android.preferences.Preference
 import kotlinx.android.synthetic.main.view_checkbox_preference.view.*
 
 class CheckablePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleConstraintLayout(context, attrs), Preference.OnPreferenceChangeListener<Boolean>,
-        Refreshable, View.OnClickListener {
+) : ConstraintLayout(context, attrs), Checkable, View.OnClickListener {
 
     private val disabledDescriptionText: CharSequence?
     private val descriptionText: CharSequence?
-    private val titleText: CharSequence?
 
     private val checkable: CompoundButton
-        get() = requireViewByIdCompat(R.id.checkable)
-
-    var preference: Preference<Boolean>? = null
-        set(value) {
-            field?.removeListener(this)
-            field = value
-            refresh()
+        get() {
+            return if (checkbox.visibility == VISIBLE) {
+                checkbox
+            } else {
+                switchCompat
+            }
         }
 
+    var listener: Listener? = null
 
-    companion object {
-        private const val CHECKABLE_TYPE_CHECKBOX = 0
-        private const val CHECKABLE_TYPE_SWITCH_COMPAT = 1
+    interface Listener {
+        fun onClick(v: CheckablePreferenceView)
     }
 
     init {
+        layoutInflater.inflate(R.layout.view_checkbox_preference, this)
+
         var ta = context.obtainStyledAttributes(attrs, R.styleable.CheckablePreferenceView)
+        val checkableTypeOrdinal = ta.getInt(R.styleable.CheckablePreferenceView_checkableType,
+                CheckableType.CHECKBOX.ordinal)
 
-        when (val checkableType = ta.getInt(R.styleable.CheckablePreferenceView_checkableType,
-                CHECKABLE_TYPE_CHECKBOX)) {
-            CHECKABLE_TYPE_CHECKBOX -> layoutInflater.inflate(
-                    R.layout.view_checkbox_preference, this)
+        when (CheckableType.values()[checkableTypeOrdinal]) {
+            CheckableType.CHECKBOX -> {
+                switchCompat.visibility = GONE
+                checkbox.visibility = VISIBLE
+            }
 
-            CHECKABLE_TYPE_SWITCH_COMPAT -> layoutInflater.inflate(
-                    R.layout.view_switch_compat_preference, this)
-
-            else -> throw RuntimeException("checkableType is an illegal value: $checkableType")
+            CheckableType.SWITCH_COMPAT -> {
+                checkbox.visibility = GONE
+                switchCompat.visibility = VISIBLE
+            }
         }
 
         disabledDescriptionText = ta.getText(R.styleable.CheckablePreferenceView_disabledDescriptionText)
@@ -62,22 +61,19 @@ class CheckablePreferenceView @JvmOverloads constructor(
         @SuppressLint("CustomViewStyleable")
         ta = context.obtainStyledAttributes(attrs, R.styleable.View)
         descriptionText = ta.getText(R.styleable.View_descriptionText)
-        titleText = ta.getText(R.styleable.View_titleText)
+        val titleText = ta.getText(R.styleable.View_titleText)
         ta.recycle()
 
+        title.text = titleText
+        description.text = descriptionText
         setOnClickListener(this)
 
-        if (isInEditMode) {
-            title.text = titleText
-            description.text = descriptionText
-        }
-
-        if (disabledDescriptionText.isNullOrBlank()) {
+        if (descriptionText.isNullOrBlank()) {
             val layoutParams = title.layoutParams as LayoutParams
             layoutParams.bottomToBottom = LayoutParams.PARENT_ID
             layoutParams.bottomMargin = layoutParams.topMargin
             title.layoutParams = layoutParams
-            description.visibility = View.GONE
+            description.visibility = GONE
         }
     }
 
@@ -89,54 +85,23 @@ class CheckablePreferenceView @JvmOverloads constructor(
         dispatchFreezeSelfOnly(container)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        preference?.addListener(this)
-        refresh()
+    override fun isChecked(): Boolean {
+        return checkable.isChecked
     }
 
     override fun onClick(v: View) {
-        val preference = this.preference ?: return
-        val value = preference.get()
-
-        if (value == true) {
-            preference.set(false)
-        } else if (value == false) {
-            preference.set(true)
-        }
+        listener?.onClick(this)
     }
 
-    override fun onDetachedFromWindow() {
-        preference?.removeListener(this)
-        super.onDetachedFromWindow()
-    }
-
-    override fun onPreferenceChange(preference: Preference<Boolean>) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
-    override fun refresh() {
-        val preference = this.preference
-
-        if (preference == null) {
-            title.clear()
-            description.clear()
-            checkable.isChecked = false
+    override fun setChecked(checked: Boolean) {
+        description.text = if (checked || descriptionText.isNullOrBlank() ||
+                disabledDescriptionText.isNullOrBlank()) {
+            descriptionText
         } else {
-            preference.addListener(this)
-            title.text = titleText
-
-            if (preference.get() == true) {
-                description.text = descriptionText
-                checkable.isChecked = true
-            } else {
-                description.text = disabledDescriptionText
-                checkable.isChecked = false
-            }
+            disabledDescriptionText
         }
+
+        checkable.isChecked = checked
     }
 
     override fun setEnabled(enabled: Boolean) {
@@ -144,6 +109,14 @@ class CheckablePreferenceView @JvmOverloads constructor(
         title.isEnabled = enabled
         description.isEnabled = enabled
         checkable.isEnabled = enabled
+    }
+
+    override fun toggle() {
+        checkable.toggle()
+    }
+
+    private enum class CheckableType {
+        CHECKBOX, SWITCH_COMPAT
     }
 
 }

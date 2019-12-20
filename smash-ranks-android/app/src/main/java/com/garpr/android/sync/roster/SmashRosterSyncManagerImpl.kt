@@ -42,16 +42,22 @@ class SmashRosterSyncManagerImpl(
             enableOrDisable()
         }
 
+    override var isSyncing: Boolean
+        get() = isSyncingSubject.requireValue()
+        set(value) = isSyncingSubject.onNext(value)
+
     private val isSyncingSubject = BehaviorSubject.createDefault(false)
     override val observeIsSyncing: Observable<Boolean> = isSyncingSubject.hide()
 
     override var syncResult: SmashRosterSyncResult?
         get() = smashRosterPreferenceStore.syncResult.get()
-        set(value) = smashRosterPreferenceStore.syncResult.set(value)
-
-    override var isSyncing: Boolean
-        get() = isSyncingSubject.requireValue()
-        set(value) = isSyncingSubject.onNext(value)
+        set(value) {
+            if (value == null) {
+                smashRosterPreferenceStore.syncResult.delete()
+            } else {
+                smashRosterPreferenceStore.syncResult.set(value)
+            }
+        }
 
     companion object {
         private const val TAG = "SmashRosterSyncManagerImpl"

@@ -1,128 +1,50 @@
 package com.garpr.android.features.settings
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
+import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Toast
 import com.garpr.android.R
-import com.garpr.android.extensions.activity
 import com.garpr.android.features.common.views.SimplePreferenceView
-import com.garpr.android.misc.RequestCodes
-import com.garpr.android.misc.Timber
-import com.garpr.android.preferences.Preference
-import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.sync.rankings.RankingsPollingManager
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
 class RingtonePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : SimplePreferenceView(context, attrs), KoinComponent, View.OnClickListener {
+) : SimplePreferenceView(context, attrs), View.OnClickListener {
 
-    protected val rankingsPollingManager: RankingsPollingManager by inject()
-    protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
-    protected val timber: Timber by inject()
+    var listener: Listener? = null
 
-    private val enabledChangeListener = object : Preference.OnPreferenceChangeListener<Boolean> {
-        override fun onPreferenceChange(preference: Preference<Boolean>) {
-            if (isAlive) {
-                refresh()
+    var ringtoneUri: Uri? = null
+        set(value) {
+            field = value
+
+            val ringtone: Ringtone? = if (value == null) {
+                null
+            } else {
+                RingtoneManager.getRingtone(context, value)
+            }
+
+            descriptionText = if (ringtone == null) {
+                context.getText(R.string.none)
+            } else {
+                ringtone.getTitle(context)
             }
         }
-    }
 
-    private val ringtoneChangeListener = object : Preference.OnPreferenceChangeListener<Uri> {
-        override fun onPreferenceChange(preference: Preference<Uri>) {
-            if (isAlive) {
-                refresh()
-            }
-        }
-    }
-
-    companion object {
-        private const val TAG = "RingtonePreferenceView"
+    interface Listener {
+        fun onClick(v: RingtonePreferenceView)
     }
 
     init {
         titleText = context.getText(R.string.ringtone)
+        descriptionText = context.getText(R.string.none)
         setOnClickListener(this)
-
-        if (isInEditMode) {
-            descriptionText = context.getText(R.string.none)
-        }
-    }
-
-    fun onActivityResult(data: Intent?) {
-        if (data == null || !data.hasExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)) {
-            return
-        }
-
-        val pickedUri = data.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-        rankingsPollingPreferenceStore.ringtone.set(pickedUri)
-        refresh()
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (isInEditMode) {
-            return
-        }
-
-        rankingsPollingPreferenceStore.enabled.addListener(enabledChangeListener)
-        rankingsPollingPreferenceStore.ringtone.addListener(ringtoneChangeListener)
-        refresh()
     }
 
     override fun onClick(v: View) {
-        val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
-                .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
-                .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
-                .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
-
-        rankingsPollingPreferenceStore.ringtone.get()?.let {
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, it)
-        }
-
-        val activity = this.activity
-
-        try {
-            if (activity == null) {
-                context.startActivity(intent)
-            } else {
-                activity.startActivityForResult(intent, RequestCodes.CHANGE_RINGTONE.value)
-            }
-        } catch (e: ActivityNotFoundException) {
-            timber.e(TAG, "Unable to start ringtone picker Activity", e)
-            Toast.makeText(context, R.string.unable_to_launch_ringtone_picker, Toast.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onDetachedFromWindow() {
-        rankingsPollingPreferenceStore.enabled.removeListener(enabledChangeListener)
-        rankingsPollingPreferenceStore.ringtone.removeListener(ringtoneChangeListener)
-        super.onDetachedFromWindow()
-    }
-
-    override fun refresh() {
-        super.refresh()
-
-        val ringtone = rankingsPollingPreferenceStore.ringtone.get()?.let {
-            RingtoneManager.getRingtone(context, it)
-        }
-
-        descriptionText = if (ringtone == null) {
-            context.getText(R.string.none)
-        } else {
-            ringtone.getTitle(context)
-        }
-
-        isEnabled = rankingsPollingManager.isEnabled
+        listener?.onClick(this)
     }
 
 }

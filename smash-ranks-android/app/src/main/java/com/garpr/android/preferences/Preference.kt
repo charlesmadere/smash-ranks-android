@@ -1,24 +1,19 @@
 package com.garpr.android.preferences
 
-interface Preference<T> {
+import com.garpr.android.data.models.Optional
+import io.reactivex.Observable
 
-    interface OnPreferenceChangeListener<T> {
-        fun onPreferenceChange(preference: Preference<T>)
-    }
-
-    fun addListener(listener: OnPreferenceChangeListener<T>)
-
-    val defaultValue: T?
-
-    fun delete()
+interface Preference<T : Any> {
 
     val exists: Boolean
 
-    fun get(): T?
+    val observable: Observable<Optional<T>>
 
     val key: String
 
-    fun removeListener(listener: OnPreferenceChangeListener<T>)
+    fun delete()
+
+    fun get(): T?
 
     fun set(newValue: T?)
 

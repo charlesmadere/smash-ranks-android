@@ -1,5 +1,7 @@
 package com.garpr.android.features.settings
 
+import android.net.Uri
+import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,8 +45,10 @@ class SettingsViewModel(
     private var rankingsPollingState: RankingsPollingState = RankingsPollingState(
             isChargingRequired = rankingsPollingManager.isChargingRequired,
             isEnabled = rankingsPollingManager.isEnabled,
+            isVibrationEnabled = rankingsPollingManager.isVibrationEnabled,
             isWifiRequired = rankingsPollingManager.isWifiRequired,
-            pollFrequency = rankingsPollingManager.pollFrequency
+            pollFrequency = rankingsPollingManager.pollFrequency,
+            ringtone = rankingsPollingManager.ringtone
     )
         set(value) {
             field = value
@@ -84,8 +88,10 @@ class SettingsViewModel(
         regionRepository.addListener(this)
 
         disposables.add(smashRosterSyncManager.observeIsSyncing
-                .subscribeOn(schedulers.background)
-                .subscribe { refreshSmashRosterState(it) })
+                .observeOn(schedulers.background)
+                .subscribe {
+                    refreshSmashRosterState(it)
+                })
     }
 
     override fun onCleared() {
@@ -120,6 +126,7 @@ class SettingsViewModel(
         threadUtils.background.submit {
             refreshFavoritePlayersSize()
             refreshIdentity()
+            refreshRankingsPollingState()
             refreshSmashRosterState()
         }
     }
@@ -136,6 +143,18 @@ class SettingsViewModel(
         state = state.copy(identityState = IdentityState.Fetching)
         val identity = identityRepository.identity
         state = state.copy(identityState = IdentityState.Fetched(identity))
+    }
+
+    @AnyThread
+    private fun refreshRankingsPollingState() {
+        rankingsPollingState = rankingsPollingState.copy(
+                isChargingRequired = rankingsPollingManager.isChargingRequired,
+                isEnabled = rankingsPollingManager.isEnabled,
+                isVibrationEnabled = rankingsPollingManager.isVibrationEnabled,
+                isWifiRequired = rankingsPollingManager.isWifiRequired,
+                pollFrequency = rankingsPollingManager.pollFrequency,
+                ringtone = rankingsPollingManager.ringtone
+        )
     }
 
     @WorkerThread
@@ -156,18 +175,32 @@ class SettingsViewModel(
 
     fun setRankingsPollingIsChargingRequired(isChargingRequired: Boolean) {
         rankingsPollingManager.isChargingRequired = isChargingRequired
+        refreshRankingsPollingState()
     }
 
     fun setRankingsPollingIsEnabled(isEnabled: Boolean) {
         rankingsPollingManager.isEnabled = isEnabled
+        refreshRankingsPollingState()
+    }
+
+    fun setRankingsPollingIsVibrationEnabled(isVibrationEnabled: Boolean) {
+        rankingsPollingManager.isVibrationEnabled = isVibrationEnabled
+        refreshRankingsPollingState()
     }
 
     fun setRankingsPollingIsWifiRequired(isWifiRequired: Boolean) {
         rankingsPollingManager.isWifiRequired = isWifiRequired
+        refreshRankingsPollingState()
     }
 
     fun setRankingsPollingPollFrequency(pollFrequency: PollFrequency) {
         rankingsPollingManager.pollFrequency = pollFrequency
+        refreshRankingsPollingState()
+    }
+
+    fun setRankingsPollingRingtone(ringtone: Uri?) {
+        rankingsPollingManager.ringtone = ringtone
+        refreshRankingsPollingState()
     }
 
     fun syncSmashRoster() {
@@ -180,6 +213,7 @@ class SettingsViewModel(
 
         disposables.add(smashRosterSyncManager.sync()
                 .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
                 .subscribe({
                     timber.d(TAG, "User-requested smash roster sync completed successfully")
                 }, {
@@ -206,8 +240,10 @@ class SettingsViewModel(
     data class RankingsPollingState(
             val isChargingRequired: Boolean,
             val isEnabled: Boolean,
+            val isVibrationEnabled: Boolean,
             val isWifiRequired: Boolean,
-            val pollFrequency: PollFrequency
+            val pollFrequency: PollFrequency,
+            val ringtone: Uri?
     )
 
     sealed class SmashRosterState {

@@ -52,7 +52,6 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
     }
 
     fun setSyncing() {
-        isEnabled = false
         descriptionText = resources.getText(R.string.syncing_now_)
     }
 

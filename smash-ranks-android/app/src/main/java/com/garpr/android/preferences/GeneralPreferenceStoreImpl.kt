@@ -14,19 +14,47 @@ class GeneralPreferenceStoreImpl(
         defaultRegion: Region
 ) : GeneralPreferenceStore {
 
-    override val currentRegion by lazy { PersistentMoshiPreference("CURRENT_REGION",
-            defaultRegion, keyValueStore, moshi, Region::class.java) }
+    override val currentRegion by lazy {
+        PersistentMoshiPreference(
+                key = "CURRENT_REGION",
+                defaultValue = defaultRegion,
+                keyValueStore = keyValueStore,
+                jsonAdapter = moshi.adapter(Region::class.java)
+        )
+    }
 
-    override val hajimeteKimasu by lazy { PersistentBooleanPreference("HAJIMETE_KIMASU",
-            true, keyValueStore) }
+    override val hajimeteKimasu by lazy {
+        PersistentBooleanPreference(
+                key = "HAJIMETE_KIMASU",
+                defaultValue = true,
+                keyValueStore = keyValueStore
+        )
+    }
 
-    override val identity by lazy { PersistentMoshiPreference<FavoritePlayer>("IDENTITY",
-            null, keyValueStore, moshi, FavoritePlayer::class.java) }
+    override val identity by lazy {
+        PersistentMoshiPreference(
+                key = "IDENTITY",
+                defaultValue = null,
+                keyValueStore = keyValueStore,
+                jsonAdapter = moshi.adapter(FavoritePlayer::class.java)
+        )
+    }
 
-    override val lastVersion by lazy { PersistentIntegerPreference("LAST_VERSION",
-            null, keyValueStore) }
+    override val lastVersion by lazy {
+        PersistentIntegerPreference(
+                key = "LAST_VERSION",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+    }
 
-    override val nightMode by lazy { PersistentMoshiPreference("NIGHT_MODE",
-            NightMode.SYSTEM, keyValueStore, moshi, NightMode::class.java) }
+    override val nightMode by lazy {
+        PersistentMoshiPreference(
+                key = "NIGHT_MODE",
+                defaultValue = NightMode.SYSTEM,
+                keyValueStore = keyValueStore,
+                jsonAdapter = moshi.adapter(NightMode::class.java)
+        )
+    }
 
 }

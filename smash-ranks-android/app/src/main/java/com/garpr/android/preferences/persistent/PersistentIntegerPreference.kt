@@ -23,7 +23,6 @@ class PersistentIntegerPreference(
 
     override fun performSet(newValue: Int) {
         keyValueStore.setInteger(key, newValue)
-        notifyListeners()
     }
 
 }

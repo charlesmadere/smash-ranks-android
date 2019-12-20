@@ -13,7 +13,11 @@ class PersistentUriPreference(
         keyValueStore
 ) {
 
-    private val backingPreference = PersistentStringPreference(key, null, keyValueStore)
+    private val backingPreference = PersistentStringPreference(
+            key = key,
+            defaultValue = null,
+            keyValueStore = keyValueStore
+    )
 
     override val exists: Boolean
         get() = backingPreference.exists || defaultValue != null

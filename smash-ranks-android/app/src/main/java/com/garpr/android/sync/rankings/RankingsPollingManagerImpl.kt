@@ -1,5 +1,6 @@
 package com.garpr.android.sync.rankings
 
+import android.net.Uri
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
@@ -33,6 +34,10 @@ class RankingsPollingManagerImpl(
             enableOrDisable()
         }
 
+    override var isVibrationEnabled: Boolean
+        get() = rankingsPollingPreferenceStore.vibrationEnabled.get() == true
+        set(value) = rankingsPollingPreferenceStore.vibrationEnabled.set(value)
+
     override var isWifiRequired: Boolean
         get() = rankingsPollingPreferenceStore.wifiRequired.get() == true
         set(value) {
@@ -45,6 +50,12 @@ class RankingsPollingManagerImpl(
         set(value) {
             rankingsPollingPreferenceStore.pollFrequency.set(value)
             enableOrDisable()
+        }
+
+    override var ringtone: Uri?
+        get() = rankingsPollingPreferenceStore.ringtone.get()
+        set(value) {
+            rankingsPollingPreferenceStore.ringtone.set(value)
         }
 
     private fun disable() {

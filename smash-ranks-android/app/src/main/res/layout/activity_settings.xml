@@ -30,8 +30,8 @@
                 android:id="@+id/identityPreference"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.features.settings.ThemePreferenceView
-                android:id="@+id/themePreference"
+            <com.garpr.android.features.settings.NightModePreferenceView
+                android:id="@+id/nightModePreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.features.settings.DeleteFavoritePlayersPreferenceView
@@ -50,40 +50,40 @@
                 style="@style/SettingsCardDescription" />
 
             <com.garpr.android.features.settings.CheckablePreferenceView
-                android:id="@+id/useRankingsPolling"
+                android:id="@+id/rankingsPollingEnabledPreference"
                 app:checkableType="switch_compat"
                 app:titleText="@string/use_rankings_polling"
                 style="@style/PreferenceView" />
 
-            <com.garpr.android.features.settings.RankingsPollingPollFrequencyPreferenceView
-                android:id="@+id/rankingsPollingFrequencyPreference"
+            <com.garpr.android.features.settings.PollFrequencyPreferenceView
+                android:id="@+id/rankingsPollingPollFrequencyPreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.features.settings.RingtonePreferenceView
-                android:id="@+id/ringtonePreference"
+                android:id="@+id/rankingsPollingRingtonePreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.features.settings.CheckablePreferenceView
-                android:id="@+id/vibratePreference"
+                android:id="@+id/rankingsPollingVibratePreference"
                 app:titleText="@string/vibrate"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.features.settings.CheckablePreferenceView
-                android:id="@+id/mustBeOnWifiPreference"
+                android:id="@+id/rankingsPollingWifiPreference"
                 app:titleText="@string/must_be_on_wifi"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.features.settings.CheckablePreferenceView
-                android:id="@+id/mustBeChargingPreference"
+                android:id="@+id/rankingsPollingChargingPreference"
                 app:titleText="@string/must_be_charging"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.features.settings.LastPollPreferenceView
-                android:id="@+id/lastPollPreference"
+                android:id="@+id/rankingsPollingLastPollPreference"
                 style="@style/PreferenceView" />
 
             <com.garpr.android.features.settings.TestNotificationsView
-                android:id="@+id/testNotification"
+                android:id="@+id/rankingsPollingTestNotification"
                 style="@style/PreferenceView" />
 
             <include

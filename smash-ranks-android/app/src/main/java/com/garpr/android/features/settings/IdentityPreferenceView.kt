@@ -26,12 +26,12 @@ class IdentityPreferenceView @JvmOverloads constructor(
     }
 
     private val setIdentityClickListener = OnClickListener {
-        listeners?.onSetIdentityClick()
+        listeners?.onSetIdentityClick(this)
     }
 
     interface Listeners {
-        fun onDeleteIdentityClick()
-        fun onSetIdentityClick()
+        fun onDeleteIdentityClick(v: IdentityPreferenceView)
+        fun onSetIdentityClick(v: IdentityPreferenceView)
     }
 
     init {
@@ -40,7 +40,7 @@ class IdentityPreferenceView @JvmOverloads constructor(
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
-        listeners?.onDeleteIdentityClick()
+        listeners?.onDeleteIdentityClick(this)
     }
 
     fun setContent(identity: FavoritePlayer?) {

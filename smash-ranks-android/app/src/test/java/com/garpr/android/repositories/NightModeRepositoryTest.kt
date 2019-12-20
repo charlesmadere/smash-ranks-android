@@ -1,10 +1,8 @@
 package com.garpr.android.repositories
 
-import android.content.Context
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.NightMode
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -15,7 +13,6 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class NightModeRepositoryTest : BaseTest() {
 
-    protected val context: Context by inject()
     protected val nightModeRepository: NightModeRepository by inject()
 
     @Test
@@ -54,16 +51,6 @@ class NightModeRepositoryTest : BaseTest() {
     @Test
     fun testGetNightMode() {
         assertNotNull(nightModeRepository.nightMode)
-    }
-
-    @Test
-    fun testGetNightModeStrings() {
-        val strings = nightModeRepository.getNightModeStrings(context)
-        assertFalse(strings.isNullOrEmpty())
-
-        strings.forEach {
-            assertFalse(it.isBlank())
-        }
     }
 
     @Test

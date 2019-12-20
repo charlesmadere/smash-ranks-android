@@ -11,6 +11,7 @@ import com.garpr.android.features.players.PlayersViewModel
 import com.garpr.android.features.rankings.RankingsViewModel
 import com.garpr.android.features.setIdentity.SetIdentityViewModel
 import com.garpr.android.features.setRegion.SetRegionViewModel
+import com.garpr.android.features.settings.SettingsViewModel
 import com.garpr.android.features.splash.SplashScreenViewModel
 import com.garpr.android.features.tournament.TournamentViewModel
 import com.garpr.android.features.tournaments.TournamentsViewModel
@@ -30,6 +31,7 @@ val viewModelsModule = module {
     viewModel { RankingsViewModel(get(), get(), get(), get()) }
     viewModel { SetIdentityViewModel(get(), get(), get(), get(), get()) }
     viewModel { SetRegionViewModel(get(), get(), get()) }
+    viewModel { SettingsViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SplashScreenViewModel(get()) }
     viewModel { TournamentViewModel(get(), get(), get(), get()) }
     viewModel { TournamentsViewModel(get(), get(), get()) }

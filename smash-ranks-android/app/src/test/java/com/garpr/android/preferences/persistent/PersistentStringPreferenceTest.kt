@@ -1,8 +1,11 @@
 package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.Optional
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
+import com.garpr.android.preferences.Preference
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -32,65 +35,173 @@ class PersistentStringPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testDeleteWithDefaultValue() {
-        val preference = PersistentStringPreference("string", "hello", keyValueStore)
-        preference.delete()
-        assertNotNull(preference.get())
-        assertTrue(preference.exists)
-
-        preference.set("world")
-        preference.delete()
-        assertNotNull(preference.get())
-        assertTrue(preference.exists)
-    }
-
-    @Test
-    fun testDeleteWithNullDefaultValue() {
-        val preference = PersistentStringPreference("string", null, keyValueStore)
-        preference.delete()
-        assertNull(preference.get())
-        assertFalse(preference.exists)
-
-        preference.set("nintendo")
-        preference.delete()
-        assertNull(preference.get())
-        assertFalse(preference.exists)
-    }
-
-    @Test
     fun testExistsWithDefaultValue() {
-        val preference = PersistentStringPreference("string", "hello", keyValueStore)
-        assertTrue(preference.exists)
-
-        preference.delete()
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = "Hello, World!",
+                keyValueStore = keyValueStore
+        )
         assertTrue(preference.exists)
     }
 
     @Test
     fun testExistsWithEmptyDefaultValue() {
-        val preference = PersistentStringPreference("string", "", keyValueStore)
-        assertTrue(preference.exists)
-
-        preference.delete()
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = "",
+                keyValueStore = keyValueStore
+        )
         assertTrue(preference.exists)
     }
 
     @Test
     fun testExistsWithNullDefaultValue() {
-        val preference = PersistentStringPreference("string", null, keyValueStore)
-        assertFalse(preference.exists)
-
-        preference.delete()
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
         assertFalse(preference.exists)
     }
 
     @Test
     fun testExistsWithWhitespaceDefaultValue() {
-        val preference = PersistentStringPreference("string", "   ", keyValueStore)
-        assertTrue(preference.exists)
-
-        preference.delete()
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = " ",
+                keyValueStore = keyValueStore
+        )
         assertTrue(preference.exists)
     }
 
+    @Test
+    fun testGetAndSetAndDeleteAndExistsWithDefaultValue() {
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = "Hello, World!",
+                keyValueStore = keyValueStore
+        )
+        assertEquals("Hello, World!", preference.get())
+        assertTrue(preference.exists)
+
+        preference.set("")
+        assertEquals("", preference.get())
+        assertTrue(preference.exists)
+
+        preference.delete()
+        assertEquals("Hello, World!", preference.get())
+        assertTrue(preference.exists)
+
+        preference.set("Google")
+        assertEquals("Google", preference.get())
+        assertTrue(preference.exists)
+    }
+
+    @Test
+    fun testGetAndSetAndDeleteAndExistsWithNullDefaultValue() {
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+        assertNull(preference.get())
+        assertFalse(preference.exists)
+
+        preference.set("")
+        assertEquals("", preference.get())
+        assertTrue(preference.exists)
+
+        preference.delete()
+        assertNull(preference.get())
+        assertFalse(preference.exists)
+
+        preference.set("Microsoft")
+        assertEquals("Microsoft", preference.get())
+        assertTrue(preference.exists)
+    }
+
+    @Test
+    fun testKey() {
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+        assertEquals("string", preference.key)
+    }
+
+    @Test
+    fun testObserveWithDefaultValue() {
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = "Hello, World!",
+                keyValueStore = keyValueStore
+        )
+
+        var value: Optional<String>? = null
+
+        preference.observable.subscribe {
+            value = it
+        }
+
+        assertNull(value)
+
+        preference.set("blah")
+        assertNotNull(value)
+        assertEquals("blah", value?.item)
+
+        preference.set("melee")
+        assertNotNull(value)
+        assertEquals("melee", value?.item)
+
+        preference.delete()
+        assertNotNull(value)
+        assertEquals("Hello, World!", value?.item)
+    }
+
+    @Test
+    fun testObserveWithNullDefaultValue() {
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+
+        var value: Optional<String>? = null
+
+        preference.observable.subscribe {
+            value = it
+        }
+
+        assertNull(value)
+
+        preference.set("nintendo")
+        assertNotNull(value)
+        assertEquals("nintendo", value?.item)
+
+        preference.set("game")
+        assertNotNull(value)
+        assertEquals("game", value?.item)
+
+        preference.delete()
+        assertNotNull(value)
+        assertEquals(false, value?.isPresent)
+    }
+
+    @Test
+    fun testSetWithNullCausesDelete() {
+        val preference: Preference<String> = PersistentStringPreference(
+                key = "string",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+
+        preference.set("Hello, World!")
+        assertTrue(preference.exists)
+
+        preference.set(null)
+        assertFalse(preference.exists)
+    }
+
 }
+

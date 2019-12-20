@@ -6,18 +6,18 @@ import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.setTintedImageDrawable
-import com.garpr.android.misc.Refreshable
 import kotlinx.android.synthetic.main.view_simple_preference.view.*
 
 open class SimplePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleConstraintLayout(context, attrs), Refreshable {
+) : ConstraintLayout(context, attrs) {
 
     var descriptionText: CharSequence?
         get() = description.text
@@ -52,10 +52,6 @@ open class SimplePreferenceView @JvmOverloads constructor(
 
     override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>) {
         dispatchFreezeSelfOnly(container)
-    }
-
-    override fun refresh() {
-        // intentionally empty, children can override
     }
 
     override fun setEnabled(enabled: Boolean) {

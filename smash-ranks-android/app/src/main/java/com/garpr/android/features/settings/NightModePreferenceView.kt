@@ -10,7 +10,7 @@ import com.garpr.android.R
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.features.common.views.SimplePreferenceView
 
-class ThemePreferenceView @JvmOverloads constructor(
+class NightModePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), DialogInterface.OnClickListener, View.OnClickListener {
@@ -19,7 +19,7 @@ class ThemePreferenceView @JvmOverloads constructor(
     private var nightMode: NightMode? = null
 
     interface Listener {
-        fun onNightModeChange(v: ThemePreferenceView, nightMode: NightMode)
+        fun onNightModeChange(v: NightModePreferenceView, nightMode: NightMode)
     }
 
     init {
@@ -36,7 +36,7 @@ class ThemePreferenceView @JvmOverloads constructor(
         dialog.dismiss()
 
         val selected = NightMode.values()[which]
-        if (checkNotNull(nightMode) == selected) {
+        if (nightMode == selected) {
             return
         }
 
@@ -44,7 +44,7 @@ class ThemePreferenceView @JvmOverloads constructor(
                 .setMessage(R.string.the_app_will_now_restart)
                 .setNeutralButton(R.string.ok, null)
                 .setOnDismissListener {
-                    listener?.onNightModeChange(this@ThemePreferenceView, selected)
+                    listener?.onNightModeChange(this@NightModePreferenceView, selected)
                 }
                 .show()
     }

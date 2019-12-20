@@ -11,17 +11,38 @@ class SmashRosterPreferenceStoreImpl(
         moshi: Moshi
 ) : SmashRosterPreferenceStore {
 
-    override val enabled by lazy { PersistentBooleanPreference("ENABLED", true,
-            keyValueStore) }
+    override val enabled by lazy {
+        PersistentBooleanPreference(
+                key = "ENABLED",
+                defaultValue = true,
+                keyValueStore = keyValueStore
+        )
+    }
 
-    override val hajimeteSync by lazy { PersistentBooleanPreference("HAJIMETE_SYNC",
-            true, keyValueStore) }
+    override val hajimeteSync by lazy {
+        PersistentBooleanPreference(
+                key = "HAJIMETE_SYNC",
+                defaultValue = true,
+                keyValueStore = keyValueStore
+        )
+    }
 
-    override val pollFrequency by lazy { PersistentMoshiPreference("POLL_FREQUENCY",
-            PollFrequency.EVERY_2_WEEKS, keyValueStore, moshi, PollFrequency::class.java) }
+    override val pollFrequency by lazy {
+        PersistentMoshiPreference(
+                key = "POLL_FREQUENCY",
+                defaultValue = PollFrequency.EVERY_2_WEEKS,
+                keyValueStore = keyValueStore,
+                jsonAdapter = moshi.adapter(PollFrequency::class.java)
+        )
+    }
 
-    override val syncResult by lazy { PersistentMoshiPreference<SmashRosterSyncResult>(
-            "SYNC_RESULT", null, keyValueStore, moshi,
-            SmashRosterSyncResult::class.java) }
+    override val syncResult by lazy {
+        PersistentMoshiPreference(
+                key = "SYNC_RESULT",
+                defaultValue = null,
+                keyValueStore = keyValueStore,
+                jsonAdapter = moshi.adapter(SmashRosterSyncResult::class.java)
+        )
+    }
 
 }

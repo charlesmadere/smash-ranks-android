@@ -23,7 +23,7 @@ class TestNotificationsView @JvmOverloads constructor(
     init {
         titleText = context.getText(R.string.show_test_notification)
         descriptionText = context.getText(R.string.debug_only)
-        visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+        visibility = if (BuildConfig.DEBUG) VISIBLE else GONE
         setOnClickListener(this)
     }
 

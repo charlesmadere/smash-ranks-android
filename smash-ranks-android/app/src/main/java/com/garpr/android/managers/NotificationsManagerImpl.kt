@@ -14,12 +14,12 @@ import com.garpr.android.extensions.notificationManager
 import com.garpr.android.extensions.notificationManagerCompat
 import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.misc.Timber
-import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.sync.rankings.RankingsPollingManager
 
 class NotificationsManagerImpl(
         private val context: Context,
-        private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
+        private val rankingsPollingManager: RankingsPollingManager,
         private val regionRepository: RegionRepository,
         private val timber: Timber
 ) : NotificationsManager {
@@ -74,13 +74,13 @@ class NotificationsManagerImpl(
         builder.setContentText(context.getString(R.string.x_rankings_have_been_updated,
                 regionDisplayName))
 
-        if (rankingsPollingPreferenceStore.vibrationEnabled.get() == true) {
+        if (rankingsPollingManager.isVibrationEnabled) {
             builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS or NotificationCompat.DEFAULT_VIBRATE)
         } else {
             builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS)
         }
 
-        rankingsPollingPreferenceStore.ringtone.get()?.let {
+        rankingsPollingManager.ringtone?.let {
             builder.setSound(it)
         }
 
