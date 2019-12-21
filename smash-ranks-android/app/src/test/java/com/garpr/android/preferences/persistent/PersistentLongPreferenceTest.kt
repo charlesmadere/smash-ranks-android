@@ -111,7 +111,7 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithDefaultValue() {
+    fun testObservableWithDefaultValue() {
         val preference: Preference<Long> = PersistentLongPreference(
                 key = "integer",
                 defaultValue = -50L,
@@ -140,7 +140,7 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithNullDefaultValue() {
+    fun testObservableWithNullDefaultValue() {
         val preference: Preference<Long> = PersistentLongPreference(
                 key = "long",
                 defaultValue = null,

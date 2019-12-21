@@ -121,7 +121,7 @@ class PersistentBooleanPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithDefaultValue() {
+    fun testObservableWithDefaultValue() {
         val preference: Preference<Boolean> = PersistentBooleanPreference(
                 key = "boolean",
                 defaultValue = true,
@@ -150,7 +150,7 @@ class PersistentBooleanPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithNullDefaultValue() {
+    fun testObservableWithNullDefaultValue() {
         val preference: Preference<Boolean> = PersistentBooleanPreference(
                 key = "boolean",
                 defaultValue = null,

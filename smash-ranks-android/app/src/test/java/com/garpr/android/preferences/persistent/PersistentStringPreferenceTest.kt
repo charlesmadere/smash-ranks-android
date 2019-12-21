@@ -131,7 +131,7 @@ class PersistentStringPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithDefaultValue() {
+    fun testObservableWithDefaultValue() {
         val preference: Preference<String> = PersistentStringPreference(
                 key = "string",
                 defaultValue = "Hello, World!",
@@ -160,7 +160,7 @@ class PersistentStringPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithNullDefaultValue() {
+    fun testObservableWithNullDefaultValue() {
         val preference: Preference<String> = PersistentStringPreference(
                 key = "string",
                 defaultValue = null,

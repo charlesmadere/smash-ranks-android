@@ -168,7 +168,7 @@ class PersistentMoshiPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithDefaultValue() {
+    fun testObservableWithDefaultValue() {
         val preference: Preference<AbsPlayer> = PersistentMoshiPreference(
                 key = "player",
                 defaultValue = SNAP,
@@ -198,7 +198,7 @@ class PersistentMoshiPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithNullDefaultValue() {
+    fun testObservableWithNullDefaultValue() {
         val preference: Preference<AbsPlayer> = PersistentMoshiPreference(
                 key = "player",
                 defaultValue = null,

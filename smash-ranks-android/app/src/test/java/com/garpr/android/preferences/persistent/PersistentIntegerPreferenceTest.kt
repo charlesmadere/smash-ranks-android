@@ -111,7 +111,7 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithDefaultValue() {
+    fun testObservableWithDefaultValue() {
         val preference: Preference<Int> = PersistentIntegerPreference(
                 key = "integer",
                 defaultValue = -31,
@@ -140,7 +140,7 @@ class PersistentIntegerPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testObserveWithNullDefaultValue() {
+    fun testObservableWithNullDefaultValue() {
         val preference: Preference<Int> = PersistentIntegerPreference(
                 key = "integer",
                 defaultValue = null,
