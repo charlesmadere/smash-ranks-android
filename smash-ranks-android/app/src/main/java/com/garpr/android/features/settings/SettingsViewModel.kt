@@ -33,8 +33,8 @@ class SettingsViewModel(
         private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
-        IdentityRepository.OnIdentityChangeListener, NightModeRepository.OnNightModeChangeListener,
-        Refreshable, RegionRepository.OnRegionChangeListener {
+        IdentityRepository.OnIdentityChangeListener, Refreshable,
+        RegionRepository.OnRegionChangeListener {
 
     private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>()
     val rankingsPollingStateLiveData: LiveData<RankingsPollingState> = _rankingsPollingStateLiveData
@@ -84,8 +84,13 @@ class SettingsViewModel(
     private fun initListeners() {
         favoritePlayersRepository.addListener(this)
         identityRepository.addListener(this)
-        nightModeRepository.addListener(this)
         regionRepository.addListener(this)
+
+        disposables.add(nightModeRepository.observable
+                .observeOn(schedulers.background)
+                .subscribe {
+                    state = state.copy(nightMode = it)
+                })
 
         disposables.add(smashRosterSyncManager.observeIsSyncing
                 .observeOn(schedulers.background)
@@ -97,7 +102,6 @@ class SettingsViewModel(
     override fun onCleared() {
         favoritePlayersRepository.removeListener(this)
         identityRepository.removeListener(this)
-        nightModeRepository.removeListener(this)
         regionRepository.removeListener(this)
         super.onCleared()
     }
@@ -108,12 +112,6 @@ class SettingsViewModel(
 
     override fun onIdentityChange(identityRepository: IdentityRepository) {
         refreshIdentity()
-    }
-
-    override fun onNightModeChange(nightModeRepository: NightModeRepository) {
-        state = state.copy(
-                nightMode = nightModeRepository.nightMode
-        )
     }
 
     override fun onRegionChange(regionRepository: RegionRepository) {

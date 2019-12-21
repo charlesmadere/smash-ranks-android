@@ -3,8 +3,6 @@ package com.garpr.android.repositories
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.NightMode
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.inject
@@ -16,66 +14,29 @@ class NightModeRepositoryTest : BaseTest() {
     protected val nightModeRepository: NightModeRepository by inject()
 
     @Test
-    fun testAddListener() {
-        var nightMode: NightMode? = null
+    fun testInitialNightMode() {
+        assertEquals(NightMode.SYSTEM, nightModeRepository.nightMode)
+    }
 
-        val listener = object : NightModeRepository.OnNightModeChangeListener {
-            override fun onNightModeChange(nightModeRepository: NightModeRepository) {
-                nightMode = nightModeRepository.nightMode
-            }
+    @Test
+    fun testObservable() {
+        var value: NightMode? = null
+
+        nightModeRepository.observable.subscribe {
+            value = it
         }
 
-        nightModeRepository.addListener(listener)
-        assertNull(nightMode)
+        assertEquals(NightMode.SYSTEM, value)
 
         nightModeRepository.nightMode = NightMode.NIGHT_NO
-        assertEquals(NightMode.NIGHT_NO, nightMode)
-    }
+        assertEquals(NightMode.NIGHT_NO, value)
 
-    @Test
-    fun testAddListenerTwice() {
-        var count = 0
-
-        val listener = object : NightModeRepository.OnNightModeChangeListener {
-            override fun onNightModeChange(nightModeRepository: NightModeRepository) {
-                ++count
-            }
-        }
-
-        nightModeRepository.addListener(listener)
-        nightModeRepository.addListener(listener)
-        nightModeRepository.nightMode = NightMode.SYSTEM
-        assertEquals(1, count)
-    }
-
-    @Test
-    fun testGetNightMode() {
-        assertNotNull(nightModeRepository.nightMode)
-    }
-
-    @Test
-    fun testRemoveListener() {
-        var nightMode: NightMode? = null
-
-        val listener = object : NightModeRepository.OnNightModeChangeListener {
-            override fun onNightModeChange(nightModeRepository: NightModeRepository) {
-                nightMode = nightModeRepository.nightMode
-            }
-        }
-
-        nightModeRepository.addListener(listener)
-        assertNull(nightMode)
-
-        nightModeRepository.nightMode = NightMode.NIGHT_YES
-        assertEquals(NightMode.NIGHT_YES, nightMode)
-
-        nightModeRepository.removeListener(listener)
         nightModeRepository.nightMode = NightMode.AUTO
-        assertEquals(NightMode.NIGHT_YES, nightMode)
+        assertEquals(NightMode.AUTO, value)
     }
 
     @Test
-    fun testSetNightMode() {
+    fun testSetNightModeAndGetNightMode() {
         nightModeRepository.nightMode = NightMode.AUTO
         assertEquals(NightMode.AUTO, nightModeRepository.nightMode)
 
@@ -87,6 +48,9 @@ class NightModeRepositoryTest : BaseTest() {
 
         nightModeRepository.nightMode = NightMode.SYSTEM
         assertEquals(NightMode.SYSTEM, nightModeRepository.nightMode)
+
+        nightModeRepository.nightMode = NightMode.NIGHT_NO
+        assertEquals(NightMode.NIGHT_NO, nightModeRepository.nightMode)
     }
 
 }

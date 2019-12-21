@@ -1,17 +1,12 @@
 package com.garpr.android.repositories
 
 import com.garpr.android.data.models.NightMode
+import io.reactivex.Observable
 
 interface NightModeRepository {
 
-    interface OnNightModeChangeListener {
-        fun onNightModeChange(nightModeRepository: NightModeRepository)
-    }
-
     var nightMode: NightMode
 
-    fun addListener(listener: OnNightModeChangeListener)
-
-    fun removeListener(listener: OnNightModeChangeListener?)
+    val observable: Observable<NightMode>
 
 }
