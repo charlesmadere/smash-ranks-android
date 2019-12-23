@@ -14,14 +14,12 @@ import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel.ListItem
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.ListLayout
-import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.fragment_favorite_players.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners, ListLayout,
-        Refreshable {
+class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners, ListLayout {
 
     private val adapter = Adapter(this)
 
@@ -69,11 +67,6 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
 
         initViews()
         initListeners()
-        refresh()
-    }
-
-    override fun refresh() {
-        viewModel.refresh()
     }
 
     private fun refreshState(state: FavoritePlayersViewModel.State) {
@@ -91,6 +84,8 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
             empty.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
+
+        refreshLayout.isRefreshing = state.isFetching
     }
 
     private class Adapter(

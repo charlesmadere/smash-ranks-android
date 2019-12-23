@@ -6,6 +6,7 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel.ListItem
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
@@ -25,6 +26,7 @@ class FavoritePlayersViewModelTest : BaseTest() {
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val identityRepository: IdentityRepository by inject()
+    protected val schedulers: Schedulers by inject()
     protected val threadUtils: ThreadUtils by inject()
 
     companion object {
@@ -71,7 +73,7 @@ class FavoritePlayersViewModelTest : BaseTest() {
         super.setUp()
 
         viewModel = FavoritePlayersViewModel(favoritePlayersRepository, identityRepository,
-                threadUtils)
+                schedulers, threadUtils)
     }
 
     @Test

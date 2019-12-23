@@ -29,8 +29,7 @@ class PlayerViewModel(
         private val smashRosterSyncManager: SmashRosterSyncManager,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
-        IdentityRepository.OnIdentityChangeListener, Refreshable, Searchable {
+) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener, Refreshable, Searchable {
 
     val identity: FavoritePlayer?
         get() = identityRepository.identity
@@ -151,27 +150,23 @@ class PlayerViewModel(
     }
 
     private fun initListeners() {
-        favoritePlayersRepository.addListener(this)
         identityRepository.addListener(this)
 
-        disposables.add(smashRosterSyncManager.observeIsSyncing
+        disposables.add(favoritePlayersRepository.playersObservable
+                .subscribe {
+                    refresh()
+                })
+
+        disposables.add(smashRosterSyncManager.isSyncingObservable
                 .filter { isSyncing -> !isSyncing }
-                .subscribe({
+                .subscribe {
                     refresh()
-                }, {
-                    timber.e(TAG, "Error listening for smash roster sync events", it)
-                    refresh()
-                }))
+                })
     }
 
     override fun onCleared() {
-        favoritePlayersRepository.removeListener(this)
         identityRepository.removeListener(this)
         super.onCleared()
-    }
-
-    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-        refresh()
     }
 
     override fun onIdentityChange(identityRepository: IdentityRepository) {

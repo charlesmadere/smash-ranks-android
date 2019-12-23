@@ -1,15 +1,20 @@
 package com.garpr.android.features.favoritePlayers
 
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.Schedulers
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
 
 class AddOrRemovePlayerFromFavoritesViewModel(
-        private val favoritePlayersRepository: FavoritePlayersRepository
-) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener, Refreshable {
+        private val favoritePlayersRepository: FavoritePlayersRepository,
+        private val schedulers: Schedulers,
+        private val threadUtils: ThreadUtils
+) : BaseViewModel(), Refreshable {
 
     private var player: FavoritePlayer? = null
 
@@ -23,7 +28,7 @@ class AddOrRemovePlayerFromFavoritesViewModel(
         }
 
     init {
-        favoritePlayersRepository.addListener(this)
+        initListeners()
     }
 
     fun addToFavorites() {
@@ -36,22 +41,30 @@ class AddOrRemovePlayerFromFavoritesViewModel(
         refresh()
     }
 
-    override fun onCleared() {
-        favoritePlayersRepository.removeListener(this)
-        super.onCleared()
-    }
-
-    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-        refresh()
+    private fun initListeners() {
+        disposables.add(favoritePlayersRepository.playersObservable
+                .observeOn(schedulers.background)
+                .subscribe { optional ->
+                    refreshIsAlreadyFavorited(optional.item)
+                })
     }
 
     override fun refresh() {
+        threadUtils.background.submit {
+            refreshIsAlreadyFavorited(favoritePlayersRepository.players)
+        }
+    }
+
+    @WorkerThread
+    private fun refreshIsAlreadyFavorited(players: List<FavoritePlayer>?) {
         val player = this.player
 
-        val isAlreadyFavorited = if (player == null) {
+        val isAlreadyFavorited = if (player == null || players.isNullOrEmpty()) {
             false
         } else {
-            player in favoritePlayersRepository
+            players.any { favoritePlayer ->
+                favoritePlayer.id.equals(player.id, ignoreCase = true)
+            }
         }
 
         state = state.copy(isAlreadyFavorited = isAlreadyFavorited)

@@ -32,8 +32,7 @@ class SettingsViewModel(
         private val smashRosterSyncManager: SmashRosterSyncManager,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
-        IdentityRepository.OnIdentityChangeListener, Refreshable,
+) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener, Refreshable,
         RegionRepository.OnRegionChangeListener {
 
     private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>()
@@ -82,32 +81,32 @@ class SettingsViewModel(
     }
 
     private fun initListeners() {
-        favoritePlayersRepository.addListener(this)
         identityRepository.addListener(this)
         regionRepository.addListener(this)
 
-        disposables.add(nightModeRepository.observable
+        disposables.add(favoritePlayersRepository.playersObservable
                 .observeOn(schedulers.background)
                 .subscribe {
-                    state = state.copy(nightMode = it)
+                    refreshFavoritePlayers()
                 })
 
-        disposables.add(smashRosterSyncManager.observeIsSyncing
+        disposables.add(nightModeRepository.observable
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshSmashRosterState(it)
+                .subscribe { nightMode ->
+                    refreshNightMode(nightMode)
+                })
+
+        disposables.add(smashRosterSyncManager.isSyncingObservable
+                .observeOn(schedulers.background)
+                .subscribe { isSyncing ->
+                    refreshSmashRosterState(isSyncing)
                 })
     }
 
     override fun onCleared() {
-        favoritePlayersRepository.removeListener(this)
         identityRepository.removeListener(this)
         regionRepository.removeListener(this)
         super.onCleared()
-    }
-
-    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-        refreshFavoritePlayersSize()
     }
 
     override fun onIdentityChange(identityRepository: IdentityRepository) {
@@ -115,14 +114,12 @@ class SettingsViewModel(
     }
 
     override fun onRegionChange(regionRepository: RegionRepository) {
-        state = state.copy(
-                region = regionRepository.getRegion()
-        )
+        state = state.copy(region = regionRepository.getRegion())
     }
 
     override fun refresh() {
         threadUtils.background.submit {
-            refreshFavoritePlayersSize()
+            refreshFavoritePlayers()
             refreshIdentity()
             refreshRankingsPollingState()
             refreshSmashRosterState()
@@ -130,7 +127,7 @@ class SettingsViewModel(
     }
 
     @WorkerThread
-    private fun refreshFavoritePlayersSize() {
+    private fun refreshFavoritePlayers() {
         state = state.copy(favoritePlayersState = FavoritePlayersState.Fetching)
         val size = favoritePlayersRepository.size
         state = state.copy(favoritePlayersState = FavoritePlayersState.Fetched(size))
@@ -141,6 +138,11 @@ class SettingsViewModel(
         state = state.copy(identityState = IdentityState.Fetching)
         val identity = identityRepository.identity
         state = state.copy(identityState = IdentityState.Fetched(identity))
+    }
+
+    @AnyThread
+    private fun refreshNightMode(nightMode: NightMode = nightModeRepository.nightMode) {
+        state = state.copy(nightMode = nightMode)
     }
 
     @AnyThread

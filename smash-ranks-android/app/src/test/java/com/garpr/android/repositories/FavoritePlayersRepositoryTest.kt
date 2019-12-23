@@ -4,10 +4,10 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.Optional
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,60 +30,6 @@ class FavoritePlayersRepositoryTest : BaseTest() {
                 id = "5877eb55d2994e15c7dea97e",
                 name = "Spark"
         )
-    }
-
-    @Test
-    fun testAbsPlayers() {
-        var absPlayers = favoritePlayersRepository.players
-        assertTrue(absPlayers.isNullOrEmpty())
-
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-
-        absPlayers = favoritePlayersRepository.players
-        assertNotNull(absPlayers)
-        assertEquals(2, absPlayers?.size)
-
-        assertEquals(PLAYER_0, absPlayers?.get(0))
-        assertEquals(PLAYER_1, absPlayers?.get(1))
-    }
-
-    @Test
-    fun testAddListener() {
-        var players: List<FavoritePlayer>? = null
-
-        val listener = object : FavoritePlayersRepository.OnFavoritePlayersChangeListener {
-            override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-                players = favoritePlayersRepository.players
-            }
-        }
-
-        favoritePlayersRepository.addListener(listener)
-        assertNull(players)
-
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertNotNull(players)
-        assertEquals(1, players?.size)
-        assertEquals(PLAYER_0, players?.get(0))
-
-        favoritePlayersRepository.removePlayer(PLAYER_0)
-        assertTrue(players.isNullOrEmpty())
-    }
-
-    @Test
-    fun testAddListenerTwice() {
-        var count = 0
-
-        val listener = object : FavoritePlayersRepository.OnFavoritePlayersChangeListener {
-            override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-                ++count
-            }
-        }
-
-        favoritePlayersRepository.addListener(listener)
-        favoritePlayersRepository.addListener(listener)
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertEquals(1, count)
     }
 
     @Test
@@ -192,76 +138,57 @@ class FavoritePlayersRepositoryTest : BaseTest() {
         var players = favoritePlayersRepository.players
         assertTrue(players.isNullOrEmpty())
 
-        var absPlayers = favoritePlayersRepository.players
-        assertTrue(absPlayers.isNullOrEmpty())
-
         favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
         players = favoritePlayersRepository.players
         assertNotNull(players)
         assertEquals(1, players?.size)
-
-        absPlayers = favoritePlayersRepository.players
-        assertNotNull(absPlayers)
-        assertEquals(1, absPlayers?.size)
 
         favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         players = favoritePlayersRepository.players
         assertNotNull(players)
         assertEquals(2, players?.size)
 
-        absPlayers = favoritePlayersRepository.players
-        assertNotNull(absPlayers)
-        assertEquals(2, absPlayers?.size)
-
         favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
         players = favoritePlayersRepository.players
         assertNotNull(players)
         assertEquals(2, players?.size)
 
-        absPlayers = favoritePlayersRepository.players
-        assertNotNull(absPlayers)
-        assertEquals(2, absPlayers?.size)
-
         favoritePlayersRepository.removePlayer(PLAYER_0)
         players = favoritePlayersRepository.players
         assertNotNull(players)
         assertEquals(1, players?.size)
-
-        absPlayers = favoritePlayersRepository.players
-        assertNotNull(absPlayers)
-        assertEquals(1, absPlayers?.size)
 
         favoritePlayersRepository.removePlayer(PLAYER_1)
         players = favoritePlayersRepository.players
         assertTrue(players.isNullOrEmpty())
-
-        absPlayers = favoritePlayersRepository.players
-        assertTrue(absPlayers.isNullOrEmpty())
     }
 
     @Test
-    fun testRemoveListener() {
-        var players: List<FavoritePlayer>? = null
+    fun testPlayersObservable() {
+        var value: Optional<List<FavoritePlayer>>? = null
 
-        val listener = object : FavoritePlayersRepository.OnFavoritePlayersChangeListener {
-            override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-                players = favoritePlayersRepository.players
-            }
+        favoritePlayersRepository.playersObservable.subscribe {
+            value = it
         }
 
-        favoritePlayersRepository.addListener(listener)
-        assertNull(players)
+        assertNotNull(value)
+        assertTrue(value?.item.isNullOrEmpty())
 
         favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertNotNull(players)
-        assertEquals(1, players?.size)
-        assertEquals(PLAYER_0, players?.get(0))
+        assertNotNull(value)
+        assertEquals(1, value?.item?.size)
 
-        favoritePlayersRepository.removeListener(listener)
+        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
+        assertNotNull(value)
+        assertEquals(2, value?.item?.size)
+
+        favoritePlayersRepository.removePlayer(PLAYER_1)
+        assertNotNull(value)
+        assertEquals(1, value?.item?.size)
+
         favoritePlayersRepository.removePlayer(PLAYER_0)
-        assertNotNull(players)
-        assertEquals(1, players?.size)
-        assertEquals(PLAYER_0, players?.get(0))
+        assertNotNull(value)
+        assertTrue(value?.item.isNullOrEmpty())
     }
 
     @Test

@@ -1,10 +1,12 @@
 package com.garpr.android.features.home
 
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
@@ -14,9 +16,9 @@ class HomeViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityRepository: IdentityRepository,
         rankingsPollingManager: RankingsPollingManager,
+        private val schedulers: Schedulers,
         smashRosterSyncManager: SmashRosterSyncManager
-) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
-        IdentityRepository.OnIdentityChangeListener {
+) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -29,21 +31,24 @@ class HomeViewModel(
         get() = identityRepository.identity
 
     init {
-        favoritePlayersRepository.addListener(this)
-        identityRepository.addListener(this)
+        initListeners()
         rankingsPollingManager.enableOrDisable()
         smashRosterSyncManager.enableOrDisable()
     }
 
-    override fun onCleared() {
-        identityRepository.removeListener(this)
-        favoritePlayersRepository.removeListener(this)
-        super.onCleared()
+    private fun initListeners() {
+        identityRepository.addListener(this)
+
+        disposables.add(favoritePlayersRepository.playersObservable
+                .observeOn(schedulers.background)
+                .subscribe {
+                    refreshFavoritePlayers()
+                })
     }
 
-    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-        state = state.copy(hasFavoritePlayers = !favoritePlayersRepository.isEmpty)
-        refreshState()
+    override fun onCleared() {
+        identityRepository.removeListener(this)
+        super.onCleared()
     }
 
     override fun onIdentityChange(identityRepository: IdentityRepository) {
@@ -67,6 +72,12 @@ class HomeViewModel(
 
     fun onTournamentsBundleChange(isEmpty: Boolean) {
         state = state.copy(hasTournaments = !isEmpty)
+        refreshState()
+    }
+
+    @WorkerThread
+    private fun refreshFavoritePlayers() {
+        state = state.copy(hasFavoritePlayers = !favoritePlayersRepository.isEmpty)
         refreshState()
     }
 

@@ -2,21 +2,19 @@ package com.garpr.android.repositories
 
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
+import io.reactivex.Observable
 
 interface FavoritePlayersRepository {
 
-    interface OnFavoritePlayersChangeListener {
-        fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository)
-    }
-
     val isEmpty: Boolean
-
-    val players: List<FavoritePlayer>?
 
     val size: Int
 
-    fun addListener(listener: OnFavoritePlayersChangeListener)
+    val players: List<FavoritePlayer>?
+
+    val playersObservable: Observable<Optional<List<FavoritePlayer>>>
 
     fun addPlayer(player: AbsPlayer, region: Region)
 
@@ -25,8 +23,6 @@ interface FavoritePlayersRepository {
     operator fun contains(player: AbsPlayer): Boolean
 
     operator fun contains(playerId: String): Boolean
-
-    fun removeListener(listener: OnFavoritePlayersChangeListener?)
 
     fun removePlayer(player: AbsPlayer)
 

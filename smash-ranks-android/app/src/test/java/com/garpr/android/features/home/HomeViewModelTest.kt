@@ -8,6 +8,7 @@ import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentsBundle
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
@@ -30,6 +31,7 @@ class HomeViewModelTest : BaseTest() {
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val identityRepository: IdentityRepository by inject()
     protected val rankingsPollingManager: RankingsPollingManager by inject()
+    protected val schedulers: Schedulers by inject()
     protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
 
     companion object {
@@ -59,7 +61,7 @@ class HomeViewModelTest : BaseTest() {
         super.setUp()
 
         viewModel = HomeViewModel(favoritePlayersRepository, identityRepository,
-                rankingsPollingManager, smashRosterSyncManager)
+                rankingsPollingManager, schedulers, smashRosterSyncManager)
     }
 
     @Test
