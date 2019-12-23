@@ -47,7 +47,7 @@ class SmashRosterSyncManagerImpl(
         set(value) = isSyncingSubject.onNext(value)
 
     private val isSyncingSubject = BehaviorSubject.createDefault(false)
-    override val observeIsSyncing: Observable<Boolean> = isSyncingSubject.hide()
+    override val isSyncingObservable: Observable<Boolean> = isSyncingSubject.hide()
 
     override var syncResult: SmashRosterSyncResult?
         get() = smashRosterPreferenceStore.syncResult.get()
