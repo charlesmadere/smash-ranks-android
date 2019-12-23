@@ -13,6 +13,7 @@ import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -121,6 +122,34 @@ class FavoritePlayersViewModelTest : BaseTest() {
 
         player = state?.list?.get(0) as ListItem.FavoritePlayer
         assertEquals(SNAP, player.player)
+    }
+
+    @Test
+    fun testInit() {
+        var state: FavoritePlayersViewModel.State? = null
+        val isFetchingStates = mutableListOf<Boolean>()
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+            isFetchingStates.add(it.isFetching)
+        }
+
+        assertEquals(true, state?.isEmpty)
+        assertEquals(false, state?.isFetching)
+        assertTrue(state?.list.isNullOrEmpty())
+        assertTrue(state?.searchResults.isNullOrEmpty())
+        assertEquals(1, isFetchingStates.size)
+        assertFalse(isFetchingStates[0])
+
+        favoritePlayersRepository.addPlayer(SNAP, NORCAL)
+        assertEquals(false, state?.isEmpty)
+        assertEquals(false, state?.isFetching)
+        assertEquals(1, state?.list?.size)
+        assertTrue(state?.searchResults.isNullOrEmpty())
+        assertEquals(3, isFetchingStates.size)
+        assertFalse(isFetchingStates[0])
+        assertTrue(isFetchingStates[1])
+        assertFalse(isFetchingStates[2])
     }
 
     @Test
