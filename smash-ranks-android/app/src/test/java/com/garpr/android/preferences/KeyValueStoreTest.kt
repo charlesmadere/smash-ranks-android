@@ -58,6 +58,17 @@ class KeyValueStoreTest : BaseTest() {
     }
 
     @Test
+    fun testBatchEditPutAndApplyWithBoolean() {
+        assertFalse("Boolean" in keyValueStore)
+
+        keyValueStore.batchEdit()
+                .putBoolean("Boolean", true)
+                .apply()
+
+        assertTrue("Boolean" in keyValueStore)
+    }
+
+    @Test
     fun testBatchEditPutAndApplyWithInteger() {
         assertFalse("String" in keyValueStore)
 
@@ -82,12 +93,16 @@ class KeyValueStoreTest : BaseTest() {
     @Test
     fun testBatchEditPutAndApplyAndClear() {
         assertFalse("String" in keyValueStore)
+        assertFalse("Integer" in keyValueStore)
+        assertFalse("Boolean" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putString("String", "Hello, World")
                 .apply()
 
         assertTrue("String" in keyValueStore)
+        assertFalse("Integer" in keyValueStore)
+        assertFalse("Boolean" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .putInteger("Integer", 1000)
@@ -95,12 +110,23 @@ class KeyValueStoreTest : BaseTest() {
 
         assertTrue("String" in keyValueStore)
         assertTrue("Integer" in keyValueStore)
+        assertFalse("Boolean" in keyValueStore)
+
+        keyValueStore.batchEdit()
+                .putBoolean("Boolean", true)
+                .apply()
+
+        assertTrue("String" in keyValueStore)
+        assertTrue("Integer" in keyValueStore)
+        assertTrue("Boolean" in keyValueStore)
 
         keyValueStore.batchEdit()
                 .clear()
                 .apply()
 
         assertFalse("String" in keyValueStore)
+        assertFalse("Integer" in keyValueStore)
+        assertFalse("Boolean" in keyValueStore)
         assertEquals(0, keyValueStore.all?.size ?: 0)
     }
 
