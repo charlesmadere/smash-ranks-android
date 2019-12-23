@@ -16,7 +16,6 @@ enum class BracketSource(
     @Json(name = "smash_gg")
     SMASH_GG("smash.gg");
 
-
     companion object {
         @JvmField
         val CREATOR = createParcel { values()[it.readInt()] }
@@ -28,12 +27,10 @@ enum class BracketSource(
 
             val host = Uri.parse(url)?.host
 
-            if (host.isNullOrBlank()) {
-                return null
-            }
-
-            return values().firstOrNull {
-                host.endsWith(it.host, true)
+            return if (host.isNullOrBlank()) {
+                null
+            } else {
+                values().firstOrNull { host.endsWith(it.host, ignoreCase = true) }
             }
         }
     }
