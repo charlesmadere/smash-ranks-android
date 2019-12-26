@@ -8,14 +8,18 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionsRepository
 import java.util.Collections
+import com.garpr.android.data.models.Endpoint as GarPrEndpoint
+import com.garpr.android.data.models.Region as GarPrRegion
 
 class SetRegionViewModel(
         private val regionRepository: RegionRepository,
         private val regionsRepository: RegionsRepository,
+        private val schedulers: Schedulers,
         private val timber: Timber
 ) : BaseViewModel() {
 
@@ -104,8 +108,9 @@ class SetRegionViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(regionsRepository.getRegions()
-                .subscribe({
-                    val list = createList(it)
+                .observeOn(schedulers.background)
+                .subscribe({ bundle ->
+                    val list = createList(bundle)
 
                     if (list.isNullOrEmpty()) {
                         timber.e(TAG, "Error fetching regions")
@@ -140,16 +145,20 @@ class SetRegionViewModel(
         abstract val listId: Long
 
         class Endpoint(
-                val endpoint: com.garpr.android.data.models.Endpoint
+                val endpoint: GarPrEndpoint
         ) : ListItem() {
             override val listId: Long = Long.MIN_VALUE + endpoint.ordinal.toLong()
         }
 
         class Region(
-                val region: com.garpr.android.data.models.Region
+                val region: GarPrRegion
         ) : ListItem() {
             override val listId: Long = region.hashCode().toLong()
         }
+    }
+
+    enum class SaveIconStatus {
+        DISABLED, ENABLED, GONE
     }
 
     data class State(
@@ -160,9 +169,5 @@ class SetRegionViewModel(
             val selectedRegion: Region? = null,
             val saveIconStatus: SaveIconStatus = SaveIconStatus.GONE
     )
-
-    enum class SaveIconStatus {
-        DISABLED, ENABLED, GONE
-    }
 
 }

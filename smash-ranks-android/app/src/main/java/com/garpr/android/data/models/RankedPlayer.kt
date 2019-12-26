@@ -3,7 +3,7 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.optInteger
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeInteger
 import com.squareup.moshi.Json
@@ -29,7 +29,7 @@ class RankedPlayer(
                     it.requireString(),
                     it.readFloat(),
                     it.readInt(),
-                    it.readInteger()
+                    it.optInteger()
             )
         }
     }

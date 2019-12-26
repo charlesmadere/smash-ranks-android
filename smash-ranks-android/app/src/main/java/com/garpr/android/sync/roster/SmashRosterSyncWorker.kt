@@ -32,7 +32,7 @@ class SmashRosterSyncWorker(
             timber.d(TAG, "successfully synced smash roster")
             syncResult = smashRosterSyncManager.syncResult
         } catch (e: RuntimeException) {
-            timber.e(TAG, "error when syncing smash roster", e)
+            timber.e(TAG, "Exception when syncing smash roster", e)
         }
 
         timber.d(TAG, "work complete")
@@ -41,7 +41,7 @@ class SmashRosterSyncWorker(
             timber.d(TAG, "work was successful ($syncResult)")
             Result.success()
         } else {
-            timber.e(TAG, "work wasn't successful, will retry ($syncResult)")
+            timber.w(TAG, "work wasn't successful, will retry ($syncResult)")
             Result.retry()
         }
     }

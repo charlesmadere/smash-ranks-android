@@ -10,7 +10,6 @@ abstract class BasePreference<T : Any>(
 ) : Preference<T> {
 
     private val subject = PublishSubject.create<Optional<T>>()
-
     override val observable: Observable<Optional<T>> = subject.hide()
 
     final override fun delete() {

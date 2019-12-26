@@ -7,6 +7,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -15,6 +16,7 @@ import com.garpr.android.repositories.TournamentsRepository
 
 class TournamentViewModel(
         private val identityRepository: IdentityRepository,
+        private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils,
         private val timber: Timber,
         private val tournamentsRepository: TournamentsRepository
@@ -70,6 +72,7 @@ class TournamentViewModel(
         check(region != null && tournamentId != null) { "initialize() hasn't been called!" }
 
         disposables.add(tournamentsRepository.getTournament(region, tournamentId)
+                .observeOn(schedulers.background)
                 .subscribe({
                     val matches = createMatchesList(it)
                     val players = createPlayersList(it)

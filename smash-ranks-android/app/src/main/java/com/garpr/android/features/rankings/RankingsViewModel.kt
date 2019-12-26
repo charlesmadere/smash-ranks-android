@@ -9,6 +9,7 @@ import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.truncate
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -19,9 +20,10 @@ import java.text.NumberFormat
 class RankingsViewModel(
         private val identityRepository: IdentityRepository,
         private val rankingsRepository: RankingsRepository,
+        private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener, Searchable {
+) : BaseViewModel(), Searchable {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -38,7 +40,7 @@ class RankingsViewModel(
     }
 
     init {
-        identityRepository.addListener(this)
+        initListeners()
     }
 
     @WorkerThread
@@ -82,6 +84,7 @@ class RankingsViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(rankingsRepository.getRankings(region)
+                .observeOn(schedulers.background)
                 .subscribe({ bundle ->
                     val list = createList(bundle)
 
@@ -107,15 +110,13 @@ class RankingsViewModel(
                 }))
     }
 
-    override fun onCleared() {
-        identityRepository.removeListener(this)
-        super.onCleared()
-    }
-
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        threadUtils.background.submit {
-            refreshListItems()
-        }
+    private fun initListeners() {
+        disposables.add(identityRepository.identityObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe {
+                    refreshListItems()
+                })
     }
 
     @WorkerThread

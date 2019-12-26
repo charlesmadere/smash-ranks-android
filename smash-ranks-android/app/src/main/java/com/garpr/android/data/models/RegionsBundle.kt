@@ -3,7 +3,7 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsRegionList
+import com.garpr.android.extensions.optAbsRegionList
 import com.garpr.android.extensions.writeAbsRegionList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -16,7 +16,9 @@ data class RegionsBundle(
     companion object {
         @JvmField
         val CREATOR = createParcel {
-            RegionsBundle(it.readAbsRegionList())
+            RegionsBundle(
+                    it.optAbsRegionList()
+            )
         }
     }
 

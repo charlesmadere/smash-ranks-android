@@ -3,7 +3,7 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsPlayer
+import com.garpr.android.extensions.requireAbsPlayer
 import com.garpr.android.extensions.writeAbsPlayer
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -15,18 +15,6 @@ data class WinsLosses(
         @Json(name = "opponent") val opponent: AbsPlayer,
         @Json(name = "opponent_wins") val opponentWins: Int
 ) : Parcelable {
-
-    companion object {
-        @JvmField
-        val CREATOR = createParcel {
-            WinsLosses(
-                    it.readAbsPlayer(),
-                    it.readInt(),
-                    it.readAbsPlayer(),
-                    it.readInt()
-            )
-        }
-    }
 
     val winLossPercentages: FloatArray
         get() {
@@ -44,12 +32,24 @@ data class WinsLosses(
                 }
 
                 else -> {
-                    val percentPlayerWins: Float = playerWins.toFloat() /
-                            (playerWins.toFloat() + opponentWins.toFloat())
+                    val totalWins: Float = (playerWins + opponentWins).toFloat()
+                    val percentPlayerWins: Float = playerWins.toFloat() / totalWins
                     floatArrayOf(percentPlayerWins, 1f - percentPlayerWins)
                 }
             }
         }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel {
+            WinsLosses(
+                    it.requireAbsPlayer(),
+                    it.readInt(),
+                    it.requireAbsPlayer(),
+                    it.readInt()
+            )
+        }
+    }
 
     override fun describeContents(): Int = 0
 

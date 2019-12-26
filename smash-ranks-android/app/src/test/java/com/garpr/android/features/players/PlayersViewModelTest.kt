@@ -9,6 +9,7 @@ import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.misc.PlayerListBuilder
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
@@ -32,6 +33,7 @@ class PlayersViewModelTest : BaseTest() {
 
     protected val identityRepository: IdentityRepository by inject()
     protected val playerListBuilder: PlayerListBuilder by inject()
+    protected val schedulers: Schedulers by inject()
     protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
 
@@ -74,7 +76,7 @@ class PlayersViewModelTest : BaseTest() {
         super.setUp()
 
         viewModel = PlayersViewModel(identityRepository, playerListBuilder, playersRepository,
-                threadUtils, timber)
+                schedulers, threadUtils, timber)
     }
 
     @Test

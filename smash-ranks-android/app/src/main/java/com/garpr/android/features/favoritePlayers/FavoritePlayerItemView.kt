@@ -19,7 +19,6 @@ class FavoritePlayerItemView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs), View.OnClickListener, View.OnLongClickListener {
 
     private val originalBackground: Drawable? = background
-
     private var _player: FavoritePlayer? = null
 
     val player: FavoritePlayer

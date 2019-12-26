@@ -7,6 +7,7 @@ import com.garpr.android.managers.NotificationsManager
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -31,50 +32,44 @@ class RankingsPollingWorker(
         val pollStatus = rankingsNotificationsUtils.getPollStatus()
 
         if (!pollStatus.proceed) {
-            return if (pollStatus.retry) {
-                timber.d(TAG, "won't proceed with work, will retry")
-                Result.retry()
-            } else {
-                timber.d(TAG, "won't proceed with work, won't retry")
-                Result.success()
-            }
+            timber.d(TAG, "won't proceed with work")
+            Result.success()
         }
 
-        var info: RankingsNotificationsUtils.NotificationInfo? = null
+        var info: NotificationInfo? = null
 
         try {
-            val rankingsBundle = serverApi
-                    .getRankings(regionRepository.getRegion())
+            val rankingsBundle = serverApi.getRankings(regionRepository.getRegion())
                     .blockingGet()
 
-            timber.d(TAG, "successfully fetched rankings")
+            timber.d(TAG, "successfully polled rankings")
             info = rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle)
         } catch (e: RuntimeException) {
-            timber.e(TAG, "error when fetching rankings", e)
+            timber.e(TAG, "Exception when polling rankings", e)
         }
 
         timber.d(TAG, "work complete")
 
         return when (info) {
-            RankingsNotificationsUtils.NotificationInfo.CANCEL -> {
+            NotificationInfo.CANCEL -> {
                 timber.d(TAG, "canceling notifications ($info)")
                 notificationsManager.cancelRankingsUpdated()
                 Result.success()
             }
 
-            RankingsNotificationsUtils.NotificationInfo.NO_CHANGE -> {
+            NotificationInfo.NO_CHANGE -> {
                 timber.d(TAG, "not changing any notifications ($info)")
                 Result.success()
             }
 
-            RankingsNotificationsUtils.NotificationInfo.SHOW -> {
+            NotificationInfo.SHOW -> {
                 timber.d(TAG, "showing rankings updated notification ($info)")
                 notificationsManager.showRankingsUpdated()
                 Result.success()
             }
 
             else -> {
-                timber.e(TAG, "NotificationInfo is unknown ($info), not changing any notifications")
+                timber.w(TAG, "NotificationInfo is unknown ($info), not changing any notifications")
                 Result.retry()
             }
         }

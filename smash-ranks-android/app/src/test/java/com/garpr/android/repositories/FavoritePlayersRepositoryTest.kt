@@ -4,7 +4,6 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
-import com.garpr.android.data.models.Optional
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -165,30 +164,30 @@ class FavoritePlayersRepositoryTest : BaseTest() {
 
     @Test
     fun testPlayersObservable() {
-        var value: Optional<List<FavoritePlayer>>? = null
+        var value: List<FavoritePlayer>? = null
 
         favoritePlayersRepository.playersObservable.subscribe {
             value = it
         }
 
         assertNotNull(value)
-        assertTrue(value?.item.isNullOrEmpty())
+        assertTrue(value.isNullOrEmpty())
 
         favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
         assertNotNull(value)
-        assertEquals(1, value?.item?.size)
+        assertEquals(1, value?.size)
 
         favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
         assertNotNull(value)
-        assertEquals(2, value?.item?.size)
+        assertEquals(2, value?.size)
 
         favoritePlayersRepository.removePlayer(PLAYER_1)
         assertNotNull(value)
-        assertEquals(1, value?.item?.size)
+        assertEquals(1, value?.size)
 
         favoritePlayersRepository.removePlayer(PLAYER_0)
         assertNotNull(value)
-        assertTrue(value?.item.isNullOrEmpty())
+        assertTrue(value.isNullOrEmpty())
     }
 
     @Test

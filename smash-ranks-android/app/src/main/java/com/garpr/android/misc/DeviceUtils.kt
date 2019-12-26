@@ -4,6 +4,4 @@ interface DeviceUtils {
 
     val hasLowRam: Boolean
 
-    val hasNetworkConnection: Boolean
-
 }

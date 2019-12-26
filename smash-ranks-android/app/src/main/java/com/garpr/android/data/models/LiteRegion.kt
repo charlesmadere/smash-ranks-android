@@ -2,8 +2,8 @@ package com.garpr.android.data.models
 
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readBoolean
-import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.optBoolean
+import com.garpr.android.extensions.optInteger
 import com.garpr.android.extensions.requireString
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -29,10 +29,10 @@ class LiteRegion(
         @JvmField
         val CREATOR = createParcel {
             LiteRegion(
-                    it.readBoolean(),
-                    it.readInteger(),
-                    it.readInteger(),
-                    it.readInteger(),
+                    it.optBoolean(),
+                    it.optInteger(),
+                    it.optInteger(),
+                    it.optInteger(),
                     it.requireString(),
                     it.requireString()
             )

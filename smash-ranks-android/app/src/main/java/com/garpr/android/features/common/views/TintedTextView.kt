@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
@@ -17,11 +18,10 @@ import com.garpr.android.misc.Refreshable
 class TintedTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleTextView(context, attrs), ColorListener, Refreshable {
+) : AppCompatTextView(context, attrs), ColorListener, Refreshable {
 
     @ColorInt
     private val drawableTintColor: Int
-
 
     init {
         @SuppressLint("CustomViewStyleable")

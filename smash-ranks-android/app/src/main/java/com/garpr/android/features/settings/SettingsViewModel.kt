@@ -32,8 +32,7 @@ class SettingsViewModel(
         private val smashRosterSyncManager: SmashRosterSyncManager,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener, Refreshable,
-        RegionRepository.OnRegionChangeListener {
+) : BaseViewModel(), Refreshable, RegionRepository.OnRegionChangeListener {
 
     private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>()
     val rankingsPollingStateLiveData: LiveData<RankingsPollingState> = _rankingsPollingStateLiveData
@@ -81,22 +80,31 @@ class SettingsViewModel(
     }
 
     private fun initListeners() {
-        identityRepository.addListener(this)
         regionRepository.addListener(this)
 
         disposables.add(favoritePlayersRepository.playersObservable
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe {
                     refreshFavoritePlayers()
                 })
 
+        disposables.add(identityRepository.identityObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe {
+                    refreshIdentity()
+                })
+
         disposables.add(nightModeRepository.observable
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { nightMode ->
                     refreshNightMode(nightMode)
                 })
 
         disposables.add(smashRosterSyncManager.isSyncingObservable
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { isSyncing ->
                     refreshSmashRosterState(isSyncing)
@@ -104,13 +112,8 @@ class SettingsViewModel(
     }
 
     override fun onCleared() {
-        identityRepository.removeListener(this)
         regionRepository.removeListener(this)
         super.onCleared()
-    }
-
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        refreshIdentity()
     }
 
     override fun onRegionChange(regionRepository: RegionRepository) {

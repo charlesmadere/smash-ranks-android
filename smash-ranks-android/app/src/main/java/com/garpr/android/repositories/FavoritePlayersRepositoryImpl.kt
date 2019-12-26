@@ -3,21 +3,20 @@ package com.garpr.android.repositories
 import androidx.annotation.WorkerThread
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStore
-import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import java.util.Collections
 
 class FavoritePlayersRepositoryImpl(
-        private val favoritePlayerAdapter: JsonAdapter<FavoritePlayer>,
         private val keyValueStore: KeyValueStore,
+        private val moshi: Moshi,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : FavoritePlayersRepository, Refreshable {
@@ -26,13 +25,17 @@ class FavoritePlayersRepositoryImpl(
         get() = size == 0
 
     override val size: Int
-        get() = playersSubject.value?.item?.size ?: 0
+        get() = playersSubject.value?.size ?: 0
+
+    private val favoritePlayerJsonAdapter by lazy {
+        moshi.adapter(FavoritePlayer::class.java)
+    }
 
     override val players: List<FavoritePlayer>?
-        get() = playersSubject.value?.item
+        get() = playersSubject.value ?: emptyList()
 
-    private val playersSubject = BehaviorSubject.createDefault<Optional<List<FavoritePlayer>>>(Optional.empty())
-    override val playersObservable: Observable<Optional<List<FavoritePlayer>>> = playersSubject.hide()
+    private val playersSubject = BehaviorSubject.createDefault<List<FavoritePlayer>>(emptyList())
+    override val playersObservable: Observable<List<FavoritePlayer>> = playersSubject.hide()
 
     companion object {
         private const val TAG = "FavoritePlayersRepositoryImpl"
@@ -52,7 +55,7 @@ class FavoritePlayersRepositoryImpl(
             timber.d(TAG, "Adding favorite (there are currently $size)")
 
             val favoritePlayer = FavoritePlayer(player.id, player.name, region)
-            val playerJson = favoritePlayerAdapter.toJson(favoritePlayer)
+            val playerJson = favoritePlayerJsonAdapter.toJson(favoritePlayer)
             keyValueStore.setString(player.id, playerJson)
 
             loadPlayers()
@@ -80,17 +83,17 @@ class FavoritePlayersRepositoryImpl(
         val all = keyValueStore.all
 
         if (all.isNullOrEmpty()) {
-            playersSubject.onNext(Optional.empty())
+            playersSubject.onNext(emptyList())
             return
         }
 
         val players = all.map { entry ->
             val json = entry.value as String
-            favoritePlayerAdapter.requireFromJson(json)
+            favoritePlayerJsonAdapter.requireFromJson(json)
         }
 
         Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
-        playersSubject.onNext(Optional.of(players))
+        playersSubject.onNext(players)
     }
 
     override fun refresh() {

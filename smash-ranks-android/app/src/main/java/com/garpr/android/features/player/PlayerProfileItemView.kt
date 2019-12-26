@@ -5,14 +5,16 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.verticalPositionInWindow
-import com.garpr.android.features.common.views.LifecycleLinearLayout
 import com.garpr.android.misc.ColorListener
+import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.item_player_profile.view.*
@@ -22,7 +24,10 @@ import org.koin.core.inject
 class PlayerProfileItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleLinearLayout(context, attrs), ColorListener, KoinComponent, Refreshable {
+) : LinearLayout(context, attrs), ColorListener, Heartbeat, KoinComponent, Refreshable {
+
+    override val isAlive: Boolean
+        get() = ViewCompat.isAttachedToWindow(this)
 
     private var isFavorited: Boolean = false
     private var player: FullPlayer? = null

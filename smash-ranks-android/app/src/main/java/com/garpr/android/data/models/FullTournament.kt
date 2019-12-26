@@ -2,13 +2,12 @@ package com.garpr.android.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.core.os.ParcelCompat
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsPlayerList
-import com.garpr.android.extensions.requireBoolean
+import com.garpr.android.extensions.optAbsPlayerList
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeAbsPlayerList
-import com.garpr.android.extensions.writeBoolean
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -37,7 +36,7 @@ class FullTournament(
                     it.requireParcelable(SimpleDate::class.java.classLoader),
                     it.requireString(),
                     it.requireString(),
-                    it.readAbsPlayerList(),
+                    it.optAbsPlayerList(),
                     it.createTypedArrayList(Match.CREATOR),
                     it.readString(),
                     it.readString()
@@ -56,7 +55,6 @@ class FullTournament(
         dest.writeString(url)
     }
 
-
     @JsonClass(generateAdapter = true)
     data class Match(
             @Json(name = "excluded") val isExcluded: Boolean,
@@ -70,7 +68,7 @@ class FullTournament(
             @JvmField
             val CREATOR = createParcel {
                 Match(
-                        it.requireBoolean(),
+                        ParcelCompat.readBoolean(it),
                         it.requireString(),
                         it.requireString(),
                         it.requireString(),
@@ -89,7 +87,7 @@ class FullTournament(
         override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
-            dest.writeBoolean(isExcluded)
+            ParcelCompat.writeBoolean(dest, isExcluded)
             dest.writeString(loserId)
             dest.writeString(loserName)
             dest.writeString(matchId)

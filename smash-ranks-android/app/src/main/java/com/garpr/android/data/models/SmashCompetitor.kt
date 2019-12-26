@@ -3,7 +3,7 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readStringMap
+import com.garpr.android.extensions.optStringMap
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeStringMap
 import com.squareup.moshi.Json
@@ -25,7 +25,7 @@ data class SmashCompetitor(
             SmashCompetitor(
                     it.readParcelable(Avatar::class.java.classLoader),
                     it.createTypedArrayList(SmashCharacter.CREATOR),
-                    it.readStringMap(),
+                    it.optStringMap(),
                     it.requireString(),
                     it.requireString(),
                     it.requireString()

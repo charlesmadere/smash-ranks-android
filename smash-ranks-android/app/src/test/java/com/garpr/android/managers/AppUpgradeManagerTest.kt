@@ -11,7 +11,6 @@ import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,8 +26,15 @@ class AppUpgradeManagerTest : BaseTest() {
     protected val identityRepository: IdentityRepository by inject()
 
     companion object {
-        private val PLAYER_1: AbsPlayer = LitePlayer("1", "Charlezard")
-        private val PLAYER_2: AbsPlayer = LitePlayer("2", "Imyt")
+        private val CHARLEZARD: AbsPlayer = LitePlayer(
+                id = "587a951dd2994e15c7dea9fe",
+                name = "Charlezard"
+        )
+
+        private val IMYT: AbsPlayer = LitePlayer(
+                id = "5877eb55d2994e15c7dea98b",
+                name = "Imyt"
+        )
 
         private val NORCAL = Region(
                 displayName = "Norcal",
@@ -40,20 +46,20 @@ class AppUpgradeManagerTest : BaseTest() {
     @Test
     fun testUpgradeAppFrom0() {
         generalPreferenceStore.lastVersion.set(0)
-        favoritePlayersRepository.addPlayer(PLAYER_1, NORCAL)
-        identityRepository.setIdentity(PLAYER_2, NORCAL)
+        favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
+        identityRepository.setIdentity(IMYT, NORCAL)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertNull(favoritePlayersRepository.players)
+        assertTrue(favoritePlayersRepository.players.isNullOrEmpty())
         assertFalse(identityRepository.hasIdentity)
     }
 
     @Test
     fun testUpgradeAppFromCurrentVersion() {
         generalPreferenceStore.lastVersion.set(BuildConfig.VERSION_CODE)
-        favoritePlayersRepository.addPlayer(PLAYER_1, NORCAL)
-        identityRepository.setIdentity(PLAYER_2, NORCAL)
+        favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
+        identityRepository.setIdentity(IMYT, NORCAL)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
@@ -64,12 +70,12 @@ class AppUpgradeManagerTest : BaseTest() {
     @Test
     fun testUpgradeAppFromNull() {
         generalPreferenceStore.lastVersion.delete()
-        favoritePlayersRepository.addPlayer(PLAYER_1, NORCAL)
-        identityRepository.setIdentity(PLAYER_2, NORCAL)
+        favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
+        identityRepository.setIdentity(IMYT, NORCAL)
         appUpgradeManager.upgradeApp()
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertNull(favoritePlayersRepository.players)
+        assertTrue(favoritePlayersRepository.players.isNullOrEmpty())
         assertFalse(identityRepository.hasIdentity)
     }
 

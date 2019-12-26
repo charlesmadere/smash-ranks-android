@@ -6,6 +6,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.features.setRegion.SetRegionViewModel.ListItem
 import com.garpr.android.features.setRegion.SetRegionViewModel.SaveIconStatus
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionsRepository
@@ -28,6 +29,7 @@ class SetRegionViewModelTest : BaseTest() {
     private lateinit var viewModel: SetRegionViewModel
 
     protected val regionRepository: RegionRepository by inject()
+    protected val schedulers: Schedulers by inject()
     protected val timber: Timber by inject()
 
     companion object {
@@ -74,7 +76,7 @@ class SetRegionViewModelTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        viewModel = SetRegionViewModel(regionRepository, regionsRepository, timber)
+        viewModel = SetRegionViewModel(regionRepository, regionsRepository, schedulers, timber)
     }
 
     @Test

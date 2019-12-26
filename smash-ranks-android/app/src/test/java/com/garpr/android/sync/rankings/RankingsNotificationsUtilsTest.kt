@@ -3,8 +3,6 @@ package com.garpr.android.sync.rankings
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.requireFromJson
-import com.garpr.android.misc.DeviceUtils
-import com.garpr.android.misc.TestDeviceUtilsImpl
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.CANCEL
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
@@ -13,7 +11,6 @@ import com.garpr.android.sync.rankings.RankingsNotificationsUtils.PollStatus
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -27,10 +24,6 @@ class RankingsNotificationsUtilsTest : BaseTest() {
 
     private lateinit var rankingsBundle: RankingsBundle
 
-    private val deviceUtils: TestDeviceUtilsImpl
-        get() = _deviceUtils as TestDeviceUtilsImpl
-
-    protected val _deviceUtils: DeviceUtils by inject()
     protected val moshi: Moshi by inject()
     protected val rankingsNotificationsUtils: RankingsNotificationsUtils by inject()
     protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
@@ -53,78 +46,78 @@ class RankingsNotificationsUtilsTest : BaseTest() {
 
     @Test
     fun testGetNotificationInfo() {
-        deviceUtils.hasNetworkConnection = true
         rankingsPollingPreferenceStore.enabled.set(true)
         rankingsPollingPreferenceStore.rankingsId.delete()
-
         var pollStatus = rankingsNotificationsUtils.getPollStatus()
-        assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle))
+        assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
+                pollStatus = pollStatus,
+                rankingsBundle = rankingsBundle
+        ))
 
         rankingsPollingPreferenceStore.rankingsId.set(RANKINGS_ID_1)
-
         pollStatus = rankingsNotificationsUtils.getPollStatus()
-        assertEquals(SHOW, rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle))
+        assertEquals(SHOW, rankingsNotificationsUtils.getNotificationInfo(
+                pollStatus = pollStatus,
+                rankingsBundle = rankingsBundle
+        ))
 
         rankingsPollingPreferenceStore.rankingsId.set(RANKINGS_ID_2)
-
         pollStatus = rankingsNotificationsUtils.getPollStatus()
-        assertEquals(NO_CHANGE, rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle))
+        assertEquals(NO_CHANGE, rankingsNotificationsUtils.getNotificationInfo(
+                pollStatus = pollStatus,
+                rankingsBundle = rankingsBundle
+        ))
 
         rankingsPollingPreferenceStore.rankingsId.set(RANKINGS_ID_3)
-
         pollStatus = rankingsNotificationsUtils.getPollStatus()
-        assertEquals(SHOW, rankingsNotificationsUtils.getNotificationInfo(pollStatus, rankingsBundle))
+        assertEquals(SHOW, rankingsNotificationsUtils.getNotificationInfo(
+                pollStatus = pollStatus,
+                rankingsBundle = rankingsBundle
+        ))
     }
 
     @Test
     fun testGetNotificationInfoWithNulls() {
-        assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(null,
-                null))
+        assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
+                pollStatus = null,
+                rankingsBundle = null
+        ))
 
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(proceed = false, retry = false), null))
+                pollStatus = PollStatus(
+                        proceed = false,
+                        oldRankingsId = null
+                ),
+                rankingsBundle = null
+        ))
 
         assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(oldRankingsId = RANKINGS_ID_1, proceed = false, retry = false), null))
-
-        assertEquals(CANCEL, rankingsNotificationsUtils.getNotificationInfo(
-                PollStatus(proceed = false, retry = false), null))
+                pollStatus = PollStatus(
+                        proceed = false,
+                        oldRankingsId = RANKINGS_ID_1
+                ),
+                rankingsBundle = null
+        ))
     }
 
     @Test
     fun testGetPollStatus() {
-        deviceUtils.hasNetworkConnection = false
         rankingsPollingPreferenceStore.enabled.set(false)
         rankingsPollingPreferenceStore.lastPoll.delete()
         rankingsPollingPreferenceStore.rankingsId.delete()
-
         var pollStatus = rankingsNotificationsUtils.getPollStatus()
         assertNull(pollStatus.oldRankingsId)
         assertFalse(pollStatus.proceed)
-        assertFalse(pollStatus.retry)
 
         rankingsPollingPreferenceStore.enabled.set(true)
-
         pollStatus = rankingsNotificationsUtils.getPollStatus()
         assertNull(pollStatus.oldRankingsId)
         assertFalse(pollStatus.proceed)
-        assertFalse(pollStatus.retry)
 
         rankingsPollingPreferenceStore.rankingsId.set(RANKINGS_ID_1)
-
         pollStatus = rankingsNotificationsUtils.getPollStatus()
-        assertNotNull(pollStatus.oldRankingsId)
-        assertEquals(RANKINGS_ID_1, pollStatus.oldRankingsId)
-        assertFalse(pollStatus.proceed)
-        assertTrue(pollStatus.retry)
-
-        deviceUtils.hasNetworkConnection = true
-
-        pollStatus = rankingsNotificationsUtils.getPollStatus()
-        assertNotNull(pollStatus.oldRankingsId)
         assertEquals(RANKINGS_ID_1, pollStatus.oldRankingsId)
         assertTrue(pollStatus.proceed)
-        assertTrue(pollStatus.retry)
     }
 
 }

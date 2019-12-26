@@ -2,7 +2,6 @@ package com.garpr.android.repositories
 
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
 import io.reactivex.Observable
 
@@ -14,7 +13,7 @@ interface FavoritePlayersRepository {
 
     val players: List<FavoritePlayer>?
 
-    val playersObservable: Observable<Optional<List<FavoritePlayer>>>
+    val playersObservable: Observable<List<FavoritePlayer>>
 
     fun addPlayer(player: AbsPlayer, region: Region)
 

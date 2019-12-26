@@ -85,7 +85,13 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
             recyclerView.visibility = View.VISIBLE
         }
 
-        refreshLayout.isRefreshing = state.isFetching
+        if (state.isFetching) {
+            refreshLayout.isEnabled = true
+            refreshLayout.isRefreshing = true
+        } else {
+            refreshLayout.isEnabled = false
+            refreshLayout.isRefreshing = false
+        }
     }
 
     private class Adapter(

@@ -14,6 +14,7 @@ class BottomWindowInsetsView @JvmOverloads constructor(
 ) : View(context, attrs), OnApplyWindowInsetsListener {
 
     init {
+        visibility = INVISIBLE
         ViewCompat.setOnApplyWindowInsetsListener(this, this)
     }
 
@@ -26,7 +27,8 @@ class BottomWindowInsetsView @JvmOverloads constructor(
                 insets.systemWindowInsetLeft,
                 insets.systemWindowInsetTop,
                 insets.systemWindowInsetRight,
-                0)
+                0
+        )
     }
 
     override fun onDraw(canvas: Canvas) {

@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val syncModule = module {
 
-    single<RankingsNotificationsUtils> { RankingsNotificationsUtilsImpl(get(), get(), get()) }
+    single<RankingsNotificationsUtils> { RankingsNotificationsUtilsImpl(get(), get()) }
     single<RankingsPollingManager> { RankingsPollingManagerImpl(get(), get(), get()) }
 
     single<SmashRosterStorage> {

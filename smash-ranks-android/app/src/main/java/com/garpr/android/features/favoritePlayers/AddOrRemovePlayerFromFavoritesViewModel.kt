@@ -44,8 +44,8 @@ class AddOrRemovePlayerFromFavoritesViewModel(
     private fun initListeners() {
         disposables.add(favoritePlayersRepository.playersObservable
                 .observeOn(schedulers.background)
-                .subscribe { optional ->
-                    refreshIsAlreadyFavorited(optional.item)
+                .subscribe { players ->
+                    refreshIsAlreadyFavorited(players)
                 })
     }
 

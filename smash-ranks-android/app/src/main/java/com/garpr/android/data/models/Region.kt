@@ -4,8 +4,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readBoolean
-import com.garpr.android.extensions.readInteger
+import com.garpr.android.extensions.optBoolean
+import com.garpr.android.extensions.optInteger
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
 import com.squareup.moshi.Json
@@ -33,10 +33,10 @@ class Region(
         @JvmField
         val CREATOR = createParcel {
             Region(
-                    it.readBoolean(),
-                    it.readInteger(),
-                    it.readInteger(),
-                    it.readInteger(),
+                    it.optBoolean(),
+                    it.optInteger(),
+                    it.optInteger(),
+                    it.optInteger(),
                     it.requireString(),
                     it.requireString(),
                     it.requireParcelable(Endpoint::class.java.classLoader)
@@ -49,7 +49,15 @@ class Region(
             region.tournamentQualifiedDayLimit, region.displayName, region.id, endpoint)
 
     override fun equals(other: Any?): Boolean {
-        return super.equals(other) && other is Region && endpoint == other.endpoint
+        return if (super.equals(other)) {
+            if (other is Region) {
+                endpoint == other.endpoint
+            } else {
+                true
+            }
+        } else {
+            false
+        }
     }
 
     override fun hashCode(): Int = ObjectsCompat.hash(id, endpoint)

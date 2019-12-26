@@ -17,7 +17,7 @@ class FavoritePlayersViewModel(
         private val identityRepository: IdentityRepository,
         private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils
-) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener, Refreshable, Searchable {
+) : BaseViewModel(), Refreshable, Searchable {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -48,34 +48,28 @@ class FavoritePlayersViewModel(
     }
 
     private fun initListeners() {
-        identityRepository.addListener(this)
-
         disposables.add(favoritePlayersRepository.playersObservable
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshFavoritePlayers(it.item)
-                })
-    }
+                .subscribe { refreshFavoritePlayers() })
 
-    override fun onCleared() {
-        identityRepository.removeListener(this)
-        super.onCleared()
-    }
-
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        refresh()
+        disposables.add(identityRepository.identityObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe { refreshFavoritePlayers() })
     }
 
     override fun refresh() {
         threadUtils.background.submit {
-            refreshFavoritePlayers(favoritePlayersRepository.players)
+            refreshFavoritePlayers()
         }
     }
 
     @WorkerThread
-    private fun refreshFavoritePlayers(players: List<GarPrFavoritePlayer>?) {
+    private fun refreshFavoritePlayers() {
         state = state.copy(isFetching = true)
 
+        val players = favoritePlayersRepository.players
         val list = createList(players)
 
         state = state.copy(

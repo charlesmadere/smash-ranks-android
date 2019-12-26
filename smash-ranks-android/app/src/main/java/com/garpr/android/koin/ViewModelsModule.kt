@@ -23,17 +23,17 @@ val viewModelsModule = module {
     viewModel { AddOrRemovePlayerFromFavoritesViewModel(get(), get(), get()) }
     viewModel { DeepLinkViewModel(get(), get(), get()) }
     viewModel { FavoritePlayersViewModel(get(), get(), get(), get()) }
-    viewModel { HeadToHeadViewModel(get(), get(), get()) }
+    viewModel { HeadToHeadViewModel(get(), get(), get(), get()) }
     viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
     viewModel { LogViewerViewModel(get(), get()) }
-    viewModel { PlayerViewModel(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { PlayersViewModel(get(), get(), get(), get(), get()) }
-    viewModel { RankingsViewModel(get(), get(), get(), get()) }
-    viewModel { SetIdentityViewModel(get(), get(), get(), get(), get()) }
-    viewModel { SetRegionViewModel(get(), get(), get()) }
+    viewModel { PlayerViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { PlayersViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { RankingsViewModel(get(), get(), get(), get(), get()) }
+    viewModel { SetIdentityViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { SetRegionViewModel(get(), get(), get(), get()) }
     viewModel { SettingsViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { SplashScreenViewModel(get()) }
-    viewModel { TournamentViewModel(get(), get(), get(), get()) }
-    viewModel { TournamentsViewModel(get(), get(), get()) }
+    viewModel { SplashScreenViewModel(get(), get(), get(), get(), get()) }
+    viewModel { TournamentViewModel(get(), get(), get(), get(), get()) }
+    viewModel { TournamentsViewModel(get(), get(), get(), get()) }
 
 }

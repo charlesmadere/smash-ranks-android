@@ -18,7 +18,7 @@ class HomeViewModel(
         rankingsPollingManager: RankingsPollingManager,
         private val schedulers: Schedulers,
         smashRosterSyncManager: SmashRosterSyncManager
-) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener {
+) : BaseViewModel() {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -28,7 +28,7 @@ class HomeViewModel(
     )
 
     val identity: FavoritePlayer?
-        get() = identityRepository.identity
+        get() = state.identity
 
     init {
         initListeners()
@@ -37,23 +37,15 @@ class HomeViewModel(
     }
 
     private fun initListeners() {
-        identityRepository.addListener(this)
-
         disposables.add(favoritePlayersRepository.playersObservable
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshFavoritePlayers()
-                })
-    }
+                .subscribe { refreshFavoritePlayers() })
 
-    override fun onCleared() {
-        identityRepository.removeListener(this)
-        super.onCleared()
-    }
-
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        state = state.copy(showYourself = identityRepository.hasIdentity)
-        refreshState()
+        disposables.add(identityRepository.identityObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe { refreshIdentity() })
     }
 
     fun onRankingsBundleChange(bundle: RankingsBundle?, isEmpty: Boolean) {
@@ -81,6 +73,16 @@ class HomeViewModel(
         refreshState()
     }
 
+    @WorkerThread
+    private fun refreshIdentity() {
+        state = state.copy(
+                showYourself = identityRepository.hasIdentity,
+                identity = identityRepository.identity
+        )
+
+        refreshState()
+    }
+
     private fun refreshState() {
         state = state.copy(
                 showSearch = state.hasRankings || state.hasTournaments || state.hasFavoritePlayers
@@ -96,7 +98,8 @@ class HomeViewModel(
             val showSearch: Boolean = false,
             val showYourself: Boolean = false,
             val subtitleDate: CharSequence? = null,
-            val title: CharSequence? = null
+            val title: CharSequence? = null,
+            val identity: FavoritePlayer? = null
     )
 
 }

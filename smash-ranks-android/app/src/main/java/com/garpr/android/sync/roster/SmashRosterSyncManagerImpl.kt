@@ -113,7 +113,9 @@ class SmashRosterSyncManagerImpl(
         hajimeteSync = false
         timber.d(TAG, "performing hajimete sync...")
 
-        sync().subscribeOn(schedulers.background)
+        sync()
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
                 .subscribe({
                     timber.d(TAG, "successfully finished hajimete sync")
                 }, {
@@ -121,15 +123,15 @@ class SmashRosterSyncManagerImpl(
                 })
     }
 
+    @Synchronized
     @WorkerThread
     private fun performSync() {
         if (isSyncing) {
             timber.w(TAG, "sync already in progress, canceling this sync...")
             return
-        } else {
-            isSyncing = true
         }
 
+        isSyncing = true
         timber.d(TAG, "syncing now...")
 
         var garPrRoster: Map<String, SmashCompetitor>? = null

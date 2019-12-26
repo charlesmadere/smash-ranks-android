@@ -3,13 +3,16 @@ package com.garpr.android.features.setIdentity
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.setIdentity.SetIdentityViewModel.SaveIconStatus
 import com.garpr.android.misc.PlayerListBuilder
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
@@ -34,6 +37,7 @@ class SetIdentityViewModelTest : BaseTest() {
 
     protected val identityRepository: IdentityRepository by inject()
     protected val playerListBuilder: PlayerListBuilder by inject()
+    protected val schedulers: Schedulers by inject()
     protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
 
@@ -81,7 +85,7 @@ class SetIdentityViewModelTest : BaseTest() {
         super.setUp()
 
        viewModel = SetIdentityViewModel(identityRepository, playerListBuilder, playersRepository,
-                threadUtils, timber)
+                schedulers, threadUtils, timber)
     }
 
     @Test
@@ -226,13 +230,12 @@ class SetIdentityViewModelTest : BaseTest() {
         viewModel.selectedIdentity = CHARLEZARD
 
         var throwable: Throwable? = null
-        var listenerNotified = false
+        var optional: Optional<FavoritePlayer>? = null
 
-        identityRepository.addListener(object : IdentityRepository.OnIdentityChangeListener {
-            override fun onIdentityChange(identityRepository: IdentityRepository) {
-                listenerNotified = true
-            }
-        })
+        identityRepository.identityObservable
+                .subscribe {
+                    optional = it
+                }
 
         try {
             viewModel.saveSelectedIdentity(NORCAL)
@@ -241,7 +244,7 @@ class SetIdentityViewModelTest : BaseTest() {
         }
 
         assertNull(throwable)
-        assertTrue(listenerNotified)
+        assertEquals(CHARLEZARD, optional?.item)
         assertEquals(CHARLEZARD, identityRepository.identity)
     }
 
@@ -252,13 +255,12 @@ class SetIdentityViewModelTest : BaseTest() {
         viewModel.selectedIdentity = WEEDLORD
 
         var throwable: Throwable? = null
-        var listenerNotified = false
+        var optional: Optional<FavoritePlayer>? = null
 
-        identityRepository.addListener(object : IdentityRepository.OnIdentityChangeListener {
-            override fun onIdentityChange(identityRepository: IdentityRepository) {
-                listenerNotified = true
-            }
-        })
+        identityRepository.identityObservable
+                .subscribe {
+                    optional = it
+                }
 
         try {
             viewModel.saveSelectedIdentity(NORCAL)
@@ -267,7 +269,7 @@ class SetIdentityViewModelTest : BaseTest() {
         }
 
         assertNull(throwable)
-        assertTrue(listenerNotified)
+        assertEquals(WEEDLORD, optional?.item)
         assertEquals(WEEDLORD, identityRepository.identity)
     }
 

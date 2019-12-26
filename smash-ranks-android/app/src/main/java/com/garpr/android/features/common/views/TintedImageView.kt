@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
@@ -14,11 +15,10 @@ import com.garpr.android.misc.Refreshable
 class TintedImageView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleImageView(context, attrs), ColorListener, Refreshable {
+) : AppCompatImageView(context, attrs), ColorListener, Refreshable {
 
     @ColorInt
     private val drawableTintColor: Int
-
 
     init {
         @SuppressLint("CustomViewStyleable")
