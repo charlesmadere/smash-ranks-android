@@ -103,7 +103,9 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
     override fun onViewsBound() {
         super.onViewsBound()
 
-        toolbar.subtitleText = regionRepository.getRegion(this).displayName
+        val region = regionRepository.getRegion(this)
+        toolbar.subtitleText = getString(R.string.region_endpoint_format, region.displayName,
+                getText(region.endpoint.title))
         toolbar.listener = this
 
         refreshLayout.setOnRefreshListener(this)
