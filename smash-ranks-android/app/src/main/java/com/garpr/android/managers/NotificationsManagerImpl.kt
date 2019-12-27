@@ -47,7 +47,8 @@ class NotificationsManagerImpl(
         val notificationChannel = NotificationChannel(
                 RANKINGS_CHANNEL,
                 context.getString(R.string.rankings_update_notifications_name),
-                NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationManager.IMPORTANCE_DEFAULT
+        )
 
         notificationChannel.description = context.getString(R.string.rankings_update_notifications_description)
         notificationChannel.enableLights(true)
