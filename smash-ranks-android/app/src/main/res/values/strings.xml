@@ -121,7 +121,7 @@
     <string name="smash_roster_polling_description">This feature will periodically download the latest version of the Smash roster. But if you\'d like to update now, just click below.</string>
     <string name="smash_roster_sync_status">Smash roster sync status</string>
     <string name="start_using_the_app">Start using the app</string>
-    <string name="start_using_the_app_description">You can change your region and identity at any time in Settings</string>
+    <string name="start_using_the_app_description">You can change your region and identity at any time in Settings.</string>
     <string name="submit_your_own_profile_to_the_roster">Submit your own profile to the roster!</string>
     <string name="swipe_to_refresh_and_check_again">Swipe down to refresh and check again</string>
     <string name="swipe_to_refresh_and_try_again">Swipe down to refresh and try again</string>
