@@ -72,10 +72,11 @@ class TournamentViewModel(
         check(region != null && tournamentId != null) { "initialize() hasn't been called!" }
 
         disposables.add(tournamentsRepository.getTournament(region, tournamentId)
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({
-                    val matches = createMatchesList(it)
-                    val players = createPlayersList(it)
+                .subscribe({ tournament ->
+                    val matches = createMatchesList(tournament)
+                    val players = createPlayersList(tournament)
 
                     state = state.copy(
                             hasError = false,
@@ -84,8 +85,8 @@ class TournamentViewModel(
                             showMatchesEmpty = matches.isNullOrEmpty(),
                             showPlayersEmpty = players.isNullOrEmpty(),
                             showSearchIcon = !matches.isNullOrEmpty() || !players.isNullOrEmpty(),
-                            titleText = it.name,
-                            tournament = it,
+                            titleText = tournament.name,
+                            tournament = tournament,
                             matches = matches,
                             matchesSearchResults = null,
                             players = players,

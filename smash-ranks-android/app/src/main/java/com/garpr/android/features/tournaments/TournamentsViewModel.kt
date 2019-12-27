@@ -37,6 +37,7 @@ class TournamentsViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(tournamentsRepository.getTournaments(region)
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ bundle ->
                     state = state.copy(

@@ -108,6 +108,7 @@ class SetRegionViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(regionsRepository.getRegions()
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ bundle ->
                     val list = createList(bundle)

@@ -80,6 +80,7 @@ class HeadToHeadViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(headToHeadRepository.getHeadToHead(region, playerId, opponentId)
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ headToHead ->
                     val list = createList(headToHead)

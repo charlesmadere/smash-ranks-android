@@ -44,6 +44,7 @@ class PlayersViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(playersRepository.getPlayers(region)
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ bundle ->
                     val list = playerListBuilder.create(bundle)

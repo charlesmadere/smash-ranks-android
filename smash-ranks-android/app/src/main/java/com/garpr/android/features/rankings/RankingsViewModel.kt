@@ -84,6 +84,7 @@ class RankingsViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(rankingsRepository.getRankings(region)
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ bundle ->
                     val list = createList(bundle)

@@ -40,12 +40,16 @@ class HomeViewModel(
         disposables.add(favoritePlayersRepository.playersObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { refreshFavoritePlayers() })
+                .subscribe {
+                    refreshFavoritePlayers()
+                })
 
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { refreshIdentity() })
+                .subscribe {
+                    refreshIdentity()
+                })
     }
 
     fun onRankingsBundleChange(bundle: RankingsBundle?, isEmpty: Boolean) {

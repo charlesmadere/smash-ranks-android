@@ -7,6 +7,7 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.features.home.HomeTab
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionsRepository
@@ -15,6 +16,7 @@ import okhttp3.internal.toImmutableList
 class DeepLinkViewModel(
         private val regionRepository: RegionRepository,
         private val regionsRepository: RegionsRepository,
+        private val schedulers: Schedulers,
         private val timber: Timber
 ) : BaseViewModel() {
 
@@ -188,6 +190,8 @@ class DeepLinkViewModel(
         }
 
         disposables.add(regionsRepository.getRegions()
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
                 .subscribe({
                     val regions = it.regions
                             ?.filterIsInstance<Region>()
