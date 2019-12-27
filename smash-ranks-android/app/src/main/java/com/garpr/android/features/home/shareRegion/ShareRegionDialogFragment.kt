@@ -58,12 +58,13 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable {
 
         initViews()
         initListeners()
+        refresh()
     }
 
     override fun refresh() {
         val region = regionRepository.getRegion(context)
-        dialogRegionRankings.text = getString(R.string.x_rankings, region.displayName)
-        dialogRegionTournaments.text = getString(R.string.x_tournaments, region.displayName)
+        dialogRegionRankings.text = getString(R.string.x_rankings_, region.displayName)
+        dialogRegionTournaments.text = getString(R.string.x_tournaments_, region.displayName)
     }
 
 }

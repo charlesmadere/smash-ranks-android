@@ -5,6 +5,7 @@ import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavorites
 import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel
 import com.garpr.android.features.headToHead.HeadToHeadViewModel
 import com.garpr.android.features.home.HomeViewModel
+import com.garpr.android.features.home.shareRegion.ShareRegionViewModel
 import com.garpr.android.features.logViewer.LogViewerViewModel
 import com.garpr.android.features.player.PlayerViewModel
 import com.garpr.android.features.players.PlayersViewModel
@@ -29,6 +30,7 @@ val viewModelsModule = module {
     viewModel { PlayerViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { PlayersViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { RankingsViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ShareRegionViewModel(get(), get()) }
     viewModel { SetIdentityViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { SetRegionViewModel(get(), get(), get(), get()) }
     viewModel { SettingsViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
