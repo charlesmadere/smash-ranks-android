@@ -1,9 +1,9 @@
 package com.garpr.android.data.models
 
-import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
+import com.garpr.android.extensions.toURI
 import com.squareup.moshi.Json
 
 enum class BracketSource(
@@ -21,11 +21,7 @@ enum class BracketSource(
         val CREATOR = createParcel { values()[it.readInt()] }
 
         fun fromUrl(url: String?): BracketSource? {
-            if (url.isNullOrBlank()) {
-                return null
-            }
-
-            val host = Uri.parse(url)?.host
+            val host = url.toURI()?.host
 
             return if (host.isNullOrBlank()) {
                 null
