@@ -1,7 +1,5 @@
 package com.garpr.android.features.splash
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.util.AttributeSet
@@ -64,13 +62,17 @@ class SplashCardView @JvmOverloads constructor(
     }
 
     private fun performAnimation() {
+        alpha = 0f
+        scaleX = 0.8f
+        scaleY = 0.8f
+        visibility = VISIBLE
+
         animate()
                 .alpha(1f)
                 .scaleX(1f)
                 .scaleY(1f)
                 .setDuration(animationDuration)
-                .setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR)
-                .setListener(animationListener)
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
                 .setStartDelay(animationDelay)
                 .start()
     }
@@ -114,20 +116,10 @@ class SplashCardView @JvmOverloads constructor(
                 .show()
     }
 
+
     ///////////////////////////////
     // BEGIN ANIMATION VARIABLES //
     ///////////////////////////////
-
-    private val animationListener: Animator.AnimatorListener by lazy {
-        object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator?) {
-                alpha = 0f
-                scaleX = 0.5f
-                scaleY = 0.5f
-                visibility = VISIBLE
-            }
-        }
-    }
 
     private val animationDelay: Long by lazy {
         resources.getLong(R.integer.splash_card_animation_delay)
