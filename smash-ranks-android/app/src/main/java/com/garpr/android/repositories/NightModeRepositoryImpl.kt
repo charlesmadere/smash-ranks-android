@@ -21,8 +21,7 @@ class NightModeRepositoryImpl(
     override var nightMode: NightMode
         get() = subject.requireValue()
         set(value) {
-            timber.d(TAG, "Theme was \"${subject.requireValue()}\"," +
-                    " is now being changed to \"$value\".")
+            timber.d(TAG, "theme was \"$nightMode\", is now being changed to \"$value\"")
             generalPreferenceStore.nightMode.set(value)
             subject.onNext(value)
         }
