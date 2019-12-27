@@ -40,6 +40,8 @@ class AppUpgradeManagerImpl(
             // used to be a list of AbsPlayer, is now a list of FavoritePlayer
             favoritePlayersRepository.clear()
         }
+
+        timber.d(TAG, "App upgrade complete")
     }
 
 }
