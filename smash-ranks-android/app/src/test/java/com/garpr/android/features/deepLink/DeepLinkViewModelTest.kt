@@ -7,6 +7,7 @@ import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.extensions.require
 import com.garpr.android.features.deepLink.DeepLinkViewModel.Breadcrumb
 import com.garpr.android.features.home.HomeTab
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionsRepository
@@ -28,6 +29,7 @@ class DeepLinkViewModelTest : BaseTest() {
     private val regionsRepository = RegionsRepositoryOverride()
 
     protected val regionRepository: RegionRepository by inject()
+    protected val schedulers: Schedulers by inject()
     protected val timber: Timber by inject()
 
     companion object {
@@ -81,7 +83,7 @@ class DeepLinkViewModelTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        viewModel = DeepLinkViewModel(regionRepository, regionsRepository, timber)
+        viewModel = DeepLinkViewModel(regionRepository, regionsRepository, schedulers, timber)
     }
 
     @Test

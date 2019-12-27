@@ -1,62 +1,34 @@
 package com.garpr.android.preferences
 
-import com.garpr.android.preferences.Preference.OnPreferenceChangeListener
-import com.garpr.android.wrappers.WeakReferenceWrapper
+import com.garpr.android.data.models.Optional
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
-abstract class BasePreference<T>(
+abstract class BasePreference<T : Any>(
         override val key: String,
-        override val defaultValue: T?
+        protected val defaultValue: T?
 ) : Preference<T> {
 
-    private val listeners = mutableSetOf<WeakReferenceWrapper<OnPreferenceChangeListener<T>>>()
+    private val subject = PublishSubject.create<Optional<T>>()
+    override val observable: Observable<Optional<T>> = subject.hide()
 
-
-    override fun addListener(listener: OnPreferenceChangeListener<T>) {
-        cleanListeners()
-
-        synchronized (listeners) {
-            listeners.add(WeakReferenceWrapper(listener))
-        }
+    final override fun delete() {
+        performDelete()
+        subject.onNext(Optional.ofNullable(defaultValue))
     }
 
-    private fun cleanListeners(listenerToRemove: OnPreferenceChangeListener<T>? = null) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val listener = iterator.next().get()
-
-                if (listener == null || listener == listenerToRemove) {
-                    iterator.remove()
-                }
-            }
-        }
-    }
-
-    protected fun notifyListeners() {
-        cleanListeners()
-
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                iterator.next().get()?.onPreferenceChange(this)
-            }
-        }
-    }
+    protected abstract fun performDelete()
 
     protected abstract fun performSet(newValue: T)
 
-    override fun removeListener(listener: OnPreferenceChangeListener<T>) {
-        cleanListeners(listener)
-    }
-
-    override fun set(newValue: T?) {
+    final override fun set(newValue: T?) {
         if (newValue == null) {
             delete()
         } else {
             performSet(newValue)
         }
+
+        subject.onNext(Optional.ofNullable(newValue))
     }
 
 }

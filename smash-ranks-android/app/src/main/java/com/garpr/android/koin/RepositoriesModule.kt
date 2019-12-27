@@ -30,11 +30,11 @@ val repositoriesModule = module {
 
     single<FavoritePlayersRepository> {
         val keyValueStore: KeyValueStore = get(named(FAVORITE_PLAYERS_KEY_VALUE_STORE))
-        FavoritePlayersRepositoryImpl(keyValueStore, get(), get())
+        FavoritePlayersRepositoryImpl(keyValueStore, get(), get(), get())
     }
 
     single<HeadToHeadRepository> { HeadToHeadRepositoryImpl(get(), get()) }
-    single<IdentityRepository> { IdentityRepositoryImpl(get(), get()) }
+    single<IdentityRepository> { IdentityRepositoryImpl(get(), get(), get(), get()) }
     single<MatchesRepository> { MatchesRepositoryImpl(get(), get()) }
     single<NightModeRepository> { NightModeRepositoryImpl(get(), get()) }
     single<PlayerMatchesRepository> { PlayerMatchesRepositoryImpl(get(), get(), get()) }

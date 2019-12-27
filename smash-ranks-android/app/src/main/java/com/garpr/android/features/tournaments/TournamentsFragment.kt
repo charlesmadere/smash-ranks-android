@@ -12,6 +12,7 @@ import com.garpr.android.R
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
@@ -19,10 +20,10 @@ import kotlinx.android.synthetic.main.fragment_tournaments.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionChangeListener,
-        Refreshable, SwipeRefreshLayout.OnRefreshListener {
+class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
+        SwipeRefreshLayout.OnRefreshListener, TournamentItemView.Listener {
 
-    private val adapter = Adapter()
+    private val adapter = Adapter(this)
 
     private val viewModel: TournamentsViewModel by sharedViewModel()
 
@@ -41,7 +42,10 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
     }
 
     private fun initListeners() {
-        regionRepository.addListener(this)
+        onCreateViewDisposable.add(regionRepository.observable
+                .subscribe {
+                    refresh()
+                })
 
         viewModel.stateLiveData.observe(viewLifecycleOwner, Observer {
             refreshState(it)
@@ -50,10 +54,18 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
 
     private fun initViews() {
         refreshLayout.setOnRefreshListener(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(context,
+        recyclerView.addItemDecoration(DividerItemDecoration(requireContext(),
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
+    }
+
+    override fun onClick(v: TournamentItemView) {
+        startActivity(TournamentActivity.getLaunchIntent(
+                context = requireContext(),
+                tournament = v.tournament,
+                region = regionRepository.getRegion(requireContext())
+        ))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -62,19 +74,8 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
         return inflater.inflate(R.layout.fragment_tournaments, container, false)
     }
 
-    override fun onDestroyView() {
-        regionRepository.removeListener(this)
-        super.onDestroyView()
-    }
-
     override fun onRefresh() {
         refresh()
-    }
-
-    override fun onRegionChange(regionRepository: RegionRepository) {
-        if (isAlive) {
-            refresh()
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -124,7 +125,9 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
         recyclerView.visibility = View.VISIBLE
     }
 
-    private class Adapter : RecyclerView.Adapter<TournamentViewHolder>() {
+    private class Adapter(
+            private val tournamentItemViewListener: TournamentItemView.Listener
+    ) : RecyclerView.Adapter<TournamentViewHolder>() {
 
         private val list = mutableListOf<AbsTournament>()
 
@@ -151,8 +154,8 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TournamentViewHolder {
             val inflater = parent.layoutInflater
-            return TournamentViewHolder(inflater.inflate(R.layout.item_tournament, parent,
-                    false))
+            return TournamentViewHolder(tournamentItemViewListener, inflater.inflate(
+                    R.layout.item_tournament, parent, false))
         }
 
         internal fun set(list: List<AbsTournament>?) {
@@ -167,8 +170,15 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
 
     }
 
-    private class TournamentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class TournamentViewHolder(
+            listener: TournamentItemView.Listener,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         internal val tournamentItemView: TournamentItemView = itemView as TournamentItemView
+
+        init {
+            tournamentItemView.listener = listener
+        }
     }
 
 }

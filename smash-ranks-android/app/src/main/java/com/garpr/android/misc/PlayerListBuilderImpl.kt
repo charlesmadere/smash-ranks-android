@@ -52,15 +52,15 @@ class PlayerListBuilderImpl(
         var addedDigitDivider = false
 
         players.filter { it.name.first().isDigit() }
-                .forEach {
+                .forEach { player ->
                     if (!addedDigitDivider) {
                         addedDigitDivider = true
                         list.add(PlayerListItem.Divider.Digit)
                     }
 
                     list.add(PlayerListItem.Player(
-                            player = it,
-                            isIdentity = identityRepository.isPlayer(it)
+                            player = player,
+                            isIdentity = identityRepository.isPlayer(player)
                     ))
                 }
 
@@ -72,15 +72,15 @@ class PlayerListBuilderImpl(
         var addedOtherDivider = false
 
         players.filter { !it.name.first().isLetterOrDigit() }
-                .forEach {
+                .forEach { player ->
                     if (!addedOtherDivider) {
                         addedOtherDivider = true
                         list.add(PlayerListItem.Divider.Other)
                     }
 
                     list.add(PlayerListItem.Player(
-                            player = it,
-                            isIdentity = identityRepository.isPlayer(it)
+                            player = player,
+                            isIdentity = identityRepository.isPlayer(player)
                     ))
                 }
 

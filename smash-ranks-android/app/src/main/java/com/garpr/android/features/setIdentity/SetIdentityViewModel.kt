@@ -7,6 +7,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.PlayerListBuilder
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -17,6 +18,7 @@ class SetIdentityViewModel(
         private val identityRepository: IdentityRepository,
         private val playerListBuilder: PlayerListBuilder,
         private val playersRepository: PlayersRepository,
+        private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : BaseViewModel(), Searchable {
@@ -59,8 +61,10 @@ class SetIdentityViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(playersRepository.getPlayers(region)
-                .subscribe({
-                    val list = playerListBuilder.create(it)
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe({ bundle ->
+                    val list = playerListBuilder.create(bundle)
 
                     state = state.copy(
                             selectedIdentity = null,
@@ -97,8 +101,8 @@ class SetIdentityViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = playerListBuilder.search(query, state.list)
-            state = state.copy(searchResults = results)
+            val searchResults = playerListBuilder.search(query, state.list)
+            state = state.copy(searchResults = searchResults)
         }
     }
 

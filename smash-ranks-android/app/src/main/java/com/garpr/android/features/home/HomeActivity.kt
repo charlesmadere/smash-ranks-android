@@ -11,6 +11,7 @@ import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel
+import com.garpr.android.features.home.shareRegion.ShareRegionDialogFragment
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsViewModel
@@ -29,6 +30,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         SearchQueryHandle {
 
     private lateinit var adapter: HomeFragmentPagerAdapter
+    override val activityName = TAG
 
     private val favoritePlayersViewModel: FavoritePlayersViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
@@ -67,8 +69,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             return intent.putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
         }
     }
-
-    override val activityName = TAG
 
     private fun initListeners() {
         homeViewModel.stateLiveData.observe(this, Observer {

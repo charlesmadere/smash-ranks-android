@@ -1,12 +1,13 @@
 package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.Optional
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -34,146 +35,152 @@ class PersistentLongPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testAddListener() {
-        val preference = PersistentLongPreference("long", null, keyValueStore)
-        var value: Long? = null
-
-        val listener = object : Preference.OnPreferenceChangeListener<Long> {
-            override fun onPreferenceChange(preference: Preference<Long>) {
-                value = preference.get()
-            }
-        }
-
-        preference.addListener(listener)
-        assertEquals(null, value)
-
-        preference.set(11L)
-        assertEquals(11L, value)
-
-        preference.set(21L)
-        assertEquals(21L, value)
-    }
-
-    @Test
-    fun testDelete() {
-        val preference = PersistentLongPreference("long", -127L, keyValueStore)
-        assertEquals(-127L, preference.get())
-
-        preference.delete()
-        assertEquals(-127L, preference.get())
-
-        preference.set(61L)
-        assertEquals(61L, preference.get())
-
-        preference.delete()
-        assertEquals(-127L, preference.get())
-    }
-
-    @Test
     fun testExistsWithDefaultValue() {
-        val preference = PersistentLongPreference("long", 1989L, keyValueStore)
-        assertTrue(preference.exists)
-
-        preference.delete()
+        val preference: Preference<Long> = PersistentLongPreference(
+                key = "long",
+                defaultValue = 1972L,
+                keyValueStore = keyValueStore
+        )
         assertTrue(preference.exists)
     }
 
     @Test
     fun testExistsWithNullDefaultValue() {
-        val preference = PersistentLongPreference("long", null, keyValueStore)
-        assertFalse(preference.exists)
-
-        preference.delete()
-        assertFalse(preference.exists)
-
-        preference.set(1998L)
-        assertTrue(preference.exists)
-
-        preference.delete()
+        val preference: Preference<Long> = PersistentLongPreference(
+                key = "long",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
         assertFalse(preference.exists)
     }
 
     @Test
-    fun testGetAndSet() {
-        val preference = PersistentLongPreference("long", 863L, keyValueStore)
+    fun testGetAndSetAndDeleteAndExistsWithDefaultValue() {
+        val preference: Preference<Long> = PersistentLongPreference(
+                key = "long",
+                defaultValue = 863L,
+                keyValueStore = keyValueStore
+        )
         assertEquals(863L, preference.get())
+        assertTrue(preference.exists)
 
         preference.set(0L)
         assertEquals(0L, preference.get())
+        assertTrue(preference.exists)
 
-        preference.set(null)
+        preference.delete()
         assertEquals(863L, preference.get())
-        assertEquals(preference.defaultValue, preference.get())
+        assertTrue(preference.exists)
 
         preference.set(-177L)
         assertEquals(-177L, preference.get())
-        assertNotEquals(preference.defaultValue, preference.get())
+        assertTrue(preference.exists)
     }
 
     @Test
-    fun testGetKey() {
-        val preference = PersistentLongPreference("long", null, keyValueStore)
+    fun testGetAndSetAndDeleteAndExistsWithNullDefaultValue() {
+        val preference: Preference<Long> = PersistentLongPreference(
+                key = "long",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+        assertNull(preference.get())
+        assertFalse(preference.exists)
+
+        preference.set(10000L)
+        assertEquals(10000L, preference.get())
+        assertTrue(preference.exists)
+
+        preference.delete()
+        assertNull(preference.get())
+        assertFalse(preference.exists)
+
+        preference.set(-675L)
+        assertEquals(-675L, preference.get())
+        assertTrue(preference.exists)
+    }
+
+    @Test
+    fun testKey() {
+        val preference: Preference<Long> = PersistentLongPreference(
+                key = "long",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
         assertEquals("long", preference.key)
     }
 
     @Test
-    fun testNonNullGetDefaultValue() {
-        val preference = PersistentLongPreference("long", 130L, keyValueStore)
-        assertEquals(130L, preference.defaultValue)
+    fun testObservableWithDefaultValue() {
+        val preference: Preference<Long> = PersistentLongPreference(
+                key = "integer",
+                defaultValue = -50L,
+                keyValueStore = keyValueStore
+        )
 
-        preference.set(java.lang.Long.MAX_VALUE)
-        assertEquals(130L, preference.defaultValue)
-    }
+        var value: Optional<Long>? = null
 
-    @Test
-    fun testNullGetDefaultValue() {
-        val preference = PersistentLongPreference("long", null, keyValueStore)
-        assertNull(preference.defaultValue)
-
-        preference.set(19L)
-        assertNull(preference.defaultValue)
-    }
-
-    @Test
-    fun testRemoveListener() {
-        val preference = PersistentLongPreference("long", null, keyValueStore)
-        var value: Long? = null
-
-        val listener = object : Preference.OnPreferenceChangeListener<Long> {
-            override fun onPreferenceChange(preference: Preference<Long>) {
-                value = preference.get()
-            }
+        preference.observable.subscribe {
+            value = it
         }
 
-        preference.addListener(listener)
+        assertNull(value)
 
-        preference.set(11L)
-        assertEquals(11L, value)
+        preference.set(-93L)
+        assertNotNull(value)
+        assertEquals(-93L, value?.item)
 
-        preference.set(25L)
-        assertEquals(25L, value)
+        preference.set(13L)
+        assertNotNull(value)
+        assertEquals(13L, value?.item)
 
-        preference.removeListener(listener)
-
-        preference.set(139L)
-        assertNotEquals(139L, value)
+        preference.delete()
+        assertNotNull(value)
+        assertEquals(-50L, value?.item)
     }
 
     @Test
-    fun testSetAndGet() {
-        val preference = PersistentLongPreference("long", null, keyValueStore)
+    fun testObservableWithNullDefaultValue() {
+        val preference: Preference<Long> = PersistentLongPreference(
+                key = "long",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
 
-        preference.set(38L)
-        assertEquals(38L, preference.get())
+        var value: Optional<Long>? = null
 
-        preference.set(-22L)
-        assertEquals(-22L, preference.get())
+        preference.observable.subscribe {
+            value = it
+        }
+
+        assertNull(value)
+
+        preference.set(11L)
+        assertNotNull(value)
+        assertEquals(11L, value?.item)
+
+        preference.set(21L)
+        assertNotNull(value)
+        assertEquals(21L, value?.item)
+
+        preference.delete()
+        assertNotNull(value)
+        assertEquals(false, value?.isPresent)
+    }
+
+    @Test
+    fun testSetWithNullCausesDelete() {
+        val preference: Preference<Long> = PersistentLongPreference(
+                key = "long",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+
+        preference.set(-1234L)
+        assertTrue(preference.exists)
 
         preference.set(null)
-        assertEquals(null, preference.get())
-
-        preference.set(Long.MIN_VALUE)
-        assertEquals(Long.MIN_VALUE, preference.get())
+        assertFalse(preference.exists)
     }
 
 }

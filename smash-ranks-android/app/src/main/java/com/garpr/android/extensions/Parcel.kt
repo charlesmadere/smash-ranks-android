@@ -22,11 +22,11 @@ inline fun <reified T : Parcelable> createParcel(
             override fun newArray(size: Int): Array<out T?> = arrayOfNulls(size)
         }
 
-fun Parcel.readAbsPlayer(): AbsPlayer {
-    return requireNotNull(readOptionalAbsPlayer())
+fun Parcel.requireAbsPlayer(): AbsPlayer {
+    return requireNotNull(optAbsPlayer())
 }
 
-fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
+fun Parcel.optAbsPlayer(): AbsPlayer? {
     @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsPlayer.Kind>(AbsPlayer.Kind::class.java.classLoader) ?: return null
 
@@ -38,7 +38,7 @@ fun Parcel.readOptionalAbsPlayer(): AbsPlayer? {
     }
 }
 
-fun Parcel.readAbsPlayerList(): MutableList<AbsPlayer>? {
+fun Parcel.optAbsPlayerList(): List<AbsPlayer>? {
     val size = readInt()
 
     if (size == 0) {
@@ -48,7 +48,7 @@ fun Parcel.readAbsPlayerList(): MutableList<AbsPlayer>? {
     val list = mutableListOf<AbsPlayer>()
 
     repeat(size) {
-        list.add(readAbsPlayer())
+        list.add(requireAbsPlayer())
     }
 
     return list
@@ -76,11 +76,11 @@ fun Parcel.writeAbsPlayerList(list: List<AbsPlayer>?, flags: Int) {
     }
 }
 
-fun Parcel.readAbsRegion(): AbsRegion {
-    return requireNotNull(readOptionalAbsRegion())
+fun Parcel.requireAbsRegion(): AbsRegion {
+    return requireNotNull(optAbsRegion())
 }
 
-fun Parcel.readOptionalAbsRegion(): AbsRegion? {
+fun Parcel.optAbsRegion(): AbsRegion? {
     @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsRegion.Kind>(AbsRegion::class.java.classLoader) ?: return null
 
@@ -90,7 +90,7 @@ fun Parcel.readOptionalAbsRegion(): AbsRegion? {
     }
 }
 
-fun Parcel.readAbsRegionList(): List<AbsRegion>? {
+fun Parcel.optAbsRegionList(): List<AbsRegion>? {
     val size = readInt()
 
     if (size == 0) {
@@ -100,7 +100,7 @@ fun Parcel.readAbsRegionList(): List<AbsRegion>? {
     val list = mutableListOf<AbsRegion>()
 
     repeat(size) {
-        list.add(readAbsRegion())
+        list.add(requireAbsRegion())
     }
 
     return list
@@ -128,11 +128,11 @@ fun Parcel.writeAbsRegionList(list: List<AbsRegion>?, flags: Int) {
     }
 }
 
-fun Parcel.readAbsTournament(): AbsTournament {
-    return requireNotNull(readOptionalAbsTournament())
+fun Parcel.requireAbsTournament(): AbsTournament {
+    return requireNotNull(optAbsTournament())
 }
 
-fun Parcel.readOptionalAbsTournament(): AbsTournament? {
+fun Parcel.optAbsTournament(): AbsTournament? {
     @Suppress("MoveVariableDeclarationIntoWhen")
     val kind = readParcelable<AbsTournament.Kind>(AbsTournament.Kind::class.java.classLoader) ?: return null
 
@@ -142,7 +142,7 @@ fun Parcel.readOptionalAbsTournament(): AbsTournament? {
     }
 }
 
-fun Parcel.readAbsTournamentList(): MutableList<AbsTournament>? {
+fun Parcel.optAbsTournamentList(): List<AbsTournament>? {
     val size = readInt()
 
     if (size == 0) {
@@ -152,7 +152,7 @@ fun Parcel.readAbsTournamentList(): MutableList<AbsTournament>? {
     val list = mutableListOf<AbsTournament>()
 
     repeat(size) {
-        list.add(readAbsTournament())
+        list.add(requireAbsTournament())
     }
 
     return list
@@ -180,11 +180,7 @@ fun Parcel.writeAbsTournamentList(list: List<AbsTournament>?, flags: Int) {
     }
 }
 
-fun Parcel.requireBoolean(): Boolean {
-    return requireNotNull(readBoolean())
-}
-
-fun Parcel.readBoolean(): Boolean? {
+fun Parcel.optBoolean(): Boolean? {
     return readValue(Boolean::class.java.classLoader) as Boolean?
 }
 
@@ -192,7 +188,7 @@ fun Parcel.writeBoolean(boolean: Boolean?) {
     writeValue(boolean)
 }
 
-fun Parcel.readInteger(): Int? {
+fun Parcel.optInteger(): Int? {
     return readValue(Integer::class.java.classLoader) as Int?
 }
 
@@ -205,7 +201,7 @@ fun <T : Parcelable> Parcel.requireParcelable(loader: ClassLoader?): T {
     return requireNotNull(readParcelable(loader))
 }
 
-fun Parcel.readRatingsMap(): Map<String, Rating>? {
+fun Parcel.optRatingsMap(): Map<String, Rating>? {
     val bundle = readBundle(Rating::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, Rating>()
 
@@ -235,7 +231,7 @@ fun Parcel.requireString(): String {
     return requireNotNull(readString())
 }
 
-fun Parcel.readStringMap(): Map<String, String>? {
+fun Parcel.optStringMap(): Map<String, String>? {
     val bundle = readBundle(String::class.java.classLoader) ?: return null
     val map = mutableMapOf<String, String>()
 

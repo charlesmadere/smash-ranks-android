@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.garpr.android.features.common.views.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    app:scrollingChildId="@+id/recyclerView">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:visibility="gone"
-        tools:listitem="@layout/item_favorite_player"
-        tools:visibility="visible"
-        style="@style/RecyclerView" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.garpr.android.features.common.views.NoContentLinearLayout
-        android:id="@+id/empty"
-        app:descriptionText="@string/you_can_add_a_player_to_your_favorites"
-        app:titleText="@string/no_favorite_players"
-        style="@style/NoContentLinearLayout.Empty" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:visibility="gone"
+            tools:listitem="@layout/item_favorite_player"
+            tools:visibility="visible"
+            style="@style/RecyclerView" />
 
-</FrameLayout>
+        <com.garpr.android.features.common.views.NoContentLinearLayout
+            android:id="@+id/empty"
+            app:descriptionText="@string/you_can_add_a_player_to_your_favorites"
+            app:titleText="@string/no_favorite_players"
+            style="@style/NoContentLinearLayout.Empty" />
+
+    </FrameLayout>
+
+</com.garpr.android.features.common.views.RefreshLayout>

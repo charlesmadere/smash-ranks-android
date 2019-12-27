@@ -6,37 +6,23 @@ import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
-import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.setTintedImageDrawable
-import com.garpr.android.misc.Refreshable
 import kotlinx.android.synthetic.main.view_simple_preference.view.*
 
 open class SimplePreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleConstraintLayout(context, attrs), Refreshable {
+) : ConstraintLayout(context, attrs) {
 
     var descriptionText: CharSequence?
         get() = description.text
         set(value) {
             description.text = value
-        }
-
-    var imageDrawable: Drawable?
-        get() = icon.drawable
-        set(value) {
-            if (value == null) {
-                icon.clear()
-                icon.visibility = View.GONE
-            } else {
-                icon.setTintedImageDrawable(value,
-                        context.getAttrColor(android.R.attr.textColorSecondary))
-                icon.visibility = View.VISIBLE
-            }
         }
 
     var titleText: CharSequence?
@@ -50,7 +36,7 @@ open class SimplePreferenceView @JvmOverloads constructor(
         layoutInflater.inflate(R.layout.view_simple_preference, this)
 
         var ta = context.obtainStyledAttributes(attrs, R.styleable.SimplePreferenceView)
-        imageDrawable = ta.getDrawable(R.styleable.SimplePreferenceView_android_src)
+        setImageDrawable(ta.getDrawable(R.styleable.SimplePreferenceView_android_src))
         ta.recycle()
 
         @SuppressLint("CustomViewStyleable")
@@ -68,14 +54,22 @@ open class SimplePreferenceView @JvmOverloads constructor(
         dispatchFreezeSelfOnly(container)
     }
 
-    override fun refresh() {
-        // intentionally empty, children can override
-    }
-
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         title.isEnabled = enabled
         description.isEnabled = enabled
+        icon.isEnabled = enabled
+    }
+
+    fun setImageDrawable(drawable: Drawable?) {
+        if (drawable == null) {
+            icon.clear()
+            icon.visibility = GONE
+        } else {
+            icon.setTintedImageDrawable(drawable,
+                    context.getAttrColor(android.R.attr.textColorSecondary))
+            icon.visibility = VISIBLE
+        }
     }
 
 }

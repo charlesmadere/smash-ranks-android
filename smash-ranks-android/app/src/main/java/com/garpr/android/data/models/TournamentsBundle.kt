@@ -3,7 +3,7 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsTournamentList
+import com.garpr.android.extensions.optAbsTournamentList
 import com.garpr.android.extensions.writeAbsTournamentList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -16,7 +16,9 @@ data class TournamentsBundle(
     companion object {
         @JvmField
         val CREATOR = createParcel {
-            TournamentsBundle(it.readAbsTournamentList())
+            TournamentsBundle(
+                    it.optAbsTournamentList()
+            )
         }
     }
 

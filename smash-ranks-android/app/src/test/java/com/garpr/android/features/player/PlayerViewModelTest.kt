@@ -15,6 +15,7 @@ import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.features.player.PlayerViewModel.ListItem
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.FavoritePlayersRepository
@@ -43,6 +44,7 @@ class PlayerViewModelTest : BaseTest() {
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val identityRepository: IdentityRepository by inject()
+    protected val schedulers: Schedulers by inject()
     protected val smashRosterStorage: SmashRosterStorage by inject()
     protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
     protected val threadUtils: ThreadUtils by inject()
@@ -168,7 +170,7 @@ class PlayerViewModelTest : BaseTest() {
         super.setUp()
 
         viewModel = PlayerViewModel(favoritePlayersRepository, identityRepository,
-                playerMatchesRepository, smashRosterStorage, smashRosterSyncManager,
+                playerMatchesRepository, schedulers, smashRosterStorage, smashRosterSyncManager,
                 threadUtils, timber)
     }
 

@@ -5,46 +5,36 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.data.models.AbsTournament
-import com.garpr.android.extensions.clear
-import com.garpr.android.features.tournament.TournamentActivity
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.divider_tournament.view.*
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
 class TournamentDividerView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs), KoinComponent, View.OnClickListener {
+) : ConstraintLayout(context, attrs), View.OnClickListener {
 
-    protected val regionRepository: RegionRepository by inject()
+    private var _tournament: AbsTournament? = null
+
+    val tournament: AbsTournament
+        get() = checkNotNull(_tournament)
+
+    var listener: Listener? = null
+
+    interface Listener {
+        fun onClick(v: TournamentDividerView)
+    }
 
     init {
         setOnClickListener(this)
     }
 
-    var tournament: AbsTournament? = null
-        set(value) {
-            field = value
-
-            if (value == null) {
-                clear()
-                return
-            }
-
-            name.text = value.name
-            date.text = value.date.mediumForm
-        }
-
-    private fun clear() {
-        date.clear()
-        name.clear()
+    override fun onClick(v: View) {
+        listener?.onClick(this)
     }
 
-    override fun onClick(v: View) {
-        val tournament = this.tournament ?: return
-        context.startActivity(TournamentActivity.getLaunchIntent(context, tournament,
-                regionRepository.getRegion(context)))
+    fun setContent(tournament: AbsTournament) {
+        _tournament = tournament
+        name.text = tournament.name
+        date.text = tournament.date.mediumForm
     }
 
 }

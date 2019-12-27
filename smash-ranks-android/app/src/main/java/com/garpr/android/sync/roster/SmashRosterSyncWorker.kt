@@ -29,18 +29,19 @@ class SmashRosterSyncWorker(
             smashRosterSyncManager.sync()
                     .blockingAwait()
 
+            timber.d(TAG, "successfully synced smash roster")
             syncResult = smashRosterSyncManager.syncResult
         } catch (e: RuntimeException) {
-            timber.e(TAG, "error when ", e)
+            timber.e(TAG, "Exception when syncing smash roster", e)
         }
 
         timber.d(TAG, "work complete")
 
         return if (syncResult?.success == true) {
-            timber.d(TAG, "work was successful: $syncResult")
+            timber.d(TAG, "work was successful ($syncResult)")
             Result.success()
         } else {
-            timber.d(TAG, "work wasn't successful, will retry: $syncResult")
+            timber.w(TAG, "work wasn't successful, will retry ($syncResult)")
             Result.retry()
         }
     }

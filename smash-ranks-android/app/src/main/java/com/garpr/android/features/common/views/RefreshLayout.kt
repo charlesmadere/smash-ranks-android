@@ -16,7 +16,7 @@ import com.garpr.android.misc.ListLayout
  * A child class of the official Android [SwipeRefreshLayout] that helps us work around some of
  * its shortcomings. We should use this view instead of SwipeRefreshLayout in every case.
  */
-open class RefreshLayout @JvmOverloads constructor(
+class RefreshLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : SwipeRefreshLayout(context, attrs), Heartbeat, ListLayout {
@@ -24,8 +24,7 @@ open class RefreshLayout @JvmOverloads constructor(
     @IdRes
     private val scrollingChildId: Int
 
-    var scrollingChild: View? = null
-
+    private var scrollingChild: View? = null
 
     init {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.RefreshLayout)
@@ -41,7 +40,7 @@ open class RefreshLayout @JvmOverloads constructor(
     }
 
     override fun getRecyclerView(): RecyclerView? {
-        return scrollingChild as? RecyclerView
+        return scrollingChild as? RecyclerView?
     }
 
     override val isAlive: Boolean

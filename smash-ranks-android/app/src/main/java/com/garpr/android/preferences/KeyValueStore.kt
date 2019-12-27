@@ -37,6 +37,8 @@ interface KeyValueStore {
 
         fun clear(): BatchEditor
 
+        fun putBoolean(key: String, value: Boolean): BatchEditor
+
         fun putInteger(key: String, value: Int): BatchEditor
 
         fun putString(key: String, value: String): BatchEditor

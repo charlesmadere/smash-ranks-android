@@ -92,7 +92,11 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
         }
 
         private fun bindMatch(holder: TournamentMatchViewHolder, item: MatchListItem.Match) {
-            holder.tournamentMatchItemView.setContent(item.match)
+            holder.tournamentMatchItemView.setContent(
+                    match = item.match,
+                    winnerIsIdentity = item.winnerIsIdentity,
+                    loserIsIdentity = item.loserIsIdentity
+            )
         }
 
         internal fun clear() {

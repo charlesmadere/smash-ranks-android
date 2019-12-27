@@ -3,19 +3,16 @@ package com.garpr.android.features.splash
 import android.content.Context
 import android.content.DialogInterface
 import android.util.AttributeSet
+import android.view.View.OnClickListener
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
-import com.garpr.android.extensions.activity
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.getLong
-import com.garpr.android.features.common.views.LifecycleCardView
-import com.garpr.android.features.setIdentity.SetIdentityActivity
-import com.garpr.android.features.setRegion.SetRegionActivity
 import com.garpr.android.misc.AnimationUtils
 import com.garpr.android.misc.DeviceUtils
-import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionRepository
+import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.activity_splash.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -23,122 +20,92 @@ import org.koin.core.inject
 class SplashCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleCardView(context, attrs), DialogInterface.OnClickListener,
-        IdentityRepository.OnIdentityChangeListener, KoinComponent, Refreshable,
-        RegionRepository.OnRegionChangeListener {
+) : MaterialCardView(context, attrs), DialogInterface.OnClickListener, KoinComponent {
 
     private var hasAnimated: Boolean = false
+    var listeners: Listeners? = null
+
+    private val customizeIdentityClickListener = OnClickListener {
+        listeners?.onCustomizeIdentityClick(this)
+    }
+
+    private val customizeRegionClickListener = OnClickListener {
+        listeners?.onCustomizeRegionClick(this)
+    }
+
+    private val deleteIdentityClickListener = OnClickListener {
+        showDeleteIdentityConfirmationDialog()
+    }
+
+    private val startUsingTheAppClickListener = OnClickListener {
+        listeners?.onStartUsingTheAppClick(this)
+    }
 
     protected val deviceUtils: DeviceUtils by inject()
-    protected val identityRepository: IdentityRepository by inject()
-    protected val regionRepository: RegionRepository by inject()
 
-    interface Listener {
+    interface Listeners {
+        fun onCustomizeIdentityClick(v: SplashCardView)
+        fun onCustomizeRegionClick(v: SplashCardView)
+        fun onRemoveIdentityClick(v: SplashCardView)
         fun onStartUsingTheAppClick(v: SplashCardView)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (isInEditMode) {
-            return
-        }
-
-        identityRepository.addListener(this)
-        regionRepository.addListener(this)
-        refresh()
-
-        if (!hasAnimated && !deviceUtils.hasLowRam) {
-            hasAnimated = true
-            performFullAnimation()
-        }
-    }
-
     override fun onClick(dialog: DialogInterface, which: Int) {
-        identityRepository.removeIdentity()
-    }
-
-    override fun onDetachedFromWindow() {
-        identityRepository.removeListener(this)
-        regionRepository.removeListener(this)
-        super.onDetachedFromWindow()
+        listeners?.onRemoveIdentityClick(this)
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (isInEditMode) {
-            return
-        }
-
-        customizeIdentity.setOnClickListener {
-            if (identityRepository.hasIdentity) {
-                showDeleteIdentityConfirmationDialog()
-            } else {
-                context.startActivity(SetIdentityActivity.getLaunchIntent(context))
-            }
-        }
-
-        customizeRegion.setOnClickListener {
-            context.startActivity(SetRegionActivity.getLaunchIntent(context))
-        }
-
-        startUsingTheApp.setOnClickListener {
-            (activity as? Listener?)?.onStartUsingTheAppClick(this)
-        }
-
-        identityRepository.addListener(this)
-        regionRepository.addListener(this)
-        refresh()
+        customizeRegion.setOnClickListener(customizeRegionClickListener)
+        startUsingTheApp.setOnClickListener(startUsingTheAppClickListener)
     }
 
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
-    override fun onRegionChange(regionRepository: RegionRepository) {
-        if (isAlive) {
-            refresh()
-        }
-    }
-
-    private fun performFullAnimation() {
+    private fun performAnimation() {
         alpha = 0f
-        scaleX = 0.5f
-        scaleY = 0.5f
+        scaleX = 0.8f
+        scaleY = 0.8f
+        visibility = VISIBLE
 
         animate()
                 .alpha(1f)
                 .scaleX(1f)
                 .scaleY(1f)
-                .setDuration(resources.getLong(R.integer.splash_card_animation_duration))
-                .setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR)
-                .setStartDelay(resources.getLong(R.integer.splash_card_animation_delay))
+                .setDuration(animationDuration)
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .setStartDelay(animationDelay)
                 .start()
     }
 
-    override fun refresh() {
-        val identity = identityRepository.identity
-
+    fun setContent(identity: FavoritePlayer?, region: Region) {
         if (identity == null) {
             customizeIdentity.descriptionText = context.getText(
                     R.string.customize_identity_description)
             customizeIdentity.titleText = context.getText(R.string.customize_identity)
-            customizeIdentity.imageDrawable = ContextCompat.getDrawable(context,
-                    R.drawable.ic_chevron_right_white_24dp)
+            customizeIdentity.setImageDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.ic_chevron_right_white_24dp))
+            customizeIdentity.setOnClickListener(customizeIdentityClickListener)
         } else {
             customizeIdentity.descriptionText = context.getString(R.string.identity_region_format,
                     identity.name, identity.region.displayName)
             customizeIdentity.titleText = context.getText(R.string.delete_identity)
-            customizeIdentity.imageDrawable = ContextCompat.getDrawable(context,
-                    R.drawable.ic_delete_white_24dp)
+            customizeIdentity.setImageDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.ic_delete_white_24dp))
+            customizeIdentity.setOnClickListener(deleteIdentityClickListener)
         }
 
-        val region = regionRepository.getRegion(context)
         customizeRegion.descriptionText = context.getString(R.string.region_endpoint_format,
                 region.displayName, context.getString(region.endpoint.title))
+
+        if (!hasAnimated) {
+            hasAnimated = true
+
+            if (deviceUtils.hasLowRam) {
+                visibility = VISIBLE
+            } else {
+                performAnimation()
+            }
+        }
     }
 
     private fun showDeleteIdentityConfirmationDialog() {
@@ -148,5 +115,22 @@ class SplashCardView @JvmOverloads constructor(
                 .setPositiveButton(R.string.yes, this)
                 .show()
     }
+
+
+    ///////////////////////////////
+    // BEGIN ANIMATION VARIABLES //
+    ///////////////////////////////
+
+    private val animationDelay: Long by lazy {
+        resources.getLong(R.integer.splash_card_animation_delay)
+    }
+
+    private val animationDuration: Long by lazy {
+        resources.getLong(R.integer.splash_card_animation_duration)
+    }
+
+    /////////////////////////////
+    // END ANIMATION VARIABLES //
+    /////////////////////////////
 
 }

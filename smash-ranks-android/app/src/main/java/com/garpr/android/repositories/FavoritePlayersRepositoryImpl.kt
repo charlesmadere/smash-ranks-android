@@ -1,73 +1,73 @@
 package com.garpr.android.repositories
 
+import androidx.annotation.WorkerThread
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.requireFromJson
+import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStore
-import com.garpr.android.repositories.FavoritePlayersRepository.OnFavoritePlayersChangeListener
-import com.garpr.android.wrappers.WeakReferenceWrapper
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import java.util.Collections
 
 class FavoritePlayersRepositoryImpl(
         private val keyValueStore: KeyValueStore,
         private val moshi: Moshi,
+        private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : FavoritePlayersRepository {
+) : FavoritePlayersRepository, Refreshable {
 
-    private val favoritePlayerAdapter: JsonAdapter<FavoritePlayer> by lazy {
+    override val isEmpty: Boolean
+        get() = size == 0
+
+    override val size: Int
+        get() = playersSubject.value?.size ?: 0
+
+    private val favoritePlayerJsonAdapter by lazy {
         moshi.adapter(FavoritePlayer::class.java)
     }
 
-    private val listeners = mutableSetOf<WeakReferenceWrapper<OnFavoritePlayersChangeListener>>()
+    override val players: List<FavoritePlayer>?
+        get() = playersSubject.value ?: emptyList()
+
+    private val playersSubject = BehaviorSubject.createDefault<List<FavoritePlayer>>(emptyList())
+    override val playersObservable: Observable<List<FavoritePlayer>> = playersSubject.hide()
 
     companion object {
         private const val TAG = "FavoritePlayersRepositoryImpl"
     }
 
-    override fun addListener(listener: OnFavoritePlayersChangeListener) {
-        cleanListeners()
-
-        synchronized (listeners) {
-            listeners.add(WeakReferenceWrapper(listener))
-        }
+    init {
+        refresh()
     }
 
     override fun addPlayer(player: AbsPlayer, region: Region) {
-        if (player in this) {
-            timber.d(TAG, "Not adding favorite, it already exists in the store")
-            return
-        }
-
-        timber.d(TAG, "Adding favorite (there are currently $size)")
-
-        val favoritePlayer = FavoritePlayer(player.id, player.name, region)
-        val playerJson = favoritePlayerAdapter.toJson(favoritePlayer)
-        keyValueStore.setString(player.id, playerJson)
-        notifyListeners()
-    }
-
-    private fun cleanListeners(listenerToRemove: OnFavoritePlayersChangeListener? = null) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val listener = iterator.next().get()
-
-                if (listener == null || listener == listenerToRemove) {
-                    iterator.remove()
-                }
+        threadUtils.background.submit {
+            if (player in this) {
+                timber.d(TAG, "Not adding favorite, it already exists in the store")
+                return@submit
             }
+
+            timber.d(TAG, "Adding favorite (there are currently $size)")
+
+            val favoritePlayer = FavoritePlayer(player.id, player.name, region)
+            val playerJson = favoritePlayerJsonAdapter.toJson(favoritePlayer)
+            keyValueStore.setString(player.id, playerJson)
+
+            loadPlayers()
         }
     }
 
     override fun clear() {
-        timber.d(TAG, "Clearing favorites (there are currently $size)")
-        keyValueStore.clear()
-        notifyListeners()
+        threadUtils.background.submit {
+            timber.d(TAG, "Clearing favorites (there are currently $size)")
+            keyValueStore.clear()
+            loadPlayers()
+        }
     }
 
     override fun contains(player: AbsPlayer): Boolean {
@@ -78,43 +78,28 @@ class FavoritePlayersRepositoryImpl(
         return playerId in keyValueStore
     }
 
-    override val isEmpty: Boolean
-        get() = keyValueStore.all.isNullOrEmpty()
+    @WorkerThread
+    private fun loadPlayers() {
+        val all = keyValueStore.all
 
-    private fun notifyListeners() {
-        cleanListeners()
-
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                iterator.next().get()?.onFavoritePlayersChange(this)
-            }
+        if (all.isNullOrEmpty()) {
+            playersSubject.onNext(emptyList())
+            return
         }
+
+        val players = all.map { entry ->
+            val json = entry.value as String
+            favoritePlayerJsonAdapter.requireFromJson(json)
+        }
+
+        Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
+        playersSubject.onNext(players)
     }
 
-    override val players: List<FavoritePlayer>?
-        get() {
-            val all = keyValueStore.all
-
-            if (all.isNullOrEmpty()) {
-                return null
-            }
-
-            val players = mutableListOf<FavoritePlayer>()
-
-            for ((key, value) in all) {
-                val json = value as String
-                val player = favoritePlayerAdapter.requireFromJson(json)
-                players.add(player)
-            }
-
-            Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
-            return players
+    override fun refresh() {
+        threadUtils.background.submit {
+            loadPlayers()
         }
-
-    override fun removeListener(listener: OnFavoritePlayersChangeListener?) {
-        cleanListeners(listener)
     }
 
     override fun removePlayer(player: AbsPlayer) {
@@ -122,12 +107,11 @@ class FavoritePlayersRepositoryImpl(
     }
 
     override fun removePlayer(playerId: String) {
-        timber.d(TAG, "Removing favorite (there are currently $size)")
-        keyValueStore.remove(playerId)
-        notifyListeners()
+        threadUtils.background.submit {
+            timber.d(TAG, "Removing favorite (there are currently $size)")
+            keyValueStore.remove(playerId)
+            loadPlayers()
+        }
     }
-
-    override val size: Int
-        get() = keyValueStore.all?.size ?: 0
 
 }

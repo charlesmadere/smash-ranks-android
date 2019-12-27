@@ -1,35 +1,36 @@
 package com.garpr.android.features.settings
 
-import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.media.RingtoneManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.garpr.android.R
+import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.features.logViewer.LogViewerActivity
+import com.garpr.android.features.setIdentity.SetIdentityActivity
+import com.garpr.android.features.setRegion.SetRegionActivity
+import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
+import com.garpr.android.features.settings.SettingsViewModel.IdentityState
+import com.garpr.android.features.settings.SettingsViewModel.RankingsPollingState
+import com.garpr.android.features.settings.SettingsViewModel.SmashRosterState
 import com.garpr.android.misc.Constants
-import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.RequestCodes
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.preferences.Preference
-import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.repositories.FavoritePlayersRepository
-import com.garpr.android.repositories.IdentityRepository
-import com.garpr.android.repositories.RegionRepository
-import com.garpr.android.sync.rankings.RankingsPollingManager
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import android.net.Uri as AndroidUri
 
-class SettingsActivity : BaseActivity(), Refreshable {
+class SettingsActivity : BaseActivity() {
 
-    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
-    protected val identityRepository: IdentityRepository by inject()
-    protected val rankingsPollingManager: RankingsPollingManager by inject()
-    protected val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore by inject()
-    protected val regionRepository: RegionRepository by inject()
+    private val viewModel: SettingsViewModel by viewModel()
+
     protected val shareUtils: ShareUtils by inject()
 
     companion object {
@@ -40,73 +41,60 @@ class SettingsActivity : BaseActivity(), Refreshable {
 
     override val activityName = TAG
 
+    private fun initListeners() {
+        viewModel.rankingsPollingStateLiveData.observe(this, Observer {
+            refreshRankingsPollingState(it)
+        })
+
+        viewModel.stateLiveData.observe(this, Observer {
+            refreshState(it)
+        })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
             RequestCodes.CHANGE_IDENTITY.value -> {
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     Toast.makeText(this, R.string.identity_saved_, Toast.LENGTH_LONG).show()
                 }
             }
 
             RequestCodes.CHANGE_REGION.value -> {
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     Toast.makeText(this, R.string.region_saved_, Toast.LENGTH_LONG).show()
                 }
             }
 
             RequestCodes.CHANGE_RINGTONE.value -> {
-                ringtonePreference.onActivityResult(data)
+                if (resultCode == RESULT_OK) {
+                    saveSmashRosterRingtone(data)
+                }
             }
         }
-
-        refresh()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        favoritePlayersRepository.removeListener(onFavoritePlayersChangeListener)
-        identityRepository.removeListener(onIdentityChangeListener)
-        regionRepository.removeListener(onRegionChangeListener)
-
-        rankingsPollingPreferenceStore.chargingRequired.removeListener(onChargingRequiredChange)
-        rankingsPollingPreferenceStore.enabled.removeListener(onRankingsPollingEnabledChange)
-        rankingsPollingPreferenceStore.pollFrequency.removeListener(onPollFrequencyChange)
-        rankingsPollingPreferenceStore.ringtone.removeListener(onRingtoneChange)
-        rankingsPollingPreferenceStore.vibrationEnabled.removeListener(onVibrationEnabledChange)
-        rankingsPollingPreferenceStore.wifiRequired.removeListener(onWifiRequiredChange)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refresh()
+        initListeners()
     }
 
     override fun onViewsBound() {
         super.onViewsBound()
 
-        favoritePlayersRepository.addListener(onFavoritePlayersChangeListener)
-        identityRepository.addListener(onIdentityChangeListener)
-        regionRepository.addListener(onRegionChangeListener)
-
-        rankingsPollingPreferenceStore.chargingRequired.addListener(onChargingRequiredChange)
-        rankingsPollingPreferenceStore.enabled.addListener(onRankingsPollingEnabledChange)
-        rankingsPollingPreferenceStore.pollFrequency.addListener(onPollFrequencyChange)
-        rankingsPollingPreferenceStore.ringtone.addListener(onRingtoneChange)
-        rankingsPollingPreferenceStore.vibrationEnabled.addListener(onVibrationEnabledChange)
-        rankingsPollingPreferenceStore.wifiRequired.addListener(onWifiRequiredChange)
-
-        useRankingsPolling.preference = rankingsPollingPreferenceStore.enabled
-        vibratePreference.preference = rankingsPollingPreferenceStore.vibrationEnabled
-        mustBeOnWifiPreference.preference = rankingsPollingPreferenceStore.wifiRequired
-        mustBeChargingPreference.preference = rankingsPollingPreferenceStore.chargingRequired
+        regionPreference.listener = regionPreferenceListener
+        identityPreference.listeners = identityPreferenceListeners
+        nightModePreference.listener = nightModePreferenceListener
+        deleteFavoritePlayersPreference.listener = deleteFavoritePlayersListener
+        rankingsPollingPollFrequencyPreference.listener = rankingsPollingPollFrequencyListener
+        rankingsPollingRingtonePreference.listener = ringtonePreferenceListener
+        rankingsPollingEnabledPreference.listener = rankingsPollingEnabledListener
+        rankingsPollingChargingPreference.listener = rankingsPollingChargingListener
+        rankingsPollingVibratePreference.listener = rankingsPollingVibrateListener
+        rankingsPollingWifiPreference.listener = rankingsPollingWifiListener
+        smashRosterPreference.listener = smashRosterPreferenceListener
 
         smashRosterFormLink.setOnClickListener {
             shareUtils.openUrl(this, Constants.SMASH_ROSTER_FORM_URL)
@@ -133,88 +121,144 @@ class SettingsActivity : BaseActivity(), Refreshable {
         }
     }
 
-    override fun refresh() {
-        regionPreference.refresh()
-        themePreference.refresh()
-        identityPreference.refresh()
-        deleteFavoritePlayersPreference.refresh()
-
-        useRankingsPolling.refresh()
-        rankingsPollingFrequencyPreference.refresh()
-        ringtonePreference.refresh()
-        vibratePreference.refresh()
-        mustBeOnWifiPreference.refresh()
-        mustBeChargingPreference.refresh()
-        lastPollPreference.refresh()
-
-        if (rankingsPollingManager.isEnabled) {
-            vibratePreference.isEnabled = true
-            mustBeOnWifiPreference.isEnabled = true
-            mustBeChargingPreference.isEnabled = true
-        } else {
-            vibratePreference.isEnabled = false
-            mustBeOnWifiPreference.isEnabled = false
-            mustBeChargingPreference.isEnabled = false
-        }
-
-        smashRosterPreference.refresh()
+    private fun refreshRankingsPollingState(state: RankingsPollingState) {
+        rankingsPollingEnabledPreference.isChecked = state.isEnabled
+        rankingsPollingPollFrequencyPreference.setContent(state.pollFrequency)
+        rankingsPollingPollFrequencyPreference.isEnabled = state.isEnabled
+        rankingsPollingRingtonePreference.ringtoneUri = state.ringtone
+        rankingsPollingRingtonePreference.isEnabled = state.isEnabled
+        rankingsPollingVibratePreference.isChecked = state.isVibrationEnabled
+        rankingsPollingVibratePreference.isEnabled = state.isEnabled
+        rankingsPollingWifiPreference.isChecked = state.isWifiRequired
+        rankingsPollingWifiPreference.isEnabled = state.isEnabled
+        rankingsPollingChargingPreference.isChecked = state.isChargingRequired
+        rankingsPollingChargingPreference.isEnabled = state.isEnabled
     }
 
-    private val onFavoritePlayersChangeListener = object : FavoritePlayersRepository.OnFavoritePlayersChangeListener {
-        override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-            refresh()
-        }
-    }
+    private fun refreshState(state: SettingsViewModel.State) {
+        regionPreference.setContent(state.region)
 
-    private val onIdentityChangeListener = object : IdentityRepository.OnIdentityChangeListener {
-        override fun onIdentityChange(identityRepository: IdentityRepository) {
-            refresh()
+        when (state.identityState) {
+            is IdentityState.Fetched -> identityPreference.setContent(state.identityState.identity)
+            is IdentityState.Fetching -> identityPreference.setLoading()
         }
-    }
 
-    private val onChargingRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
-        override fun onPreferenceChange(preference: Preference<Boolean>) {
-            rankingsPollingManager.enableOrDisable()
-            refresh()
+        nightModePreference.setContent(state.nightMode)
+
+        when (state.favoritePlayersState) {
+            is FavoritePlayersState.Fetched -> {
+                deleteFavoritePlayersPreference.setContent(state.favoritePlayersState.size)
+            }
+
+            is FavoritePlayersState.Fetching -> deleteFavoritePlayersPreference.setLoading()
+        }
+
+        when (state.smashRosterState) {
+            is SmashRosterState.Fetched -> {
+                smashRosterPreference.setContent(state.smashRosterState.result)
+            }
+
+            is SmashRosterState.Fetching -> smashRosterPreference.setLoading()
+            is SmashRosterState.IsSyncing -> smashRosterPreference.setSyncing()
         }
     }
 
-    private val onPollFrequencyChange = object : Preference.OnPreferenceChangeListener<PollFrequency> {
-        override fun onPreferenceChange(preference: Preference<PollFrequency>) {
-            rankingsPollingManager.enableOrDisable()
-            refresh()
+    private fun saveSmashRosterRingtone(data: Intent?) {
+        val ringtoneUri = data?.getParcelableExtra<AndroidUri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+        viewModel.setRankingsPollingRingtone(ringtoneUri?.toString())
+    }
+
+    private val deleteFavoritePlayersListener = object : DeleteFavoritePlayersPreferenceView.Listener {
+        override fun onDeleteFavoritePlayersClick(v: DeleteFavoritePlayersPreferenceView) {
+            viewModel.deleteFavoritePlayers()
         }
     }
 
-    private val onRankingsPollingEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
-        override fun onPreferenceChange(preference: Preference<Boolean>) {
-            rankingsPollingManager.enableOrDisable()
-            refresh()
+    private val identityPreferenceListeners = object : IdentityPreferenceView.Listeners {
+        override fun onDeleteIdentityClick(v: IdentityPreferenceView) {
+            viewModel.deleteIdentity()
+        }
+
+        override fun onSetIdentityClick(v: IdentityPreferenceView) {
+            startActivityForResult(SetIdentityActivity.getLaunchIntent(this@SettingsActivity),
+                    RequestCodes.CHANGE_IDENTITY.value)
         }
     }
 
-    private val onRingtoneChange = object : Preference.OnPreferenceChangeListener<Uri> {
-        override fun onPreferenceChange(preference: Preference<Uri>) {
-            refresh()
+    private val nightModePreferenceListener = object : NightModePreferenceView.Listener {
+        override fun onNightModeChange(v: NightModePreferenceView, nightMode: NightMode) {
+            viewModel.setNightMode(nightMode)
+
+            startActivity(HomeActivity.getLaunchIntent(
+                    context = this@SettingsActivity,
+                    restartActivityTask = true
+            ))
         }
     }
 
-    private val onVibrationEnabledChange = object : Preference.OnPreferenceChangeListener<Boolean> {
-        override fun onPreferenceChange(preference: Preference<Boolean>) {
-            refresh()
+    private val rankingsPollingPollFrequencyListener = object : PollFrequencyPreferenceView.Listener {
+        override fun onPollFrequencyChange(v: PollFrequencyPreferenceView,
+                pollFrequency: PollFrequency) {
+            viewModel.setRankingsPollingPollFrequency(pollFrequency)
         }
     }
 
-    private val onWifiRequiredChange = object : Preference.OnPreferenceChangeListener<Boolean> {
-        override fun onPreferenceChange(preference: Preference<Boolean>) {
-            rankingsPollingManager.enableOrDisable()
-            refresh()
+    private val rankingsPollingChargingListener = object : CheckablePreferenceView.Listener {
+        override fun onClick(v: CheckablePreferenceView) {
+            viewModel.setRankingsPollingIsChargingRequired(!v.isChecked)
         }
     }
 
-    private val onRegionChangeListener = object : RegionRepository.OnRegionChangeListener {
-        override fun onRegionChange(regionRepository: RegionRepository) {
-            refresh()
+    private val rankingsPollingEnabledListener = object : CheckablePreferenceView.Listener {
+        override fun onClick(v: CheckablePreferenceView) {
+            viewModel.setRankingsPollingIsEnabled(!v.isChecked)
+        }
+    }
+
+    private val rankingsPollingVibrateListener = object : CheckablePreferenceView.Listener {
+        override fun onClick(v: CheckablePreferenceView) {
+            viewModel.setRankingsPollingIsVibrationEnabled(!v.isChecked)
+        }
+    }
+
+    private val rankingsPollingWifiListener = object : CheckablePreferenceView.Listener {
+        override fun onClick(v: CheckablePreferenceView) {
+            viewModel.setRankingsPollingIsWifiRequired(!v.isChecked)
+        }
+    }
+
+    private val regionPreferenceListener = object : RegionPreferenceView.Listener {
+        override fun onClick(v: RegionPreferenceView) {
+            startActivityForResult(SetRegionActivity.getLaunchIntent(this@SettingsActivity),
+                    RequestCodes.CHANGE_REGION.value)
+        }
+    }
+
+    private val ringtonePreferenceListener = object : RingtonePreferenceView.Listener {
+        override fun onClick(v: RingtonePreferenceView) {
+            val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+                    .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+                    .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
+                    .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
+
+            v.ringtoneUri?.let { javaUri ->
+                val androidUri = AndroidUri.parse(javaUri.toString())
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, androidUri)
+            }
+
+            try {
+                startActivityForResult(intent, RequestCodes.CHANGE_RINGTONE.value)
+            } catch (e: ActivityNotFoundException) {
+                timber.e(TAG, "Unable to start ringtone picker Activity", e)
+                Toast.makeText(this@SettingsActivity,
+                        R.string.unable_to_launch_ringtone_picker, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private val smashRosterPreferenceListener = object : SmashRosterSyncPreferenceView.Listener {
+        override fun onClick(v: SmashRosterSyncPreferenceView) {
+            viewModel.syncSmashRoster()
         }
     }
 

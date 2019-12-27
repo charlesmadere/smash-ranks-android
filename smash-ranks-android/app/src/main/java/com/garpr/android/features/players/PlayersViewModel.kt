@@ -1,11 +1,13 @@
 package com.garpr.android.features.players
 
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.PlayerListBuilder
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -16,9 +18,10 @@ class PlayersViewModel(
         private val identityRepository: IdentityRepository,
         private val playerListBuilder: PlayerListBuilder,
         private val playersRepository: PlayersRepository,
+        private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), IdentityRepository.OnIdentityChangeListener, Searchable {
+) : BaseViewModel(), Searchable {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -41,8 +44,10 @@ class PlayersViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(playersRepository.getPlayers(region)
-                .subscribe({
-                    val list = playerListBuilder.create(it)
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe({ bundle ->
+                    val list = playerListBuilder.create(bundle)
 
                     state = state.copy(
                             hasError = false,
@@ -67,27 +72,27 @@ class PlayersViewModel(
     }
 
     private fun initListeners() {
-        identityRepository.addListener(this)
+        disposables.add(identityRepository.identityObservable
+                .subscribe {
+                    refreshIdentity()
+                })
     }
 
-    override fun onCleared() {
-        identityRepository.removeListener(this)
-        super.onCleared()
-    }
+    @WorkerThread
+    private fun refreshIdentity() {
+        val list = playerListBuilder.refresh(state.list)
+        val searchResults = playerListBuilder.refresh(state.searchResults)
 
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        threadUtils.background.submit {
-            state = state.copy(
-                    list = playerListBuilder.refresh(state.list),
-                    searchResults = playerListBuilder.refresh(state.searchResults)
-            )
-        }
+        state = state.copy(
+                list = list,
+                searchResults = searchResults
+        )
     }
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = playerListBuilder.search(query, state.list)
-            state = state.copy(searchResults = results)
+            val searchResults = playerListBuilder.search(query, state.list)
+            state = state.copy(searchResults = searchResults)
         }
     }
 

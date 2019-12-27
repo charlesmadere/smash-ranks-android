@@ -31,7 +31,7 @@ class AppUpgradeManagerImpl(
         lastVersionPref.set(BuildConfig.VERSION_CODE)
 
         if (lastVersion == null || lastVersion < 1011) {
-            // it used to be a String, is now a Region
+            // it used to be a String, is now a Region object
             generalPreferenceStore.currentRegion.delete()
 
             // it used to be an AbsPlayer, is now a FavoritePlayer
@@ -40,6 +40,8 @@ class AppUpgradeManagerImpl(
             // used to be a list of AbsPlayer, is now a list of FavoritePlayer
             favoritePlayersRepository.clear()
         }
+
+        timber.d(TAG, "App upgrade complete")
     }
 
 }

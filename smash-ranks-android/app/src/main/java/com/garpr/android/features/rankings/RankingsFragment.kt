@@ -23,8 +23,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
-        RegionRepository.OnRegionChangeListener, Refreshable, Searchable,
-        SwipeRefreshLayout.OnRefreshListener {
+        Refreshable, Searchable, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter(this)
 
@@ -45,7 +44,10 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
     }
 
     private fun initListeners() {
-        regionRepository.addListener(this)
+        onCreateViewDisposable.add(regionRepository.observable
+                .subscribe {
+                    refresh()
+                })
 
         viewModel.stateLiveData.observe(viewLifecycleOwner, Observer {
             refreshState(it)
@@ -76,11 +78,6 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
         return inflater.inflate(R.layout.fragment_rankings, container, false)
     }
 
-    override fun onDestroyView() {
-        regionRepository.removeListener(this)
-        super.onDestroyView()
-    }
-
     override fun onLongClick(v: RankingItemView) {
         childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.player,
                 regionRepository.getRegion(requireContext()))
@@ -88,12 +85,6 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
 
     override fun onRefresh() {
         refresh()
-    }
-
-    override fun onRegionChange(regionRepository: RegionRepository) {
-        if (isAlive) {
-            refresh()
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

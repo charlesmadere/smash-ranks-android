@@ -7,12 +7,16 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
+import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.TournamentsRepository
 
 class TournamentViewModel(
+        private val identityRepository: IdentityRepository,
+        private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils,
         private val timber: Timber,
         private val tournamentsRepository: TournamentsRepository
@@ -38,7 +42,13 @@ class TournamentViewModel(
         return if (tournament.matches.isNullOrEmpty()) {
             null
         } else {
-            tournament.matches.map { MatchListItem.Match(it) }
+            tournament.matches.map { match ->
+                MatchListItem.Match(
+                        winnerIsIdentity = identityRepository.isPlayer(match.winnerId),
+                        loserIsIdentity = identityRepository.isPlayer(match.loserId),
+                        match = match
+                )
+            }
         }
     }
 
@@ -46,7 +56,12 @@ class TournamentViewModel(
         return if (tournament.players.isNullOrEmpty()) {
             null
         } else {
-            tournament.players.map { PlayerListItem.Player(it) }
+            tournament.players.map { player ->
+                PlayerListItem.Player(
+                        player = player,
+                        isIdentity = identityRepository.isPlayer(player)
+                )
+            }
         }
     }
 
@@ -57,9 +72,11 @@ class TournamentViewModel(
         check(region != null && tournamentId != null) { "initialize() hasn't been called!" }
 
         disposables.add(tournamentsRepository.getTournament(region, tournamentId)
-                .subscribe({
-                    val matches = createMatchesList(it)
-                    val players = createPlayersList(it)
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe({ tournament ->
+                    val matches = createMatchesList(tournament)
+                    val players = createPlayersList(tournament)
 
                     state = state.copy(
                             hasError = false,
@@ -68,8 +85,8 @@ class TournamentViewModel(
                             showMatchesEmpty = matches.isNullOrEmpty(),
                             showPlayersEmpty = players.isNullOrEmpty(),
                             showSearchIcon = !matches.isNullOrEmpty() || !players.isNullOrEmpty(),
-                            titleText = it.name,
-                            tournament = it,
+                            titleText = tournament.name,
+                            tournament = tournament,
                             matches = matches,
                             matchesSearchResults = null,
                             players = players,
@@ -144,6 +161,8 @@ class TournamentViewModel(
         abstract val listId: Long
 
         class Match(
+                val winnerIsIdentity: Boolean,
+                val loserIsIdentity: Boolean,
                 val match: FullTournament.Match
         ) : MatchListItem() {
             override val listId: Long = match.hashCode().toLong()
@@ -154,7 +173,8 @@ class TournamentViewModel(
         abstract val listId: Long
 
         class Player(
-                val player: AbsPlayer
+                val player: AbsPlayer,
+                val isIdentity: Boolean
         ) : PlayerListItem() {
             override val listId: Long = player.hashCode().toLong()
         }

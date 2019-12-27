@@ -9,11 +9,16 @@ import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.HeadToHeadRepository
+import com.garpr.android.repositories.IdentityRepository
+import com.garpr.android.data.models.WinsLosses as GarPrWinsLosses
 
 class HeadToHeadViewModel(
         private val headToHeadRepository: HeadToHeadRepository,
+        private val identityRepository: IdentityRepository,
+        private val schedulers: Schedulers,
         private val timber: Timber
 ) : BaseViewModel() {
 
@@ -57,11 +62,15 @@ class HeadToHeadViewModel(
                 list.add(ListItem.Tournament(match.tournament))
             }
 
-            list.add(ListItem.Match(HeadToHeadMatch(
-                    result = match.result,
-                    player = headToHead.player,
-                    opponent = match.opponent
-            )))
+            list.add(ListItem.Match(
+                    playerIsIdentity = identityRepository.isPlayer(headToHead.player),
+                    opponentIsIdentity = identityRepository.isPlayer(match.opponent),
+                    match = HeadToHeadMatch(
+                            result = match.result,
+                            player = headToHead.player,
+                            opponent = match.opponent
+                    )
+            ))
         }
 
         return list
@@ -71,8 +80,10 @@ class HeadToHeadViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(headToHeadRepository.getHeadToHead(region, playerId, opponentId)
-                .subscribe({
-                    val list = createList(it)
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe({ headToHead ->
+                    val list = createList(headToHead)
 
                     state = state.copy(
                             hasError = list.isNullOrEmpty(),
@@ -94,6 +105,8 @@ class HeadToHeadViewModel(
         abstract val listId: Long
 
         class Match(
+                val playerIsIdentity: Boolean,
+                val opponentIsIdentity: Boolean,
                 val match: HeadToHeadMatch
         ) : ListItem() {
             override val listId: Long = match.hashCode().toLong()
@@ -110,7 +123,7 @@ class HeadToHeadViewModel(
         }
 
         class WinsLosses(
-                val winsLosses:  com.garpr.android.data.models.WinsLosses
+                val winsLosses:  GarPrWinsLosses
         ) : ListItem() {
             override val listId: Long = Long.MIN_VALUE + 2L
         }

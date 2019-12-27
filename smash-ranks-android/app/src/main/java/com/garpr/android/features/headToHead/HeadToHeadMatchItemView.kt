@@ -1,25 +1,23 @@
 package com.garpr.android.features.headToHead
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.MatchResult
-import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.features.common.adapters.BaseAdapterView
-import com.garpr.android.features.common.views.IdentityConstraintLayout
 import kotlinx.android.synthetic.main.item_head_to_head_match.view.*
 
 class HeadToHeadMatchItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : IdentityConstraintLayout(context, attrs), BaseAdapterView<HeadToHeadMatch>,
-        View.OnClickListener {
+) : ConstraintLayout(context, attrs), View.OnClickListener {
 
     private var _headToHeadMatch: HeadToHeadMatch? = null
 
@@ -37,37 +35,37 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
 
     var listener: Listener? = null
 
+    interface Listener {
+        fun onClick(v: HeadToHeadMatchItemView)
+    }
+
     init {
         setOnClickListener(this)
 
         if (isInEditMode) {
-            setContent(HeadToHeadMatch(MatchResult.WIN, LitePlayer("0", "Shroomed"),
-                    LitePlayer("1", "PewPewU")))
+            setContent(
+                    match = HeadToHeadMatch(
+                            result = MatchResult.WIN,
+                            player = LitePlayer("0", "Shroomed"),
+                            opponent = LitePlayer("1", "PewPewU")
+                    ),
+                    playerIsIdentity = true,
+                    opponentIsIdentity = false
+            )
         }
-    }
-
-    override fun clear() {
-        super.clear()
-        playerName.clear()
-        opponentName.clear()
     }
 
     override fun onClick(v: View) {
         listener?.onClick(this)
     }
 
-    override fun refresh() {
-        super.refresh()
-
-        val match = _headToHeadMatch
-
-        if (match == null) {
-            clear()
-            return
-        }
-
+    fun setContent(match: HeadToHeadMatch, playerIsIdentity: Boolean, opponentIsIdentity: Boolean) {
+        _headToHeadMatch = match
         playerName.text = match.player.name
         opponentName.text = match.opponent.name
+
+        playerName.typeface = if (playerIsIdentity) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        opponentName.typeface = if (opponentIsIdentity) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
 
         when (match.result) {
             MatchResult.EXCLUDED -> {
@@ -85,15 +83,6 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
                 opponentName.setTextColor(loseColor)
             }
         }
-    }
-
-    override fun setContent(content: HeadToHeadMatch) {
-        _headToHeadMatch = content
-        refresh()
-    }
-
-    interface Listener {
-        fun onClick(v: HeadToHeadMatchItemView)
     }
 
 }

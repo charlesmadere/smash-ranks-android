@@ -2,6 +2,7 @@ package com.garpr.android.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import com.garpr.android.preferences.KeyValueStore.BatchEditor
 import java.util.Collections
 
@@ -88,24 +89,29 @@ class KeyValueStoreImpl(
     }
 
     class BatchEditorImpl(
-            private val sharedPreferencesEditor: SharedPreferences.Editor
+            private val editor: Editor
     ) : BatchEditor {
         override fun apply() {
-            sharedPreferencesEditor.apply()
+            editor.apply()
         }
 
         override fun clear(): BatchEditor {
-            sharedPreferencesEditor.clear()
+            editor.clear()
+            return this
+        }
+
+        override fun putBoolean(key: String, value: Boolean): BatchEditor {
+            editor.putBoolean(key, value)
             return this
         }
 
         override fun putInteger(key: String, value: Int): BatchEditor {
-            sharedPreferencesEditor.putInt(key, value)
+            editor.putInt(key, value)
             return this
         }
 
         override fun putString(key: String, value: String): BatchEditor {
-            sharedPreferencesEditor.putString(key, value)
+            editor.putString(key, value)
             return this
         }
     }

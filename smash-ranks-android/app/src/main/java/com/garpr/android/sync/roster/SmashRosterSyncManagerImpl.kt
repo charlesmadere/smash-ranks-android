@@ -1,5 +1,6 @@
 package com.garpr.android.sync.roster
 
+import android.annotation.SuppressLint
 import androidx.annotation.WorkerThread
 import androidx.work.Constraints
 import androidx.work.NetworkType
@@ -15,7 +16,6 @@ import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
-import com.garpr.android.sync.roster.SmashRosterSyncManager.State
 import com.garpr.android.wrappers.WorkManagerWrapper
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -42,54 +42,61 @@ class SmashRosterSyncManagerImpl(
             enableOrDisable()
         }
 
-    private val syncStateSubject = BehaviorSubject.createDefault(State.NOT_SYNCING)
-    override val observeSyncState: Observable<State> = syncStateSubject.hide()
+    override var isSyncing: Boolean
+        get() = isSyncingSubject.requireValue()
+        set(value) = isSyncingSubject.onNext(value)
+
+    private val isSyncingSubject = BehaviorSubject.createDefault(false)
+    override val isSyncingObservable: Observable<Boolean> = isSyncingSubject.hide()
 
     override var syncResult: SmashRosterSyncResult?
         get() = smashRosterPreferenceStore.syncResult.get()
-        set(value) = smashRosterPreferenceStore.syncResult.set(value)
-
-    override var syncState: State
-        get() = syncStateSubject.requireValue()
-        set(value) = syncStateSubject.onNext(value)
+        set(value) {
+            if (value == null) {
+                smashRosterPreferenceStore.syncResult.delete()
+            } else {
+                smashRosterPreferenceStore.syncResult.set(value)
+            }
+        }
 
     companion object {
         private const val TAG = "SmashRosterSyncManagerImpl"
     }
 
     private fun disable() {
-        timber.d(TAG, "disabling syncing...")
+        timber.d(TAG, "disabling smash roster sync...")
         workManagerWrapper.cancelAllWorkByTag(TAG)
-        timber.d(TAG, "sync has been disabled")
+        timber.d(TAG, "smash roster sync has been disabled")
     }
 
     private fun enable() {
-        timber.d(TAG, "enabling syncing...")
+        timber.d(TAG, "enabling smash roster sync...")
 
         val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.UNMETERED)
                 .setRequiresBatteryNotLow(true)
                 .setRequiresCharging(true)
-                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .setRequiresDeviceIdle(true)
+                .setRequiresStorageNotLow(true)
                 .build()
 
         val pollFrequency = smashRosterPreferenceStore.pollFrequency.get()
-                ?: PollFrequency.EVERY_10_DAYS
+                ?: PollFrequency.EVERY_2_WEEKS
 
         val periodicRequest = PeriodicWorkRequest.Builder(
                 SmashRosterSyncWorker::class.java,
                 pollFrequency.timeInSeconds,
                 TimeUnit.SECONDS
         )
-        .addTag(TAG)
-        .setConstraints(constraints)
-        .build()
+                .addTag(TAG)
+                .setConstraints(constraints)
+                .build()
 
         workManagerWrapper.enqueue(periodicRequest)
-        timber.d(TAG, "sync has been enabled")
+        timber.d(TAG, "smash roster sync has been enabled")
 
         if (hajimeteSync) {
-            timber.d(TAG, "hajimete sync")
-            sync().subscribeOn(schedulers.background).subscribe()
+            hajimeteSync()
         }
     }
 
@@ -101,17 +108,31 @@ class SmashRosterSyncManagerImpl(
         }
     }
 
+    @SuppressLint("CheckResult")
+    private fun hajimeteSync() {
+        hajimeteSync = false
+        timber.d(TAG, "performing hajimete sync...")
+
+        sync()
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe({
+                    timber.d(TAG, "successfully finished hajimete sync")
+                }, {
+                    timber.e(TAG, "Exception when performing hajimete sync", it)
+                })
+    }
+
+    @Synchronized
     @WorkerThread
     private fun performSync() {
-        if (syncState == State.SYNCING) {
-            timber.w(TAG, "sync already in progress, canceling requested sync...")
+        if (isSyncing) {
+            timber.w(TAG, "sync already in progress, canceling this sync...")
             return
-        } else {
-            syncState = State.SYNCING
         }
 
+        isSyncing = true
         timber.d(TAG, "syncing now...")
-        hajimeteSync = false
 
         var garPrRoster: Map<String, SmashCompetitor>? = null
         var notGarPrRoster: Map<String, SmashCompetitor>? = null
@@ -133,8 +154,11 @@ class SmashRosterSyncManagerImpl(
             timber.e(TAG, "Exception when fetching Not GAR PR roster", e)
         }
 
-        syncResult = if (garPrRoster.isNullOrEmpty() || notGarPrRoster.isNullOrEmpty() ||
-                throwable != null) {
+        syncResult = if (
+                garPrRoster.isNullOrEmpty() ||
+                notGarPrRoster.isNullOrEmpty() ||
+                throwable != null
+        ) {
             smashRosterStorage.deleteFromStorage(Endpoint.GAR_PR)
             smashRosterStorage.deleteFromStorage(Endpoint.NOT_GAR_PR)
 
@@ -150,13 +174,13 @@ class SmashRosterSyncManagerImpl(
         }
 
         timber.d(TAG, "finished sync")
-        syncState = State.NOT_SYNCING
+        isSyncing = false
     }
 
     override fun sync(): Completable {
-        return Completable.create {
+        return Completable.create { emitter ->
             performSync()
-            it.onComplete()
+            emitter.onComplete()
         }
     }
 

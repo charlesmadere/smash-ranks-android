@@ -1,5 +1,6 @@
 package com.garpr.android
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.Configuration
@@ -24,7 +25,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class App : Application(), Configuration.Provider, NightModeRepository.OnNightModeChangeListener {
+class App : Application(), Configuration.Provider {
 
     protected val appUpgradeManager: AppUpgradeManager by inject()
     protected val crashlyticsWrapper: CrashlyticsWrapper by inject()
@@ -38,9 +39,13 @@ class App : Application(), Configuration.Provider, NightModeRepository.OnNightMo
         private const val TAG = "App"
     }
 
+    @SuppressLint("CheckResult")
     private fun applyNightMode() {
         AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
-        nightModeRepository.addListener(this)
+
+        nightModeRepository.observable.subscribe { nightMode ->
+            AppCompatDelegate.setDefaultNightMode(nightMode.themeValue)
+        }
     }
 
     override fun getWorkManagerConfiguration(): Configuration {
@@ -73,10 +78,6 @@ class App : Application(), Configuration.Provider, NightModeRepository.OnNightMo
         applyNightMode()
         imageLibraryWrapper.initialize()
         appUpgradeManager.upgradeApp()
-    }
-
-    override fun onNightModeChange(nightModeRepository: NightModeRepository) {
-        AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
     }
 
 }

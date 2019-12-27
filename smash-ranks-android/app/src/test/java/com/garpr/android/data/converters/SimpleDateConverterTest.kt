@@ -17,7 +17,7 @@ import java.util.Date
 @RunWith(RobolectricTestRunner::class)
 class SimpleDateConverterTest : BaseTest() {
 
-    private val moshi: Moshi by inject()
+    protected val moshi: Moshi by inject()
 
     private lateinit var simpleDateAdapter: JsonAdapter<SimpleDate>
 

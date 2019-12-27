@@ -2,7 +2,9 @@ package com.garpr.android.repositories
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.RankedPlayer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -36,44 +38,26 @@ class IdentityRepositoryTest : BaseTest() {
 
     @Test
     fun testAddListener() {
-        var identity: AbsPlayer? = null
+        var optional: Optional<FavoritePlayer>? = null
 
-        val listener = object : IdentityRepository.OnIdentityChangeListener {
-            override fun onIdentityChange(identityRepository: IdentityRepository) {
-                identity = identityRepository.identity
-            }
-        }
+        identityRepository.identityObservable
+                .subscribe {
+                    optional = it
+                }
 
-        identityRepository.addListener(listener)
-        assertNull(identity)
+        assertEquals(false, optional?.isPresent)
 
         identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
-        assertEquals(LITE_PLAYER, identity)
+        assertEquals(LITE_PLAYER, optional?.item)
 
         identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
-        assertEquals(LITE_PLAYER, identity)
+        assertEquals(LITE_PLAYER, optional?.item)
 
         identityRepository.setIdentity(RANKED_PLAYER, regionRepository.getRegion())
-        assertEquals(RANKED_PLAYER, identity)
+        assertEquals(RANKED_PLAYER, optional?.item)
 
         identityRepository.removeIdentity()
-        assertNull(identity)
-    }
-
-    @Test
-    fun testAddListenerTwice() {
-        var count = 0
-
-        val listener = object : IdentityRepository.OnIdentityChangeListener {
-            override fun onIdentityChange(identityRepository: IdentityRepository) {
-                ++count
-            }
-        }
-
-        identityRepository.addListener(listener)
-        identityRepository.addListener(listener)
-        identityRepository.setIdentity(LITE_PLAYER, regionRepository.getRegion())
-        assertEquals(1, count)
+        assertEquals(false, optional?.isPresent)
     }
 
     @Test
@@ -178,25 +162,6 @@ class IdentityRepositoryTest : BaseTest() {
 
         identityRepository.removeIdentity()
         assertFalse(identityRepository.isPlayer("   "))
-    }
-
-    @Test
-    fun testRemoveListener() {
-        var identity: AbsPlayer? = null
-
-        val listener = object : IdentityRepository.OnIdentityChangeListener {
-            override fun onIdentityChange(identityRepository: IdentityRepository) {
-                identity = identityRepository.identity
-            }
-        }
-
-        identityRepository.addListener(listener)
-        identityRepository.setIdentity(RANKED_PLAYER, regionRepository.getRegion())
-        assertEquals(RANKED_PLAYER, identity)
-
-        identityRepository.removeListener(listener)
-        identityRepository.removeIdentity()
-        assertEquals(RANKED_PLAYER, identity)
     }
 
 }

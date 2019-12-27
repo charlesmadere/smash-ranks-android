@@ -1,10 +1,12 @@
 package com.garpr.android.features.home
 
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
@@ -14,9 +16,9 @@ class HomeViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityRepository: IdentityRepository,
         rankingsPollingManager: RankingsPollingManager,
+        private val schedulers: Schedulers,
         smashRosterSyncManager: SmashRosterSyncManager
-) : BaseViewModel(), FavoritePlayersRepository.OnFavoritePlayersChangeListener,
-        IdentityRepository.OnIdentityChangeListener {
+) : BaseViewModel() {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -26,29 +28,28 @@ class HomeViewModel(
     )
 
     val identity: FavoritePlayer?
-        get() = identityRepository.identity
+        get() = state.identity
 
     init {
-        favoritePlayersRepository.addListener(this)
-        identityRepository.addListener(this)
+        initListeners()
         rankingsPollingManager.enableOrDisable()
         smashRosterSyncManager.enableOrDisable()
     }
 
-    override fun onCleared() {
-        identityRepository.removeListener(this)
-        favoritePlayersRepository.removeListener(this)
-        super.onCleared()
-    }
+    private fun initListeners() {
+        disposables.add(favoritePlayersRepository.playersObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe {
+                    refreshFavoritePlayers()
+                })
 
-    override fun onFavoritePlayersChange(favoritePlayersRepository: FavoritePlayersRepository) {
-        state = state.copy(hasFavoritePlayers = !favoritePlayersRepository.isEmpty)
-        refreshState()
-    }
-
-    override fun onIdentityChange(identityRepository: IdentityRepository) {
-        state = state.copy(showYourself = identityRepository.hasIdentity)
-        refreshState()
+        disposables.add(identityRepository.identityObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe {
+                    refreshIdentity()
+                })
     }
 
     fun onRankingsBundleChange(bundle: RankingsBundle?, isEmpty: Boolean) {
@@ -70,6 +71,22 @@ class HomeViewModel(
         refreshState()
     }
 
+    @WorkerThread
+    private fun refreshFavoritePlayers() {
+        state = state.copy(hasFavoritePlayers = !favoritePlayersRepository.isEmpty)
+        refreshState()
+    }
+
+    @WorkerThread
+    private fun refreshIdentity() {
+        state = state.copy(
+                showYourself = identityRepository.hasIdentity,
+                identity = identityRepository.identity
+        )
+
+        refreshState()
+    }
+
     private fun refreshState() {
         state = state.copy(
                 showSearch = state.hasRankings || state.hasTournaments || state.hasFavoritePlayers
@@ -85,7 +102,8 @@ class HomeViewModel(
             val showSearch: Boolean = false,
             val showYourself: Boolean = false,
             val subtitleDate: CharSequence? = null,
-            val title: CharSequence? = null
+            val title: CharSequence? = null,
+            val identity: FavoritePlayer? = null
     )
 
 }

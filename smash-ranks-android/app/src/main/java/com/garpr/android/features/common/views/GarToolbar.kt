@@ -14,6 +14,7 @@ import android.view.View.OnTouchListener
 import android.view.Window
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.extensions.colorCompat
@@ -29,7 +30,7 @@ import kotlinx.android.synthetic.main.gar_toolbar.view.*
 open class GarToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LifecycleConstraintLayout(context, attrs) {
+) : ConstraintLayout(context, attrs) {
 
     @ColorInt
     private val colorPrimary = context.getAttrColor(R.attr.colorPrimary)

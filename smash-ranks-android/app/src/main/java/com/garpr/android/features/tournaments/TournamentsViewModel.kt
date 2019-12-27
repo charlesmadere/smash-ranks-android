@@ -7,12 +7,14 @@ import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.TournamentsRepository
 
 class TournamentsViewModel(
+        private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils,
         private val timber: Timber,
         private val tournamentsRepository: TournamentsRepository
@@ -35,13 +37,15 @@ class TournamentsViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(tournamentsRepository.getTournaments(region)
-                .subscribe({
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe({ bundle ->
                     state = state.copy(
-                            isEmpty = it.tournaments.isNullOrEmpty(),
+                            isEmpty = bundle.tournaments.isNullOrEmpty(),
                             isFetching = false,
                             hasError = false,
                             searchResults = null,
-                            tournamentsBundle = it
+                            tournamentsBundle = bundle
                     )
                 }, {
                     timber.e(TAG, "Error fetching tournaments", it)

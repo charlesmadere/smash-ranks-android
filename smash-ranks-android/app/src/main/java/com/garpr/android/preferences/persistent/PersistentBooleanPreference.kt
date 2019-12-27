@@ -23,7 +23,6 @@ class PersistentBooleanPreference(
 
     override fun performSet(newValue: Boolean) {
         keyValueStore.setBoolean(key, newValue)
-        notifyListeners()
     }
 
 }

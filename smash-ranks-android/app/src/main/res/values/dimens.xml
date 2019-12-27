@@ -17,8 +17,7 @@
     <dimen name="root_padding_quadruple">64dp</dimen>
     <dimen name="root_padding_triple">48dp</dimen>
     <dimen name="splash_card_corner_radius">12dp</dimen>
-    <dimen name="splash_card_end_elevation">16dp</dimen>
-    <dimen name="splash_card_start_elevation">4dp</dimen>
+    <dimen name="splash_card_elevation">6dp</dimen>
     <dimen name="splash_card_width">288dp</dimen>
     <dimen name="tab_height">56dp</dimen>
     <dimen name="text_size_normal">14sp</dimen>

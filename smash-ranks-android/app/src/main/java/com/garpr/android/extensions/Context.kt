@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
-import android.net.ConnectivityManager
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -35,9 +34,6 @@ val Context.activity: Activity?
 
 val Context.activityManager: ActivityManager
     get() = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-
-val Context.connectivityManager: ConnectivityManager
-    get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
 @ColorInt
 @Throws(Resources.NotFoundException::class)

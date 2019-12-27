@@ -1,23 +1,24 @@
 package com.garpr.android.preferences.persistent
 
 import com.garpr.android.preferences.KeyValueStore
-import com.squareup.moshi.Moshi
-import java.lang.reflect.Type
+import com.squareup.moshi.JsonAdapter
 
-class PersistentMoshiPreference<T>(
+class PersistentMoshiPreference<T : Any>(
         key: String,
         defaultValue: T?,
         keyValueStore: KeyValueStore,
-        moshi: Moshi,
-        type: Type
+        private val jsonAdapter: JsonAdapter<T>
 ) : BasePersistentPreference<T>(
         key,
         defaultValue,
         keyValueStore
 ) {
 
-    private val typeAdapter = moshi.adapter<T>(type)
-    private val backingPreference = PersistentStringPreference(key, null, keyValueStore)
+    private val backingPreference = PersistentStringPreference(
+            key = key,
+            defaultValue = null,
+            keyValueStore = keyValueStore
+    )
 
     override val exists: Boolean
         get() = backingPreference.exists || defaultValue != null
@@ -28,12 +29,12 @@ class PersistentMoshiPreference<T>(
         return if (json == null) {
             defaultValue
         } else {
-            typeAdapter.fromJson(json)
+            jsonAdapter.fromJson(json)
         }
     }
 
     override fun performSet(newValue: T) {
-        backingPreference.set(typeAdapter.toJson(newValue))
+        backingPreference.set(jsonAdapter.toJson(newValue))
     }
 
 }

@@ -1,13 +1,9 @@
 package com.garpr.android.extensions
 
-import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class NumberTest : BaseTest() {
+class NumberTest {
 
     @Test
     fun testTruncateDoubleMaxValue() {

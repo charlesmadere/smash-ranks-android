@@ -14,8 +14,7 @@ interface RankingsNotificationsUtils {
 
     class PollStatus(
             val proceed: Boolean,
-            val retry: Boolean,
-            val oldRankingsId: String? = null
+            val oldRankingsId: String?
     )
 
 }

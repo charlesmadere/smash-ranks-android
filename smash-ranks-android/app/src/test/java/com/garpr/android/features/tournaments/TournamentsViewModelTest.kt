@@ -8,6 +8,7 @@ import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentsBundle
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.TournamentsRepository
@@ -28,6 +29,7 @@ class TournamentsViewModelTest : BaseTest() {
     private val tournamentsRepository = TournamentsRepositoryOverride()
     private lateinit var viewModel: TournamentsViewModel
 
+    protected val schedulers: Schedulers by inject()
     protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
 
@@ -85,7 +87,7 @@ class TournamentsViewModelTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        viewModel = TournamentsViewModel(threadUtils, timber, tournamentsRepository)
+        viewModel = TournamentsViewModel(schedulers, threadUtils, timber, tournamentsRepository)
     }
 
     @Test

@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsPlayer
+import com.garpr.android.extensions.requireAbsPlayer
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
 import com.squareup.moshi.Json
@@ -24,15 +24,22 @@ class HeadToHeadMatch(
         val CREATOR = createParcel {
             HeadToHeadMatch(
                     it.requireParcelable(MatchResult::class.java.classLoader),
-                    it.readAbsPlayer(),
-                    it.readAbsPlayer()
+                    it.requireAbsPlayer(),
+                    it.requireAbsPlayer()
             )
         }
     }
 
     override fun equals(other: Any?): Boolean {
-        return super.equals(other) && other is HeadToHeadMatch && player == other.player
-                && opponent == other.opponent
+        return if (super.equals(other)) {
+            if (other is HeadToHeadMatch) {
+                player == other.player && opponent == other.opponent
+            } else {
+                true
+            }
+        } else {
+            false
+        }
     }
 
     override fun hashCode(): Int = ObjectsCompat.hash(result, player, opponent)

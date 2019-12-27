@@ -8,18 +8,14 @@ interface SmashRosterSyncManager {
 
     var isEnabled: Boolean
 
-    val observeSyncState: Observable<State>
+    val isSyncing: Boolean
+
+    val isSyncingObservable: Observable<Boolean>
 
     val syncResult: SmashRosterSyncResult?
-
-    val syncState: State
 
     fun enableOrDisable()
 
     fun sync(): Completable
-
-    enum class State {
-        NOT_SYNCING, SYNCING
-    }
 
 }

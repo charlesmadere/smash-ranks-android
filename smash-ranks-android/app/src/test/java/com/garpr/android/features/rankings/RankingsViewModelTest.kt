@@ -8,6 +8,7 @@ import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.features.rankings.RankingsViewModel.ListItem
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
@@ -30,6 +31,7 @@ class RankingsViewModelTest : BaseTest() {
     private lateinit var viewModel: RankingsViewModel
 
     protected val identityRepository: IdentityRepository by inject()
+    protected val schedulers: Schedulers by inject()
     protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
 
@@ -151,7 +153,7 @@ class RankingsViewModelTest : BaseTest() {
         super.setUp()
 
         viewModel = RankingsViewModel(identityRepository, RankingsRepositoryOverride(),
-                threadUtils, timber)
+                schedulers, threadUtils, timber)
     }
 
     @Test
@@ -163,9 +165,10 @@ class RankingsViewModelTest : BaseTest() {
         }
 
         viewModel.fetchRankings(NORCAL)
-        assertEquals(2, states.size)
-        assertTrue(states[0])
-        assertFalse(states[1])
+        assertEquals(3, states.size)
+        assertFalse(states[0])
+        assertTrue(states[1])
+        assertFalse(states[2])
     }
 
     @Test

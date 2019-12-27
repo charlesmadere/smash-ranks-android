@@ -4,8 +4,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readAbsPlayer
-import com.garpr.android.extensions.readAbsTournament
+import com.garpr.android.extensions.requireAbsPlayer
+import com.garpr.android.extensions.requireAbsTournament
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
 import com.garpr.android.extensions.writeAbsTournament
@@ -27,8 +27,8 @@ class Match(
         val CREATOR = createParcel {
             Match(
                     it.requireParcelable(MatchResult::class.java.classLoader),
-                    it.readAbsPlayer(),
-                    it.readAbsTournament()
+                    it.requireAbsPlayer(),
+                    it.requireAbsTournament()
             )
         }
 
@@ -42,8 +42,15 @@ class Match(
     }
 
     override fun equals(other: Any?): Boolean {
-        return super.equals(other) && other is Match && opponent == other.opponent
-                && tournament == other.tournament
+        return if (super.equals(other)) {
+            if (other is Match) {
+                opponent == other.opponent && tournament == other.tournament
+            } else {
+                true
+            }
+        } else {
+            false
+        }
     }
 
     override fun hashCode(): Int = ObjectsCompat.hash(result, opponent, tournament)

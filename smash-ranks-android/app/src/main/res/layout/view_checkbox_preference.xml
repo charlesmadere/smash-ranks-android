@@ -8,19 +8,33 @@
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <CheckBox
-        android:id="@+id/checkable"
+        android:id="@+id/checkbox"
+        android:visibility="gone"
+        tools:visibility="visible"
         style="@style/PreferenceViewCheckable" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchCompat"
+        android:visibility="gone"
+        style="@style/PreferenceViewCheckable" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/checkableBarrier"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="checkbox,switchCompat" />
 
     <TextView
         android:id="@+id/title"
-        app:layout_constraintEnd_toStartOf="@id/checkable"
+        app:layout_constraintEnd_toStartOf="@+id/checkableBarrier"
         tools:text="@string/must_be_charging"
         style="@style/PreferenceViewTitle" />
 
     <TextView
         android:id="@+id/description"
-        app:layout_constraintEnd_toStartOf="@id/checkable"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintEnd_toStartOf="@+id/checkableBarrier"
+        app:layout_constraintTop_toBottomOf="@+id/title"
         tools:text="@string/rankings_polling_description"
         style="@style/PreferenceViewDescription" />
 

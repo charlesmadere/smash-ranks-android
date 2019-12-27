@@ -1,9 +1,11 @@
 package com.garpr.android.preferences.persistent
 
-import android.net.Uri
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.Optional
+import com.garpr.android.extensions.toURI
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
+import com.garpr.android.preferences.Preference
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -14,6 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
+import java.net.URI as JavaUri
 
 @RunWith(RobolectricTestRunner::class)
 class PersistentUriPreferenceTest : BaseTest() {
@@ -23,10 +26,10 @@ class PersistentUriPreferenceTest : BaseTest() {
     private lateinit var keyValueStore: KeyValueStore
 
     companion object {
-        private const val AMAZON = "https://www.amazon.com/"
-        private const val GOOGLE = "https://www.google.com/"
-        private const val POLYGON = "http://www.polygon.com/"
         private const val TAG = "PersistentUriPreferenceTest"
+        private val AMAZON = "https://www.amazon.com/".toURI()
+        private val GOOGLE = "https://www.google.com/".toURI()
+        private val POLYGON = "https://www.polygon.com/best-games/2019/12/13/21002670/best-games-2019-ps4-pc-xbox-one-nintendo-switch-ios".toURI()
     }
 
     @Before
@@ -37,74 +40,152 @@ class PersistentUriPreferenceTest : BaseTest() {
     }
 
     @Test
-    fun testGet() {
-        val preference = PersistentUriPreference("test", null, keyValueStore)
-        assertNull(preference.get())
+    fun testExistsWithDefaultValue() {
+        val preference: Preference<JavaUri> = PersistentUriPreference(
+                key = "uri",
+                defaultValue = GOOGLE,
+                keyValueStore = keyValueStore
+        )
+        assertTrue(preference.exists)
     }
 
     @Test
-    fun testGetAndSet() {
-        val preference = PersistentUriPreference("test", null, keyValueStore)
-        assertNull(preference.get())
-
-        val google = Uri.parse(GOOGLE)
-        preference.set(google)
-        assertNotNull(preference.get())
-        assertEquals(google, preference.get())
-    }
-
-    @Test
-    fun testGetAndSetAndDelete() {
-        val preference = PersistentUriPreference("test", null, keyValueStore)
-        assertNull(preference.get())
-
-        val amazon = Uri.parse(AMAZON)
-        preference.set(amazon)
-        assertNotNull(preference.get())
-        assertEquals(amazon, preference.get())
-
-        val polygon = Uri.parse(POLYGON)
-        preference.set(polygon)
-        assertNotNull(preference.get())
-        assertEquals(polygon, preference.get())
-
-        preference.delete()
-        assertNull(preference.get())
-    }
-
-    @Test
-    fun testGetAndSetAndDeleteAndExists() {
-        val preference = PersistentUriPreference("test", null, keyValueStore)
+    fun testExistsWithNullDefaultValue() {
+        val preference: Preference<JavaUri> = PersistentUriPreference(
+                key = "uri",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
         assertFalse(preference.exists)
-        assertNull(preference.get())
-
-        val amazon = Uri.parse(AMAZON)
-        preference.set(amazon)
-        assertTrue(preference.exists)
-        assertNotNull(preference.get())
-        assertEquals(amazon, preference.get())
-
-        val polygon = Uri.parse(POLYGON)
-        preference.set(polygon)
-        assertTrue(preference.exists)
-        assertNotNull(preference.get())
-        assertEquals(polygon, preference.get())
-
-        preference.set(Uri.EMPTY)
-        assertTrue(preference.exists)
-        assertNotNull(preference.get())
-        assertEquals(Uri.EMPTY, preference.get())
-
-        preference.delete()
-        assertNull(preference.get())
     }
 
     @Test
-    fun testGetDefaultValue() {
-        val polygon = Uri.parse(POLYGON)
-        val preference = PersistentUriPreference("test", polygon, keyValueStore)
-        assertNotNull(preference.get())
-        assertEquals(polygon, preference.get())
+    fun testGetAndSetAndDeleteAndExistsWithDefaultValue() {
+        val preference: Preference<JavaUri> = PersistentUriPreference(
+                key = "uri",
+                defaultValue = AMAZON,
+                keyValueStore = keyValueStore
+        )
+        assertEquals(AMAZON, preference.get())
+        assertTrue(preference.exists)
+
+        preference.set(GOOGLE)
+        assertEquals(GOOGLE, preference.get())
+        assertTrue(preference.exists)
+
+        preference.delete()
+        assertEquals(AMAZON, preference.get())
+        assertTrue(preference.exists)
+
+        preference.set(POLYGON)
+        assertEquals(POLYGON, preference.get())
+        assertTrue(preference.exists)
+    }
+
+    @Test
+    fun testGetAndSetAndDeleteAndExistsWithNullDefaultValue() {
+        val preference: Preference<JavaUri> = PersistentUriPreference(
+                key = "uri",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+        assertNull(preference.get())
+        assertFalse(preference.exists)
+
+        preference.set(AMAZON)
+        assertEquals(AMAZON, preference.get())
+        assertTrue(preference.exists)
+
+        preference.delete()
+        assertNull(preference.get())
+        assertFalse(preference.exists)
+
+        preference.set(POLYGON)
+        assertEquals(POLYGON, preference.get())
+        assertTrue(preference.exists)
+    }
+
+    @Test
+    fun testKey() {
+        val preference: Preference<JavaUri> = PersistentUriPreference(
+                key = "uri",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+        assertEquals("uri", preference.key)
+    }
+
+    @Test
+    fun testObservableWithDefaultValue() {
+        val preference: Preference<JavaUri> = PersistentUriPreference(
+                key = "uri",
+                defaultValue = AMAZON,
+                keyValueStore = keyValueStore
+        )
+
+        var value: Optional<JavaUri>? = null
+
+        preference.observable.subscribe {
+            value = it
+        }
+
+        assertNull(value)
+
+        preference.set(GOOGLE)
+        assertNotNull(value)
+        assertEquals(GOOGLE, value?.item)
+
+        preference.set(POLYGON)
+        assertNotNull(value)
+        assertEquals(POLYGON, value?.item)
+
+        preference.delete()
+        assertNotNull(value)
+        assertEquals(AMAZON, value?.item)
+    }
+
+    @Test
+    fun testObservableWithNullDefaultValue() {
+        val preference: Preference<JavaUri> = PersistentUriPreference(
+                key = "uri",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+
+        var value: Optional<JavaUri>? = null
+
+        preference.observable.subscribe {
+            value = it
+        }
+
+        assertNull(value)
+
+        preference.set(POLYGON)
+        assertNotNull(value)
+        assertEquals(POLYGON, value?.item)
+
+        preference.set(GOOGLE)
+        assertNotNull(value)
+        assertEquals(GOOGLE, value?.item)
+
+        preference.delete()
+        assertNotNull(value)
+        assertEquals(false, value?.isPresent)
+    }
+
+    @Test
+    fun testSetWithNullCausesDelete() {
+        val preference: Preference<JavaUri> = PersistentUriPreference(
+                key = "uri",
+                defaultValue = null,
+                keyValueStore = keyValueStore
+        )
+
+        preference.set(GOOGLE)
+        assertTrue(preference.exists)
+
+        preference.set(null)
+        assertFalse(preference.exists)
     }
 
 }

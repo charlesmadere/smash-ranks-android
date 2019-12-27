@@ -3,7 +3,7 @@ package com.garpr.android.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.garpr.android.extensions.createParcel
-import com.garpr.android.extensions.readRatingsMap
+import com.garpr.android.extensions.optRatingsMap
 import com.garpr.android.extensions.requireString
 import com.garpr.android.extensions.writeRatingsMap
 import com.squareup.moshi.Json
@@ -29,7 +29,7 @@ class FullPlayer(
                     it.requireString(),
                     it.createStringArrayList(),
                     it.createStringArrayList(),
-                    it.readRatingsMap()
+                    it.optRatingsMap()
             )
         }
     }

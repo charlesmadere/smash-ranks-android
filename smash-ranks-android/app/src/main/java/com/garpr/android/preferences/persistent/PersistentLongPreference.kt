@@ -23,7 +23,6 @@ class PersistentLongPreference(
 
     override fun performSet(newValue: Long) {
         keyValueStore.setLong(key, newValue)
-        notifyListeners()
     }
 
 }

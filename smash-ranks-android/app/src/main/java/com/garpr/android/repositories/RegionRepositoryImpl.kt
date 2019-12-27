@@ -6,8 +6,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
-import com.garpr.android.repositories.RegionRepository.OnRegionChangeListener
-import com.garpr.android.wrappers.WeakReferenceWrapper
+import io.reactivex.Observable
 
 class RegionRepositoryImpl(
         private val generalPreferenceStore: GeneralPreferenceStore,
@@ -15,32 +14,16 @@ class RegionRepositoryImpl(
         private val timber: Timber
 ) : RegionRepository {
 
-    private val listeners = mutableSetOf<WeakReferenceWrapper<OnRegionChangeListener>>()
+    override val observable: Observable<Region> = generalPreferenceStore.currentRegion
+            .observable
+            .map {
+                checkNotNull(it.item) {
+                    "A null region here is impossible and means we have a bug somewhere else."
+                }
+            }
 
     companion object {
         private const val TAG = "RegionRepositoryImpl"
-    }
-
-    override fun addListener(listener: OnRegionChangeListener) {
-        cleanListeners()
-
-        synchronized (listeners) {
-            listeners.add(WeakReferenceWrapper(listener))
-        }
-    }
-
-    private fun cleanListeners(listenerToRemove: OnRegionChangeListener? = null) {
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                val listener = iterator.next().get()
-
-                if (listener == null || listener == listenerToRemove) {
-                    iterator.remove()
-                }
-            }
-        }
     }
 
     override fun getRegion(context: Context?): Region {
@@ -53,24 +36,8 @@ class RegionRepositoryImpl(
         }
 
         return checkNotNull(generalPreferenceStore.currentRegion.get()) {
-            "The user's current region preference is null, this should be impossible."
+            "The user's current region preference is null, this is impossible."
         }
-    }
-
-    private fun notifyListeners() {
-        cleanListeners()
-
-        synchronized (listeners) {
-            val iterator = listeners.iterator()
-
-            while (iterator.hasNext()) {
-                iterator.next().get()?.onRegionChange(this)
-            }
-        }
-    }
-
-    override fun removeListener(listener: OnRegionChangeListener?) {
-        cleanListeners(listener)
     }
 
     override fun setRegion(region: Region) {
@@ -79,7 +46,6 @@ class RegionRepositoryImpl(
         rankingsPollingPreferenceStore.lastPoll.delete()
         rankingsPollingPreferenceStore.rankingsId.delete()
         generalPreferenceStore.currentRegion.set(region)
-        notifyListeners()
     }
 
 }

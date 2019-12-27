@@ -23,7 +23,6 @@ class PersistentStringPreference(
 
     override fun performSet(newValue: String) {
         keyValueStore.setString(key, newValue)
-        notifyListeners()
     }
 
 }
