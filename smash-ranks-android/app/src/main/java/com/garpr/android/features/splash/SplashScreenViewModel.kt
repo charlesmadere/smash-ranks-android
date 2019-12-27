@@ -19,7 +19,7 @@ class SplashScreenViewModel(
         private val regionRepository: RegionRepository,
         private val schedulers: Schedulers,
         private val timber: Timber
-)  : BaseViewModel(), RegionRepository.OnRegionChangeListener {
+)  : BaseViewModel() {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -42,8 +42,6 @@ class SplashScreenViewModel(
     }
 
     private fun initListeners() {
-        regionRepository.addListener(this)
-
         disposables.add(generalPreferenceStore.hajimeteKimasu.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
@@ -57,15 +55,13 @@ class SplashScreenViewModel(
                 .subscribe {
                     refreshIdentity()
                 })
-    }
 
-    override fun onCleared() {
-        regionRepository.removeListener(this)
-        super.onCleared()
-    }
-
-    override fun onRegionChange(regionRepository: RegionRepository) {
-        state = state.copy(region = regionRepository.getRegion())
+        disposables.add(regionRepository.observable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe {
+                    refreshRegion()
+                })
     }
 
     @AnyThread
@@ -78,6 +74,11 @@ class SplashScreenViewModel(
     @WorkerThread
     private fun refreshIdentity() {
         state = state.copy(identity = identityRepository.identity)
+    }
+
+    @AnyThread
+    private fun refreshRegion() {
+        state = state.copy(region = regionRepository.getRegion())
     }
 
     fun removeIdentity() {

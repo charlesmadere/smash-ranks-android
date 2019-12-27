@@ -1,11 +1,9 @@
 package com.garpr.android.repositories
 
-import android.content.Context
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,7 +13,6 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class RegionRepositoryTest : BaseTest() {
 
-    protected val context: Context by inject()
     protected val regionRepository: RegionRepository by inject()
 
     companion object {
@@ -37,6 +34,15 @@ class RegionRepositoryTest : BaseTest() {
                 tournamentQualifiedDayLimit = 180
         )
 
+        private val NORCAL = Region(
+                displayName = "Norcal",
+                id = "norcal",
+                endpoint = Endpoint.GAR_PR,
+                rankingActivityDayLimit = 60,
+                rankingNumTourneysAttended = 2,
+                tournamentQualifiedDayLimit = 1000
+        )
+
         private val NYC = Region(
                 displayName = "NYC Metro Area",
                 id = "nyc",
@@ -48,75 +54,40 @@ class RegionRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun testAddListener() {
-        var region: Region? = null
+    fun testInitialRegion() {
+        assertEquals(NORCAL, regionRepository.getRegion())
+    }
 
-        val listener = object : RegionRepository.OnRegionChangeListener {
-            override fun onRegionChange(regionRepository: RegionRepository) {
-                region = regionRepository.getRegion()
-            }
+    @Test
+    fun testObservable() {
+        var value: Region? = null
+
+        regionRepository.observable.subscribe {
+            value = it
         }
 
-        regionRepository.addListener(listener)
-        assertNull(region)
-
-        regionRepository.setRegion(ALABAMA)
-        assertEquals(ALABAMA, region)
-    }
-
-    @Test
-    fun testAddListenerTwice() {
-        var count = 0
-
-        val listener = object : RegionRepository.OnRegionChangeListener {
-            override fun onRegionChange(regionRepository: RegionRepository) {
-                ++count
-            }
-        }
-
-        regionRepository.addListener(listener)
-        regionRepository.addListener(listener)
-        regionRepository.setRegion(ALABAMA)
-        assertEquals(1, count)
-    }
-
-    @Test
-    fun testGetRegion() {
-        assertNotNull(regionRepository.getRegion())
-    }
-
-    @Test
-    fun testGetRegionWithContext() {
-        assertNotNull(regionRepository.getRegion(context))
-    }
-
-    @Test
-    fun testRemoveListener() {
-        var region: Region? = null
-
-        val listener = object : RegionRepository.OnRegionChangeListener {
-            override fun onRegionChange(regionRepository: RegionRepository) {
-                region = regionRepository.getRegion()
-            }
-        }
-
-        regionRepository.addListener(listener)
-        assertNull(region)
+        assertNull(value)
 
         regionRepository.setRegion(NYC)
-        assertEquals(NYC, region)
+        assertEquals(NYC, value)
 
-        regionRepository.removeListener(listener)
         regionRepository.setRegion(GEORGIA)
-        assertEquals(NYC, region)
+        assertEquals(GEORGIA, value)
     }
 
     @Test
-    fun testSetRegion() {
-        assertNotNull(regionRepository.getRegion())
+    fun testSetRegionAndGetRegion() {
+        regionRepository.setRegion(ALABAMA)
+        assertEquals(ALABAMA, regionRepository.getRegion())
+
+        regionRepository.setRegion(NORCAL)
+        assertEquals(NORCAL, regionRepository.getRegion())
 
         regionRepository.setRegion(GEORGIA)
         assertEquals(GEORGIA, regionRepository.getRegion())
+
+        regionRepository.setRegion(NYC)
+        assertEquals(NYC, regionRepository.getRegion())
     }
 
 }

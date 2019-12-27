@@ -3,6 +3,7 @@ package com.garpr.android.repositories
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.NightMode
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.inject
@@ -26,7 +27,7 @@ class NightModeRepositoryTest : BaseTest() {
             value = it
         }
 
-        assertEquals(NightMode.SYSTEM, value)
+        assertNull(value)
 
         nightModeRepository.nightMode = NightMode.NIGHT_NO
         assertEquals(NightMode.NIGHT_NO, value)

@@ -33,7 +33,7 @@ class SettingsViewModel(
         private val smashRosterSyncManager: SmashRosterSyncManager,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), Refreshable, RegionRepository.OnRegionChangeListener {
+) : BaseViewModel(), Refreshable {
 
     private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>()
     val rankingsPollingStateLiveData: LiveData<RankingsPollingState> = _rankingsPollingStateLiveData
@@ -81,8 +81,6 @@ class SettingsViewModel(
     }
 
     private fun initListeners() {
-        regionRepository.addListener(this)
-
         disposables.add(favoritePlayersRepository.playersObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
@@ -104,21 +102,19 @@ class SettingsViewModel(
                     refreshNightMode(nightMode)
                 })
 
+        disposables.add(regionRepository.observable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe {
+                    refreshRegion()
+                })
+
         disposables.add(smashRosterSyncManager.isSyncingObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { isSyncing ->
                     refreshSmashRosterState(isSyncing)
                 })
-    }
-
-    override fun onCleared() {
-        regionRepository.removeListener(this)
-        super.onCleared()
-    }
-
-    override fun onRegionChange(regionRepository: RegionRepository) {
-        state = state.copy(region = regionRepository.getRegion())
     }
 
     override fun refresh() {
@@ -159,6 +155,11 @@ class SettingsViewModel(
                 pollFrequency = rankingsPollingManager.pollFrequency,
                 ringtone = rankingsPollingManager.ringtone
         )
+    }
+
+    @AnyThread
+    private fun refreshRegion() {
+        state = state.copy(region = regionRepository.getRegion())
     }
 
     @WorkerThread

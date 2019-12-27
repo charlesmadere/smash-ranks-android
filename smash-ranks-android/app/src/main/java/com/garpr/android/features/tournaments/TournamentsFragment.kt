@@ -20,8 +20,8 @@ import kotlinx.android.synthetic.main.fragment_tournaments.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegionChangeListener,
-        Refreshable, SwipeRefreshLayout.OnRefreshListener, TournamentItemView.Listener {
+class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
+        SwipeRefreshLayout.OnRefreshListener, TournamentItemView.Listener {
 
     private val adapter = Adapter(this)
 
@@ -42,7 +42,10 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
     }
 
     private fun initListeners() {
-        regionRepository.addListener(this)
+        onCreateViewDisposable.add(regionRepository.observable
+                .subscribe {
+                    refresh()
+                })
 
         viewModel.stateLiveData.observe(viewLifecycleOwner, Observer {
             refreshState(it)
@@ -71,19 +74,8 @@ class TournamentsFragment : BaseFragment(), ListLayout, RegionRepository.OnRegio
         return inflater.inflate(R.layout.fragment_tournaments, container, false)
     }
 
-    override fun onDestroyView() {
-        regionRepository.removeListener(this)
-        super.onDestroyView()
-    }
-
     override fun onRefresh() {
         refresh()
-    }
-
-    override fun onRegionChange(regionRepository: RegionRepository) {
-        if (isAlive) {
-            refresh()
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
