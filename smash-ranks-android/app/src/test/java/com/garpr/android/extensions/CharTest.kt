@@ -1,14 +1,10 @@
 package com.garpr.android.extensions
 
-import com.garpr.android.BaseTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class CharTest : BaseTest() {
+class CharTest {
 
     @Test
     fun testSafeEqualsWithDigits() {
