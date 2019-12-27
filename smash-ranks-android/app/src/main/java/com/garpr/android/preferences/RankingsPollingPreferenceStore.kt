@@ -1,9 +1,8 @@
 package com.garpr.android.preferences
 
-import android.net.Uri
-
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.SimpleDate
+import java.net.URI as JavaUri
 
 interface RankingsPollingPreferenceStore : PreferenceStore {
 
@@ -11,13 +10,13 @@ interface RankingsPollingPreferenceStore : PreferenceStore {
 
     val enabled: Preference<Boolean>
 
+    val ringtone: Preference<JavaUri>
+
     val lastPoll: Preference<SimpleDate>
 
     val pollFrequency: Preference<PollFrequency>
 
     val rankingsId: Preference<String>
-
-    val ringtone: Preference<Uri>
 
     val vibrationEnabled: Preference<Boolean>
 

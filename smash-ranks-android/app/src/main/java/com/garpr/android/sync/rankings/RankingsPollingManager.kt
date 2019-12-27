@@ -1,7 +1,7 @@
 package com.garpr.android.sync.rankings
 
-import android.net.Uri
 import com.garpr.android.data.models.PollFrequency
+import java.net.URI as JavaUri
 
 interface RankingsPollingManager {
 
@@ -13,9 +13,9 @@ interface RankingsPollingManager {
 
     var isWifiRequired: Boolean
 
-    var pollFrequency: PollFrequency
+    var ringtone: JavaUri?
 
-    var ringtone: Uri?
+    var pollFrequency: PollFrequency
 
     fun enableOrDisable()
 

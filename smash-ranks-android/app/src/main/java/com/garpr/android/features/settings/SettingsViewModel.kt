@@ -1,6 +1,5 @@
 package com.garpr.android.features.settings
 
-import android.net.Uri
 import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
@@ -10,6 +9,7 @@ import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashRosterSyncResult
+import com.garpr.android.extensions.toURI
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
@@ -21,6 +21,7 @@ import com.garpr.android.repositories.NightModeRepository
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
+import java.net.URI as JavaUri
 
 class SettingsViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
@@ -201,8 +202,8 @@ class SettingsViewModel(
         refreshRankingsPollingState()
     }
 
-    fun setRankingsPollingRingtone(ringtone: Uri?) {
-        rankingsPollingManager.ringtone = ringtone
+    fun setRankingsPollingRingtone(ringtone: String?) {
+        rankingsPollingManager.ringtone = ringtone.toURI()
         refreshRankingsPollingState()
     }
 
@@ -246,7 +247,7 @@ class SettingsViewModel(
             val isVibrationEnabled: Boolean,
             val isWifiRequired: Boolean,
             val pollFrequency: PollFrequency,
-            val ringtone: Uri?
+            val ringtone: JavaUri?
     )
 
     sealed class SmashRosterState {

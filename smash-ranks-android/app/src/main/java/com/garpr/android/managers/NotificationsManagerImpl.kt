@@ -16,6 +16,7 @@ import com.garpr.android.features.home.HomeActivity
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
+import android.net.Uri as AndroidUri
 
 class NotificationsManagerImpl(
         private val context: Context,
@@ -80,8 +81,9 @@ class NotificationsManagerImpl(
             builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS)
         }
 
-        rankingsPollingManager.ringtone?.let {
-            builder.setSound(it)
+        rankingsPollingManager.ringtone?.let { javaUri ->
+            val string = javaUri.toString()
+            builder.setSound(AndroidUri.parse(string))
         }
 
         timber.d(TAG, "Showing rankings updated notification! Debug info: " +

@@ -1,13 +1,13 @@
 package com.garpr.android.extensions
 
-import java.net.URI
+import java.net.URI as JavaUri
 
-fun String?.toURI(): URI? {
+fun String?.toURI(): JavaUri? {
     return if (isNullOrBlank()) {
         null
     } else {
         try {
-            URI.create(this)
+            JavaUri.create(this)
         } catch (e: IllegalArgumentException) {
             null
         }

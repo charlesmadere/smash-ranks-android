@@ -2,7 +2,6 @@ package com.garpr.android.features.common.views
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.ViewCompat
@@ -22,6 +21,7 @@ import com.garpr.android.misc.ThreadUtils
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.lang.ref.WeakReference
+import android.net.Uri as AndroidUri
 
 class PaletteSimpleDraweeView @JvmOverloads constructor(
         context: Context,
@@ -60,10 +60,10 @@ class PaletteSimpleDraweeView @JvmOverloads constructor(
     }
 
     override fun setImageURI(uriString: String?) {
-        val uri = if (uriString.isNullOrBlank() || deviceUtils.hasLowRam) {
+        val uri: AndroidUri? = if (uriString.isNullOrBlank() || deviceUtils.hasLowRam) {
             null
         } else {
-            Uri.parse(uriString)
+            AndroidUri.parse(uriString)
         }
 
         if (uri == null) {

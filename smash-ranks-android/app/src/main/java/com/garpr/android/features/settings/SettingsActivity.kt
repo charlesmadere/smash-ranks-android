@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -26,6 +25,7 @@ import com.garpr.android.misc.ShareUtils
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import android.net.Uri as AndroidUri
 
 class SettingsActivity : BaseActivity() {
 
@@ -164,8 +164,8 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun saveSmashRosterRingtone(data: Intent?) {
-        val ringtoneUri = data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-        viewModel.setRankingsPollingRingtone(ringtoneUri)
+        val ringtoneUri = data?.getParcelableExtra<AndroidUri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+        viewModel.setRankingsPollingRingtone(ringtoneUri?.toString())
     }
 
     private val deleteFavoritePlayersListener = object : DeleteFavoritePlayersPreferenceView.Listener {
@@ -241,8 +241,9 @@ class SettingsActivity : BaseActivity() {
                     .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
                     .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
 
-            v.ringtoneUri?.let {
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, it)
+            v.ringtoneUri?.let { javaUri ->
+                val androidUri = AndroidUri.parse(javaUri.toString())
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, androidUri)
             }
 
             try {

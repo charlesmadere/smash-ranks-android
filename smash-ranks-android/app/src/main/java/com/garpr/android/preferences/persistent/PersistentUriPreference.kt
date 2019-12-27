@@ -1,13 +1,14 @@
 package com.garpr.android.preferences.persistent
 
-import android.net.Uri
+import com.garpr.android.extensions.toURI
 import com.garpr.android.preferences.KeyValueStore
+import java.net.URI as JavaUri
 
 class PersistentUriPreference(
         key: String,
-        defaultValue: Uri?,
+        defaultValue: JavaUri?,
         keyValueStore: KeyValueStore
-) : BasePersistentPreference<Uri>(
+) : BasePersistentPreference<JavaUri>(
         key,
         defaultValue,
         keyValueStore
@@ -22,15 +23,15 @@ class PersistentUriPreference(
     override val exists: Boolean
         get() = backingPreference.exists || defaultValue != null
 
-    override fun get(): Uri? {
+    override fun get(): JavaUri? {
         return if (backingPreference.exists) {
-            Uri.parse(backingPreference.get())
+            backingPreference.get().toURI()
         } else {
             defaultValue
         }
     }
 
-    override fun performSet(newValue: Uri) {
+    override fun performSet(newValue: JavaUri) {
         backingPreference.set(newValue.toString())
     }
 

@@ -1,6 +1,5 @@
 package com.garpr.android.sync.rankings
 
-import android.net.Uri
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
@@ -9,6 +8,7 @@ import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.wrappers.WorkManagerWrapper
 import java.util.concurrent.TimeUnit
+import java.net.URI as JavaUri
 
 class RankingsPollingManagerImpl(
         private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
@@ -45,17 +45,17 @@ class RankingsPollingManagerImpl(
             enableOrDisable()
         }
 
+    override var ringtone: JavaUri?
+        get() = rankingsPollingPreferenceStore.ringtone.get()
+        set(value) {
+            rankingsPollingPreferenceStore.ringtone.set(value)
+        }
+
     override var pollFrequency: PollFrequency
         get() = rankingsPollingPreferenceStore.pollFrequency.get() ?: PollFrequency.DAILY
         set(value) {
             rankingsPollingPreferenceStore.pollFrequency.set(value)
             enableOrDisable()
-        }
-
-    override var ringtone: Uri?
-        get() = rankingsPollingPreferenceStore.ringtone.get()
-        set(value) {
-            rankingsPollingPreferenceStore.ringtone.set(value)
         }
 
     private fun disable() {
