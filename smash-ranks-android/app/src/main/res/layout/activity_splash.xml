@@ -12,7 +12,7 @@
         android:layout_width="@dimen/splash_card_width"
         android:visibility="invisible"
         app:cardCornerRadius="@dimen/splash_card_corner_radius"
-        app:cardElevation="@dimen/splash_card_start_elevation"
+        app:cardElevation="@dimen/splash_card_elevation"
         app:layout_constraintBottom_toTopOf="@+id/bottomWindowInsetsView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
