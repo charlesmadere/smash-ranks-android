@@ -64,13 +64,13 @@ class SmashRosterSyncManagerImpl(
     }
 
     private fun disable() {
-        timber.d(TAG, "disabling syncing...")
+        timber.d(TAG, "disabling smash roster sync...")
         workManagerWrapper.cancelAllWorkByTag(TAG)
-        timber.d(TAG, "sync has been disabled")
+        timber.d(TAG, "smash roster sync has been disabled")
     }
 
     private fun enable() {
-        timber.d(TAG, "enabling syncing...")
+        timber.d(TAG, "enabling smash roster sync...")
 
         val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.UNMETERED)
@@ -93,7 +93,7 @@ class SmashRosterSyncManagerImpl(
                 .build()
 
         workManagerWrapper.enqueue(periodicRequest)
-        timber.d(TAG, "sync has been enabled")
+        timber.d(TAG, "smash roster sync has been enabled")
 
         if (hajimeteSync) {
             hajimeteSync()

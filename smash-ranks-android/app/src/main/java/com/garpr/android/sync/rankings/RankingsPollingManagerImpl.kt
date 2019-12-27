@@ -16,10 +16,6 @@ class RankingsPollingManagerImpl(
         private val workManagerWrapper: WorkManagerWrapper
 ) : RankingsPollingManager {
 
-    companion object {
-        private const val TAG = "RankingsPollingManagerImpl"
-    }
-
     override var isChargingRequired: Boolean
         get() = rankingsPollingPreferenceStore.chargingRequired.get() == true
         set(value) {
@@ -58,14 +54,18 @@ class RankingsPollingManagerImpl(
             enableOrDisable()
         }
 
+    companion object {
+        private const val TAG = "RankingsPollingManagerImpl"
+    }
+
     private fun disable() {
-        timber.d(TAG, "disabling polling...")
+        timber.d(TAG, "disabling rankings polling...")
         workManagerWrapper.cancelAllWorkByTag(TAG)
-        timber.d(TAG, "polling has been disabled")
+        timber.d(TAG, "rankings polling has been disabled")
     }
 
     private fun enable() {
-        timber.d(TAG, "enabling polling...")
+        timber.d(TAG, "enabling rankings polling...")
 
         val constraints = Constraints.Builder()
                 .setRequiredNetworkType(if (isWifiRequired) {
@@ -87,7 +87,7 @@ class RankingsPollingManagerImpl(
                 .build()
 
         workManagerWrapper.enqueue(periodicRequest)
-        timber.d(TAG, "polling has been enabled")
+        timber.d(TAG, "rankings polling has been enabled")
     }
 
     override fun enableOrDisable() {

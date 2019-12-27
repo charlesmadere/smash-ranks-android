@@ -52,24 +52,24 @@ class RankingsPollingWorker(
 
         return when (info) {
             NotificationInfo.CANCEL -> {
-                timber.d(TAG, "canceling notifications ($info)")
+                timber.d(TAG, "canceling rankings notification ($info)")
                 notificationsManager.cancelRankingsUpdated()
                 Result.success()
             }
 
             NotificationInfo.NO_CHANGE -> {
-                timber.d(TAG, "not changing any notifications ($info)")
+                timber.d(TAG, "not changing any rankings notification ($info)")
                 Result.success()
             }
 
             NotificationInfo.SHOW -> {
-                timber.d(TAG, "showing rankings updated notification ($info)")
+                timber.d(TAG, "showing rankings notification ($info)")
                 notificationsManager.showRankingsUpdated()
                 Result.success()
             }
 
             else -> {
-                timber.w(TAG, "NotificationInfo is unknown ($info), not changing any notifications")
+                timber.w(TAG, "NotificationInfo is unknown, not changing any rankings notification ($info)")
                 Result.retry()
             }
         }
