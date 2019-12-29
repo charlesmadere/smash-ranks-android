@@ -178,7 +178,8 @@ class SettingsViewModelTest : BaseTest() {
         }
 
         assertNotNull(state)
-        assertEquals((state?.identityState as IdentityState.Fetched).identity, CHARLEZARD)
+        assertTrue(state?.identityState is IdentityState.Fetched)
+        assertEquals(CHARLEZARD, (state?.identityState as IdentityState.Fetched).identity)
         assertEquals(4, (state?.favoritePlayersState as FavoritePlayersState.Fetched).size)
         assertEquals(nightModeRepository.nightMode, state?.nightMode)
         assertEquals(regionRepository.getRegion(), state?.region)
