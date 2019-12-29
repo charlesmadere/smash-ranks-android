@@ -125,7 +125,7 @@ class SettingsActivity : BaseActivity() {
         rankingsPollingEnabledPreference.isChecked = state.isEnabled
         rankingsPollingPollFrequencyPreference.setContent(state.pollFrequency)
         rankingsPollingPollFrequencyPreference.isEnabled = state.isEnabled
-        rankingsPollingRingtonePreference.ringtoneUri = state.ringtone
+        rankingsPollingRingtonePreference.ringtoneUri = state.ringtoneUri
         rankingsPollingRingtonePreference.isEnabled = state.isEnabled
         rankingsPollingVibratePreference.isChecked = state.isVibrationEnabled
         rankingsPollingVibratePreference.isEnabled = state.isEnabled

@@ -47,7 +47,7 @@ class SettingsViewModel(
             isVibrationEnabled = rankingsPollingManager.isVibrationEnabled,
             isWifiRequired = rankingsPollingManager.isWifiRequired,
             pollFrequency = rankingsPollingManager.pollFrequency,
-            ringtone = rankingsPollingManager.ringtone
+            ringtoneUri = rankingsPollingManager.ringtone
     )
         set(value) {
             field = value
@@ -153,7 +153,7 @@ class SettingsViewModel(
                 isVibrationEnabled = rankingsPollingManager.isVibrationEnabled,
                 isWifiRequired = rankingsPollingManager.isWifiRequired,
                 pollFrequency = rankingsPollingManager.pollFrequency,
-                ringtone = rankingsPollingManager.ringtone
+                ringtoneUri = rankingsPollingManager.ringtone
         )
     }
 
@@ -248,7 +248,7 @@ class SettingsViewModel(
             val isVibrationEnabled: Boolean,
             val isWifiRequired: Boolean,
             val pollFrequency: PollFrequency,
-            val ringtone: JavaUri?
+            val ringtoneUri: JavaUri?
     )
 
     sealed class SmashRosterState {

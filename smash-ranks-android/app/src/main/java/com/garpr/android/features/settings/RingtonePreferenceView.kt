@@ -15,8 +15,6 @@ class RingtonePreferenceView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SimplePreferenceView(context, attrs), View.OnClickListener {
 
-    var listener: Listener? = null
-
     var ringtoneUri: JavaUri? = null
         set(value) {
             field = value
@@ -34,6 +32,8 @@ class RingtonePreferenceView @JvmOverloads constructor(
                 ringtone.getTitle(context)
             }
         }
+
+    var listener: Listener? = null
 
     interface Listener {
         fun onClick(v: RingtonePreferenceView)
