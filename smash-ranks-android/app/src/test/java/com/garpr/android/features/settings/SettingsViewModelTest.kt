@@ -4,6 +4,7 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
 import com.garpr.android.features.settings.SettingsViewModel.IdentityState
@@ -146,6 +147,23 @@ class SettingsViewModelTest : BaseTest() {
     }
 
     @Test
+    fun testInitialRankingsPollingState() {
+        var state: SettingsViewModel.RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertNotNull(state)
+        assertEquals(false, state?.isChargingRequired)
+        assertEquals(true, state?.isEnabled)
+        assertEquals(false, state?.isVibrationEnabled)
+        assertEquals(true, state?.isWifiRequired)
+        assertEquals(PollFrequency.DAILY, state?.pollFrequency)
+        assertNull(state?.ringtoneUri)
+    }
+
+    @Test
     fun testInitialState() {
         favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
         favoritePlayersRepository.addPlayer(IMYT, NORCAL)
@@ -164,6 +182,7 @@ class SettingsViewModelTest : BaseTest() {
         assertEquals(4, (state?.favoritePlayersState as FavoritePlayersState.Fetched).size)
         assertEquals(nightModeRepository.nightMode, state?.nightMode)
         assertEquals(regionRepository.getRegion(), state?.region)
+        assertTrue(state?.smashRosterState is SmashRosterState.Fetched)
         assertNull((state?.smashRosterState as SmashRosterState.Fetched).result)
     }
 
