@@ -112,6 +112,12 @@ class OptionalTest {
     }
 
     @Test
+    fun testOrElseWithNullBoolean() {
+        val optional = Optional.ofNullable<Boolean>(null)
+        assertEquals(false, optional.orElse(false))
+    }
+
+    @Test
     fun testOrElseWithInt() {
         val optional = Optional.of(100)
         assertEquals(100, optional.orElse(0))
