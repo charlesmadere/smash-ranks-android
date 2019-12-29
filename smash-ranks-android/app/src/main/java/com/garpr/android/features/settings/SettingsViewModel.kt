@@ -98,8 +98,8 @@ class SettingsViewModel(
         disposables.add(nightModeRepository.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { nightMode ->
-                    refreshNightMode(nightMode)
+                .subscribe {
+                    refreshNightMode()
                 })
 
         disposables.add(regionRepository.observable
@@ -121,7 +121,9 @@ class SettingsViewModel(
         threadUtils.background.submit {
             refreshFavoritePlayers()
             refreshIdentity()
+            refreshNightMode()
             refreshRankingsPollingState()
+            refreshRegion()
             refreshSmashRosterState()
         }
     }
@@ -141,8 +143,8 @@ class SettingsViewModel(
     }
 
     @AnyThread
-    private fun refreshNightMode(nightMode: NightMode = nightModeRepository.nightMode) {
-        state = state.copy(nightMode = nightMode)
+    private fun refreshNightMode() {
+        state = state.copy(nightMode = nightModeRepository.nightMode)
     }
 
     @AnyThread
