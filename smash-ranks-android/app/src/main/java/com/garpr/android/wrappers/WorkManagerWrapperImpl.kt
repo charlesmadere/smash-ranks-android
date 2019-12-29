@@ -13,14 +13,15 @@ class WorkManagerWrapperImpl(
         private val threadUtils: ThreadUtils
 ) : WorkManagerWrapper {
 
-    private val workManager: WorkManager
-        get() = WorkManager.getInstance(context)
-
     override val configuration: Configuration
         get() = Configuration.Builder()
                 .setExecutor(threadUtils.background)
                 .setMinimumLoggingLevel(if (BuildConfig.DEBUG) Log.VERBOSE else Log.INFO)
+                .setTaskExecutor(threadUtils.background)
                 .build()
+
+    private val workManager: WorkManager
+        get() = WorkManager.getInstance(context)
 
     override fun cancelAllWorkByTag(tag: String) {
         workManager.cancelAllWorkByTag(tag)
