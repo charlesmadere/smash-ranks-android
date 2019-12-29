@@ -147,6 +147,44 @@ class SettingsViewModelTest : BaseTest() {
     }
 
     @Test
+    fun testDeleteIdentityWithCharlezardAsIdentity() {
+        identityRepository.setIdentity(CHARLEZARD, NORCAL)
+
+        var state: SettingsViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        assertNotNull(state)
+        assertTrue(state?.identityState is IdentityState.Fetched)
+        assertEquals(CHARLEZARD, (state?.identityState as IdentityState.Fetched).identity)
+
+        viewModel.deleteIdentity()
+        assertNotNull(state)
+        assertTrue(state?.identityState is IdentityState.Fetched)
+        assertNull((state?.identityState as IdentityState.Fetched).identity)
+    }
+
+    @Test
+    fun testDeleteIdentityWithNoIdentity() {
+        var state: SettingsViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        assertNotNull(state)
+        assertTrue(state?.identityState is IdentityState.Fetched)
+        assertNull((state?.identityState as IdentityState.Fetched).identity)
+
+        viewModel.deleteIdentity()
+        assertNotNull(state)
+        assertTrue(state?.identityState is IdentityState.Fetched)
+        assertNull((state?.identityState as IdentityState.Fetched).identity)
+    }
+
+    @Test
     fun testInitialRankingsPollingState() {
         var state: SettingsViewModel.RankingsPollingState? = null
 
