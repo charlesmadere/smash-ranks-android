@@ -9,8 +9,8 @@ import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
-import com.garpr.android.networking.AbsServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
+import com.garpr.android.repositories.SmashRosterRepository
 import com.garpr.android.wrappers.WorkManagerWrapper
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
@@ -27,7 +27,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class SmashRosterSyncManagerTest : BaseTest() {
 
-    private val serverApi = ServerApiOverride()
+    private val smashRosterRepository = SmashRosterRepositoryOverride()
     private lateinit var smashRosterSyncManager: SmashRosterSyncManager
     private val workManagerWrapper = WorkManagerWrapperOverride()
 
@@ -76,7 +76,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
                 name = "jarebair"
         )
 
-        private val GAR_PR = mapOf(
+        private val GAR_PR_ROSTER = mapOf(
                 CHARLEZARD.id to SmashCompetitor(
                         id = CHARLEZARD.id,
                         name = "Charles",
@@ -99,7 +99,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
                 )
         )
 
-        private val NOT_GAR_PR = mapOf(
+        private val NOT_GAR_PR_ROSTER = mapOf(
                 HAX.id to SmashCompetitor(
                         id = HAX.id,
                         name = "Aziz",
@@ -113,8 +113,8 @@ class SmashRosterSyncManagerTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        smashRosterSyncManager = SmashRosterSyncManagerImpl(schedulers, serverApi,
-                smashRosterPreferenceStore, smashRosterStorage, timber, workManagerWrapper)
+        smashRosterSyncManager = SmashRosterSyncManagerImpl(schedulers, smashRosterPreferenceStore,
+                smashRosterRepository, smashRosterStorage, timber, workManagerWrapper)
     }
 
     @Test
@@ -170,32 +170,31 @@ class SmashRosterSyncManagerTest : BaseTest() {
         assertNotNull(smashRosterSyncManager.syncResult)
         assertEquals(true, smashRosterSyncManager.syncResult?.success)
 
-        serverApi.garPrSmashRoster = emptyMap()
+        smashRosterRepository.garPrRoster = emptyMap()
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
         assertEquals(false, smashRosterSyncManager.syncResult?.success)
 
-        serverApi.notGarPrSmashRoster = emptyMap()
+        smashRosterRepository.notGarPrRoster = emptyMap()
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
         assertEquals(false, smashRosterSyncManager.syncResult?.success)
 
-        serverApi.garPrSmashRoster = GAR_PR
-        serverApi.notGarPrSmashRoster = NOT_GAR_PR
+        smashRosterRepository.garPrRoster = GAR_PR_ROSTER
+        smashRosterRepository.notGarPrRoster = NOT_GAR_PR_ROSTER
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
         assertEquals(true, smashRosterSyncManager.syncResult?.success)
     }
 
-    private class ServerApiOverride(
-            internal var garPrSmashRoster: Map<String, SmashCompetitor>? = GAR_PR,
-            internal var notGarPrSmashRoster: Map<String, SmashCompetitor>? = NOT_GAR_PR
-    ) : AbsServerApi() {
-
+    private class SmashRosterRepositoryOverride(
+            internal var garPrRoster: Map<String, SmashCompetitor>? = GAR_PR_ROSTER,
+            internal var notGarPrRoster: Map<String, SmashCompetitor>? = NOT_GAR_PR_ROSTER
+    ) : SmashRosterRepository {
         override fun getSmashRoster(endpoint: Endpoint): Single<Map<String, SmashCompetitor>> {
             val roster = when (endpoint) {
-                Endpoint.GAR_PR -> garPrSmashRoster
-                Endpoint.NOT_GAR_PR -> notGarPrSmashRoster
+                Endpoint.GAR_PR -> garPrRoster
+                Endpoint.NOT_GAR_PR -> notGarPrRoster
             }
 
             return if (roster == null) {
@@ -204,7 +203,6 @@ class SmashRosterSyncManagerTest : BaseTest() {
                 Single.just(roster)
             }
         }
-
     }
 
     private class WorkManagerWrapperOverride : WorkManagerWrapper {

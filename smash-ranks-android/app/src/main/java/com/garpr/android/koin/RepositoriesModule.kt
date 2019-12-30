@@ -21,6 +21,8 @@ import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionRepositoryImpl
 import com.garpr.android.repositories.RegionsRepository
 import com.garpr.android.repositories.RegionsRepositoryImpl
+import com.garpr.android.repositories.SmashRosterRepository
+import com.garpr.android.repositories.SmashRosterRepositoryImpl
 import com.garpr.android.repositories.TournamentsRepository
 import com.garpr.android.repositories.TournamentsRepositoryImpl
 import org.koin.core.qualifier.named
@@ -42,6 +44,7 @@ val repositoriesModule = module {
     single<RankingsRepository> { RankingsRepositoryImpl(get(), get(), get(), get(), get()) }
     single<RegionRepository> { RegionRepositoryImpl(get(), get(), get()) }
     single<RegionsRepository> { RegionsRepositoryImpl(get(), get()) }
+    single<SmashRosterRepository> { SmashRosterRepositoryImpl(get(), get()) }
     single<TournamentsRepository> { TournamentsRepositoryImpl(get(), get()) }
 
 }
