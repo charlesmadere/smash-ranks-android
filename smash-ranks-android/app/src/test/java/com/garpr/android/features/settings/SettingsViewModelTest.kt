@@ -7,18 +7,25 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
 import com.garpr.android.features.settings.SettingsViewModel.IdentityState
 import com.garpr.android.features.settings.SettingsViewModel.SmashRosterState
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
+import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.NightModeRepository
 import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.repositories.SmashRosterRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
+import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
+import com.garpr.android.sync.roster.SmashRosterSyncManagerImpl
+import com.garpr.android.wrappers.WorkManagerWrapper
+import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -34,6 +41,7 @@ import org.robolectric.RobolectricTestRunner
 class SettingsViewModelTest : BaseTest() {
 
     private lateinit var viewModel: SettingsViewModel
+    private val smashRosterRepository = SmashRosterRepositoryOverride()
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val identityRepository: IdentityRepository by inject()
@@ -41,14 +49,21 @@ class SettingsViewModelTest : BaseTest() {
     protected val rankingsPollingManager: RankingsPollingManager by inject()
     protected val regionRepository: RegionRepository by inject()
     protected val schedulers: Schedulers by inject()
-    protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
+    protected val smashRosterPreferenceStore: SmashRosterPreferenceStore by inject()
+    protected val smashRosterStorage: SmashRosterStorage by inject()
     protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
+    protected val workManagerWrapper: WorkManagerWrapper by inject()
 
     companion object {
         private val CHARLEZARD: AbsPlayer = LitePlayer(
                 id = "587a951dd2994e15c7dea9fe",
                 name = "Charlezard"
+        )
+
+        private val HAX: AbsPlayer = LitePlayer(
+                id = "53c64dba8ab65f6e6651f7bc",
+                name = "Hax"
         )
 
         private val IMYT: AbsPlayer = LitePlayer(
@@ -71,11 +86,46 @@ class SettingsViewModelTest : BaseTest() {
                 id = "norcal",
                 endpoint = Endpoint.GAR_PR
         )
+
+        private val GAR_PR_ROSTER = mapOf(
+                CHARLEZARD.id to SmashCompetitor(
+                        id = CHARLEZARD.id,
+                        name = "Charles",
+                        tag = CHARLEZARD.name
+                ),
+                MIKKUZ.id to SmashCompetitor(
+                        id = MIKKUZ.id,
+                        name = "Justin",
+                        tag = MIKKUZ.name
+                ),
+                IMYT.id to SmashCompetitor(
+                        id = IMYT.id,
+                        name = "Declan",
+                        tag = IMYT.name
+                ),
+                SNAP.id to SmashCompetitor(
+                        id = SNAP.id,
+                        name = "Danny",
+                        tag = SNAP.name
+                )
+        )
+
+        private val NOT_GAR_PR_ROSTER = mapOf(
+                HAX.id to SmashCompetitor(
+                        id = HAX.id,
+                        name = "Aziz",
+                        tag = HAX.name
+                )
+        )
     }
 
     @Before
     override fun setUp() {
         super.setUp()
+
+        val smashRosterSyncManager: SmashRosterSyncManager = SmashRosterSyncManagerImpl(
+                schedulers, smashRosterPreferenceStore, smashRosterRepository, smashRosterStorage,
+                timber, workManagerWrapper)
 
         viewModel = SettingsViewModel(favoritePlayersRepository, identityRepository,
                 nightModeRepository, rankingsPollingManager, regionRepository, schedulers,
@@ -255,6 +305,49 @@ class SettingsViewModelTest : BaseTest() {
 
         viewModel.setNightMode(NightMode.AUTO)
         assertEquals(NightMode.AUTO, state?.nightMode)
+    }
+
+    @Test
+    fun testSyncSmashRoster() {
+        val states = mutableListOf<SmashRosterState>()
+
+        viewModel.stateLiveData.observeForever {
+            states.add(it.smashRosterState)
+        }
+
+        assertEquals(1, states.size)
+
+        var fetchedState = states[0] as? SmashRosterState.Fetched
+        assertNotNull(fetchedState)
+        assertNull(fetchedState?.result)
+
+        viewModel.syncSmashRoster()
+        assertEquals(5, states.size)
+        assertTrue(states[1] is SmashRosterState.Fetching)
+        assertTrue(states[2] is SmashRosterState.Syncing)
+        assertTrue(states[3] is SmashRosterState.Fetching)
+
+        fetchedState = states[4] as? SmashRosterState.Fetched
+        assertNotNull(fetchedState)
+        assertEquals(true, fetchedState?.result?.success)
+    }
+
+    private class SmashRosterRepositoryOverride(
+            internal var garPrRoster: Map<String, SmashCompetitor>? = GAR_PR_ROSTER,
+            internal var notGarPrRoster: Map<String, SmashCompetitor>? = NOT_GAR_PR_ROSTER
+    ) : SmashRosterRepository {
+        override fun getSmashRoster(endpoint: Endpoint): Single<Map<String, SmashCompetitor>> {
+            val roster = when (endpoint) {
+                Endpoint.GAR_PR -> garPrRoster
+                Endpoint.NOT_GAR_PR -> notGarPrRoster
+            }
+
+            return if (roster == null) {
+                Single.error(NullPointerException())
+            } else {
+                Single.just(roster)
+            }
+        }
     }
 
 }
