@@ -14,8 +14,8 @@ class TestThreadUtilsImpl : ThreadUtils {
             throw NotImplementedError()
         }
 
-        override fun execute(command: Runnable?) {
-            command?.run()
+        override fun execute(command: Runnable) {
+            command.run()
         }
 
         override fun <T : Any?> invokeAll(
@@ -53,19 +53,19 @@ class TestThreadUtilsImpl : ThreadUtils {
             throw NotImplementedError()
         }
 
-        override fun <T : Any?> submit(task: Callable<T>?): Future<T> {
+        override fun <T : Any?> submit(task: Callable<T>): Future<T> {
             val future = FutureTask(task)
             future.run()
             return future
         }
 
-        override fun submit(task: Runnable?): Future<*> {
+        override fun submit(task: Runnable): Future<*> {
             val future = FutureTask(task, null)
             future.run()
             return future
         }
 
-        override fun <T : Any?> submit(task: Runnable?, result: T): Future<T> {
+        override fun <T : Any?> submit(task: Runnable, result: T): Future<T> {
             val future = FutureTask(task, result)
             future.run()
             return future
