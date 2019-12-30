@@ -4,6 +4,7 @@ import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
@@ -239,6 +240,21 @@ class SettingsViewModelTest : BaseTest() {
         assertEquals(nightModeRepository.nightMode, state?.nightMode)
         assertEquals(regionRepository.getRegion(), state?.region)
         assertNull((state?.smashRosterState as SmashRosterState.Fetched).result)
+    }
+
+    @Test
+    fun testSetNightMode() {
+        var state: SettingsViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.setNightMode(NightMode.NIGHT_YES)
+        assertEquals(NightMode.NIGHT_YES, state?.nightMode)
+
+        viewModel.setNightMode(NightMode.AUTO)
+        assertEquals(NightMode.AUTO, state?.nightMode)
     }
 
 }
