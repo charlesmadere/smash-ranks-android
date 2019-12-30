@@ -39,7 +39,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
     companion object {
 
         private val CHARLEZARD = FullPlayer(
-                id = "2",
+                id = "587a951dd2994e15c7dea9fe",
                 name = "Charlezard",
                 aliases = listOf("charles"),
                 ratings = mapOf(
@@ -48,7 +48,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
         )
 
         private val GAR = FullPlayer(
-                id = "4",
+                id = "58523b44d2994e15c7dea945",
                 name = "gaR",
                 ratings = mapOf(
                         "norcal" to Rating(20f, 1.5f),
@@ -57,7 +57,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
         )
 
         private val HAX = FullPlayer(
-                id = "3",
+                id = "53c64dba8ab65f6e6651f7bc",
                 name = "Hax",
                 aliases = listOf("hax$"),
                 ratings = mapOf(
@@ -67,12 +67,12 @@ class SmashRosterSyncManagerTest : BaseTest() {
         )
 
         private val IMYT = FullPlayer(
-                id = "1",
+                id = "5877eb55d2994e15c7dea98b",
                 name = "Imyt"
         )
 
         private val JAREBAIR = FullPlayer(
-                id = "5",
+                id = "58a914c7d2994e756952ada0",
                 name = "jarebair"
         )
 

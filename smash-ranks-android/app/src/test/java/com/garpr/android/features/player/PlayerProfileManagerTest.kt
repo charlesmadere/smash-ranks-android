@@ -27,7 +27,7 @@ class PlayerProfileManagerTest : BaseTest() {
 
         private object Players {
             val CHARLEZARD = FullPlayer(
-                    id = "2",
+                    id = "587a951dd2994e15c7dea9fe",
                     name = "Charlezard",
                     aliases = listOf("charles"),
                     ratings = mapOf(
@@ -36,7 +36,7 @@ class PlayerProfileManagerTest : BaseTest() {
             )
 
             val GAR = FullPlayer(
-                    id = "4",
+                    id = "58523b44d2994e15c7dea945",
                     name = "gaR",
                     aliases = emptyList(),
                     ratings = mapOf(
@@ -46,7 +46,7 @@ class PlayerProfileManagerTest : BaseTest() {
             )
 
             val HAX = FullPlayer(
-                    id = "3",
+                    id = "53c64dba8ab65f6e6651f7bc",
                     name = "Hax",
                     aliases = listOf("hax$"),
                     ratings = mapOf(
@@ -56,7 +56,7 @@ class PlayerProfileManagerTest : BaseTest() {
             )
 
             val IMYT = FullPlayer(
-                    id = "1",
+                    id = "5877eb55d2994e15c7dea98b",
                     name = "Imyt"
             )
 
