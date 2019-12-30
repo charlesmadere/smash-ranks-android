@@ -3,6 +3,8 @@ package com.garpr.android.repositories
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
@@ -47,10 +49,42 @@ class TournamentsRepositoryTest : BaseTest() {
                 name = "The People's Tuesdays #16"
         )
 
+        private val BLARGH = LitePlayer(
+                id = "58885df9d2994e3d56594112",
+                name = "blargh"
+        )
+
+        private val NMW = LitePlayer(
+                id = "583a4a15d2994e0577b05c8a",
+                name = "NMW"
+        )
+
+        private val SNAP = LitePlayer(
+                id = "59213f1ad2994e1d79144956",
+                name = "Snap"
+        )
+
+        private val THE_UNABLE_TABLE = LitePlayer(
+                id = "58b132d5d2994e7265472773",
+                name = "theunabletable"
+        )
+
+        private val UMARTH = LitePlayer(
+                id = "5877eb55d2994e15c7dea977",
+                name = "Umarth"
+        )
+
         private val NORCAL = Region(
                 displayName = "Norcal",
                 id = "norcal",
                 endpoint = Endpoint.GAR_PR
+        )
+
+        private val FULL_TOURNAMENT = FullTournament(
+                date = SimpleDate(Date(1577433600000L)),
+                id = "5e071549d2994e083b9c1466",
+                name = "Melee @ the Made #123",
+                players = listOf(NMW, BLARGH, UMARTH, THE_UNABLE_TABLE, SNAP)
         )
 
         private val EMPTY_TOURNAMENTS_BUNDLE = TournamentsBundle()
@@ -66,6 +100,20 @@ class TournamentsRepositoryTest : BaseTest() {
         super.setUp()
 
         tournamentsRepository = TournamentsRepositoryImpl(schedulers, serverApi)
+    }
+
+    @Test
+    fun testGetTournament() {
+        val fullTournament = tournamentsRepository.getTournament(NORCAL, FULL_TOURNAMENT.id)
+                .blockingGet()
+
+        assertNotNull(fullTournament)
+        assertEquals(5, fullTournament.players?.size)
+        assertEquals(BLARGH, fullTournament.players?.get(0))
+        assertEquals(NMW, fullTournament.players?.get(1))
+        assertEquals(SNAP, fullTournament.players?.get(2))
+        assertEquals(THE_UNABLE_TABLE, fullTournament.players?.get(3))
+        assertEquals(UMARTH, fullTournament.players?.get(4))
     }
 
     @Test
@@ -91,8 +139,19 @@ class TournamentsRepositoryTest : BaseTest() {
     }
 
     private class ServerApiOverride(
+            internal var fullTournament: FullTournament? = FULL_TOURNAMENT,
             internal var tournamentsBundle: TournamentsBundle? = TOURNAMENTS_BUNDLE
     ) : AbsServerApi() {
+        override fun getTournament(region: Region, tournamentId: String): Single<FullTournament> {
+            val fullTournament = this.fullTournament
+
+            return if (fullTournament == null) {
+                Single.error(NullPointerException())
+            } else {
+                Single.just(fullTournament)
+            }
+        }
+
         override fun getTournaments(region: Region): Single<TournamentsBundle> {
             val tournamentsBundle = this.tournamentsBundle
 
