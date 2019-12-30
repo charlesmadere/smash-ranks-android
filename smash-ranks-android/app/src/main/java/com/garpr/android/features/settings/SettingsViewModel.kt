@@ -98,15 +98,15 @@ class SettingsViewModel(
         disposables.add(nightModeRepository.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshNightMode()
+                .subscribe { nightMode ->
+                    refreshNightMode(nightMode)
                 })
 
         disposables.add(regionRepository.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshRegion()
+                .subscribe { region ->
+                    refreshRegion(region)
                 })
 
         disposables.add(smashRosterSyncManager.isSyncingObservable
@@ -143,8 +143,8 @@ class SettingsViewModel(
     }
 
     @AnyThread
-    private fun refreshNightMode() {
-        state = state.copy(nightMode = nightModeRepository.nightMode)
+    private fun refreshNightMode(nightMode: NightMode = nightModeRepository.nightMode) {
+        state = state.copy(nightMode = nightMode)
     }
 
     @AnyThread
@@ -160,8 +160,8 @@ class SettingsViewModel(
     }
 
     @AnyThread
-    private fun refreshRegion() {
-        state = state.copy(region = regionRepository.getRegion())
+    private fun refreshRegion(region: Region = regionRepository.getRegion()) {
+        state = state.copy(region = region)
     }
 
     @WorkerThread
@@ -169,7 +169,7 @@ class SettingsViewModel(
         state = state.copy(smashRosterState = SmashRosterState.Fetching)
 
         state = if (isSyncing) {
-            state.copy(smashRosterState = SmashRosterState.IsSyncing)
+            state.copy(smashRosterState = SmashRosterState.Syncing)
         } else {
             val result = smashRosterSyncManager.syncResult
             state.copy(smashRosterState = SmashRosterState.Fetched(result))
@@ -259,7 +259,7 @@ class SettingsViewModel(
         ) : SmashRosterState()
 
         object Fetching : SmashRosterState()
-        object IsSyncing : SmashRosterState()
+        object Syncing : SmashRosterState()
     }
 
     data class State(

@@ -159,7 +159,7 @@ class SettingsActivity : BaseActivity() {
             }
 
             is SmashRosterState.Fetching -> smashRosterPreference.setLoading()
-            is SmashRosterState.IsSyncing -> smashRosterPreference.setSyncing()
+            is SmashRosterState.Syncing -> smashRosterPreference.setSyncing()
         }
     }
 
