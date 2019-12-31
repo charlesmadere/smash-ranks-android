@@ -1,7 +1,6 @@
 package com.garpr.android.features.splash
 
 import androidx.annotation.AnyThread
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
@@ -45,40 +44,38 @@ class SplashScreenViewModel(
         disposables.add(generalPreferenceStore.hajimeteKimasu.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshIsSplashScreenComplete()
+                .subscribe { optional ->
+                    refreshIsSplashScreenComplete(optional.orElse(false))
                 })
 
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshIdentity()
+                .subscribe { optional ->
+                    refreshIdentity(optional.item)
                 })
 
         disposables.add(regionRepository.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshRegion()
+                .subscribe { region ->
+                    refreshRegion(region)
                 })
     }
 
     @AnyThread
-    private fun refreshIsSplashScreenComplete() {
-        state = state.copy(
-                isSplashScreenComplete = generalPreferenceStore.hajimeteKimasu.get() == false
-        )
-    }
-
-    @WorkerThread
-    private fun refreshIdentity() {
-        state = state.copy(identity = identityRepository.identity)
+    private fun refreshIsSplashScreenComplete(isSplashScreenComplete: Boolean) {
+        state = state.copy(isSplashScreenComplete = isSplashScreenComplete)
     }
 
     @AnyThread
-    private fun refreshRegion() {
-        state = state.copy(region = regionRepository.getRegion())
+    private fun refreshIdentity(identity: FavoritePlayer?) {
+        state = state.copy(identity = identity)
+    }
+
+    @AnyThread
+    private fun refreshRegion(region: Region) {
+        state = state.copy(region = region)
     }
 
     fun removeIdentity() {
