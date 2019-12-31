@@ -64,8 +64,8 @@ class SplashScreenViewModel(
     }
 
     @AnyThread
-    private fun refreshIsSplashScreenComplete(isSplashScreenComplete: Boolean) {
-        state = state.copy(isSplashScreenComplete = isSplashScreenComplete)
+    private fun refreshIsSplashScreenComplete(hajimeteKimasu: Boolean) {
+        state = state.copy(isSplashScreenComplete = !hajimeteKimasu)
     }
 
     @AnyThread
