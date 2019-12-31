@@ -3,13 +3,14 @@ package com.garpr.android.features.favoritePlayers
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.garpr.android.data.models.Optional
 import com.garpr.android.features.common.viewModels.BaseViewModel
-import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
+import io.reactivex.functions.BiFunction
 import com.garpr.android.data.models.FavoritePlayer as GarPrFavoritePlayer
 
 class FavoritePlayersViewModel(
@@ -17,7 +18,7 @@ class FavoritePlayersViewModel(
         private val identityRepository: IdentityRepository,
         private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils
-) : BaseViewModel(), Refreshable, Searchable {
+) : BaseViewModel(), Searchable {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -30,17 +31,17 @@ class FavoritePlayersViewModel(
 
     init {
         initListeners()
-        refresh()
     }
 
     @WorkerThread
-    private fun createList(players: List<GarPrFavoritePlayer>?): List<ListItem>? {
+    private fun createListItems(players: List<GarPrFavoritePlayer>?,
+            identity: GarPrFavoritePlayer?): List<ListItem>? {
         return if (players.isNullOrEmpty()) {
             null
         } else {
             players.map { player ->
                 ListItem.FavoritePlayer(
-                        isIdentity = identityRepository.isPlayer(player),
+                        isIdentity = player == identity,
                         player = player
                 )
             }
@@ -49,32 +50,22 @@ class FavoritePlayersViewModel(
 
     private fun initListeners() {
         disposables.add(favoritePlayersRepository.playersObservable
+                .withLatestFrom(identityRepository.identityObservable,
+                        BiFunction<List<GarPrFavoritePlayer>, Optional<GarPrFavoritePlayer>,
+                                Pair<List<GarPrFavoritePlayer>, Optional<GarPrFavoritePlayer>>> { t1, t2 ->
+                                    Pair(t1, t2)
+                                })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshFavoritePlayers()
+                .subscribe { (players, identity) ->
+                    refreshFavoritePlayers(players, identity.item)
                 })
-
-        disposables.add(identityRepository.identityObservable
-                .subscribeOn(schedulers.background)
-                .observeOn(schedulers.background)
-                .subscribe {
-                    refreshFavoritePlayers()
-                })
-    }
-
-    override fun refresh() {
-        threadUtils.background.submit {
-            refreshFavoritePlayers()
-        }
     }
 
     @WorkerThread
-    private fun refreshFavoritePlayers() {
-        state = state.copy(isFetching = true)
-
-        val players = favoritePlayersRepository.players
-        val list = createList(players)
+    private fun refreshFavoritePlayers(players: List<GarPrFavoritePlayer>,
+            identity: GarPrFavoritePlayer?) {
+        val list = createListItems(players, identity)
 
         state = state.copy(
                 isEmpty = list.isNullOrEmpty(),

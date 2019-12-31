@@ -7,7 +7,6 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
-import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
@@ -52,8 +51,6 @@ class HomeViewModelTest : BaseTest() {
                 id = "6f1ed002ab5595859014ebf0951522d9",
                 region = "norcal"
         )
-
-        private val EMPTY_TOURNAMENTS_BUNDLE = TournamentsBundle()
     }
 
     @Before

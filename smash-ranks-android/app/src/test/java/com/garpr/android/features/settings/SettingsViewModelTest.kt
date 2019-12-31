@@ -27,7 +27,6 @@ import com.garpr.android.sync.roster.SmashRosterSyncManagerImpl
 import com.garpr.android.wrappers.WorkManagerWrapper
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -139,62 +138,37 @@ class SettingsViewModelTest : BaseTest() {
         favoritePlayersRepository.addPlayer(MIKKUZ, NORCAL)
         favoritePlayersRepository.addPlayer(SNAP, NORCAL)
 
-        var state: SettingsViewModel.State? = null
-        val fetchedStates = mutableListOf<FavoritePlayersState>()
+        val states = mutableListOf<FavoritePlayersState>()
 
         viewModel.stateLiveData.observeForever {
-            state = it
-            fetchedStates.add(it.favoritePlayersState)
+            states.add(it.favoritePlayersState)
         }
 
-        assertFalse(favoritePlayersRepository.isEmpty)
-        assertNotNull(state)
-
-        var fetchedState = state?.favoritePlayersState as FavoritePlayersState.Fetched
-        assertEquals(4, fetchedState.size)
-        assertEquals(1, fetchedStates.size)
-        assertTrue(fetchedStates[0] is FavoritePlayersState.Fetched)
+        assertEquals(1, states.size)
+        var state = states[0] as? FavoritePlayersState.Fetched
+        assertEquals(4, state?.size)
 
         viewModel.deleteFavoritePlayers()
-        assertTrue(favoritePlayersRepository.isEmpty)
-        assertNotNull(state)
-
-        fetchedState = state?.favoritePlayersState as FavoritePlayersState.Fetched
-        assertEquals(0, fetchedState.size)
-        assertEquals(3, fetchedStates.size)
-        assertTrue(fetchedStates[0] is FavoritePlayersState.Fetched)
-        assertTrue(fetchedStates[1] is FavoritePlayersState.Fetching)
-        assertTrue(fetchedStates[2] is FavoritePlayersState.Fetched)
+        state = states[1] as? FavoritePlayersState.Fetched
+        assertEquals(0, state?.size)
     }
 
     @Test
     fun testDeleteAllFavoritePlayersWithEmptyFavoritesRepository() {
-        var state: SettingsViewModel.State? = null
-        val fetchedStates = mutableListOf<FavoritePlayersState>()
+        val states = mutableListOf<FavoritePlayersState>()
 
         viewModel.stateLiveData.observeForever {
-            state = it
-            fetchedStates.add(it.favoritePlayersState)
+            states.add(it.favoritePlayersState)
         }
 
-        assertTrue(favoritePlayersRepository.isEmpty)
-        assertNotNull(state)
-
-        var fetchedState = state?.favoritePlayersState as FavoritePlayersState.Fetched
-        assertEquals(0, fetchedState.size)
-        assertEquals(1, fetchedStates.size)
-        assertTrue(fetchedStates[0] is FavoritePlayersState.Fetched)
+        assertEquals(1, states.size)
+        var state = states[0] as? FavoritePlayersState.Fetched
+        assertEquals(0, state?.size)
 
         viewModel.deleteFavoritePlayers()
-        assertTrue(favoritePlayersRepository.isEmpty)
-        assertNotNull(state)
-
-        fetchedState = state?.favoritePlayersState as FavoritePlayersState.Fetched
-        assertEquals(0, fetchedState.size)
-        assertEquals(3, fetchedStates.size)
-        assertTrue(fetchedStates[0] is FavoritePlayersState.Fetched)
-        assertTrue(fetchedStates[1] is FavoritePlayersState.Fetching)
-        assertTrue(fetchedStates[2] is FavoritePlayersState.Fetched)
+        assertEquals(2, states.size)
+        state = states[1] as? FavoritePlayersState.Fetched
+        assertEquals(0, state?.size)
     }
 
     @Test
@@ -269,6 +243,7 @@ class SettingsViewModelTest : BaseTest() {
         assertNotNull(state)
         assertTrue(state?.identityState is IdentityState.Fetched)
         assertEquals(CHARLEZARD, (state?.identityState as IdentityState.Fetched).identity)
+        assertTrue(state?.favoritePlayersState is FavoritePlayersState.Fetched)
         assertEquals(4, (state?.favoritePlayersState as FavoritePlayersState.Fetched).size)
         assertEquals(nightModeRepository.nightMode, state?.nightMode)
         assertEquals(regionRepository.getRegion(), state?.region)
@@ -285,10 +260,13 @@ class SettingsViewModelTest : BaseTest() {
         }
 
         assertNotNull(state)
+        assertTrue(state?.identityState is IdentityState.Fetched)
         assertNull((state?.identityState as IdentityState.Fetched).identity)
+        assertTrue(state?.favoritePlayersState is FavoritePlayersState.Fetched)
         assertEquals(0, (state?.favoritePlayersState as FavoritePlayersState.Fetched).size)
         assertEquals(nightModeRepository.nightMode, state?.nightMode)
         assertEquals(regionRepository.getRegion(), state?.region)
+        assertTrue(state?.smashRosterState is SmashRosterState.Fetched)
         assertNull((state?.smashRosterState as SmashRosterState.Fetched).result)
     }
 

@@ -10,7 +10,7 @@ class TestThreadUtilsImpl : ThreadUtils {
 
     override val background: ExecutorService = object : ExecutorService {
 
-        override fun awaitTermination(timeout: Long, unit: TimeUnit?): Boolean {
+        override fun awaitTermination(timeout: Long, unit: TimeUnit): Boolean {
             throw NotImplementedError()
         }
 
@@ -19,21 +19,21 @@ class TestThreadUtilsImpl : ThreadUtils {
         }
 
         override fun <T : Any?> invokeAll(
-                tasks: MutableCollection<out Callable<T>>?): MutableList<Future<T>> {
+                tasks: MutableCollection<out Callable<T>>): MutableList<Future<T>> {
             throw NotImplementedError()
         }
 
-        override fun <T : Any?> invokeAll(tasks: MutableCollection<out Callable<T>>?,
-                timeout: Long, unit: TimeUnit?): MutableList<Future<T>> {
+        override fun <T : Any?> invokeAll(tasks: MutableCollection<out Callable<T>>,
+                timeout: Long, unit: TimeUnit): MutableList<Future<T>> {
             throw NotImplementedError()
         }
 
-        override fun <T : Any?> invokeAny(tasks: MutableCollection<out Callable<T>>?): T {
+        override fun <T : Any?> invokeAny(tasks: MutableCollection<out Callable<T>>): T {
             throw NotImplementedError()
         }
 
-        override fun <T : Any?> invokeAny(tasks: MutableCollection<out Callable<T>>?,
-                timeout: Long, unit: TimeUnit?): T {
+        override fun <T : Any?> invokeAny(tasks: MutableCollection<out Callable<T>>,
+                timeout: Long, unit: TimeUnit): T {
             throw NotImplementedError()
         }
 
@@ -60,12 +60,10 @@ class TestThreadUtilsImpl : ThreadUtils {
         }
 
         override fun submit(task: Runnable): Future<*> {
-            val future = FutureTask(task, null)
-            future.run()
-            return future
+            return submit(task, null)
         }
 
-        override fun <T : Any?> submit(task: Runnable, result: T): Future<T> {
+        override fun <T : Any?> submit(task: Runnable, result: T?): Future<T?> {
             val future = FutureTask(task, result)
             future.run()
             return future

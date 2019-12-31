@@ -38,6 +38,7 @@ class TournamentViewModel(
         private const val TAG = "TournamentViewModel"
     }
 
+    @WorkerThread
     private fun createMatchesList(tournament: FullTournament): List<MatchListItem>? {
         return if (tournament.matches.isNullOrEmpty()) {
             null
@@ -52,6 +53,7 @@ class TournamentViewModel(
         }
     }
 
+    @WorkerThread
     private fun createPlayersList(tournament: FullTournament): List<PlayerListItem>? {
         return if (tournament.players.isNullOrEmpty()) {
             null

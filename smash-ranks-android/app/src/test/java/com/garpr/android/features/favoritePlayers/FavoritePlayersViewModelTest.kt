@@ -125,7 +125,7 @@ class FavoritePlayersViewModelTest : BaseTest() {
     }
 
     @Test
-    fun testInit() {
+    fun testInitialState() {
         var state: FavoritePlayersViewModel.State? = null
         val isFetchingStates = mutableListOf<Boolean>()
 
@@ -137,19 +137,7 @@ class FavoritePlayersViewModelTest : BaseTest() {
         assertEquals(true, state?.isEmpty)
         assertEquals(false, state?.isFetching)
         assertTrue(state?.list.isNullOrEmpty())
-        assertTrue(state?.searchResults.isNullOrEmpty())
-        assertEquals(1, isFetchingStates.size)
-        assertFalse(isFetchingStates[0])
-
-        favoritePlayersRepository.addPlayer(SNAP, NORCAL)
-        assertEquals(false, state?.isEmpty)
-        assertEquals(false, state?.isFetching)
-        assertEquals(1, state?.list?.size)
-        assertTrue(state?.searchResults.isNullOrEmpty())
-        assertEquals(3, isFetchingStates.size)
-        assertFalse(isFetchingStates[0])
-        assertTrue(isFetchingStates[1])
-        assertFalse(isFetchingStates[2])
+        assertNull(state?.searchResults)
     }
 
     @Test

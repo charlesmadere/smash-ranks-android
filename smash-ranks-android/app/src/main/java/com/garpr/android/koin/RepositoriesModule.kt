@@ -32,7 +32,7 @@ val repositoriesModule = module {
 
     single<FavoritePlayersRepository> {
         val keyValueStore: KeyValueStore = get(named(FAVORITE_PLAYERS_KEY_VALUE_STORE))
-        FavoritePlayersRepositoryImpl(keyValueStore, get(), get(), get())
+        FavoritePlayersRepositoryImpl(keyValueStore, get(), get(), get(), get())
     }
 
     single<HeadToHeadRepository> { HeadToHeadRepositoryImpl(get(), get()) }

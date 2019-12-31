@@ -81,18 +81,18 @@ class SettingsViewModel(
     }
 
     private fun initListeners() {
-        disposables.add(favoritePlayersRepository.playersObservable
+        disposables.add(favoritePlayersRepository.sizeObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshFavoritePlayers()
+                .subscribe { size ->
+                    refreshFavoritePlayers(size)
                 })
 
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshIdentity()
+                .subscribe { identity ->
+                    refreshIdentity(identity.item)
                 })
 
         disposables.add(nightModeRepository.observable
@@ -119,8 +119,6 @@ class SettingsViewModel(
 
     override fun refresh() {
         threadUtils.background.submit {
-            refreshFavoritePlayers()
-            refreshIdentity()
             refreshNightMode()
             refreshRankingsPollingState()
             refreshRegion()
@@ -128,17 +126,13 @@ class SettingsViewModel(
         }
     }
 
-    @WorkerThread
-    private fun refreshFavoritePlayers() {
-        state = state.copy(favoritePlayersState = FavoritePlayersState.Fetching)
-        val size = favoritePlayersRepository.size
+    @AnyThread
+    private fun refreshFavoritePlayers(size: Int) {
         state = state.copy(favoritePlayersState = FavoritePlayersState.Fetched(size))
     }
 
-    @WorkerThread
-    private fun refreshIdentity() {
-        state = state.copy(identityState = IdentityState.Fetching)
-        val identity = identityRepository.identity
+    @AnyThread
+    private fun refreshIdentity(identity: FavoritePlayer?) {
         state = state.copy(identityState = IdentityState.Fetched(identity))
     }
 

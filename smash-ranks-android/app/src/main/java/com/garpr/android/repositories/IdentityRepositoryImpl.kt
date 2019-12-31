@@ -5,6 +5,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.requireValue
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
@@ -20,18 +21,21 @@ class IdentityRepositoryImpl(
         private val timber: Timber
 ) : IdentityRepository, Refreshable {
 
-    companion object {
-        private const val TAG = "IdentityRepositoryImpl"
-    }
-
     override val hasIdentity: Boolean
-        get() = identity != null
+        get() = hasIdentitySubject.requireValue()
 
     override val identity: FavoritePlayer?
-        get() = identitySubject.value?.item
+        get() = identitySubject.requireValue().item
+
+    private val hasIdentitySubject = BehaviorSubject.create<Boolean>()
+    override val hasIdentityObservable: Observable<Boolean> = hasIdentitySubject.hide()
 
     private val identitySubject = BehaviorSubject.create<Optional<FavoritePlayer>>()
     override val identityObservable: Observable<Optional<FavoritePlayer>> = identitySubject.hide()
+
+    companion object {
+        private const val TAG = "IdentityRepositoryImpl"
+    }
 
     init {
         initListeners()
@@ -40,11 +44,18 @@ class IdentityRepositoryImpl(
 
     @SuppressLint("CheckResult")
     private fun initListeners() {
-        generalPreferenceStore.identity.observable
+        identityObservable
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { optional ->
-                    val identity = optional.item
-                    identitySubject.onNext(Optional.ofNullable(identity))
+                    hasIdentitySubject.onNext(optional.isPresent)
+                }
+
+        generalPreferenceStore.identity.observable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe { optional ->
+                    identitySubject.onNext(optional)
                 }
     }
 
@@ -59,20 +70,21 @@ class IdentityRepositoryImpl(
     override fun refresh() {
         threadUtils.background.submit {
             val identity = generalPreferenceStore.identity.get()
-            identitySubject.onNext(Optional.ofNullable(identity))
+            val optional = Optional.ofNullable(identity)
+            identitySubject.onNext(optional)
         }
     }
 
     override fun removeIdentity() {
         threadUtils.background.submit {
-            timber.d(TAG, "identity is being removed, hasIdentity: $hasIdentity")
+            timber.d(TAG, "removing identity...")
             generalPreferenceStore.identity.delete()
         }
     }
 
     override fun setIdentity(player: AbsPlayer, region: Region) {
         threadUtils.background.submit {
-            timber.d(TAG, "identity is being set, hasIdentity: $hasIdentity")
+            timber.d(TAG, "setting identity...")
 
             val newIdentity = FavoritePlayer(
                     id = player.id,

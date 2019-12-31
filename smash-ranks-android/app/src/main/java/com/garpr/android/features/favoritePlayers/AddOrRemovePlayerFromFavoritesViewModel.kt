@@ -5,16 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.features.common.viewModels.BaseViewModel
-import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
 
 class AddOrRemovePlayerFromFavoritesViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
-        private val schedulers: Schedulers,
-        private val threadUtils: ThreadUtils
-) : BaseViewModel(), Refreshable {
+        private val schedulers: Schedulers
+) : BaseViewModel() {
 
     private var player: FavoritePlayer? = null
 
@@ -28,7 +25,8 @@ class AddOrRemovePlayerFromFavoritesViewModel(
         }
 
     init {
-        initListeners()
+        // Kind of a dumb hack, but it ensures that something is being set to the LiveData.
+        state = State()
     }
 
     fun addToFavorites() {
@@ -38,36 +36,32 @@ class AddOrRemovePlayerFromFavoritesViewModel(
 
     fun initialize(player: FavoritePlayer) {
         this.player = player
-        refresh()
+        initListeners()
     }
 
     private fun initListeners() {
         disposables.add(favoritePlayersRepository.playersObservable
+                .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { players ->
-                    refreshIsAlreadyFavorited(players)
+                    refreshIsFavorited(players)
                 })
     }
 
-    override fun refresh() {
-        threadUtils.background.submit {
-            refreshIsAlreadyFavorited(favoritePlayersRepository.players)
-        }
-    }
-
     @WorkerThread
-    private fun refreshIsAlreadyFavorited(players: List<FavoritePlayer>?) {
-        val player = this.player
+    private fun refreshIsFavorited(favoritePlayers: List<FavoritePlayer>?) {
+        val player = checkNotNull(this.player) { "initialize() was not called" }
 
-        val isAlreadyFavorited = if (player == null || players.isNullOrEmpty()) {
+        val isFavorited = if (favoritePlayers.isNullOrEmpty()) {
             false
         } else {
-            players.any { favoritePlayer ->
-                favoritePlayer.id.equals(player.id, ignoreCase = true)
-            }
+            favoritePlayers.any { it == player }
         }
 
-        state = state.copy(isAlreadyFavorited = isAlreadyFavorited)
+        state = state.copy(
+                isFavorited = isFavorited,
+                isFetching = false
+        )
     }
 
     fun removeFromFavorites() {
@@ -76,7 +70,8 @@ class AddOrRemovePlayerFromFavoritesViewModel(
     }
 
     data class State(
-            val isAlreadyFavorited: Boolean = false
+            val isFavorited: Boolean = false,
+            val isFetching: Boolean = true
     )
 
 }

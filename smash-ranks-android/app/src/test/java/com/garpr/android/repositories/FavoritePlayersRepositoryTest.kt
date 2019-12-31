@@ -2,11 +2,12 @@ package com.garpr.android.repositories
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,222 +18,239 @@ import org.robolectric.RobolectricTestRunner
 class FavoritePlayersRepositoryTest : BaseTest() {
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
-    protected val regionRepository: RegionRepository by inject()
 
     companion object {
-        private val PLAYER_0: AbsPlayer = LitePlayer(
+        private val HMW: AbsPlayer = LitePlayer(
                 id = "583a4a15d2994e0577b05c74",
                 name = "homemadewaffles"
         )
 
-        private val PLAYER_1: AbsPlayer = LitePlayer(
+        private val SPARK: AbsPlayer = LitePlayer(
                 id = "5877eb55d2994e15c7dea97e",
                 name = "Spark"
+        )
+
+        private val NORCAL = Region(
+                displayName = "Norcal",
+                id = "norcal",
+                endpoint = Endpoint.GAR_PR
         )
     }
 
     @Test
     fun testAddPlayer() {
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
+        var players: List<FavoritePlayer>? = null
 
-        val players = favoritePlayersRepository.players
-        assertNotNull(players)
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
+
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
         assertEquals(1, players?.size)
-        assertEquals(PLAYER_0, players?.get(0))
+        assertEquals(HMW, players?.get(0))
     }
 
     @Test
     fun testAddPlayers() {
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
+        var players: List<FavoritePlayer>? = null
 
-        val players = favoritePlayersRepository.players
-        assertNotNull(players)
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
+
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        assertEquals(1, players?.size)
+        assertEquals(SPARK, players?.get(0))
+
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
         assertEquals(2, players?.size)
-        assertEquals(PLAYER_0, players?.get(0))
-        assertEquals(PLAYER_1, players?.get(1))
+        assertEquals(HMW, players?.get(0))
+        assertEquals(SPARK, players?.get(1))
+    }
+
+    @Test
+    fun testAddPlayersWithDuplicate() {
+        var players: List<FavoritePlayer>? = null
+
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
+
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        assertEquals(1, players?.size)
+        assertEquals(SPARK, players?.get(0))
     }
 
     @Test
     fun testClear() {
+        var size: Int? = null
+
+        favoritePlayersRepository.sizeObservable.subscribe {
+            size = it
+        }
+
         favoritePlayersRepository.clear()
-        assertTrue(favoritePlayersRepository.isEmpty)
+        assertEquals(0, size)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertFalse(favoritePlayersRepository.isEmpty)
-
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
         favoritePlayersRepository.clear()
-        assertTrue(favoritePlayersRepository.isEmpty)
-
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        favoritePlayersRepository.clear()
-        assertTrue(favoritePlayersRepository.isEmpty)
-
+        assertEquals(0, size)
     }
 
     @Test
     fun testContains() {
-        assertFalse(PLAYER_0 in favoritePlayersRepository)
-        assertFalse(PLAYER_0.id in favoritePlayersRepository)
-        assertFalse(PLAYER_1 in favoritePlayersRepository)
-        assertFalse(PLAYER_1.id in favoritePlayersRepository)
+        assertFalse(HMW in favoritePlayersRepository)
+        assertFalse(SPARK in favoritePlayersRepository)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertTrue(PLAYER_0 in favoritePlayersRepository)
-        assertTrue(PLAYER_0.id in favoritePlayersRepository)
-        assertFalse(PLAYER_1 in favoritePlayersRepository)
-        assertFalse(PLAYER_1.id in favoritePlayersRepository)
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        assertTrue(HMW in favoritePlayersRepository)
+        assertFalse(SPARK in favoritePlayersRepository)
 
-        favoritePlayersRepository.removePlayer(PLAYER_1)
-        assertTrue(PLAYER_0 in favoritePlayersRepository)
-        assertTrue(PLAYER_0.id in favoritePlayersRepository)
-        assertFalse(PLAYER_1 in favoritePlayersRepository)
-        assertFalse(PLAYER_1.id in favoritePlayersRepository)
+        favoritePlayersRepository.removePlayer(SPARK)
+        assertTrue(HMW in favoritePlayersRepository)
+        assertFalse(SPARK in favoritePlayersRepository)
 
-        favoritePlayersRepository.removePlayer(PLAYER_0)
-        assertFalse(PLAYER_0 in favoritePlayersRepository)
-        assertFalse(PLAYER_0.id in favoritePlayersRepository)
-        assertFalse(PLAYER_1 in favoritePlayersRepository)
-        assertFalse(PLAYER_1.id in favoritePlayersRepository)
+        favoritePlayersRepository.removePlayer(HMW)
+        assertFalse(HMW in favoritePlayersRepository)
+        assertFalse(SPARK in favoritePlayersRepository)
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
-        assertFalse(PLAYER_0 in favoritePlayersRepository)
-        assertFalse(PLAYER_0.id in favoritePlayersRepository)
-        assertTrue(PLAYER_1 in favoritePlayersRepository)
-        assertTrue(PLAYER_1.id in favoritePlayersRepository)
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        assertFalse(HMW in favoritePlayersRepository)
+        assertTrue(SPARK in favoritePlayersRepository)
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertTrue(PLAYER_0 in favoritePlayersRepository)
-        assertTrue(PLAYER_0.id in favoritePlayersRepository)
-        assertTrue(PLAYER_1 in favoritePlayersRepository)
-        assertTrue(PLAYER_1.id in favoritePlayersRepository)
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        assertTrue(HMW in favoritePlayersRepository)
+        assertTrue(SPARK in favoritePlayersRepository)
 
         favoritePlayersRepository.clear()
-        assertFalse(PLAYER_0 in favoritePlayersRepository)
-        assertFalse(PLAYER_0.id in favoritePlayersRepository)
-        assertFalse(PLAYER_1 in favoritePlayersRepository)
-        assertFalse(PLAYER_1.id in favoritePlayersRepository)
-    }
-
-    @Test
-    fun testIsEmpty() {
-        assertTrue(favoritePlayersRepository.isEmpty)
-
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertFalse(favoritePlayersRepository.isEmpty)
-
-        favoritePlayersRepository.removePlayer(PLAYER_1)
-        assertFalse(favoritePlayersRepository.isEmpty)
-
-        favoritePlayersRepository.removePlayer(PLAYER_1.id)
-        assertFalse(favoritePlayersRepository.isEmpty)
-
-        favoritePlayersRepository.removePlayer(PLAYER_0.id)
-        assertTrue(favoritePlayersRepository.isEmpty)
-    }
-
-    @Test
-    fun testPlayers() {
-        var players = favoritePlayersRepository.players
-        assertTrue(players.isNullOrEmpty())
-
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
-        players = favoritePlayersRepository.players
-        assertNotNull(players)
-        assertEquals(1, players?.size)
-
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        players = favoritePlayersRepository.players
-        assertNotNull(players)
-        assertEquals(2, players?.size)
-
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
-        players = favoritePlayersRepository.players
-        assertNotNull(players)
-        assertEquals(2, players?.size)
-
-        favoritePlayersRepository.removePlayer(PLAYER_0)
-        players = favoritePlayersRepository.players
-        assertNotNull(players)
-        assertEquals(1, players?.size)
-
-        favoritePlayersRepository.removePlayer(PLAYER_1)
-        players = favoritePlayersRepository.players
-        assertTrue(players.isNullOrEmpty())
+        assertFalse(HMW in favoritePlayersRepository)
+        assertFalse(SPARK in favoritePlayersRepository)
     }
 
     @Test
     fun testPlayersObservable() {
-        var value: List<FavoritePlayer>? = null
+        var players: List<FavoritePlayer>? = null
 
         favoritePlayersRepository.playersObservable.subscribe {
-            value = it
+            players = it
         }
 
-        assertNotNull(value)
-        assertTrue(value.isNullOrEmpty())
+        assertEquals(true, players?.isEmpty())
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertNotNull(value)
-        assertEquals(1, value?.size)
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        assertEquals(1, players?.size)
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
-        assertNotNull(value)
-        assertEquals(2, value?.size)
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        assertEquals(2, players?.size)
 
-        favoritePlayersRepository.removePlayer(PLAYER_1)
-        assertNotNull(value)
-        assertEquals(1, value?.size)
+        favoritePlayersRepository.removePlayer(SPARK)
+        assertEquals(1, players?.size)
 
-        favoritePlayersRepository.removePlayer(PLAYER_0)
-        assertNotNull(value)
-        assertTrue(value.isNullOrEmpty())
+        favoritePlayersRepository.removePlayer(HMW)
+        assertEquals(true, players?.isEmpty())
+    }
+
+    @Test
+    fun testRemovePlayer() {
+        var players: List<FavoritePlayer>? = null
+
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
+
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        favoritePlayersRepository.removePlayer(HMW)
+        assertEquals(true, players?.isEmpty())
     }
 
     @Test
     fun testRemovePlayers() {
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
+        var players: List<FavoritePlayer>? = null
 
-        favoritePlayersRepository.removePlayer(PLAYER_0)
-        favoritePlayersRepository.removePlayer(PLAYER_1)
-        var players = favoritePlayersRepository.players
-        assertTrue(players.isNullOrEmpty())
-        assertTrue(favoritePlayersRepository.isEmpty)
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        favoritePlayersRepository.removePlayer(PLAYER_1.id)
-        favoritePlayersRepository.removePlayer(PLAYER_0.id)
-        players = favoritePlayersRepository.players
-        assertTrue(players.isNullOrEmpty())
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        assertEquals(2, players?.size)
+        assertEquals(HMW, players?.get(0))
+        assertEquals(SPARK, players?.get(1))
+
+        favoritePlayersRepository.removePlayer(HMW)
+        assertEquals(1, players?.size)
+        assertEquals(SPARK, players?.get(0))
+
+        favoritePlayersRepository.removePlayer(SPARK)
+        assertEquals(true, players?.isEmpty())
     }
 
     @Test
-    fun testSize() {
-        assertEquals(0, favoritePlayersRepository.size)
+    fun testRemovePlayersWithDuplicate() {
+        var players: List<FavoritePlayer>? = null
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertEquals(1, favoritePlayersRepository.size)
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
 
-        favoritePlayersRepository.addPlayer(PLAYER_1, regionRepository.getRegion())
-        assertEquals(2, favoritePlayersRepository.size)
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        favoritePlayersRepository.removePlayer(SPARK)
+        favoritePlayersRepository.removePlayer(SPARK)
+        assertEquals(true, players?.isEmpty())
+    }
 
-        favoritePlayersRepository.addPlayer(PLAYER_0, regionRepository.getRegion())
-        assertEquals(2, favoritePlayersRepository.size)
+    @Test
+    fun testSizeObservable() {
+        var size: Int? = null
 
-        favoritePlayersRepository.removePlayer(PLAYER_0)
-        assertEquals(1, favoritePlayersRepository.size)
+        favoritePlayersRepository.sizeObservable.subscribe {
+            size = it
+        }
 
-        favoritePlayersRepository.removePlayer(PLAYER_0)
-        assertEquals(1, favoritePlayersRepository.size)
+        assertEquals(0, size)
 
-        favoritePlayersRepository.clear()
-        assertEquals(0, favoritePlayersRepository.size)
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        assertEquals(1, size)
 
-        favoritePlayersRepository.removePlayer(PLAYER_1)
-        assertEquals(0, favoritePlayersRepository.size)
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        assertEquals(2, size)
+
+        favoritePlayersRepository.removePlayer(HMW)
+        assertEquals(1, size)
+
+        favoritePlayersRepository.removePlayer(SPARK)
+        assertEquals(0, size)
+    }
+
+    @Test
+    fun testSizeObservableWithDuplicates() {
+        var size: Int? = null
+
+        favoritePlayersRepository.sizeObservable.subscribe {
+            size = it
+        }
+
+        assertEquals(0, size)
+
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        assertEquals(1, size)
+
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        assertEquals(2, size)
+
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        assertEquals(2, size)
+
+        favoritePlayersRepository.removePlayer(HMW)
+        assertEquals(1, size)
+
+        favoritePlayersRepository.removePlayer(SPARK)
+        assertEquals(0, size)
+
+        favoritePlayersRepository.removePlayer(HMW)
+        assertEquals(0, size)
     }
 
 }
