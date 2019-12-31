@@ -42,9 +42,7 @@ class FavoritePlayer(
         }
     }
 
-    override fun hashCode(): Int {
-        return ObjectsCompat.hash(id, region.endpoint)
-    }
+    override fun hashCode(): Int = ObjectsCompat.hash(id, region.endpoint)
 
     override val kind: Kind
         get() = Kind.FAVORITE
