@@ -76,6 +76,7 @@
     <string name="no_players">No players</string>
     <string name="no_rankings">No rankings</string>
     <string name="no_regions">No regions</string>
+    <string name="no_search_results_for_x">No search results for %1$s</string>
     <string name="no_tournaments">No tournaments</string>
     <string name="number">Number</string>
     <string name="ok">OK</string>

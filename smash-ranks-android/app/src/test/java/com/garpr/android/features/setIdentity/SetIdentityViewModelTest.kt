@@ -429,7 +429,11 @@ class SetIdentityViewModelTest : BaseTest() {
         viewModel.fetchPlayers(NORCAL)
         viewModel.search("q")
         assertEquals(9, state?.list?.size)
-        assertEquals(true, state?.searchResults?.isEmpty())
+        assertEquals(1, state?.searchResults?.size)
+
+        val noResults = state?.searchResults?.get(0) as? PlayerListItem.NoResults
+        assertNotNull(noResults)
+        assertEquals("q", noResults?.query)
     }
 
     @Test
