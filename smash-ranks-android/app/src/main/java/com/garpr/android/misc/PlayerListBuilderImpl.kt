@@ -141,7 +141,7 @@ class PlayerListBuilderImpl(
         }
 
         if (results.isEmpty()) {
-            results.add(PlayerListItem.NoResults(query))
+            results.add(PlayerListItem.NoResults(trimmedQuery))
         }
 
         return results
