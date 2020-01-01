@@ -90,8 +90,14 @@ class FavoritePlayersViewModel(
 
         val trimmedQuery = query.trim()
 
-        return list.filterIsInstance(ListItem.FavoritePlayer::class.java)
+        val results = list.filterIsInstance(ListItem.FavoritePlayer::class.java)
                 .filter { it.player.name.contains(trimmedQuery, true) }
+
+        return if (results.isEmpty()) {
+            listOf(ListItem.NoResults(trimmedQuery))
+        } else {
+            results
+        }
     }
 
     data class State(
@@ -109,6 +115,12 @@ class FavoritePlayersViewModel(
                 val player: GarPrFavoritePlayer
         ) : ListItem() {
             override val listId: Long = player.hashCode().toLong()
+        }
+
+        class NoResults(
+                val query: String
+        ) : ListItem() {
+            override val listId: Long = Long.MAX_VALUE - 1L
         }
     }
 

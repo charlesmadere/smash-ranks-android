@@ -129,6 +129,7 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
                 is ListItem.FavoritePlayer -> VIEW_TYPE_FAVORITE_PLAYER
+                is ListItem.NoResults -> VIEW_TYPE_NO_RESULTS
             }
         }
 
