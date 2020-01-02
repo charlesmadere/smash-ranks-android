@@ -3,6 +3,7 @@ package com.garpr.android.features.favoritePlayers
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Optional
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
@@ -11,7 +12,6 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import io.reactivex.functions.BiFunction
-import com.garpr.android.data.models.FavoritePlayer as GarPrFavoritePlayer
 
 class FavoritePlayersViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
@@ -34,13 +34,12 @@ class FavoritePlayersViewModel(
     }
 
     @WorkerThread
-    private fun createListItems(players: List<GarPrFavoritePlayer>?,
-            identity: GarPrFavoritePlayer?): List<ListItem>? {
+    private fun createList(players: List<FavoritePlayer>?, identity: FavoritePlayer?): List<ListItem>? {
         return if (players.isNullOrEmpty()) {
             null
         } else {
             players.map { player ->
-                ListItem.FavoritePlayer(
+                ListItem.Player(
                         isIdentity = player == identity,
                         player = player
                 )
@@ -51,8 +50,8 @@ class FavoritePlayersViewModel(
     private fun initListeners() {
         disposables.add(favoritePlayersRepository.playersObservable
                 .withLatestFrom(identityRepository.identityObservable,
-                        BiFunction<List<GarPrFavoritePlayer>, Optional<GarPrFavoritePlayer>,
-                                Pair<List<GarPrFavoritePlayer>, Optional<GarPrFavoritePlayer>>> { t1, t2 ->
+                        BiFunction<List<FavoritePlayer>, Optional<FavoritePlayer>,
+                                Pair<List<FavoritePlayer>, Optional<FavoritePlayer>>> { t1, t2 ->
                                     Pair(t1, t2)
                                 })
                 .subscribeOn(schedulers.background)
@@ -63,9 +62,8 @@ class FavoritePlayersViewModel(
     }
 
     @WorkerThread
-    private fun refreshFavoritePlayers(players: List<GarPrFavoritePlayer>,
-            identity: GarPrFavoritePlayer?) {
-        val list = createListItems(players, identity)
+    private fun refreshFavoritePlayers(players: List<FavoritePlayer>, identity: FavoritePlayer?) {
+        val list = createList(players, identity)
 
         state = state.copy(
                 isEmpty = list.isNullOrEmpty(),
@@ -77,8 +75,8 @@ class FavoritePlayersViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val searchResults = search(query, state.list)
-            state = state.copy(searchResults = searchResults)
+            val results = search(query, state.list)
+            state = state.copy(searchResults = results)
         }
     }
 
@@ -90,8 +88,11 @@ class FavoritePlayersViewModel(
 
         val trimmedQuery = query.trim()
 
-        val results = list.filterIsInstance(ListItem.FavoritePlayer::class.java)
-                .filter { it.player.name.contains(trimmedQuery, true) }
+        val results = list
+                .filterIsInstance(ListItem.Player::class.java)
+                .filter { listItem ->
+                    listItem.player.name.contains(trimmedQuery, true)
+                }
 
         return if (results.isEmpty()) {
             listOf(ListItem.NoResults(trimmedQuery))
@@ -100,19 +101,12 @@ class FavoritePlayersViewModel(
         }
     }
 
-    data class State(
-            val isEmpty: Boolean = false,
-            val isFetching: Boolean = true,
-            val list: List<ListItem>? = null,
-            val searchResults: List<ListItem>? = null
-    )
-
     sealed class ListItem {
         abstract val listId: Long
 
-        class FavoritePlayer(
+        class Player(
                 val isIdentity: Boolean,
-                val player: GarPrFavoritePlayer
+                val player: FavoritePlayer
         ) : ListItem() {
             override val listId: Long = player.hashCode().toLong()
         }
@@ -123,5 +117,12 @@ class FavoritePlayersViewModel(
             override val listId: Long = Long.MAX_VALUE - 1L
         }
     }
+
+    data class State(
+            val isEmpty: Boolean = false,
+            val isFetching: Boolean = true,
+            val list: List<ListItem>? = null,
+            val searchResults: List<ListItem>? = null
+    )
 
 }

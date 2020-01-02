@@ -165,11 +165,11 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
             setHasStableIds(true)
         }
 
-        private fun bindEndpointViewHolder(holder: EndpointViewHolder, item: ListItem.Endpoint) {
+        private fun bindEndpoint(holder: EndpointViewHolder, item: ListItem.Endpoint) {
             holder.endpointDividerView.setContent(item.endpoint)
         }
 
-        private fun bindRegionViewHolder(holder: RegionViewHolder, item: ListItem.Region) {
+        private fun bindRegion(holder: RegionViewHolder, item: ListItem.Region) {
             holder.regionSelectionItemView.setContent(item.region, item.region == selectedRegion)
         }
 
@@ -196,8 +196,8 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is ListItem.Endpoint -> bindEndpointViewHolder(holder as EndpointViewHolder, item)
-                is ListItem.Region -> bindRegionViewHolder(holder as RegionViewHolder, item)
+                is ListItem.Endpoint -> bindEndpoint(holder as EndpointViewHolder, item)
+                is ListItem.Region -> bindRegion(holder as RegionViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }

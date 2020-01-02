@@ -12,6 +12,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.common.views.NoResultsItemView
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.rankings.RankingsViewModel.ListItem
 import com.garpr.android.misc.ListLayout
@@ -145,11 +146,16 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
         private val list = mutableListOf<ListItem>()
 
         companion object {
-            private const val VIEW_TYPE_PLAYER = 0
+            private const val VIEW_TYPE_NO_RESULTS = 0
+            private const val VIEW_TYPE_PLAYER = 1
         }
 
         init {
             setHasStableIds(true)
+        }
+
+        private fun bindNoResults(holder: NoResultsViewHolder, item: ListItem.NoResults) {
+            holder.noResultsItemView.setContent(item.query)
         }
 
         private fun bindPlayer(holder: PlayerViewHolder, item: ListItem.Player) {
@@ -177,12 +183,14 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
+                is ListItem.NoResults -> VIEW_TYPE_NO_RESULTS
                 is ListItem.Player -> VIEW_TYPE_PLAYER
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
+                is ListItem.NoResults -> bindNoResults(holder as NoResultsViewHolder, item)
                 is ListItem.Player -> bindPlayer(holder as PlayerViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
@@ -192,6 +200,8 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
             val inflater = parent.layoutInflater
 
             return when (viewType) {
+                VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
+                        R.layout.item_no_results, parent, false))
                 VIEW_TYPE_PLAYER -> PlayerViewHolder(rankingItemViewListeners,
                         inflater.inflate(R.layout.item_ranking, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
@@ -208,6 +218,10 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
             notifyDataSetChanged()
         }
 
+    }
+
+    private class NoResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val noResultsItemView: NoResultsItemView = itemView as NoResultsItemView
     }
 
     private class PlayerViewHolder(

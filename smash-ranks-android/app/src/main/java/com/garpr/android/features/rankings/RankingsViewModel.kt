@@ -175,12 +175,27 @@ class RankingsViewModel(
 
         val trimmedQuery = query.trim()
 
-        return list.filterIsInstance(ListItem.Player::class.java)
-                .filter { it.player.name.contains(trimmedQuery, true) }
+        val results = list
+                .filterIsInstance(ListItem.Player::class.java)
+                .filter { listItem ->
+                    listItem.player.name.contains(trimmedQuery, true)
+                }
+
+        return if (results.isEmpty()) {
+            listOf(ListItem.NoResults(trimmedQuery))
+        } else {
+            results
+        }
     }
 
     sealed class ListItem {
         abstract val listId: Long
+
+        class NoResults(
+                val query: String
+        ) : ListItem() {
+            override val listId: Long = Long.MAX_VALUE - 1L
+        }
 
         data class Player(
                 val player: AbsPlayer,
