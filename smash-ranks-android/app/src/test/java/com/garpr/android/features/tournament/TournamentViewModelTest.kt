@@ -223,12 +223,7 @@ class TournamentViewModelTest : BaseTest() {
 
     @Test
     fun testFetchTournamentWithoutCallingInitialize() {
-        var state: TournamentViewModel.State? = null
         var throwable: Throwable? = null
-
-        viewModel.stateLiveData.observeForever {
-            state = it
-        }
 
         try {
             viewModel.fetchTournament()
@@ -236,7 +231,6 @@ class TournamentViewModelTest : BaseTest() {
             throwable = t
         }
 
-        assertNull(state)
         assertNotNull(throwable)
     }
 
