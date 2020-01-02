@@ -44,11 +44,13 @@ class TournamentViewModel(
     }
 
     @WorkerThread
-    private fun createMatchesList(tournament: FullTournament): List<MatchListItem>? {
-        return if (tournament.matches.isNullOrEmpty()) {
+    private fun createMatchesList(tournament: FullTournament?): List<MatchListItem>? {
+        val matches = tournament?.matches
+
+        return if (matches.isNullOrEmpty()) {
             null
         } else {
-            tournament.matches.map { match ->
+            matches.map { match ->
                 MatchListItem.Match(
                         winnerIsIdentity = identityRepository.isPlayer(match.winnerId),
                         loserIsIdentity = identityRepository.isPlayer(match.loserId),
@@ -59,11 +61,13 @@ class TournamentViewModel(
     }
 
     @WorkerThread
-    private fun createPlayersList(tournament: FullTournament): List<PlayerListItem>? {
-        return if (tournament.players.isNullOrEmpty()) {
+    private fun createPlayersList(tournament: FullTournament?): List<PlayerListItem>? {
+        val players = tournament?.players
+
+        return if (players.isNullOrEmpty()) {
             null
         } else {
-            tournament.players.map { player ->
+            players.map { player ->
                 PlayerListItem.Player(
                         player = player,
                         isIdentity = identityRepository.isPlayer(player)
