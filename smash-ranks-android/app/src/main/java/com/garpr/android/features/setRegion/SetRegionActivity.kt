@@ -145,8 +145,13 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
             recyclerView.visibility = View.VISIBLE
         }
 
-        refreshLayout.isRefreshing = state.isFetching
-        refreshLayout.isEnabled = state.isRefreshEnabled
+        if (state.isFetching) {
+            refreshLayout.isEnabled = true
+            refreshLayout.isRefreshing = true
+        } else {
+            refreshLayout.isRefreshing = false
+            refreshLayout.isEnabled = state.isRefreshEnabled
+        }
     }
 
     private class Adapter(
