@@ -46,8 +46,8 @@ class SettingsViewModel(
             isEnabled = rankingsPollingManager.isEnabled,
             isVibrationEnabled = rankingsPollingManager.isVibrationEnabled,
             isWifiRequired = rankingsPollingManager.isWifiRequired,
-            pollFrequency = rankingsPollingManager.pollFrequency,
-            ringtoneUri = rankingsPollingManager.ringtone
+            ringtoneUri = rankingsPollingManager.ringtone,
+            pollFrequency = rankingsPollingManager.pollFrequency
     )
         set(value) {
             field = value
