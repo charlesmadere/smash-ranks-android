@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.PreviousRank
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
@@ -115,23 +116,23 @@ class RankingsViewModel(
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshListItems()
+                .subscribe { optional ->
+                    refreshListItems(optional.item)
                 })
     }
 
     @WorkerThread
-    private fun refreshListItems() {
+    private fun refreshListItems(identity: FavoritePlayer?) {
         val list: List<ListItem>? = if (state.list.isNullOrEmpty()) {
             state.list
         } else {
             val list = mutableListOf<ListItem>()
 
-            state.list?.mapTo(list) {
-                if (it is ListItem.Player) {
-                    it.copy(isIdentity = identityRepository.isPlayer(it.player))
+            state.list?.mapTo(list) { listItem ->
+                if (listItem is ListItem.Player) {
+                    listItem.copy(isIdentity = listItem.player == identity)
                 } else {
-                    it
+                    listItem
                 }
             }
 
@@ -143,11 +144,11 @@ class RankingsViewModel(
         } else {
             val searchResults = mutableListOf<ListItem>()
 
-            state.searchResults?.mapTo(searchResults) {
-                if (it is ListItem.Player) {
-                    it.copy(isIdentity = identityRepository.isPlayer(it.player))
+            state.searchResults?.mapTo(searchResults) { listItem ->
+                if (listItem is ListItem.Player) {
+                    listItem.copy(isIdentity = listItem.player == identity)
                 } else {
-                    it
+                    listItem
                 }
             }
 
