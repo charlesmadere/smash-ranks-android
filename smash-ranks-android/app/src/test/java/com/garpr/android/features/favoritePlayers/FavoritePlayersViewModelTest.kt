@@ -165,6 +165,12 @@ class FavoritePlayersViewModelTest : BaseTest() {
 
         player = state?.searchResults?.get(2) as ListItem.FavoritePlayer
         assertEquals(TWO_SAINT, player.player)
+
+        viewModel.search("Wadu")
+        assertEquals(1, state?.searchResults?.size)
+
+        val noResults = state?.searchResults?.get(0) as ListItem.NoResults
+        assertEquals("Wadu", noResults.query)
     }
 
     @Test
