@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.features.common.views.NoResultsItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:ellipsize="end"
+    android:maxLines="1"
     android:textSize="@dimen/text_size_large"
     android:textStyle="italic"
     tools:text="No search results for blah"
