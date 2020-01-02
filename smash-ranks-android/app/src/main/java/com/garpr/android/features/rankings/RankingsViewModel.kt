@@ -123,42 +123,32 @@ class RankingsViewModel(
 
     @WorkerThread
     private fun refreshListItems(identity: FavoritePlayer?) {
-        val list: List<ListItem>? = if (state.list.isNullOrEmpty()) {
-            state.list
-        } else {
-            val list = mutableListOf<ListItem>()
-
-            state.list?.mapTo(list) { listItem ->
-                if (listItem is ListItem.Player) {
-                    listItem.copy(isIdentity = listItem.player == identity)
-                } else {
-                    listItem
-                }
-            }
-
-            list
-        }
-
-        val searchResults: List<ListItem>? = if (state.searchResults.isNullOrEmpty()) {
-            state.searchResults
-        } else {
-            val searchResults = mutableListOf<ListItem>()
-
-            state.searchResults?.mapTo(searchResults) { listItem ->
-                if (listItem is ListItem.Player) {
-                    listItem.copy(isIdentity = listItem.player == identity)
-                } else {
-                    listItem
-                }
-            }
-
-            searchResults
-        }
+        val list = refreshListItems(identity, state.list)
+        val searchResults = refreshListItems(identity, state.searchResults)
 
         state = state.copy(
                 list = list,
                 searchResults = searchResults
         )
+    }
+
+    @WorkerThread
+    private fun refreshListItems(identity: FavoritePlayer?, list: List<ListItem>?): List<ListItem>? {
+        return if (list.isNullOrEmpty()) {
+            list
+        } else {
+            val newList = mutableListOf<ListItem>()
+
+            list.mapTo(newList) { listItem ->
+                if (listItem is ListItem.Player) {
+                    listItem.copy(isIdentity = listItem.player == identity)
+                } else {
+                    listItem
+                }
+            }
+
+            newList
+        }
     }
 
     override fun search(query: String?) {
