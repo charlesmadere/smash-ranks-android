@@ -91,7 +91,7 @@ class FavoritePlayersViewModel(
         val results = list
                 .filterIsInstance(ListItem.Player::class.java)
                 .filter { listItem ->
-                    listItem.player.name.contains(trimmedQuery, true)
+                    listItem.player.name.contains(trimmedQuery, ignoreCase = true)
                 }
 
         return if (results.isEmpty()) {
