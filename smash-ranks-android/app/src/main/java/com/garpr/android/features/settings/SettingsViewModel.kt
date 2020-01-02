@@ -243,8 +243,8 @@ class SettingsViewModel(
             val isEnabled: Boolean,
             val isVibrationEnabled: Boolean,
             val isWifiRequired: Boolean,
-            val pollFrequency: PollFrequency,
-            val ringtoneUri: JavaUri?
+            val ringtoneUri: JavaUri?,
+            val pollFrequency: PollFrequency
     )
 
     sealed class SmashRosterState {
