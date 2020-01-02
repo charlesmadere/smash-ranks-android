@@ -157,14 +157,18 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         toolbar.showSearchIcon = state.showSearchIcon
 
         if (state.hasError) {
-            tournamentInfoView.setContent(null)
             tournamentInfoView.visibility = View.GONE
             tournamentTabsView.visibility = View.GONE
             viewPager.visibility = View.GONE
             error.visibility = View.VISIBLE
-        } else {
+        } else if (state.tournament != null) {
             error.visibility = View.GONE
-            tournamentInfoView.setContent(state.tournament)
+
+            tournamentInfoView.setContent(
+                    tournament = state.tournament,
+                    region = regionRepository.getRegion(this)
+            )
+
             tournamentInfoView.visibility = View.VISIBLE
             tournamentTabsView.visibility = View.VISIBLE
             viewPager.visibility = View.VISIBLE

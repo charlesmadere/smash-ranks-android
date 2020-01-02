@@ -7,7 +7,6 @@ import com.garpr.android.R
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.extensions.getLong
-import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.misc.AnimationUtils
 import kotlinx.android.synthetic.main.item_wins_losses.view.*
 import java.text.NumberFormat
@@ -15,7 +14,7 @@ import java.text.NumberFormat
 class WinsLossesView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs), BaseAdapterView<WinsLosses> {
+) : ConstraintLayout(context, attrs) {
 
     private var hasAnimated = false
 
@@ -41,7 +40,7 @@ class WinsLossesView @JvmOverloads constructor(
                 .start()
     }
 
-    override fun setContent(content: WinsLosses) {
+    fun setContent(content: WinsLosses) {
         playerName.text = content.player.name
         playerWins.text = NUMBER_FORMAT.format(content.playerWins)
 

@@ -7,18 +7,17 @@ import android.widget.LinearLayout
 import com.garpr.android.R
 import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.getAttrColor
-import com.garpr.android.features.common.adapters.BaseAdapterView
 import com.garpr.android.misc.Timber
 import kotlinx.android.synthetic.main.item_timber_entry.view.*
 
 class TimberEntryItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LinearLayout(context, attrs), BaseAdapterView<Timber.Entry> {
+) : LinearLayout(context, attrs) {
 
     private val colors = SparseIntArray()
 
-    override fun setContent(content: Timber.Entry) {
+    fun setContent(content: Timber.Entry) {
         tagAndMessage.text = resources.getString(R.string.tag_and_message, content.tag,
                 content.msg)
 

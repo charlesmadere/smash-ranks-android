@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,7 +19,6 @@ import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.features.common.views.StringItemView
 import com.garpr.android.features.headToHead.HeadToHeadViewModel.ListItem
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentDividerView
@@ -249,11 +249,11 @@ class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Ref
     }
 
     private class NoMatchesViewHolder(
-            text: String,
+            text: CharSequence,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         init {
-            (itemView as StringItemView).setContent(text)
+            (itemView as TextView).text = text
         }
     }
 
