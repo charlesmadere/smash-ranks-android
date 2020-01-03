@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.PreviousRank
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
@@ -115,49 +116,39 @@ class RankingsViewModel(
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshListItems()
+                .subscribe { optional ->
+                    refreshListItems(optional.item)
                 })
     }
 
     @WorkerThread
-    private fun refreshListItems() {
-        val list: List<ListItem>? = if (state.list.isNullOrEmpty()) {
-            state.list
-        } else {
-            val list = mutableListOf<ListItem>()
-
-            state.list?.mapTo(list) {
-                if (it is ListItem.Player) {
-                    it.copy(isIdentity = identityRepository.isPlayer(it.player))
-                } else {
-                    it
-                }
-            }
-
-            list
-        }
-
-        val searchResults: List<ListItem>? = if (state.searchResults.isNullOrEmpty()) {
-            state.searchResults
-        } else {
-            val searchResults = mutableListOf<ListItem>()
-
-            state.searchResults?.mapTo(searchResults) {
-                if (it is ListItem.Player) {
-                    it.copy(isIdentity = identityRepository.isPlayer(it.player))
-                } else {
-                    it
-                }
-            }
-
-            searchResults
-        }
+    private fun refreshListItems(identity: FavoritePlayer?) {
+        val list = refreshListItems(identity, state.list)
+        val searchResults = refreshListItems(identity, state.searchResults)
 
         state = state.copy(
                 list = list,
                 searchResults = searchResults
         )
+    }
+
+    @WorkerThread
+    private fun refreshListItems(identity: FavoritePlayer?, list: List<ListItem>?): List<ListItem>? {
+        return if (list.isNullOrEmpty()) {
+            list
+        } else {
+            val newList = mutableListOf<ListItem>()
+
+            list.mapTo(newList) { listItem ->
+                if (listItem is ListItem.Player) {
+                    listItem.copy(isIdentity = listItem.player == identity)
+                } else {
+                    listItem
+                }
+            }
+
+            newList
+        }
     }
 
     override fun search(query: String?) {
@@ -175,12 +166,27 @@ class RankingsViewModel(
 
         val trimmedQuery = query.trim()
 
-        return list.filterIsInstance(ListItem.Player::class.java)
-                .filter { it.player.name.contains(trimmedQuery, true) }
+        val results = list
+                .filterIsInstance(ListItem.Player::class.java)
+                .filter { listItem ->
+                    listItem.player.name.contains(trimmedQuery, true)
+                }
+
+        return if (results.isEmpty()) {
+            listOf(ListItem.NoResults(trimmedQuery))
+        } else {
+            results
+        }
     }
 
     sealed class ListItem {
         abstract val listId: Long
+
+        class NoResults(
+                val query: String
+        ) : ListItem() {
+            override val listId: Long = Long.MAX_VALUE - 1L
+        }
 
         data class Player(
                 val player: AbsPlayer,

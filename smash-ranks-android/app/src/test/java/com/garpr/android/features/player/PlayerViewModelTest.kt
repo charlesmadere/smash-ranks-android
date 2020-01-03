@@ -186,23 +186,23 @@ class PlayerViewModelTest : BaseTest() {
 
         viewModel.fetchPlayer()
         assertEquals(false, state?.isFavorited)
-        assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
+        assertFalse(ABS_PLAYER_CHARLEZARD in favoritePlayersRepository)
 
         viewModel.addOrRemoveFromFavorites()
         assertEquals(true, state?.isFavorited)
-        assertTrue(CHARLEZARD_ID in favoritePlayersRepository)
+        assertTrue(ABS_PLAYER_CHARLEZARD in favoritePlayersRepository)
 
         viewModel.addOrRemoveFromFavorites()
         assertEquals(false, state?.isFavorited)
-        assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
+        assertFalse(ABS_PLAYER_CHARLEZARD in favoritePlayersRepository)
 
         favoritePlayersRepository.addPlayer(ABS_PLAYER_CHARLEZARD, NORCAL)
         assertEquals(true, state?.isFavorited)
-        assertTrue(CHARLEZARD_ID in favoritePlayersRepository)
+        assertTrue(ABS_PLAYER_CHARLEZARD in favoritePlayersRepository)
 
         favoritePlayersRepository.removePlayer(ABS_PLAYER_CHARLEZARD)
         assertEquals(false, state?.isFavorited)
-        assertFalse(CHARLEZARD_ID in favoritePlayersRepository)
+        assertFalse(ABS_PLAYER_CHARLEZARD in favoritePlayersRepository)
     }
 
     @Test

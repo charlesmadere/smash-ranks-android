@@ -83,7 +83,7 @@ class SetIdentityViewModel(
                     state = state.copy(
                             selectedIdentity = null,
                             hasError = true,
-                            isEmpty = true,
+                            isEmpty = false,
                             isFetching = false,
                             isRefreshEnabled = true,
                             showSearchIcon = false,

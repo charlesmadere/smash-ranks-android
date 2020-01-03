@@ -11,6 +11,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.common.views.NoResultsItemView
 import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel.ListItem
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.ListLayout
@@ -101,16 +102,20 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
         private val list = mutableListOf<ListItem>()
 
         companion object {
-            private const val VIEW_TYPE_FAVORITE_PLAYER = 0
+            private const val VIEW_TYPE_NO_RESULTS = 0
+            private const val VIEW_TYPE_PLAYER = 1
         }
 
         init {
             setHasStableIds(true)
         }
 
-        private fun bindFavoritePlayerViewHolder(holder: FavoritePlayerViewHolder,
-                item: ListItem.FavoritePlayer) {
+        private fun bindPlayerViewHolder(holder: PlayerViewHolder, item: ListItem.Player) {
             holder.favoritePlayerItemView.setContent(item.player, item.isIdentity)
+        }
+
+        private fun bindNoResultsViewHolder(holder: NoResultsViewHolder, item: ListItem.NoResults) {
+            holder.noResultsItemView.setContent(item.query)
         }
 
         internal fun clear() {
@@ -128,14 +133,15 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
-                is ListItem.FavoritePlayer -> VIEW_TYPE_FAVORITE_PLAYER
+                is ListItem.NoResults -> VIEW_TYPE_NO_RESULTS
+                is ListItem.Player -> VIEW_TYPE_PLAYER
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is ListItem.FavoritePlayer -> bindFavoritePlayerViewHolder(
-                        holder as FavoritePlayerViewHolder, item)
+                is ListItem.NoResults -> bindNoResultsViewHolder(holder as NoResultsViewHolder, item)
+                is ListItem.Player -> bindPlayerViewHolder(holder as PlayerViewHolder, item)
             }
         }
 
@@ -143,7 +149,9 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
             val inflater = parent.layoutInflater
 
             return when (viewType) {
-                VIEW_TYPE_FAVORITE_PLAYER -> FavoritePlayerViewHolder(favoritePlayerItemViewListeners,
+                VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
+                        R.layout.item_no_results, parent, false))
+                VIEW_TYPE_PLAYER -> PlayerViewHolder(favoritePlayerItemViewListeners,
                         inflater.inflate(R.layout.item_favorite_player, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
@@ -161,7 +169,11 @@ class FavoritePlayersFragment : BaseFragment(), FavoritePlayerItemView.Listeners
 
     }
 
-    private class FavoritePlayerViewHolder(
+    private class NoResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val noResultsItemView: NoResultsItemView = itemView as NoResultsItemView
+    }
+
+    private class PlayerViewHolder(
             listeners: FavoritePlayerItemView.Listeners,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {

@@ -73,18 +73,28 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
     }
 
     private fun refreshState(state: AddOrRemovePlayerFromFavoritesViewModel.State) {
-        if (state.isAlreadyFavorited) {
-            dialogMessage.text = getString(R.string.remove_x_from_favorites, player.name)
-            dialogPositiveText.setText(R.string.yes_remove)
-            dialogPositiveText.setStartCompoundDrawableRelativeWithIntrinsicBounds(
-                    R.drawable.ic_delete_white_24dp)
-            dialogPositiveText.setOnClickListener(removePlayerClickListener)
+        if (state.isFetching) {
+            dialogMessage.visibility = View.INVISIBLE
+            dialogPositiveText.visibility = View.INVISIBLE
+            dialogProgressBar.visibility = View.VISIBLE
         } else {
-            dialogMessage.text = getString(R.string.add_x_to_favorites, player.name)
-            dialogPositiveText.setText(R.string.yes_add)
-            dialogPositiveText.setStartCompoundDrawableRelativeWithIntrinsicBounds(
-                    R.drawable.ic_add_circle_white_24dp)
-            dialogPositiveText.setOnClickListener(addPlayerClickListener)
+            if (state.isFavorited) {
+                dialogMessage.text = getString(R.string.remove_x_from_favorites, player.name)
+                dialogPositiveText.setText(R.string.yes_remove)
+                dialogPositiveText.setStartCompoundDrawableRelativeWithIntrinsicBounds(
+                        R.drawable.ic_delete_white_24dp)
+                dialogPositiveText.setOnClickListener(removePlayerClickListener)
+            } else {
+                dialogMessage.text = getString(R.string.add_x_to_favorites, player.name)
+                dialogPositiveText.setText(R.string.yes_add)
+                dialogPositiveText.setStartCompoundDrawableRelativeWithIntrinsicBounds(
+                        R.drawable.ic_add_circle_white_24dp)
+                dialogPositiveText.setOnClickListener(addPlayerClickListener)
+            }
+
+            dialogMessage.visibility = View.VISIBLE
+            dialogPositiveText.visibility = View.VISIBLE
+            dialogProgressBar.visibility = View.GONE
         }
     }
 

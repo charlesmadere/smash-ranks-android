@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BottomSheetDialogRoot">
 
     <TextView
         android:id="@+id/dialogMessage"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Add Behemoth87 to favorites?"
+        tools:visibility="visible"
         style="@style/BottomSheetDialogTitle" />
 
     <com.garpr.android.features.common.views.TintedTextView
         android:id="@+id/dialogPositiveText"
+        android:layout_width="0dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogMessage"
         tools:drawableStart="@drawable/ic_add_circle_white_24dp"
         tools:text="@string/yes_add"
+        tools:visibility="visible"
         style="@style/BottomSheetDialogButton.Accent" />
 
     <Space
+        android:id="@+id/dialogSpace"
         android:layout_height="@dimen/root_padding"
-        android:layout_width="match_parent" />
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogPositiveText"/>
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/dialogProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogSpace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dialogMessage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

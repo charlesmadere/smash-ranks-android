@@ -8,6 +8,7 @@ import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentsBundle
+import com.garpr.android.features.tournaments.TournamentsViewModel.ListItem
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
@@ -15,7 +16,6 @@ import com.garpr.android.repositories.TournamentsRepository
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -102,11 +102,18 @@ class TournamentsViewModelTest : BaseTest() {
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
+        assertEquals(3, state?.list?.size)
         assertNull(state?.searchResults)
-        assertEquals(3, state?.tournamentsBundle?.tournaments?.size)
-        assertEquals(GENESIS_RED, state?.tournamentsBundle?.tournaments?.get(0))
-        assertEquals(GET_MADE_AT_THE_FOUNDRY, state?.tournamentsBundle?.tournaments?.get(1))
-        assertEquals(THE_BEAT_DOWN_14, state?.tournamentsBundle?.tournaments?.get(2))
+        assertEquals(TOURNAMENTS_BUNDLE, state?.tournamentsBundle)
+
+        var listItem = state?.list?.get(0) as ListItem.Tournament
+        assertEquals(GENESIS_RED, listItem.tournament)
+
+        listItem = state?.list?.get(1) as ListItem.Tournament
+        assertEquals(GET_MADE_AT_THE_FOUNDRY, listItem.tournament)
+
+        listItem = state?.list?.get(2) as ListItem.Tournament
+        assertEquals(THE_BEAT_DOWN_14, listItem.tournament)
     }
 
     @Test
@@ -123,12 +130,13 @@ class TournamentsViewModelTest : BaseTest() {
         assertEquals(false, state?.hasError)
         assertEquals(true, state?.isEmpty)
         assertEquals(false, state?.isFetching)
+        assertNull(state?.list)
         assertNull(state?.searchResults)
-        assertTrue(state?.tournamentsBundle?.tournaments.isNullOrEmpty())
+        assertEquals(EMPTY_TOURNAMENTS_BUNDLE, state?.tournamentsBundle)
     }
 
     @Test
-    fun testSearch() {
+    fun testSearchWithGe() {
         var state: TournamentsViewModel.State? = null
 
         viewModel.stateLiveData.observeForever {
@@ -138,8 +146,12 @@ class TournamentsViewModelTest : BaseTest() {
         viewModel.fetchTournaments(NORCAL)
         viewModel.search("ge")
         assertEquals(2, state?.searchResults?.size)
-        assertEquals(GENESIS_RED, state?.searchResults?.get(0))
-        assertEquals(GET_MADE_AT_THE_FOUNDRY, state?.searchResults?.get(1))
+
+        var listItem = state?.searchResults?.get(0) as ListItem.Tournament
+        assertEquals(GENESIS_RED, listItem.tournament)
+
+        listItem = state?.searchResults?.get(1) as ListItem.Tournament
+        assertEquals(GET_MADE_AT_THE_FOUNDRY, listItem.tournament)
     }
 
     @Test
@@ -179,6 +191,22 @@ class TournamentsViewModelTest : BaseTest() {
         viewModel.fetchTournaments(NORCAL)
         viewModel.search(" ")
         assertNull(state?.searchResults)
+    }
+
+    @Test
+    fun testSearchWithXyz() {
+        var state: TournamentsViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.fetchTournaments(NORCAL)
+        viewModel.search("XyZ")
+        assertEquals(1, state?.searchResults?.size)
+
+        val listItem = state?.searchResults?.get(0) as ListItem.NoResults
+        assertEquals("XyZ", listItem.query)
     }
 
     private class TournamentsRepositoryOverride(

@@ -7,11 +7,7 @@ import io.reactivex.Observable
 
 interface FavoritePlayersRepository {
 
-    val isEmpty: Boolean
-
-    val size: Int
-
-    val players: List<FavoritePlayer>?
+    val sizeObservable: Observable<Int>
 
     val playersObservable: Observable<List<FavoritePlayer>>
 
@@ -21,10 +17,6 @@ interface FavoritePlayersRepository {
 
     operator fun contains(player: AbsPlayer): Boolean
 
-    operator fun contains(playerId: String): Boolean
-
     fun removePlayer(player: AbsPlayer)
-
-    fun removePlayer(playerId: String)
 
 }

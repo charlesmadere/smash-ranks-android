@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
-import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.common.views.NoResultsItemView
 import com.garpr.android.features.tournament.TournamentActivity
+import com.garpr.android.features.tournaments.TournamentsViewModel.ListItem
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.repositories.RegionRepository
@@ -96,9 +97,9 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
         } else if (state.isEmpty) {
             showEmpty()
         } else if (state.searchResults != null) {
-            showTournaments(state.searchResults)
+            showList(state.searchResults)
         } else {
-            showTournaments(state.tournamentsBundle?.tournaments)
+            showList(state.list)
         }
 
         refreshLayout.isRefreshing = state.isFetching
@@ -118,8 +119,8 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
         error.visibility = View.VISIBLE
     }
 
-    private fun showTournaments(tournaments: List<AbsTournament>?) {
-        adapter.set(tournaments)
+    private fun showList(list: List<ListItem>?) {
+        adapter.set(list)
         empty.visibility = View.GONE
         error.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
@@ -127,12 +128,25 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
 
     private class Adapter(
             private val tournamentItemViewListener: TournamentItemView.Listener
-    ) : RecyclerView.Adapter<TournamentViewHolder>() {
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val list = mutableListOf<AbsTournament>()
+        private val list = mutableListOf<ListItem>()
+
+        companion object {
+            private const val VIEW_TYPE_NO_RESULTS = 0
+            private const val VIEW_TYPE_TOURNAMENT = 1
+        }
 
         init {
             setHasStableIds(true)
+        }
+
+        private fun bindNoResults(holder: NoResultsViewHolder, item: ListItem.NoResults) {
+            holder.noResultsItemView.setContent(item.query)
+        }
+
+        private fun bindTournament(holder: TournamentViewHolder, item: ListItem.Tournament) {
+            holder.tournamentItemView.setContent(item.tournament)
         }
 
         internal fun clear() {
@@ -148,17 +162,34 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
             return list[position].hashCode().toLong()
         }
 
-        override fun onBindViewHolder(holder: TournamentViewHolder, position: Int) {
-            holder.tournamentItemView.setContent(list[position])
+        override fun getItemViewType(position: Int): Int {
+            return when (list[position]) {
+                is ListItem.NoResults -> VIEW_TYPE_NO_RESULTS
+                is ListItem.Tournament -> VIEW_TYPE_TOURNAMENT
+            }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TournamentViewHolder {
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            when (val item = list[position]) {
+                is ListItem.NoResults -> bindNoResults(holder as NoResultsViewHolder, item)
+                is ListItem.Tournament -> bindTournament(holder as TournamentViewHolder, item)
+                else -> throw RuntimeException("unknown item: $item, position: $position")
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val inflater = parent.layoutInflater
-            return TournamentViewHolder(tournamentItemViewListener, inflater.inflate(
-                    R.layout.item_tournament, parent, false))
+
+            return when (viewType) {
+                VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
+                        R.layout.item_no_results, parent, false))
+                VIEW_TYPE_TOURNAMENT -> TournamentViewHolder(tournamentItemViewListener,
+                        inflater.inflate(R.layout.item_tournament, parent, false))
+                else -> throw IllegalArgumentException("unknown viewType: $viewType")
+            }
         }
 
-        internal fun set(list: List<AbsTournament>?) {
+        internal fun set(list: List<ListItem>?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {
@@ -168,6 +199,10 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
             notifyDataSetChanged()
         }
 
+    }
+
+    private class NoResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val noResultsItemView: NoResultsItemView = itemView as NoResultsItemView
     }
 
     private class TournamentViewHolder(

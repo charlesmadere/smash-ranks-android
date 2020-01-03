@@ -21,7 +21,7 @@ import org.koin.dsl.module
 
 val viewModelsModule = module {
 
-    viewModel { AddOrRemovePlayerFromFavoritesViewModel(get(), get(), get()) }
+    viewModel { AddOrRemovePlayerFromFavoritesViewModel(get(), get()) }
     viewModel { DeepLinkViewModel(get(), get(), get(), get()) }
     viewModel { FavoritePlayersViewModel(get(), get(), get(), get()) }
     viewModel { HeadToHeadViewModel(get(), get(), get(), get()) }

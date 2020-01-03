@@ -383,7 +383,8 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
-        assertEquals(true, state?.searchResults?.isEmpty())
+        assertEquals(1, state?.searchResults?.size)
+        assertEquals("www", (state?.searchResults?.get(0) as ListItem.NoResults).query)
         assertEquals(NORCAL_RANKINGS_BUNDLE, state?.rankingsBundle)
     }
 

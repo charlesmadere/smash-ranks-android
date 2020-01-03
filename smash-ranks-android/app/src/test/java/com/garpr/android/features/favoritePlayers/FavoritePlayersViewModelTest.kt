@@ -88,7 +88,7 @@ class FavoritePlayersViewModelTest : BaseTest() {
         favoritePlayersRepository.addPlayer(MIKKUZ, NORCAL)
         assertEquals(1, state?.list?.size)
 
-        val player = state?.list?.get(0) as ListItem.FavoritePlayer
+        val player = state?.list?.get(0) as ListItem.Player
         assertFalse(player.isIdentity)
         assertEquals(MIKKUZ, player.player)
     }
@@ -104,28 +104,28 @@ class FavoritePlayersViewModelTest : BaseTest() {
         favoritePlayersRepository.addPlayer(IMYT, NORCAL)
         assertEquals(1, state?.list?.size)
 
-        var player = state?.list?.get(0) as ListItem.FavoritePlayer
+        var player = state?.list?.get(0) as ListItem.Player
         assertFalse(player.isIdentity)
         assertEquals(IMYT, player.player)
 
         favoritePlayersRepository.addPlayer(SNAP, NORCAL)
         assertEquals(2, state?.list?.size)
 
-        player = state?.list?.get(0) as ListItem.FavoritePlayer
+        player = state?.list?.get(0) as ListItem.Player
         assertEquals(IMYT, player.player)
 
-        player = state?.list?.get(1) as ListItem.FavoritePlayer
+        player = state?.list?.get(1) as ListItem.Player
         assertEquals(SNAP, player.player)
 
         favoritePlayersRepository.removePlayer(IMYT)
         assertEquals(1, state?.list?.size)
 
-        player = state?.list?.get(0) as ListItem.FavoritePlayer
+        player = state?.list?.get(0) as ListItem.Player
         assertEquals(SNAP, player.player)
     }
 
     @Test
-    fun testInit() {
+    fun testInitialState() {
         var state: FavoritePlayersViewModel.State? = null
         val isFetchingStates = mutableListOf<Boolean>()
 
@@ -137,19 +137,7 @@ class FavoritePlayersViewModelTest : BaseTest() {
         assertEquals(true, state?.isEmpty)
         assertEquals(false, state?.isFetching)
         assertTrue(state?.list.isNullOrEmpty())
-        assertTrue(state?.searchResults.isNullOrEmpty())
-        assertEquals(1, isFetchingStates.size)
-        assertFalse(isFetchingStates[0])
-
-        favoritePlayersRepository.addPlayer(SNAP, NORCAL)
-        assertEquals(false, state?.isEmpty)
-        assertEquals(false, state?.isFetching)
-        assertEquals(1, state?.list?.size)
-        assertTrue(state?.searchResults.isNullOrEmpty())
-        assertEquals(3, isFetchingStates.size)
-        assertFalse(isFetchingStates[0])
-        assertTrue(isFetchingStates[1])
-        assertFalse(isFetchingStates[2])
+        assertNull(state?.searchResults)
     }
 
     @Test
@@ -169,14 +157,20 @@ class FavoritePlayersViewModelTest : BaseTest() {
         viewModel.search("i")
         assertEquals(3, state?.searchResults?.size)
 
-        var player = state?.searchResults?.get(0) as ListItem.FavoritePlayer
+        var player = state?.searchResults?.get(0) as ListItem.Player
         assertEquals(IMYT, player.player)
 
-        player = state?.searchResults?.get(1) as ListItem.FavoritePlayer
+        player = state?.searchResults?.get(1) as ListItem.Player
         assertEquals(MIKKUZ, player.player)
 
-        player = state?.searchResults?.get(2) as ListItem.FavoritePlayer
+        player = state?.searchResults?.get(2) as ListItem.Player
         assertEquals(TWO_SAINT, player.player)
+
+        viewModel.search("Wadu")
+        assertEquals(1, state?.searchResults?.size)
+
+        val noResults = state?.searchResults?.get(0) as ListItem.NoResults
+        assertEquals("Wadu", noResults.query)
     }
 
     @Test

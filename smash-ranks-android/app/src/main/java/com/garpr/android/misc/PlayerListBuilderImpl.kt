@@ -94,6 +94,7 @@ class PlayerListBuilderImpl(
             list.map { listItem ->
                 when (listItem) {
                     is PlayerListItem.Divider -> listItem
+                    is PlayerListItem.NoResults -> listItem
                     is PlayerListItem.Player -> {
                         PlayerListItem.Player(
                                 player = listItem.player,
@@ -137,6 +138,10 @@ class PlayerListBuilderImpl(
                     }
                 }
             }
+        }
+
+        if (results.isEmpty()) {
+            results.add(PlayerListItem.NoResults(trimmedQuery))
         }
 
         return results

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,6 @@ import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.features.common.views.StringItemView
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.player.PlayerViewModel.ListItem
 import com.garpr.android.features.tournament.TournamentActivity
@@ -335,11 +335,11 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     }
 
     private class NoMatchesViewHolder(
-            text: String,
+            text: CharSequence,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         init {
-            (itemView as StringItemView).setContent(text)
+            (itemView as TextView).text = text
         }
     }
 

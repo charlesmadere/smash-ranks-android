@@ -33,6 +33,12 @@ interface PlayerListBuilder {
             }
         }
 
+        class NoResults(
+                val query: String
+        ) : PlayerListItem() {
+            override val listId: Long = Long.MAX_VALUE - 3L
+        }
+
         class Player(
                 val player: AbsPlayer,
                 val isIdentity: Boolean

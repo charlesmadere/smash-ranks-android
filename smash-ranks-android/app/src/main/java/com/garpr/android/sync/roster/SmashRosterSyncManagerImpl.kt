@@ -14,8 +14,8 @@ import com.garpr.android.extensions.message
 import com.garpr.android.extensions.requireValue
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
-import com.garpr.android.networking.ServerApi
 import com.garpr.android.preferences.SmashRosterPreferenceStore
+import com.garpr.android.repositories.SmashRosterRepository
 import com.garpr.android.wrappers.WorkManagerWrapper
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit
 
 class SmashRosterSyncManagerImpl(
         private val schedulers: Schedulers,
-        private val serverApi: ServerApi,
         private val smashRosterPreferenceStore: SmashRosterPreferenceStore,
+        private val smashRosterRepository: SmashRosterRepository,
         private val smashRosterStorage: SmashRosterStorage,
         private val timber: Timber,
         private val workManagerWrapper: WorkManagerWrapper
@@ -139,7 +139,7 @@ class SmashRosterSyncManagerImpl(
         var throwable: Throwable? = null
 
         try {
-            garPrRoster = serverApi.getSmashRoster(Endpoint.GAR_PR)
+            garPrRoster = smashRosterRepository.getSmashRoster(Endpoint.GAR_PR)
                     .blockingGet()
         } catch (e: Exception) {
             throwable = e
@@ -147,7 +147,7 @@ class SmashRosterSyncManagerImpl(
         }
 
         try {
-            notGarPrRoster = serverApi.getSmashRoster(Endpoint.NOT_GAR_PR)
+            notGarPrRoster = smashRosterRepository.getSmashRoster(Endpoint.NOT_GAR_PR)
                     .blockingGet()
         } catch (e: Exception) {
             throwable = e

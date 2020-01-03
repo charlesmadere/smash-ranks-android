@@ -1,11 +1,13 @@
 package com.garpr.android.repositories
 
+import android.annotation.SuppressLint
 import androidx.annotation.WorkerThread
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.KeyValueStore
@@ -17,24 +19,19 @@ import java.util.Collections
 class FavoritePlayersRepositoryImpl(
         private val keyValueStore: KeyValueStore,
         private val moshi: Moshi,
+        private val schedulers: Schedulers,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : FavoritePlayersRepository, Refreshable {
-
-    override val isEmpty: Boolean
-        get() = size == 0
-
-    override val size: Int
-        get() = playersSubject.value?.size ?: 0
 
     private val favoritePlayerJsonAdapter by lazy {
         moshi.adapter(FavoritePlayer::class.java)
     }
 
-    override val players: List<FavoritePlayer>?
-        get() = playersSubject.value ?: emptyList()
+    private val sizeSubject = BehaviorSubject.create<Int>()
+    override val sizeObservable: Observable<Int> = sizeSubject.hide()
 
-    private val playersSubject = BehaviorSubject.createDefault<List<FavoritePlayer>>(emptyList())
+    private val playersSubject = BehaviorSubject.create<List<FavoritePlayer>>()
     override val playersObservable: Observable<List<FavoritePlayer>> = playersSubject.hide()
 
     companion object {
@@ -42,17 +39,18 @@ class FavoritePlayersRepositoryImpl(
     }
 
     init {
+        initListeners()
         refresh()
     }
 
     override fun addPlayer(player: AbsPlayer, region: Region) {
         threadUtils.background.submit {
             if (player in this) {
-                timber.d(TAG, "Not adding favorite, it already exists in the store")
+                timber.w(TAG, "Not adding favorite, it already exists in the store")
                 return@submit
             }
 
-            timber.d(TAG, "Adding favorite (there are currently $size)")
+            timber.d(TAG, "adding favorite...")
 
             val favoritePlayer = FavoritePlayer(player.id, player.name, region)
             val playerJson = favoritePlayerJsonAdapter.toJson(favoritePlayer)
@@ -64,18 +62,27 @@ class FavoritePlayersRepositoryImpl(
 
     override fun clear() {
         threadUtils.background.submit {
-            timber.d(TAG, "Clearing favorites (there are currently $size)")
+            timber.d(TAG, "clearing favorites...")
             keyValueStore.clear()
             loadPlayers()
         }
     }
 
     override fun contains(player: AbsPlayer): Boolean {
-        return player.id in this
+        return player.id in keyValueStore
     }
 
-    override fun contains(playerId: String): Boolean {
-        return playerId in keyValueStore
+    @SuppressLint("CheckResult")
+    private fun initListeners() {
+        playersObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .map { players ->
+                    players.size
+                }
+                .subscribe { size ->
+                    sizeSubject.onNext(size)
+                }
     }
 
     @WorkerThread
@@ -103,13 +110,9 @@ class FavoritePlayersRepositoryImpl(
     }
 
     override fun removePlayer(player: AbsPlayer) {
-        removePlayer(player.id)
-    }
-
-    override fun removePlayer(playerId: String) {
         threadUtils.background.submit {
-            timber.d(TAG, "Removing favorite (there are currently $size)")
-            keyValueStore.remove(playerId)
+            timber.d(TAG, "removing favorite...")
+            keyValueStore.remove(player.id)
             loadPlayers()
         }
     }

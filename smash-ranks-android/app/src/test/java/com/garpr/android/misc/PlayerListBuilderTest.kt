@@ -469,6 +469,16 @@ class PlayerListBuilderTest : BaseTest() {
     }
 
     @Test
+    fun testSearchWithZzz() {
+        val list = playerListBuilder.create(PLAYERS_BUNDLE)
+        val results = playerListBuilder.search(" Zzz ", list)
+        assertEquals(1, results?.size)
+
+        val noResults = results?.get(0) as PlayerListItem.NoResults
+        assertEquals("Zzz", noResults.query)
+    }
+
+    @Test
     fun testSearchWithNullQueryAndNullList() {
         assertNull(playerListBuilder.search(null, null))
     }

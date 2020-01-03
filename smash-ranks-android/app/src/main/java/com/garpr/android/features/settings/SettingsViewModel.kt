@@ -46,8 +46,8 @@ class SettingsViewModel(
             isEnabled = rankingsPollingManager.isEnabled,
             isVibrationEnabled = rankingsPollingManager.isVibrationEnabled,
             isWifiRequired = rankingsPollingManager.isWifiRequired,
-            pollFrequency = rankingsPollingManager.pollFrequency,
-            ringtone = rankingsPollingManager.ringtone
+            ringtoneUri = rankingsPollingManager.ringtone,
+            pollFrequency = rankingsPollingManager.pollFrequency
     )
         set(value) {
             field = value
@@ -81,18 +81,18 @@ class SettingsViewModel(
     }
 
     private fun initListeners() {
-        disposables.add(favoritePlayersRepository.playersObservable
+        disposables.add(favoritePlayersRepository.sizeObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshFavoritePlayers()
+                .subscribe { size ->
+                    refreshFavoritePlayers(size)
                 })
 
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshIdentity()
+                .subscribe { identity ->
+                    refreshIdentity(identity.item)
                 })
 
         disposables.add(nightModeRepository.observable
@@ -105,8 +105,8 @@ class SettingsViewModel(
         disposables.add(regionRepository.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshRegion()
+                .subscribe { region ->
+                    refreshRegion(region)
                 })
 
         disposables.add(smashRosterSyncManager.isSyncingObservable
@@ -119,24 +119,20 @@ class SettingsViewModel(
 
     override fun refresh() {
         threadUtils.background.submit {
-            refreshFavoritePlayers()
-            refreshIdentity()
+            refreshNightMode()
             refreshRankingsPollingState()
+            refreshRegion()
             refreshSmashRosterState()
         }
     }
 
-    @WorkerThread
-    private fun refreshFavoritePlayers() {
-        state = state.copy(favoritePlayersState = FavoritePlayersState.Fetching)
-        val size = favoritePlayersRepository.size
+    @AnyThread
+    private fun refreshFavoritePlayers(size: Int) {
         state = state.copy(favoritePlayersState = FavoritePlayersState.Fetched(size))
     }
 
-    @WorkerThread
-    private fun refreshIdentity() {
-        state = state.copy(identityState = IdentityState.Fetching)
-        val identity = identityRepository.identity
+    @AnyThread
+    private fun refreshIdentity(identity: FavoritePlayer?) {
         state = state.copy(identityState = IdentityState.Fetched(identity))
     }
 
@@ -153,13 +149,13 @@ class SettingsViewModel(
                 isVibrationEnabled = rankingsPollingManager.isVibrationEnabled,
                 isWifiRequired = rankingsPollingManager.isWifiRequired,
                 pollFrequency = rankingsPollingManager.pollFrequency,
-                ringtone = rankingsPollingManager.ringtone
+                ringtoneUri = rankingsPollingManager.ringtone
         )
     }
 
     @AnyThread
-    private fun refreshRegion() {
-        state = state.copy(region = regionRepository.getRegion())
+    private fun refreshRegion(region: Region = regionRepository.getRegion()) {
+        state = state.copy(region = region)
     }
 
     @WorkerThread
@@ -167,7 +163,7 @@ class SettingsViewModel(
         state = state.copy(smashRosterState = SmashRosterState.Fetching)
 
         state = if (isSyncing) {
-            state.copy(smashRosterState = SmashRosterState.IsSyncing)
+            state.copy(smashRosterState = SmashRosterState.Syncing)
         } else {
             val result = smashRosterSyncManager.syncResult
             state.copy(smashRosterState = SmashRosterState.Fetched(result))
@@ -247,8 +243,8 @@ class SettingsViewModel(
             val isEnabled: Boolean,
             val isVibrationEnabled: Boolean,
             val isWifiRequired: Boolean,
-            val pollFrequency: PollFrequency,
-            val ringtone: JavaUri?
+            val ringtoneUri: JavaUri?,
+            val pollFrequency: PollFrequency
     )
 
     sealed class SmashRosterState {
@@ -257,7 +253,7 @@ class SettingsViewModel(
         ) : SmashRosterState()
 
         object Fetching : SmashRosterState()
-        object IsSyncing : SmashRosterState()
+        object Syncing : SmashRosterState()
     }
 
     data class State(

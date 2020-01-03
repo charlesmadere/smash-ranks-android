@@ -29,8 +29,6 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
     }
 
     fun setContent(syncResult: SmashRosterSyncResult?) {
-        isEnabled = true
-
         descriptionText = if (syncResult == null) {
             resources.getText(R.string.sync_has_yet_to_occur)
         } else if (syncResult.success) {
@@ -44,6 +42,8 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
             resources.getString(R.string.sync_error_occurred_x_code, syncResult.message,
                     syncResult.httpCode)
         }
+
+        isEnabled = true
     }
 
     fun setLoading() {
@@ -53,6 +53,7 @@ class SmashRosterSyncPreferenceView @JvmOverloads constructor(
 
     fun setSyncing() {
         descriptionText = resources.getText(R.string.syncing_now_)
+        isEnabled = true
     }
 
 }

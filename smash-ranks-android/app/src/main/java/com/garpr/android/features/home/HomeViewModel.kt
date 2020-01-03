@@ -1,6 +1,6 @@
 package com.garpr.android.features.home
 
-import androidx.annotation.WorkerThread
+import androidx.annotation.AnyThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
@@ -23,9 +23,7 @@ class HomeViewModel(
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
 
-    private var state = State(
-            showYourself = identityRepository.hasIdentity
-    )
+    private var state = State()
 
     val identity: FavoritePlayer?
         get() = state.identity
@@ -37,18 +35,18 @@ class HomeViewModel(
     }
 
     private fun initListeners() {
-        disposables.add(favoritePlayersRepository.playersObservable
+        disposables.add(favoritePlayersRepository.sizeObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshFavoritePlayers()
+                .subscribe { size ->
+                    refreshFavoritePlayers(size)
                 })
 
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshIdentity()
+                .subscribe { identity ->
+                    refreshIdentity(identity.item)
                 })
     }
 
@@ -71,22 +69,22 @@ class HomeViewModel(
         refreshState()
     }
 
-    @WorkerThread
-    private fun refreshFavoritePlayers() {
-        state = state.copy(hasFavoritePlayers = !favoritePlayersRepository.isEmpty)
+    @AnyThread
+    private fun refreshFavoritePlayers(size: Int) {
+        state = state.copy(hasFavoritePlayers = size > 0)
         refreshState()
     }
 
-    @WorkerThread
-    private fun refreshIdentity() {
+    @AnyThread
+    private fun refreshIdentity(identity: FavoritePlayer?) {
         state = state.copy(
-                showYourself = identityRepository.hasIdentity,
-                identity = identityRepository.identity
+                showYourself = identity != null,
+                identity = identity
         )
-
         refreshState()
     }
 
+    @AnyThread
     private fun refreshState() {
         state = state.copy(
                 showSearch = state.hasRankings || state.hasTournaments || state.hasFavoritePlayers

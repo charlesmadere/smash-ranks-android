@@ -33,6 +33,21 @@ class TournamentsViewModel(
         private const val TAG = "TournamentsViewModel"
     }
 
+    @WorkerThread
+    private fun createList(bundle: TournamentsBundle?): List<ListItem>? {
+        val tournaments = bundle?.tournaments
+
+        return if (tournaments.isNullOrEmpty()) {
+            null
+        } else {
+            tournaments.map { tournament ->
+                ListItem.Tournament(
+                        tournament = tournament
+                )
+            }
+        }
+    }
+
     fun fetchTournaments(region: Region) {
         state = state.copy(isFetching = true)
 
@@ -40,10 +55,13 @@ class TournamentsViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ bundle ->
+                    val list = createList(bundle)
+
                     state = state.copy(
-                            isEmpty = bundle.tournaments.isNullOrEmpty(),
-                            isFetching = false,
                             hasError = false,
+                            isEmpty = list.isNullOrEmpty(),
+                            isFetching = false,
+                            list = list,
                             searchResults = null,
                             tournamentsBundle = bundle
                     )
@@ -51,9 +69,10 @@ class TournamentsViewModel(
                     timber.e(TAG, "Error fetching tournaments", it)
 
                     state = state.copy(
+                            hasError = true,
                             isEmpty = false,
                             isFetching = false,
-                            hasError = true,
+                            list = null,
                             searchResults = null,
                             tournamentsBundle = null
                     )
@@ -62,21 +81,45 @@ class TournamentsViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = search(query, state.tournamentsBundle?.tournaments)
+            val results = search(query, state.list)
             state = state.copy(searchResults = results)
         }
     }
 
     @WorkerThread
-    private fun search(query: String?, tournaments: List<AbsTournament>?): List<AbsTournament>? {
-        if (query.isNullOrBlank() || tournaments.isNullOrEmpty()) {
+    private fun search(query: String?, list: List<ListItem>?): List<ListItem>? {
+        if (query.isNullOrBlank() || list.isNullOrEmpty()) {
             return null
         }
 
         val trimmedQuery = query.trim()
 
-        return tournaments.filter { tournament ->
-            tournament.name.contains(trimmedQuery, true)
+        val results = list
+                .filterIsInstance(ListItem.Tournament::class.java)
+                .filter { listItem ->
+                    listItem.tournament.name.contains(trimmedQuery, ignoreCase = true)
+                }
+
+        return if (results.isEmpty()) {
+            listOf(ListItem.NoResults(trimmedQuery))
+        } else {
+            results
+        }
+    }
+
+    sealed class ListItem {
+        abstract val listId: Long
+
+        class NoResults(
+                val query: String
+        ) : ListItem() {
+            override val listId: Long = Long.MAX_VALUE - 1L
+        }
+
+        class Tournament(
+                val tournament: AbsTournament
+        ) : ListItem() {
+            override val listId: Long = tournament.hashCode().toLong()
         }
     }
 
@@ -84,7 +127,8 @@ class TournamentsViewModel(
             val hasError: Boolean = false,
             val isEmpty: Boolean = false,
             val isFetching: Boolean = false,
-            val searchResults: List<AbsTournament>? = null,
+            val list: List<ListItem>? = null,
+            val searchResults: List<ListItem>? = null,
             val tournamentsBundle: TournamentsBundle? = null
     )
 

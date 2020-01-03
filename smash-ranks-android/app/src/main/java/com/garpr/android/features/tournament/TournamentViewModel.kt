@@ -4,7 +4,9 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
@@ -13,6 +15,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.TournamentsRepository
+import io.reactivex.functions.BiFunction
 
 class TournamentViewModel(
         private val identityRepository: IdentityRepository,
@@ -38,28 +41,45 @@ class TournamentViewModel(
         private const val TAG = "TournamentViewModel"
     }
 
-    private fun createMatchesList(tournament: FullTournament): List<MatchListItem>? {
-        return if (tournament.matches.isNullOrEmpty()) {
+    init {
+        initListeners()
+    }
+
+    @WorkerThread
+    private fun createMatchesList(tournament: FullTournament?, identity: FavoritePlayer?): List<MatchListItem>? {
+        val matches = tournament?.matches
+        val sameRegion = region == identity?.region
+
+        return if (matches.isNullOrEmpty()) {
             null
         } else {
-            tournament.matches.map { match ->
+            matches.map { match ->
                 MatchListItem.Match(
-                        winnerIsIdentity = identityRepository.isPlayer(match.winnerId),
-                        loserIsIdentity = identityRepository.isPlayer(match.loserId),
+                        winnerIsIdentity = sameRegion && identity?.id?.equals(
+                                other = match.winnerId,
+                                ignoreCase = true
+                        ) == true,
+                        loserIsIdentity = sameRegion && identity?.id?.equals(
+                                other = match.loserId,
+                                ignoreCase = true
+                        ) == true,
                         match = match
                 )
             }
         }
     }
 
-    private fun createPlayersList(tournament: FullTournament): List<PlayerListItem>? {
-        return if (tournament.players.isNullOrEmpty()) {
+    @WorkerThread
+    private fun createPlayersList(tournament: FullTournament?, identity: FavoritePlayer?): List<PlayerListItem>? {
+        val players = tournament?.players
+
+        return if (players.isNullOrEmpty()) {
             null
         } else {
-            tournament.players.map { player ->
+            players.map { player ->
                 PlayerListItem.Player(
                         player = player,
-                        isIdentity = identityRepository.isPlayer(player)
+                        isIdentity = identity == player
                 )
             }
         }
@@ -71,12 +91,20 @@ class TournamentViewModel(
 
         check(region != null && tournamentId != null) { "initialize() hasn't been called!" }
 
+        state = state.copy(isFetching = true)
+
         disposables.add(tournamentsRepository.getTournament(region, tournamentId)
+                .zipWith(identityRepository.identityObservable.take(1).singleOrError(),
+                        BiFunction<FullTournament, Optional<FavoritePlayer>,
+                                Pair<FullTournament, Optional<FavoritePlayer>>> { t1, t2 ->
+                                    Pair(t1, t2)
+                                })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ tournament ->
-                    val matches = createMatchesList(tournament)
-                    val players = createPlayersList(tournament)
+                .subscribe({ (tournament, identity) ->
+                    identityRepository.identityObservable.take(1)
+                    val matches = createMatchesList(tournament, identity.item)
+                    val players = createPlayersList(tournament, identity.item)
 
                     state = state.copy(
                             hasError = false,
@@ -118,6 +146,78 @@ class TournamentViewModel(
         state = state.copy(subtitleText = region.displayName)
     }
 
+    private fun initListeners() {
+        disposables.add(identityRepository.identityObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe { optional ->
+                    refreshListItems(optional.item)
+                })
+    }
+
+    @WorkerThread
+    private fun refreshListItems(identity: FavoritePlayer?) {
+        val matches = refreshMatchListItems(identity, state.matches)
+        val matchesSearchResults = refreshMatchListItems(identity, state.matchesSearchResults)
+        val players = refreshPlayerListItems(identity, state.players)
+        val playersSearchResults = refreshPlayerListItems(identity, state.playersSearchResults)
+
+        state = state.copy(
+                matches = matches,
+                matchesSearchResults = matchesSearchResults,
+                players = players,
+                playersSearchResults = playersSearchResults
+        )
+    }
+
+    @WorkerThread
+    private fun refreshMatchListItems(identity: FavoritePlayer?, list: List<MatchListItem>?): List<MatchListItem>? {
+        return if (list.isNullOrEmpty()) {
+            list
+        } else {
+            val newList = mutableListOf<MatchListItem>()
+            val sameRegion = region == identity?.region
+
+            list.mapTo(newList) { listItem ->
+                if (listItem is MatchListItem.Match) {
+                    listItem.copy(
+                            winnerIsIdentity = sameRegion && identity?.id?.equals(
+                                    other = listItem.match.winnerId,
+                                    ignoreCase = true
+                            ) == true,
+                            loserIsIdentity = sameRegion && identity?.id?.equals(
+                                    other = listItem.match.loserId,
+                                    ignoreCase = true
+                            ) == true
+                    )
+                } else {
+                    listItem
+                }
+            }
+
+            newList
+        }
+    }
+
+    @WorkerThread
+    private fun refreshPlayerListItems(identity: FavoritePlayer?, list: List<PlayerListItem>?): List<PlayerListItem>? {
+        return if (list.isNullOrEmpty()) {
+            list
+        } else {
+            val newList = mutableListOf<PlayerListItem>()
+
+            list.mapTo(newList) { listItem ->
+                if (listItem is PlayerListItem.Player) {
+                    listItem.copy(isIdentity = listItem.player == identity)
+                } else {
+                    listItem
+                }
+            }
+
+            newList
+        }
+    }
+
     override fun search(query: String?) {
         threadUtils.background.submit {
             val results = searchMatches(query, state.matches)
@@ -139,9 +239,9 @@ class TournamentViewModel(
         val trimmedQuery = query.trim()
 
         return list.filterIsInstance(MatchListItem.Match::class.java)
-                .filter {
-                    it.match.winnerName.contains(trimmedQuery, true) ||
-                            it.match.loserName.contains(trimmedQuery, true)
+                .filter { listItem ->
+                    listItem.match.winnerName.contains(trimmedQuery, ignoreCase = true) ||
+                            listItem.match.loserName.contains(trimmedQuery, ignoreCase = true)
                 }
     }
 
@@ -154,13 +254,15 @@ class TournamentViewModel(
         val trimmedQuery = query.trim()
 
         return list.filterIsInstance(PlayerListItem.Player::class.java)
-                .filter { it.player.name.contains(trimmedQuery, true) }
+                .filter { listItem ->
+                    listItem.player.name.contains(trimmedQuery, ignoreCase = true)
+                }
     }
 
     sealed class MatchListItem {
         abstract val listId: Long
 
-        class Match(
+        data class Match(
                 val winnerIsIdentity: Boolean,
                 val loserIsIdentity: Boolean,
                 val match: FullTournament.Match
@@ -172,7 +274,7 @@ class TournamentViewModel(
     sealed class PlayerListItem {
         abstract val listId: Long
 
-        class Player(
+        data class Player(
                 val player: AbsPlayer,
                 val isIdentity: Boolean
         ) : PlayerListItem() {

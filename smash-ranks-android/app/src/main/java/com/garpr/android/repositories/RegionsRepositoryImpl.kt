@@ -21,7 +21,7 @@ class RegionsRepositoryImpl(
                 serverApi.getRegions(Endpoint.GAR_PR),
                 serverApi.getRegions(Endpoint.NOT_GAR_PR),
                 BiFunction<RegionsBundle, RegionsBundle, RegionsBundle> { t1, t2 ->
-                    mergeResponses(t1, t2)
+                    mergeResponses(garPr = t1, notGarPr = t2)
                 })
                 .subscribeOn(schedulers.background)
     }

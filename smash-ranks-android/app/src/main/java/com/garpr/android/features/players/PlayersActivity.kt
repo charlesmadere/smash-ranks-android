@@ -14,6 +14,7 @@ import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.common.views.NoResultsItemView
 import com.garpr.android.features.common.views.StringDividerView
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
@@ -142,7 +143,8 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
 
         companion object {
             private const val VIEW_TYPE_DIVIDER = 0
-            private const val VIEW_TYPE_PLAYER = 1
+            private const val VIEW_TYPE_NO_RESULTS = 1
+            private const val VIEW_TYPE_PLAYER = 2
         }
 
         init {
@@ -157,6 +159,10 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
             }
 
             holder.dividerItemView.setContent(content)
+        }
+
+        private fun bindNoResultsViewHolder(holder: NoResultsViewHolder, item: PlayerListItem.NoResults) {
+            holder.noResultsItemView.setContent(item.query)
         }
 
         private fun bindPlayerViewHolder(holder: PlayerViewHolder, item: PlayerListItem.Player) {
@@ -179,6 +185,7 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
                 is PlayerListItem.Divider -> VIEW_TYPE_DIVIDER
+                is PlayerListItem.NoResults -> VIEW_TYPE_NO_RESULTS
                 is PlayerListItem.Player -> VIEW_TYPE_PLAYER
             }
         }
@@ -186,6 +193,7 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
                 is PlayerListItem.Divider -> bindDividerViewHolder(holder as DividerViewHolder, item)
+                is PlayerListItem.NoResults -> bindNoResultsViewHolder(holder as NoResultsViewHolder, item)
                 is PlayerListItem.Player -> bindPlayerViewHolder(holder as PlayerViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
@@ -196,9 +204,11 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
 
             return when (viewType) {
                 VIEW_TYPE_DIVIDER -> DividerViewHolder(inflater.inflate(R.layout.divider_string,
-                                parent, false))
-                VIEW_TYPE_PLAYER -> PlayerViewHolder(playerItemViewListeners,
-                        inflater.inflate(R.layout.item_player, parent, false))
+                        parent, false))
+                VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
+                        R.layout.item_no_results, parent, false))
+                VIEW_TYPE_PLAYER -> PlayerViewHolder(playerItemViewListeners, inflater.inflate(
+                        R.layout.item_player, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
         }
@@ -217,6 +227,10 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
 
     private class DividerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal val dividerItemView: StringDividerView = itemView as StringDividerView
+    }
+
+    private class NoResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val noResultsItemView: NoResultsItemView = itemView as NoResultsItemView
     }
 
     private class PlayerViewHolder(

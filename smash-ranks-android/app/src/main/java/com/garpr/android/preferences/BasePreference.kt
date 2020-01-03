@@ -23,7 +23,7 @@ abstract class BasePreference<T : Any>(
 
     final override fun set(newValue: T?) {
         if (newValue == null) {
-            delete()
+            performDelete()
         } else {
             performSet(newValue)
         }
