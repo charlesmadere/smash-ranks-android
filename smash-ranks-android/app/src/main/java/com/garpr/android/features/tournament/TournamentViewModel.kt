@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullTournament
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
@@ -14,6 +15,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.TournamentsRepository
+import io.reactivex.functions.BiFunction
 
 class TournamentViewModel(
         private val identityRepository: IdentityRepository,
@@ -44,16 +46,23 @@ class TournamentViewModel(
     }
 
     @WorkerThread
-    private fun createMatchesList(tournament: FullTournament?): List<MatchListItem>? {
+    private fun createMatchesList(tournament: FullTournament?, identity: FavoritePlayer?): List<MatchListItem>? {
         val matches = tournament?.matches
+        val sameRegion = region == identity?.region
 
         return if (matches.isNullOrEmpty()) {
             null
         } else {
             matches.map { match ->
                 MatchListItem.Match(
-                        winnerIsIdentity = identityRepository.isPlayer(match.winnerId),
-                        loserIsIdentity = identityRepository.isPlayer(match.loserId),
+                        winnerIsIdentity = sameRegion && identity?.id?.equals(
+                                other = match.winnerId,
+                                ignoreCase = true
+                        ) == true,
+                        loserIsIdentity = sameRegion && identity?.id?.equals(
+                                other = match.loserId,
+                                ignoreCase = true
+                        ) == true,
                         match = match
                 )
             }
@@ -61,7 +70,7 @@ class TournamentViewModel(
     }
 
     @WorkerThread
-    private fun createPlayersList(tournament: FullTournament?): List<PlayerListItem>? {
+    private fun createPlayersList(tournament: FullTournament?, identity: FavoritePlayer?): List<PlayerListItem>? {
         val players = tournament?.players
 
         return if (players.isNullOrEmpty()) {
@@ -70,7 +79,7 @@ class TournamentViewModel(
             players.map { player ->
                 PlayerListItem.Player(
                         player = player,
-                        isIdentity = identityRepository.isPlayer(player)
+                        isIdentity = identity == player
                 )
             }
         }
@@ -82,12 +91,20 @@ class TournamentViewModel(
 
         check(region != null && tournamentId != null) { "initialize() hasn't been called!" }
 
+        state = state.copy(isFetching = true)
+
         disposables.add(tournamentsRepository.getTournament(region, tournamentId)
+                .zipWith(identityRepository.identityObservable.take(1).singleOrError(),
+                        BiFunction<FullTournament, Optional<FavoritePlayer>,
+                                Pair<FullTournament, Optional<FavoritePlayer>>> { t1, t2 ->
+                                    Pair(t1, t2)
+                                })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ tournament ->
-                    val matches = createMatchesList(tournament)
-                    val players = createPlayersList(tournament)
+                .subscribe({ (tournament, identity) ->
+                    identityRepository.identityObservable.take(1)
+                    val matches = createMatchesList(tournament, identity.item)
+                    val players = createPlayersList(tournament, identity.item)
 
                     state = state.copy(
                             hasError = false,
@@ -159,15 +176,16 @@ class TournamentViewModel(
             list
         } else {
             val newList = mutableListOf<MatchListItem>()
+            val sameRegion = region == identity?.region
 
             list.mapTo(newList) { listItem ->
                 if (listItem is MatchListItem.Match) {
                     listItem.copy(
-                            winnerIsIdentity = identity?.id?.equals(
+                            winnerIsIdentity = sameRegion && identity?.id?.equals(
                                     other = listItem.match.winnerId,
                                     ignoreCase = true
                             ) == true,
-                            loserIsIdentity = identity?.id?.equals(
+                            loserIsIdentity = sameRegion && identity?.id?.equals(
                                     other = listItem.match.loserId,
                                     ignoreCase = true
                             ) == true
