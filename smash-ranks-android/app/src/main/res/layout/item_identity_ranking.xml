@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.features.rankings.IdentityRankingItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/root_padding"
+    android:layout_width="match_parent"
+    app:cardElevation="@dimen/elevation">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/list_item_height">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:contentDescription="@string/avatar"
+            android:id="@+id/avatar"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_width="@dimen/avatar_size"
+            android:visibility="gone"
+            app:actualImageScaleType="centerCrop"
+            app:failureImage="@drawable/avatar_placeholder"
+            app:failureImageScaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholderImage="@drawable/avatar_placeholder"
+            app:placeholderImageScaleType="centerCrop"
+            tools:visibility="visible" />
+
+        <TextView
+            android:ellipsize="end"
+            android:fontFamily="@font/nunito_sans"
+            android:gravity="center_vertical"
+            android:id="@+id/name"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/root_padding_quarter"
+            android:layout_marginEnd="@dimen/root_padding"
+            android:layout_marginStart="@dimen/root_padding"
+            android:layout_width="0dp"
+            android:maxLines="2"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_xxlarge"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/rank"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Charlezard" />
+
+        <View
+            android:background="@drawable/identity_divider"
+            android:id="@+id/nameDivider"
+            android:layout_height="1dp"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/rank"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/avatar"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <TextView
+            android:fontFamily="sans-serif-condensed"
+            android:ellipsize="end"
+            android:id="@+id/rankLabel"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/root_padding_quarter"
+            android:layout_marginTop="@dimen/root_padding_quarter"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:text="@string/rank"
+            app:layout_constraintBottom_toTopOf="@+id/rankDivider"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/nameDivider" />
+
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/rank"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/root_padding_half"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rankLabel"
+            app:layout_constraintStart_toEndOf="@+id/rankLabel"
+            tools:text="84" />
+
+        <ImageView
+            android:id="@+id/previousRank"
+            android:importantForAccessibility="no"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/root_padding_half"
+            android:layout_width="@dimen/previous_rank_view_size"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/rank"
+            app:layout_constraintStart_toEndOf="@+id/rank"
+            app:layout_constraintTop_toTopOf="@+id/rank"
+            tools:srcCompat="@drawable/ic_arrow_upward_white_18dp"
+            tools:visibility="visible" />
+
+        <View
+            android:background="@drawable/identity_divider"
+            android:id="@+id/rankDivider"
+            android:layout_height="1dp"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/rating"
+            app:layout_constraintEnd_toEndOf="@+id/nameDivider"
+            app:layout_constraintStart_toStartOf="@+id/nameDivider"
+            app:layout_constraintTop_toBottomOf="@+id/rank" />
+
+        <TextView
+            android:fontFamily="sans-serif-condensed"
+            android:id="@+id/ratingLabel"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/root_padding_quarter"
+            android:layout_marginTop="@dimen/root_padding_quarter"
+            android:layout_width="wrap_content"
+            android:text="@string/rating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/rankLabel"
+            app:layout_constraintTop_toBottomOf="@+id/rankDivider" />
+
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/rating"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/root_padding_half"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintBaseline_toBaselineOf="@+id/ratingLabel"
+            app:layout_constraintStart_toEndOf="@+id/ratingLabel"
+            tools:text="21.737" />
+
+        <include
+            layout="@layout/view_constraint_layout_foreground" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.garpr.android.features.rankings.IdentityRankingItemView>

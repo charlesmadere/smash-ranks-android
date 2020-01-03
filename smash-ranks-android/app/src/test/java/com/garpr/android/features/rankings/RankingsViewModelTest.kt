@@ -7,12 +7,15 @@ import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.features.player.SmashRosterAvatarUrlHelper
 import com.garpr.android.features.rankings.RankingsViewModel.ListItem
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RankingsRepository
+import com.garpr.android.sync.roster.SmashRosterStorage
+import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -32,6 +35,9 @@ class RankingsViewModelTest : BaseTest() {
 
     protected val identityRepository: IdentityRepository by inject()
     protected val schedulers: Schedulers by inject()
+    protected val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper by inject()
+    protected val smashRosterStorage: SmashRosterStorage by inject()
+    protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
     protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
 
@@ -153,7 +159,8 @@ class RankingsViewModelTest : BaseTest() {
         super.setUp()
 
         viewModel = RankingsViewModel(identityRepository, RankingsRepositoryOverride(),
-                schedulers, threadUtils, timber)
+                schedulers, smashRosterAvatarUrlHelper, smashRosterStorage, smashRosterSyncManager,
+                threadUtils, timber)
     }
 
     @Test
@@ -219,32 +226,40 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
-        assertEquals(4, state?.list?.size)
+        assertEquals(5, state?.list?.size)
         assertNull(state?.searchResults)
         assertEquals(NORCAL_RANKINGS_BUNDLE, state?.rankingsBundle)
 
-        var player = state?.list?.get(0) as ListItem.Player
+        val identity = state?.list?.get(0) as ListItem.Identity
+        assertEquals(CHARLEZARD, identity.player)
+        assertEquals(PreviousRank.INVISIBLE, identity.previousRank)
+        assertNull(identity.avatar)
+        assertEquals(CHARLEZARD.name, identity.name)
+        assertFalse(identity.rank.isBlank())
+        assertFalse(identity.rating.isBlank())
+
+        var player = state?.list?.get(1) as ListItem.Player
         assertEquals(SNAP, player.player)
         assertEquals(false, player.isIdentity)
         assertEquals(PreviousRank.INCREASE, player.previousRank)
         assertFalse(player.rank.isBlank())
         assertFalse(player.rating.isBlank())
 
-        player = state?.list?.get(1) as ListItem.Player
+        player = state?.list?.get(2) as ListItem.Player
         assertEquals(IMYT, player.player)
         assertEquals(false, player.isIdentity)
         assertEquals(PreviousRank.DECREASE, player.previousRank)
         assertFalse(player.rank.isBlank())
         assertFalse(player.rating.isBlank())
 
-        player = state?.list?.get(2) as ListItem.Player
+        player = state?.list?.get(3) as ListItem.Player
         assertEquals(AERIUS, player.player)
         assertEquals(false, player.isIdentity)
         assertEquals(PreviousRank.INCREASE, player.previousRank)
         assertFalse(player.rank.isBlank())
         assertFalse(player.rating.isBlank())
 
-        player = state?.list?.get(3) as ListItem.Player
+        player = state?.list?.get(4) as ListItem.Player
         assertEquals(CHARLEZARD, player.player)
         assertEquals(true, player.isIdentity)
         assertEquals(PreviousRank.INVISIBLE, player.previousRank)
