@@ -244,7 +244,6 @@ class SetIdentityViewModelTest : BaseTest() {
 
         assertNull(throwable)
         assertEquals(CHARLEZARD, optional?.item)
-        assertEquals(CHARLEZARD, identityRepository.identity)
     }
 
     @Test
@@ -268,7 +267,6 @@ class SetIdentityViewModelTest : BaseTest() {
 
         assertNull(throwable)
         assertEquals(WEEDLORD, optional?.item)
-        assertEquals(WEEDLORD, identityRepository.identity)
     }
 
     @Test

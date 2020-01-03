@@ -24,7 +24,7 @@ class IdentityRepositoryImpl(
     override val hasIdentity: Boolean
         get() = hasIdentitySubject.requireValue()
 
-    override val identity: FavoritePlayer?
+    private val identity: FavoritePlayer?
         get() = identitySubject.requireValue().item
 
     private val hasIdentitySubject = BehaviorSubject.create<Boolean>()

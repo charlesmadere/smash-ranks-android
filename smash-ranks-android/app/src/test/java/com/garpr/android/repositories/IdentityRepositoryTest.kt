@@ -10,7 +10,6 @@ import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -64,11 +63,6 @@ class IdentityRepositoryTest : BaseTest() {
 
         identityRepository.removeIdentity()
         assertEquals(false, value?.isPresent)
-    }
-
-    @Test
-    fun testGetIdentity() {
-        assertNull(identityRepository.identity)
     }
 
     @Test

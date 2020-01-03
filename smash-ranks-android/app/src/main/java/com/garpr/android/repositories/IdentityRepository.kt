@@ -10,8 +10,6 @@ interface IdentityRepository {
 
     val hasIdentity: Boolean
 
-    val identity: FavoritePlayer?
-
     val hasIdentityObservable: Observable<Boolean>
 
     val identityObservable: Observable<Optional<FavoritePlayer>>
