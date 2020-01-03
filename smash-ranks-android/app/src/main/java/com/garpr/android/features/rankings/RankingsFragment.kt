@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_rankings.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListLayout,
+class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
         RankingItemView.Listeners, Refreshable, Searchable, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter(this, this)
@@ -63,7 +63,7 @@ class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListL
         recyclerView.adapter = adapter
     }
 
-    override fun onClick(v: IdentityRankingItemView) {
+    override fun onClick(v: IdentityCardView) {
         val intent = PlayerActivity.getLaunchIntent(
                 context = requireContext(),
                 player = v.identity,
@@ -150,7 +150,7 @@ class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListL
     }
 
     private class Adapter(
-            private val identityRankingItemViewListener: IdentityRankingItemView.Listener,
+            private val identityCardViewListener: IdentityCardView.Listener,
             private val rankingItemViewListeners: RankingItemView.Listeners
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -167,7 +167,7 @@ class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListL
         }
 
         private fun bindIdentity(holder: IdentityViewHolder, item: ListItem.Identity) {
-            holder.identityRankingItemView.setContent(
+            holder.identityCardView.setContent(
                     player = item.player,
                     previousRank = item.previousRank,
                     avatar = item.avatar,
@@ -181,7 +181,7 @@ class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListL
             holder.noResultsItemView.setContent(item.query)
         }
 
-        private fun bindPlayer(holder: PlayerViewHolder, item: ListItem.Player) {
+        private fun bindRanking(holder: RankingViewHolder, item: ListItem.Player) {
             holder.rankingItemView.setContent(
                     player = item.player,
                     isIdentity = item.isIdentity,
@@ -216,7 +216,7 @@ class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListL
             when (val item = list[position]) {
                 is ListItem.Identity -> bindIdentity(holder as IdentityViewHolder, item)
                 is ListItem.NoResults -> bindNoResults(holder as NoResultsViewHolder, item)
-                is ListItem.Player -> bindPlayer(holder as PlayerViewHolder, item)
+                is ListItem.Player -> bindRanking(holder as RankingViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -225,11 +225,11 @@ class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListL
             val inflater = parent.layoutInflater
 
             return when (viewType) {
-                VIEW_TYPE_IDENTITY -> IdentityViewHolder(identityRankingItemViewListener,
-                        inflater.inflate(R.layout.item_identity_ranking, parent, false))
+                VIEW_TYPE_IDENTITY -> IdentityViewHolder(identityCardViewListener,
+                        inflater.inflate(R.layout.item_identity_card, parent, false))
                 VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
                         R.layout.item_no_results, parent, false))
-                VIEW_TYPE_PLAYER -> PlayerViewHolder(rankingItemViewListeners,
+                VIEW_TYPE_PLAYER -> RankingViewHolder(rankingItemViewListeners,
                         inflater.inflate(R.layout.item_ranking, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
@@ -248,13 +248,13 @@ class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListL
     }
 
     private class IdentityViewHolder(
-            listener: IdentityRankingItemView.Listener,
+            listener: IdentityCardView.Listener,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
-        internal val identityRankingItemView: IdentityRankingItemView = itemView as IdentityRankingItemView
+        internal val identityCardView: IdentityCardView = itemView as IdentityCardView
 
         init {
-            identityRankingItemView.listener = listener
+            identityCardView.listener = listener
         }
     }
 
@@ -262,7 +262,7 @@ class RankingsFragment : BaseFragment(), IdentityRankingItemView.Listener, ListL
         internal val noResultsItemView: NoResultsItemView = itemView as NoResultsItemView
     }
 
-    private class PlayerViewHolder(
+    private class RankingViewHolder(
             listeners: RankingItemView.Listeners,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {

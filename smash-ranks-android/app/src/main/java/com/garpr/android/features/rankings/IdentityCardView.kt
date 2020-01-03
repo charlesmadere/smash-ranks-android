@@ -10,9 +10,9 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.PreviousRank
 import com.garpr.android.extensions.setTintedImageResource
 import com.google.android.material.card.MaterialCardView
-import kotlinx.android.synthetic.main.item_identity_ranking.view.*
+import kotlinx.android.synthetic.main.item_identity_card.view.*
 
-class IdentityRankingItemView @JvmOverloads constructor(
+class IdentityCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : MaterialCardView(context, attrs), View.OnClickListener {
@@ -31,7 +31,7 @@ class IdentityRankingItemView @JvmOverloads constructor(
     var listener: Listener? = null
 
     interface Listener {
-        fun onClick(v: IdentityRankingItemView)
+        fun onClick(v: IdentityCardView)
     }
 
     init {
