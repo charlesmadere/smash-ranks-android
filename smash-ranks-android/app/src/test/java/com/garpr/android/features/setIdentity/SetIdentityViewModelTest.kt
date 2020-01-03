@@ -173,7 +173,7 @@ class SetIdentityViewModelTest : BaseTest() {
         viewModel.fetchPlayers(NORCAL)
         assertNull(state?.selectedIdentity)
         assertEquals(true, state?.hasError)
-        assertEquals(true, state?.isEmpty)
+        assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
         assertEquals(true, state?.isRefreshEnabled)
         assertEquals(false, state?.showSearchIcon)
@@ -232,10 +232,9 @@ class SetIdentityViewModelTest : BaseTest() {
         var throwable: Throwable? = null
         var optional: Optional<FavoritePlayer>? = null
 
-        identityRepository.identityObservable
-                .subscribe {
-                    optional = it
-                }
+        identityRepository.identityObservable.subscribe {
+            optional = it
+        }
 
         try {
             viewModel.saveSelectedIdentity(NORCAL)
@@ -257,10 +256,9 @@ class SetIdentityViewModelTest : BaseTest() {
         var throwable: Throwable? = null
         var optional: Optional<FavoritePlayer>? = null
 
-        identityRepository.identityObservable
-                .subscribe {
-                    optional = it
-                }
+        identityRepository.identityObservable.subscribe {
+            optional = it
+        }
 
         try {
             viewModel.saveSelectedIdentity(NORCAL)
