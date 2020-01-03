@@ -112,31 +112,6 @@ class IdentityRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun testIsPlayerWithEmptyString() {
-        assertFalse(identityRepository.isPlayer(""))
-
-        identityRepository.setIdentity(HMW, NORCAL)
-        assertFalse(identityRepository.isPlayer(""))
-
-        identityRepository.removeIdentity()
-        assertFalse(identityRepository.isPlayer(""))
-    }
-
-    @Test
-    fun testIsPlayerWithIdString() {
-        assertFalse(identityRepository.isPlayer(HMW.id))
-        assertFalse(identityRepository.isPlayer(NMW.id))
-
-        identityRepository.setIdentity(HMW, NORCAL)
-        assertTrue(identityRepository.isPlayer(HMW.id))
-        assertFalse(identityRepository.isPlayer(NMW.id))
-
-        identityRepository.removeIdentity()
-        assertFalse(identityRepository.isPlayer(HMW.id))
-        assertFalse(identityRepository.isPlayer(NMW.id))
-    }
-
-    @Test
     fun testIsPlayerWithNullPlayer() {
         assertFalse(identityRepository.isPlayer(null as AbsPlayer?))
 
@@ -145,17 +120,6 @@ class IdentityRepositoryTest : BaseTest() {
 
         identityRepository.removeIdentity()
         assertFalse(identityRepository.isPlayer(null as AbsPlayer?))
-    }
-
-    @Test
-    fun testIsPlayerWithNullString() {
-        assertFalse(identityRepository.isPlayer(null as String?))
-
-        identityRepository.setIdentity(HMW, NORCAL)
-        assertFalse(identityRepository.isPlayer(null as String?))
-
-        identityRepository.removeIdentity()
-        assertFalse(identityRepository.isPlayer(null as String?))
     }
 
     @Test
@@ -169,17 +133,6 @@ class IdentityRepositoryTest : BaseTest() {
         identityRepository.removeIdentity()
         assertFalse(identityRepository.isPlayer(HMW))
         assertFalse(identityRepository.isPlayer(NMW))
-    }
-
-    @Test
-    fun testIsPlayerWithWhitespaceString() {
-        assertFalse(identityRepository.isPlayer(" "))
-
-        identityRepository.setIdentity(HMW, NORCAL)
-        assertFalse(identityRepository.isPlayer("  "))
-
-        identityRepository.removeIdentity()
-        assertFalse(identityRepository.isPlayer("   "))
     }
 
 }

@@ -63,10 +63,6 @@ class IdentityRepositoryImpl(
         return player != null && identity == player
     }
 
-    override fun isPlayer(id: String?): Boolean {
-        return identity?.id?.equals(id, ignoreCase = true) == true
-    }
-
     override fun refresh() {
         threadUtils.background.submit {
             val identity = generalPreferenceStore.identity.get()

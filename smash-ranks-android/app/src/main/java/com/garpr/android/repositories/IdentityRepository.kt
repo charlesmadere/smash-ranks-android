@@ -18,8 +18,6 @@ interface IdentityRepository {
 
     fun isPlayer(player: AbsPlayer?): Boolean
 
-    fun isPlayer(id: String?): Boolean
-
     fun removeIdentity()
 
     fun setIdentity(player: AbsPlayer, region: Region)
