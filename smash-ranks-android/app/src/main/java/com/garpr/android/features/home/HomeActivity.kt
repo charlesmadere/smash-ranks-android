@@ -12,7 +12,6 @@ import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel
 import com.garpr.android.features.home.shareRegion.ShareRegionDialogFragment
-import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsViewModel
 import com.garpr.android.features.settings.SettingsActivity
@@ -156,12 +155,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         viewPager.adapter = adapter
     }
 
-    override fun onViewYourselfClick(v: HomeToolbar) {
-        val identity = homeViewModel.identity ?: return
-        startActivity(PlayerActivity.getLaunchIntent(this, identity,
-                regionRepository.getRegion(this)))
-    }
-
     private fun refreshState(state: HomeViewModel.State) {
         toolbar.titleText = state.title
 
@@ -172,7 +165,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
         toolbar.isActivityRequirementsVisible = state.showActivityRequirements
-        toolbar.isShowYourselfVisible = state.showYourself
         toolbar.showSearchIcon = if (toolbar.isSearchFieldExpanded) false else state.showSearch
     }
 

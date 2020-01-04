@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/root_padding"
     android:layout_width="match_parent"
-    app:cardElevation="@dimen/elevation">
+    app:cardCornerRadius="@dimen/splash_card_corner_radius"
+    app:cardElevation="@dimen/splash_card_elevation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="wrap_content"
@@ -32,9 +33,8 @@
             android:ellipsize="end"
             android:fontFamily="@font/nunito_sans"
             android:gravity="center_vertical"
-            android:id="@+id/name"
+            android:id="@+id/playerTag"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/root_padding_quarter"
             android:layout_marginEnd="@dimen/root_padding"
             android:layout_marginStart="@dimen/root_padding"
             android:layout_width="0dp"
@@ -49,89 +49,79 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="Charlezard" />
 
-        <View
-            android:background="@drawable/identity_divider"
-            android:id="@+id/nameDivider"
-            android:layout_height="1dp"
+        <ImageView
+            android:id="@+id/rankBadge"
+            android:importantForAccessibility="no"
+            android:layout_height="0dp"
             android:layout_width="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/rank"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/avatar"
-            app:layout_constraintTop_toBottomOf="@+id/name" />
-
-        <TextView
-            android:fontFamily="sans-serif-condensed"
-            android:ellipsize="end"
-            android:id="@+id/rankLabel"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/root_padding_quarter"
-            android:layout_marginTop="@dimen/root_padding_quarter"
-            android:layout_width="wrap_content"
-            android:maxLines="1"
-            android:text="@string/rank"
-            app:layout_constraintBottom_toTopOf="@+id/rankDivider"
-            app:layout_constraintStart_toStartOf="@+id/name"
-            app:layout_constraintTop_toBottomOf="@+id/nameDivider" />
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="@+id/rankLabel"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@+id/playerTag"
+            app:layout_constraintTop_toTopOf="@+id/rank"
+            tools:background="@drawable/identity_card_win_badge"
+            tools:srcCompat="@drawable/ic_arrow_upward_white_18dp" />
 
         <TextView
             android:ellipsize="end"
             android:id="@+id/rank"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/root_padding_half"
+            android:layout_marginTop="@dimen/root_padding_half"
             android:layout_width="wrap_content"
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
-            app:layout_constraintBaseline_toBaselineOf="@+id/rankLabel"
-            app:layout_constraintStart_toEndOf="@+id/rankLabel"
+            app:layout_constraintBottom_toTopOf="@+id/rankLabel"
+            app:layout_constraintStart_toEndOf="@+id/rankBadge"
+            app:layout_constraintTop_toBottomOf="@+id/playerTag"
             tools:text="84" />
 
-        <ImageView
-            android:id="@+id/previousRank"
-            android:importantForAccessibility="no"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/root_padding_half"
-            android:layout_width="@dimen/previous_rank_view_size"
-            android:scaleType="centerInside"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/rank"
-            app:layout_constraintStart_toEndOf="@+id/rank"
-            app:layout_constraintTop_toTopOf="@+id/rank"
-            tools:srcCompat="@drawable/ic_arrow_upward_white_18dp"
-            tools:visibility="visible" />
-
-        <View
-            android:background="@drawable/identity_divider"
-            android:id="@+id/rankDivider"
-            android:layout_height="1dp"
-            android:layout_width="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/rating"
-            app:layout_constraintEnd_toEndOf="@+id/nameDivider"
-            app:layout_constraintStart_toStartOf="@+id/nameDivider"
+        <TextView
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:id="@+id/rankLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:text="@string/rank"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/rank"
             app:layout_constraintTop_toBottomOf="@+id/rank" />
 
-        <TextView
-            android:fontFamily="sans-serif-condensed"
-            android:id="@+id/ratingLabel"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/root_padding_quarter"
-            android:layout_marginTop="@dimen/root_padding_quarter"
-            android:layout_width="wrap_content"
-            android:text="@string/rating"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/rankLabel"
-            app:layout_constraintTop_toBottomOf="@+id/rankDivider" />
+        <ImageView
+            android:background="@drawable/identity_card_neutral_badge"
+            android:id="@+id/ratingBadge"
+            android:importantForAccessibility="no"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/root_padding_half"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="@+id/rankBadge"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@+id/rating"
+            app:layout_constraintTop_toTopOf="@+id/rankBadge"
+            app:srcCompat="@drawable/ic_bar_chart_white_18dp" />
 
         <TextView
             android:ellipsize="end"
             android:id="@+id/rating"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/root_padding_half"
             android:layout_width="wrap_content"
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
-            app:layout_constraintBaseline_toBaselineOf="@+id/ratingLabel"
-            app:layout_constraintStart_toEndOf="@+id/ratingLabel"
+            app:layout_constraintEnd_toEndOf="@+id/playerTag"
+            app:layout_constraintTop_toTopOf="@+id/rank"
             tools:text="21.737" />
+
+        <TextView
+            android:fontFamily="sans-serif-condensed"
+            android:id="@+id/ratingLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:text="@string/rating"
+            app:layout_constraintStart_toStartOf="@+id/rating"
+            app:layout_constraintTop_toBottomOf="@+id/rating" />
 
         <include
             layout="@layout/view_constraint_layout_foreground" />

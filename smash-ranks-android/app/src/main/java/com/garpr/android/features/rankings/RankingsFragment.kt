@@ -171,9 +171,9 @@ class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
                     player = item.player,
                     previousRank = item.previousRank,
                     avatar = item.avatar,
-                    name = item.name,
                     rank = item.rank,
-                    rating = item.rating
+                    rating = item.rating,
+                    tag = item.tag
             )
         }
 

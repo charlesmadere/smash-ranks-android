@@ -3,12 +3,9 @@ package com.garpr.android.features.rankings
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.PreviousRank
-import com.garpr.android.extensions.setTintedImageResource
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.item_identity_card.view.*
 
@@ -21,12 +18,6 @@ class IdentityCardView @JvmOverloads constructor(
 
     val identity: FavoritePlayer
         get() = checkNotNull(_identity)
-
-    @ColorInt
-    private val loseColor: Int = ContextCompat.getColor(context, R.color.lose)
-
-    @ColorInt
-    private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
     var listener: Listener? = null
 
@@ -46,9 +37,9 @@ class IdentityCardView @JvmOverloads constructor(
             player: FavoritePlayer,
             previousRank: PreviousRank,
             avatar: String?,
-            name: String,
             rank: String,
-            rating: String
+            rating: String,
+            tag: String
     ) {
         _identity = player
 
@@ -59,25 +50,22 @@ class IdentityCardView @JvmOverloads constructor(
             this.avatar.visibility = VISIBLE
         }
 
-        this.name.text = name
+        playerTag.text = tag
 
         when (previousRank) {
             PreviousRank.DECREASE -> {
-                this.previousRank.setTintedImageResource(R.drawable.ic_arrow_downward_white_18dp, loseColor)
-                this.previousRank.visibility = VISIBLE
+                rankBadge.setBackgroundResource(R.drawable.identity_card_lose_badge)
+                rankBadge.setImageResource(R.drawable.ic_arrow_downward_white_18dp)
             }
 
-            PreviousRank.GONE -> {
-                this.previousRank.visibility = GONE
+            PreviousRank.GONE, PreviousRank.INVISIBLE -> {
+                rankBadge.setBackgroundResource(R.drawable.identity_card_neutral_badge)
+                rankBadge.setImageResource(R.drawable.ic_trophy_white_18dp)
             }
 
             PreviousRank.INCREASE -> {
-                this.previousRank.setTintedImageResource(R.drawable.ic_arrow_upward_white_18dp, winColor)
-                this.previousRank.visibility = VISIBLE
-            }
-
-            PreviousRank.INVISIBLE -> {
-                this.previousRank.visibility = INVISIBLE
+                rankBadge.setBackgroundResource(R.drawable.identity_card_win_badge)
+                rankBadge.setImageResource(R.drawable.ic_arrow_upward_white_18dp)
             }
         }
 

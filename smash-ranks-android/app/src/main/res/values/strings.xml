@@ -156,7 +156,6 @@
     <string name="view_all_players">View all players</string>
     <string name="view_logs">View logs</string>
     <string name="view_logs_description">Read logs normally only visible via Android\'s Logcat. Really only useful for debug purposes.</string>
-    <string name="view_yourself">View yourself</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>

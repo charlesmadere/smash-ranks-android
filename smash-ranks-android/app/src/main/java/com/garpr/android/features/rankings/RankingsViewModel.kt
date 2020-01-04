@@ -103,7 +103,7 @@ class RankingsViewModel(
                         avatarPath = smashCompetitor?.avatar?.largeButFallbackToMediumThenOriginalThenSmall
                 )
 
-                val name = if (smashCompetitor?.tag?.isNotBlank() == true) {
+                val tag = if (smashCompetitor?.tag?.isNotBlank() == true) {
                     smashCompetitor.tag
                 } else {
                     listItem.player.name
@@ -113,9 +113,9 @@ class RankingsViewModel(
                         player = identity,
                         previousRank = listItem.previousRank,
                         avatar = avatar,
-                        name = name,
                         rank = listItem.rank,
-                        rating = listItem.rating
+                        rating = listItem.rating,
+                        tag = tag
                 ))
             }
         }
@@ -239,9 +239,9 @@ class RankingsViewModel(
                 val player: FavoritePlayer,
                 val previousRank: PreviousRank,
                 val avatar: String?,
-                val name: String,
                 val rank: String,
-                val rating: String
+                val rating: String,
+                val tag: String
         ) : ListItem() {
             override val listId: Long = Long.MAX_VALUE - 1L
         }
