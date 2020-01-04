@@ -329,21 +329,24 @@ class RankingsViewModelTest : BaseTest() {
         viewModel.search("r")
 
         list = state?.list
-        assertEquals(4, list?.size)
+        assertEquals(5, list?.size)
 
-        var player = list?.get(0) as ListItem.Player
+        val identity = list?.get(0) as ListItem.Identity
+        assertEquals(CHARLEZARD, identity.player)
+
+        var player = list[1] as ListItem.Player
         assertEquals(SNAP, player.player)
         assertFalse(player.isIdentity)
 
-        player = list[1] as ListItem.Player
+        player = list[2] as ListItem.Player
         assertEquals(IMYT, player.player)
         assertFalse(player.isIdentity)
 
-        player = list[2] as ListItem.Player
+        player = list[3] as ListItem.Player
         assertEquals(AERIUS, player.player)
         assertFalse(player.isIdentity)
 
-        player = list[3] as ListItem.Player
+        player = list[4] as ListItem.Player
         assertEquals(CHARLEZARD, player.player)
         assertTrue(player.isIdentity)
 
