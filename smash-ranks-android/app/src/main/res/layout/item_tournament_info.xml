@@ -18,7 +18,7 @@
         android:lineSpacingExtra="-4dp"
         android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
-        app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
+        app:autoSizeMaxTextSize="@dimen/text_size_xxxxlarge"
         app:autoSizeMinTextSize="@dimen/text_size_xlarge"
         app:autoSizeTextType="uniform"
         tools:text="Melee @ the Made #32" />

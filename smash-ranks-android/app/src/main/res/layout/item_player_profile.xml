@@ -25,7 +25,7 @@
         app:failureImageScaleType="centerCrop"
         app:placeholderImage="@drawable/avatar_placeholder"
         app:placeholderImageScaleType="centerCrop"
-        app:roundAsCircle="true"
+        app:roundedCornerRadius="@dimen/avatar_corner_radius"
         tools:visibility="visible" />
 
     <TextView
@@ -41,7 +41,7 @@
         android:lineSpacingExtra="-4dp"
         android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
-        app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
+        app:autoSizeMaxTextSize="@dimen/text_size_xxxxlarge"
         app:autoSizeMinTextSize="@dimen/text_size_xlarge"
         app:autoSizeTextType="uniform"
         tools:text="Mang0" />
