@@ -234,7 +234,7 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(CHARLEZARD, identity.player)
         assertEquals(PreviousRank.INVISIBLE, identity.previousRank)
         assertNull(identity.avatar)
-        assertEquals(CHARLEZARD.name, identity.name)
+        assertEquals(CHARLEZARD.name, identity.tag)
         assertFalse(identity.rank.isBlank())
         assertFalse(identity.rating.isBlank())
 
