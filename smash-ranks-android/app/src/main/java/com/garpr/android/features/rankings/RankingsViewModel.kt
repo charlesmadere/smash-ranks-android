@@ -82,7 +82,7 @@ class RankingsViewModel(
 
             ListItem.Player(
                     player = player,
-                    isIdentity = identity?.equals(player) == true,
+                    isIdentity = AbsPlayer.safeEquals(identity, player),
                     previousRank = previousRank,
                     rank = NUMBER_FORMAT.format(player.rank),
                     rating = player.rating.truncate()

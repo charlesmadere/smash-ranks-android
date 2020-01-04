@@ -21,6 +21,44 @@ class FullPlayer(
         name
 ), Parcelable {
 
+    val uniqueAliases: Array<String>? by lazy {
+        if (aliases.isNullOrEmpty()) {
+            return@lazy null
+        }
+
+        val uniqueAliases = mutableListOf<String>()
+
+        aliases
+                .filter { alias ->
+                    alias.isNotBlank() && !alias.equals(name, ignoreCase = true)
+                }
+                .forEach { alias ->
+                    val alreadyExists = uniqueAliases.any { uniqueAlias ->
+                        alias.equals(uniqueAlias, ignoreCase = true)
+                    }
+
+                    if (!alreadyExists) {
+                        uniqueAliases.add(alias)
+                    }
+                }
+
+        if (uniqueAliases.isEmpty()) {
+            null
+        } else {
+            uniqueAliases.toTypedArray()
+        }
+    }
+
+    override val kind: Kind
+        get() = Kind.FULL
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
+        dest.writeStringList(aliases)
+        dest.writeStringList(regions)
+        dest.writeRatingsMap(ratings)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -32,47 +70,6 @@ class FullPlayer(
                     it.optRatingsMap()
             )
         }
-    }
-
-    override val kind: Kind
-        get() = Kind.FULL
-
-    val uniqueAliases: Array<String>?
-        get() {
-            if (aliases.isNullOrEmpty()) {
-                return null
-            }
-
-            val uniqueAliases = mutableListOf<String>()
-
-            aliases.filter { it.isNotBlank() && !it.equals(name, true) }
-                    .forEach { alias ->
-                        var add = true
-
-                        for (uniqueAlias in uniqueAliases) {
-                            if (alias.equals(uniqueAlias, true)) {
-                                add = false
-                                break
-                            }
-                        }
-
-                        if (add) {
-                            uniqueAliases.add(alias)
-                        }
-                    }
-
-            return if (uniqueAliases.isEmpty()) {
-                null
-            } else {
-                uniqueAliases.toTypedArray()
-            }
-        }
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        super.writeToParcel(dest, flags)
-        dest.writeStringList(aliases)
-        dest.writeStringList(regions)
-        dest.writeRatingsMap(ratings)
     }
 
 }

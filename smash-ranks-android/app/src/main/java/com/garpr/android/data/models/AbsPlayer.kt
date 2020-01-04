@@ -11,6 +11,23 @@ abstract class AbsPlayer(
         val name: String
 ) : Parcelable {
 
+    abstract val kind: Kind
+
+    final override fun equals(other: Any?): Boolean {
+        return safeEquals(this, other)
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+
+    override fun toString(): String = name
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeString(id)
+        dest.writeString(name)
+    }
+
     companion object {
         val ALPHABETICAL_ORDER = Comparator<AbsPlayer> { o1, o2 ->
             var result = 0
@@ -25,25 +42,27 @@ abstract class AbsPlayer(
 
             result
         }
+
+        fun safeEquals(p1: Any?, p2: Any?): Boolean {
+            return if (p1 is AbsPlayer && p2 is AbsPlayer) {
+                safeEquals(p1, p2)
+            } else {
+                false
+            }
+        }
+
+        fun safeEquals(p1: AbsPlayer, p2: AbsPlayer): Boolean {
+            return if (p1.id.equals(p2.id, ignoreCase = true)) {
+                if (p1 is FavoritePlayer && p2 is FavoritePlayer) {
+                    p1.region.endpoint == p2.region.endpoint
+                } else {
+                    true
+                }
+            } else {
+                false
+            }
+        }
     }
-
-    override fun equals(other: Any?): Boolean {
-        return other is AbsPlayer && id.equals(other.id, ignoreCase = true)
-    }
-
-    override fun hashCode(): Int = id.hashCode()
-
-    abstract val kind: Kind
-
-    override fun toString(): String = name
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(id)
-        dest.writeString(name)
-    }
-
 
     enum class Kind : Parcelable {
         @Json(name = "favorite")
