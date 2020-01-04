@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:placeholderImage="@drawable/avatar_placeholder"
             app:placeholderImageScaleType="centerCrop"
-            app:roundedCornerRadius="@dimen/splash_card_corner_radius"
+            app:roundedCornerRadius="@dimen/avatar_corner_radius"
             tools:visibility="visible" />
 
         <TextView
