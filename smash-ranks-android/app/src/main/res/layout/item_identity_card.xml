@@ -53,6 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/avatar"
             app:layout_constraintVertical_chainStyle="packed"
+            app:layout_goneMarginTop="@dimen/root_padding"
             tools:text="Charlezard" />
 
         <ImageView
