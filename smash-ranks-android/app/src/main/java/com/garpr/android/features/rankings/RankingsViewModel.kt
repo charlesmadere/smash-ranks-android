@@ -89,36 +89,7 @@ class RankingsViewModel(
             )
         }
 
-        if (identity != null) {
-            val listItem = list.filterIsInstance(ListItem.Player::class.java)
-                    .firstOrNull { listItem -> listItem.isIdentity }
-
-            if (listItem != null) {
-                val smashCompetitor = smashRosterStorage.getSmashCompetitor(
-                        region = identity.region,
-                        playerId = identity.id
-                )
-
-                val avatar = smashRosterAvatarUrlHelper.getAvatarUrl(
-                        avatarPath = smashCompetitor?.avatar?.largeButFallbackToMediumThenOriginalThenSmall
-                )
-
-                val tag = if (smashCompetitor?.tag?.isNotBlank() == true) {
-                    smashCompetitor.tag
-                } else {
-                    listItem.player.name
-                }
-
-                list.add(0, ListItem.Identity(
-                        player = identity,
-                        previousRank = listItem.previousRank,
-                        avatar = avatar,
-                        rank = listItem.rank,
-                        rating = listItem.rating,
-                        tag = tag
-                ))
-            }
-        }
+        insertOrRemoveIdentityAtFrontOfList(identity, list)
 
         return list
     }
@@ -175,6 +146,45 @@ class RankingsViewModel(
     }
 
     @WorkerThread
+    private fun insertOrRemoveIdentityAtFrontOfList(
+            identity: FavoritePlayer?,
+            list: MutableList<ListItem>
+    ) {
+        list.removeAll { listItem -> listItem is ListItem.Identity }
+
+        if (identity == null) {
+            return
+        }
+
+        val listItem = list.filterIsInstance(ListItem.Player::class.java)
+                .firstOrNull { listItem -> listItem.isIdentity } ?: return
+
+        val smashCompetitor = smashRosterStorage.getSmashCompetitor(
+                region = identity.region,
+                playerId = identity.id
+        )
+
+        val avatar = smashRosterAvatarUrlHelper.getAvatarUrl(
+                avatarPath = smashCompetitor?.avatar?.largeButFallbackToMediumThenOriginalThenSmall
+        )
+
+        val tag = if (smashCompetitor?.tag?.isNotBlank() == true) {
+            smashCompetitor.tag
+        } else {
+            listItem.player.name
+        }
+
+        list.add(0, ListItem.Identity(
+                player = identity,
+                previousRank = listItem.previousRank,
+                avatar = avatar,
+                rank = listItem.rank,
+                rating = listItem.rating,
+                tag = tag
+        ))
+    }
+
+    @WorkerThread
     private fun refreshListItems(identity: FavoritePlayer?) {
         val list = refreshListItems(identity, state.list)
         val searchResults = refreshListItems(identity, state.searchResults)
@@ -199,6 +209,8 @@ class RankingsViewModel(
                     listItem
                 }
             }
+
+            insertOrRemoveIdentityAtFrontOfList(identity, newList)
 
             newList
         }
