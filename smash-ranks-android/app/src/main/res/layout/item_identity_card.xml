@@ -14,23 +14,31 @@
         android:layout_width="match_parent"
         android:minHeight="@dimen/list_item_height">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:contentDescription="@string/avatar"
-            android:id="@+id/avatar"
-            android:layout_height="@dimen/avatar_size"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatarContainer"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/root_padding"
-            android:layout_width="@dimen/avatar_size"
+            android:layout_width="wrap_content"
             android:visibility="gone"
-            app:actualImageScaleType="centerCrop"
-            app:failureImage="@drawable/avatar_placeholder"
-            app:failureImageScaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:placeholderImage="@drawable/avatar_placeholder"
-            app:placeholderImageScaleType="centerCrop"
-            app:roundedCornerRadius="@dimen/avatar_corner_radius"
-            tools:visibility="visible" />
+            app:cardCornerRadius="@dimen/avatar_corner_radius"
+            app:cardElevation="@dimen/elevation_half"
+            tools:visibility="visible">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:contentDescription="@string/avatar"
+                android:id="@+id/avatar"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_width="@dimen/avatar_size"
+                app:actualImageScaleType="centerCrop"
+                app:failureImage="@drawable/avatar_placeholder"
+                app:failureImageScaleType="centerCrop"
+                app:placeholderImage="@drawable/avatar_placeholder"
+                app:placeholderImageScaleType="centerCrop" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:ellipsize="end"
@@ -51,7 +59,7 @@
             app:layout_constraintBottom_toTopOf="@+id/rank"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/avatar"
+            app:layout_constraintTop_toBottomOf="@+id/avatarContainer"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_goneMarginTop="@dimen/root_padding"
             tools:text="Charlezard" />

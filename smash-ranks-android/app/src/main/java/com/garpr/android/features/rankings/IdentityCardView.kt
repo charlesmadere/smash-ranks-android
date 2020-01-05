@@ -44,10 +44,10 @@ class IdentityCardView @JvmOverloads constructor(
         _identity = player
 
         if (avatar.isNullOrBlank()) {
-            this.avatar.visibility = GONE
+            avatarContainer.visibility = GONE
         } else {
             this.avatar.setImageURI(avatar)
-            this.avatar.visibility = VISIBLE
+            avatarContainer.visibility = VISIBLE
         }
 
         playerTag.text = tag
