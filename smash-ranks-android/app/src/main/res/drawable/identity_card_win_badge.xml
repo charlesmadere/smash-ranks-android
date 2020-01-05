@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <corners
-        android:radius="@dimen/splash_card_corner_radius" />
+        android:radius="@dimen/avatar_corner_radius" />
 
     <solid
         android:color="@color/win" />

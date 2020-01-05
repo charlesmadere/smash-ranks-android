@@ -56,6 +56,15 @@
             app:layout_goneMarginTop="@dimen/root_padding"
             tools:text="Charlezard" />
 
+        <Space
+            android:id="@+id/startSpace"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rankLabel"
+            app:layout_constraintEnd_toStartOf="@+id/rankBadge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rank" />
+
         <ImageView
             android:id="@+id/rankBadge"
             android:importantForAccessibility="no"
@@ -64,22 +73,32 @@
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="@+id/rankLabel"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintStart_toStartOf="@+id/playerTag"
+            app:layout_constraintEnd_toStartOf="@+id/rankSpace"
+            app:layout_constraintStart_toEndOf="@+id/startSpace"
             app:layout_constraintTop_toTopOf="@+id/rank"
             tools:background="@drawable/identity_card_win_badge"
             tools:srcCompat="@drawable/ic_arrow_upward_white_18dp" />
+
+        <Space
+            android:id="@+id/rankSpace"
+            android:layout_height="0dp"
+            android:layout_width="@dimen/root_padding_half"
+            app:layout_constraintBottom_toBottomOf="@+id/startSpace"
+            app:layout_constraintEnd_toStartOf="@+id/rank"
+            app:layout_constraintStart_toEndOf="@+id/rankBadge"
+            app:layout_constraintTop_toTopOf="@+id/startSpace" />
 
         <TextView
             android:ellipsize="end"
             android:id="@+id/rank"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/root_padding_half"
             android:layout_marginTop="@dimen/root_padding"
             android:layout_width="wrap_content"
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/rankLabel"
-            app:layout_constraintStart_toEndOf="@+id/rankBadge"
+            app:layout_constraintEnd_toStartOf="@+id/middleSpace"
+            app:layout_constraintStart_toEndOf="@+id/rankSpace"
             app:layout_constraintTop_toBottomOf="@+id/playerTag"
             tools:text="84" />
 
@@ -96,19 +115,39 @@
             app:layout_constraintStart_toStartOf="@+id/rank"
             app:layout_constraintTop_toBottomOf="@+id/rank" />
 
+        <Space
+            android:id="@+id/middleSpace"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/root_padding_double"
+            android:layout_marginStart="@dimen/root_padding_double"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rankSpace"
+            app:layout_constraintEnd_toStartOf="@+id/ratingBadge"
+            app:layout_constraintStart_toEndOf="@+id/rank"
+            app:layout_constraintTop_toTopOf="@+id/rankSpace" />
+
         <ImageView
             android:background="@drawable/identity_card_neutral_badge"
             android:id="@+id/ratingBadge"
             android:importantForAccessibility="no"
             android:layout_height="0dp"
-            android:layout_marginEnd="@dimen/root_padding_half"
             android:layout_width="0dp"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="@+id/rankBadge"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toStartOf="@+id/rating"
+            app:layout_constraintEnd_toStartOf="@+id/ratingSpace"
+            app:layout_constraintStart_toEndOf="@+id/middleSpace"
             app:layout_constraintTop_toTopOf="@+id/rankBadge"
             app:srcCompat="@drawable/ic_bar_chart_white_18dp" />
+
+        <Space
+            android:id="@+id/ratingSpace"
+            android:layout_height="0dp"
+            android:layout_width="@dimen/root_padding_half"
+            app:layout_constraintBottom_toBottomOf="@+id/middleSpace"
+            app:layout_constraintEnd_toStartOf="@+id/rating"
+            app:layout_constraintStart_toEndOf="@+id/ratingBadge"
+            app:layout_constraintTop_toTopOf="@+id/middleSpace" />
 
         <TextView
             android:ellipsize="end"
@@ -117,8 +156,9 @@
             android:layout_width="wrap_content"
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
-            app:layout_constraintEnd_toEndOf="@+id/playerTag"
-            app:layout_constraintTop_toTopOf="@+id/rank"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rank"
+            app:layout_constraintEnd_toStartOf="@+id/endSpace"
+            app:layout_constraintStart_toEndOf="@+id/ratingSpace"
             tools:text="21.737" />
 
         <TextView
@@ -128,8 +168,17 @@
             android:layout_width="wrap_content"
             android:maxLines="1"
             android:text="@string/rating"
-            app:layout_constraintStart_toStartOf="@+id/rating"
-            app:layout_constraintTop_toBottomOf="@+id/rating" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/rankLabel"
+            app:layout_constraintStart_toStartOf="@+id/rating" />
+
+        <Space
+            android:id="@+id/endSpace"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingSpace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rating"
+            app:layout_constraintTop_toTopOf="@+id/ratingSpace" />
 
         <include
             layout="@layout/view_constraint_layout_foreground" />
