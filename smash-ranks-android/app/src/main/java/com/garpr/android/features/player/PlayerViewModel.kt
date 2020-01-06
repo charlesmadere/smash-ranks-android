@@ -22,7 +22,8 @@ import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.PlayerMatchesRepository
 import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
-import io.reactivex.functions.BiFunction
+import io.reactivex.Single
+import io.reactivex.functions.Function3
 import com.garpr.android.data.models.Match as GarPrMatch
 
 class PlayerViewModel(
@@ -115,20 +116,25 @@ class PlayerViewModel(
 
         state = state.copy(isFetching = true)
 
-        disposables.add(playerMatchesRepository.getPlayerAndMatches(region, playerId)
-                .zipWith(identityRepository.identityObservable.take(1).singleOrError(),
-                        BiFunction<PlayerMatchesBundle, Optional<FavoritePlayer>,
-                                Pair<PlayerMatchesBundle, Optional<FavoritePlayer>>> { t1, t2 ->
-                                    Pair(t1, t2)
-                                })
+        disposables.add(Single.zip(playerMatchesRepository.getPlayerAndMatches(region, playerId),
+                favoritePlayersRepository.playersObservable.take(1).singleOrError(),
+                identityRepository.identityObservable.take(1).singleOrError(),
+                Function3<PlayerMatchesBundle, List<FavoritePlayer>, Optional<FavoritePlayer>,
+                        Triple<PlayerMatchesBundle, List<FavoritePlayer>, Optional<FavoritePlayer>>> { t1, t2, t3 ->
+                            Triple(t1, t2, t3)
+                        })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ (bundle, identity) ->
+                .subscribe({ (bundle, favoritePlayers, identity) ->
                     val list = createList(bundle, identity.item)
                     val showSearchIcon = list?.any { it is ListItem.Match } == true
+                    val isFavorited = favoritePlayers.any { favoritePlayer ->
+                        AbsPlayer.safeEquals(favoritePlayer, bundle.fullPlayer)
+                    }
 
                     state = state.copy(
                             hasError = false,
+                            isFavorited = isFavorited,
                             isFetching = false,
                             showSearchIcon = showSearchIcon,
                             identity = identity.item,
