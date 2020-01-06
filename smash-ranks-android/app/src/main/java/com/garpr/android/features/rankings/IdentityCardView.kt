@@ -37,8 +37,8 @@ class IdentityCardView @JvmOverloads constructor(
             player: FavoritePlayer,
             previousRank: PreviousRank,
             avatar: String?,
-            rank: String,
-            rating: String,
+            rank: String?,
+            rating: String?,
             tag: String
     ) {
         _identity = player
@@ -69,8 +69,13 @@ class IdentityCardView @JvmOverloads constructor(
             }
         }
 
-        this.rank.text = rank
-        this.rating.text = rating
+        if (rank.isNullOrBlank() || rating.isNullOrBlank()) {
+            this.rank.setText(R.string.unknown)
+            this.rating.setText(R.string.unknown)
+        } else {
+            this.rank.text = rank
+            this.rating.text = rating
+        }
     }
 
 }

@@ -157,7 +157,7 @@ class RankingsViewModel(
         }
 
         val listItem = list.filterIsInstance(ListItem.Player::class.java)
-                .firstOrNull { listItem -> listItem.isIdentity } ?: return
+                .firstOrNull { listItem -> listItem.isIdentity }
 
         val smashCompetitor = smashRosterStorage.getSmashCompetitor(
                 region = identity.region,
@@ -168,20 +168,32 @@ class RankingsViewModel(
                 avatarPath = smashCompetitor?.avatar?.largeButFallbackToMediumThenOriginalThenSmall
         )
 
-        val tag = if (smashCompetitor?.tag?.isNotBlank() == true) {
+        val tag: String = if (smashCompetitor?.tag?.isNotBlank() == true) {
             smashCompetitor.tag
-        } else {
+        } else if (listItem?.player?.name?.isNotBlank() == true) {
             listItem.player.name
+        } else {
+            identity.name
         }
 
-        list.add(0, ListItem.Identity(
-                player = identity,
-                previousRank = listItem.previousRank,
-                avatar = avatar,
-                rank = listItem.rank,
-                rating = listItem.rating,
-                tag = tag
-        ))
+        list.add(0, if (listItem == null) {
+            // the user's identity does not exist in the rankings list
+            ListItem.Identity(
+                    player = identity,
+                    previousRank = PreviousRank.GONE,
+                    avatar = avatar,
+                    tag = tag
+            )
+        } else {
+            ListItem.Identity(
+                    player = identity,
+                    previousRank = listItem.previousRank,
+                    avatar = avatar,
+                    rank = listItem.rank,
+                    rating = listItem.rating,
+                    tag = tag
+            )
+        })
     }
 
     @WorkerThread
@@ -250,9 +262,9 @@ class RankingsViewModel(
         class Identity(
                 val player: FavoritePlayer,
                 val previousRank: PreviousRank,
-                val avatar: String?,
-                val rank: String,
-                val rating: String,
+                val avatar: String? = null,
+                val rank: String? = null,
+                val rating: String? = null,
                 val tag: String
         ) : ListItem() {
             override val listId: Long = Long.MAX_VALUE - 1L
