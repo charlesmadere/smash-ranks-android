@@ -1,7 +1,9 @@
 package com.garpr.android.features.rankings
 
 import com.garpr.android.BaseTest
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PreviousRank
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.RankingsBundle
@@ -78,6 +80,11 @@ class RankingsViewModelTest : BaseTest() {
                 rating = 33.313937433274404f,
                 rank = 28,
                 previousRank = 27
+        )
+
+        private val MIKKUZ: AbsPlayer = LitePlayer(
+                id = "583a4a15d2994e0577b05c74",
+                name = "mikkuz"
         )
 
         private val SNAP = RankedPlayer(
@@ -230,13 +237,13 @@ class RankingsViewModelTest : BaseTest() {
         assertNull(state?.searchResults)
         assertEquals(NORCAL_RANKINGS_BUNDLE, state?.rankingsBundle)
 
-        val identity = state?.list?.get(0) as ListItem.Identity
+        var identity = state?.list?.get(0) as ListItem.Identity
         assertEquals(CHARLEZARD, identity.player)
         assertEquals(PreviousRank.INVISIBLE, identity.previousRank)
         assertNull(identity.avatar)
         assertEquals(CHARLEZARD.name, identity.tag)
-        assertFalse(identity.rank.isBlank())
-        assertFalse(identity.rating.isBlank())
+        assertFalse(identity.rank.isNullOrBlank())
+        assertFalse(identity.rating.isNullOrBlank())
 
         var player = state?.list?.get(1) as ListItem.Player
         assertEquals(SNAP, player.player)
@@ -265,6 +272,44 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(PreviousRank.INVISIBLE, player.previousRank)
         assertFalse(player.rank.isBlank())
         assertFalse(player.rating.isBlank())
+
+        identityRepository.setIdentity(MIKKUZ, NORCAL)
+        assertEquals(5, state?.list?.size)
+        identity = state?.list?.get(0) as ListItem.Identity
+        assertEquals(MIKKUZ, identity.player)
+        assertEquals(PreviousRank.GONE, identity.previousRank)
+        assertNull(identity.avatar)
+        assertEquals(MIKKUZ.name, identity.tag)
+        assertNull(identity.rank)
+        assertNull(identity.rating)
+
+        player = state?.list?.get(1) as ListItem.Player
+        assertEquals(SNAP, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.INCREASE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
+
+        player = state?.list?.get(2) as ListItem.Player
+        assertEquals(IMYT, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.DECREASE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
+
+        player = state?.list?.get(3) as ListItem.Player
+        assertEquals(AERIUS, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.INCREASE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
+
+        player = state?.list?.get(4) as ListItem.Player
+        assertEquals(CHARLEZARD, player.player)
+        assertEquals(false, player.isIdentity)
+        assertEquals(PreviousRank.INVISIBLE, player.previousRank)
+        assertFalse(player.rank.isBlank())
+        assertFalse(player.rating.isBlank())
     }
 
     @Test
@@ -281,25 +326,33 @@ class RankingsViewModelTest : BaseTest() {
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
-        assertEquals(3, state?.list?.size)
+        assertEquals(4, state?.list?.size)
         assertNull(state?.searchResults)
         assertEquals(NYC_RANKINGS_BUNDLE, state?.rankingsBundle)
 
-        var player = state?.list?.get(0) as ListItem.Player
+        val identity = state?.list?.get(0) as ListItem.Identity
+        assertEquals(CHARLEZARD, identity.player)
+        assertEquals(PreviousRank.GONE, identity.previousRank)
+        assertNull(identity.avatar)
+        assertEquals(CHARLEZARD.name, identity.tag)
+        assertNull(identity.rank)
+        assertNull(identity.rating)
+
+        var player = state?.list?.get(1) as ListItem.Player
         assertEquals(SWEDISH_DELIGHT, player.player)
         assertEquals(false, player.isIdentity)
         assertEquals(PreviousRank.GONE, player.previousRank)
         assertFalse(player.rank.isBlank())
         assertFalse(player.rating.isBlank())
 
-        player = state?.list?.get(1) as ListItem.Player
+        player = state?.list?.get(2) as ListItem.Player
         assertEquals(HAX, player.player)
         assertEquals(false, player.isIdentity)
         assertEquals(PreviousRank.GONE, player.previousRank)
         assertFalse(player.rank.isBlank())
         assertFalse(player.rating.isBlank())
 
-        player = state?.list?.get(2) as ListItem.Player
+        player = state?.list?.get(3) as ListItem.Player
         assertEquals(CAPTAIN_SMUCKERS, player.player)
         assertEquals(false, player.isIdentity)
         assertEquals(PreviousRank.GONE, player.previousRank)
