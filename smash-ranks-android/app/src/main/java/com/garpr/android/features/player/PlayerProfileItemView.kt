@@ -116,10 +116,10 @@ class PlayerProfileItemView @JvmOverloads constructor(
         this.presentation = presentation
 
         if (presentation.avatar.isNullOrBlank()) {
-            avatar.visibility = View.GONE
+            avatarContainer.visibility = View.GONE
         } else {
             avatar.setImageURI(presentation.avatar)
-            avatar.visibility = View.VISIBLE
+            avatarContainer.visibility = View.VISIBLE
         }
 
         playerTag.text = presentation.tag

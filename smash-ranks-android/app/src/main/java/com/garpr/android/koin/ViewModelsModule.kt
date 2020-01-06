@@ -29,7 +29,7 @@ val viewModelsModule = module {
     viewModel { LogViewerViewModel(get(), get()) }
     viewModel { PlayerViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { PlayersViewModel(get(), get(), get(), get(), get(), get()) }
-    viewModel { RankingsViewModel(get(), get(), get(), get(), get()) }
+    viewModel { RankingsViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { ShareRegionViewModel(get(), get()) }
     viewModel { SetIdentityViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { SetRegionViewModel(get(), get(), get(), get()) }

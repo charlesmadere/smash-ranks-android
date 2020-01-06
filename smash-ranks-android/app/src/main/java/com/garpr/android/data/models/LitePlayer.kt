@@ -15,14 +15,17 @@ class LitePlayer(
         name
 ), Parcelable {
 
+    override val kind: Kind
+        get() = Kind.LITE
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
-            LitePlayer(it.requireString(), it.requireString())
+            LitePlayer(
+                    it.requireString(),
+                    it.requireString()
+            )
         }
     }
-
-    override val kind: Kind
-        get() = Kind.LITE
 
 }

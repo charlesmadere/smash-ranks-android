@@ -16,7 +16,6 @@ enum class MatchResult : Parcelable {
     @Json(name = "win")
     WIN;
 
-
     companion object {
         @JvmField
         val CREATOR = createParcel { values()[it.readInt()] }

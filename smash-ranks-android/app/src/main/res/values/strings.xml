@@ -89,6 +89,7 @@
     <string name="please_wait_">Please wait…</string>
     <string name="poll_frequency">Poll frequency</string>
     <string name="poll_has_yet_to_occur">Poll has yet to occur</string>
+    <string name="rank">Rank</string>
     <string name="rankings">Rankings</string>
     <string name="x_rankings_">%1$s rankings…</string>
     <string name="x_rankings_have_been_updated">%1$s rankings have been updated!</string>
@@ -96,6 +97,7 @@
     <string name="rankings_polling_description">This feature will periodically poll your region\'s GAR PR (or Not GAR PR) and let you know if its rankings have been updated. Note that the poll frequency is just an estimate, it\'s not guaranteed to run at these exact intervals.</string>
     <string name="rankings_update_notifications_description">Notification that shows whenever your region\'s rankings have been updated.</string>
     <string name="rankings_update_notifications_name">Rankings Update Notifications</string>
+    <string name="rating">Rating</string>
     <string name="rating_x">Rating: %1$s</string>
     <string name="region">Region</string>
     <string name="region_endpoint_format">%1$s (%2$s)</string>
@@ -145,6 +147,7 @@
     <string name="unable_to_open_link">Unable to open link!</string>
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
     <string name="unfavorite">Unfavorite</string>
+    <string name="unknown">Unknown</string>
     <string name="unknown_activity_requirements">This region\'s activity requirements are unknown.</string>
     <string name="updated_x">Updated %1$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
@@ -154,7 +157,6 @@
     <string name="view_all_players">View all players</string>
     <string name="view_logs">View logs</string>
     <string name="view_logs_description">Read logs normally only visible via Android\'s Logcat. Really only useful for debug purposes.</string>
-    <string name="view_yourself">View yourself</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
     <string name="x_within_the_last_y">%1$s within the last %2$s.</string>

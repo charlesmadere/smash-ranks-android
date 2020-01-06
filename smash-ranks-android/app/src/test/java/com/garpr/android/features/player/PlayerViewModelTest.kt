@@ -330,12 +330,7 @@ class PlayerViewModelTest : BaseTest() {
 
     @Test
     fun testFetchPlayerWithoutInitializeDoesThrowException() {
-        var state: PlayerViewModel.State? = null
         var throwable: Throwable? = null
-
-        viewModel.stateLiveData.observeForever {
-            state = it
-        }
 
         try {
             viewModel.fetchPlayer()
@@ -343,7 +338,6 @@ class PlayerViewModelTest : BaseTest() {
             throwable = t
         }
 
-        assertNull(state)
         assertNotNull(throwable)
     }
 

@@ -7,7 +7,6 @@ import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.favoritePlayers.FavoritePlayersFragment
 import com.garpr.android.features.rankings.RankingsFragment
 import com.garpr.android.features.tournaments.TournamentsFragment
-import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.ListLayout
 import java.lang.ref.WeakReference
 
@@ -35,7 +34,7 @@ class HomeFragmentPagerAdapter(
     fun onNavigationItemReselected(homeTab: HomeTab) {
         val fragment = pages[homeTab]?.get()
 
-        if ((fragment as? Heartbeat?)?.isAlive == true) {
+        if (fragment?.isAlive == true) {
             (fragment as? ListLayout?)?.smoothScrollToTop()
         }
     }

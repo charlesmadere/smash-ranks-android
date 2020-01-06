@@ -5,23 +5,31 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.PreviousRank
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.truncate
 import com.garpr.android.features.common.viewModels.BaseViewModel
+import com.garpr.android.features.player.SmashRosterAvatarUrlHelper
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RankingsRepository
+import com.garpr.android.sync.roster.SmashRosterStorage
+import com.garpr.android.sync.roster.SmashRosterSyncManager
+import io.reactivex.functions.BiFunction
 import java.text.NumberFormat
 
 class RankingsViewModel(
         private val identityRepository: IdentityRepository,
         private val rankingsRepository: RankingsRepository,
         private val schedulers: Schedulers,
+        private val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper,
+        private val smashRosterStorage: SmashRosterStorage,
+        private val smashRosterSyncManager: SmashRosterSyncManager,
         private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : BaseViewModel(), Searchable {
@@ -45,7 +53,7 @@ class RankingsViewModel(
     }
 
     @WorkerThread
-    private fun createList(bundle: RankingsBundle?): List<ListItem>? {
+    private fun createList(bundle: RankingsBundle?, identity: FavoritePlayer?): List<ListItem>? {
         val rankings = bundle?.rankings
 
         if (rankings.isNullOrEmpty()) {
@@ -53,8 +61,9 @@ class RankingsViewModel(
         }
 
         val previousRankSupported = rankings.any { it.previousRank != null }
+        val list = mutableListOf<ListItem>()
 
-        return bundle.rankings.map { player ->
+        bundle.rankings.mapTo(list) { player ->
             val previousRank = if (previousRankSupported) {
                 checkNotNull(player.previousRank) {
                     "This is impossible here if RankedPlayerConverter does its job correctly."
@@ -73,22 +82,31 @@ class RankingsViewModel(
 
             ListItem.Player(
                     player = player,
-                    isIdentity = identityRepository.isPlayer(player),
+                    isIdentity = AbsPlayer.safeEquals(identity, player),
                     previousRank = previousRank,
                     rank = NUMBER_FORMAT.format(player.rank),
                     rating = player.rating.truncate()
             )
         }
+
+        insertOrRemoveIdentityAtFrontOfList(identity, list)
+
+        return list
     }
 
     fun fetchRankings(region: Region) {
         state = state.copy(isFetching = true)
 
         disposables.add(rankingsRepository.getRankings(region)
+                .zipWith(identityRepository.identityObservable.take(1).singleOrError(),
+                        BiFunction<RankingsBundle, Optional<FavoritePlayer>,
+                                Pair<RankingsBundle, Optional<FavoritePlayer>>> { t1, t2 ->
+                                    Pair(t1, t2)
+                                })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ bundle ->
-                    val list = createList(bundle)
+                .subscribe({ (bundle, identity) ->
+                    val list = createList(bundle, identity.item)
 
                     state = state.copy(
                             hasError = false,
@@ -114,11 +132,68 @@ class RankingsViewModel(
 
     private fun initListeners() {
         disposables.add(identityRepository.identityObservable
+                .withLatestFrom(smashRosterSyncManager.isSyncingObservable
+                        .filter { isSyncing -> !isSyncing },
+                        BiFunction<Optional<FavoritePlayer>, Boolean,
+                                Optional<FavoritePlayer>> { optional, _ ->
+                                    optional
+                                })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { optional ->
                     refreshListItems(optional.item)
                 })
+    }
+
+    @WorkerThread
+    private fun insertOrRemoveIdentityAtFrontOfList(
+            identity: FavoritePlayer?,
+            list: MutableList<ListItem>
+    ) {
+        list.removeAll { listItem -> listItem is ListItem.Identity }
+
+        if (identity == null) {
+            return
+        }
+
+        val listItem = list.filterIsInstance(ListItem.Player::class.java)
+                .firstOrNull { listItem -> listItem.isIdentity }
+
+        val smashCompetitor = smashRosterStorage.getSmashCompetitor(
+                region = identity.region,
+                playerId = identity.id
+        )
+
+        val avatar = smashRosterAvatarUrlHelper.getAvatarUrl(
+                avatarPath = smashCompetitor?.avatar?.largeButFallbackToMediumThenOriginalThenSmall
+        )
+
+        val tag: String = if (smashCompetitor?.tag?.isNotBlank() == true) {
+            smashCompetitor.tag
+        } else if (listItem?.player?.name?.isNotBlank() == true) {
+            listItem.player.name
+        } else {
+            identity.name
+        }
+
+        list.add(0, if (listItem == null) {
+            // the user's identity does not exist in the rankings list
+            ListItem.Identity(
+                    player = identity,
+                    previousRank = PreviousRank.GONE,
+                    avatar = avatar,
+                    tag = tag
+            )
+        } else {
+            ListItem.Identity(
+                    player = identity,
+                    previousRank = listItem.previousRank,
+                    avatar = avatar,
+                    rank = listItem.rank,
+                    rating = listItem.rating,
+                    tag = tag
+            )
+        })
     }
 
     @WorkerThread
@@ -147,6 +222,8 @@ class RankingsViewModel(
                 }
             }
 
+            insertOrRemoveIdentityAtFrontOfList(identity, newList)
+
             newList
         }
     }
@@ -169,7 +246,7 @@ class RankingsViewModel(
         val results = list
                 .filterIsInstance(ListItem.Player::class.java)
                 .filter { listItem ->
-                    listItem.player.name.contains(trimmedQuery, true)
+                    listItem.player.name.contains(trimmedQuery, ignoreCase = true)
                 }
 
         return if (results.isEmpty()) {
@@ -182,10 +259,21 @@ class RankingsViewModel(
     sealed class ListItem {
         abstract val listId: Long
 
+        class Identity(
+                val player: FavoritePlayer,
+                val previousRank: PreviousRank,
+                val avatar: String? = null,
+                val rank: String? = null,
+                val rating: String? = null,
+                val tag: String
+        ) : ListItem() {
+            override val listId: Long = Long.MAX_VALUE - 1L
+        }
+
         class NoResults(
                 val query: String
         ) : ListItem() {
-            override val listId: Long = Long.MAX_VALUE - 1L
+            override val listId: Long = Long.MAX_VALUE - 2L
         }
 
         data class Player(

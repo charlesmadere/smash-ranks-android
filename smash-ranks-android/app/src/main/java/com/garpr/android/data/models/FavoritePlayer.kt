@@ -10,6 +10,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
+@Suppress("EqualsOrHashCode")
 class FavoritePlayer(
         @Json(name = "id") id: String,
         @Json(name = "name") name: String,
@@ -18,6 +19,16 @@ class FavoritePlayer(
         id,
         name
 ), Parcelable {
+
+    override val kind: Kind
+        get() = Kind.FAVORITE
+
+    override fun hashCode(): Int = ObjectsCompat.hash(id, region.endpoint)
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
+        dest.writeParcelable(region, flags)
+    }
 
     companion object {
         @JvmField
@@ -28,28 +39,6 @@ class FavoritePlayer(
                     it.requireParcelable(Region::class.java.classLoader)
             )
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return if (super.equals(other)) {
-            if (other is FavoritePlayer) {
-                region.endpoint == other.region.endpoint
-            } else {
-                true
-            }
-        } else {
-            false
-        }
-    }
-
-    override fun hashCode(): Int = ObjectsCompat.hash(id, region.endpoint)
-
-    override val kind: Kind
-        get() = Kind.FAVORITE
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        super.writeToParcel(dest, flags)
-        dest.writeParcelable(region, flags)
     }
 
 }

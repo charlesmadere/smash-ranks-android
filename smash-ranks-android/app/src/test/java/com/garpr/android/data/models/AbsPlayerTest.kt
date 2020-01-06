@@ -13,37 +13,37 @@ import java.util.Objects
 class AbsPlayerTest : BaseTest() {
 
     companion object {
-        private val REGION_GEORGIA = Region(
+        private val GEORGIA = Region(
                 displayName = "Georgia",
                 id = "georgia",
                 endpoint = Endpoint.NOT_GAR_PR
         )
 
-        private val REGION_NORCAL = Region(
+        private val NORCAL = Region(
                 displayName = "Norcal",
                 id = "norcal",
                 endpoint = Endpoint.GAR_PR
         )
 
-        private val FAVORITE_PLAYER_1: AbsPlayer = FavoritePlayer(
-                region = REGION_NORCAL,
+        private val MIKKUZ: AbsPlayer = FavoritePlayer(
+                region = NORCAL,
                 id = "583a4a15d2994e0577b05c74",
                 name = "mikkuz"
         )
 
-        private val FAVORITE_PLAYER_2: AbsPlayer = FavoritePlayer(
-                region = REGION_GEORGIA,
+        private val GEORGIA_DRUGGEDFOX: AbsPlayer = FavoritePlayer(
+                region = GEORGIA,
                 id = "583a4a15d2994e0577b05c86",
                 name = "druggedfox"
         )
 
-        private val FAVORITE_PLAYER_3: AbsPlayer = FavoritePlayer(
-                region = REGION_NORCAL,
+        private val NORCAL_DRUGGEDFOX: AbsPlayer = FavoritePlayer(
+                region = NORCAL,
                 id = "583a4a15d2994e0577b05c86",
                 name = "druggedfox"
         )
 
-        private val FULL_PLAYER_1: AbsPlayer = FullPlayer(
+        private val GAR: AbsPlayer = FullPlayer(
                 id = "58523b44d2994e15c7dea945",
                 name = "gaR",
                 ratings = mapOf(
@@ -53,17 +53,22 @@ class AbsPlayerTest : BaseTest() {
                 regions = listOf("norcal", "google")
         )
 
-        private val LITE_PLAYER_1: AbsPlayer = LitePlayer(
+        private val HMW: AbsPlayer = LitePlayer(
                 id = "583a4a15d2994e0577b05c74",
                 name = "homemadewaffles"
         )
 
-        private val LITE_PLAYER_2: AbsPlayer = LitePlayer(
+        private val SPARK: AbsPlayer = LitePlayer(
                 id = "5877eb55d2994e15c7dea97e",
                 name = "Spark"
         )
 
-        private val RANKED_PLAYER_1: AbsPlayer = RankedPlayer(
+        private val NO_REGION_DRUGGEDFOX: AbsPlayer = LitePlayer(
+                id = "583a4a15d2994e0577b05c86",
+                name = "druggedfox"
+        )
+
+        private val YCZ6: AbsPlayer = RankedPlayer(
                 id = "5888542ad2994e3bbfa52de4",
                 name = "ycz6",
                 rating = 36.81988474543549f,
@@ -71,7 +76,7 @@ class AbsPlayerTest : BaseTest() {
                 previousRank = 16
         )
 
-        private val RANKED_PLAYER_2: AbsPlayer = RankedPlayer(
+        private val HAX: AbsPlayer = RankedPlayer(
                 id = "53c64dba8ab65f6e6651f7bc",
                 name = "Hax",
                 rating = 37.975921649503086f,
@@ -81,62 +86,72 @@ class AbsPlayerTest : BaseTest() {
 
     @Test
     fun testComparatorAlphabeticalOrder() {
-        val list = listOf(FULL_PLAYER_1, LITE_PLAYER_2, LITE_PLAYER_1, FAVORITE_PLAYER_2,
-                RANKED_PLAYER_1, FAVORITE_PLAYER_1, RANKED_PLAYER_2, FAVORITE_PLAYER_3)
+        val list = listOf(GAR, SPARK, NO_REGION_DRUGGEDFOX, HMW, GEORGIA_DRUGGEDFOX, YCZ6, MIKKUZ,
+                HAX, NORCAL_DRUGGEDFOX)
         Collections.sort(list, AbsPlayer.ALPHABETICAL_ORDER)
 
-        assertEquals(FAVORITE_PLAYER_3, list[0])
-        assertEquals(FAVORITE_PLAYER_2, list[1])
-        assertEquals(FULL_PLAYER_1, list[2])
-        assertEquals(RANKED_PLAYER_2, list[3])
-        assertEquals(LITE_PLAYER_1, list[4])
-        assertEquals(FAVORITE_PLAYER_1, list[5])
-        assertEquals(LITE_PLAYER_2, list[6])
-        assertEquals(RANKED_PLAYER_1, list[7])
+        assertEquals(NO_REGION_DRUGGEDFOX, list[0])
+        assertEquals(NORCAL_DRUGGEDFOX, list[1])
+        assertEquals(GEORGIA_DRUGGEDFOX, list[2])
+        assertEquals(GAR, list[3])
+        assertEquals(HAX, list[4])
+        assertEquals(HMW, list[5])
+        assertEquals(MIKKUZ, list[6])
+        assertEquals(SPARK, list[7])
+        assertEquals(YCZ6, list[8])
     }
 
     @Test
     fun testEquals() {
-        assertEquals(FAVORITE_PLAYER_1, FAVORITE_PLAYER_1)
-        assertEquals(FAVORITE_PLAYER_2, FAVORITE_PLAYER_2)
-        assertNotEquals(FAVORITE_PLAYER_1, FAVORITE_PLAYER_2)
-        assertNotEquals(FAVORITE_PLAYER_2, FAVORITE_PLAYER_3)
+        assertEquals(GEORGIA_DRUGGEDFOX, GEORGIA_DRUGGEDFOX)
+        assertEquals(GEORGIA_DRUGGEDFOX, NO_REGION_DRUGGEDFOX)
+        assertEquals(NORCAL_DRUGGEDFOX, NORCAL_DRUGGEDFOX)
+        assertEquals(NORCAL_DRUGGEDFOX, NO_REGION_DRUGGEDFOX)
+        assertEquals(NO_REGION_DRUGGEDFOX, NO_REGION_DRUGGEDFOX)
+        assertNotEquals(GEORGIA_DRUGGEDFOX, NORCAL_DRUGGEDFOX)
 
-        assertEquals(FULL_PLAYER_1, FULL_PLAYER_1)
-        assertNotEquals(FULL_PLAYER_1, LITE_PLAYER_1)
-        assertNotEquals(FULL_PLAYER_1, RANKED_PLAYER_1)
+        assertEquals(MIKKUZ, MIKKUZ)
+        assertNotEquals(MIKKUZ, GEORGIA_DRUGGEDFOX)
+        assertNotEquals(MIKKUZ, NO_REGION_DRUGGEDFOX)
 
-        assertEquals(LITE_PLAYER_1, LITE_PLAYER_1)
-        assertEquals(LITE_PLAYER_2, LITE_PLAYER_2)
-        assertNotEquals(LITE_PLAYER_1, LITE_PLAYER_2)
+        assertEquals(GAR, GAR)
+        assertNotEquals(GAR, HMW)
+        assertNotEquals(GAR, YCZ6)
 
-        assertEquals(RANKED_PLAYER_1, RANKED_PLAYER_1)
-        assertEquals(RANKED_PLAYER_2, RANKED_PLAYER_2)
-        assertNotEquals(RANKED_PLAYER_1, RANKED_PLAYER_2)
+        assertEquals(HMW, HMW)
+        assertEquals(SPARK, SPARK)
+        assertEquals(NO_REGION_DRUGGEDFOX, NO_REGION_DRUGGEDFOX)
+        assertNotEquals(HMW, SPARK)
+        assertNotEquals(HMW, NO_REGION_DRUGGEDFOX)
+        assertNotEquals(SPARK, NO_REGION_DRUGGEDFOX)
+
+        assertEquals(YCZ6, YCZ6)
+        assertEquals(HAX, HAX)
+        assertNotEquals(YCZ6, HAX)
     }
 
     @Test
     fun testHashCode() {
-        assertEquals(Objects.hash(FAVORITE_PLAYER_1.id, REGION_NORCAL.endpoint), FAVORITE_PLAYER_1.hashCode())
-        assertEquals(Objects.hash(FAVORITE_PLAYER_2.id, REGION_GEORGIA.endpoint), FAVORITE_PLAYER_2.hashCode())
-        assertEquals(Objects.hash(FAVORITE_PLAYER_3.id, REGION_NORCAL.endpoint), FAVORITE_PLAYER_3.hashCode())
-        assertEquals(FULL_PLAYER_1.id.hashCode(), FULL_PLAYER_1.hashCode())
-        assertEquals(LITE_PLAYER_1.id.hashCode(), LITE_PLAYER_1.hashCode())
-        assertEquals(LITE_PLAYER_2.id.hashCode(), LITE_PLAYER_2.hashCode())
-        assertEquals(RANKED_PLAYER_1.id.hashCode(), RANKED_PLAYER_1.hashCode())
-        assertEquals(RANKED_PLAYER_2.id.hashCode(), RANKED_PLAYER_2.hashCode())
+        assertEquals(Objects.hash(MIKKUZ.id, NORCAL.endpoint), MIKKUZ.hashCode())
+        assertEquals(Objects.hash(GEORGIA_DRUGGEDFOX.id, GEORGIA.endpoint), GEORGIA_DRUGGEDFOX.hashCode())
+        assertEquals(Objects.hash(NORCAL_DRUGGEDFOX.id, NORCAL.endpoint), NORCAL_DRUGGEDFOX.hashCode())
+        assertEquals(GAR.id.hashCode(), GAR.hashCode())
+        assertEquals(HMW.id.hashCode(), HMW.hashCode())
+        assertEquals(SPARK.id.hashCode(), SPARK.hashCode())
+        assertEquals(YCZ6.id.hashCode(), YCZ6.hashCode())
+        assertEquals(HAX.id.hashCode(), HAX.hashCode())
     }
 
     @Test
     fun testKind() {
-        assertEquals(AbsPlayer.Kind.FAVORITE, FAVORITE_PLAYER_1.kind)
-        assertEquals(AbsPlayer.Kind.FAVORITE, FAVORITE_PLAYER_2.kind)
-        assertEquals(AbsPlayer.Kind.FAVORITE, FAVORITE_PLAYER_3.kind)
-        assertEquals(AbsPlayer.Kind.FULL, FULL_PLAYER_1.kind)
-        assertEquals(AbsPlayer.Kind.LITE, LITE_PLAYER_1.kind)
-        assertEquals(AbsPlayer.Kind.LITE, LITE_PLAYER_2.kind)
-        assertEquals(AbsPlayer.Kind.RANKED, RANKED_PLAYER_1.kind)
-        assertEquals(AbsPlayer.Kind.RANKED, RANKED_PLAYER_2.kind)
+        assertEquals(AbsPlayer.Kind.FAVORITE, MIKKUZ.kind)
+        assertEquals(AbsPlayer.Kind.FAVORITE, GEORGIA_DRUGGEDFOX.kind)
+        assertEquals(AbsPlayer.Kind.FAVORITE, NORCAL_DRUGGEDFOX.kind)
+        assertEquals(AbsPlayer.Kind.FULL, GAR.kind)
+        assertEquals(AbsPlayer.Kind.LITE, HMW.kind)
+        assertEquals(AbsPlayer.Kind.LITE, SPARK.kind)
+        assertEquals(AbsPlayer.Kind.RANKED, YCZ6.kind)
+        assertEquals(AbsPlayer.Kind.RANKED, HAX.kind)
     }
 
 }

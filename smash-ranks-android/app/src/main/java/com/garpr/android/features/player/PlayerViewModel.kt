@@ -3,9 +3,11 @@ package com.garpr.android.features.player
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullPlayer
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.PlayerMatchesBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
@@ -20,6 +22,8 @@ import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.PlayerMatchesRepository
 import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
+import io.reactivex.Single
+import io.reactivex.functions.Function3
 import com.garpr.android.data.models.Match as GarPrMatch
 
 class PlayerViewModel(
@@ -72,7 +76,7 @@ class PlayerViewModel(
     }
 
     @WorkerThread
-    private fun createList(bundle: PlayerMatchesBundle?): List<ListItem>? {
+    private fun createList(bundle: PlayerMatchesBundle?, identity: FavoritePlayer?): List<ListItem>? {
         if (bundle == null) {
             return null
         }
@@ -96,7 +100,7 @@ class PlayerViewModel(
             }
 
             list.add(ListItem.Match(
-                    isIdentity = identityRepository.isPlayer(match.opponent),
+                    isIdentity = identity == match.opponent,
                     match = match
             ))
         }
@@ -112,17 +116,28 @@ class PlayerViewModel(
 
         state = state.copy(isFetching = true)
 
-        disposables.add(playerMatchesRepository.getPlayerAndMatches(region, playerId)
+        disposables.add(Single.zip(playerMatchesRepository.getPlayerAndMatches(region, playerId),
+                favoritePlayersRepository.playersObservable.take(1).singleOrError(),
+                identityRepository.identityObservable.take(1).singleOrError(),
+                Function3<PlayerMatchesBundle, List<FavoritePlayer>, Optional<FavoritePlayer>,
+                        Triple<PlayerMatchesBundle, List<FavoritePlayer>, Optional<FavoritePlayer>>> { t1, t2, t3 ->
+                            Triple(t1, t2, t3)
+                        })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ bundle ->
-                    val list = createList(bundle)
+                .subscribe({ (bundle, favoritePlayers, identity) ->
+                    val list = createList(bundle, identity.item)
                     val showSearchIcon = list?.any { it is ListItem.Match } == true
+                    val isFavorited = favoritePlayers.any { favoritePlayer ->
+                        AbsPlayer.safeEquals(favoritePlayer, bundle.fullPlayer)
+                    }
 
                     state = state.copy(
                             hasError = false,
+                            isFavorited = isFavorited,
                             isFetching = false,
                             showSearchIcon = showSearchIcon,
+                            identity = identity.item,
                             list = list,
                             searchResults = null,
                             playerMatchesBundle = bundle
@@ -136,6 +151,7 @@ class PlayerViewModel(
                             hasError = true,
                             isFetching = false,
                             showSearchIcon = false,
+                            identity = null,
                             list = null,
                             searchResults = null,
                             playerMatchesBundle = null
@@ -158,23 +174,21 @@ class PlayerViewModel(
         disposables.add(favoritePlayersRepository.playersObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshState()
+                .subscribe { favoritePlayers ->
+                    refreshIsFavorited(favoritePlayers)
                 })
 
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe {
-                    refreshState()
+                .subscribe { optional ->
+                    refreshListItems(optional.item)
                 })
 
         disposables.add(smashRosterSyncManager.isSyncingObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .filter { isSyncing ->
-                    !isSyncing
-                }
+                .filter { isSyncing -> !isSyncing }
                 .subscribe {
                     refreshState()
                 })
@@ -183,6 +197,52 @@ class PlayerViewModel(
     override fun refresh() {
         threadUtils.background.submit {
             refreshState()
+        }
+    }
+
+    @WorkerThread
+    private fun refreshIsFavorited(favoritePlayers: List<FavoritePlayer>) {
+        val player = this.player
+
+        val isFavorited: Boolean = if (player == null) {
+            false
+        } else {
+            favoritePlayers.any { favoritePlayer ->
+                AbsPlayer.safeEquals(player, favoritePlayer)
+            }
+        }
+
+        state = state.copy(isFavorited = isFavorited)
+    }
+
+    @WorkerThread
+    private fun refreshListItems(identity: FavoritePlayer?) {
+        val list = refreshListItems(identity, state.list)
+        val searchResults = refreshListItems(identity, state.searchResults)
+
+        state = state.copy(
+                identity = identity,
+                list = list,
+                searchResults = searchResults
+        )
+    }
+
+    @WorkerThread
+    private fun refreshListItems(identity: FavoritePlayer?, list: List<ListItem>?): List<ListItem>? {
+        return if (list.isNullOrEmpty()) {
+            list
+        } else {
+            val newList = mutableListOf<ListItem>()
+
+            list.mapTo(newList) { listItem ->
+                if (listItem is ListItem.Match) {
+                    listItem.copy(isIdentity = listItem.match.opponent == identity)
+                } else {
+                    listItem
+                }
+            }
+
+            newList
         }
     }
 
@@ -200,12 +260,6 @@ class PlayerViewModel(
 
         val player = this.player
 
-        val isFavorited: Boolean = if (player == null) {
-            false
-        } else {
-            player in favoritePlayersRepository
-        }
-
         val smashCompetitor = smashRosterStorage.getSmashCompetitor(region, playerId)
 
         val titleText: CharSequence? = if (smashCompetitor?.tag?.isNotBlank() == true) {
@@ -217,7 +271,6 @@ class PlayerViewModel(
         }
 
         state = state.copy(
-                isFavorited = isFavorited,
                 titleText = titleText,
                 smashCompetitor = smashCompetitor
         )
@@ -277,7 +330,7 @@ class PlayerViewModel(
     sealed class ListItem {
         abstract val listId: Long
 
-        class Match(
+        data class Match(
                 val isIdentity: Boolean,
                 val match: GarPrMatch
         ) : ListItem() {

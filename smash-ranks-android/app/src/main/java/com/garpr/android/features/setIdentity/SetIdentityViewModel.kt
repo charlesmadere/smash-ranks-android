@@ -3,6 +3,7 @@ package com.garpr.android.features.setIdentity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.PlayerListBuilder
@@ -24,15 +25,18 @@ class SetIdentityViewModel(
 ) : BaseViewModel(), Searchable {
 
     var selectedIdentity: AbsPlayer?
-        get() = state.selectedIdentity ?: identityRepository.identity
+        get() = state.selectedIdentity ?: identityRepositoryIdentity
         set(value) {
             val saveIconStatus = if (state.list.isNullOrEmpty()) {
                 SaveIconStatus.GONE
-            } else if (identityRepository.hasIdentity && identityRepository.isPlayer(value)
-                    || !identityRepository.hasIdentity && value == null) {
-                SaveIconStatus.DISABLED
             } else {
-                SaveIconStatus.ENABLED
+                val iri = identityRepositoryIdentity
+
+                if (iri != null && iri == value || iri == null && value == null) {
+                    SaveIconStatus.DISABLED
+                } else {
+                    SaveIconStatus.ENABLED
+                }
             }
 
             state = state.copy(
@@ -43,6 +47,8 @@ class SetIdentityViewModel(
 
     val warnBeforeClose: Boolean
         get() = state.saveIconStatus == SaveIconStatus.ENABLED
+
+    private var identityRepositoryIdentity: FavoritePlayer? = null
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -55,6 +61,10 @@ class SetIdentityViewModel(
 
     companion object {
         private const val TAG = "SetIdentityViewModel"
+    }
+
+    init {
+        initListeners()
     }
 
     fun fetchPlayers(region: Region) {
@@ -92,6 +102,15 @@ class SetIdentityViewModel(
                             saveIconStatus = SaveIconStatus.GONE
                     )
                 }))
+    }
+
+    private fun initListeners() {
+        disposables.add(identityRepository.identityObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe { optional ->
+                    identityRepositoryIdentity = optional.item
+                })
     }
 
     fun saveSelectedIdentity(region: Region) {

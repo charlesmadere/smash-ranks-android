@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.features.rankings.IdentityCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/root_padding"
+    android:layout_width="match_parent"
+    app:cardCornerRadius="@dimen/splash_card_corner_radius"
+    app:cardElevation="@dimen/splash_card_elevation">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:duplicateParentState="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/list_item_height">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatarContainer"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/root_padding"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="@dimen/avatar_corner_radius"
+            app:cardElevation="@dimen/elevation_half"
+            tools:visibility="visible">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:contentDescription="@string/avatar"
+                android:id="@+id/avatar"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_width="@dimen/avatar_size"
+                app:actualImageScaleType="centerCrop"
+                app:failureImage="@drawable/avatar_placeholder"
+                app:failureImageScaleType="centerCrop"
+                app:placeholderImage="@drawable/avatar_placeholder"
+                app:placeholderImageScaleType="centerCrop" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:ellipsize="end"
+            android:fontFamily="@font/nunito_sans"
+            android:gravity="center"
+            android:id="@+id/playerTag"
+            android:layout_height="64dp"
+            android:layout_marginEnd="@dimen/root_padding"
+            android:layout_marginStart="@dimen/root_padding"
+            android:layout_marginTop="@dimen/root_padding_half"
+            android:layout_width="0dp"
+            android:maxLines="2"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
+            app:autoSizeMinTextSize="@dimen/text_size_xlarge"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/rank"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/avatarContainer"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_goneMarginTop="@dimen/root_padding"
+            tools:text="Charlezard" />
+
+        <Space
+            android:id="@+id/startSpace"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rankLabel"
+            app:layout_constraintEnd_toStartOf="@+id/rankBadge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rank" />
+
+        <ImageView
+            android:id="@+id/rankBadge"
+            android:importantForAccessibility="no"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="@+id/rankLabel"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@+id/rankSpace"
+            app:layout_constraintStart_toEndOf="@+id/startSpace"
+            app:layout_constraintTop_toTopOf="@+id/rank"
+            tools:background="@drawable/identity_card_win_badge"
+            tools:srcCompat="@drawable/ic_arrow_upward_white_18dp" />
+
+        <Space
+            android:id="@+id/rankSpace"
+            android:layout_height="0dp"
+            android:layout_width="@dimen/root_padding_half"
+            app:layout_constraintBottom_toBottomOf="@+id/startSpace"
+            app:layout_constraintEnd_toStartOf="@+id/rank"
+            app:layout_constraintStart_toEndOf="@+id/rankBadge"
+            app:layout_constraintTop_toTopOf="@+id/startSpace" />
+
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/rank"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/root_padding"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/rankLabel"
+            app:layout_constraintEnd_toStartOf="@+id/middleSpace"
+            app:layout_constraintStart_toEndOf="@+id/rankSpace"
+            app:layout_constraintTop_toBottomOf="@+id/playerTag"
+            tools:text="84" />
+
+        <TextView
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:id="@+id/rankLabel"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/root_padding"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:text="@string/rank"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/rank"
+            app:layout_constraintTop_toBottomOf="@+id/rank" />
+
+        <Space
+            android:id="@+id/middleSpace"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/root_padding_double"
+            android:layout_marginStart="@dimen/root_padding_double"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rankSpace"
+            app:layout_constraintEnd_toStartOf="@+id/ratingBadge"
+            app:layout_constraintStart_toEndOf="@+id/rank"
+            app:layout_constraintTop_toTopOf="@+id/rankSpace" />
+
+        <ImageView
+            android:background="@drawable/identity_card_neutral_badge"
+            android:id="@+id/ratingBadge"
+            android:importantForAccessibility="no"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="@+id/rankBadge"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@+id/ratingSpace"
+            app:layout_constraintStart_toEndOf="@+id/middleSpace"
+            app:layout_constraintTop_toTopOf="@+id/rankBadge"
+            app:srcCompat="@drawable/ic_bar_chart_white_18dp" />
+
+        <Space
+            android:id="@+id/ratingSpace"
+            android:layout_height="0dp"
+            android:layout_width="@dimen/root_padding_half"
+            app:layout_constraintBottom_toBottomOf="@+id/middleSpace"
+            app:layout_constraintEnd_toStartOf="@+id/rating"
+            app:layout_constraintStart_toEndOf="@+id/ratingBadge"
+            app:layout_constraintTop_toTopOf="@+id/middleSpace" />
+
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/rating"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rank"
+            app:layout_constraintEnd_toStartOf="@+id/endSpace"
+            app:layout_constraintStart_toEndOf="@+id/ratingSpace"
+            tools:text="21.737" />
+
+        <TextView
+            android:fontFamily="sans-serif-condensed"
+            android:id="@+id/ratingLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:text="@string/rating"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rankLabel"
+            app:layout_constraintStart_toStartOf="@+id/rating" />
+
+        <Space
+            android:id="@+id/endSpace"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingSpace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rating"
+            app:layout_constraintTop_toTopOf="@+id/ratingSpace" />
+
+        <include
+            layout="@layout/view_constraint_layout_foreground" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.garpr.android.features.rankings.IdentityCardView>

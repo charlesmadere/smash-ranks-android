@@ -23,16 +23,9 @@ class HomeToolbar @JvmOverloads constructor(
             showActivityRequirements.isVisible = value
         }
 
-    var isShowYourselfVisible: Boolean
-        get() = showYourself.isVisible
-        set(value) {
-            showYourself.isVisible = value
-        }
-
     var listeners: Listeners? = null
 
     private val showActivityRequirements: MenuItem
-    private val showYourself: MenuItem
 
     private val activityRequirementsClickListener = MenuItem.OnMenuItemClickListener {
         listeners?.onActivityRequirementsClick(this)
@@ -49,11 +42,6 @@ class HomeToolbar @JvmOverloads constructor(
         true
     }
 
-    private val viewYourselfClickListener = MenuItem.OnMenuItemClickListener {
-        listeners?.onViewYourselfClick(this)
-        true
-    }
-
     private val settingsClickListener = MenuItem.OnMenuItemClickListener {
         listeners?.onSettingsClick(this)
         true
@@ -66,7 +54,6 @@ class HomeToolbar @JvmOverloads constructor(
         fun onSettingsClick(v: HomeToolbar)
         fun onShareClick(v: HomeToolbar)
         fun onViewAllPlayersClick(v: HomeToolbar)
-        fun onViewYourselfClick(v: HomeToolbar)
     }
 
     init {
@@ -80,8 +67,6 @@ class HomeToolbar @JvmOverloads constructor(
         showActivityRequirements = overflowPopupMenu.addMenuItem(R.string.activity_requirements,
                     activityRequirementsClickListener)
         overflowPopupMenu.addMenuItem(R.string.view_all_players, viewAllPlayersClickListener)
-        showYourself = overflowPopupMenu.addMenuItem(R.string.view_yourself,
-                viewYourselfClickListener)
         overflowPopupMenu.addMenuItem(R.string.settings, settingsClickListener)
     }
 

@@ -21,6 +21,16 @@ class RankedPlayer(
         name
 ), Parcelable {
 
+    override val kind: Kind
+        get() = Kind.RANKED
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
+        dest.writeFloat(rating)
+        dest.writeInt(rank)
+        dest.writeInteger(previousRank)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -32,16 +42,6 @@ class RankedPlayer(
                     it.optInteger()
             )
         }
-    }
-
-    override val kind: Kind
-        get() = Kind.RANKED
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        super.writeToParcel(dest, flags)
-        dest.writeFloat(rating)
-        dest.writeInt(rank)
-        dest.writeInteger(previousRank)
     }
 
 }

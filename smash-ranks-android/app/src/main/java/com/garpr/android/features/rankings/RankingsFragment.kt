@@ -23,10 +23,10 @@ import kotlinx.android.synthetic.main.fragment_rankings.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
-        Refreshable, Searchable, SwipeRefreshLayout.OnRefreshListener {
+class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
+        RankingItemView.Listeners, Refreshable, Searchable, SwipeRefreshLayout.OnRefreshListener {
 
-    private val adapter = Adapter(this)
+    private val adapter = Adapter(this, this)
 
     private val viewModel: RankingsViewModel by sharedViewModel()
 
@@ -61,6 +61,16 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
                 DividerItemDecoration.VERTICAL))
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
+    }
+
+    override fun onClick(v: IdentityCardView) {
+        val intent = PlayerActivity.getLaunchIntent(
+                context = requireContext(),
+                player = v.identity,
+                region = regionRepository.getRegion(requireContext())
+        )
+
+        startActivity(intent)
     }
 
     override fun onClick(v: RankingItemView) {
@@ -140,25 +150,38 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
     }
 
     private class Adapter(
+            private val identityCardViewListener: IdentityCardView.Listener,
             private val rankingItemViewListeners: RankingItemView.Listeners
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val list = mutableListOf<ListItem>()
 
         companion object {
-            private const val VIEW_TYPE_NO_RESULTS = 0
-            private const val VIEW_TYPE_PLAYER = 1
+            private const val VIEW_TYPE_IDENTITY = 0
+            private const val VIEW_TYPE_NO_RESULTS = 1
+            private const val VIEW_TYPE_PLAYER = 2
         }
 
         init {
             setHasStableIds(true)
         }
 
+        private fun bindIdentity(holder: IdentityViewHolder, item: ListItem.Identity) {
+            holder.identityCardView.setContent(
+                    player = item.player,
+                    previousRank = item.previousRank,
+                    avatar = item.avatar,
+                    rank = item.rank,
+                    rating = item.rating,
+                    tag = item.tag
+            )
+        }
+
         private fun bindNoResults(holder: NoResultsViewHolder, item: ListItem.NoResults) {
             holder.noResultsItemView.setContent(item.query)
         }
 
-        private fun bindPlayer(holder: PlayerViewHolder, item: ListItem.Player) {
+        private fun bindRanking(holder: RankingViewHolder, item: ListItem.Player) {
             holder.rankingItemView.setContent(
                     player = item.player,
                     isIdentity = item.isIdentity,
@@ -183,6 +206,7 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
+                is ListItem.Identity -> VIEW_TYPE_IDENTITY
                 is ListItem.NoResults -> VIEW_TYPE_NO_RESULTS
                 is ListItem.Player -> VIEW_TYPE_PLAYER
             }
@@ -190,8 +214,9 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
+                is ListItem.Identity -> bindIdentity(holder as IdentityViewHolder, item)
                 is ListItem.NoResults -> bindNoResults(holder as NoResultsViewHolder, item)
-                is ListItem.Player -> bindPlayer(holder as PlayerViewHolder, item)
+                is ListItem.Player -> bindRanking(holder as RankingViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -200,9 +225,11 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
             val inflater = parent.layoutInflater
 
             return when (viewType) {
+                VIEW_TYPE_IDENTITY -> IdentityViewHolder(identityCardViewListener,
+                        inflater.inflate(R.layout.item_identity_card, parent, false))
                 VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
                         R.layout.item_no_results, parent, false))
-                VIEW_TYPE_PLAYER -> PlayerViewHolder(rankingItemViewListeners,
+                VIEW_TYPE_PLAYER -> RankingViewHolder(rankingItemViewListeners,
                         inflater.inflate(R.layout.item_ranking, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
             }
@@ -220,11 +247,22 @@ class RankingsFragment : BaseFragment(), ListLayout, RankingItemView.Listeners,
 
     }
 
+    private class IdentityViewHolder(
+            listener: IdentityCardView.Listener,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+        internal val identityCardView: IdentityCardView = itemView as IdentityCardView
+
+        init {
+            identityCardView.listener = listener
+        }
+    }
+
     private class NoResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal val noResultsItemView: NoResultsItemView = itemView as NoResultsItemView
     }
 
-    private class PlayerViewHolder(
+    private class RankingViewHolder(
             listeners: RankingItemView.Listeners,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {

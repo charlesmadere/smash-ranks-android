@@ -10,23 +10,33 @@
     android:paddingStart="@dimen/root_padding"
     android:paddingTop="@dimen/root_padding_half">
 
-    <com.garpr.android.features.common.views.PaletteSimpleDraweeView
-        android:contentDescription="@string/avatar"
-        android:elevation="@dimen/elevation_half"
-        android:id="@+id/avatar"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/avatarContainer"
         android:layout_gravity="center_horizontal"
-        android:layout_height="@dimen/avatar_size"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/root_padding_half"
         android:layout_marginTop="@dimen/root_padding"
-        android:layout_width="@dimen/avatar_size"
+        android:layout_width="wrap_content"
         android:visibility="gone"
-        app:actualImageScaleType="centerCrop"
-        app:failureImage="@drawable/avatar_placeholder"
-        app:failureImageScaleType="centerCrop"
-        app:placeholderImage="@drawable/avatar_placeholder"
-        app:placeholderImageScaleType="centerCrop"
-        app:roundAsCircle="true"
-        tools:visibility="visible" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="@dimen/avatar_corner_radius"
+        app:cardElevation="@dimen/elevation_half"
+        tools:visibility="visible">
+
+        <com.garpr.android.features.common.views.PaletteSimpleDraweeView
+            android:contentDescription="@string/avatar"
+            android:id="@+id/avatar"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_width="@dimen/avatar_size"
+            app:actualImageScaleType="centerCrop"
+            app:failureImage="@drawable/avatar_placeholder"
+            app:failureImageScaleType="centerCrop"
+            app:placeholderImage="@drawable/avatar_placeholder"
+            app:placeholderImageScaleType="centerCrop" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:ellipsize="end"
@@ -41,7 +51,7 @@
         android:lineSpacingExtra="-4dp"
         android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
-        app:autoSizeMaxTextSize="@dimen/text_size_xxxlarge"
+        app:autoSizeMaxTextSize="@dimen/text_size_xxxxlarge"
         app:autoSizeMinTextSize="@dimen/text_size_xlarge"
         app:autoSizeTextType="uniform"
         tools:text="Mang0" />
