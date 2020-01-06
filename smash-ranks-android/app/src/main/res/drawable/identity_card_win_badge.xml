@@ -6,6 +6,6 @@
         android:radius="@dimen/avatar_corner_radius" />
 
     <solid
-        android:color="@color/win" />
+        android:color="@color/win_badge_background" />
 
 </shape>

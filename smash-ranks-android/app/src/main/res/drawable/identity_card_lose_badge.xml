@@ -6,6 +6,6 @@
         android:radius="@dimen/avatar_corner_radius" />
 
     <solid
-        android:color="@color/lose" />
+        android:color="@color/lose_badge_background" />
 
 </shape>
