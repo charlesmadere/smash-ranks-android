@@ -15,19 +15,14 @@ class AddOrRemovePlayerFromFavoritesViewModel(
 
     private var player: FavoritePlayer? = null
 
-    private val _stateLiveData = MutableLiveData<State>()
-    val stateLiveData: LiveData<State> = _stateLiveData
-
     private var state: State = State()
         set(value) {
             field = value
             _stateLiveData.postValue(value)
         }
 
-    init {
-        // Kind of a dumb hack, but it ensures that something is being set to the LiveData.
-        state = State()
-    }
+    private val _stateLiveData = MutableLiveData<State>(state)
+    val stateLiveData: LiveData<State> = _stateLiveData
 
     fun addToFavorites() {
         val player = checkNotNull(this.player) { "initialize() was not called" }
