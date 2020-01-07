@@ -10,6 +10,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
 import com.garpr.android.features.settings.SettingsViewModel.IdentityState
+import com.garpr.android.features.settings.SettingsViewModel.RankingsPollingState
 import com.garpr.android.features.settings.SettingsViewModel.SmashRosterState
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
@@ -220,7 +221,7 @@ class SettingsViewModelTest : BaseTest() {
 
     @Test
     fun testInitialRankingsPollingState() {
-        var state: SettingsViewModel.RankingsPollingState? = null
+        var state: RankingsPollingState? = null
 
         viewModel.rankingsPollingStateLiveData.observeForever {
             state = it
@@ -324,6 +325,23 @@ class SettingsViewModelTest : BaseTest() {
 
         viewModel.setNightMode(NightMode.AUTO)
         assertEquals(NightMode.AUTO, nightMode)
+    }
+
+    @Test
+    fun testSetRankingsPollingIsWifiRequired() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(true, state?.isWifiRequired)
+
+        viewModel.setRankingsPollingIsWifiRequired(false)
+        assertEquals(false, state?.isWifiRequired)
+
+        viewModel.setRankingsPollingIsWifiRequired(true)
+        assertEquals(true, state?.isWifiRequired)
     }
 
     @Test
