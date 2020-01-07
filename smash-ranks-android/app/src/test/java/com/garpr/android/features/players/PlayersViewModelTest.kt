@@ -48,20 +48,20 @@ class PlayersViewModelTest : BaseTest() {
                 name = "Imyt"
         )
 
-        private val MIKKUZ: AbsPlayer = LitePlayer(
-                id = "583a4a15d2994e0577b05c74",
-                name = "mikkuz"
-        )
-
         private val SNAP: AbsPlayer = LitePlayer(
                 id = "59213f1ad2994e1d79144956",
                 name = "Snap"
         )
 
+        private val THREE_FOUR_THREE: AbsPlayer = LitePlayer(
+                id = "588999c5d2994e713ad63bb7",
+                name = "343"
+        )
+
         private val EMPTY_PLAYERS_BUNDLE = PlayersBundle()
 
         private val PLAYERS_BUNDLE = PlayersBundle(
-                players = listOf(CHARLEZARD, IMYT, MIKKUZ, SNAP)
+                players = listOf(CHARLEZARD, IMYT, SNAP, THREE_FOUR_THREE)
         )
 
         private val NORCAL = Region(
@@ -92,10 +92,31 @@ class PlayersViewModelTest : BaseTest() {
         assertEquals(false, state?.isEmpty)
         assertEquals(false, state?.isFetching)
         assertEquals(true, state?.showSearchIcon)
-        assertNotNull(state?.list)
+        assertEquals(8, state?.list?.size)
         assertNull(state?.searchResults)
 
-        // TODO
+        var letter = state?.list?.get(0) as PlayerListItem.Divider.Letter
+        assertEquals("C", letter.letter)
+
+        var player = state?.list?.get(1) as PlayerListItem.Player
+        assertEquals(CHARLEZARD, player.player)
+
+        letter = state?.list?.get(2) as PlayerListItem.Divider.Letter
+        assertEquals("I", letter.letter)
+
+        player = state?.list?.get(3) as PlayerListItem.Player
+        assertEquals(IMYT, player.player)
+
+        letter = state?.list?.get(4) as PlayerListItem.Divider.Letter
+        assertEquals("S", letter.letter)
+
+        player = state?.list?.get(5) as PlayerListItem.Player
+        assertEquals(SNAP, player.player)
+
+        assertTrue(state?.list?.get(6) is PlayerListItem.Divider.Digit)
+
+        player = state?.list?.get(7) as PlayerListItem.Player
+        assertEquals(THREE_FOUR_THREE, player.player)
     }
 
     @Test
