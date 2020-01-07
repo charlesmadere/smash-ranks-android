@@ -42,12 +42,28 @@ class SettingsActivity : BaseActivity() {
     override val activityName = TAG
 
     private fun initListeners() {
-        viewModel.rankingsPollingStateLiveData.observe(this, Observer {
-            refreshRankingsPollingState(it)
+        viewModel.favoritePlayersStateLiveData.observe(this, Observer { state ->
+            refreshFavoritePlayersState(state)
         })
 
-        viewModel.stateLiveData.observe(this, Observer {
-            refreshState(it)
+        viewModel.identityStateLiveData.observe(this, Observer { state ->
+            refreshIdentityState(state)
+        })
+
+        viewModel.nightModeLiveData.observe(this, Observer { nightMode ->
+            nightModePreference.setContent(nightMode)
+        })
+
+        viewModel.rankingsPollingStateLiveData.observe(this, Observer { state ->
+            refreshRankingsPollingState(state)
+        })
+
+        viewModel.regionLiveData.observe(this, Observer { region ->
+            regionPreference.setContent(region)
+        })
+
+        viewModel.smashRosterStateLiveData.observe(this, Observer { state ->
+            refreshSmashRosterState(state)
         })
     }
 
@@ -121,6 +137,23 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
+    private fun refreshFavoritePlayersState(state: FavoritePlayersState) {
+        when (state) {
+            is FavoritePlayersState.Fetched -> {
+                deleteFavoritePlayersPreference.setContent(state.size)
+            }
+
+            is FavoritePlayersState.Fetching -> deleteFavoritePlayersPreference.setLoading()
+        }
+    }
+
+    private fun refreshIdentityState(state: IdentityState) {
+        when (state) {
+            is IdentityState.Fetched -> identityPreference.setContent(state.identity)
+            is IdentityState.Fetching -> identityPreference.setLoading()
+        }
+    }
+
     private fun refreshRankingsPollingState(state: RankingsPollingState) {
         rankingsPollingEnabledPreference.isChecked = state.isEnabled
         rankingsPollingPollFrequencyPreference.setContent(state.pollFrequency)
@@ -135,27 +168,10 @@ class SettingsActivity : BaseActivity() {
         rankingsPollingChargingPreference.isEnabled = state.isEnabled
     }
 
-    private fun refreshState(state: SettingsViewModel.State) {
-        regionPreference.setContent(state.region)
-
-        when (state.identityState) {
-            is IdentityState.Fetched -> identityPreference.setContent(state.identityState.identity)
-            is IdentityState.Fetching -> identityPreference.setLoading()
-        }
-
-        nightModePreference.setContent(state.nightMode)
-
-        when (state.favoritePlayersState) {
-            is FavoritePlayersState.Fetched -> {
-                deleteFavoritePlayersPreference.setContent(state.favoritePlayersState.size)
-            }
-
-            is FavoritePlayersState.Fetching -> deleteFavoritePlayersPreference.setLoading()
-        }
-
-        when (state.smashRosterState) {
+    private fun refreshSmashRosterState(state: SmashRosterState) {
+        when (state) {
             is SmashRosterState.Fetched -> {
-                smashRosterPreference.setContent(state.smashRosterState.result)
+                smashRosterPreference.setContent(state.result)
             }
 
             is SmashRosterState.Fetching -> smashRosterPreference.setLoading()
