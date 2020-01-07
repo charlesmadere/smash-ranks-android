@@ -11,9 +11,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashRosterSyncResult
 import com.garpr.android.extensions.toURI
 import com.garpr.android.features.common.viewModels.BaseViewModel
-import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
@@ -31,9 +29,8 @@ class SettingsViewModel(
         private val regionRepository: RegionRepository,
         private val schedulers: Schedulers,
         private val smashRosterSyncManager: SmashRosterSyncManager,
-        private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), Refreshable {
+) : BaseViewModel() {
 
     private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>()
     val rankingsPollingStateLiveData: LiveData<RankingsPollingState> = _rankingsPollingStateLiveData
@@ -69,7 +66,6 @@ class SettingsViewModel(
 
     init {
         initListeners()
-        refresh()
     }
 
     fun deleteFavoritePlayers() {
@@ -117,15 +113,6 @@ class SettingsViewModel(
                 })
     }
 
-    override fun refresh() {
-        threadUtils.background.submit {
-            refreshNightMode()
-            refreshRankingsPollingState()
-            refreshRegion()
-            refreshSmashRosterState()
-        }
-    }
-
     @AnyThread
     private fun refreshFavoritePlayers(size: Int) {
         state = state.copy(favoritePlayersState = FavoritePlayersState.Fetched(size))
@@ -137,7 +124,7 @@ class SettingsViewModel(
     }
 
     @AnyThread
-    private fun refreshNightMode(nightMode: NightMode = nightModeRepository.nightMode) {
+    private fun refreshNightMode(nightMode: NightMode) {
         state = state.copy(nightMode = nightMode)
     }
 
@@ -154,20 +141,18 @@ class SettingsViewModel(
     }
 
     @AnyThread
-    private fun refreshRegion(region: Region = regionRepository.getRegion()) {
+    private fun refreshRegion(region: Region) {
         state = state.copy(region = region)
     }
 
     @WorkerThread
-    private fun refreshSmashRosterState(isSyncing: Boolean = smashRosterSyncManager.isSyncing) {
-        state = state.copy(smashRosterState = SmashRosterState.Fetching)
-
-        state = if (isSyncing) {
-            state.copy(smashRosterState = SmashRosterState.Syncing)
+    private fun refreshSmashRosterState(isSyncing: Boolean) {
+        state = state.copy(smashRosterState = if (isSyncing) {
+            SmashRosterState.Syncing
         } else {
             val result = smashRosterSyncManager.syncResult
-            state.copy(smashRosterState = SmashRosterState.Fetched(result))
-        }
+            SmashRosterState.Fetched(result)
+        })
     }
 
     fun setNightMode(nightMode: NightMode) {
