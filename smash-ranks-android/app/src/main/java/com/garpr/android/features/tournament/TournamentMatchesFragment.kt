@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.garpr.android.R
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.tournament.TournamentViewModel.MatchListItem
 import com.garpr.android.misc.ListLayout
+import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.fragment_tournament_matches.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchItemView.Listener {
@@ -20,6 +23,8 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
     private val adapter = Adapter(this)
 
     private val viewModel: TournamentViewModel by sharedViewModel()
+
+    protected val regionRepository: RegionRepository by inject()
 
     companion object {
         fun create(): TournamentMatchesFragment = TournamentMatchesFragment()
@@ -43,8 +48,11 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
     }
 
     override fun onClick(v: TournamentMatchItemView) {
-        val dialog = TournamentMatchDialogFragment.create(v.match)
-        dialog.show(childFragmentManager, TournamentMatchDialogFragment.TAG)
+        startActivity(HeadToHeadActivity.getLaunchIntent(
+                context = requireContext(),
+                match = v.match,
+                region = regionRepository.getRegion(requireContext())
+        ))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
