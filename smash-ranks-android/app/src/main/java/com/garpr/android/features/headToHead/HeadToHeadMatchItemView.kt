@@ -18,11 +18,6 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
 
-    private var _headToHeadMatch: HeadToHeadMatch? = null
-
-    val headToHeadMatch: HeadToHeadMatch
-        get() = checkNotNull(_headToHeadMatch)
-
     @ColorInt
     private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
 
@@ -47,7 +42,6 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
     }
 
     fun setContent(match: HeadToHeadMatch, playerIsIdentity: Boolean, opponentIsIdentity: Boolean) {
-        _headToHeadMatch = match
         playerName.text = match.player.name
         opponentName.text = match.opponent.name
 
