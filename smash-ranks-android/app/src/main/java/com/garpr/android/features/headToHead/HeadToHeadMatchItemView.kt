@@ -3,7 +3,6 @@ package com.garpr.android.features.headToHead
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.view.View
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -17,7 +16,7 @@ import kotlinx.android.synthetic.main.item_head_to_head_match.view.*
 class HeadToHeadMatchItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs), View.OnClickListener {
+) : ConstraintLayout(context, attrs) {
 
     private var _headToHeadMatch: HeadToHeadMatch? = null
 
@@ -33,15 +32,7 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
     @ColorInt
     private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
-    var listener: Listener? = null
-
-    interface Listener {
-        fun onClick(v: HeadToHeadMatchItemView)
-    }
-
     init {
-        setOnClickListener(this)
-
         if (isInEditMode) {
             setContent(
                     match = HeadToHeadMatch(
@@ -53,10 +44,6 @@ class HeadToHeadMatchItemView @JvmOverloads constructor(
                     opponentIsIdentity = false
             )
         }
-    }
-
-    override fun onClick(v: View) {
-        listener?.onClick(this)
     }
 
     fun setContent(match: HeadToHeadMatch, playerIsIdentity: Boolean, opponentIsIdentity: Boolean) {

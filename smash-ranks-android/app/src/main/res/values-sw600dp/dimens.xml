@@ -10,7 +10,6 @@
     <dimen name="root_padding_quadruple">72dp</dimen>
     <dimen name="root_padding_triple">54dp</dimen>
     <dimen name="splash_card_width">320dp</dimen>
-    <dimen name="wins_losses_graph_size">72dp</dimen>
     <dimen name="wins_losses_height">144dp</dimen>
 
 </resources>

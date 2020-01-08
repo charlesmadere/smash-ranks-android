@@ -114,6 +114,7 @@
     <string name="set_identity">Set Identity</string>
     <string name="set_region">Set Region</string>
     <string name="share">Share</string>
+    <string name="share_">Share…</string>
     <string name="share_rankings">Share rankings</string>
     <string name="share_tournaments">Share tournaments</string>
     <string name="share_x">Share %1$s</string>
@@ -154,6 +155,7 @@
     <string name="version_x">Version %1$s</string>
     <string name="vibrate">Vibrate</string>
     <string name="view">View</string>
+    <string name="view_">View…</string>
     <string name="view_all_players">View all players</string>
     <string name="view_logs">View logs</string>
     <string name="view_logs_description">Read logs normally only visible via Android\'s Logcat. Really only useful for debug purposes.</string>

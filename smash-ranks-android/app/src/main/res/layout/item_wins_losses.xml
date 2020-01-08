@@ -8,9 +8,12 @@
 
     <com.garpr.android.features.headToHead.WinsLossesGraphView
         android:id="@+id/winsLossesGraph"
-        android:layout_height="@dimen/wins_losses_graph_size"
-        android:layout_width="@dimen/wins_losses_graph_size"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/root_padding_double"
+        android:layout_marginTop="@dimen/root_padding_double"
+        android:layout_width="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +34,16 @@
         tools:text="PewPewU"
         style="@style/WinsLossesPlayerName" />
 
+    <View
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/playerSelectionArea"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerName"
+        app:layout_constraintEnd_toEndOf="@+id/playerWins"
+        app:layout_constraintStart_toStartOf="@+id/playerWins"
+        app:layout_constraintTop_toTopOf="@+id/playerWins" />
+
     <TextView
         android:id="@+id/opponentWins"
         app:layout_constraintBottom_toTopOf="@+id/opponentName"
@@ -46,5 +59,15 @@
         app:layout_constraintTop_toBottomOf="@+id/opponentWins"
         tools:text="Shroomed"
         style="@style/WinsLossesPlayerName" />
+
+    <View
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/opponentSelectionArea"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/opponentName"
+        app:layout_constraintEnd_toEndOf="@+id/opponentWins"
+        app:layout_constraintStart_toStartOf="@+id/opponentWins"
+        app:layout_constraintTop_toTopOf="@+id/opponentWins" />
 
 </com.garpr.android.features.headToHead.WinsLossesView>
