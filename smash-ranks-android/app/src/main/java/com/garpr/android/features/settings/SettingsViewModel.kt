@@ -40,7 +40,7 @@ class SettingsViewModel(
     private val _nightModeLiveData = MutableLiveData<NightMode>(nightModeRepository.nightMode)
     val nightModeLiveData: LiveData<NightMode> = _nightModeLiveData
 
-    private val _regionLiveData = MutableLiveData<Region>(regionRepository.getRegion())
+    private val _regionLiveData = MutableLiveData<Region>(regionRepository.region)
     val regionLiveData: LiveData<Region> = _regionLiveData
 
     private val _smashRosterStateLiveData = MutableLiveData<SmashRosterState>(SmashRosterState.Fetching)

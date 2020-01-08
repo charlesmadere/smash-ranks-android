@@ -73,13 +73,13 @@ class SplashScreenViewModelTest : BaseTest() {
         assertNotNull(state)
         assertEquals(false, state?.isSplashScreenComplete)
         assertNull(state?.identity)
-        assertEquals(regionRepository.getRegion(), state?.region)
+        assertEquals(regionRepository.region, state?.region)
 
         identityRepository.setIdentity(CHARLEZARD, NORCAL)
         assertNotNull(state)
         assertEquals(false, state?.isSplashScreenComplete)
         assertEquals(CHARLEZARD, state?.identity)
-        assertEquals(regionRepository.getRegion(), state?.region)
+        assertEquals(regionRepository.region, state?.region)
     }
 
     @Test
@@ -93,15 +93,15 @@ class SplashScreenViewModelTest : BaseTest() {
         assertNotNull(state)
         assertEquals(false, state?.isSplashScreenComplete)
         assertNull(state?.identity)
-        assertEquals(regionRepository.getRegion(), state?.region)
+        assertEquals(regionRepository.region, state?.region)
 
         identityRepository.setIdentity(IMYT, NORCAL)
         assertNotNull(state)
         assertEquals(false, state?.isSplashScreenComplete)
         assertEquals(IMYT, state?.identity)
-        assertEquals(regionRepository.getRegion(), state?.region)
+        assertEquals(regionRepository.region, state?.region)
 
-        regionRepository.setRegion(ATLANTA)
+        regionRepository.region = ATLANTA
         assertNotNull(state)
         assertEquals(false, state?.isSplashScreenComplete)
         assertEquals(IMYT, state?.identity)
@@ -125,9 +125,9 @@ class SplashScreenViewModelTest : BaseTest() {
         assertNotNull(state)
         assertEquals(false, state?.isSplashScreenComplete)
         assertNull(state?.identity)
-        assertEquals(regionRepository.getRegion(), state?.region)
+        assertEquals(regionRepository.region, state?.region)
 
-        regionRepository.setRegion(ATLANTA)
+        regionRepository.region = ATLANTA
         assertNotNull(state)
         assertEquals(false, state?.isSplashScreenComplete)
         assertNull(state?.identity)
@@ -157,13 +157,13 @@ class SplashScreenViewModelTest : BaseTest() {
         assertNotNull(state)
         assertEquals(false, state?.isSplashScreenComplete)
         assertNull(state?.identity)
-        assertEquals(regionRepository.getRegion(), state?.region)
+        assertEquals(regionRepository.region, state?.region)
 
         viewModel.setSplashScreenComplete()
         assertNotNull(state)
         assertEquals(true, state?.isSplashScreenComplete)
         assertNull(state?.identity)
-        assertEquals(regionRepository.getRegion(), state?.region)
+        assertEquals(regionRepository.region, state?.region)
     }
 
 }

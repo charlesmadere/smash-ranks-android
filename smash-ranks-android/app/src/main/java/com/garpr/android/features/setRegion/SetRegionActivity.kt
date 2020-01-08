@@ -17,7 +17,7 @@ import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.features.common.views.RegionSelectionItemView
 import com.garpr.android.features.setRegion.SetRegionViewModel.ListItem
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.misc.RegionHandleUtils
 import kotlinx.android.synthetic.main.activity_set_region.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,7 +29,7 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
 
     private val viewModel: SetRegionViewModel by viewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     companion object {
         private const val TAG = "SetRegionActivity"
@@ -103,7 +103,7 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
     override fun onViewsBound() {
         super.onViewsBound()
 
-        val region = regionRepository.getRegion(this)
+        val region = regionHandleUtils.getRegion(this)
         toolbar.subtitleText = getString(R.string.region_endpoint_format, region.displayName,
                 getText(region.endpoint.title))
         toolbar.listener = this

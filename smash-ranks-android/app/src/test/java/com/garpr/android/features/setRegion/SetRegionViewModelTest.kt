@@ -196,7 +196,7 @@ class SetRegionViewModelTest : BaseTest() {
         }
 
         assertNull(throwable)
-        assertEquals(CHICAGO, regionRepository.getRegion())
+        assertEquals(CHICAGO, regionRepository.region)
     }
 
     @Test
@@ -253,7 +253,7 @@ class SetRegionViewModelTest : BaseTest() {
         viewModel.selectedRegion = NEW_YORK_CITY
         assertTrue(viewModel.warnBeforeClose)
 
-        viewModel.selectedRegion = regionRepository.getRegion()
+        viewModel.selectedRegion = regionRepository.region
         assertFalse(viewModel.warnBeforeClose)
 
         viewModel.selectedRegion = GOOGLE_MTV

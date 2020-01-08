@@ -20,13 +20,13 @@ class RankingsRepositoryImpl(
         return serverApi.getRankings(region)
                 .subscribeOn(schedulers.background)
                 .doOnSubscribe {
-                    if (region == regionRepository.getRegion()) {
+                    if (region == regionRepository.region) {
                         notificationsManager.cancelRankingsUpdated()
                     }
                 }
-                .doOnSuccess {
-                    if (region == regionRepository.getRegion()) {
-                        rankingsPollingPreferenceStore.rankingsId.set(it.id)
+                .doOnSuccess { bundle ->
+                    if (region == regionRepository.region) {
+                        rankingsPollingPreferenceStore.rankingsId.set(bundle.id)
                     }
                 }
     }

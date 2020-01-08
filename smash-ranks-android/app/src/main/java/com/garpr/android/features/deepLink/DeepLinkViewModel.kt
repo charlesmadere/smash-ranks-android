@@ -127,9 +127,9 @@ class DeepLinkViewModel(
 
     @WorkerThread
     private fun createBreadcrumbs(regions: List<Region>): List<Breadcrumb> {
-        val currentRegion = regionRepository.getRegion()
-
+        val currentRegion = regionRepository.region
         val url = this.url
+
         if (url.isNullOrBlank()) {
             return emptyList()
         }
@@ -137,7 +137,8 @@ class DeepLinkViewModel(
         require(regions.isNotEmpty()) { "regions can't be empty" }
 
         val endpoint = Endpoint.values()
-                .firstOrNull { url.startsWith(it.basePath) } ?: return emptyList()
+                .firstOrNull { endpoint -> url.startsWith(endpoint.basePath) }
+                ?: return emptyList()
 
         val path = url.substring(endpoint.getWebPath().length, url.length)
 

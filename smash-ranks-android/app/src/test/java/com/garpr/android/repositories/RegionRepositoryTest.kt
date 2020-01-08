@@ -55,7 +55,7 @@ class RegionRepositoryTest : BaseTest() {
 
     @Test
     fun testInitialRegion() {
-        assertEquals(NORCAL, regionRepository.getRegion())
+        assertEquals(NORCAL, regionRepository.region)
     }
 
     @Test
@@ -68,26 +68,26 @@ class RegionRepositoryTest : BaseTest() {
 
         assertNull(value)
 
-        regionRepository.setRegion(NYC)
+        regionRepository.region = NYC
         assertEquals(NYC, value)
 
-        regionRepository.setRegion(GEORGIA)
+        regionRepository.region = GEORGIA
         assertEquals(GEORGIA, value)
     }
 
     @Test
     fun testSetRegionAndGetRegion() {
-        regionRepository.setRegion(ALABAMA)
-        assertEquals(ALABAMA, regionRepository.getRegion())
+        regionRepository.region = ALABAMA
+        assertEquals(ALABAMA, regionRepository.region)
 
-        regionRepository.setRegion(NORCAL)
-        assertEquals(NORCAL, regionRepository.getRegion())
+        regionRepository.region = NORCAL
+        assertEquals(NORCAL, regionRepository.region)
 
-        regionRepository.setRegion(GEORGIA)
-        assertEquals(GEORGIA, regionRepository.getRegion())
+        regionRepository.region = GEORGIA
+        assertEquals(GEORGIA, regionRepository.region)
 
-        regionRepository.setRegion(NYC)
-        assertEquals(NYC, regionRepository.getRegion())
+        regionRepository.region = NYC
+        assertEquals(NYC, regionRepository.region)
     }
 
 }

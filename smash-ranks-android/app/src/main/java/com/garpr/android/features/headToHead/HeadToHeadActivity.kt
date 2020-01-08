@@ -24,7 +24,7 @@ import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentDividerView
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.misc.RegionHandleUtils
 import kotlinx.android.synthetic.main.activity_head_to_head.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +38,7 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
 
     private val viewModel: HeadToHeadViewModel by viewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     companion object {
         private const val TAG = "HeadToHeadActivity"
@@ -85,7 +85,7 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
     override val activityName = TAG
 
     private fun fetchHeadToHead() {
-        viewModel.fetchHeadToHead(regionRepository.getRegion(this), playerId, opponentId)
+        viewModel.fetchHeadToHead(regionHandleUtils.getRegion(this), playerId, opponentId)
     }
 
     private fun initListeners() {
@@ -96,7 +96,7 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
 
     override fun onClick(v: TournamentDividerView) {
         startActivity(TournamentActivity.getLaunchIntent(this, v.tournament,
-                regionRepository.getRegion(this)))
+                regionHandleUtils.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +110,7 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
         startActivity(PlayerActivity.getLaunchIntent(
                 context = this,
                 player = v.opponent,
-                region = regionRepository.getRegion(this)
+                region = regionHandleUtils.getRegion(this)
         ))
     }
 
@@ -118,7 +118,7 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
         startActivity(PlayerActivity.getLaunchIntent(
                 context = this,
                 player = v.player,
-                region = regionRepository.getRegion(this)
+                region = regionHandleUtils.getRegion(this)
         ))
     }
 

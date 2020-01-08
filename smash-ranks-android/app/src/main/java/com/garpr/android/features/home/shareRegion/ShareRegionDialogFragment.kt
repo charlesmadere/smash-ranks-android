@@ -8,8 +8,8 @@ import androidx.lifecycle.Observer
 import com.garpr.android.R
 import com.garpr.android.features.common.fragments.dialogs.BaseBottomSheetDialogFragment
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.dialog_share_region.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -18,7 +18,7 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable {
 
     private val viewModel: ShareRegionViewModel by viewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
     protected val shareUtils: ShareUtils by inject()
 
     private val shareRankingsClickListener = View.OnClickListener {
@@ -62,7 +62,7 @@ class ShareRegionDialogFragment : BaseBottomSheetDialogFragment(), Refreshable {
     }
 
     override fun refresh() {
-        val region = regionRepository.getRegion(requireContext())
+        val region = regionHandleUtils.getRegion(context)
         dialogRegionRankings.text = getString(R.string.x_rankings_, region.displayName)
         dialogRegionTournaments.text = getString(R.string.x_tournaments_, region.displayName)
     }

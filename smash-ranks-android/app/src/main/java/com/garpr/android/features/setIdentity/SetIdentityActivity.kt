@@ -18,8 +18,8 @@ import com.garpr.android.features.common.views.NoResultsItemView
 import com.garpr.android.features.common.views.StringDividerView
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.misc.Searchable
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_set_identity.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,7 +31,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
 
     private val viewModel: SetIdentityViewModel by viewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     companion object {
         private const val TAG = "SetIdentityActivity"
@@ -42,7 +42,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
     override val activityName = TAG
 
     private fun fetchPlayers() {
-        viewModel.fetchPlayers(regionRepository.getRegion(this))
+        viewModel.fetchPlayers(regionHandleUtils.getRegion(this))
     }
 
     private fun initListeners() {
@@ -102,7 +102,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
     }
 
     override fun onSaveClick(v: SetIdentityToolbar) {
-        viewModel.saveSelectedIdentity(regionRepository.getRegion(this))
+        viewModel.saveSelectedIdentity(regionHandleUtils.getRegion(this))
         setResult(Activity.RESULT_OK)
         supportFinishAfterTransition()
     }
@@ -110,7 +110,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
     override fun onViewsBound() {
         super.onViewsBound()
 
-        val region = regionRepository.getRegion(this)
+        val region = regionHandleUtils.getRegion(this)
         toolbar.subtitleText = getString(R.string.region_endpoint_format, region.displayName,
                 getText(region.endpoint.title))
         toolbar.listener = this

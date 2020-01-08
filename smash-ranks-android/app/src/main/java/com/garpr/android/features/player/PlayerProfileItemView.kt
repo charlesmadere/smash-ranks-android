@@ -16,7 +16,7 @@ import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Heartbeat
 import com.garpr.android.misc.Refreshable
-import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.misc.RegionHandleUtils
 import kotlinx.android.synthetic.main.item_player_profile.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -65,7 +65,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
     private var smashCompetitor: SmashCompetitor? = null
 
     protected val playerProfileManager: PlayerProfileManager by inject()
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     interface Listeners : ColorListener {
         fun onCompareClick(v: PlayerProfileItemView)
@@ -110,7 +110,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
 
     override fun refresh() {
         val player = this.player ?: return
-        val region = regionRepository.getRegion(context)
+        val region = regionHandleUtils.getRegion(context)
         val presentation = playerProfileManager.getPresentation(region, isFavorited,
                 player, smashCompetitor)
         this.presentation = presentation

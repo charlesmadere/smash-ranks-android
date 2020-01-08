@@ -16,9 +16,9 @@ import com.garpr.android.features.players.PlayersActivity
 import com.garpr.android.features.rankings.RankingsViewModel
 import com.garpr.android.features.settings.SettingsActivity
 import com.garpr.android.features.tournaments.TournamentsViewModel
+import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
-import com.garpr.android.repositories.RegionRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.android.ext.android.inject
@@ -36,7 +36,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     private val rankingsViewModel: RankingsViewModel by viewModel()
     private val tournamentsViewModel: TournamentsViewModel by viewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     private var currentPage: HomeTab
         get() = HomeTab.values()[viewPager.currentItem]
@@ -88,7 +88,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         val dialog = ActivityRequirementsDialogFragment.create(
                 rankingCriteria.rankingActivityDayLimit,
                 rankingCriteria.rankingNumTourneysAttended,
-                regionRepository.getRegion(this).displayName)
+                regionHandleUtils.getRegion(this).displayName)
         dialog.show(supportFragmentManager, ActivityRequirementsDialogFragment.TAG)
     }
 

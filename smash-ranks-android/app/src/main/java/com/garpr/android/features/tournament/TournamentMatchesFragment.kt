@@ -13,7 +13,7 @@ import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.tournament.TournamentViewModel.MatchListItem
 import com.garpr.android.misc.ListLayout
-import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.misc.RegionHandleUtils
 import kotlinx.android.synthetic.main.fragment_tournament_matches.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -24,7 +24,7 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
 
     private val viewModel: TournamentViewModel by sharedViewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     companion object {
         fun create(): TournamentMatchesFragment = TournamentMatchesFragment()
@@ -51,7 +51,7 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
         startActivity(HeadToHeadActivity.getLaunchIntent(
                 context = requireContext(),
                 match = v.match,
-                region = regionRepository.getRegion(requireContext())
+                region = regionHandleUtils.getRegion(context)
         ))
     }
 

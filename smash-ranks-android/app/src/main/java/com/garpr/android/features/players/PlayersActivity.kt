@@ -19,8 +19,8 @@ import com.garpr.android.features.common.views.StringDividerView
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.misc.Searchable
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_players.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,7 +32,7 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
 
     private val viewModel: PlayersViewModel by viewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     companion object {
         private const val TAG = "PlayersActivity"
@@ -46,7 +46,7 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
     override val activityName = TAG
 
     private fun fetchPlayers() {
-        viewModel.fetchPlayers(regionRepository.getRegion(this))
+        viewModel.fetchPlayers(regionHandleUtils.getRegion(this))
     }
 
     private fun initListeners() {
@@ -64,13 +64,11 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
     }
 
     override fun onClick(v: PlayerItemView) {
-        val intent = PlayerActivity.getLaunchIntent(
+        startActivity(PlayerActivity.getLaunchIntent(
                 context = this,
                 player = v.player,
-                region = regionRepository.getRegion(this)
-        )
-
-        startActivity(intent)
+                region = regionHandleUtils.getRegion(this)
+        ))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,8 +79,10 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
     }
 
     override fun onLongClick(v: PlayerItemView) {
-        supportFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.player,
-                regionRepository.getRegion(this))
+        supportFragmentManager.showAddOrRemoveFavoritePlayerDialog(
+                player = v.player,
+                region = regionHandleUtils.getRegion(this)
+        )
     }
 
     override fun onRefresh() {
@@ -92,7 +92,7 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
     override fun onViewsBound() {
         super.onViewsBound()
 
-        toolbar.subtitleText = regionRepository.getRegion(this).displayName
+        toolbar.subtitleText = regionHandleUtils.getRegion(this).displayName
 
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)

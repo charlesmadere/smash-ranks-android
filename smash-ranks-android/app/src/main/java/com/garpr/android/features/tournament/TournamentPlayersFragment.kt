@@ -14,7 +14,7 @@ import com.garpr.android.features.common.fragments.BaseFragment
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.tournament.TournamentViewModel.PlayerListItem
 import com.garpr.android.misc.ListLayout
-import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.misc.RegionHandleUtils
 import kotlinx.android.synthetic.main.fragment_tournament_players.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -25,7 +25,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
 
     private val viewModel: TournamentViewModel by sharedViewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     companion object {
         fun create(): TournamentPlayersFragment = TournamentPlayersFragment()
@@ -52,7 +52,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
         val intent = PlayerActivity.getLaunchIntent(
                 context = requireContext(),
                 player = v.player,
-                region = regionRepository.getRegion(requireContext())
+                region = regionHandleUtils.getRegion(context)
         )
 
         startActivity(intent)
@@ -66,7 +66,7 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
 
     override fun onLongClick(v: TournamentPlayerItemView) {
         childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.player,
-                regionRepository.getRegion(requireContext()))
+                regionHandleUtils.getRegion(context))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

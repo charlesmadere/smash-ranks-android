@@ -88,7 +88,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithChicagoAndNorcalValidated2Tournament() {
-        regionRepository.setRegion(CHICAGO)
+        regionRepository.region = CHICAGO
         viewModel.initialize(TOURNAMENT_NORCAL_VALIDATED_2)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -127,7 +127,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNorcalAndEmptyString() {
-        regionRepository.setRegion(NORCAL)
+        regionRepository.region = NORCAL
         viewModel.initialize("")
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -154,7 +154,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNorcalAndNull() {
-        regionRepository.setRegion(NORCAL)
+        regionRepository.region = NORCAL
         viewModel.initialize(null)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -181,7 +181,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNorcalAndGeorgiaPlayers() {
-        regionRepository.setRegion(NORCAL)
+        regionRepository.region = NORCAL
         viewModel.initialize(PLAYERS_GEORGIA)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -211,7 +211,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNorcalAndGinger() {
-        regionRepository.setRegion(NORCAL)
+        regionRepository.region = NORCAL
         viewModel.initialize(PLAYER_GINGER)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -250,7 +250,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNorcalAndNorcalRankings() {
-        regionRepository.setRegion(NORCAL)
+        regionRepository.region = NORCAL
         viewModel.initialize(RANKINGS_NORCAL)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -282,7 +282,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNorcalAndNorcalTournaments() {
-        regionRepository.setRegion(NORCAL)
+        regionRepository.region = NORCAL
         viewModel.initialize(TOURNAMENTS_NORCAL)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -314,7 +314,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNorcalAndNycRankings() {
-        regionRepository.setRegion(NORCAL)
+        regionRepository.region = NORCAL
         viewModel.initialize(RANKINGS_NYC)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -349,7 +349,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNorcalAndSfat() {
-        regionRepository.setRegion(NORCAL)
+        regionRepository.region = NORCAL
         viewModel.initialize(PLAYER_SFAT)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -388,7 +388,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNycAndNorcalPlayers() {
-        regionRepository.setRegion(NYC)
+        regionRepository.region = NYC
         viewModel.initialize(PLAYERS_NORCAL)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -423,7 +423,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNycAndNycTournaments() {
-        regionRepository.setRegion(NYC)
+        regionRepository.region = NYC
         viewModel.initialize(TOURNAMENTS_NYC)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -455,7 +455,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNycAndNycApolloIiiTournament() {
-        regionRepository.setRegion(NYC)
+        regionRepository.region = NYC
         viewModel.initialize(TOURNAMENT_APOLLO_III)
 
         var breadcrumbs: List<Breadcrumb>? = null
@@ -491,7 +491,7 @@ class DeepLinkViewModelTest : BaseTest() {
 
     @Test
     fun testBreadcrumbsWithNycAndSwedishDelight() {
-        regionRepository.setRegion(NYC)
+        regionRepository.region = NYC
         viewModel.initialize(PLAYER_SWEDISH_DELIGHT)
 
         var breadcrumbs: List<Breadcrumb>? = null

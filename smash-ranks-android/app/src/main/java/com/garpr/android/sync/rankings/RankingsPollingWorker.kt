@@ -39,7 +39,7 @@ class RankingsPollingWorker(
         var info: NotificationInfo? = null
 
         try {
-            val rankingsBundle = serverApi.getRankings(regionRepository.getRegion())
+            val rankingsBundle = serverApi.getRankings(regionRepository.region)
                     .blockingGet()
 
             timber.d(TAG, "successfully polled rankings")
