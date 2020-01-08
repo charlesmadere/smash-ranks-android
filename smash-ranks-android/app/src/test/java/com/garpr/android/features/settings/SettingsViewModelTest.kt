@@ -8,6 +8,7 @@ import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
+import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
 import com.garpr.android.features.settings.SettingsViewModel.IdentityState
 import com.garpr.android.features.settings.SettingsViewModel.RankingsPollingState
@@ -115,6 +116,10 @@ class SettingsViewModelTest : BaseTest() {
                         tag = HAX.name
                 )
         )
+
+        // Ringtone URIs taken from Android using the debugger
+        private const val BEAT_BOX_ANDROID = "content://media/internal/audio/media/60"
+        private const val DEFAULT_NOTIFICATION_SOUND = "content://settings/system/notification_sound"
     }
 
     @Before
@@ -328,6 +333,57 @@ class SettingsViewModelTest : BaseTest() {
     }
 
     @Test
+    fun testSetRankingsPollingIsChargingRequired() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(false, state?.isChargingRequired)
+
+        viewModel.setRankingsPollingIsChargingRequired(true)
+        assertEquals(true, state?.isChargingRequired)
+
+        viewModel.setRankingsPollingIsChargingRequired(false)
+        assertEquals(false, state?.isChargingRequired)
+    }
+
+    @Test
+    fun testSetRankingsPollingIsEnabled() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(true, state?.isEnabled)
+
+        viewModel.setRankingsPollingIsEnabled(false)
+        assertEquals(false, state?.isEnabled)
+
+        viewModel.setRankingsPollingIsEnabled(true)
+        assertEquals(true, state?.isEnabled)
+    }
+
+    @Test
+    fun testSetRankingsPollingIsVibrationEnabled() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(false, state?.isVibrationEnabled)
+
+        viewModel.setRankingsPollingIsVibrationEnabled(true)
+        assertEquals(true, state?.isVibrationEnabled)
+
+        viewModel.setRankingsPollingIsVibrationEnabled(false)
+        assertEquals(false, state?.isVibrationEnabled)
+    }
+
+    @Test
     fun testSetRankingsPollingIsWifiRequired() {
         var state: RankingsPollingState? = null
 
@@ -342,6 +398,43 @@ class SettingsViewModelTest : BaseTest() {
 
         viewModel.setRankingsPollingIsWifiRequired(true)
         assertEquals(true, state?.isWifiRequired)
+    }
+
+    @Test
+    fun testSetRankingsPollingPollFrequency() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(PollFrequency.DAILY, state?.pollFrequency)
+
+        viewModel.setRankingsPollingPollFrequency(PollFrequency.EVERY_3_DAYS)
+        assertEquals(PollFrequency.EVERY_3_DAYS, state?.pollFrequency)
+
+        viewModel.setRankingsPollingPollFrequency(PollFrequency.EVERY_2_WEEKS)
+        assertEquals(PollFrequency.EVERY_2_WEEKS, state?.pollFrequency)
+    }
+
+    @Test
+    fun testSetRankingsPollingRingtoneUri() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertNull(state?.ringtoneUri)
+
+        viewModel.setRankingsPollingRingtoneUri(DEFAULT_NOTIFICATION_SOUND)
+        assertEquals(DEFAULT_NOTIFICATION_SOUND.toJavaUri(), state?.ringtoneUri)
+
+        viewModel.setRankingsPollingRingtoneUri(BEAT_BOX_ANDROID)
+        assertEquals(BEAT_BOX_ANDROID.toJavaUri(), state?.ringtoneUri)
+
+        viewModel.setRankingsPollingRingtoneUri(null)
+        assertNull(state?.ringtoneUri)
     }
 
     @Test

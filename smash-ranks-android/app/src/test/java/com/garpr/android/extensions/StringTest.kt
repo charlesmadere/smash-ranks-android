@@ -20,7 +20,7 @@ class StringTest {
 
     @Test
     fun testToURIWithArsTechnica() {
-        val uri = ARS_TECHNICA.toURI()
+        val uri = ARS_TECHNICA.toJavaUri()
         assertEquals("https", uri?.scheme)
         assertEquals("arstechnica.com", uri?.authority)
         assertEquals("arstechnica.com", uri?.host)
@@ -31,7 +31,7 @@ class StringTest {
 
     @Test
     fun testToURIWithBeatBoxAndroid() {
-        val uri = BEAT_BOX_ANDROID.toURI()
+        val uri = BEAT_BOX_ANDROID.toJavaUri()
         assertEquals("content", uri?.scheme)
         assertEquals("media", uri?.authority)
         assertEquals("media", uri?.host)
@@ -42,12 +42,12 @@ class StringTest {
 
     @Test
     fun testToURIWithBlank() {
-        assertNull(" ".toURI())
+        assertNull(" ".toJavaUri())
     }
 
     @Test
     fun testToURIWithDefaultNotificationSound() {
-        val uri = DEFAULT_NOTIFICATION_SOUND.toURI()
+        val uri = DEFAULT_NOTIFICATION_SOUND.toJavaUri()
         assertEquals("content", uri?.scheme)
         assertEquals("settings", uri?.authority)
         assertEquals("settings", uri?.host)
@@ -58,12 +58,12 @@ class StringTest {
 
     @Test
     fun testToURIWithEmpty() {
-        assertNull("".toURI())
+        assertNull("".toJavaUri())
     }
 
     @Test
     fun testToURIWithEndNote() {
-        val uri = END_NOTE.toURI()
+        val uri = END_NOTE.toJavaUri()
         assertEquals("content", uri?.scheme)
         assertEquals("media", uri?.authority)
         assertEquals("media", uri?.host)
@@ -74,7 +74,7 @@ class StringTest {
 
     @Test
     fun testToURIWithGoogle() {
-        val uri = GOOGLE.toURI()
+        val uri = GOOGLE.toJavaUri()
         assertEquals("https", uri?.scheme)
         assertEquals("www.google.com", uri?.authority)
         assertEquals("www.google.com", uri?.host)
@@ -85,7 +85,7 @@ class StringTest {
 
     @Test
     fun testToURIWithMagic() {
-        val uri = MAGIC.toURI()
+        val uri = MAGIC.toJavaUri()
         assertEquals("content", uri?.scheme)
         assertEquals("media", uri?.authority)
         assertEquals("media", uri?.host)
@@ -96,7 +96,7 @@ class StringTest {
 
     @Test
     fun testToURIWithNull() {
-        assertNull((null as String?).toURI())
+        assertNull((null as String?).toJavaUri())
     }
 
 }

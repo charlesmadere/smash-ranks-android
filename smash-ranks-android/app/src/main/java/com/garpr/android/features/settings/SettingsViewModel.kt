@@ -8,7 +8,7 @@ import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashRosterSyncResult
-import com.garpr.android.extensions.toURI
+import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
@@ -160,8 +160,8 @@ class SettingsViewModel(
         refreshRankingsPollingState()
     }
 
-    fun setRankingsPollingRingtone(ringtone: String?) {
-        rankingsPollingManager.ringtone = ringtone.toURI()
+    fun setRankingsPollingRingtoneUri(ringtone: String?) {
+        rankingsPollingManager.ringtone = ringtone.toJavaUri()
         refreshRankingsPollingState()
     }
 

@@ -180,8 +180,8 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun saveSmashRosterRingtone(data: Intent?) {
-        val ringtoneUri = data?.getParcelableExtra<AndroidUri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-        viewModel.setRankingsPollingRingtone(ringtoneUri?.toString())
+        val ringtoneUri: AndroidUri? = data?.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+        viewModel.setRankingsPollingRingtoneUri(ringtoneUri?.toString())
     }
 
     private val deleteFavoritePlayersListener = object : DeleteFavoritePlayersPreferenceView.Listener {

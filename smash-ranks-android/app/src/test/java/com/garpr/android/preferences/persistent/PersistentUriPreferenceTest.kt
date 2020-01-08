@@ -2,7 +2,7 @@ package com.garpr.android.preferences.persistent
 
 import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Optional
-import com.garpr.android.extensions.toURI
+import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
@@ -27,9 +27,9 @@ class PersistentUriPreferenceTest : BaseTest() {
 
     companion object {
         private const val TAG = "PersistentUriPreferenceTest"
-        private val AMAZON = "https://www.amazon.com/".toURI()
-        private val GOOGLE = "https://www.google.com/".toURI()
-        private val POLYGON = "https://www.polygon.com/best-games/2019/12/13/21002670/best-games-2019-ps4-pc-xbox-one-nintendo-switch-ios".toURI()
+        private val AMAZON = "https://www.amazon.com/".toJavaUri()
+        private val GOOGLE = "https://www.google.com/".toJavaUri()
+        private val POLYGON = "https://www.polygon.com/best-games/2019/12/13/21002670/best-games-2019-ps4-pc-xbox-one-nintendo-switch-ios".toJavaUri()
     }
 
     @Before
