@@ -13,7 +13,7 @@ data class MatchesBundle(
         @Json(name = "player") val player: AbsPlayer,
         @Json(name = "losses") val losses: Int = 0,
         @Json(name = "wins") val wins: Int = 0,
-        @Json(name = "matches") val matches: List<Match>? = null
+        @Json(name = "matches") val matches: List<TournamentMatch>? = null
 ) : Parcelable {
 
     companion object {
@@ -23,7 +23,7 @@ data class MatchesBundle(
                     it.requireAbsPlayer(),
                     it.readInt(),
                     it.readInt(),
-                    it.createTypedArrayList(Match.CREATOR)
+                    it.createTypedArrayList(TournamentMatch.CREATOR)
             )
         }
     }

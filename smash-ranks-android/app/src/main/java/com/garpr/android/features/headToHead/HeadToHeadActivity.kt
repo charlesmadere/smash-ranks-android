@@ -13,8 +13,8 @@ import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullTournament
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
@@ -56,7 +56,7 @@ class HeadToHeadActivity : BaseActivity(), HeadToHeadMatchItemView.Listener, Ref
             return getLaunchIntent(context, player.id, opponent.id, regionCopy)
         }
 
-        fun getLaunchIntent(context: Context, player: AbsPlayer, match: Match,
+        fun getLaunchIntent(context: Context, player: AbsPlayer, match: TournamentMatch,
                 region: Region? = null): Intent {
             var regionCopy = region
 

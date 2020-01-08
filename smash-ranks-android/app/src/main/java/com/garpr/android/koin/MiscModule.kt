@@ -3,9 +3,9 @@ package com.garpr.android.koin
 import com.garpr.android.data.converters.AbsPlayerConverter
 import com.garpr.android.data.converters.AbsRegionConverter
 import com.garpr.android.data.converters.AbsTournamentConverter
-import com.garpr.android.data.converters.MatchConverter
 import com.garpr.android.data.converters.RankedPlayerConverter
 import com.garpr.android.data.converters.SimpleDateConverter
+import com.garpr.android.data.converters.TournamentMatchConverter
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelper
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelperImpl
 import com.garpr.android.features.rankings.PreviousRankUtils
@@ -30,9 +30,9 @@ val miscModule = module {
                 .add(AbsPlayerConverter)
                 .add(AbsRegionConverter)
                 .add(AbsTournamentConverter)
-                .add(MatchConverter)
                 .add(RankedPlayerConverter)
                 .add(SimpleDateConverter)
+                .add(TournamentMatchConverter)
                 .add(KotlinJsonAdapterFactory()) // this has to be at the end
                 .build()
     }

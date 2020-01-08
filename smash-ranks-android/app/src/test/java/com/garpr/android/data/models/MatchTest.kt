@@ -13,7 +13,7 @@ import java.util.Collections
 class MatchTest : BaseTest() {
 
     companion object {
-        private val MATCH_0 = Match(
+        private val MATCH_0 = TournamentMatch(
                 result = MatchResult.WIN,
                 opponent = LitePlayer(
                         id = "588852e8d2994e3bbfa52dca",
@@ -34,7 +34,7 @@ class MatchTest : BaseTest() {
                 )
         )
 
-        private val MATCH_1 = Match(
+        private val MATCH_1 = TournamentMatch(
                 result = MatchResult.EXCLUDED,
                 opponent = LitePlayer(
                         id = "5877eb55d2994e15c7dea981",
@@ -55,7 +55,7 @@ class MatchTest : BaseTest() {
                 )
         )
 
-        private val MATCH_2 = Match(
+        private val MATCH_2 = TournamentMatch(
                 result = MatchResult.EXCLUDED,
                 opponent = LitePlayer(
                         id = "587a951dd2994e15c7deaa00",
@@ -80,7 +80,7 @@ class MatchTest : BaseTest() {
     @Test
     fun testChronologicalOrder() {
         val list = listOf(MATCH_0, MATCH_1, MATCH_2)
-        Collections.sort(list, Match.CHRONOLOGICAL_ORDER)
+        Collections.sort(list, TournamentMatch.CHRONOLOGICAL_ORDER)
 
         assertEquals(MATCH_0, list[0])
         assertEquals(MATCH_2, list[1])
@@ -108,7 +108,7 @@ class MatchTest : BaseTest() {
     @Test
     fun testReverseChronologicalOrder() {
         val list = listOf(MATCH_0, MATCH_1, MATCH_2)
-        Collections.sort(list, Match.REVERSE_CHRONOLOGICAL_ORDER)
+        Collections.sort(list, TournamentMatch.REVERSE_CHRONOLOGICAL_ORDER)
 
         assertEquals(MATCH_1, list[0])
         assertEquals(MATCH_2, list[1])

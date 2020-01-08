@@ -1,10 +1,10 @@
 package com.garpr.android.repositories
 
 import com.garpr.android.data.models.FullPlayer
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchesBundle
 import com.garpr.android.data.models.PlayerMatchesBundle
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.misc.Schedulers
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -28,7 +28,7 @@ class PlayerMatchesRepositoryImpl(
 
     private fun mergeResponses(fullPlayer: FullPlayer, matchesBundle: MatchesBundle): PlayerMatchesBundle {
         if (!matchesBundle.matches.isNullOrEmpty()) {
-            Collections.sort(matchesBundle.matches, Match.REVERSE_CHRONOLOGICAL_ORDER)
+            Collections.sort(matchesBundle.matches, TournamentMatch.REVERSE_CHRONOLOGICAL_ORDER)
         }
 
         return PlayerMatchesBundle(fullPlayer = fullPlayer, matchesBundle = matchesBundle)

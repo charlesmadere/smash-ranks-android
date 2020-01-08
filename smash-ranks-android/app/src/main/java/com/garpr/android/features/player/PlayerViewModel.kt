@@ -11,6 +11,7 @@ import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.PlayerMatchesBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
@@ -24,7 +25,6 @@ import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.Single
 import io.reactivex.functions.Function3
-import com.garpr.android.data.models.Match as GarPrMatch
 
 class PlayerViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
@@ -332,7 +332,7 @@ class PlayerViewModel(
 
         data class Match(
                 val isIdentity: Boolean,
-                val match: GarPrMatch
+                val match: TournamentMatch
         ) : ListItem() {
             override val listId: Long = match.hashCode().toLong()
         }

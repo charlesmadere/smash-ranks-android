@@ -10,8 +10,8 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsTournament
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.data.models.TournamentMode
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
@@ -61,7 +61,7 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
             return getLaunchIntent(context, tournament.id, region)
         }
 
-        fun getLaunchIntent(context: Context, match: Match, region: Region? = null): Intent {
+        fun getLaunchIntent(context: Context, match: TournamentMatch, region: Region? = null): Intent {
             return getLaunchIntent(context, match.tournament.id, region)
         }
 

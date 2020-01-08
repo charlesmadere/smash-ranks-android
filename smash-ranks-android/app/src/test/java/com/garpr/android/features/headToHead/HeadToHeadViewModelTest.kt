@@ -7,10 +7,10 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.HeadToHead
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.LiteTournament
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.features.headToHead.HeadToHeadViewModel.ListItem
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
@@ -83,17 +83,17 @@ class HeadToHeadViewModelTest : BaseTest() {
                 losses = 2,
                 wins = 1,
                 matches = listOf(
-                        Match(
+                        TournamentMatch(
                                 result = MatchResult.LOSE,
                                 opponent = MIKKUZ,
                                 tournament = MELEE_AT_THE_MADE_100
                         ),
-                        Match(
+                        TournamentMatch(
                                 result = MatchResult.LOSE,
                                 opponent = MIKKUZ,
                                 tournament = MELEE_AT_THE_MADE_100
                         ),
-                        Match(
+                        TournamentMatch(
                                 result = MatchResult.WIN,
                                 opponent = MIKKUZ,
                                 tournament = SUPER_GATOR_GAMES
