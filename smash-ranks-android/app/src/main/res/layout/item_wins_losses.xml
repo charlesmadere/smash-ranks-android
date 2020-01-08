@@ -35,7 +35,7 @@
         style="@style/WinsLossesPlayerName" />
 
     <View
-        android:background="?attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:id="@+id/playerSelectionArea"
         android:layout_height="0dp"
         android:layout_width="0dp"
@@ -61,7 +61,7 @@
         style="@style/WinsLossesPlayerName" />
 
     <View
-        android:background="?attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:id="@+id/opponentSelectionArea"
         android:layout_height="0dp"
         android:layout_width="0dp"
