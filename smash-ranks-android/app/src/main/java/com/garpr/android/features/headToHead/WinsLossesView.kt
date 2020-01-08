@@ -2,9 +2,10 @@ package com.garpr.android.features.headToHead
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View.OnClickListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.garpr.android.R
-import com.garpr.android.data.models.LitePlayer
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.extensions.getLong
 import com.garpr.android.misc.AnimationUtils
@@ -16,18 +17,45 @@ class WinsLossesView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
 
+    var _opponent: AbsPlayer? = null
+
+    val opponent: AbsPlayer
+        get() = checkNotNull(_opponent)
+
+    var _player: AbsPlayer? = null
+
+    val player: AbsPlayer
+        get() = checkNotNull(_player)
+
     private var hasAnimated = false
+    var listeners: Listeners? = null
+
+    private val opponentClickListener = OnClickListener {
+        listeners?.onOpponentClick(this)
+    }
+
+    private val playerClickListener = OnClickListener {
+        listeners?.onPlayerClick(this)
+    }
+
+    interface Listeners {
+        fun onOpponentClick(v: WinsLossesView)
+        fun onPlayerClick(v: WinsLossesView)
+    }
 
     companion object {
         private val NUMBER_FORMAT = NumberFormat.getIntegerInstance()
     }
 
-    init {
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
         if (isInEditMode) {
-            hasAnimated = true
-            setContent(WinsLosses(LitePlayer("0", "PewPewU"), 8,
-                    LitePlayer("1", "Shroomed"), 5))
+            return
         }
+
+        playerSelectionArea.setOnClickListener(playerClickListener)
+        opponentSelectionArea.setOnClickListener(opponentClickListener)
     }
 
     private fun performAnimation() {
@@ -41,9 +69,11 @@ class WinsLossesView @JvmOverloads constructor(
     }
 
     fun setContent(content: WinsLosses) {
+        _player = content.player
         playerName.text = content.player.name
         playerWins.text = NUMBER_FORMAT.format(content.playerWins)
 
+        _opponent = content.opponent
         opponentName.text = content.opponent.name
         opponentWins.text = NUMBER_FORMAT.format(content.opponentWins)
 

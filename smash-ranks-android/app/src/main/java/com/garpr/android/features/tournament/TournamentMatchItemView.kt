@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
-import com.garpr.android.data.models.FullTournament.Match
+import com.garpr.android.data.models.FullTournament
 import com.garpr.android.extensions.getAttrColor
 import kotlinx.android.synthetic.main.item_tournament_match.view.*
 
@@ -20,6 +20,11 @@ class TournamentMatchItemView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs), View.OnClickListener {
 
     private val originalBackground: Drawable? = background
+
+    private var _match: FullTournament.Match? = null
+
+    val match: FullTournament.Match
+        get() = checkNotNull(_match)
 
     @ColorInt
     private val exclusionColor: Int = context.getAttrColor(android.R.attr.textColorSecondary)
@@ -31,11 +36,6 @@ class TournamentMatchItemView @JvmOverloads constructor(
     private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
     var listener: Listener? = null
-
-    private var _match: Match? = null
-
-    val match: Match
-        get() = checkNotNull(_match)
 
     interface Listener {
         fun onClick(v: TournamentMatchItemView)
@@ -49,7 +49,7 @@ class TournamentMatchItemView @JvmOverloads constructor(
         listener?.onClick(this)
     }
 
-    fun setContent(match: Match, winnerIsIdentity: Boolean, loserIsIdentity: Boolean) {
+    fun setContent(match: FullTournament.Match, winnerIsIdentity: Boolean, loserIsIdentity: Boolean) {
         _match = match
 
         loserName.text = match.loserName

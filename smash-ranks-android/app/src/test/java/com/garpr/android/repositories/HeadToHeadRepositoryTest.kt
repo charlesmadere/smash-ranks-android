@@ -7,10 +7,10 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.HeadToHead
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.LiteTournament
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.AbsServerApi
 import io.reactivex.Single
@@ -71,13 +71,13 @@ class HeadToHeadRepositoryTest : BaseTest() {
                 name = "Melee @ the Made #100"
         )
 
-        private val MATCH_0 = Match(
+        private val MATCH_0 = TournamentMatch(
                 result = MatchResult.LOSE,
                 opponent = IMYT,
                 tournament = SUPER_GATOR_GAMES
         )
 
-        private val MATCH_1 = Match(
+        private val MATCH_1 = TournamentMatch(
                 result = MatchResult.LOSE,
                 opponent = IMYT,
                 tournament = MELEE_AT_THE_MADE_100

@@ -27,11 +27,11 @@ class SetRegionViewModel(
         get() = state.saveIconStatus == SaveIconStatus.ENABLED
 
     var selectedRegion: Region
-        get() = state.selectedRegion ?: regionRepository.getRegion()
+        get() = state.selectedRegion ?: regionRepository.region
         set(value) {
             val saveIconStatus = if (state.list.isNullOrEmpty()) {
                 SaveIconStatus.GONE
-            } else if (value == regionRepository.getRegion()) {
+            } else if (value == regionRepository.region) {
                 SaveIconStatus.DISABLED
             } else {
                 SaveIconStatus.ENABLED
@@ -122,7 +122,7 @@ class SetRegionViewModel(
                                 isFetching = false,
                                 isRefreshEnabled = false,
                                 list = list,
-                                selectedRegion = regionRepository.getRegion(),
+                                selectedRegion = regionRepository.region,
                                 saveIconStatus = SaveIconStatus.DISABLED
                         )
                     }
@@ -135,11 +135,11 @@ class SetRegionViewModel(
     fun saveSelectedRegion() {
         val region = selectedRegion
 
-        check(region != regionRepository.getRegion()) {
+        require(region != regionRepository.region) {
             "region is the same as the user's current region!"
         }
 
-        regionRepository.setRegion(region)
+        regionRepository.region = region
     }
 
     sealed class ListItem {

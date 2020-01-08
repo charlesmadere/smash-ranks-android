@@ -25,7 +25,7 @@ class SplashScreenViewModel(
 
     private var state: State = State(
             isSplashScreenComplete = generalPreferenceStore.hajimeteKimasu.get() == false,
-            region = regionRepository.getRegion()
+            region = regionRepository.region
     )
         set(value) {
             field = value

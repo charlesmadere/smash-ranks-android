@@ -1,7 +1,6 @@
 package com.garpr.android.features.settings
 
 import androidx.annotation.AnyThread
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.garpr.android.data.models.FavoritePlayer
@@ -9,11 +8,9 @@ import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashRosterSyncResult
-import com.garpr.android.extensions.toURI
+import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.features.common.viewModels.BaseViewModel
-import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
@@ -31,15 +28,23 @@ class SettingsViewModel(
         private val regionRepository: RegionRepository,
         private val schedulers: Schedulers,
         private val smashRosterSyncManager: SmashRosterSyncManager,
-        private val threadUtils: ThreadUtils,
         private val timber: Timber
-) : BaseViewModel(), Refreshable {
+) : BaseViewModel() {
 
-    private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>()
-    val rankingsPollingStateLiveData: LiveData<RankingsPollingState> = _rankingsPollingStateLiveData
+    private val _favoritePlayersStateLiveData = MutableLiveData<FavoritePlayersState>(FavoritePlayersState.Fetching)
+    val favoritePlayersStateLiveData: LiveData<FavoritePlayersState> = _favoritePlayersStateLiveData
 
-    private val _stateLiveData = MutableLiveData<State>()
-    val stateLiveData: LiveData<State> = _stateLiveData
+    private val _identityStateLiveData = MutableLiveData<IdentityState>(IdentityState.Fetching)
+    val identityStateLiveData: LiveData<IdentityState> = _identityStateLiveData
+
+    private val _nightModeLiveData = MutableLiveData<NightMode>(nightModeRepository.nightMode)
+    val nightModeLiveData: LiveData<NightMode> = _nightModeLiveData
+
+    private val _regionLiveData = MutableLiveData<Region>(regionRepository.region)
+    val regionLiveData: LiveData<Region> = _regionLiveData
+
+    private val _smashRosterStateLiveData = MutableLiveData<SmashRosterState>(SmashRosterState.Fetching)
+    val smashRosterStateLiveData: LiveData<SmashRosterState> = _smashRosterStateLiveData
 
     private var rankingsPollingState: RankingsPollingState = RankingsPollingState(
             isChargingRequired = rankingsPollingManager.isChargingRequired,
@@ -54,14 +59,8 @@ class SettingsViewModel(
             _rankingsPollingStateLiveData.postValue(value)
         }
 
-    private var state: State = State(
-            nightMode = nightModeRepository.nightMode,
-            region = regionRepository.getRegion()
-    )
-        set(value) {
-            field = value
-            _stateLiveData.postValue(value)
-        }
+    private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>(rankingsPollingState)
+    val rankingsPollingStateLiveData: LiveData<RankingsPollingState> = _rankingsPollingStateLiveData
 
     companion object {
         private const val TAG = "SettingsViewModel"
@@ -69,7 +68,6 @@ class SettingsViewModel(
 
     init {
         initListeners()
-        refresh()
     }
 
     fun deleteFavoritePlayers() {
@@ -85,60 +83,40 @@ class SettingsViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { size ->
-                    refreshFavoritePlayers(size)
+                    _favoritePlayersStateLiveData.postValue(FavoritePlayersState.Fetched(size))
                 })
 
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { identity ->
-                    refreshIdentity(identity.item)
+                    _identityStateLiveData.postValue(IdentityState.Fetched(identity.item))
                 })
 
         disposables.add(nightModeRepository.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { nightMode ->
-                    refreshNightMode(nightMode)
+                    _nightModeLiveData.postValue(nightMode)
                 })
 
         disposables.add(regionRepository.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { region ->
-                    refreshRegion(region)
+                    _regionLiveData.postValue(region)
                 })
 
         disposables.add(smashRosterSyncManager.isSyncingObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { isSyncing ->
-                    refreshSmashRosterState(isSyncing)
+                    _smashRosterStateLiveData.postValue(if (isSyncing) {
+                        SmashRosterState.Syncing
+                    } else {
+                        SmashRosterState.Fetched(smashRosterSyncManager.syncResult)
+                    })
                 })
-    }
-
-    override fun refresh() {
-        threadUtils.background.submit {
-            refreshNightMode()
-            refreshRankingsPollingState()
-            refreshRegion()
-            refreshSmashRosterState()
-        }
-    }
-
-    @AnyThread
-    private fun refreshFavoritePlayers(size: Int) {
-        state = state.copy(favoritePlayersState = FavoritePlayersState.Fetched(size))
-    }
-
-    @AnyThread
-    private fun refreshIdentity(identity: FavoritePlayer?) {
-        state = state.copy(identityState = IdentityState.Fetched(identity))
-    }
-
-    @AnyThread
-    private fun refreshNightMode(nightMode: NightMode = nightModeRepository.nightMode) {
-        state = state.copy(nightMode = nightMode)
     }
 
     @AnyThread
@@ -151,23 +129,6 @@ class SettingsViewModel(
                 pollFrequency = rankingsPollingManager.pollFrequency,
                 ringtoneUri = rankingsPollingManager.ringtone
         )
-    }
-
-    @AnyThread
-    private fun refreshRegion(region: Region = regionRepository.getRegion()) {
-        state = state.copy(region = region)
-    }
-
-    @WorkerThread
-    private fun refreshSmashRosterState(isSyncing: Boolean = smashRosterSyncManager.isSyncing) {
-        state = state.copy(smashRosterState = SmashRosterState.Fetching)
-
-        state = if (isSyncing) {
-            state.copy(smashRosterState = SmashRosterState.Syncing)
-        } else {
-            val result = smashRosterSyncManager.syncResult
-            state.copy(smashRosterState = SmashRosterState.Fetched(result))
-        }
     }
 
     fun setNightMode(nightMode: NightMode) {
@@ -199,8 +160,8 @@ class SettingsViewModel(
         refreshRankingsPollingState()
     }
 
-    fun setRankingsPollingRingtone(ringtone: String?) {
-        rankingsPollingManager.ringtone = ringtone.toURI()
+    fun setRankingsPollingRingtoneUri(ringtone: String?) {
+        rankingsPollingManager.ringtone = ringtone.toJavaUri()
         refreshRankingsPollingState()
     }
 
@@ -255,13 +216,5 @@ class SettingsViewModel(
         object Fetching : SmashRosterState()
         object Syncing : SmashRosterState()
     }
-
-    data class State(
-            val identityState: IdentityState = IdentityState.Fetching,
-            val favoritePlayersState: FavoritePlayersState = FavoritePlayersState.Fetching,
-            val nightMode: NightMode,
-            val region: Region,
-            val smashRosterState: SmashRosterState = SmashRosterState.Fetching
-    )
 
 }

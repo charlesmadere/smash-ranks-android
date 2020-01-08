@@ -8,11 +8,12 @@ import com.garpr.android.data.models.NightMode
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
+import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
 import com.garpr.android.features.settings.SettingsViewModel.IdentityState
+import com.garpr.android.features.settings.SettingsViewModel.RankingsPollingState
 import com.garpr.android.features.settings.SettingsViewModel.SmashRosterState
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.repositories.FavoritePlayersRepository
@@ -50,7 +51,6 @@ class SettingsViewModelTest : BaseTest() {
     protected val schedulers: Schedulers by inject()
     protected val smashRosterPreferenceStore: SmashRosterPreferenceStore by inject()
     protected val smashRosterStorage: SmashRosterStorage by inject()
-    protected val threadUtils: ThreadUtils by inject()
     protected val timber: Timber by inject()
     protected val workManagerWrapper: WorkManagerWrapper by inject()
 
@@ -116,6 +116,10 @@ class SettingsViewModelTest : BaseTest() {
                         tag = HAX.name
                 )
         )
+
+        // Ringtone URIs taken from Android using the debugger
+        private const val BEAT_BOX_ANDROID = "content://media/internal/audio/media/60"
+        private const val DEFAULT_NOTIFICATION_SOUND = "content://settings/system/notification_sound"
     }
 
     @Before
@@ -128,7 +132,7 @@ class SettingsViewModelTest : BaseTest() {
 
         viewModel = SettingsViewModel(favoritePlayersRepository, identityRepository,
                 nightModeRepository, rankingsPollingManager, regionRepository, schedulers,
-                smashRosterSyncManager, threadUtils, timber)
+                smashRosterSyncManager, timber)
     }
 
     @Test
@@ -140,8 +144,8 @@ class SettingsViewModelTest : BaseTest() {
 
         val states = mutableListOf<FavoritePlayersState>()
 
-        viewModel.stateLiveData.observeForever {
-            states.add(it.favoritePlayersState)
+        viewModel.favoritePlayersStateLiveData.observeForever {
+            states.add(it)
         }
 
         assertEquals(1, states.size)
@@ -157,61 +161,72 @@ class SettingsViewModelTest : BaseTest() {
     fun testDeleteAllFavoritePlayersWithEmptyFavoritesRepository() {
         val states = mutableListOf<FavoritePlayersState>()
 
-        viewModel.stateLiveData.observeForever {
-            states.add(it.favoritePlayersState)
+        viewModel.favoritePlayersStateLiveData.observeForever {
+            states.add(it)
         }
 
         assertEquals(1, states.size)
-        var state = states[0] as? FavoritePlayersState.Fetched
-        assertEquals(0, state?.size)
+        var state = states[0] as FavoritePlayersState.Fetched
+        assertEquals(0, state.size)
 
         viewModel.deleteFavoritePlayers()
         assertEquals(2, states.size)
-        state = states[1] as? FavoritePlayersState.Fetched
-        assertEquals(0, state?.size)
+        state = states[1] as FavoritePlayersState.Fetched
+        assertEquals(0, state.size)
     }
 
     @Test
     fun testDeleteIdentityWithCharlezardAsIdentity() {
         identityRepository.setIdentity(CHARLEZARD, NORCAL)
 
-        var state: SettingsViewModel.State? = null
+        val states = mutableListOf<IdentityState>()
 
-        viewModel.stateLiveData.observeForever {
-            state = it
+        viewModel.identityStateLiveData.observeForever {
+            states.add(it)
         }
 
-        assertNotNull(state)
-        assertTrue(state?.identityState is IdentityState.Fetched)
-        assertEquals(CHARLEZARD, (state?.identityState as IdentityState.Fetched).identity)
+        assertEquals(1, states.size)
+        var state = states[0] as IdentityState.Fetched
+        assertEquals(CHARLEZARD, state.identity)
 
         viewModel.deleteIdentity()
-        assertNotNull(state)
-        assertTrue(state?.identityState is IdentityState.Fetched)
-        assertNull((state?.identityState as IdentityState.Fetched).identity)
+        assertEquals(2, states.size)
+        state = states[1] as IdentityState.Fetched
+        assertNull(state.identity)
     }
 
     @Test
     fun testDeleteIdentityWithNoIdentity() {
-        var state: SettingsViewModel.State? = null
+        val states = mutableListOf<IdentityState>()
 
-        viewModel.stateLiveData.observeForever {
-            state = it
+        viewModel.identityStateLiveData.observeForever {
+            states.add(it)
         }
 
-        assertNotNull(state)
-        assertTrue(state?.identityState is IdentityState.Fetched)
-        assertNull((state?.identityState as IdentityState.Fetched).identity)
+        assertEquals(1, states.size)
+        var state = states[0] as IdentityState.Fetched
+        assertNull(state.identity)
 
         viewModel.deleteIdentity()
-        assertNotNull(state)
-        assertTrue(state?.identityState is IdentityState.Fetched)
-        assertNull((state?.identityState as IdentityState.Fetched).identity)
+        assertEquals(2, states.size)
+        state = states[1] as IdentityState.Fetched
+        assertNull(state.identity)
+    }
+
+    @Test
+    fun testInitialNightMode() {
+        var nightMode: NightMode? = null
+
+        viewModel.nightModeLiveData.observeForever {
+            nightMode = it
+        }
+
+        assertEquals(NightMode.SYSTEM, nightMode)
     }
 
     @Test
     fun testInitialRankingsPollingState() {
-        var state: SettingsViewModel.RankingsPollingState? = null
+        var state: RankingsPollingState? = null
 
         viewModel.rankingsPollingStateLiveData.observeForever {
             state = it
@@ -227,70 +242,207 @@ class SettingsViewModelTest : BaseTest() {
     }
 
     @Test
-    fun testInitialState() {
-        favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
-        favoritePlayersRepository.addPlayer(IMYT, NORCAL)
-        favoritePlayersRepository.addPlayer(MIKKUZ, NORCAL)
-        favoritePlayersRepository.addPlayer(SNAP, NORCAL)
-        identityRepository.setIdentity(CHARLEZARD, NORCAL)
+    fun testInitialRegion() {
+        var region: Region? = null
 
-        var state: SettingsViewModel.State? = null
-
-        viewModel.stateLiveData.observeForever {
-            state = it
+        viewModel.regionLiveData.observeForever {
+            region = it
         }
 
-        assertNotNull(state)
-        assertTrue(state?.identityState is IdentityState.Fetched)
-        assertEquals(CHARLEZARD, (state?.identityState as IdentityState.Fetched).identity)
-        assertTrue(state?.favoritePlayersState is FavoritePlayersState.Fetched)
-        assertEquals(4, (state?.favoritePlayersState as FavoritePlayersState.Fetched).size)
-        assertEquals(nightModeRepository.nightMode, state?.nightMode)
-        assertEquals(regionRepository.getRegion(), state?.region)
-        assertTrue(state?.smashRosterState is SmashRosterState.Fetched)
-        assertNull((state?.smashRosterState as SmashRosterState.Fetched).result)
+        assertEquals(NORCAL, region)
     }
 
     @Test
-    fun testInitialStateWithEmptyFavoritePlayersRepositoryAndNoIdentity() {
-        var state: SettingsViewModel.State? = null
+    fun testInitialFavoritePlayersState() {
+        favoritePlayersRepository.addPlayer(IMYT, NORCAL)
+        favoritePlayersRepository.addPlayer(SNAP, NORCAL)
 
-        viewModel.stateLiveData.observeForever {
-            state = it
+        val states = mutableListOf<FavoritePlayersState>()
+
+        viewModel.favoritePlayersStateLiveData.observeForever {
+            states.add(it)
         }
 
-        assertNotNull(state)
-        assertTrue(state?.identityState is IdentityState.Fetched)
-        assertNull((state?.identityState as IdentityState.Fetched).identity)
-        assertTrue(state?.favoritePlayersState is FavoritePlayersState.Fetched)
-        assertEquals(0, (state?.favoritePlayersState as FavoritePlayersState.Fetched).size)
-        assertEquals(nightModeRepository.nightMode, state?.nightMode)
-        assertEquals(regionRepository.getRegion(), state?.region)
-        assertTrue(state?.smashRosterState is SmashRosterState.Fetched)
-        assertNull((state?.smashRosterState as SmashRosterState.Fetched).result)
+        assertEquals(1, states.size)
+        assertEquals(2, (states[0] as FavoritePlayersState.Fetched).size)
+    }
+
+    @Test
+    fun testInitialFavoritePlayersStateWithNoFavoritePlayers() {
+        val states = mutableListOf<FavoritePlayersState>()
+
+        viewModel.favoritePlayersStateLiveData.observeForever {
+            states.add(it)
+        }
+
+        assertEquals(1, states.size)
+        assertEquals(0, (states[0] as FavoritePlayersState.Fetched).size)
+    }
+
+    @Test
+    fun testInitialIdentityStateWithMikkuzAsIdentity() {
+        identityRepository.setIdentity(MIKKUZ, NORCAL)
+
+        val states = mutableListOf<IdentityState>()
+
+        viewModel.identityStateLiveData.observeForever {
+            states.add(it)
+        }
+
+        assertEquals(1, states.size)
+        assertEquals(MIKKUZ, (states[0] as IdentityState.Fetched).identity)
+    }
+
+    @Test
+    fun testInitialIdentityStateWithNoIdentity() {
+        val states = mutableListOf<IdentityState>()
+
+        viewModel.identityStateLiveData.observeForever {
+            states.add(it)
+        }
+
+        assertEquals(1, states.size)
+        assertNull((states[0] as IdentityState.Fetched).identity)
+    }
+
+    @Test
+    fun testInitialSmashRosterState() {
+        val states = mutableListOf<SmashRosterState>()
+
+        viewModel.smashRosterStateLiveData.observeForever {
+            states.add(it)
+        }
+
+        assertEquals(1, states.size)
+        assertNull((states[0] as SmashRosterState.Fetched).result)
     }
 
     @Test
     fun testSetNightMode() {
-        var state: SettingsViewModel.State? = null
+        var nightMode: NightMode? = null
 
-        viewModel.stateLiveData.observeForever {
-            state = it
+        viewModel.nightModeLiveData.observeForever {
+            nightMode = it
         }
 
         viewModel.setNightMode(NightMode.NIGHT_YES)
-        assertEquals(NightMode.NIGHT_YES, state?.nightMode)
+        assertEquals(NightMode.NIGHT_YES, nightMode)
 
         viewModel.setNightMode(NightMode.AUTO)
-        assertEquals(NightMode.AUTO, state?.nightMode)
+        assertEquals(NightMode.AUTO, nightMode)
+    }
+
+    @Test
+    fun testSetRankingsPollingIsChargingRequired() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(false, state?.isChargingRequired)
+
+        viewModel.setRankingsPollingIsChargingRequired(true)
+        assertEquals(true, state?.isChargingRequired)
+
+        viewModel.setRankingsPollingIsChargingRequired(false)
+        assertEquals(false, state?.isChargingRequired)
+    }
+
+    @Test
+    fun testSetRankingsPollingIsEnabled() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(true, state?.isEnabled)
+
+        viewModel.setRankingsPollingIsEnabled(false)
+        assertEquals(false, state?.isEnabled)
+
+        viewModel.setRankingsPollingIsEnabled(true)
+        assertEquals(true, state?.isEnabled)
+    }
+
+    @Test
+    fun testSetRankingsPollingIsVibrationEnabled() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(false, state?.isVibrationEnabled)
+
+        viewModel.setRankingsPollingIsVibrationEnabled(true)
+        assertEquals(true, state?.isVibrationEnabled)
+
+        viewModel.setRankingsPollingIsVibrationEnabled(false)
+        assertEquals(false, state?.isVibrationEnabled)
+    }
+
+    @Test
+    fun testSetRankingsPollingIsWifiRequired() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(true, state?.isWifiRequired)
+
+        viewModel.setRankingsPollingIsWifiRequired(false)
+        assertEquals(false, state?.isWifiRequired)
+
+        viewModel.setRankingsPollingIsWifiRequired(true)
+        assertEquals(true, state?.isWifiRequired)
+    }
+
+    @Test
+    fun testSetRankingsPollingPollFrequency() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertEquals(PollFrequency.DAILY, state?.pollFrequency)
+
+        viewModel.setRankingsPollingPollFrequency(PollFrequency.EVERY_3_DAYS)
+        assertEquals(PollFrequency.EVERY_3_DAYS, state?.pollFrequency)
+
+        viewModel.setRankingsPollingPollFrequency(PollFrequency.EVERY_2_WEEKS)
+        assertEquals(PollFrequency.EVERY_2_WEEKS, state?.pollFrequency)
+    }
+
+    @Test
+    fun testSetRankingsPollingRingtoneUri() {
+        var state: RankingsPollingState? = null
+
+        viewModel.rankingsPollingStateLiveData.observeForever {
+            state = it
+        }
+
+        assertNull(state?.ringtoneUri)
+
+        viewModel.setRankingsPollingRingtoneUri(DEFAULT_NOTIFICATION_SOUND)
+        assertEquals(DEFAULT_NOTIFICATION_SOUND.toJavaUri(), state?.ringtoneUri)
+
+        viewModel.setRankingsPollingRingtoneUri(BEAT_BOX_ANDROID)
+        assertEquals(BEAT_BOX_ANDROID.toJavaUri(), state?.ringtoneUri)
+
+        viewModel.setRankingsPollingRingtoneUri(null)
+        assertNull(state?.ringtoneUri)
     }
 
     @Test
     fun testSyncSmashRoster() {
         val states = mutableListOf<SmashRosterState>()
 
-        viewModel.stateLiveData.observeForever {
-            states.add(it.smashRosterState)
+        viewModel.smashRosterStateLiveData.observeForever {
+            states.add(it)
         }
 
         assertEquals(1, states.size)
@@ -300,20 +452,18 @@ class SettingsViewModelTest : BaseTest() {
         assertNull(fetchedState?.result)
 
         viewModel.syncSmashRoster()
-        assertEquals(5, states.size)
-        assertTrue(states[1] is SmashRosterState.Fetching)
-        assertTrue(states[2] is SmashRosterState.Syncing)
-        assertTrue(states[3] is SmashRosterState.Fetching)
+        assertEquals(3, states.size)
+        assertTrue(states[1] is SmashRosterState.Syncing)
 
-        fetchedState = states[4] as? SmashRosterState.Fetched
-        assertNotNull(fetchedState)
-        assertEquals(true, fetchedState?.result?.success)
+        fetchedState = states[2] as SmashRosterState.Fetched
+        assertEquals(true, fetchedState.result?.success)
     }
 
     private class SmashRosterRepositoryOverride(
             internal var garPrRoster: Map<String, SmashCompetitor>? = GAR_PR_ROSTER,
             internal var notGarPrRoster: Map<String, SmashCompetitor>? = NOT_GAR_PR_ROSTER
     ) : SmashRosterRepository {
+
         override fun getSmashRoster(endpoint: Endpoint): Single<Map<String, SmashCompetitor>> {
             val roster = when (endpoint) {
                 Endpoint.GAR_PR -> garPrRoster
@@ -326,6 +476,7 @@ class SettingsViewModelTest : BaseTest() {
                 Single.just(roster)
             }
         }
+
     }
 
 }

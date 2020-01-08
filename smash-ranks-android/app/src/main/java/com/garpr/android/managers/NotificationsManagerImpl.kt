@@ -25,12 +25,6 @@ class NotificationsManagerImpl(
         private val timber: Timber
 ) : NotificationsManager {
 
-    companion object {
-        private const val RANKINGS_CHANNEL = "rankings"
-        private const val RANKINGS_ID = 1001
-        private const val TAG = "NotificationsManagerImpl"
-    }
-
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             initRankingsNotificationsChannel()
@@ -72,7 +66,7 @@ class NotificationsManagerImpl(
                 HomeActivity.getLaunchIntent(context = context, restartActivityTask = true),
                 PendingIntent.FLAG_UPDATE_CURRENT))
 
-        val regionDisplayName = regionRepository.getRegion().displayName
+        val regionDisplayName = regionRepository.region.displayName
         builder.setContentText(context.getString(R.string.x_rankings_have_been_updated,
                 regionDisplayName))
 
@@ -92,6 +86,12 @@ class NotificationsManagerImpl(
                 "time = ${SimpleDate()}")
 
         context.notificationManagerCompat.notify(RANKINGS_ID, builder.build())
+    }
+
+    companion object {
+        private const val RANKINGS_CHANNEL = "rankings"
+        private const val RANKINGS_ID = 1001
+        private const val TAG = "NotificationsManagerImpl"
     }
 
 }

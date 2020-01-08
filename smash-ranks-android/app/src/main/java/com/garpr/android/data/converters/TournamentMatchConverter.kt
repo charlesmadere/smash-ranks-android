@@ -4,9 +4,9 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.LiteTournament
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.extensions.readJsonValueMap
 import com.garpr.android.extensions.requireFromJsonValue
 import com.squareup.moshi.FromJson
@@ -15,7 +15,7 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.ToJson
 
-object MatchConverter {
+object TournamentMatchConverter {
 
     private const val OPPONENT_ID = "opponent_id"
     private const val OPPONENT_NAME = "opponent_name"
@@ -24,16 +24,13 @@ object MatchConverter {
     private const val TOURNAMENT_ID = "tournament_id"
     private const val TOURNAMENT_NAME = "tournament_name"
 
-
     @FromJson
     fun fromJson(
             reader: JsonReader,
             matchResultAdapter: JsonAdapter<MatchResult>,
             simpleDateAdapter: JsonAdapter<SimpleDate>
-    ): Match? {
+    ): TournamentMatch? {
         val json = reader.readJsonValueMap() ?: return null
-
-        val result = matchResultAdapter.requireFromJsonValue(json[RESULT])
 
         val opponent: AbsPlayer = LitePlayer(
                 id = json[OPPONENT_ID] as String,
@@ -46,17 +43,19 @@ object MatchConverter {
                 name = json[TOURNAMENT_NAME] as String
         )
 
-        return Match(
-                result = result,
+        val result = matchResultAdapter.requireFromJsonValue(json[RESULT])
+
+        return TournamentMatch(
                 opponent = opponent,
-                tournament = tournament
+                tournament = tournament,
+                result = result
         )
     }
 
     @ToJson
     fun toJson(
             writer: JsonWriter,
-            value: Match?,
+            value: TournamentMatch?,
             matchResultAdapter: JsonAdapter<MatchResult>,
             simpleDateAdapter: JsonAdapter<SimpleDate>
     ) {

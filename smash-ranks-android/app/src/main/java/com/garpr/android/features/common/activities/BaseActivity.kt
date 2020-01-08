@@ -9,9 +9,9 @@ import androidx.core.app.TaskStackBuilder
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.optHideKeyboard
 import com.garpr.android.misc.Heartbeat
+import com.garpr.android.misc.RegionHandle
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.NightModeRepository
-import com.garpr.android.repositories.RegionRepository.RegionHandle
 import org.koin.android.ext.android.inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
@@ -19,19 +19,13 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     protected val nightModeRepository: NightModeRepository by inject()
     protected val timber: Timber by inject()
 
-    companion object {
-        private const val TAG = "BaseActivity"
-        private val CNAME = BaseActivity::class.java.canonicalName
-        internal val EXTRA_REGION = "$CNAME.Region"
-    }
-
     protected abstract val activityName: String
-
-    override val currentRegion: Region?
-        get() = intent?.getParcelableExtra(EXTRA_REGION)
 
     override val isAlive: Boolean
         get() = !isFinishing && !isDestroyed
+
+    override val regionOverride: Region?
+        get() = intent?.getParcelableExtra(EXTRA_REGION)
 
     open fun navigateUp() {
         val intent = supportParentActivityIntent
@@ -81,5 +75,11 @@ abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
     }
 
     override fun toString() = activityName
+
+    companion object {
+        private const val TAG = "BaseActivity"
+        private val CNAME = BaseActivity::class.java.canonicalName
+        internal val EXTRA_REGION = "$CNAME.Region"
+    }
 
 }

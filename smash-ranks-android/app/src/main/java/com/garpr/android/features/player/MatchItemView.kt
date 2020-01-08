@@ -10,8 +10,8 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.extensions.getAttrColor
 import kotlinx.android.synthetic.main.item_match.view.*
 
@@ -35,9 +35,9 @@ class MatchItemView @JvmOverloads constructor(
     private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
     var listeners: Listeners? = null
-    private var _match: Match? = null
+    private var _match: TournamentMatch? = null
 
-    val match: Match
+    val match: TournamentMatch
         get() = checkNotNull(_match)
 
     interface Listeners {
@@ -59,7 +59,7 @@ class MatchItemView @JvmOverloads constructor(
         return true
     }
 
-    fun setContent(match: Match, isIdentity: Boolean) {
+    fun setContent(match: TournamentMatch, isIdentity: Boolean) {
         _match = match
         name.text = match.opponent.name
 

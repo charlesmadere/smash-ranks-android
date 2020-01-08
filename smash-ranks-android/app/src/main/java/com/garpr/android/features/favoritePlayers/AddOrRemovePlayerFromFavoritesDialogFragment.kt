@@ -45,7 +45,7 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
     }
 
     private fun initListeners() {
-        viewModel.stateLiveData.observe(this, Observer {
+        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer {
             refreshState(it)
         })
     }

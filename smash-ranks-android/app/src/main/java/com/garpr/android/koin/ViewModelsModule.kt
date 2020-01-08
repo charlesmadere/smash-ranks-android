@@ -33,7 +33,7 @@ val viewModelsModule = module {
     viewModel { ShareRegionViewModel(get(), get()) }
     viewModel { SetIdentityViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { SetRegionViewModel(get(), get(), get(), get()) }
-    viewModel { SettingsViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { SettingsViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SplashScreenViewModel(get(), get(), get(), get(), get()) }
     viewModel { TournamentViewModel(get(), get(), get(), get(), get()) }
     viewModel { TournamentsViewModel(get(), get(), get(), get()) }

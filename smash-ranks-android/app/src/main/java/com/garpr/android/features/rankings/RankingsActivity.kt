@@ -7,13 +7,13 @@ import com.garpr.android.R
 import com.garpr.android.data.models.Region
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.repositories.RegionRepository
+import com.garpr.android.misc.RegionHandleUtils
 import kotlinx.android.synthetic.main.activity_rankings.*
 import org.koin.android.ext.android.inject
 
 class RankingsActivity : BaseActivity() {
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     companion object {
         private const val TAG = "RankingsActivity"
@@ -33,7 +33,7 @@ class RankingsActivity : BaseActivity() {
 
     override fun onViewsBound() {
         super.onViewsBound()
-        toolbar.subtitleText = regionRepository.getRegion(this).displayName
+        toolbar.subtitleText = regionHandleUtils.getRegion(this).displayName
     }
 
 }

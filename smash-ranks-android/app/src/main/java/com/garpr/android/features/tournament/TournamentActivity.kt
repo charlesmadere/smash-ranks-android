@@ -10,17 +10,17 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsTournament
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.data.models.TournamentMode
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.repositories.RegionRepository
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_tournament.*
 import org.koin.android.ext.android.inject
@@ -33,7 +33,7 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
     private lateinit var adapter: TournamentFragmentPagerAdapter
     private val tournamentId by lazy { intent.requireStringExtra(EXTRA_TOURNAMENT_ID) }
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
     protected val shareUtils: ShareUtils by inject()
 
     private val viewModel: TournamentViewModel by viewModel()
@@ -61,7 +61,7 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
             return getLaunchIntent(context, tournament.id, region)
         }
 
-        fun getLaunchIntent(context: Context, match: Match, region: Region? = null): Intent {
+        fun getLaunchIntent(context: Context, match: TournamentMatch, region: Region? = null): Intent {
             return getLaunchIntent(context, match.tournament.id, region)
         }
 
@@ -105,7 +105,7 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.initialize(regionRepository.getRegion(this), tournamentId)
+        viewModel.initialize(regionHandleUtils.getRegion(this), tournamentId)
         setContentView(R.layout.activity_tournament)
         initListeners()
         fetchFullTournament()
@@ -166,7 +166,7 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
 
             tournamentInfoView.setContent(
                     tournament = state.tournament,
-                    region = regionRepository.getRegion(this)
+                    region = regionHandleUtils.getRegion(this)
             )
 
             tournamentInfoView.visibility = View.VISIBLE

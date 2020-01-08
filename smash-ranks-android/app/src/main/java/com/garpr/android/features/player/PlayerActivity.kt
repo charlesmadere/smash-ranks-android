@@ -28,9 +28,9 @@ import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentDividerView
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ShareUtils
-import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.activity_player.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,7 +44,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
     private val viewModel: PlayerViewModel by viewModel()
 
-    protected val regionRepository: RegionRepository by inject()
+    protected val regionHandleUtils: RegionHandleUtils by inject()
     protected val shareUtils: ShareUtils by inject()
 
     companion object {
@@ -115,7 +115,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
                 context = this,
                 player = player,
                 match = match,
-                region = regionRepository.getRegion(this)
+                region = regionHandleUtils.getRegion(this)
         )
 
         startActivity(intent)
@@ -123,19 +123,19 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
     override fun onClick(v: TournamentDividerView) {
         startActivity(TournamentActivity.getLaunchIntent(this, v.tournament,
-                regionRepository.getRegion(this)))
+                regionHandleUtils.getRegion(this)))
     }
 
     override fun onCompareClick(v: PlayerProfileItemView) {
         val identity = viewModel.identity ?: return
         val player = viewModel.player ?: return
         startActivity(HeadToHeadActivity.getLaunchIntent(this, identity, player,
-                regionRepository.getRegion(this)))
+                regionHandleUtils.getRegion(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.initialize(regionRepository.getRegion(this), playerId)
+        viewModel.initialize(regionHandleUtils.getRegion(this), playerId)
         setContentView(R.layout.activity_player)
         initListeners()
         fetchPlayer()
@@ -146,8 +146,10 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     }
 
     override fun onLongClick(v: MatchItemView) {
-        supportFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.match.opponent,
-                regionRepository.getRegion(this))
+        supportFragmentManager.showAddOrRemoveFavoritePlayerDialog(
+                player = v.match.opponent,
+                region = regionHandleUtils.getRegion(this)
+        )
     }
 
     override fun onPaletteBuilt(palette: Palette?) {

@@ -1,8 +1,8 @@
 package com.garpr.android.repositories
 
 import com.garpr.android.data.models.HeadToHead
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.Region
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.ServerApi
 import io.reactivex.Single
@@ -19,7 +19,7 @@ class HeadToHeadRepositoryImpl(
                 .subscribeOn(schedulers.background)
                 .doOnSuccess {
                     if (!it.matches.isNullOrEmpty()) {
-                        Collections.sort(it.matches, Match.REVERSE_CHRONOLOGICAL_ORDER)
+                        Collections.sort(it.matches, TournamentMatch.REVERSE_CHRONOLOGICAL_ORDER)
                     }
                 }
     }

@@ -2,8 +2,8 @@ package com.garpr.android.extensions
 
 import java.net.URI as JavaUri
 
-fun String?.toURI(): JavaUri? {
-    return if (isNullOrBlank()) {
+fun String?.toJavaUri(): JavaUri? {
+    return if (this.isNullOrBlank()) {
         null
     } else {
         try {

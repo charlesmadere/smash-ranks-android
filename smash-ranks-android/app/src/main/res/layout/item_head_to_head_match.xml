@@ -37,7 +37,4 @@
         app:layout_constraintStart_toEndOf="@+id/playerName"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        layout="@layout/view_constraint_layout_foreground" />
-
 </com.garpr.android.features.headToHead.HeadToHeadMatchItemView>

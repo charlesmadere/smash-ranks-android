@@ -29,7 +29,6 @@
     <dimen name="text_size_xxlarge">24sp</dimen>
     <dimen name="text_size_xxxlarge">32sp</dimen>
     <dimen name="text_size_xxxxlarge">48sp</dimen>
-    <dimen name="wins_losses_graph_size">64dp</dimen>
     <dimen name="wins_losses_height">128dp</dimen>
 
 </resources>

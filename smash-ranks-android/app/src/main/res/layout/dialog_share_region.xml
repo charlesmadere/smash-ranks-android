@@ -4,7 +4,7 @@
     style="@style/BottomSheetDialogRoot">
 
     <TextView
-        android:text="@string/share"
+        android:text="@string/share_"
         style="@style/BottomSheetDialogTitle" />
 
     <TextView

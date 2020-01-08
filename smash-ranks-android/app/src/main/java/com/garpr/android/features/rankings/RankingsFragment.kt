@@ -17,6 +17,7 @@ import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.rankings.RankingsViewModel.ListItem
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.misc.Searchable
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.fragment_rankings.*
@@ -30,6 +31,7 @@ class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
 
     private val viewModel: RankingsViewModel by sharedViewModel()
 
+    protected val regionHandleUtils: RegionHandleUtils by inject()
     protected val regionRepository: RegionRepository by inject()
 
     companion object {
@@ -37,7 +39,7 @@ class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
     }
 
     private fun fetchRankings() {
-        viewModel.fetchRankings(regionRepository.getRegion(requireContext()))
+        viewModel.fetchRankings(regionHandleUtils.getRegion(context))
     }
 
     override fun getRecyclerView(): RecyclerView? {
@@ -64,23 +66,19 @@ class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
     }
 
     override fun onClick(v: IdentityCardView) {
-        val intent = PlayerActivity.getLaunchIntent(
+        startActivity(PlayerActivity.getLaunchIntent(
                 context = requireContext(),
                 player = v.identity,
-                region = regionRepository.getRegion(requireContext())
-        )
-
-        startActivity(intent)
+                region = regionHandleUtils.getRegion(context)
+        ))
     }
 
     override fun onClick(v: RankingItemView) {
-        val intent = PlayerActivity.getLaunchIntent(
+        startActivity(PlayerActivity.getLaunchIntent(
                 context = requireContext(),
                 player = v.player,
-                region = regionRepository.getRegion(requireContext())
-        )
-
-        startActivity(intent)
+                region = regionHandleUtils.getRegion(context)
+        ))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -90,8 +88,10 @@ class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
     }
 
     override fun onLongClick(v: RankingItemView) {
-        childFragmentManager.showAddOrRemoveFavoritePlayerDialog(v.player,
-                regionRepository.getRegion(requireContext()))
+        childFragmentManager.showAddOrRemoveFavoritePlayerDialog(
+                player = v.player,
+                region = regionHandleUtils.getRegion(context)
+        )
     }
 
     override fun onRefresh() {

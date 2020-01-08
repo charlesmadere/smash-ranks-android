@@ -7,13 +7,13 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.LiteTournament
-import com.garpr.android.data.models.Match
 import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.MatchesBundle
 import com.garpr.android.data.models.PlayerMatchesBundle
 import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.features.player.PlayerViewModel.ListItem
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
@@ -119,37 +119,37 @@ class PlayerViewModelTest : BaseTest() {
                         wins = 1,
                         losses = 4,
                         matches = listOf(
-                                Match(
+                                TournamentMatch(
                                         result = MatchResult.LOSE,
                                         opponent = ABS_PLAYER_IMYT,
                                         tournament = TOURNAMENT_MADE_112
                                 ),
-                                Match(
+                                TournamentMatch(
                                         result = MatchResult.WIN,
                                         opponent = ABS_PLAYER_PIMP_JONG_ILLEST,
                                         tournament = TOURNAMENT_MADE_112
                                 ),
-                                Match(
+                                TournamentMatch(
                                         result = MatchResult.LOSE,
                                         opponent = ABS_PLAYER_JOEJOE,
                                         tournament = TOURNAMENT_MADE_112
                                 ),
-                                Match(
+                                TournamentMatch(
                                         result = MatchResult.EXCLUDED,
                                         opponent = ABS_PLAYER_IMYT,
                                         tournament = TOURNAMENT_PEOPLES_TUESDAYS_16
                                 ),
-                                Match(
+                                TournamentMatch(
                                         result = MatchResult.EXCLUDED,
                                         opponent = ABS_PLAYER_PIMP_JONG_ILLEST,
                                         tournament = TOURNAMENT_PEOPLES_TUESDAYS_16
                                 ),
-                                Match(
+                                TournamentMatch(
                                         result = MatchResult.LOSE,
                                         opponent = ABS_PLAYER_JOEJOE,
                                         tournament = TOURNAMENT_PEOPLES_TUESDAYS_14
                                 ),
-                                Match(
+                                TournamentMatch(
                                         result = MatchResult.LOSE,
                                         opponent = ABS_PLAYER_IMYT,
                                         tournament = TOURNAMENT_PEOPLES_TUESDAYS_14

@@ -16,6 +16,7 @@ import com.garpr.android.features.tournament.TournamentActivity
 import com.garpr.android.features.tournaments.TournamentsViewModel.ListItem
 import com.garpr.android.misc.ListLayout
 import com.garpr.android.misc.Refreshable
+import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.repositories.RegionRepository
 import kotlinx.android.synthetic.main.fragment_tournaments.*
 import org.koin.android.ext.android.inject
@@ -28,6 +29,7 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
 
     private val viewModel: TournamentsViewModel by sharedViewModel()
 
+    protected val regionHandleUtils: RegionHandleUtils by inject()
     protected val regionRepository: RegionRepository by inject()
 
     companion object {
@@ -35,7 +37,7 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
     }
 
     private fun fetchTournamentsBundle() {
-        viewModel.fetchTournaments(regionRepository.getRegion(requireContext()))
+        viewModel.fetchTournaments(regionHandleUtils.getRegion(context))
     }
 
     override fun getRecyclerView(): RecyclerView? {
@@ -65,7 +67,7 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
         startActivity(TournamentActivity.getLaunchIntent(
                 context = requireContext(),
                 tournament = v.tournament,
-                region = regionRepository.getRegion(requireContext())
+                region = regionHandleUtils.getRegion(requireContext())
         ))
     }
 
