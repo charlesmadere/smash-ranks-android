@@ -5,8 +5,10 @@ import android.os.Parcelable
 import androidx.core.os.ParcelCompat
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.optAbsPlayerList
+import com.garpr.android.extensions.requireAbsPlayer
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
+import com.garpr.android.extensions.writeAbsPlayer
 import com.garpr.android.extensions.writeAbsPlayerList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -28,6 +30,17 @@ class FullTournament(
         name
 ), Parcelable {
 
+    override val kind: Kind
+        get() = Kind.FULL
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
+        dest.writeAbsPlayerList(players, flags)
+        dest.writeTypedList(matches)
+        dest.writeString(rawId)
+        dest.writeString(url)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -44,39 +57,13 @@ class FullTournament(
         }
     }
 
-    override val kind: Kind
-        get() = Kind.FULL
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        super.writeToParcel(dest, flags)
-        dest.writeAbsPlayerList(players, flags)
-        dest.writeTypedList(matches)
-        dest.writeString(rawId)
-        dest.writeString(url)
-    }
-
-    @JsonClass(generateAdapter = true)
+    @JsonClass(generateAdapter = false)
     data class Match(
-            @Json(name = "excluded") val isExcluded: Boolean,
-            @Json(name = "loser_id") val loserId: String,
-            @Json(name = "loser_name") val loserName: String,
-            @Json(name = "match_id") val matchId: String,
-            @Json(name = "winner_id") val winnerId: String,
-            @Json(name = "winner_name") val winnerName: String
+            val loser: AbsPlayer,
+            val winner: AbsPlayer,
+            val excluded: Boolean,
+            val matchId: String
     ) : Parcelable {
-        companion object {
-            @JvmField
-            val CREATOR = createParcel {
-                Match(
-                        ParcelCompat.readBoolean(it),
-                        it.requireString(),
-                        it.requireString(),
-                        it.requireString(),
-                        it.requireString(),
-                        it.requireString()
-                )
-            }
-        }
 
         override fun equals(other: Any?): Boolean {
             return other is Match && matchId.equals(other.matchId, ignoreCase = true)
@@ -87,12 +74,22 @@ class FullTournament(
         override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
-            ParcelCompat.writeBoolean(dest, isExcluded)
-            dest.writeString(loserId)
-            dest.writeString(loserName)
+            dest.writeAbsPlayer(loser, flags)
+            dest.writeAbsPlayer(winner, flags)
+            ParcelCompat.writeBoolean(dest, excluded)
             dest.writeString(matchId)
-            dest.writeString(winnerId)
-            dest.writeString(winnerName)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR = createParcel {
+                Match(
+                        it.requireAbsPlayer(),
+                        it.requireAbsPlayer(),
+                        ParcelCompat.readBoolean(it),
+                        it.requireString()
+                )
+            }
         }
     }
 

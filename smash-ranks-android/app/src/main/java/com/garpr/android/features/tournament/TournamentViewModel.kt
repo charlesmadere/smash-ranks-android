@@ -55,14 +55,8 @@ class TournamentViewModel(
         } else {
             matches.map { match ->
                 MatchListItem.Match(
-                        winnerIsIdentity = sameRegion && identity?.id?.equals(
-                                other = match.winnerId,
-                                ignoreCase = true
-                        ) == true,
-                        loserIsIdentity = sameRegion && identity?.id?.equals(
-                                other = match.loserId,
-                                ignoreCase = true
-                        ) == true,
+                        winnerIsIdentity = sameRegion && identity != null && identity == match.winner,
+                        loserIsIdentity = sameRegion && identity != null && identity == match.loser,
                         match = match
                 )
             }
@@ -181,14 +175,8 @@ class TournamentViewModel(
             list.mapTo(newList) { listItem ->
                 if (listItem is MatchListItem.Match) {
                     listItem.copy(
-                            winnerIsIdentity = sameRegion && identity?.id?.equals(
-                                    other = listItem.match.winnerId,
-                                    ignoreCase = true
-                            ) == true,
-                            loserIsIdentity = sameRegion && identity?.id?.equals(
-                                    other = listItem.match.loserId,
-                                    ignoreCase = true
-                            ) == true
+                            winnerIsIdentity = sameRegion && identity != null && identity == listItem.match.winner,
+                            loserIsIdentity = sameRegion && identity != null && identity == listItem.match.loser
                     )
                 } else {
                     listItem
@@ -240,8 +228,8 @@ class TournamentViewModel(
 
         return list.filterIsInstance(MatchListItem.Match::class.java)
                 .filter { listItem ->
-                    listItem.match.winnerName.contains(trimmedQuery, ignoreCase = true) ||
-                            listItem.match.loserName.contains(trimmedQuery, ignoreCase = true)
+                    listItem.match.winner.name.contains(trimmedQuery, ignoreCase = true) ||
+                            listItem.match.loser.name.contains(trimmedQuery, ignoreCase = true)
                 }
     }
 

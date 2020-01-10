@@ -21,7 +21,7 @@ interface PlayerProfileManager {
             val youTube: String? = null
     )
 
-    fun getPresentation(region: AbsRegion, isFavorited: Boolean, player: FullPlayer,
-            competitor: SmashCompetitor? = null): Presentation
+    fun getPresentation(region: AbsRegion, isFavorited: Boolean, isIdentity: Boolean,
+            player: FullPlayer, smashCompetitor: SmashCompetitor?): Presentation
 
 }

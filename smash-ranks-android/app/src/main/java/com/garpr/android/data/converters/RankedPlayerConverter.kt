@@ -3,7 +3,6 @@ package com.garpr.android.data.converters
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.extensions.readJsonValueMap
 import com.squareup.moshi.FromJson
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.ToJson
@@ -15,7 +14,6 @@ object RankedPlayerConverter {
     private const val PREVIOUS_RANK = "previous_rank"
     private const val RANK = "rank"
     private const val RATING = "rating"
-
 
     @FromJson
     fun fromJson(
@@ -47,12 +45,23 @@ object RankedPlayerConverter {
     @ToJson
     fun toJson(
             writer: JsonWriter,
-            value: RankedPlayer?,
-            rankedPlayerAdapter: JsonAdapter<RankedPlayer>
+            value: RankedPlayer?
     ) {
-        if (value != null) {
-            rankedPlayerAdapter.toJson(writer, value)
+        if (value == null) {
+            return
         }
+
+        writer.beginObject()
+                .name(ID).value(value.id)
+                .name(NAME).value(value.name)
+                .name(RATING).value(value.rating)
+                .name(RANK).value(value.rank)
+
+        if (value.previousRank != null && value.previousRank != Int.MIN_VALUE) {
+            writer.name(PREVIOUS_RANK).value(value.previousRank)
+        }
+
+        writer.endObject()
     }
 
 }

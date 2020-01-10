@@ -59,10 +59,6 @@ class IdentityRepositoryImpl(
                 }
     }
 
-    override fun isPlayer(player: AbsPlayer?): Boolean {
-        return player != null && identity == player
-    }
-
     override fun refresh() {
         threadUtils.background.submit {
             val identity = generalPreferenceStore.identity.get()

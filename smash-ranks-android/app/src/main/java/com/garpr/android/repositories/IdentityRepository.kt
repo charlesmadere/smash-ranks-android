@@ -14,8 +14,6 @@ interface IdentityRepository {
 
     val identityObservable: Observable<Optional<FavoritePlayer>>
 
-    fun isPlayer(player: AbsPlayer?): Boolean
-
     fun removeIdentity()
 
     fun setIdentity(player: AbsPlayer, region: Region)

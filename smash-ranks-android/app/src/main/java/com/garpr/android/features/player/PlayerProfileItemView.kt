@@ -30,6 +30,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
         get() = ViewCompat.isAttachedToWindow(this)
 
     private var isFavorited: Boolean = false
+    private var isIdentity: Boolean = false
     private var player: FullPlayer? = null
 
     val ratingVerticalPositionInWindow: Int
@@ -111,7 +112,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
     override fun refresh() {
         val player = this.player ?: return
         val region = regionHandleUtils.getRegion(context)
-        val presentation = playerProfileManager.getPresentation(region, isFavorited,
+        val presentation = playerProfileManager.getPresentation(region, isFavorited, isIdentity,
                 player, smashCompetitor)
         this.presentation = presentation
 
@@ -205,8 +206,10 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
     }
 
-    fun setContent(isFavorited: Boolean, player: FullPlayer, smashCompetitor: SmashCompetitor?) {
+    fun setContent(isFavorited: Boolean, isIdentity: Boolean, player: FullPlayer,
+            smashCompetitor: SmashCompetitor?) {
         this.isFavorited = isFavorited
+        this.isIdentity = isIdentity
         this.player = player
         this.smashCompetitor = smashCompetitor
         refresh()

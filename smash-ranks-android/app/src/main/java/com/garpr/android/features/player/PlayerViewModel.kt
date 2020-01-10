@@ -127,15 +127,22 @@ class PlayerViewModel(
                 .observeOn(schedulers.background)
                 .subscribe({ (bundle, favoritePlayers, identity) ->
                     val list = createList(bundle, identity.item)
-                    val showSearchIcon = list?.any { it is ListItem.Match } == true
+
+                    val showSearchIcon = list?.any { listItem ->
+                        listItem is ListItem.Match
+                    } == true
+
                     val isFavorited = favoritePlayers.any { favoritePlayer ->
                         AbsPlayer.safeEquals(favoritePlayer, bundle.fullPlayer)
                     }
+
+                    val isIdentity = AbsPlayer.safeEquals(identity.item, bundle.fullPlayer)
 
                     state = state.copy(
                             hasError = false,
                             isFavorited = isFavorited,
                             isFetching = false,
+                            isIdentity = isIdentity,
                             showSearchIcon = showSearchIcon,
                             identity = identity.item,
                             list = list,
@@ -149,7 +156,9 @@ class PlayerViewModel(
 
                     state = state.copy(
                             hasError = true,
+                            isFavorited = false,
                             isFetching = false,
+                            isIdentity = false,
                             showSearchIcon = false,
                             identity = null,
                             list = null,
@@ -221,6 +230,7 @@ class PlayerViewModel(
         val searchResults = refreshListItems(identity, state.searchResults)
 
         state = state.copy(
+                isIdentity = AbsPlayer.safeEquals(identity, state.playerMatchesBundle?.fullPlayer),
                 identity = identity,
                 list = list,
                 searchResults = searchResults
@@ -356,6 +366,7 @@ class PlayerViewModel(
             val hasError: Boolean = false,
             val isFavorited: Boolean = false,
             val isFetching: Boolean = false,
+            val isIdentity: Boolean = false,
             val showSearchIcon: Boolean = false,
             val subtitleText: CharSequence? = null,
             val titleText: CharSequence? = null,
