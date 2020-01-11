@@ -7,7 +7,9 @@ import com.garpr.android.data.models.LitePlayer
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,8 +47,22 @@ class FullTournamentMatchConverterTest : BaseTest() {
         private const val BLARGH_VS_UNABLETABLE_MATCH_ID = "C74B6CC4"
         private const val DARK_SILENCE_VS_SNAP_MATCH_ID = "644D33E1"
 
-        private val BLARGH_VS_UNABLETABLE_JSON = "{\"lose_id\":\"${BLARGH.id}\",\"loser_name\":\"${BLARGH.name}\",\"match_id\":$BLARGH_VS_UNABLETABLE_MATCH_ID,\"winner_id\":\"${UNABLETABLE.id}\",\"winner_name\":\"${UNABLETABLE.name}\",\"excluded\":true}"
-        private val DARK_SILENCE_VS_SNAP_JSON = "{\"lose_id\":\"${DARK_SILENCE.id}\",\"loser_name\":\"${DARK_SILENCE.name}\",\"match_id\":$DARK_SILENCE_VS_SNAP_MATCH_ID,\"winner_id\":\"${SNAP.id}\",\"winner_name\":\"${SNAP.name}\",\"excluded\":false}"
+        private val BLARGH_VS_UNABLETABLE = FullTournament.Match(
+                loser = BLARGH,
+                winner = UNABLETABLE,
+                excluded = true,
+                matchId = BLARGH_VS_UNABLETABLE_MATCH_ID
+        )
+
+        private val DARK_SILENCE_VS_SNAP = FullTournament.Match(
+                loser = DARK_SILENCE,
+                winner = SNAP,
+                excluded = false,
+                matchId = DARK_SILENCE_VS_SNAP_MATCH_ID
+        )
+
+        private val BLARGH_VS_UNABLETABLE_JSON = "{\"loser_id\":\"${BLARGH.id}\",\"loser_name\":\"${BLARGH.name}\",\"match_id\":\"$BLARGH_VS_UNABLETABLE_MATCH_ID\",\"winner_id\":\"${UNABLETABLE.id}\",\"winner_name\":\"${UNABLETABLE.name}\",\"excluded\":${BLARGH_VS_UNABLETABLE.excluded}}"
+        private val DARK_SILENCE_VS_SNAP_JSON = "{\"loser_id\":\"${DARK_SILENCE.id}\",\"loser_name\":\"${DARK_SILENCE.name}\",\"match_id\":\"$DARK_SILENCE_VS_SNAP_MATCH_ID\",\"winner_id\":\"${SNAP.id}\",\"winner_name\":\"${SNAP.name}\",\"excluded\":${DARK_SILENCE_VS_SNAP.excluded}}"
     }
 
     @Before
@@ -77,8 +93,27 @@ class FullTournamentMatchConverterTest : BaseTest() {
     }
 
     @Test
+    fun testToJsonWithBlarghVsUnabletable() {
+        val json = fullTournamentMatchAdapter.toJson(BLARGH_VS_UNABLETABLE)
+        assertFalse(json.isNullOrBlank())
+
+        val match = fullTournamentMatchAdapter.fromJson(json)
+        assertEquals(BLARGH_VS_UNABLETABLE, match)
+    }
+
+    @Test
+    fun testToJsonWithDarkSilenceVsSnap() {
+        val json = fullTournamentMatchAdapter.toJson(DARK_SILENCE_VS_SNAP)
+        assertFalse(json.isNullOrBlank())
+
+        val match = fullTournamentMatchAdapter.fromJson(json)
+        assertEquals(DARK_SILENCE_VS_SNAP, match)
+    }
+
+    @Test
     fun testToJsonWithNull() {
-        v
+        val json = fullTournamentMatchAdapter.toJson(null)
+        assertTrue(json.isNullOrEmpty())
     }
 
 }

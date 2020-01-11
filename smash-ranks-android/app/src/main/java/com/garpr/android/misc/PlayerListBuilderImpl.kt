@@ -1,15 +1,13 @@
 package com.garpr.android.misc
 
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.extensions.safeEquals
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
-import com.garpr.android.repositories.IdentityRepository
 
-class PlayerListBuilderImpl(
-        private val identityRepository: IdentityRepository
-) : PlayerListBuilder {
+class PlayerListBuilderImpl : PlayerListBuilder {
 
-    override fun create(bundle: PlayersBundle?): List<PlayerListItem>? {
+    override fun create(bundle: PlayersBundle?, identity: AbsPlayer?): List<PlayerListItem>? {
         val players = bundle?.players
 
         if (players.isNullOrEmpty()) {
@@ -25,8 +23,8 @@ class PlayerListBuilderImpl(
         ////////////////////////
 
         players.filter { it.name.first().isLetter() }
-                .forEach {
-                    val char = it.name.first()
+                .forEach { player ->
+                    val char = player.name.first()
 
                     if (!char.safeEquals(previousChar, true)) {
                         previousChar = char
@@ -40,8 +38,8 @@ class PlayerListBuilderImpl(
                     }
 
                     list.add(PlayerListItem.Player(
-                            player = it,
-                            isIdentity = identityRepository.isPlayer(it)
+                            player = player,
+                            isIdentity = player == identity
                     ))
                 }
 
@@ -60,7 +58,7 @@ class PlayerListBuilderImpl(
 
                     list.add(PlayerListItem.Player(
                             player = player,
-                            isIdentity = identityRepository.isPlayer(player)
+                            isIdentity = player == identity
                     ))
                 }
 
@@ -80,14 +78,14 @@ class PlayerListBuilderImpl(
 
                     list.add(PlayerListItem.Player(
                             player = player,
-                            isIdentity = identityRepository.isPlayer(player)
+                            isIdentity = player == identity
                     ))
                 }
 
         return list
     }
 
-    override fun refresh(list: List<PlayerListItem>?): List<PlayerListItem>? {
+    override fun refresh(list: List<PlayerListItem>?, identity: AbsPlayer?): List<PlayerListItem>? {
         return if (list.isNullOrEmpty()) {
             list
         } else {
@@ -98,7 +96,7 @@ class PlayerListBuilderImpl(
                     is PlayerListItem.Player -> {
                         PlayerListItem.Player(
                                 player = listItem.player,
-                                isIdentity = identityRepository.isPlayer(listItem.player)
+                                isIdentity = listItem.player == identity
                         )
                     }
                 }
@@ -106,7 +104,7 @@ class PlayerListBuilderImpl(
         }
     }
 
-    override fun search(query: String?, list: List<PlayerListItem>?): List<PlayerListItem>? {
+    override fun search(list: List<PlayerListItem>?, query: String?): List<PlayerListItem>? {
         if (query.isNullOrBlank() || list.isNullOrEmpty()) {
             return null
         }

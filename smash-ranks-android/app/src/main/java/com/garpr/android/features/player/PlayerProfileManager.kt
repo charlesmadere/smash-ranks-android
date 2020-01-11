@@ -22,6 +22,6 @@ interface PlayerProfileManager {
     )
 
     fun getPresentation(region: AbsRegion, isFavorited: Boolean, isIdentity: Boolean,
-            player: FullPlayer, smashCompetitor: SmashCompetitor?): Presentation
+            player: FullPlayer, smashCompetitor: SmashCompetitor? = null): Presentation
 
 }

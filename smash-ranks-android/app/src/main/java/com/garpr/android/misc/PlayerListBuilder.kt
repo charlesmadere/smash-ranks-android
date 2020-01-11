@@ -7,13 +7,13 @@ import com.garpr.android.data.models.PlayersBundle
 interface PlayerListBuilder {
 
     @WorkerThread
-    fun create(bundle: PlayersBundle?): List<PlayerListItem>?
+    fun create(bundle: PlayersBundle?, identity: AbsPlayer?): List<PlayerListItem>?
 
     @WorkerThread
-    fun refresh(list: List<PlayerListItem>?): List<PlayerListItem>?
+    fun refresh(list: List<PlayerListItem>?, identity: AbsPlayer?): List<PlayerListItem>?
 
     @WorkerThread
-    fun search(query: String?, list: List<PlayerListItem>?): List<PlayerListItem>?
+    fun search(list: List<PlayerListItem>?, query: String?): List<PlayerListItem>?
 
     sealed class PlayerListItem {
         abstract val listId: Long

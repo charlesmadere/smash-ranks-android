@@ -41,7 +41,7 @@ val miscModule = module {
                 .build()
     }
 
-    single<PlayerListBuilder> { PlayerListBuilderImpl(get()) }
+    single<PlayerListBuilder> { PlayerListBuilderImpl() }
     single<PreviousRankUtils> { PreviousRankUtilsImpl() }
     single<RegionHandleUtils> { RegionHandleUtilsImpl(get()) }
     single<Schedulers> { SchedulersImpl(get()) }

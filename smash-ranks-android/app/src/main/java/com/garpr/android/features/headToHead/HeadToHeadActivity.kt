@@ -12,7 +12,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.TournamentMatch
 import com.garpr.android.extensions.layoutInflater
@@ -66,11 +65,6 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
             }
 
             return getLaunchIntent(context, player.id, match.opponent.id, regionCopy)
-        }
-
-        fun getLaunchIntent(context: Context, match: FullTournament.Match,
-                region: Region? = null): Intent {
-            return getLaunchIntent(context, match.winnerId, match.loserId, region)
         }
 
         fun getLaunchIntent(context: Context, playerId: String, opponentId: String,
