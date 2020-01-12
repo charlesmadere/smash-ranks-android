@@ -64,49 +64,49 @@ class TournamentViewModelTest : BaseTest() {
                 loser = CHARLEZARD,
                 winner = IMYT,
                 excluded = true,
-                matchId = "A6E139C947AC398C"
+                matchId = 0
         )
 
         private val CHARLEZARD_VS_MIKKUZ = FullTournament.Match(
                 loser = CHARLEZARD,
                 winner = IMYT,
                 excluded = true,
-                matchId = "FD3CAA55BAB15FAD"
+                matchId = 1
         )
 
         private val IMYT_VS_MIKKUZ = FullTournament.Match(
                 loser = IMYT,
                 winner = MIKKUZ,
                 excluded = false,
-                matchId = "D0B6B17FABEB5BC4"
+                matchId = 2
         )
 
         private val IMYT_VS_SNAP_0 = FullTournament.Match(
                 loser = SNAP,
                 winner = IMYT,
                 excluded = false,
-                matchId = "4C50D174B5EB82FF"
+                matchId = 3
         )
 
         private val IMYT_VS_SNAP_1 = FullTournament.Match(
                 loser = IMYT,
                 winner = SNAP,
                 excluded = false,
-                matchId = "5A13470AA81DA148"
+                matchId = 5
         )
 
         private val IMYT_VS_SNAP_2 = FullTournament.Match(
                 loser = SNAP,
                 winner = IMYT,
                 excluded = false,
-                matchId = "946FF12A6DC34BC1"
+                matchId = 6
         )
 
         private val MIKKUZ_VS_SNAP = FullTournament.Match(
                 loser = MIKKUZ,
                 winner = SNAP,
                 excluded = false,
-                matchId = "B7FC951240926717"
+                matchId = 4
         )
 
         private val NORCAL = Region(

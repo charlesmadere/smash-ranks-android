@@ -62,11 +62,11 @@ class FullTournament(
             val loser: AbsPlayer,
             val winner: AbsPlayer,
             val excluded: Boolean,
-            val matchId: String
+            val matchId: Int
     ) : Parcelable {
 
         override fun equals(other: Any?): Boolean {
-            return other is Match && matchId.equals(other.matchId, ignoreCase = true)
+            return other is Match && matchId == other.matchId
         }
 
         override fun hashCode(): Int = matchId.hashCode()
@@ -77,7 +77,7 @@ class FullTournament(
             dest.writeAbsPlayer(loser, flags)
             dest.writeAbsPlayer(winner, flags)
             ParcelCompat.writeBoolean(dest, excluded)
-            dest.writeString(matchId)
+            dest.writeInt(matchId)
         }
 
         companion object {
@@ -87,7 +87,7 @@ class FullTournament(
                         it.requireAbsPlayer(),
                         it.requireAbsPlayer(),
                         ParcelCompat.readBoolean(it),
-                        it.requireString()
+                        it.readInt()
                 )
             }
         }

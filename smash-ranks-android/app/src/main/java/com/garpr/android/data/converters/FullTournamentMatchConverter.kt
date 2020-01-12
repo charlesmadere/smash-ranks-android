@@ -38,7 +38,7 @@ object FullTournamentMatchConverter {
                 loser = loser,
                 winner = winner,
                 excluded = json[EXCLUDED] as Boolean,
-                matchId = json[MATCH_ID] as String
+                matchId = (json[MATCH_ID] as Number).toInt()
         )
     }
 

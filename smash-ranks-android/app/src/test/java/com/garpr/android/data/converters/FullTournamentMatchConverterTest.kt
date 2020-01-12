@@ -44,25 +44,22 @@ class FullTournamentMatchConverterTest : BaseTest() {
                 name = "theunabletable"
         )
 
-        private const val BLARGH_VS_UNABLETABLE_MATCH_ID = "C74B6CC4"
-        private const val DARK_SILENCE_VS_SNAP_MATCH_ID = "644D33E1"
-
         private val BLARGH_VS_UNABLETABLE = FullTournament.Match(
                 loser = BLARGH,
                 winner = UNABLETABLE,
                 excluded = true,
-                matchId = BLARGH_VS_UNABLETABLE_MATCH_ID
+                matchId = 0
         )
 
         private val DARK_SILENCE_VS_SNAP = FullTournament.Match(
                 loser = DARK_SILENCE,
                 winner = SNAP,
                 excluded = false,
-                matchId = DARK_SILENCE_VS_SNAP_MATCH_ID
+                matchId = 1
         )
 
-        private val BLARGH_VS_UNABLETABLE_JSON = "{\"loser_id\":\"${BLARGH.id}\",\"loser_name\":\"${BLARGH.name}\",\"match_id\":\"$BLARGH_VS_UNABLETABLE_MATCH_ID\",\"winner_id\":\"${UNABLETABLE.id}\",\"winner_name\":\"${UNABLETABLE.name}\",\"excluded\":${BLARGH_VS_UNABLETABLE.excluded}}"
-        private val DARK_SILENCE_VS_SNAP_JSON = "{\"loser_id\":\"${DARK_SILENCE.id}\",\"loser_name\":\"${DARK_SILENCE.name}\",\"match_id\":\"$DARK_SILENCE_VS_SNAP_MATCH_ID\",\"winner_id\":\"${SNAP.id}\",\"winner_name\":\"${SNAP.name}\",\"excluded\":${DARK_SILENCE_VS_SNAP.excluded}}"
+        private val BLARGH_VS_UNABLETABLE_JSON = "{\"excluded\":${BLARGH_VS_UNABLETABLE.excluded},\"loser_id\":\"${BLARGH.id}\",\"loser_name\":\"${BLARGH.name}\",\"match_id\":${BLARGH_VS_UNABLETABLE.matchId},\"winner_id\":\"${UNABLETABLE.id}\",\"winner_name\":\"${UNABLETABLE.name}\"}"
+        private val DARK_SILENCE_VS_SNAP_JSON = "{\"excluded\":${DARK_SILENCE_VS_SNAP.excluded},\"loser_id\":\"${DARK_SILENCE.id}\",\"loser_name\":\"${DARK_SILENCE.name}\",\"match_id\":${DARK_SILENCE_VS_SNAP.matchId},\"winner_id\":\"${SNAP.id}\",\"winner_name\":\"${SNAP.name}\"}"
     }
 
     @Before
@@ -79,7 +76,7 @@ class FullTournamentMatchConverterTest : BaseTest() {
         assertEquals(BLARGH, match?.loser)
         assertEquals(UNABLETABLE, match?.winner)
         assertEquals(true, match?.excluded)
-        assertEquals(BLARGH_VS_UNABLETABLE_MATCH_ID, match?.matchId)
+        assertEquals(BLARGH_VS_UNABLETABLE.matchId, match?.matchId)
     }
 
     @Test
@@ -89,7 +86,7 @@ class FullTournamentMatchConverterTest : BaseTest() {
         assertEquals(DARK_SILENCE, match?.loser)
         assertEquals(SNAP, match?.winner)
         assertEquals(false, match?.excluded)
-        assertEquals(DARK_SILENCE_VS_SNAP_MATCH_ID, match?.matchId)
+        assertEquals(DARK_SILENCE_VS_SNAP.matchId, match?.matchId)
     }
 
     @Test
