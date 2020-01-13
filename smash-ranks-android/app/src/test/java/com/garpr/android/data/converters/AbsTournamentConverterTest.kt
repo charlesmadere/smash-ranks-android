@@ -81,7 +81,7 @@ class AbsTournamentConverterTest : BaseTest() {
                 name = "Phoenix Underground #82"
         )
 
-        private val FOUR_STOCK_FRIDAY_JSON = "{\"date\":\"01/13/17\",\"id\":\"${FOUR_STOCK_FRIDAY.id}\",\"name\":\"${FOUR_STOCK_FRIDAY.name}\",\"raw_id\":\"${FOUR_STOCK_FRIDAY.rawId}\",\"matches\":[],\"regions\":[\"${NORCAL.id}\"],\"players\":[{\"id\":\"${HMW.id}\",\"name\":\"${HMW.name}\"},{\"id\":\"${SPARK.id}\",\"name\":\"${SPARK.name}\"},{\"id\":\"${DARREL.id}\",\"name\":\"${DARREL.name}\"},{\"id\":\"${CHARLEZARD.id}\",\"name\":\"${CHARLEZARD.name}\"}],\"url\":\"${FOUR_STOCK_FRIDAY.url}\",\"type\":\"challonge\"}"
+        private val FOUR_STOCK_FRIDAY_JSON = "{\"date\":\"01/21/18\",\"id\":\"${FOUR_STOCK_FRIDAY.id}\",\"name\":\"${FOUR_STOCK_FRIDAY.name}\",\"raw_id\":\"${FOUR_STOCK_FRIDAY.rawId}\",\"regions\":[\"${NORCAL.id}\"],\"players\":[{\"id\":\"${HMW.id}\",\"name\":\"${HMW.name}\"},{\"id\":\"${SPARK.id}\",\"name\":\"${SPARK.name}\"},{\"id\":\"${DARREL.id}\",\"name\":\"${DARREL.name}\"},{\"id\":\"${CHARLEZARD.id}\",\"name\":\"${CHARLEZARD.name}\"}],\"url\":\"${FOUR_STOCK_FRIDAY.url}\",\"type\":\"challonge\"}"
         private val PHOENIX_UNDERGROUND_JSON = "{\"date\":\"01/09/19\",\"id\":\"${PHOENIX_UNDERGROUND.id}\",\"name\":\"${PHOENIX_UNDERGROUND.name}\",\"regions\":[\"${NORCAL.id}\"]}"
     }
 

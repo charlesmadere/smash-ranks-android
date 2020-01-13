@@ -210,7 +210,7 @@ class PlayerListBuilderTest : BaseTest() {
 
         player = list[3] as PlayerListItem.Player
         assertEquals(IMYT, player.player)
-        assertFalse(player.isIdentity)
+        assertTrue(player.isIdentity)
 
         divider = list[4] as PlayerListItem.Divider
         assertEquals("S", (divider as PlayerListItem.Divider.Letter).letter)
@@ -237,15 +237,15 @@ class PlayerListBuilderTest : BaseTest() {
         assertEquals(KIM, player.player)
         assertFalse(player.isIdentity)
 
-        list = playerListBuilder.refresh(list, IMYT)
+        ////////////////////////////////////////////////////////////////
+        // change our identity, then refresh the list and check again //
+        ////////////////////////////////////////////////////////////////
+
+        list = playerListBuilder.refresh(list, SNAP)
         assertEquals(11, list?.size)
 
         divider = list?.get(0) as PlayerListItem.Divider
         assertEquals("C", (divider as PlayerListItem.Divider.Letter).letter)
-
-        ////////////////////////////////////////////////////////////////
-        // change our identity, then refresh the list and check again //
-        ////////////////////////////////////////////////////////////////
 
         player = list?.get(1) as PlayerListItem.Player
         assertEquals(CHARLEZARD, player.player)
@@ -256,7 +256,7 @@ class PlayerListBuilderTest : BaseTest() {
 
         player = list[3] as PlayerListItem.Player
         assertEquals(IMYT, player.player)
-        assertTrue(player.isIdentity)
+        assertFalse(player.isIdentity)
 
         divider = list[4] as PlayerListItem.Divider
         assertEquals("S", (divider as PlayerListItem.Divider.Letter).letter)
@@ -267,7 +267,7 @@ class PlayerListBuilderTest : BaseTest() {
 
         player = list[6] as PlayerListItem.Player
         assertEquals(SNAP, player.player)
-        assertFalse(player.isIdentity)
+        assertTrue(player.isIdentity)
 
         divider = list[7] as PlayerListItem.Divider
         assertTrue(divider is PlayerListItem.Divider.Digit)

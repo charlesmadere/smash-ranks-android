@@ -37,7 +37,7 @@ class PlayerViewModel(
         private val timber: Timber
 ) : BaseViewModel(), Refreshable, Searchable {
 
-    val identity: FavoritePlayer?
+    val identity: AbsPlayer?
         get() = state.identity
 
     val player: FullPlayer?
@@ -136,15 +136,13 @@ class PlayerViewModel(
                         AbsPlayer.safeEquals(favoritePlayer, bundle.fullPlayer)
                     }
 
-                    val isIdentity = AbsPlayer.safeEquals(identity.item, bundle.fullPlayer)
 
                     state = state.copy(
+                            identity = identity.item,
                             hasError = false,
                             isFavorited = isFavorited,
                             isFetching = false,
-                            isIdentity = isIdentity,
                             showSearchIcon = showSearchIcon,
-                            identity = identity.item,
                             list = list,
                             searchResults = null,
                             playerMatchesBundle = bundle
@@ -155,12 +153,11 @@ class PlayerViewModel(
                     timber.e(TAG, "Error fetching player", it)
 
                     state = state.copy(
+                            identity = null,
                             hasError = true,
                             isFavorited = false,
                             isFetching = false,
-                            isIdentity = false,
                             showSearchIcon = false,
-                            identity = null,
                             list = null,
                             searchResults = null,
                             playerMatchesBundle = null
@@ -230,7 +227,6 @@ class PlayerViewModel(
         val searchResults = refreshListItems(identity, state.searchResults)
 
         state = state.copy(
-                isIdentity = AbsPlayer.safeEquals(identity, state.playerMatchesBundle?.fullPlayer),
                 identity = identity,
                 list = list,
                 searchResults = searchResults
@@ -363,14 +359,13 @@ class PlayerViewModel(
     }
 
     data class State(
+            val identity: AbsPlayer? = null,
             val hasError: Boolean = false,
             val isFavorited: Boolean = false,
             val isFetching: Boolean = false,
-            val isIdentity: Boolean = false,
             val showSearchIcon: Boolean = false,
             val subtitleText: CharSequence? = null,
             val titleText: CharSequence? = null,
-            val identity: FavoritePlayer? = null,
             val list: List<ListItem>? = null,
             val searchResults: List<ListItem>? = null,
             val playerMatchesBundle: PlayerMatchesBundle? = null,

@@ -1,5 +1,6 @@
 package com.garpr.android.features.player
 
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.SmashCompetitor
@@ -21,7 +22,12 @@ interface PlayerProfileManager {
             val youTube: String? = null
     )
 
-    fun getPresentation(region: AbsRegion, isFavorited: Boolean, isIdentity: Boolean,
-            player: FullPlayer, smashCompetitor: SmashCompetitor? = null): Presentation
+    fun getPresentation(
+            identity: AbsPlayer? = null,
+            region: AbsRegion,
+            isFavorited: Boolean,
+            player: FullPlayer,
+            smashCompetitor: SmashCompetitor? = null
+    ): Presentation
 
 }

@@ -208,8 +208,8 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         } else {
             adapter.set(
                     list = state.searchResults ?: state.list,
+                    identity = state.identity,
                     isFavorited = state.isFavorited,
-                    isIdentity = state.isIdentity,
                     player = viewModel.player,
                     smashCompetitor = state.smashCompetitor
             )
@@ -231,8 +231,8 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             private val tournamentDividerViewListener: TournamentDividerView.Listener
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+        private var identity: AbsPlayer? = null
         private var isFavorited: Boolean = false
-        private var isIdentity: Boolean = false
         private var player: FullPlayer? = null
         private val list = mutableListOf<ListItem>()
         private var smashCompetitor: SmashCompetitor? = null
@@ -257,7 +257,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
         private fun bindPlayerViewHolder(holder: PlayerViewHolder) {
             val player = checkNotNull(this.player)
-            holder.playerProfileItemView.setContent(isFavorited, isIdentity, player, smashCompetitor)
+            holder.playerProfileItemView.setContent(identity, isFavorited, player, smashCompetitor)
         }
 
         private fun bindTournamentViewHolder(holder: TournamentViewHolder,
@@ -266,7 +266,11 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         }
 
         internal fun clear() {
+            identity = null
+            isFavorited = false
+            player = null
             list.clear()
+            smashCompetitor = null
             notifyDataSetChanged()
         }
 
@@ -310,7 +314,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             }
         }
 
-        internal fun set(list: List<ListItem>?, isFavorited: Boolean, isIdentity: Boolean,
+        internal fun set(list: List<ListItem>?, identity: AbsPlayer?, isFavorited: Boolean,
                 player: FullPlayer?, smashCompetitor: SmashCompetitor?) {
             this.list.clear()
 
@@ -318,8 +322,8 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
                 this.list.addAll(list)
             }
 
+            this.identity = identity
             this.isFavorited = isFavorited
-            this.isIdentity = isIdentity
             this.player = player
             this.smashCompetitor = smashCompetitor
 

@@ -3,6 +3,7 @@ package com.garpr.android.features.player
 import android.content.Context
 import android.text.TextUtils
 import com.garpr.android.R
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.SmashCompetitor
@@ -15,11 +16,11 @@ class PlayerProfileManagerImpl(
         private val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper
 ) : PlayerProfileManager {
 
-    override fun getPresentation(region: AbsRegion, isFavorited: Boolean, isIdentity: Boolean,
+    override fun getPresentation(identity: AbsPlayer?, region: AbsRegion, isFavorited: Boolean,
             player: FullPlayer, smashCompetitor: SmashCompetitor?): Presentation {
         var presentation = Presentation(
                 isAddToFavoritesVisible = !isFavorited,
-                isCompareVisible = !isIdentity
+                isCompareVisible = identity != null && identity != player
         )
 
         player.ratings?.get(region.id)?.let { rating ->

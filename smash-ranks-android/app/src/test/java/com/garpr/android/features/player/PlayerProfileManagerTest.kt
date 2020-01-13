@@ -151,7 +151,6 @@ class PlayerProfileManagerTest : BaseTest() {
         val presentation = playerProfileManager.getPresentation(
                 region = Regions.NORCAL,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.CHARLEZARD,
                 smashCompetitor = SmashCompetitors.CHARLEZARD
         )
@@ -175,7 +174,6 @@ class PlayerProfileManagerTest : BaseTest() {
         val presentation = playerProfileManager.getPresentation(
                 region = Regions.NORCAL,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.CHARLEZARD
         )
 
@@ -197,7 +195,6 @@ class PlayerProfileManagerTest : BaseTest() {
     fun testGarInFavoritesAndNoIdentity() {
         val presentation = playerProfileManager.getPresentation(
                 region = Regions.NORCAL,
-                isIdentity = false,
                 isFavorited = true,
                 player = Players.GAR
         )
@@ -219,9 +216,9 @@ class PlayerProfileManagerTest : BaseTest() {
     @Test
     fun testGarInFavoritesAndCharlezardIsIdentity() {
         val presentation = playerProfileManager.getPresentation(
+                identity = Players.CHARLEZARD,
                 region = Regions.NORCAL,
                 isFavorited = true,
-                isIdentity = true,
                 player = Players.GAR
         )
 
@@ -242,9 +239,9 @@ class PlayerProfileManagerTest : BaseTest() {
     @Test
     fun testGarInFavoritesAndGarIsIdentity() {
         val presentation = playerProfileManager.getPresentation(
+                identity = Players.GAR,
                 region = Regions.NORCAL,
                 isFavorited = true,
-                isIdentity = false,
                 player = Players.GAR
         )
 
@@ -265,9 +262,9 @@ class PlayerProfileManagerTest : BaseTest() {
     @Test
     fun testGarNotInFavoritesAndGarIsIdentity() {
         val presentation = playerProfileManager.getPresentation(
+                identity = Players.GAR,
                 region = Regions.NORCAL,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.GAR
         )
 
@@ -290,7 +287,6 @@ class PlayerProfileManagerTest : BaseTest() {
         val presentation = playerProfileManager.getPresentation(
                 region = Regions.NORCAL,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.GAR
         )
 
@@ -313,7 +309,6 @@ class PlayerProfileManagerTest : BaseTest() {
         var presentation = playerProfileManager.getPresentation(
                 region = Regions.NYC,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.HAX,
                 smashCompetitor = SmashCompetitors.HAX
         )
@@ -334,7 +329,6 @@ class PlayerProfileManagerTest : BaseTest() {
         presentation = playerProfileManager.getPresentation(
                 region = Regions.NORCAL,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.HAX
         )
 
@@ -354,7 +348,6 @@ class PlayerProfileManagerTest : BaseTest() {
         presentation = playerProfileManager.getPresentation(
                 region = Regions.ATLANTA,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.HAX,
                 smashCompetitor = SmashCompetitors.HAX
         )
@@ -378,7 +371,6 @@ class PlayerProfileManagerTest : BaseTest() {
         val presentation = playerProfileManager.getPresentation(
                 region = Regions.NORCAL,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.IMYT,
                 smashCompetitor = SmashCompetitors.IMYT
         )
@@ -402,7 +394,6 @@ class PlayerProfileManagerTest : BaseTest() {
         val presentation = playerProfileManager.getPresentation(
                 region = Regions.NORCAL,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.IMYT
         )
 
@@ -425,7 +416,6 @@ class PlayerProfileManagerTest : BaseTest() {
         val presentation = playerProfileManager.getPresentation(
                 region = Regions.NORCAL,
                 isFavorited = false,
-                isIdentity = false,
                 player = Players.JAREBAIR,
                 smashCompetitor = SmashCompetitors.JAREBAIR
         )

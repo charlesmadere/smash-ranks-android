@@ -69,7 +69,7 @@ class TournamentViewModelTest : BaseTest() {
 
         private val CHARLEZARD_VS_MIKKUZ = FullTournament.Match(
                 loser = CHARLEZARD,
-                winner = IMYT,
+                winner = MIKKUZ,
                 excluded = true,
                 matchId = 1
         )
