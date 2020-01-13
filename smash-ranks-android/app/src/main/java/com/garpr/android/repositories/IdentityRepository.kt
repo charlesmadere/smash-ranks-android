@@ -8,8 +8,6 @@ import io.reactivex.Observable
 
 interface IdentityRepository {
 
-    val hasIdentity: Boolean
-
     val hasIdentityObservable: Observable<Boolean>
 
     val identityObservable: Observable<Optional<FavoritePlayer>>

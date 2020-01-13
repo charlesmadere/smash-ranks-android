@@ -5,7 +5,6 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.requireValue
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
@@ -20,12 +19,6 @@ class IdentityRepositoryImpl(
         private val threadUtils: ThreadUtils,
         private val timber: Timber
 ) : IdentityRepository, Refreshable {
-
-    override val hasIdentity: Boolean
-        get() = hasIdentitySubject.requireValue()
-
-    private val identity: FavoritePlayer?
-        get() = identitySubject.requireValue().item
 
     private val hasIdentitySubject = BehaviorSubject.create<Boolean>()
     override val hasIdentityObservable: Observable<Boolean> = hasIdentitySubject.hide()
