@@ -3,6 +3,7 @@ package com.garpr.android.features.favoritePlayers
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Optional
 import com.garpr.android.features.common.viewModels.BaseViewModel
@@ -34,7 +35,7 @@ class FavoritePlayersViewModel(
     }
 
     @WorkerThread
-    private fun createList(players: List<FavoritePlayer>?, identity: FavoritePlayer?): List<ListItem>? {
+    private fun createList(players: List<FavoritePlayer>?, identity: AbsPlayer?): List<ListItem>? {
         return if (players.isNullOrEmpty()) {
             null
         } else {
@@ -62,7 +63,7 @@ class FavoritePlayersViewModel(
     }
 
     @WorkerThread
-    private fun refreshFavoritePlayers(players: List<FavoritePlayer>, identity: FavoritePlayer?) {
+    private fun refreshFavoritePlayers(players: List<FavoritePlayer>, identity: AbsPlayer?) {
         val list = createList(players, identity)
 
         state = state.copy(

@@ -76,7 +76,7 @@ class PlayerViewModel(
     }
 
     @WorkerThread
-    private fun createList(bundle: PlayerMatchesBundle?, identity: FavoritePlayer?): List<ListItem>? {
+    private fun createList(bundle: PlayerMatchesBundle?, identity: AbsPlayer?): List<ListItem>? {
         if (bundle == null) {
             return null
         }
@@ -222,7 +222,7 @@ class PlayerViewModel(
     }
 
     @WorkerThread
-    private fun refreshListItems(identity: FavoritePlayer?) {
+    private fun refreshListItems(identity: AbsPlayer?) {
         val list = refreshListItems(identity, state.list)
         val searchResults = refreshListItems(identity, state.searchResults)
 
@@ -234,21 +234,17 @@ class PlayerViewModel(
     }
 
     @WorkerThread
-    private fun refreshListItems(identity: FavoritePlayer?, list: List<ListItem>?): List<ListItem>? {
+    private fun refreshListItems(identity: AbsPlayer?, list: List<ListItem>?): List<ListItem>? {
         return if (list.isNullOrEmpty()) {
             list
         } else {
-            val newList = mutableListOf<ListItem>()
-
-            list.mapTo(newList) { listItem ->
+            list.map { listItem ->
                 if (listItem is ListItem.Match) {
                     listItem.copy(isIdentity = listItem.match.opponent == identity)
                 } else {
                     listItem
                 }
             }
-
-            newList
         }
     }
 

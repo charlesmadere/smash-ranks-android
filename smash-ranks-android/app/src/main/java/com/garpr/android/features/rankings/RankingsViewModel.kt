@@ -89,7 +89,10 @@ class RankingsViewModel(
             )
         }
 
-        insertOrRemoveIdentityAtFrontOfList(identity, list)
+        insertOrRemoveIdentityAtFrontOfList(
+                list = list,
+                identity = identity
+        )
 
         return list
     }
@@ -147,8 +150,8 @@ class RankingsViewModel(
 
     @WorkerThread
     private fun insertOrRemoveIdentityAtFrontOfList(
-            identity: FavoritePlayer?,
-            list: MutableList<ListItem>
+            list: MutableList<ListItem>,
+            identity: FavoritePlayer?
     ) {
         list.removeAll { listItem -> listItem is ListItem.Identity }
 
@@ -198,8 +201,8 @@ class RankingsViewModel(
 
     @WorkerThread
     private fun refreshListItems(identity: FavoritePlayer?) {
-        val list = refreshListItems(identity, state.list)
-        val searchResults = refreshListItems(identity, state.searchResults)
+        val list = refreshListItems(state.list, identity)
+        val searchResults = refreshListItems(state.searchResults, identity)
 
         state = state.copy(
                 list = list,
@@ -208,7 +211,7 @@ class RankingsViewModel(
     }
 
     @WorkerThread
-    private fun refreshListItems(identity: FavoritePlayer?, list: List<ListItem>?): List<ListItem>? {
+    private fun refreshListItems(list: List<ListItem>?, identity: FavoritePlayer?): List<ListItem>? {
         return if (list.isNullOrEmpty()) {
             list
         } else {
@@ -222,7 +225,10 @@ class RankingsViewModel(
                 }
             }
 
-            insertOrRemoveIdentityAtFrontOfList(identity, newList)
+            insertOrRemoveIdentityAtFrontOfList(
+                    list = newList,
+                    identity = identity
+            )
 
             newList
         }

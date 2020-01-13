@@ -36,7 +36,7 @@ class RegionPreferenceView @JvmOverloads constructor(
 
     fun setContent(region: Region) {
         descriptionText = context.getString(R.string.region_endpoint_format,
-                region.displayName, context.getString(region.endpoint.title))
+                region.displayName, context.getText(region.endpoint.title))
     }
 
 }

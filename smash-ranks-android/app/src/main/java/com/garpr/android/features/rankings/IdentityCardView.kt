@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import com.garpr.android.R
-import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PreviousRank
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.item_identity_card.view.*
@@ -14,9 +14,9 @@ class IdentityCardView @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : MaterialCardView(context, attrs), View.OnClickListener {
 
-    private var _identity: FavoritePlayer? = null
+    private var _identity: AbsPlayer? = null
 
-    val identity: FavoritePlayer
+    val identity: AbsPlayer
         get() = checkNotNull(_identity)
 
     var listener: Listener? = null
@@ -34,7 +34,7 @@ class IdentityCardView @JvmOverloads constructor(
     }
 
     fun setContent(
-            player: FavoritePlayer,
+            player: AbsPlayer,
             previousRank: PreviousRank,
             avatar: String?,
             rank: String?,

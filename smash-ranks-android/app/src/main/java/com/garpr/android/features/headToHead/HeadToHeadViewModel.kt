@@ -132,9 +132,7 @@ class HeadToHeadViewModel(
             return
         }
 
-        val newList = mutableListOf<ListItem>()
-
-        list.mapTo(newList) { listItem ->
+        val newList = list.map { listItem ->
             if (listItem is ListItem.Match) {
                 listItem.copy(
                         playerIsIdentity = listItem.match.player == identity,
