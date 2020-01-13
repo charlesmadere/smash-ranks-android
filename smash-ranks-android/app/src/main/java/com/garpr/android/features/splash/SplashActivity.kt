@@ -79,7 +79,10 @@ class SplashActivity : BaseActivity(), SplashCardView.Listeners {
             setContentView(R.layout.activity_splash)
         }
 
-        splashCardView.setContent(state.identity, state.region)
+        splashCardView.setContent(
+                identity = state.identity,
+                region = state.region
+        )
     }
 
     private fun startHomeActivity() {

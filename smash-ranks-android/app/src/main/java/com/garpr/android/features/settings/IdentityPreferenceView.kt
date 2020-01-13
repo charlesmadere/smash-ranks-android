@@ -52,8 +52,8 @@ class IdentityPreferenceView @JvmOverloads constructor(
             setOnClickListener(setIdentityClickListener)
         } else {
             titleText = resources.getText(R.string.delete_identity)
-            descriptionText = resources.getString(R.string.name_endpoint_format, identity.name,
-                    resources.getText(identity.region.endpoint.title))
+            descriptionText = resources.getString(R.string.name_region_format, identity.name,
+                    identity.region.displayName)
             setOnClickListener(deleteIdentityClickListener)
         }
     }

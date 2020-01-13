@@ -65,7 +65,7 @@
     <string name="more">More</string>
     <string name="must_be_charging">Must be charging</string>
     <string name="must_be_on_wifi">Must be on wifi</string>
-    <string name="name_endpoint_format">%1$s (%2$s)</string>
+    <string name="name_region_format">%1$s (%2$s)</string>
     <string name="night">Night</string>
     <string name="none">None</string>
     <string name="norcal" translatable="false">Norcal</string>

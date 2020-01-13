@@ -3,7 +3,7 @@ package com.garpr.android.features.splash
 import androidx.annotation.AnyThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
@@ -69,7 +69,7 @@ class SplashScreenViewModel(
     }
 
     @AnyThread
-    private fun refreshIdentity(identity: AbsPlayer?) {
+    private fun refreshIdentity(identity: FavoritePlayer?) {
         state = state.copy(identity = identity)
     }
 
@@ -88,8 +88,8 @@ class SplashScreenViewModel(
     }
 
     data class State(
-            val identity: AbsPlayer? = null,
             val isSplashScreenComplete: Boolean,
+            val identity: FavoritePlayer? = null,
             val region: Region
     )
 
