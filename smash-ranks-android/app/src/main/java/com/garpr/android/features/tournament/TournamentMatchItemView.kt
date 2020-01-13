@@ -52,10 +52,10 @@ class TournamentMatchItemView @JvmOverloads constructor(
     fun setContent(match: FullTournament.Match, winnerIsIdentity: Boolean, loserIsIdentity: Boolean) {
         _match = match
 
-        loserName.text = match.loserName
-        winnerName.text = match.winnerName
+        loserName.text = match.loser.name
+        winnerName.text = match.winner.name
 
-        if (match.isExcluded) {
+        if (match.excluded) {
             loserName.setTextColor(exclusionColor)
             winnerName.setTextColor(exclusionColor)
         } else {

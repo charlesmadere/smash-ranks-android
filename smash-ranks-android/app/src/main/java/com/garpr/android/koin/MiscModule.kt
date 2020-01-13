@@ -3,6 +3,7 @@ package com.garpr.android.koin
 import com.garpr.android.data.converters.AbsPlayerConverter
 import com.garpr.android.data.converters.AbsRegionConverter
 import com.garpr.android.data.converters.AbsTournamentConverter
+import com.garpr.android.data.converters.FullTournamentMatchConverter
 import com.garpr.android.data.converters.RankedPlayerConverter
 import com.garpr.android.data.converters.SimpleDateConverter
 import com.garpr.android.data.converters.TournamentMatchConverter
@@ -32,6 +33,7 @@ val miscModule = module {
                 .add(AbsPlayerConverter)
                 .add(AbsRegionConverter)
                 .add(AbsTournamentConverter)
+                .add(FullTournamentMatchConverter)
                 .add(RankedPlayerConverter)
                 .add(SimpleDateConverter)
                 .add(TournamentMatchConverter)
@@ -39,7 +41,7 @@ val miscModule = module {
                 .build()
     }
 
-    single<PlayerListBuilder> { PlayerListBuilderImpl(get()) }
+    single<PlayerListBuilder> { PlayerListBuilderImpl() }
     single<PreviousRankUtils> { PreviousRankUtilsImpl() }
     single<RegionHandleUtils> { RegionHandleUtilsImpl(get()) }
     single<Schedulers> { SchedulersImpl(get()) }

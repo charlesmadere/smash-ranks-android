@@ -3,9 +3,12 @@ package com.garpr.android.features.headToHead
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
+import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.HeadToHead
 import com.garpr.android.data.models.HeadToHeadMatch
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.WinsLosses
 import com.garpr.android.features.common.viewModels.BaseViewModel
@@ -13,6 +16,8 @@ import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.HeadToHeadRepository
 import com.garpr.android.repositories.IdentityRepository
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import com.garpr.android.data.models.WinsLosses as GarPrWinsLosses
 
 class HeadToHeadViewModel(
@@ -35,8 +40,12 @@ class HeadToHeadViewModel(
         private const val TAG = "HeadToHeadViewModel"
     }
 
+    init {
+        initListeners()
+    }
+
     @WorkerThread
-    private fun createList(headToHead: HeadToHead?): List<ListItem>? {
+    private fun createList(headToHead: HeadToHead?, identity: AbsPlayer?): List<ListItem>? {
         if (headToHead == null) {
             return null
         }
@@ -63,8 +72,8 @@ class HeadToHeadViewModel(
             }
 
             list.add(ListItem.Match(
-                    playerIsIdentity = identityRepository.isPlayer(headToHead.player),
-                    opponentIsIdentity = identityRepository.isPlayer(match.opponent),
+                    playerIsIdentity = headToHead.player == identity,
+                    opponentIsIdentity = match.opponent == identity,
                     match = HeadToHeadMatch(
                             result = match.result,
                             player = headToHead.player,
@@ -79,11 +88,16 @@ class HeadToHeadViewModel(
     fun fetchHeadToHead(region: Region, playerId: String, opponentId: String) {
         state = state.copy(isFetching = true)
 
-        disposables.add(headToHeadRepository.getHeadToHead(region, playerId, opponentId)
+        disposables.add(Single.zip(headToHeadRepository.getHeadToHead(region, playerId, opponentId),
+                identityRepository.identityObservable.take(1).singleOrError(),
+                BiFunction<HeadToHead, Optional<FavoritePlayer>,
+                        Pair<HeadToHead, Optional<FavoritePlayer>>> { t1, t2 ->
+                            Pair(t1, t2)
+                        })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ headToHead ->
-                    val list = createList(headToHead)
+                .subscribe({ (headToHead, identity) ->
+                    val list = createList(headToHead, identity.item)
 
                     state = state.copy(
                             hasError = list.isNullOrEmpty(),
@@ -101,10 +115,41 @@ class HeadToHeadViewModel(
                 }))
     }
 
+    private fun initListeners() {
+        disposables.add(identityRepository.identityObservable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe { identity ->
+                    refreshListItems(identity.item)
+                })
+    }
+
+    @WorkerThread
+    private fun refreshListItems(identity: AbsPlayer?) {
+        val list = state.list
+
+        if (list.isNullOrEmpty()) {
+            return
+        }
+
+        val newList = list.map { listItem ->
+            if (listItem is ListItem.Match) {
+                listItem.copy(
+                        playerIsIdentity = listItem.match.player == identity,
+                        opponentIsIdentity = listItem.match.opponent == identity
+                )
+            } else {
+                listItem
+            }
+        }
+
+        state = state.copy(list = newList)
+    }
+
     sealed class ListItem {
         abstract val listId: Long
 
-        class Match(
+        data class Match(
                 val playerIsIdentity: Boolean,
                 val opponentIsIdentity: Boolean,
                 val match: HeadToHeadMatch

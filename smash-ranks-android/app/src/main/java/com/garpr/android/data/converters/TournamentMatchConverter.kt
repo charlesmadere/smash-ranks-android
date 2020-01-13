@@ -64,13 +64,13 @@ object TournamentMatchConverter {
         }
 
         writer.beginObject()
-        writer.name(RESULT).value(matchResultAdapter.toJsonValue(value.result) as String)
-        writer.name(OPPONENT_ID).value(value.opponent.id)
-        writer.name(OPPONENT_NAME).value(value.opponent.name)
-        writer.name(TOURNAMENT_DATE).value(simpleDateAdapter.toJsonValue(value.tournament.date) as Long)
-        writer.name(TOURNAMENT_ID).value(value.tournament.id)
-        writer.name(TOURNAMENT_NAME).value(value.tournament.name)
-        writer.endObject()
+                .name(RESULT).value(matchResultAdapter.toJsonValue(value.result) as String)
+                .name(OPPONENT_ID).value(value.opponent.id)
+                .name(OPPONENT_NAME).value(value.opponent.name)
+                .name(TOURNAMENT_DATE).value(simpleDateAdapter.toJsonValue(value.tournament.date) as Long)
+                .name(TOURNAMENT_ID).value(value.tournament.id)
+                .name(TOURNAMENT_NAME).value(value.tournament.name)
+                .endObject()
     }
 
 }

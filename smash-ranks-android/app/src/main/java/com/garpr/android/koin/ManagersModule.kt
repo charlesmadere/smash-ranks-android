@@ -13,6 +13,6 @@ val managersModule = module {
 
     single<AppUpgradeManager> { AppUpgradeManagerImpl(get(), get(), get()) }
     single<NotificationsManager> { NotificationsManagerImpl(androidContext(), get(), get(), get()) }
-    single<PlayerProfileManager> { PlayerProfileManagerImpl(androidContext(), get(), get()) }
+    single<PlayerProfileManager> { PlayerProfileManagerImpl(androidContext(), get()) }
 
 }

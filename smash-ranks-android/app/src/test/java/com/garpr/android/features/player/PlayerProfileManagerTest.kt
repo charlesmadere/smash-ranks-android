@@ -8,7 +8,6 @@ import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCharacter
 import com.garpr.android.data.models.SmashCompetitor
-import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -20,7 +19,6 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class PlayerProfileManagerTest : BaseTest() {
 
-    protected val identityRepository: IdentityRepository by inject()
     protected val playerProfileManager: PlayerProfileManager by inject()
 
     companion object {
@@ -154,7 +152,7 @@ class PlayerProfileManagerTest : BaseTest() {
                 region = Regions.NORCAL,
                 isFavorited = false,
                 player = Players.CHARLEZARD,
-                competitor = SmashCompetitors.CHARLEZARD
+                smashCompetitor = SmashCompetitors.CHARLEZARD
         )
 
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -217,8 +215,8 @@ class PlayerProfileManagerTest : BaseTest() {
 
     @Test
     fun testGarInFavoritesAndCharlezardIsIdentity() {
-        identityRepository.setIdentity(Players.CHARLEZARD, Regions.NORCAL)
         val presentation = playerProfileManager.getPresentation(
+                identity = Players.CHARLEZARD,
                 region = Regions.NORCAL,
                 isFavorited = true,
                 player = Players.GAR
@@ -240,8 +238,8 @@ class PlayerProfileManagerTest : BaseTest() {
 
     @Test
     fun testGarInFavoritesAndGarIsIdentity() {
-        identityRepository.setIdentity(Players.GAR, Regions.NORCAL)
         val presentation = playerProfileManager.getPresentation(
+                identity = Players.GAR,
                 region = Regions.NORCAL,
                 isFavorited = true,
                 player = Players.GAR
@@ -263,8 +261,8 @@ class PlayerProfileManagerTest : BaseTest() {
 
     @Test
     fun testGarNotInFavoritesAndGarIsIdentity() {
-        identityRepository.setIdentity(Players.GAR, Regions.NORCAL)
         val presentation = playerProfileManager.getPresentation(
+                identity = Players.GAR,
                 region = Regions.NORCAL,
                 isFavorited = false,
                 player = Players.GAR
@@ -312,7 +310,7 @@ class PlayerProfileManagerTest : BaseTest() {
                 region = Regions.NYC,
                 isFavorited = false,
                 player = Players.HAX,
-                competitor = SmashCompetitors.HAX
+                smashCompetitor = SmashCompetitors.HAX
         )
 
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -351,7 +349,7 @@ class PlayerProfileManagerTest : BaseTest() {
                 region = Regions.ATLANTA,
                 isFavorited = false,
                 player = Players.HAX,
-                competitor = SmashCompetitors.HAX
+                smashCompetitor = SmashCompetitors.HAX
         )
 
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -374,7 +372,7 @@ class PlayerProfileManagerTest : BaseTest() {
                 region = Regions.NORCAL,
                 isFavorited = false,
                 player = Players.IMYT,
-                competitor = SmashCompetitors.IMYT
+                smashCompetitor = SmashCompetitors.IMYT
         )
 
         assertTrue(presentation.isAddToFavoritesVisible)
@@ -419,7 +417,7 @@ class PlayerProfileManagerTest : BaseTest() {
                 region = Regions.NORCAL,
                 isFavorited = false,
                 player = Players.JAREBAIR,
-                competitor = SmashCompetitors.JAREBAIR
+                smashCompetitor = SmashCompetitors.JAREBAIR
         )
 
         assertTrue(presentation.isAddToFavoritesVisible)

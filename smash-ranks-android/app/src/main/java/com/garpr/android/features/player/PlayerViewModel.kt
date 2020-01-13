@@ -37,7 +37,7 @@ class PlayerViewModel(
         private val timber: Timber
 ) : BaseViewModel(), Refreshable, Searchable {
 
-    val identity: FavoritePlayer?
+    val identity: AbsPlayer?
         get() = state.identity
 
     val player: FullPlayer?
@@ -76,7 +76,7 @@ class PlayerViewModel(
     }
 
     @WorkerThread
-    private fun createList(bundle: PlayerMatchesBundle?, identity: FavoritePlayer?): List<ListItem>? {
+    private fun createList(bundle: PlayerMatchesBundle?, identity: AbsPlayer?): List<ListItem>? {
         if (bundle == null) {
             return null
         }
@@ -127,17 +127,22 @@ class PlayerViewModel(
                 .observeOn(schedulers.background)
                 .subscribe({ (bundle, favoritePlayers, identity) ->
                     val list = createList(bundle, identity.item)
-                    val showSearchIcon = list?.any { it is ListItem.Match } == true
+
+                    val showSearchIcon = list?.any { listItem ->
+                        listItem is ListItem.Match
+                    } == true
+
                     val isFavorited = favoritePlayers.any { favoritePlayer ->
                         AbsPlayer.safeEquals(favoritePlayer, bundle.fullPlayer)
                     }
 
+
                     state = state.copy(
+                            identity = identity.item,
                             hasError = false,
                             isFavorited = isFavorited,
                             isFetching = false,
                             showSearchIcon = showSearchIcon,
-                            identity = identity.item,
                             list = list,
                             searchResults = null,
                             playerMatchesBundle = bundle
@@ -148,10 +153,11 @@ class PlayerViewModel(
                     timber.e(TAG, "Error fetching player", it)
 
                     state = state.copy(
+                            identity = null,
                             hasError = true,
+                            isFavorited = false,
                             isFetching = false,
                             showSearchIcon = false,
-                            identity = null,
                             list = null,
                             searchResults = null,
                             playerMatchesBundle = null
@@ -216,7 +222,7 @@ class PlayerViewModel(
     }
 
     @WorkerThread
-    private fun refreshListItems(identity: FavoritePlayer?) {
+    private fun refreshListItems(identity: AbsPlayer?) {
         val list = refreshListItems(identity, state.list)
         val searchResults = refreshListItems(identity, state.searchResults)
 
@@ -228,21 +234,17 @@ class PlayerViewModel(
     }
 
     @WorkerThread
-    private fun refreshListItems(identity: FavoritePlayer?, list: List<ListItem>?): List<ListItem>? {
+    private fun refreshListItems(identity: AbsPlayer?, list: List<ListItem>?): List<ListItem>? {
         return if (list.isNullOrEmpty()) {
             list
         } else {
-            val newList = mutableListOf<ListItem>()
-
-            list.mapTo(newList) { listItem ->
+            list.map { listItem ->
                 if (listItem is ListItem.Match) {
                     listItem.copy(isIdentity = listItem.match.opponent == identity)
                 } else {
                     listItem
                 }
             }
-
-            newList
         }
     }
 
@@ -353,13 +355,13 @@ class PlayerViewModel(
     }
 
     data class State(
+            val identity: AbsPlayer? = null,
             val hasError: Boolean = false,
             val isFavorited: Boolean = false,
             val isFetching: Boolean = false,
             val showSearchIcon: Boolean = false,
             val subtitleText: CharSequence? = null,
             val titleText: CharSequence? = null,
-            val identity: FavoritePlayer? = null,
             val list: List<ListItem>? = null,
             val searchResults: List<ListItem>? = null,
             val playerMatchesBundle: PlayerMatchesBundle? = null,

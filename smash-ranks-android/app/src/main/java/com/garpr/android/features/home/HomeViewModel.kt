@@ -3,7 +3,7 @@ package com.garpr.android.features.home
 import androidx.annotation.AnyThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
@@ -20,13 +20,13 @@ class HomeViewModel(
         smashRosterSyncManager: SmashRosterSyncManager
 ) : BaseViewModel() {
 
+    val identity: AbsPlayer?
+        get() = state.identity
+
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
 
     private var state = State()
-
-    val identity: FavoritePlayer?
-        get() = state.identity
 
     init {
         initListeners()
@@ -76,10 +76,10 @@ class HomeViewModel(
     }
 
     @AnyThread
-    private fun refreshIdentity(identity: FavoritePlayer?) {
+    private fun refreshIdentity(identity: AbsPlayer?) {
         state = state.copy(
-                showYourself = identity != null,
-                identity = identity
+                identity = identity,
+                showYourself = identity != null
         )
         refreshState()
     }
@@ -93,6 +93,7 @@ class HomeViewModel(
     }
 
     data class State(
+            val identity: AbsPlayer? = null,
             val hasFavoritePlayers: Boolean = false,
             val hasRankings: Boolean = false,
             val hasTournaments: Boolean = false,
@@ -100,8 +101,7 @@ class HomeViewModel(
             val showSearch: Boolean = false,
             val showYourself: Boolean = false,
             val subtitleDate: CharSequence? = null,
-            val title: CharSequence? = null,
-            val identity: FavoritePlayer? = null
+            val title: CharSequence? = null
     )
 
 }

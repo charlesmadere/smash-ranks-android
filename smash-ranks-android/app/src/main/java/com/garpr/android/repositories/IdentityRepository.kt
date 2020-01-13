@@ -8,13 +8,9 @@ import io.reactivex.Observable
 
 interface IdentityRepository {
 
-    val hasIdentity: Boolean
-
     val hasIdentityObservable: Observable<Boolean>
 
     val identityObservable: Observable<Optional<FavoritePlayer>>
-
-    fun isPlayer(player: AbsPlayer?): Boolean
 
     fun removeIdentity()
 

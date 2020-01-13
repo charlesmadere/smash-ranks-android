@@ -48,11 +48,14 @@ class TournamentMatchesFragment : BaseFragment(), ListLayout, TournamentMatchIte
     }
 
     override fun onClick(v: TournamentMatchItemView) {
-        startActivity(HeadToHeadActivity.getLaunchIntent(
+        val intent = HeadToHeadActivity.getLaunchIntent(
                 context = requireContext(),
-                match = v.match,
+                player = v.match.winner,
+                opponent = v.match.loser,
                 region = regionHandleUtils.getRegion(context)
-        ))
+        )
+
+        startActivity(intent)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -1,7 +1,6 @@
 package com.garpr.android.repositories
 
 import com.garpr.android.BaseTest
-import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
@@ -9,8 +8,6 @@ import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.inject
@@ -103,30 +100,6 @@ class IdentityRepositoryTest : BaseTest() {
 
         identityRepository.removeIdentity()
         assertEquals(false, value)
-    }
-
-    @Test
-    fun testIsPlayerWithNullPlayer() {
-        assertFalse(identityRepository.isPlayer(null as AbsPlayer?))
-
-        identityRepository.setIdentity(NMW, NORCAL)
-        assertFalse(identityRepository.isPlayer(null as AbsPlayer?))
-
-        identityRepository.removeIdentity()
-        assertFalse(identityRepository.isPlayer(null as AbsPlayer?))
-    }
-
-    @Test
-    fun testIsPlayerWithPlayer() {
-        assertFalse(identityRepository.isPlayer(HMW))
-
-        identityRepository.setIdentity(NMW, NORCAL)
-        assertFalse(identityRepository.isPlayer(HMW))
-        assertTrue(identityRepository.isPlayer(NMW))
-
-        identityRepository.removeIdentity()
-        assertFalse(identityRepository.isPlayer(HMW))
-        assertFalse(identityRepository.isPlayer(NMW))
     }
 
 }

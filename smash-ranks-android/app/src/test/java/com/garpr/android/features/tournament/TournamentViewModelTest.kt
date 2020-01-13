@@ -61,66 +61,52 @@ class TournamentViewModelTest : BaseTest() {
         )
 
         private val CHARLEZARD_VS_IMYT = FullTournament.Match(
-                isExcluded = true,
-                loserId = CHARLEZARD.id,
-                loserName = CHARLEZARD.name,
-                matchId = "A6E139C947AC398C",
-                winnerId = IMYT.id,
-                winnerName = IMYT.name
+                loser = CHARLEZARD,
+                winner = IMYT,
+                excluded = true,
+                matchId = 0
         )
 
         private val CHARLEZARD_VS_MIKKUZ = FullTournament.Match(
-                isExcluded = true,
-                loserId = CHARLEZARD.id,
-                loserName = CHARLEZARD.name,
-                matchId = "FD3CAA55BAB15FAD",
-                winnerId = MIKKUZ.id,
-                winnerName = MIKKUZ.name
+                loser = CHARLEZARD,
+                winner = MIKKUZ,
+                excluded = true,
+                matchId = 1
         )
 
         private val IMYT_VS_MIKKUZ = FullTournament.Match(
-                isExcluded = false,
-                loserId = IMYT.id,
-                loserName = IMYT.name,
-                matchId = "D0B6B17FABEB5BC4",
-                winnerId = MIKKUZ.id,
-                winnerName = MIKKUZ.name
+                loser = IMYT,
+                winner = MIKKUZ,
+                excluded = false,
+                matchId = 2
         )
 
         private val IMYT_VS_SNAP_0 = FullTournament.Match(
-                isExcluded = false,
-                loserId = SNAP.id,
-                loserName = SNAP.name,
-                matchId = "4C50D174B5EB82FF",
-                winnerId = IMYT.id,
-                winnerName = IMYT.name
+                loser = SNAP,
+                winner = IMYT,
+                excluded = false,
+                matchId = 3
         )
 
         private val IMYT_VS_SNAP_1 = FullTournament.Match(
-                isExcluded = false,
-                loserId = IMYT.id,
-                loserName = IMYT.name,
-                matchId = "5A13470AA81DA148",
-                winnerId = SNAP.id,
-                winnerName = SNAP.name
+                loser = IMYT,
+                winner = SNAP,
+                excluded = false,
+                matchId = 5
         )
 
         private val IMYT_VS_SNAP_2 = FullTournament.Match(
-                isExcluded = false,
-                loserId = SNAP.id,
-                loserName = SNAP.name,
-                matchId = "946FF12A6DC34BC1",
-                winnerId = IMYT.id,
-                winnerName = IMYT.name
+                loser = SNAP,
+                winner = IMYT,
+                excluded = false,
+                matchId = 6
         )
 
         private val MIKKUZ_VS_SNAP = FullTournament.Match(
-                isExcluded = false,
-                loserId = MIKKUZ.id,
-                loserName = MIKKUZ.name,
-                matchId = "B7FC951240926717",
-                winnerId = SNAP.id,
-                winnerName = SNAP.name
+                loser = MIKKUZ,
+                winner = SNAP,
+                excluded = false,
+                matchId = 4
         )
 
         private val NORCAL = Region(

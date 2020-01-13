@@ -3,6 +3,10 @@ package com.garpr.android.features.players
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.FavoritePlayer
+import com.garpr.android.data.models.Optional
+import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.PlayerListBuilder
@@ -13,6 +17,8 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.PlayersRepository
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 
 class PlayersViewModel(
         private val identityRepository: IdentityRepository,
@@ -43,11 +49,16 @@ class PlayersViewModel(
     fun fetchPlayers(region: Region) {
         state = state.copy(isFetching = true)
 
-        disposables.add(playersRepository.getPlayers(region)
+        disposables.add(Single.zip(playersRepository.getPlayers(region),
+                identityRepository.identityObservable.take(1).singleOrError(),
+                BiFunction<PlayersBundle, Optional<FavoritePlayer>,
+                        Pair<PlayersBundle, Optional<FavoritePlayer>>> { t1, t2 ->
+                            Pair(t1, t2)
+                        })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ bundle ->
-                    val list = playerListBuilder.create(bundle)
+                .subscribe({ (bundle, identity) ->
+                    val list = playerListBuilder.create(bundle, identity.item)
 
                     state = state.copy(
                             hasError = false,
@@ -73,15 +84,17 @@ class PlayersViewModel(
 
     private fun initListeners() {
         disposables.add(identityRepository.identityObservable
-                .subscribe {
-                    refreshIdentity()
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .subscribe { identity ->
+                    refreshIdentity(identity.item)
                 })
     }
 
     @WorkerThread
-    private fun refreshIdentity() {
-        val list = playerListBuilder.refresh(state.list)
-        val searchResults = playerListBuilder.refresh(state.searchResults)
+    private fun refreshIdentity(identity: AbsPlayer?) {
+        val list = playerListBuilder.refresh(state.list, identity)
+        val searchResults = playerListBuilder.refresh(state.searchResults, identity)
 
         state = state.copy(
                 list = list,
@@ -91,7 +104,7 @@ class PlayersViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val searchResults = playerListBuilder.search(query, state.list)
+            val searchResults = playerListBuilder.search(state.list, query)
             state = state.copy(searchResults = searchResults)
         }
     }

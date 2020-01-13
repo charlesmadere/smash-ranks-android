@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
+import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.verticalPositionInWindow
@@ -25,6 +26,8 @@ class PlayerProfileItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs), ColorListener, Heartbeat, KoinComponent, Refreshable {
+
+    private var identity: AbsPlayer? = null
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)
@@ -111,7 +114,7 @@ class PlayerProfileItemView @JvmOverloads constructor(
     override fun refresh() {
         val player = this.player ?: return
         val region = regionHandleUtils.getRegion(context)
-        val presentation = playerProfileManager.getPresentation(region, isFavorited,
+        val presentation = playerProfileManager.getPresentation(identity, region, isFavorited,
                 player, smashCompetitor)
         this.presentation = presentation
 
@@ -205,7 +208,9 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
     }
 
-    fun setContent(isFavorited: Boolean, player: FullPlayer, smashCompetitor: SmashCompetitor?) {
+    fun setContent(identity: AbsPlayer?, isFavorited: Boolean, player: FullPlayer,
+            smashCompetitor: SmashCompetitor?) {
+        this.identity = identity
         this.isFavorited = isFavorited
         this.player = player
         this.smashCompetitor = smashCompetitor

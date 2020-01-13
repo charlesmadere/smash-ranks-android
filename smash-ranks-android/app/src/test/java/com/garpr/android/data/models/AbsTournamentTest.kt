@@ -24,6 +24,7 @@ class AbsTournamentTest : BaseTest() {
 
         private val LITE_TOURNAMENT_0: AbsTournament = LiteTournament(
                 date = SimpleDate(with(Calendar.getInstance()) {
+                    clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.JANUARY)
                     set(Calendar.DAY_OF_MONTH, 5)
@@ -36,6 +37,7 @@ class AbsTournamentTest : BaseTest() {
 
         private val LITE_TOURNAMENT_1: AbsTournament = LiteTournament(
                 date = SimpleDate(with(Calendar.getInstance()) {
+                    clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.FEBRUARY)
                     set(Calendar.DAY_OF_MONTH, 21)
@@ -48,6 +50,7 @@ class AbsTournamentTest : BaseTest() {
 
         private val LITE_TOURNAMENT_2: AbsTournament = LiteTournament(
                 date = SimpleDate(with(Calendar.getInstance()) {
+                    clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.JULY)
                     set(Calendar.DAY_OF_MONTH, 9)

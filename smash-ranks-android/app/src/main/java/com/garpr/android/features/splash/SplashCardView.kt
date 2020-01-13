@@ -95,7 +95,7 @@ class SplashCardView @JvmOverloads constructor(
         }
 
         customizeRegion.descriptionText = context.getString(R.string.region_endpoint_format,
-                region.displayName, context.getString(region.endpoint.title))
+                region.displayName, context.getText(region.endpoint.title))
 
         if (!hasAnimated) {
             hasAnimated = true
