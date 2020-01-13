@@ -52,11 +52,7 @@ class SmashRosterSyncManagerImpl(
     override var syncResult: SmashRosterSyncResult?
         get() = smashRosterPreferenceStore.syncResult.get()
         set(value) {
-            if (value == null) {
-                smashRosterPreferenceStore.syncResult.delete()
-            } else {
-                smashRosterPreferenceStore.syncResult.set(value)
-            }
+            smashRosterPreferenceStore.syncResult.set(value)
         }
 
     companion object {
