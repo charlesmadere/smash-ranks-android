@@ -56,11 +56,6 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // Android Architecture Components - ViewModel and LiveData
-    // https://developer.android.com/jetpack/androidx/releases/lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-
     // Android Architecture Components - WorkManager
     // https://developer.android.com/jetpack/androidx/releases/work
     implementation "androidx.work:work-runtime:$workmanager_version"
@@ -88,6 +83,11 @@ dependencies {
     // AndroidX Test
     // https://developer.android.com/jetpack/androidx/releases/test
     testImplementation "androidx.test:core:$testcore_version"
+
+    // AndroidX ViewModel and LiveData
+    // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // AndroidX ViewPager2
     // https://developer.android.com/jetpack/androidx/releases/viewpager2
