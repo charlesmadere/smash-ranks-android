@@ -1,30 +1,13 @@
-// Fabric
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        //noinspection GradleDynamicVersion
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
-
 // Android
-apply plugin: 'com.android.application'
+apply plugin: "com.android.application"
 
 // Kotlin
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
 
-// Fabric
-apply plugin: 'io.fabric'
-
-// Fabric
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
+// Fabric / Firebase Crashlytics plugin
+apply plugin: "io.fabric"
 
 android {
     compileSdkVersion 28
@@ -61,6 +44,7 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation "junit:junit:4.12"
 
@@ -147,9 +131,8 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
-    // Fabric
-    // https://fabric.io/kits/android/crashlytics/update
-    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics_version@aar") {
-        transitive = true
-    }
+    // Fabric / Firebase Crashlytics
+    // https://firebase.google.com/docs/crashlytics/get-started?platform=android
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
+
 }

@@ -26,6 +26,11 @@ buildscript {
         google()
         mavenCentral()
         jcenter()
+
+        // Fabric / Firebase Crashlytics plugin
+        maven {
+            url "https://maven.fabric.io/public"
+        }
     }
 
     dependencies {
@@ -33,6 +38,12 @@ buildscript {
 
         // Kotlin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // Google Services plugin (needed for Fabric / Firebase Crashlytics plugin)
+        classpath "com.google.gms:google-services:4.3.3"
+
+        // Fabric / Firebase Crashlytics plugin
+        classpath "io.fabric.tools:gradle:1.31.2"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
