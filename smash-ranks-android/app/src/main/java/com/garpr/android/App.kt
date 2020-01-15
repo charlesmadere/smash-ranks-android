@@ -5,6 +5,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.Configuration
 import com.garpr.android.koin.configModule
+import com.garpr.android.koin.databaseModule
 import com.garpr.android.koin.managersModule
 import com.garpr.android.koin.miscModule
 import com.garpr.android.koin.networkingModule
@@ -61,8 +62,9 @@ class App : Application(), Configuration.Provider {
         startKoin {
             androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
             androidContext(this@App)
-            modules(listOf(configModule, managersModule, miscModule, networkingModule,
-                    preferencesModule, repositoriesModule, syncModule, viewModelsModule))
+            modules(listOf(configModule, databaseModule, managersModule, miscModule,
+                    networkingModule, preferencesModule, repositoriesModule, syncModule,
+                    viewModelsModule))
         }
     }
 

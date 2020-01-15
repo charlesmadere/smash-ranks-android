@@ -10,7 +10,6 @@ import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
@@ -43,16 +42,23 @@ class AddOrRemovePlayerFromFavoritesViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun testAddToFavorites() {
+    fun testAddOrRemoveFromFavoritesDoesAdd() {
         var state: AddOrRemovePlayerFromFavoritesViewModel.State? = null
 
         viewModel.stateLiveData.observeForever {
             state = it
         }
 
+        var players: List<FavoritePlayer>? = null
+
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
+
         assertNotNull(state)
         assertEquals(false, state?.isFavorited)
         assertEquals(true, state?.isFetching)
+        assertEquals(false, players?.contains(CHARLEZARD))
 
         val player = FavoritePlayer(
                 id = CHARLEZARD.id,
@@ -64,20 +70,61 @@ class AddOrRemovePlayerFromFavoritesViewModelTest : BaseViewModelTest() {
         assertNotNull(state)
         assertEquals(false, state?.isFavorited)
         assertEquals(false, state?.isFetching)
+        assertEquals(false, players?.contains(CHARLEZARD))
 
-        viewModel.addToFavorites()
+        viewModel.addOrRemoveFromFavorites()
         assertNotNull(state)
         assertEquals(true, state?.isFavorited)
         assertEquals(false, state?.isFetching)
-        assertTrue(CHARLEZARD in favoritePlayersRepository)
+        assertEquals(true, players?.contains(CHARLEZARD))
     }
 
     @Test
-    fun testAddToFavoritesWithoutInitialize() {
+    fun testAddOrRemoveFromFavoritesDoesRemove() {
+        favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
+
+        var state: AddOrRemovePlayerFromFavoritesViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        var players: List<FavoritePlayer>? = null
+
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
+
+        assertNotNull(state)
+        assertEquals(false, state?.isFavorited)
+        assertEquals(true, state?.isFetching)
+        assertEquals(true, players?.contains(CHARLEZARD))
+
+        val player = FavoritePlayer(
+                id = CHARLEZARD.id,
+                name = CHARLEZARD.name,
+                region = NORCAL
+        )
+
+        viewModel.initialize(player)
+        assertNotNull(state)
+        assertEquals(true, state?.isFavorited)
+        assertEquals(false, state?.isFetching)
+        assertEquals(true, players?.contains(CHARLEZARD))
+
+        viewModel.addOrRemoveFromFavorites()
+        assertNotNull(state)
+        assertEquals(false, state?.isFavorited)
+        assertEquals(false, state?.isFetching)
+        assertEquals(false, players?.contains(CHARLEZARD))
+    }
+
+    @Test
+    fun testAddOrRemoveFromFavoritesWithoutInitialize() {
         var throwable: Throwable? = null
 
         try {
-            viewModel.addToFavorites()
+            viewModel.addOrRemoveFromFavorites()
         } catch (t: Throwable) {
             throwable = t
         }
@@ -96,50 +143,6 @@ class AddOrRemovePlayerFromFavoritesViewModelTest : BaseViewModelTest() {
         assertNotNull(state)
         assertEquals(false, state?.isFavorited)
         assertEquals(true, state?.isFetching)
-    }
-
-    @Test
-    fun testRemoveFromFavorites() {
-        favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
-
-        var state: AddOrRemovePlayerFromFavoritesViewModel.State? = null
-
-        viewModel.stateLiveData.observeForever {
-            state = it
-        }
-
-        assertNotNull(state)
-        assertEquals(false, state?.isFavorited)
-        assertEquals(true, state?.isFetching)
-
-        val player = FavoritePlayer(
-                id = CHARLEZARD.id,
-                name = CHARLEZARD.name,
-                region = NORCAL
-        )
-
-        viewModel.initialize(player)
-        assertNotNull(state)
-        assertEquals(true, state?.isFavorited)
-        assertEquals(false, state?.isFetching)
-
-        viewModel.removeFromFavorites()
-        assertNotNull(state)
-        assertEquals(false, state?.isFavorited)
-        assertEquals(false, state?.isFetching)
-    }
-
-    @Test
-    fun testRemoveFromFavoritesWithoutInitialize() {
-        var throwable: Throwable? = null
-
-        try {
-            viewModel.removeFromFavorites()
-        } catch (t: Throwable) {
-            throwable = t
-        }
-
-        assertNotNull(throwable)
     }
 
 }

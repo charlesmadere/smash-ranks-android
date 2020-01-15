@@ -114,7 +114,7 @@ class FavoritePlayersViewModelTest : BaseViewModelTest() {
         player = state?.list?.get(1) as ListItem.Player
         assertEquals(SNAP, player.player)
 
-        favoritePlayersRepository.removePlayer(IMYT)
+        favoritePlayersRepository.removePlayer(IMYT, NORCAL)
         assertEquals(1, state?.list?.size)
 
         player = state?.list?.get(0) as ListItem.Player

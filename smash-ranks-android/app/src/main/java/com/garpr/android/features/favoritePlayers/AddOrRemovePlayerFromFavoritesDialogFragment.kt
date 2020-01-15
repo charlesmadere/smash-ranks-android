@@ -19,14 +19,10 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
 
     private val viewModel: AddOrRemovePlayerFromFavoritesViewModel by viewModel()
 
-    private val addPlayerClickListener = View.OnClickListener {
-        viewModel.addToFavorites()
-        performHapticFeedbackAndDismiss(it)
-    }
-
-    private val removePlayerClickListener = View.OnClickListener {
-        viewModel.removeFromFavorites()
-        performHapticFeedbackAndDismiss(it)
+    private val addOrRemovePlayerClickListener = View.OnClickListener { view ->
+        viewModel.addOrRemoveFromFavorites()
+        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        dismissAllowingStateLoss()
     }
 
     companion object {
@@ -50,6 +46,10 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
         })
     }
 
+    private fun initViews() {
+        dialogPositiveText.setOnClickListener(addOrRemovePlayerClickListener)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.initialize(player)
@@ -65,11 +65,7 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
-    }
-
-    private fun performHapticFeedbackAndDismiss(view: View) {
-        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-        dismissAllowingStateLoss()
+        initViews()
     }
 
     private fun refreshState(state: AddOrRemovePlayerFromFavoritesViewModel.State) {
@@ -83,13 +79,11 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
                 dialogPositiveText.setText(R.string.yes_remove)
                 dialogPositiveText.setStartCompoundDrawableRelativeWithIntrinsicBounds(
                         R.drawable.ic_delete_white_24dp)
-                dialogPositiveText.setOnClickListener(removePlayerClickListener)
             } else {
                 dialogMessage.text = getString(R.string.add_x_to_favorites, player.name)
                 dialogPositiveText.setText(R.string.yes_add)
                 dialogPositiveText.setStartCompoundDrawableRelativeWithIntrinsicBounds(
                         R.drawable.ic_add_circle_white_24dp)
-                dialogPositiveText.setOnClickListener(addPlayerClickListener)
             }
 
             dialogMessage.visibility = View.VISIBLE

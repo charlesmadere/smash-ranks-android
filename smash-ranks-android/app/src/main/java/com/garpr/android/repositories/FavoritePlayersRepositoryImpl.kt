@@ -2,6 +2,8 @@ package com.garpr.android.repositories
 
 import android.annotation.SuppressLint
 import androidx.annotation.WorkerThread
+import com.garpr.android.data.database.DbFavoritePlayer
+import com.garpr.android.data.database.FavoritePlayerDao
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
@@ -17,6 +19,7 @@ import io.reactivex.subjects.BehaviorSubject
 import java.util.Collections
 
 class FavoritePlayersRepositoryImpl(
+        private val favoritePlayerDao: FavoritePlayerDao,
         private val keyValueStore: KeyValueStore,
         private val moshi: Moshi,
         private val schedulers: Schedulers,
@@ -24,19 +27,11 @@ class FavoritePlayersRepositoryImpl(
         private val timber: Timber
 ) : FavoritePlayersRepository, Refreshable {
 
-    private val favoritePlayerJsonAdapter by lazy {
-        moshi.adapter(FavoritePlayer::class.java)
-    }
-
     private val sizeSubject = BehaviorSubject.create<Int>()
     override val sizeObservable: Observable<Int> = sizeSubject.hide()
 
     private val playersSubject = BehaviorSubject.create<List<FavoritePlayer>>()
     override val playersObservable: Observable<List<FavoritePlayer>> = playersSubject.hide()
-
-    companion object {
-        private const val TAG = "FavoritePlayersRepositoryImpl"
-    }
 
     init {
         initListeners()
@@ -45,16 +40,12 @@ class FavoritePlayersRepositoryImpl(
 
     override fun addPlayer(player: AbsPlayer, region: Region) {
         threadUtils.background.submit {
-            if (player in this) {
-                timber.w(TAG, "Not adding favorite, it already exists in the store")
-                return@submit
-            }
-
             timber.d(TAG, "adding favorite...")
 
-            val favoritePlayer = FavoritePlayer(player.id, player.name, region)
-            val playerJson = favoritePlayerJsonAdapter.toJson(favoritePlayer)
-            keyValueStore.setString(player.id, playerJson)
+            favoritePlayerDao.insert(DbFavoritePlayer(
+                    player = player,
+                    region = region
+            ))
 
             loadPlayers()
         }
@@ -63,13 +54,9 @@ class FavoritePlayersRepositoryImpl(
     override fun clear() {
         threadUtils.background.submit {
             timber.d(TAG, "clearing favorites...")
-            keyValueStore.clear()
+            favoritePlayerDao.deleteAll()
             loadPlayers()
         }
-    }
-
-    override fun contains(player: AbsPlayer): Boolean {
-        return player.id in keyValueStore
     }
 
     @SuppressLint("CheckResult")
@@ -87,20 +74,50 @@ class FavoritePlayersRepositoryImpl(
 
     @WorkerThread
     private fun loadPlayers() {
+        val players = favoritePlayerDao.getAll()
+                .map { dbFavoritePlayer ->
+                    dbFavoritePlayer.toFavoritePlayer()
+                }
+
+        playersSubject.onNext(if (players.isNullOrEmpty()) {
+            emptyList()
+        } else {
+            Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
+            Collections.unmodifiableList(players)
+        })
+    }
+
+    override fun migrate() {
+        threadUtils.background.submit {
+            migratePlayersFromKeyValueStoreToRoom()
+        }
+    }
+
+    @WorkerThread
+    private fun migratePlayersFromKeyValueStoreToRoom() {
+        timber.d(TAG, "migrating favorites from KeyValueStore to Room...")
+
         val all = keyValueStore.all
 
         if (all.isNullOrEmpty()) {
-            playersSubject.onNext(emptyList())
+            timber.d(TAG, "user has no favorites to migrate")
             return
         }
 
+        val jsonAdapter = moshi.adapter(FavoritePlayer::class.java)
+
         val players = all.map { entry ->
             val json = entry.value as String
-            favoritePlayerJsonAdapter.requireFromJson(json)
+            val player = jsonAdapter.requireFromJson(json)
+            DbFavoritePlayer(player = player, region = player.region)
         }
 
-        Collections.sort(players, AbsPlayer.ALPHABETICAL_ORDER)
-        playersSubject.onNext(players)
+        keyValueStore.clear()
+        favoritePlayerDao.insertAll(players)
+
+        timber.d(TAG, "finished migration process")
+
+        loadPlayers()
     }
 
     override fun refresh() {
@@ -109,12 +126,21 @@ class FavoritePlayersRepositoryImpl(
         }
     }
 
-    override fun removePlayer(player: AbsPlayer) {
+    override fun removePlayer(player: AbsPlayer, region: Region) {
         threadUtils.background.submit {
             timber.d(TAG, "removing favorite...")
-            keyValueStore.remove(player.id)
+
+            favoritePlayerDao.delete(DbFavoritePlayer(
+                    player = player,
+                    region = region
+            ))
+
             loadPlayers()
         }
+    }
+
+    companion object {
+        private const val TAG = "FavoritePlayersRepositoryImpl"
     }
 
 }

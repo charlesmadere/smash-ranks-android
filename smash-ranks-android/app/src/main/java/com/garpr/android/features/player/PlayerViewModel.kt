@@ -68,8 +68,8 @@ class PlayerViewModel(
         val region = checkNotNull(this.region) { "initialize() hasn't been called!" }
         val player = checkNotNull(this.player) { "player hasn't been fetched!" }
 
-        if (player in favoritePlayersRepository) {
-            favoritePlayersRepository.removePlayer(player)
+        if (state.isFavorited) {
+            favoritePlayersRepository.removePlayer(player, region)
         } else {
             favoritePlayersRepository.addPlayer(player, region)
         }
@@ -135,7 +135,6 @@ class PlayerViewModel(
                     val isFavorited = favoritePlayers.any { favoritePlayer ->
                         AbsPlayer.safeEquals(favoritePlayer, bundle.fullPlayer)
                     }
-
 
                     state = state.copy(
                             identity = identity.item,

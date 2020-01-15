@@ -19,12 +19,16 @@ class TestThreadUtilsImpl : ThreadUtils {
         }
 
         override fun <T : Any?> invokeAll(
-                tasks: MutableCollection<out Callable<T>>): MutableList<Future<T>> {
+                tasks: MutableCollection<out Callable<T>>
+        ): MutableList<Future<T>> {
             throw NotImplementedError()
         }
 
-        override fun <T : Any?> invokeAll(tasks: MutableCollection<out Callable<T>>,
-                timeout: Long, unit: TimeUnit): MutableList<Future<T>> {
+        override fun <T : Any?> invokeAll(
+                tasks: MutableCollection<out Callable<T>>,
+                timeout: Long,
+                unit: TimeUnit
+        ): MutableList<Future<T>> {
             throw NotImplementedError()
         }
 
@@ -32,8 +36,11 @@ class TestThreadUtilsImpl : ThreadUtils {
             throw NotImplementedError()
         }
 
-        override fun <T : Any?> invokeAny(tasks: MutableCollection<out Callable<T>>,
-                timeout: Long, unit: TimeUnit): T {
+        override fun <T : Any?> invokeAny(
+                tasks: MutableCollection<out Callable<T>>,
+                timeout: Long,
+                unit: TimeUnit
+        ): T {
             throw NotImplementedError()
         }
 

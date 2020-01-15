@@ -50,10 +50,6 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // Android Architecture Components - WorkManager
-    // https://developer.android.com/jetpack/androidx/releases/work
-    implementation "androidx.work:work-runtime:$workmanager_version"
-
     // AndroidX Architecture Core Test
     // https://developer.android.com/jetpack/androidx/releases/test
     testImplementation "androidx.arch.core:core-testing:$architecture_core_test_version"
@@ -78,6 +74,11 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/recyclerview
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
+    // AndroidX Room
+    // https://developer.android.com/jetpack/androidx/releases/room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
     // AndroidX ViewModel and LiveData
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -86,6 +87,10 @@ dependencies {
     // AndroidX ViewPager2
     // https://developer.android.com/jetpack/androidx/releases/viewpager2
     implementation "androidx.viewpager2:viewpager2:$viewpager_version"
+
+    // AndroidX WorkManager
+    // https://developer.android.com/jetpack/androidx/releases/work
+    implementation "androidx.work:work-runtime:$workmanager_version"
 
     // Facebook's Fresco
     // https://github.com/facebook/fresco

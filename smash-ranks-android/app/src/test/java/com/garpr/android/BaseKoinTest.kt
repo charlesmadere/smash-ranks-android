@@ -1,6 +1,7 @@
 package com.garpr.android
 
 import com.garpr.android.koin.configModule
+import com.garpr.android.koin.databaseModule
 import com.garpr.android.koin.managersModule
 import com.garpr.android.koin.miscModule
 import com.garpr.android.koin.networkingModule
@@ -16,8 +17,9 @@ abstract class BaseKoinTest : AutoCloseKoinTest() {
 
     private fun initializeKoin() {
         startKoin {
-            modules(listOf(configModule, managersModule, miscModule, networkingModule,
-                    preferencesModule, repositoriesModule, syncModule, viewModelsModule))
+            modules(listOf(configModule, databaseModule, managersModule, miscModule,
+                    networkingModule, preferencesModule, repositoriesModule, syncModule,
+                    viewModelsModule))
         }
     }
 

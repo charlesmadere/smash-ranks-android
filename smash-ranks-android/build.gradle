@@ -17,6 +17,7 @@ buildscript {
     ext.palette_version = '1.0.0'
     ext.recyclerview_version = '1.1.0'
     ext.retrofit_version = '2.7.1'
+    ext.room_version = '2.2.3'
     ext.rx_java_version = '2.2.17'
     ext.viewpager_version = '1.0.0'
     ext.workmanager_version = '2.2.0'

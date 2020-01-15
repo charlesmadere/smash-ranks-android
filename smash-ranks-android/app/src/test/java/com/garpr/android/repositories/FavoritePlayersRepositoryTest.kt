@@ -6,8 +6,10 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
+import com.garpr.android.koin.FAVORITE_PLAYERS_KEY_VALUE_STORE
+import com.garpr.android.preferences.KeyValueStoreProvider
+import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.test.inject
@@ -15,6 +17,8 @@ import org.koin.test.inject
 class FavoritePlayersRepositoryTest : BaseKoinTest() {
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
+    protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
+    protected val moshi: Moshi by inject()
 
     companion object {
         private val HMW: AbsPlayer = LitePlayer(
@@ -97,33 +101,35 @@ class FavoritePlayersRepositoryTest : BaseKoinTest() {
     }
 
     @Test
-    fun testContains() {
-        assertFalse(HMW in favoritePlayersRepository)
-        assertFalse(SPARK in favoritePlayersRepository)
+    fun testMigrate() {
+        var players: List<FavoritePlayer>? = null
 
-        favoritePlayersRepository.addPlayer(HMW, NORCAL)
-        assertTrue(HMW in favoritePlayersRepository)
-        assertFalse(SPARK in favoritePlayersRepository)
+        favoritePlayersRepository.playersObservable.subscribe {
+            players = it
+        }
 
-        favoritePlayersRepository.removePlayer(SPARK)
-        assertTrue(HMW in favoritePlayersRepository)
-        assertFalse(SPARK in favoritePlayersRepository)
+        val keyValueStore = keyValueStoreProvider.getKeyValueStore(FAVORITE_PLAYERS_KEY_VALUE_STORE)
+        val jsonAdapter = moshi.adapter(FavoritePlayer::class.java)
 
-        favoritePlayersRepository.removePlayer(HMW)
-        assertFalse(HMW in favoritePlayersRepository)
-        assertFalse(SPARK in favoritePlayersRepository)
+        keyValueStore.setString(HMW.id, jsonAdapter.toJson(FavoritePlayer(
+                id = HMW.id,
+                name = HMW.name,
+                region = NORCAL
+        )))
 
-        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
-        assertFalse(HMW in favoritePlayersRepository)
-        assertTrue(SPARK in favoritePlayersRepository)
+        keyValueStore.setString(SPARK.id, jsonAdapter.toJson(FavoritePlayer(
+                id = SPARK.id,
+                name = SPARK.name,
+                region = NORCAL
+        )))
 
-        favoritePlayersRepository.addPlayer(HMW, NORCAL)
-        assertTrue(HMW in favoritePlayersRepository)
-        assertTrue(SPARK in favoritePlayersRepository)
+        assertEquals(true, players?.isEmpty())
 
-        favoritePlayersRepository.clear()
-        assertFalse(HMW in favoritePlayersRepository)
-        assertFalse(SPARK in favoritePlayersRepository)
+        favoritePlayersRepository.migrate()
+        assertEquals(2, players?.size)
+        assertEquals(HMW, players?.get(0))
+        assertEquals(SPARK, players?.get(1))
+        assertTrue(keyValueStore.all.isNullOrEmpty())
     }
 
     @Test
@@ -142,10 +148,10 @@ class FavoritePlayersRepositoryTest : BaseKoinTest() {
         favoritePlayersRepository.addPlayer(SPARK, NORCAL)
         assertEquals(2, players?.size)
 
-        favoritePlayersRepository.removePlayer(SPARK)
+        favoritePlayersRepository.removePlayer(SPARK, NORCAL)
         assertEquals(1, players?.size)
 
-        favoritePlayersRepository.removePlayer(HMW)
+        favoritePlayersRepository.removePlayer(HMW, NORCAL)
         assertEquals(true, players?.isEmpty())
     }
 
@@ -158,7 +164,7 @@ class FavoritePlayersRepositoryTest : BaseKoinTest() {
         }
 
         favoritePlayersRepository.addPlayer(HMW, NORCAL)
-        favoritePlayersRepository.removePlayer(HMW)
+        favoritePlayersRepository.removePlayer(HMW, NORCAL)
         assertEquals(true, players?.isEmpty())
     }
 
@@ -176,11 +182,11 @@ class FavoritePlayersRepositoryTest : BaseKoinTest() {
         assertEquals(HMW, players?.get(0))
         assertEquals(SPARK, players?.get(1))
 
-        favoritePlayersRepository.removePlayer(HMW)
+        favoritePlayersRepository.removePlayer(HMW, NORCAL)
         assertEquals(1, players?.size)
         assertEquals(SPARK, players?.get(0))
 
-        favoritePlayersRepository.removePlayer(SPARK)
+        favoritePlayersRepository.removePlayer(SPARK, NORCAL)
         assertEquals(true, players?.isEmpty())
     }
 
@@ -193,8 +199,8 @@ class FavoritePlayersRepositoryTest : BaseKoinTest() {
         }
 
         favoritePlayersRepository.addPlayer(SPARK, NORCAL)
-        favoritePlayersRepository.removePlayer(SPARK)
-        favoritePlayersRepository.removePlayer(SPARK)
+        favoritePlayersRepository.removePlayer(SPARK, NORCAL)
+        favoritePlayersRepository.removePlayer(SPARK, NORCAL)
         assertEquals(true, players?.isEmpty())
     }
 
@@ -214,10 +220,10 @@ class FavoritePlayersRepositoryTest : BaseKoinTest() {
         favoritePlayersRepository.addPlayer(SPARK, NORCAL)
         assertEquals(2, size)
 
-        favoritePlayersRepository.removePlayer(HMW)
+        favoritePlayersRepository.removePlayer(HMW, NORCAL)
         assertEquals(1, size)
 
-        favoritePlayersRepository.removePlayer(SPARK)
+        favoritePlayersRepository.removePlayer(SPARK, NORCAL)
         assertEquals(0, size)
     }
 
@@ -240,13 +246,13 @@ class FavoritePlayersRepositoryTest : BaseKoinTest() {
         favoritePlayersRepository.addPlayer(HMW, NORCAL)
         assertEquals(2, size)
 
-        favoritePlayersRepository.removePlayer(HMW)
+        favoritePlayersRepository.removePlayer(HMW, NORCAL)
         assertEquals(1, size)
 
-        favoritePlayersRepository.removePlayer(SPARK)
+        favoritePlayersRepository.removePlayer(SPARK, NORCAL)
         assertEquals(0, size)
 
-        favoritePlayersRepository.removePlayer(HMW)
+        favoritePlayersRepository.removePlayer(HMW, NORCAL)
         assertEquals(0, size)
     }
 
