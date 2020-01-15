@@ -1,6 +1,6 @@
 package com.garpr.android.preferences
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -8,12 +8,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class KeyValueStoreTest : BaseTest() {
+class KeyValueStoreTest : BaseKoinTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 
@@ -143,7 +140,7 @@ class KeyValueStoreTest : BaseTest() {
     @Test
     fun testClear() {
         keyValueStore.clear()
-        assertNull(keyValueStore.all)
+        assertTrue(keyValueStore.all.isNullOrEmpty())
     }
 
     @Test

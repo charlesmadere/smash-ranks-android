@@ -1,16 +1,13 @@
 package com.garpr.android.features.rankings
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.RankedPlayer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class PreviousRankUtilsTest : BaseTest() {
+class PreviousRankUtilsTest : BaseKoinTest() {
 
     protected val previousRankUtils: PreviousRankUtils by inject()
 

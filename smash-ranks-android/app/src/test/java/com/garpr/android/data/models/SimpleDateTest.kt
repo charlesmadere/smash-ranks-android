@@ -1,16 +1,11 @@
 package com.garpr.android.data.models
 
-import android.os.Parcel
-import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import java.util.Collections
 import java.util.Date
 
-@RunWith(RobolectricTestRunner::class)
-class SimpleDateTest : BaseTest() {
+class SimpleDateTest {
 
     @Test
     fun testChronologicalOrder() {
@@ -23,17 +18,6 @@ class SimpleDateTest : BaseTest() {
         assertEquals(2, list[2].date.time)
         assertEquals(5, list[3].date.time)
         assertEquals(20, list[4].date.time)
-    }
-
-    @Test
-    fun testParcelable() {
-        val simpleDate = SimpleDate()
-        val parcel = Parcel.obtain()
-        simpleDate.writeToParcel(parcel, simpleDate.describeContents())
-        parcel.setDataPosition(0)
-
-        val simpleDateFromParcel = SimpleDate.CREATOR.createFromParcel(parcel)
-        assertEquals(simpleDate, simpleDateFromParcel)
     }
 
     @Test

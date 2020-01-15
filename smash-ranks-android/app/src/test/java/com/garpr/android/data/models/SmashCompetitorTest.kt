@@ -1,14 +1,10 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class SmashCompetitorTest : BaseTest() {
+class SmashCompetitorTest {
 
     companion object {
         private val SMASH_COMPETITOR_1 = SmashCompetitor(

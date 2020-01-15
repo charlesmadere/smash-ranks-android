@@ -1,6 +1,6 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PlayersBundle
@@ -11,12 +11,9 @@ import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class PlayersRepositoryTest : BaseTest() {
+class PlayersRepositoryTest : BaseKoinTest() {
 
     private lateinit var playersRepository: PlayersRepository
     private val serverApi = ServerApiOverride()

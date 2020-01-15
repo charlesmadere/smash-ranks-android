@@ -1,6 +1,6 @@
 package com.garpr.android.features.favoritePlayers
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
@@ -16,12 +16,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class FavoritePlayersViewModelTest : BaseTest() {
+class FavoritePlayersViewModelTest : BaseViewModelTest() {
 
     private lateinit var viewModel: FavoritePlayersViewModel
 

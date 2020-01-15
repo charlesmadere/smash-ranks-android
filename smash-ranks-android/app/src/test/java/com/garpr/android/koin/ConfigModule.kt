@@ -3,12 +3,18 @@ package com.garpr.android.koin
 import androidx.work.Configuration
 import androidx.work.WorkRequest
 import com.garpr.android.misc.DeviceUtils
+import com.garpr.android.misc.StackTraceUtils
 import com.garpr.android.misc.TestDeviceUtilsImpl
 import com.garpr.android.misc.TestThreadUtilsImpl
 import com.garpr.android.misc.ThreadUtils
+import com.garpr.android.preferences.KeyValueStore
+import com.garpr.android.preferences.KeyValueStoreProvider
+import com.garpr.android.preferences.TestKeyValueStoreImpl
+import com.garpr.android.preferences.TestKeyValueStoreProviderImpl
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val configModule = module {
@@ -51,6 +57,22 @@ val configModule = module {
         }
     }
 
+    single<KeyValueStore> { TestKeyValueStoreImpl() }
+    single<KeyValueStoreProvider> { TestKeyValueStoreProviderImpl() }
+
+    single<StackTraceUtils> {
+        object : StackTraceUtils {
+            override fun toString(throwable: Throwable?): String {
+                return if (throwable == null) {
+                    ""
+                } else {
+                    throwable.javaClass.name
+                }
+            }
+        }
+    }
+
+    single(named(PACKAGE_NAME)) { "com.garpr.android" }
     single<ThreadUtils> { TestThreadUtilsImpl() }
 
     single<WorkManagerWrapper> {

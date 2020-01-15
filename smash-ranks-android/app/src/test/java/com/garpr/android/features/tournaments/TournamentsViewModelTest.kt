@@ -1,6 +1,6 @@
 package com.garpr.android.features.tournaments
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullTournament
@@ -18,13 +18,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.util.Calendar
 
-@RunWith(RobolectricTestRunner::class)
-class TournamentsViewModelTest : BaseTest() {
+class TournamentsViewModelTest : BaseViewModelTest() {
 
     private val tournamentsRepository = TournamentsRepositoryOverride()
     private lateinit var viewModel: TournamentsViewModel
@@ -42,6 +39,7 @@ class TournamentsViewModelTest : BaseTest() {
 
         private val GENESIS_RED: AbsTournament = LiteTournament(
                 date = SimpleDate(with(Calendar.getInstance()) {
+                    clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.JULY)
                     set(Calendar.DAY_OF_MONTH, 9)
@@ -54,6 +52,7 @@ class TournamentsViewModelTest : BaseTest() {
 
         private val GET_MADE_AT_THE_FOUNDRY: AbsTournament = LiteTournament(
                 date = SimpleDate(with(Calendar.getInstance()) {
+                    clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.FEBRUARY)
                     set(Calendar.DAY_OF_MONTH, 21)
@@ -66,6 +65,7 @@ class TournamentsViewModelTest : BaseTest() {
 
         private val THE_BEAT_DOWN_14: AbsTournament = LiteTournament(
                 date = SimpleDate(with(Calendar.getInstance()) {
+                    clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.JANUARY)
                     set(Calendar.DAY_OF_MONTH, 5)

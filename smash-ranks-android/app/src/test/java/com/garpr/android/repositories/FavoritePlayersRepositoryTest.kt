@@ -1,6 +1,6 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
@@ -10,12 +10,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class FavoritePlayersRepositoryTest : BaseTest() {
+class FavoritePlayersRepositoryTest : BaseKoinTest() {
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
 

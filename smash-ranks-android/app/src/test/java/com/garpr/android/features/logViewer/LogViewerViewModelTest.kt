@@ -1,6 +1,6 @@
 package com.garpr.android.features.logViewer
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseViewModelTest
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import org.junit.Assert.assertEquals
@@ -9,12 +9,9 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.koin.core.inject
-import org.robolectric.RobolectricTestRunner
+import org.koin.test.inject
 
-@RunWith(RobolectricTestRunner::class)
-class LogViewerViewModelTest : BaseTest() {
+class LogViewerViewModelTest : BaseViewModelTest() {
 
     private lateinit var viewModel: LogViewerViewModel
 

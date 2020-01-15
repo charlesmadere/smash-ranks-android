@@ -3,7 +3,7 @@ package com.garpr.android.misc
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 
-object MiscUtils {
+object ColorUtils {
 
     @ColorInt
     fun brightenOrDarkenColor(@ColorInt color: Int, factor: Float): Int {

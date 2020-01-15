@@ -1,6 +1,6 @@
 package com.garpr.android.features.rankings
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
@@ -25,13 +25,10 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.util.Date
 
-@RunWith(RobolectricTestRunner::class)
-class RankingsViewModelTest : BaseTest() {
+class RankingsViewModelTest : BaseViewModelTest() {
 
     private lateinit var viewModel: RankingsViewModel
 

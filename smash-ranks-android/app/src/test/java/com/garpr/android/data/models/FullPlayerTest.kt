@@ -1,15 +1,11 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class FullPlayerTest : BaseTest() {
+class FullPlayerTest {
 
     companion object {
         private val FULL_PLAYER_1 = FullPlayer(

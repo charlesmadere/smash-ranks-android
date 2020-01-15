@@ -1,6 +1,6 @@
 package com.garpr.android.data.converters
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.SimpleDate
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -9,13 +9,10 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.util.Date
 
-@RunWith(RobolectricTestRunner::class)
-class SimpleDateConverterTest : BaseTest() {
+class SimpleDateConverterTest : BaseKoinTest() {
 
     protected val moshi: Moshi by inject()
 

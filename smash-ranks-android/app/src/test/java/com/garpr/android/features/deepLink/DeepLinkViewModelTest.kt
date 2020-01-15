@@ -1,6 +1,6 @@
 package com.garpr.android.features.deepLink
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
@@ -18,12 +18,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class DeepLinkViewModelTest : BaseTest() {
+class DeepLinkViewModelTest : BaseViewModelTest() {
 
     private lateinit var viewModel: DeepLinkViewModel
     private val regionsRepository = RegionsRepositoryOverride()

@@ -24,7 +24,7 @@ import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.misc.AnimationUtils
-import com.garpr.android.misc.MiscUtils
+import com.garpr.android.misc.ColorUtils
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 
 open class GarToolbar @JvmOverloads constructor(
@@ -140,9 +140,9 @@ open class GarToolbar @JvmOverloads constructor(
             toolbarBackground = toolbarBackgroundFallback
             systemWindowBackground = statusBarBackgroundFallback
         } else {
-            toolbarBackground = MiscUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb,
+            toolbarBackground = ColorUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb,
                     TOO_LIGHT_DARKEN_FACTOR, LIGHTNESS_LIMIT)
-            systemWindowBackground = MiscUtils.brightenOrDarkenColor(toolbarBackground,
+            systemWindowBackground = ColorUtils.brightenOrDarkenColor(toolbarBackground,
                     STATUS_BAR_DARKEN_FACTOR)
         }
 

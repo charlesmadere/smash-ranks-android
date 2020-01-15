@@ -1,6 +1,6 @@
 package com.garpr.android.features.setRegion
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
@@ -18,12 +18,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class SetRegionViewModelTest : BaseTest() {
+class SetRegionViewModelTest : BaseViewModelTest() {
 
     private val regionsRepository = RegionsRepositoryOverride()
     private lateinit var viewModel: SetRegionViewModel
@@ -240,7 +237,11 @@ class SetRegionViewModelTest : BaseTest() {
         viewModel.fetchRegions()
 
         assertEquals(true, state?.hasError)
-        assertTrue(state?.list.isNullOrEmpty())
+        assertEquals(false, state?.isFetching)
+        assertEquals(true, state?.isRefreshEnabled)
+        assertNull(state?.list)
+        assertNull(state?.selectedRegion)
+        assertEquals(SaveIconStatus.GONE, state?.saveIconStatus)
     }
 
     @Test

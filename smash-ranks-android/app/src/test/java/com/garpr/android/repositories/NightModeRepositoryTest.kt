@@ -1,16 +1,13 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.NightMode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class NightModeRepositoryTest : BaseTest() {
+class NightModeRepositoryTest : BaseKoinTest() {
 
     protected val nightModeRepository: NightModeRepository by inject()
 

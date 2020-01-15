@@ -1,6 +1,6 @@
 package com.garpr.android.features.headToHead
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
@@ -22,13 +22,10 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.util.Date
 
-@RunWith(RobolectricTestRunner::class)
-class HeadToHeadViewModelTest : BaseTest() {
+class HeadToHeadViewModelTest : BaseViewModelTest() {
 
     private val headToHeadRepository = HeadToHeadRepositoryOverride()
     private lateinit var viewModel: HeadToHeadViewModel

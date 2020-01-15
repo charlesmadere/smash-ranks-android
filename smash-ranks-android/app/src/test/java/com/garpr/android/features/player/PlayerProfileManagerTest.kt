@@ -1,6 +1,6 @@
 package com.garpr.android.features.player
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.Avatar
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
@@ -12,12 +12,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class PlayerProfileManagerTest : BaseTest() {
+class PlayerProfileManagerTest : BaseKoinTest() {
 
     protected val playerProfileManager: PlayerProfileManager by inject()
 

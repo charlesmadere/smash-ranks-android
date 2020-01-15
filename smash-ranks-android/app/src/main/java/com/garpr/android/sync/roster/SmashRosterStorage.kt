@@ -1,6 +1,5 @@
 package com.garpr.android.sync.roster
 
-import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
@@ -11,10 +10,10 @@ interface SmashRosterStorage {
     @WorkerThread
     fun deleteFromStorage(endpoint: Endpoint)
 
-    @AnyThread
+    @WorkerThread
     fun getSmashCompetitor(endpoint: Endpoint, playerId: String?): SmashCompetitor?
 
-    @AnyThread
+    @WorkerThread
     fun getSmashCompetitor(region: Region, playerId: String?): SmashCompetitor?
 
     @WorkerThread

@@ -1,6 +1,6 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
@@ -9,12 +9,9 @@ import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class IdentityRepositoryTest : BaseTest() {
+class IdentityRepositoryTest : BaseKoinTest() {
 
     protected val identityRepository: IdentityRepository by inject()
 

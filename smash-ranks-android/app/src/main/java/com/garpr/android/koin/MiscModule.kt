@@ -47,6 +47,6 @@ val miscModule = module {
     single<Schedulers> { SchedulersImpl(get()) }
     single<ShareUtils> { ShareUtilsImpl(get(), get()) }
     single<SmashRosterAvatarUrlHelper> { SmashRosterAvatarUrlHelperImpl(Constants.SMASH_ROSTER_BASE_PATH) }
-    single<Timber> { TimberImpl(get(), get()) }
+    single<Timber> { TimberImpl(get(), get(), get()) }
 
 }

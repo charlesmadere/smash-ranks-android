@@ -1,6 +1,6 @@
 package com.garpr.android.data.converters
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LiteRegion
@@ -12,12 +12,9 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class AbsRegionConverterTest : BaseTest() {
+class AbsRegionConverterTest : BaseKoinTest() {
 
     protected val moshi: Moshi by inject()
 

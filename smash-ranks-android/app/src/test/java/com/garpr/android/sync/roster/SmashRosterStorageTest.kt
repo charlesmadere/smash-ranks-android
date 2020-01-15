@@ -1,6 +1,6 @@
 package com.garpr.android.sync.roster
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.requireFromJson
@@ -11,12 +11,9 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class SmashRosterStorageTest : BaseTest() {
+class SmashRosterStorageTest : BaseKoinTest() {
 
     private lateinit var garPrSmashRoster: Map<String, SmashCompetitor>
     private lateinit var notGarPrSmashRoster: Map<String, SmashCompetitor>

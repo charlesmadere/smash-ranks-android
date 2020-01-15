@@ -35,12 +35,6 @@ android {
     aaptOptions {
         cruncherEnabled false
     }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
 }
 
 dependencies {
@@ -59,6 +53,10 @@ dependencies {
     // Android Architecture Components - WorkManager
     // https://developer.android.com/jetpack/androidx/releases/work
     implementation "androidx.work:work-runtime:$workmanager_version"
+
+    // AndroidX Architecture Core Test
+    // https://developer.android.com/jetpack/androidx/releases/test
+    testImplementation "androidx.arch.core:core-testing:$architecture_core_test_version"
 
     // AndroidX AppCompat
     // https://developer.android.com/jetpack/androidx/releases/appcompat
@@ -79,10 +77,6 @@ dependencies {
     // AndroidX RecyclerView
     // https://developer.android.com/jetpack/androidx/releases/recyclerview
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
-
-    // AndroidX Test
-    // https://developer.android.com/jetpack/androidx/releases/test
-    testImplementation "androidx.test:core:$testcore_version"
 
     // AndroidX ViewModel and LiveData
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
@@ -107,10 +101,6 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     testImplementation "org.koin:koin-test:$koin_version"
-
-    // Robolectric
-    // https://github.com/robolectric/robolectric
-    testImplementation "org.robolectric:robolectric:$robolectric_version"
 
     // RxJava
     // https://github.com/ReactiveX/RxJava

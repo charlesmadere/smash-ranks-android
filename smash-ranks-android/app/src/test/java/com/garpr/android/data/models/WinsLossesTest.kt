@@ -1,13 +1,9 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class WinsLossesTest : BaseTest() {
+class WinsLossesTest {
 
     companion object {
         private val PLAYER_0: AbsPlayer = LitePlayer(

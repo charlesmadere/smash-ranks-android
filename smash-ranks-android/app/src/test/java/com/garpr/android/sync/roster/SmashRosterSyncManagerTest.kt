@@ -2,7 +2,7 @@ package com.garpr.android.sync.roster
 
 import androidx.work.Configuration
 import androidx.work.WorkRequest
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.Rating
@@ -20,12 +20,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class SmashRosterSyncManagerTest : BaseTest() {
+class SmashRosterSyncManagerTest : BaseKoinTest() {
 
     private val smashRosterRepository = SmashRosterRepositoryOverride()
     private lateinit var smashRosterSyncManager: SmashRosterSyncManager

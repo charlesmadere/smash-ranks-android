@@ -1,6 +1,6 @@
 package com.garpr.android.managers
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.BuildConfig
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
@@ -13,12 +13,9 @@ import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class AppUpgradeManagerTest : BaseTest() {
+class AppUpgradeManagerTest : BaseKoinTest() {
 
     protected val appUpgradeManager: AppUpgradeManager by inject()
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()

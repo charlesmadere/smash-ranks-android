@@ -1,6 +1,6 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.Optional
 import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.preferences.KeyValueStore
@@ -13,13 +13,10 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.net.URI as JavaUri
 
-@RunWith(RobolectricTestRunner::class)
-class PersistentUriPreferenceTest : BaseTest() {
+class PersistentUriPreferenceTest : BaseKoinTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 

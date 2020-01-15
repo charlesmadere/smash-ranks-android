@@ -1,6 +1,6 @@
 package com.garpr.android.features.tournament
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullTournament
@@ -23,13 +23,10 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.util.Date
 
-@RunWith(RobolectricTestRunner::class)
-class TournamentViewModelTest : BaseTest() {
+class TournamentViewModelTest : BaseViewModelTest() {
 
     private lateinit var viewModel: TournamentViewModel
     private val tournamentsRepository = TournamentsRepositoryOverride()

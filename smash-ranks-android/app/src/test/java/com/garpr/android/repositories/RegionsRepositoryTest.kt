@@ -1,6 +1,6 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.exceptions.FailedToFetchRegionsException
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.Endpoint
@@ -17,12 +17,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class RegionsRepositoryTest : BaseTest() {
+class RegionsRepositoryTest : BaseKoinTest() {
 
     private lateinit var regionsRepository: RegionsRepository
     private val serverApi = ServerApiOverride()

@@ -1,6 +1,6 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseTest
+import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.LitePlayer
@@ -18,12 +18,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class PersistentMoshiPreferenceTest : BaseTest() {
+class PersistentMoshiPreferenceTest : BaseKoinTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
     protected val moshi: Moshi by inject()
