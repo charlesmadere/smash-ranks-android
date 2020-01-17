@@ -17,7 +17,7 @@ import org.koin.test.AutoCloseKoinTest
 
 abstract class BaseAndroidTest : AutoCloseKoinTest() {
 
-    protected open fun initializeKoin() {
+    private fun initializeKoin() {
         startKoin {
             androidContext(ApplicationProvider.getApplicationContext())
             modules(listOf(configModule, databaseModule, managersModule, miscModule,
