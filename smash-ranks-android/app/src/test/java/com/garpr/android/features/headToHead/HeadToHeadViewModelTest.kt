@@ -1,6 +1,5 @@
 package com.garpr.android.features.headToHead
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
@@ -11,6 +10,7 @@ import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentMatch
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.features.headToHead.HeadToHeadViewModel.ListItem
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber

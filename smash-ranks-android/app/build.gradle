@@ -79,6 +79,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    // AndroidX Test
+    // https://developer.android.com/jetpack/androidx/releases/test
+    testImplementation "androidx.test:core:$testcore_version"
+
     // AndroidX ViewModel and LiveData
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"

@@ -1,6 +1,6 @@
 package com.garpr.android.features.logViewer
 
-import com.garpr.android.BaseViewModelTest
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import org.junit.Assert.assertEquals

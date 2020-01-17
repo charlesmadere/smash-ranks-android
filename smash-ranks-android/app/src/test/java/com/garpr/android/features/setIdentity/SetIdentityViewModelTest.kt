@@ -1,6 +1,5 @@
 package com.garpr.android.features.setIdentity
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
@@ -9,6 +8,7 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.features.setIdentity.SetIdentityViewModel.SaveIconStatus
 import com.garpr.android.misc.PlayerListBuilder
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem

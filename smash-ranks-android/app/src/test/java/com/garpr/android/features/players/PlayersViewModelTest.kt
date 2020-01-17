@@ -1,12 +1,12 @@
 package com.garpr.android.features.players
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.misc.PlayerListBuilder
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
 import com.garpr.android.misc.Schedulers

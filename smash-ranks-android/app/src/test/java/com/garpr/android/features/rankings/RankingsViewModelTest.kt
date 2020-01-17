@@ -1,6 +1,5 @@
 package com.garpr.android.features.rankings
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
@@ -9,6 +8,7 @@ import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.features.player.SmashRosterAvatarUrlHelper
 import com.garpr.android.features.rankings.RankingsViewModel.ListItem
 import com.garpr.android.misc.Schedulers

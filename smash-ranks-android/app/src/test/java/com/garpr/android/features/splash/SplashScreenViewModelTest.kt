@@ -1,10 +1,10 @@
 package com.garpr.android.features.splash
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore

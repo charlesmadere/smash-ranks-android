@@ -1,6 +1,5 @@
 package com.garpr.android.features.tournament
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullTournament
@@ -8,6 +7,7 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentsBundle
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.features.tournament.TournamentViewModel.MatchListItem
 import com.garpr.android.features.tournament.TournamentViewModel.PlayerListItem
 import com.garpr.android.misc.Schedulers

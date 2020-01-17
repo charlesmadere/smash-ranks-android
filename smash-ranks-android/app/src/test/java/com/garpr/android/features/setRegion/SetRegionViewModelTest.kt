@@ -1,9 +1,9 @@
 package com.garpr.android.features.setRegion
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.features.setRegion.SetRegionViewModel.ListItem
 import com.garpr.android.features.setRegion.SetRegionViewModel.SaveIconStatus
 import com.garpr.android.misc.Schedulers

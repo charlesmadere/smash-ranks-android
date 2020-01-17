@@ -1,6 +1,5 @@
 package com.garpr.android.features.settings
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
@@ -9,6 +8,7 @@ import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.toJavaUri
+import com.garpr.android.features.common.BaseAndroidKoinViewModelTest
 import com.garpr.android.features.settings.SettingsViewModel.FavoritePlayersState
 import com.garpr.android.features.settings.SettingsViewModel.IdentityState
 import com.garpr.android.features.settings.SettingsViewModel.RankingsPollingState
@@ -35,7 +35,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class SettingsViewModelTest : BaseViewModelTest() {
+class SettingsViewModelTest : BaseAndroidKoinViewModelTest() {
 
     private lateinit var viewModel: SettingsViewModel
     private val smashRosterRepository = SmashRosterRepositoryOverride()

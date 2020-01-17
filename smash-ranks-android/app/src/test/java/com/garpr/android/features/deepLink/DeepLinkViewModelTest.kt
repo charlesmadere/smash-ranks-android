@@ -1,10 +1,10 @@
 package com.garpr.android.features.deepLink
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.extensions.require
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.features.deepLink.DeepLinkViewModel.Breadcrumb
 import com.garpr.android.features.home.HomeTab
 import com.garpr.android.misc.Schedulers

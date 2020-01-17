@@ -1,12 +1,12 @@
 package com.garpr.android.features.home
 
-import com.garpr.android.BaseViewModelTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.features.common.BaseAndroidKoinViewModelTest
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
@@ -20,7 +20,7 @@ import org.junit.Test
 import org.koin.test.inject
 import java.util.Date
 
-class HomeViewModelTest : BaseViewModelTest() {
+class HomeViewModelTest : BaseAndroidKoinViewModelTest() {
 
     private lateinit var viewModel: HomeViewModel
 
