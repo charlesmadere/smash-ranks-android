@@ -1,6 +1,7 @@
 package com.garpr.android.repositories
 
 import com.garpr.android.data.models.Region
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
@@ -9,6 +10,7 @@ import io.reactivex.Observable
 class RegionRepositoryImpl(
         private val generalPreferenceStore: GeneralPreferenceStore,
         private val rankingsPollingPreferenceStore: RankingsPollingPreferenceStore,
+        schedulers: Schedulers,
         private val timber: Timber
 ) : RegionRepository {
 
@@ -27,6 +29,8 @@ class RegionRepositoryImpl(
 
     override val observable: Observable<Region> = generalPreferenceStore.currentRegion
             .observable
+            .subscribeOn(schedulers.background)
+            .observeOn(schedulers.background)
             .map {
                 checkNotNull(it.item) {
                     "A null region here is impossible and means we have a bug somewhere else."

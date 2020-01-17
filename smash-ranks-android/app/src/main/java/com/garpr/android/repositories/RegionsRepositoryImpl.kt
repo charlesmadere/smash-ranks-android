@@ -5,14 +5,12 @@ import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
-import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.ServerApi
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.Collections
 
 class RegionsRepositoryImpl(
-        private val schedulers: Schedulers,
         private val serverApi: ServerApi
 ) : RegionsRepository {
 
@@ -23,7 +21,6 @@ class RegionsRepositoryImpl(
                 BiFunction<RegionsBundle, RegionsBundle, RegionsBundle> { t1, t2 ->
                     mergeResponses(garPr = t1, notGarPr = t2)
                 })
-                .subscribeOn(schedulers.background)
     }
 
     @Throws(FailedToFetchRegionsException::class)

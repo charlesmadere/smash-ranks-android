@@ -35,16 +35,16 @@ val repositoriesModule = module {
         FavoritePlayersRepositoryImpl(get(), keyValueStore, get(), get(), get(), get())
     }
 
-    single<HeadToHeadRepository> { HeadToHeadRepositoryImpl(get(), get()) }
+    single<HeadToHeadRepository> { HeadToHeadRepositoryImpl(get()) }
     single<IdentityRepository> { IdentityRepositoryImpl(get(), get(), get(), get()) }
-    single<MatchesRepository> { MatchesRepositoryImpl(get(), get()) }
-    single<NightModeRepository> { NightModeRepositoryImpl(get(), get()) }
-    single<PlayerMatchesRepository> { PlayerMatchesRepositoryImpl(get(), get(), get()) }
-    single<PlayersRepository> { PlayersRepositoryImpl(get(), get()) }
-    single<RankingsRepository> { RankingsRepositoryImpl(get(), get(), get(), get(), get()) }
-    single<RegionRepository> { RegionRepositoryImpl(get(), get(), get()) }
-    single<RegionsRepository> { RegionsRepositoryImpl(get(), get()) }
-    single<SmashRosterRepository> { SmashRosterRepositoryImpl(get(), get()) }
-    single<TournamentsRepository> { TournamentsRepositoryImpl(get(), get()) }
+    single<MatchesRepository> { MatchesRepositoryImpl(get()) }
+    single<NightModeRepository> { NightModeRepositoryImpl(get(), get(), get()) }
+    single<PlayerMatchesRepository> { PlayerMatchesRepositoryImpl(get(), get()) }
+    single<PlayersRepository> { PlayersRepositoryImpl(get()) }
+    single<RankingsRepository> { RankingsRepositoryImpl(get(), get(), get(), get()) }
+    single<RegionRepository> { RegionRepositoryImpl(get(), get(), get(), get()) }
+    single<RegionsRepository> { RegionsRepositoryImpl(get()) }
+    single<SmashRosterRepository> { SmashRosterRepositoryImpl(get()) }
+    single<TournamentsRepository> { TournamentsRepositoryImpl(get()) }
 
 }
