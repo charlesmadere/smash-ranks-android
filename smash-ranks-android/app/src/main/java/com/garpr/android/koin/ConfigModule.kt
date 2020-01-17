@@ -1,5 +1,7 @@
 package com.garpr.android.koin
 
+import androidx.room.Room
+import com.garpr.android.data.database.AppDatabase
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.DeviceUtilsImpl
 import com.garpr.android.misc.StackTraceUtils
@@ -24,6 +26,15 @@ val configModule = module {
     single<DeviceUtils> { DeviceUtilsImpl(androidContext()) }
     single<ImageLibraryWrapper> { FacebookFrescoWrapper(androidContext(), get(), get()) }
     single<KeyValueStoreProvider> { KeyValueStoreProviderImpl(androidContext()) }
+
+    single {
+        val threadUtils: ThreadUtils = get()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, DATABASE_NAME)
+                .setQueryExecutor(threadUtils.background)
+                .setTransactionExecutor(threadUtils.background)
+                .build()
+    }
+
     single<StackTraceUtils> { StackTraceUtilsImpl() }
     single<String>(named(PACKAGE_NAME)) { androidContext().packageName }
     single<ThreadUtils> { ThreadUtilsImpl(get()) }

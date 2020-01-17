@@ -1,7 +1,9 @@
 package com.garpr.android.koin
 
+import androidx.room.Room
 import androidx.work.Configuration
 import androidx.work.WorkRequest
+import com.garpr.android.data.database.AppDatabase
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.StackTraceUtils
 import com.garpr.android.misc.TestDeviceUtilsImpl
@@ -14,6 +16,7 @@ import com.garpr.android.preferences.TestKeyValueStoreProviderImpl
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -63,16 +66,21 @@ val configModule = module {
     single<StackTraceUtils> {
         object : StackTraceUtils {
             override fun toString(throwable: Throwable?): String {
-                return if (throwable == null) {
-                    ""
-                } else {
-                    throwable.javaClass.name
-                }
+                return throwable?.javaClass?.name ?: ""
             }
         }
     }
 
     single(named(PACKAGE_NAME)) { "com.garpr.android" }
+
+    single {
+        val threadUtils: ThreadUtils = get()
+        Room.inMemoryDatabaseBuilder(androidContext(), AppDatabase::class.java)
+                .setQueryExecutor(threadUtils.background)
+                .setTransactionExecutor(threadUtils.background)
+                .build()
+    }
+
     single<ThreadUtils> { TestThreadUtilsImpl() }
 
     single<WorkManagerWrapper> {
