@@ -4,7 +4,7 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.common.BaseAndroidKoinViewModelTest
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel.ListItem
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
@@ -18,7 +18,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class FavoritePlayersViewModelTest : BaseAndroidKoinViewModelTest() {
+class FavoritePlayersViewModelTest : BaseViewModelTest() {
 
     private lateinit var viewModel: FavoritePlayersViewModel
 

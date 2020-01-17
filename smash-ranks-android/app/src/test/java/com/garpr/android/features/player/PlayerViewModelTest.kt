@@ -13,7 +13,7 @@ import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentMatch
-import com.garpr.android.features.common.BaseAndroidKoinViewModelTest
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.features.player.PlayerViewModel.ListItem
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
@@ -34,7 +34,7 @@ import org.junit.Test
 import org.koin.test.inject
 import java.util.Date
 
-class PlayerViewModelTest : BaseAndroidKoinViewModelTest() {
+class PlayerViewModelTest : BaseViewModelTest() {
 
     private val playerMatchesRepository = PlayerMatchesRepositoryOverride()
     private lateinit var viewModel: PlayerViewModel

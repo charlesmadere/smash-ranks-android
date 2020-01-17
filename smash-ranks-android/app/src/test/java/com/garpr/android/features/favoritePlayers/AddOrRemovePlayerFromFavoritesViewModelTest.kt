@@ -5,7 +5,7 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.features.common.BaseAndroidKoinViewModelTest
+import com.garpr.android.features.common.BaseViewModelTest
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import org.junit.Assert.assertEquals
@@ -14,7 +14,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class AddOrRemovePlayerFromFavoritesViewModelTest : BaseAndroidKoinViewModelTest() {
+class AddOrRemovePlayerFromFavoritesViewModelTest : BaseViewModelTest() {
 
     private lateinit var viewModel: AddOrRemovePlayerFromFavoritesViewModel
 
