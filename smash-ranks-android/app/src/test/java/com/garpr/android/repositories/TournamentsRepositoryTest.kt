@@ -1,6 +1,5 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullTournament
@@ -9,7 +8,6 @@ import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentsBundle
-import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.AbsServerApi
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
@@ -17,15 +15,12 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.inject
 import java.util.Date
 
-class TournamentsRepositoryTest : BaseKoinTest() {
+class TournamentsRepositoryTest {
 
     private val serverApi = ServerApiOverride()
     private lateinit var tournamentsRepository: TournamentsRepository
-
-    protected val schedulers: Schedulers by inject()
 
     companion object {
         private val TOURNAMENT_MADE_112: AbsTournament = LiteTournament(
@@ -93,10 +88,8 @@ class TournamentsRepositoryTest : BaseKoinTest() {
     }
 
     @Before
-    override fun setUp() {
-        super.setUp()
-
-        tournamentsRepository = TournamentsRepositoryImpl(schedulers, serverApi)
+    fun setUp() {
+        tournamentsRepository = TournamentsRepositoryImpl(serverApi)
     }
 
     @Test

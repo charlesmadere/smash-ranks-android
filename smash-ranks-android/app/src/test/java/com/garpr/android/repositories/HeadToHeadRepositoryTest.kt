@@ -1,6 +1,5 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
@@ -11,7 +10,6 @@ import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentMatch
-import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.AbsServerApi
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
@@ -19,15 +17,12 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.inject
 import java.util.Date
 
-class HeadToHeadRepositoryTest : BaseKoinTest() {
+class HeadToHeadRepositoryTest {
 
     private lateinit var headToHeadRepository: HeadToHeadRepository
     private val serverApi = ServerApiOverride()
-
-    protected val schedulers: Schedulers by inject()
 
     companion object {
         private val NORCAL = Region(
@@ -97,10 +92,8 @@ class HeadToHeadRepositoryTest : BaseKoinTest() {
     }
 
     @Before
-    override fun setUp() {
-        super.setUp()
-
-        headToHeadRepository = HeadToHeadRepositoryImpl(schedulers, serverApi)
+    fun setUp() {
+        headToHeadRepository = HeadToHeadRepositoryImpl(serverApi)
     }
 
     @Test

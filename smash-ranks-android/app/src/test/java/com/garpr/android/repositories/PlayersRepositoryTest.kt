@@ -1,24 +1,19 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseKoinTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
-import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.AbsServerApi
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.inject
 
-class PlayersRepositoryTest : BaseKoinTest() {
+class PlayersRepositoryTest {
 
     private lateinit var playersRepository: PlayersRepository
     private val serverApi = ServerApiOverride()
-
-    protected val schedulers: Schedulers by inject()
 
     companion object {
         private val BLARGH = LitePlayer(
@@ -53,10 +48,8 @@ class PlayersRepositoryTest : BaseKoinTest() {
     }
 
     @Before
-    override fun setUp() {
-        super.setUp()
-
-        playersRepository = PlayersRepositoryImpl(schedulers, serverApi)
+    fun setUp() {
+        playersRepository = PlayersRepositoryImpl(serverApi)
     }
 
     @Test
