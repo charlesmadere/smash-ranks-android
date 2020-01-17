@@ -1,5 +1,6 @@
 package com.garpr.android.repositories
 
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullTournament
@@ -17,7 +18,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.Date
 
-class TournamentsRepositoryTest {
+class TournamentsRepositoryTest : BaseTest() {
 
     private val serverApi = ServerApiOverride()
     private lateinit var tournamentsRepository: TournamentsRepository
@@ -88,7 +89,9 @@ class TournamentsRepositoryTest {
     }
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
+
         tournamentsRepository = TournamentsRepositoryImpl(serverApi)
     }
 

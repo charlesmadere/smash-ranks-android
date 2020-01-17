@@ -1,6 +1,6 @@
 package com.garpr.android.misc
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
@@ -8,7 +8,7 @@ import org.junit.Test
 import org.koin.test.inject
 import kotlin.random.Random
 
-class TimberTest : BaseKoinTest() {
+class TimberTest : BaseTest() {
 
     protected val timber: Timber by inject()
 

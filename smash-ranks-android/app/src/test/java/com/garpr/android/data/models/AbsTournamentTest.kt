@@ -1,6 +1,6 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.extensions.requireFromJson
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
@@ -10,7 +10,7 @@ import org.koin.test.inject
 import java.util.Calendar
 import java.util.Collections
 
-class AbsTournamentTest : BaseKoinTest() {
+class AbsTournamentTest : BaseTest() {
 
     protected val moshi: Moshi by inject()
 

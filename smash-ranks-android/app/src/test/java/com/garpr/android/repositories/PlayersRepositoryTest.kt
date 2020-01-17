@@ -1,5 +1,6 @@
 package com.garpr.android.repositories
 
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PlayersBundle
@@ -10,7 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class PlayersRepositoryTest {
+class PlayersRepositoryTest : BaseTest() {
 
     private lateinit var playersRepository: PlayersRepository
     private val serverApi = ServerApiOverride()
@@ -48,7 +49,9 @@ class PlayersRepositoryTest {
     }
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
+
         playersRepository = PlayersRepositoryImpl(serverApi)
     }
 

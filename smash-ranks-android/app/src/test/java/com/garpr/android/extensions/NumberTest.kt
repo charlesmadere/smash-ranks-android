@@ -1,9 +1,10 @@
 package com.garpr.android.extensions
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class NumberTest {
+class NumberTest : BaseTest() {
 
     @Test
     fun testTruncateDoubleMaxValue() {

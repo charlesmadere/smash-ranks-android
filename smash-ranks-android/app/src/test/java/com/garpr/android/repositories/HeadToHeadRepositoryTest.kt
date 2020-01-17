@@ -1,5 +1,6 @@
 package com.garpr.android.repositories
 
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
@@ -19,7 +20,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.Date
 
-class HeadToHeadRepositoryTest {
+class HeadToHeadRepositoryTest : BaseTest() {
 
     private lateinit var headToHeadRepository: HeadToHeadRepository
     private val serverApi = ServerApiOverride()
@@ -92,7 +93,9 @@ class HeadToHeadRepositoryTest {
     }
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
+
         headToHeadRepository = HeadToHeadRepositoryImpl(serverApi)
     }
 

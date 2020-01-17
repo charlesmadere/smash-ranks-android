@@ -1,6 +1,6 @@
 package com.garpr.android.data.converters
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.MatchResult
@@ -16,7 +16,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class TournamentMatchConverterTest : BaseKoinTest() {
+class TournamentMatchConverterTest : BaseTest() {
 
     protected val moshi: Moshi by inject()
 

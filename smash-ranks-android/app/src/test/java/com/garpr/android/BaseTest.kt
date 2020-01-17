@@ -13,7 +13,7 @@ import org.junit.Before
 import org.koin.core.context.startKoin
 import org.koin.test.AutoCloseKoinTest
 
-abstract class BaseKoinTest : AutoCloseKoinTest() {
+abstract class BaseTest : AutoCloseKoinTest() {
 
     private fun initializeKoin() {
         startKoin {

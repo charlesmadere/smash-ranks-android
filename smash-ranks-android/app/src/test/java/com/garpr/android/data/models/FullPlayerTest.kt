@@ -1,11 +1,12 @@
 package com.garpr.android.data.models
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class FullPlayerTest {
+class FullPlayerTest : BaseTest() {
 
     companion object {
         private val FULL_PLAYER_1 = FullPlayer(

@@ -1,6 +1,6 @@
 package com.garpr.android.features.player
 
-import com.garpr.android.BaseAndroidKoinTest
+import com.garpr.android.BaseAndroidTest
 import com.garpr.android.data.models.Avatar
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
@@ -14,7 +14,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.test.inject
 
-class PlayerProfileManagerTest : BaseAndroidKoinTest() {
+class PlayerProfileManagerTest : BaseAndroidTest() {
 
     protected val playerProfileManager: PlayerProfileManager by inject()
 

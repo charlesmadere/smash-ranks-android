@@ -1,5 +1,6 @@
 package com.garpr.android.repositories
 
+import com.garpr.android.BaseTest
 import com.garpr.android.data.exceptions.FailedToFetchRegionsException
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.Endpoint
@@ -16,7 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class RegionsRepositoryTest {
+class RegionsRepositoryTest : BaseTest() {
 
     private lateinit var regionsRepository: RegionsRepository
     private val serverApi = ServerApiOverride()
@@ -59,7 +60,9 @@ class RegionsRepositoryTest {
     }
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
+
         regionsRepository = RegionsRepositoryImpl(serverApi)
     }
 

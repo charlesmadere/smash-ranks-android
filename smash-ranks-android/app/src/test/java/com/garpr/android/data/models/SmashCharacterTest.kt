@@ -1,6 +1,6 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class SmashCharacterTest : BaseKoinTest() {
+class SmashCharacterTest : BaseTest() {
 
     protected val moshi: Moshi by inject()
 

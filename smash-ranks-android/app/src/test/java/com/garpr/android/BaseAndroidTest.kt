@@ -15,7 +15,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.test.AutoCloseKoinTest
 
-abstract class BaseAndroidKoinTest : AutoCloseKoinTest() {
+abstract class BaseAndroidTest : AutoCloseKoinTest() {
 
     protected open fun initializeKoin() {
         startKoin {

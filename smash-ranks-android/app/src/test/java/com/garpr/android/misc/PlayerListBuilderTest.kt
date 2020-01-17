@@ -1,6 +1,6 @@
 package com.garpr.android.misc
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PlayersBundle
@@ -12,7 +12,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.test.inject
 
-class PlayerListBuilderTest : BaseKoinTest() {
+class PlayerListBuilderTest : BaseTest() {
 
     protected val playerListBuilder: PlayerListBuilder by inject()
 

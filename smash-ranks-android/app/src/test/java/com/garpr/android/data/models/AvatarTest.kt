@@ -1,10 +1,11 @@
 package com.garpr.android.data.models
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class AvatarTest {
+class AvatarTest : BaseTest() {
 
     companion object {
         private val AVATAR_1 = Avatar(null, null, null, null)

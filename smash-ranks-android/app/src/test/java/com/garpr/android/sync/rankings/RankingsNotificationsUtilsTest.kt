@@ -1,6 +1,6 @@
 package com.garpr.android.sync.rankings
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
@@ -17,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class RankingsNotificationsUtilsTest : BaseKoinTest() {
+class RankingsNotificationsUtilsTest : BaseTest() {
 
     private lateinit var rankingsBundle: RankingsBundle
 

@@ -2,7 +2,7 @@ package com.garpr.android.sync.roster
 
 import androidx.work.Configuration
 import androidx.work.WorkRequest
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.Rating
@@ -22,7 +22,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class SmashRosterSyncManagerTest : BaseKoinTest() {
+class SmashRosterSyncManagerTest : BaseTest() {
 
     private val smashRosterRepository = SmashRosterRepositoryOverride()
     private lateinit var smashRosterSyncManager: SmashRosterSyncManager

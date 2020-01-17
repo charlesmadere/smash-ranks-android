@@ -1,9 +1,10 @@
 package com.garpr.android.data.models
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class WinsLossesTest {
+class WinsLossesTest : BaseTest() {
 
     companion object {
         private val PLAYER_0: AbsPlayer = LitePlayer(

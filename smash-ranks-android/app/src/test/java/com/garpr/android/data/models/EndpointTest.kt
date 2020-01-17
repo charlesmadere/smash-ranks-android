@@ -1,9 +1,10 @@
 package com.garpr.android.data.models
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class EndpointTest {
+class EndpointTest : BaseTest() {
 
     @Test
     fun testGetBasePath() {

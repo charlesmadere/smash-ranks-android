@@ -1,12 +1,13 @@
 package com.garpr.android.data.models
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import java.util.Calendar
 import java.util.Collections
 
-class MatchTest {
+class MatchTest : BaseTest() {
 
     companion object {
         private val MATCH_0 = TournamentMatch(

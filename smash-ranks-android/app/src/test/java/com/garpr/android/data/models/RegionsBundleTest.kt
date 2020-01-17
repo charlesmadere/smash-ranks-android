@@ -1,10 +1,11 @@
 package com.garpr.android.data.models
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.Collections
 
-class RegionsBundleTest {
+class RegionsBundleTest : BaseTest() {
 
     companion object {
         private val REGIONS_BUNDLE = RegionsBundle(

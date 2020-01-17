@@ -1,6 +1,6 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Optional
 import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.preferences.KeyValueStore
@@ -16,7 +16,7 @@ import org.junit.Test
 import org.koin.test.inject
 import java.net.URI as JavaUri
 
-class PersistentUriPreferenceTest : BaseKoinTest() {
+class PersistentUriPreferenceTest : BaseTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 

@@ -1,6 +1,6 @@
 package com.garpr.android.data.converters
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.AbsTournament
@@ -19,7 +19,7 @@ import org.junit.Test
 import org.koin.test.inject
 import java.util.Calendar
 
-class AbsTournamentConverterTest : BaseKoinTest() {
+class AbsTournamentConverterTest : BaseTest() {
 
     protected val moshi: Moshi by inject()
 

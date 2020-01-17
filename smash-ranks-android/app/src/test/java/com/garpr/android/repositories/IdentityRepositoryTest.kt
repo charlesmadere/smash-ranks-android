@@ -1,6 +1,6 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
@@ -11,7 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.koin.test.inject
 
-class IdentityRepositoryTest : BaseKoinTest() {
+class IdentityRepositoryTest : BaseTest() {
 
     protected val identityRepository: IdentityRepository by inject()
 

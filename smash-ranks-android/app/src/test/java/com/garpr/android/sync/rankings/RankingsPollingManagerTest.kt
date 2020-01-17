@@ -2,7 +2,7 @@ package com.garpr.android.sync.rankings
 
 import androidx.work.Configuration
 import androidx.work.WorkRequest
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
@@ -15,7 +15,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class RankingsPollingManagerTest : BaseKoinTest() {
+class RankingsPollingManagerTest : BaseTest() {
 
     private lateinit var rankingsPollingManager: RankingsPollingManager
     private val workManagerWrapper = WorkManagerWrapperOverride()

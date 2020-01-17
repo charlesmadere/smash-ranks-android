@@ -1,12 +1,12 @@
 package com.garpr.android.features.player
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.koin.test.inject
 
-class SmashRosterAvatarUrlHelperTest : BaseKoinTest() {
+class SmashRosterAvatarUrlHelperTest : BaseTest() {
 
     protected val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper by inject()
 

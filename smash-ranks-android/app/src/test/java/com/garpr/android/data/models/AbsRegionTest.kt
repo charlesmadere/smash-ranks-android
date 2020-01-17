@@ -1,5 +1,6 @@
 package com.garpr.android.data.models
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
@@ -7,7 +8,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.Collections
 
-class AbsRegionTest {
+class AbsRegionTest : BaseTest() {
 
     companion object {
         private val LITE_REGION_1: AbsRegion = LiteRegion(

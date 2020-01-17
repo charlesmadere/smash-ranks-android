@@ -1,6 +1,6 @@
 package com.garpr.android.sync.roster
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.requireFromJson
@@ -13,7 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class SmashRosterStorageTest : BaseKoinTest() {
+class SmashRosterStorageTest : BaseTest() {
 
     private lateinit var garPrSmashRoster: Map<String, SmashCompetitor>
     private lateinit var notGarPrSmashRoster: Map<String, SmashCompetitor>

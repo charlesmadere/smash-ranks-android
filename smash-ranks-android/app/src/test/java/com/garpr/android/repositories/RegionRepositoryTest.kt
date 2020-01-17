@@ -1,6 +1,6 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
@@ -8,7 +8,7 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 import org.koin.test.inject
 
-class RegionRepositoryTest : BaseKoinTest() {
+class RegionRepositoryTest : BaseTest() {
 
     protected val regionRepository: RegionRepository by inject()
 

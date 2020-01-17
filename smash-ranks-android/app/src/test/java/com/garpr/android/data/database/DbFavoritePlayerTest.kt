@@ -1,12 +1,13 @@
 package com.garpr.android.data.database
 
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class DbFavoritePlayerTest {
+class DbFavoritePlayerTest : BaseTest() {
 
     @Test
     fun testConstructFromAbsPlayerWithCharlezard() {

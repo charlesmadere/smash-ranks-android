@@ -1,6 +1,6 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Optional
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
@@ -14,7 +14,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class PersistentIntegerPreferenceTest : BaseKoinTest() {
+class PersistentIntegerPreferenceTest : BaseTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 

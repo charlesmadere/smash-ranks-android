@@ -1,6 +1,6 @@
 package com.garpr.android.data.converters
 
-import com.garpr.android.BaseKoinTest
+import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankedPlayer
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -14,7 +14,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.test.inject
 
-class RankedPlayerConverterTest : BaseKoinTest() {
+class RankedPlayerConverterTest : BaseTest() {
 
     protected val moshi: Moshi by inject()
 

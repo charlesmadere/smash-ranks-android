@@ -1,12 +1,13 @@
 package com.garpr.android.data.models
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import java.util.Collections
 import java.util.Objects
 
-class AbsPlayerTest {
+class AbsPlayerTest : BaseTest() {
 
     companion object {
         private val GEORGIA = Region(

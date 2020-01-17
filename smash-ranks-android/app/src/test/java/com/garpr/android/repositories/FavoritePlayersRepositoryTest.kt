@@ -1,6 +1,6 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseAndroidKoinTest
+import com.garpr.android.BaseAndroidTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
@@ -14,7 +14,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.test.inject
 
-class FavoritePlayersRepositoryTest : BaseAndroidKoinTest() {
+class FavoritePlayersRepositoryTest : BaseAndroidTest() {
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()

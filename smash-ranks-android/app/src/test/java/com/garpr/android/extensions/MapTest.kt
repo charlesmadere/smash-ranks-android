@@ -1,11 +1,12 @@
 package com.garpr.android.extensions
 
+import com.garpr.android.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class MapTest {
+class MapTest : BaseTest() {
 
     @Test
     fun testRequireWithNullItemInMap() {
