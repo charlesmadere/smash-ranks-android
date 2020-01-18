@@ -40,7 +40,6 @@ android {
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation "junit:junit:4.12"
 
     // Kotlin
     // https://kotlinlang.org/docs/reference/using-gradle.html
@@ -52,6 +51,7 @@ dependencies {
 
     // AndroidX Architecture Core Test
     // https://developer.android.com/jetpack/androidx/releases/test
+    androidTestImplementation "androidx.arch.core:core-testing:$architecture_core_test_version"
     testImplementation "androidx.arch.core:core-testing:$architecture_core_test_version"
 
     // AndroidX AppCompat
@@ -81,7 +81,7 @@ dependencies {
 
     // AndroidX Test
     // https://developer.android.com/jetpack/androidx/releases/test
-    testImplementation "androidx.test:core:$testcore_version"
+    androidTestImplementation "androidx.test:core:$testcore_version"
 
     // AndroidX ViewModel and LiveData
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
@@ -105,10 +105,16 @@ dependencies {
     // https://material.io/develop/android/
     implementation "com.google.android.material:material:$material_design_version"
 
+    // JUnit 4
+    // https://junit.org/junit4/
+    androidTestImplementation "junit:junit:4.12"
+    testImplementation "junit:junit:4.12"
+
     // Koin
     // https://github.com/InsertKoinIO/koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    androidTestImplementation "org.koin:koin-test:$koin_version"
     testImplementation "org.koin:koin-test:$koin_version"
 
     // RxJava
