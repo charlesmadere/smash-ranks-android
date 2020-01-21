@@ -24,6 +24,7 @@ android {
         targetSdkVersion 29
         versionCode 22003
         versionName "2.2.3"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -93,6 +94,7 @@ dependencies {
     // AndroidX Test
     // https://developer.android.com/jetpack/androidx/releases/test
     androidTestImplementation "androidx.test:core:$testcore_version"
+    androidTestImplementation "androidx.test:runner:$testcore_version"
 
     // AndroidX ViewModel and LiveData
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
