@@ -1,7 +1,9 @@
 package com.garpr.android.koin
 
+import androidx.room.Room
 import androidx.work.Configuration
 import androidx.work.WorkRequest
+import com.garpr.android.data.database.AppDatabase
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.PackageNameProvider
 import com.garpr.android.misc.StackTraceUtils
@@ -17,6 +19,14 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val androidTestConfigModule = module {
+
+    single {
+        val threadUtils: ThreadUtils = get()
+        Room.inMemoryDatabaseBuilder(androidContext(), AppDatabase::class.java)
+                .setQueryExecutor(threadUtils.background)
+                .setTransactionExecutor(threadUtils.background)
+                .build()
+    }
 
     single<CrashlyticsWrapper> {
         object : CrashlyticsWrapper {
