@@ -7,9 +7,7 @@ import com.garpr.android.misc.StackTraceUtils
 import com.garpr.android.misc.TestDeviceUtilsImpl
 import com.garpr.android.misc.TestThreadUtilsImpl
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
-import com.garpr.android.preferences.TestKeyValueStoreImpl
 import com.garpr.android.preferences.TestKeyValueStoreProviderImpl
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
@@ -57,7 +55,6 @@ val testConfigModule = module {
         }
     }
 
-    single<KeyValueStore> { TestKeyValueStoreImpl() }
     single<KeyValueStoreProvider> { TestKeyValueStoreProviderImpl() }
 
     single<StackTraceUtils> {

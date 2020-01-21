@@ -7,13 +7,12 @@ import com.garpr.android.misc.StackTraceUtils
 import com.garpr.android.misc.TestDeviceUtilsImpl
 import com.garpr.android.misc.TestThreadUtilsImpl
 import com.garpr.android.misc.ThreadUtils
-import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
-import com.garpr.android.preferences.TestKeyValueStoreImpl
-import com.garpr.android.preferences.TestKeyValueStoreProviderImpl
+import com.garpr.android.preferences.KeyValueStoreProviderImpl
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -57,8 +56,7 @@ val androidTestConfigModule = module {
         }
     }
 
-    single<KeyValueStore> { TestKeyValueStoreImpl() }
-    single<KeyValueStoreProvider> { TestKeyValueStoreProviderImpl() }
+    single<KeyValueStoreProvider> { KeyValueStoreProviderImpl(androidContext()) }
 
     single<StackTraceUtils> {
         object : StackTraceUtils {
@@ -68,7 +66,7 @@ val androidTestConfigModule = module {
         }
     }
 
-    single(named(PACKAGE_NAME)) { "com.garpr.android.androidTest" }
+    single(named(PACKAGE_NAME)) { androidContext().packageName }
     single<ThreadUtils> { TestThreadUtilsImpl() }
 
     single<WorkManagerWrapper> {
