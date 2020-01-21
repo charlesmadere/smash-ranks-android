@@ -3,6 +3,7 @@ package com.garpr.android.koin
 import androidx.work.Configuration
 import androidx.work.WorkRequest
 import com.garpr.android.misc.DeviceUtils
+import com.garpr.android.misc.PackageNameProvider
 import com.garpr.android.misc.StackTraceUtils
 import com.garpr.android.misc.TestDeviceUtilsImpl
 import com.garpr.android.misc.TestThreadUtilsImpl
@@ -13,7 +14,6 @@ import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val androidTestConfigModule = module {
@@ -66,7 +66,12 @@ val androidTestConfigModule = module {
         }
     }
 
-    single(named(PACKAGE_NAME)) { androidContext().packageName }
+    single {
+        object : PackageNameProvider {
+            override val packageName: String = "com.garpr.android.androidTest"
+        }
+    }
+
     single<ThreadUtils> { TestThreadUtilsImpl() }
 
     single<WorkManagerWrapper> {

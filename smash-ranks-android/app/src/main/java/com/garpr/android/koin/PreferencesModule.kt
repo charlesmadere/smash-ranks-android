@@ -1,6 +1,7 @@
 package com.garpr.android.koin
 
 import com.garpr.android.misc.Constants
+import com.garpr.android.misc.PackageNameProvider
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.preferences.GeneralPreferenceStoreImpl
 import com.garpr.android.preferences.KeyValueStore
@@ -21,37 +22,37 @@ val preferencesModule = module {
 
     single(named(FAVORITE_PLAYERS_KEY_VALUE_STORE)) {
         val keyValueStoreProvider: KeyValueStoreProvider = get()
-        val packageName: String = get(named(PACKAGE_NAME))
+        val packageNameProvider: PackageNameProvider = get()
 
         keyValueStoreProvider.getKeyValueStore(
-                name = "$packageName.Preferences.v2.FavoritePlayers"
+                name = "${packageNameProvider.packageName}.Preferences.v2.FavoritePlayers"
         )
     }
 
     single(named(GENERAL_KEY_VALUE_STORE)) {
         val keyValueStoreProvider: KeyValueStoreProvider = get()
-        val packageName: String = get(named(PACKAGE_NAME))
+        val packageNameProvider: PackageNameProvider = get()
 
         keyValueStoreProvider.getKeyValueStore(
-                name = "$packageName.Preferences.v2.General"
+                name = "${packageNameProvider.packageName}.Preferences.v2.General"
         )
     }
 
     single(named(RANKINGS_POLLING_KEY_VALUE_STORE)) {
         val keyValueStoreProvider: KeyValueStoreProvider = get()
-        val packageName: String = get(named(PACKAGE_NAME))
+        val packageNameProvider: PackageNameProvider = get()
 
         keyValueStoreProvider.getKeyValueStore(
-                name = "$packageName.Preferences.v2.RankingsPolling"
+                name = "${packageNameProvider.packageName}.Preferences.v2.RankingsPolling"
         )
     }
 
     single(named(SMASH_ROSTER_KEY_VALUE_STORE)) {
         val keyValueStoreProvider: KeyValueStoreProvider = get()
-        val packageName: String = get(named(PACKAGE_NAME))
+        val packageNameProvider: PackageNameProvider = get()
 
         keyValueStoreProvider.getKeyValueStore(
-                name = "$packageName.Preferences.v2.SmashRoster"
+                name = "${packageNameProvider.packageName}.Preferences.v2.SmashRoster"
         )
     }
 
