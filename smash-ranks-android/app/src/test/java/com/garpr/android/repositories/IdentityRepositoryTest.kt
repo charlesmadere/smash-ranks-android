@@ -37,29 +37,6 @@ class IdentityRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun testAddListener() {
-        var value: Optional<FavoritePlayer>? = null
-
-        identityRepository.identityObservable.subscribe {
-            value = it
-        }
-
-        assertEquals(false, value?.isPresent)
-
-        identityRepository.setIdentity(HMW, NORCAL)
-        assertEquals(HMW, value?.item)
-
-        identityRepository.setIdentity(HMW, NORCAL)
-        assertEquals(HMW, value?.item)
-
-        identityRepository.setIdentity(NMW, NORCAL)
-        assertEquals(NMW, value?.item)
-
-        identityRepository.removeIdentity()
-        assertEquals(false, value?.isPresent)
-    }
-
-    @Test
     fun testGetAndSetIdentity() {
         var value: Optional<FavoritePlayer>? = null
 
@@ -80,7 +57,7 @@ class IdentityRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun testHasIdentity() {
+    fun testHasIdentityObservable() {
         var value: Boolean? = null
 
         identityRepository.hasIdentityObservable.subscribe {
@@ -97,6 +74,29 @@ class IdentityRepositoryTest : BaseTest() {
 
         identityRepository.removeIdentity()
         assertEquals(false, value)
+    }
+
+    @Test
+    fun testIdentityObservable() {
+        var value: Optional<FavoritePlayer>? = null
+
+        identityRepository.identityObservable.subscribe {
+            value = it
+        }
+
+        assertEquals(false, value?.isPresent)
+
+        identityRepository.setIdentity(HMW, NORCAL)
+        assertEquals(HMW, value?.item)
+
+        identityRepository.setIdentity(HMW, NORCAL)
+        assertEquals(HMW, value?.item)
+
+        identityRepository.setIdentity(NMW, NORCAL)
+        assertEquals(NMW, value?.item)
+
+        identityRepository.removeIdentity()
+        assertEquals(false, value?.isPresent)
     }
 
 }
