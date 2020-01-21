@@ -58,17 +58,17 @@ val androidTestConfigModule = module {
 
     single<KeyValueStoreProvider> { KeyValueStoreProviderImpl(androidContext()) }
 
+    single {
+        object : PackageNameProvider {
+            override val packageName: String = "com.garpr.android.androidTest"
+        }
+    }
+
     single<StackTraceUtils> {
         object : StackTraceUtils {
             override fun toString(throwable: Throwable?): String {
                 return throwable?.javaClass?.simpleName ?: ""
             }
-        }
-    }
-
-    single {
-        object : PackageNameProvider {
-            override val packageName: String = "com.garpr.android.androidTest"
         }
     }
 
