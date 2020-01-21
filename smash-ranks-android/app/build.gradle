@@ -10,6 +10,7 @@ apply plugin: "kotlin-kapt"
 apply plugin: "io.fabric"
 
 android {
+
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
@@ -35,6 +36,17 @@ android {
     aaptOptions {
         cruncherEnabled false
     }
+
+    sourceSets {
+        androidTest {
+            java.srcDirs += "src/baseTest/java"
+        }
+
+        test {
+            java.srcDirs += "src/baseTest/java"
+        }
+    }
+
 }
 
 dependencies {
