@@ -49,10 +49,9 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // AndroidX Architecture Core Test
+    // AndroidX Architecture Test
     // https://developer.android.com/jetpack/androidx/releases/test
-    androidTestImplementation "androidx.arch.core:core-testing:$architecture_core_test_version"
-    testImplementation "androidx.arch.core:core-testing:$architecture_core_test_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$architecture_test_version"
 
     // AndroidX AppCompat
     // https://developer.android.com/jetpack/androidx/releases/appcompat
