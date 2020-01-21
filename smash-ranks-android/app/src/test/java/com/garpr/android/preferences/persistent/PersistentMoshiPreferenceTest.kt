@@ -1,6 +1,5 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.LitePlayer
@@ -9,6 +8,7 @@ import com.garpr.android.data.models.Optional
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals

@@ -1,11 +1,11 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Optional
 import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull

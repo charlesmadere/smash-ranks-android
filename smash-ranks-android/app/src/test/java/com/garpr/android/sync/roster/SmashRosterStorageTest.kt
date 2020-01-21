@@ -1,9 +1,9 @@
 package com.garpr.android.sync.roster
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.requireFromJson
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types

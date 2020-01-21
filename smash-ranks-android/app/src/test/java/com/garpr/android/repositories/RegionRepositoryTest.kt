@@ -1,8 +1,8 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

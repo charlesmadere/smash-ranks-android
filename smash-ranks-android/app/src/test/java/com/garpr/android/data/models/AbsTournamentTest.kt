@@ -1,7 +1,7 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseTest
 import com.garpr.android.extensions.requireFromJson
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Before

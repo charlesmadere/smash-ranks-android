@@ -1,5 +1,6 @@
-package com.garpr.android.misc
+package com.garpr.android.test
 
+import com.garpr.android.misc.ThreadUtils
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future

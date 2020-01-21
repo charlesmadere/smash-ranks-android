@@ -5,11 +5,11 @@ import androidx.work.WorkRequest
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.PackageNameProvider
 import com.garpr.android.misc.StackTraceUtils
-import com.garpr.android.misc.TestDeviceUtilsImpl
-import com.garpr.android.misc.TestThreadUtilsImpl
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.TestKeyValueStoreProviderImpl
+import com.garpr.android.test.TestDeviceUtilsImpl
+import com.garpr.android.test.TestThreadUtilsImpl
 import com.garpr.android.wrappers.CrashlyticsWrapper
 import com.garpr.android.wrappers.ImageLibraryWrapper
 import com.garpr.android.wrappers.WorkManagerWrapper

@@ -36,10 +36,6 @@ class App : Application(), Configuration.Provider {
     protected val timber: Timber by inject()
     protected val workManagerWrapper: WorkManagerWrapper by inject()
 
-    companion object {
-        private const val TAG = "App"
-    }
-
     @SuppressLint("CheckResult")
     private fun applyNightMode() {
         AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
@@ -80,6 +76,10 @@ class App : Application(), Configuration.Provider {
         applyNightMode()
         imageLibraryWrapper.initialize()
         appUpgradeManager.upgradeApp()
+    }
+
+    companion object {
+        private const val TAG = "App"
     }
 
 }

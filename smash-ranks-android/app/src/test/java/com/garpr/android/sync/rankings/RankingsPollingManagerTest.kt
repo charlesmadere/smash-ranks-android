@@ -2,10 +2,10 @@ package com.garpr.android.sync.rankings
 
 import androidx.work.Configuration
 import androidx.work.WorkRequest
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
+import com.garpr.android.test.BaseTest
 import com.garpr.android.wrappers.WorkManagerWrapper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

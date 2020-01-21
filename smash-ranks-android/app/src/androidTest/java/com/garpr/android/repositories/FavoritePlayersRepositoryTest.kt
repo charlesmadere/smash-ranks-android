@@ -1,6 +1,5 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseAndroidTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
@@ -8,6 +7,7 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.koin.FAVORITE_PLAYERS_KEY_VALUE_STORE
 import com.garpr.android.preferences.KeyValueStoreProvider
+import com.garpr.android.test.BaseAndroidTest
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

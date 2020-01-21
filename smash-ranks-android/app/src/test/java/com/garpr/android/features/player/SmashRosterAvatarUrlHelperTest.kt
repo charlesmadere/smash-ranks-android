@@ -1,6 +1,6 @@
 package com.garpr.android.features.player
 
-import com.garpr.android.BaseTest
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Test

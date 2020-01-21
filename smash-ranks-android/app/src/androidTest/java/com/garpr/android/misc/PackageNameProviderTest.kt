@@ -1,6 +1,6 @@
 package com.garpr.android.misc
 
-import com.garpr.android.BaseAndroidTest
+import com.garpr.android.test.BaseAndroidTest
 import org.junit.Assert.assertFalse
 import org.junit.Test
 import org.koin.test.inject

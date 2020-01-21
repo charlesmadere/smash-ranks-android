@@ -2,7 +2,6 @@ package com.garpr.android.sync.roster
 
 import androidx.work.Configuration
 import androidx.work.WorkRequest
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.Rating
@@ -11,6 +10,7 @@ import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.repositories.SmashRosterRepository
+import com.garpr.android.test.BaseTest
 import com.garpr.android.wrappers.WorkManagerWrapper
 import io.reactivex.Single
 import org.junit.Assert.assertEquals

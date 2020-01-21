@@ -1,12 +1,12 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Region
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.koin.test.inject

@@ -1,6 +1,5 @@
 package com.garpr.android.managers
 
-import com.garpr.android.BaseAndroidTest
 import com.garpr.android.BuildConfig
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
@@ -11,6 +10,7 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.preferences.GeneralPreferenceStore
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
+import com.garpr.android.test.BaseAndroidTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.koin.test.inject

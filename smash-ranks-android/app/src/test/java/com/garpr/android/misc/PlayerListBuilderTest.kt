@@ -1,10 +1,10 @@
 package com.garpr.android.misc
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

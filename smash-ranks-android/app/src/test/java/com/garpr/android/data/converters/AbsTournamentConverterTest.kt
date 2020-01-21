@@ -1,6 +1,5 @@
 package com.garpr.android.data.converters
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.AbsTournament
@@ -9,6 +8,7 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.LiteRegion
 import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.SimpleDate
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals

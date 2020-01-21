@@ -1,4 +1,6 @@
-package com.garpr.android.misc
+package com.garpr.android.test
+
+import com.garpr.android.misc.DeviceUtils
 
 class TestDeviceUtilsImpl : DeviceUtils {
 

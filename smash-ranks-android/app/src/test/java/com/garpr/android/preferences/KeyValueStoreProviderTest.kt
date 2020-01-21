@@ -1,6 +1,6 @@
 package com.garpr.android.preferences
 
-import com.garpr.android.BaseTest
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNotSame
 import org.junit.Test
