@@ -57,7 +57,7 @@ val testConfigModule = module {
 
     single<KeyValueStoreProvider> { TestKeyValueStoreProviderImpl() }
 
-    single {
+    single<PackageNameProvider> {
         object : PackageNameProvider {
             override val packageName: String = "com.garpr.android.test"
         }
