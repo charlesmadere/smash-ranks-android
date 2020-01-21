@@ -36,15 +36,6 @@ class App : Application(), Configuration.Provider {
     protected val timber: Timber by inject()
     protected val workManagerWrapper: WorkManagerWrapper by inject()
 
-    @SuppressLint("CheckResult")
-    private fun applyNightMode() {
-        AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
-
-        nightModeRepository.observable.subscribe { nightMode ->
-            AppCompatDelegate.setDefaultNightMode(nightMode.themeValue)
-        }
-    }
-
     override fun getWorkManagerConfiguration(): Configuration {
         return workManagerWrapper.configuration
     }
@@ -64,6 +55,15 @@ class App : Application(), Configuration.Provider {
         }
     }
 
+    @SuppressLint("CheckResult")
+    private fun initializeNightMode() {
+        AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
+
+        nightModeRepository.observable.subscribe { nightMode ->
+            AppCompatDelegate.setDefaultNightMode(nightMode.themeValue)
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -73,7 +73,7 @@ class App : Application(), Configuration.Provider {
 
         timber.d(TAG, "App created", null)
 
-        applyNightMode()
+        initializeNightMode()
         imageLibraryWrapper.initialize()
         appUpgradeManager.upgradeApp()
     }
