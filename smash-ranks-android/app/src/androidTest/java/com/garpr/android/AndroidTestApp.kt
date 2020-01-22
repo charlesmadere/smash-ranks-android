@@ -1,5 +1,6 @@
 package com.garpr.android
 
+import android.app.Application
 import com.garpr.android.koin.androidTestConfigModule
 import com.garpr.android.koin.databaseModule
 import com.garpr.android.koin.managersModule
@@ -14,11 +15,9 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class AndroidTestApp : BaseApp() {
+class AndroidTestApp : Application() {
 
-    override val tag: String = "AndroidTestApp"
-
-    override fun initializeKoin() {
+    private fun initializeKoin() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@AndroidTestApp)
@@ -26,6 +25,12 @@ class AndroidTestApp : BaseApp() {
                     networkingModule, preferencesModule, repositoriesModule, syncModule,
                     viewModelsModule))
         }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        initializeKoin()
     }
 
 }

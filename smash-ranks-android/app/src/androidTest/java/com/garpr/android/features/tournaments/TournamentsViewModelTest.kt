@@ -18,7 +18,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.inject
+import org.koin.core.inject
 import java.util.Calendar
 
 class TournamentsViewModelTest : BaseViewModelTest() {

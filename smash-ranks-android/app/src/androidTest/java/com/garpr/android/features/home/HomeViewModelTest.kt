@@ -17,7 +17,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.inject
+import org.koin.core.inject
 import java.util.Date
 
 class HomeViewModelTest : BaseViewModelTest() {

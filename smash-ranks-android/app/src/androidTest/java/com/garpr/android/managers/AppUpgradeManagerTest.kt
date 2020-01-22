@@ -13,7 +13,7 @@ import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.test.BaseAndroidTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.koin.test.inject
+import org.koin.core.inject
 
 class AppUpgradeManagerTest : BaseAndroidTest() {
 

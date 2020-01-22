@@ -24,7 +24,9 @@ android {
         targetSdkVersion 29
         versionCode 22003
         versionName "2.2.3"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner "com.garpr.android.test.AndroidTestRunner"
+        testInstrumentationRunnerArguments clearPackageData: "true"
     }
 
     buildTypes {
@@ -46,6 +48,10 @@ android {
         test {
             java.srcDirs += "src/baseTest/java"
         }
+    }
+
+    testOptions {
+        execution "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
 }
@@ -95,6 +101,7 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/test
     androidTestImplementation "androidx.test:core:$testcore_version"
     androidTestImplementation "androidx.test:runner:$testcore_version"
+    androidTestUtil "androidx.test:orchestrator:$testcore_version"
 
     // AndroidX ViewModel and LiveData
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
@@ -127,7 +134,6 @@ dependencies {
     // https://github.com/InsertKoinIO/koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    androidTestImplementation "org.koin:koin-test:$koin_version"
     testImplementation "org.koin:koin-test:$koin_version"
 
     // RxJava

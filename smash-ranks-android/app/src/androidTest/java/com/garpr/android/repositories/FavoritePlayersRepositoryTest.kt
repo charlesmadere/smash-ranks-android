@@ -6,18 +6,19 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Region
 import com.garpr.android.koin.FAVORITE_PLAYERS_KEY_VALUE_STORE
-import com.garpr.android.preferences.KeyValueStoreProvider
+import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.test.BaseAndroidTest
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.koin.test.inject
+import org.koin.core.inject
+import org.koin.core.qualifier.named
 
 class FavoritePlayersRepositoryTest : BaseAndroidTest() {
 
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
-    protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
+    protected val keyValueStore: KeyValueStore by inject(named(FAVORITE_PLAYERS_KEY_VALUE_STORE))
     protected val moshi: Moshi by inject()
 
     companion object {
@@ -70,7 +71,7 @@ class FavoritePlayersRepositoryTest : BaseAndroidTest() {
     }
 
     @Test
-    fun testAddPlayersWithDuplicate() {
+    fun testAddPlayersWithDuplicates() {
         var players: List<FavoritePlayer>? = null
 
         favoritePlayersRepository.playersObservable.subscribe {
@@ -81,6 +82,13 @@ class FavoritePlayersRepositoryTest : BaseAndroidTest() {
         favoritePlayersRepository.addPlayer(SPARK, NORCAL)
         assertEquals(1, players?.size)
         assertEquals(SPARK, players?.get(0))
+
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        favoritePlayersRepository.addPlayer(SPARK, NORCAL)
+        favoritePlayersRepository.addPlayer(HMW, NORCAL)
+        assertEquals(2, players?.size)
+        assertEquals(HMW, players?.get(0))
+        assertEquals(SPARK, players?.get(1))
     }
 
     @Test
@@ -108,7 +116,6 @@ class FavoritePlayersRepositoryTest : BaseAndroidTest() {
             players = it
         }
 
-        val keyValueStore = keyValueStoreProvider.getKeyValueStore(FAVORITE_PLAYERS_KEY_VALUE_STORE)
         val jsonAdapter = moshi.adapter(FavoritePlayer::class.java)
 
         keyValueStore.setString(HMW.id, jsonAdapter.toJson(FavoritePlayer(

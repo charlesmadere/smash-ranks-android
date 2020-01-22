@@ -3,7 +3,7 @@ package com.garpr.android.misc
 import com.garpr.android.test.BaseAndroidTest
 import org.junit.Assert.assertFalse
 import org.junit.Test
-import org.koin.test.inject
+import org.koin.core.inject
 
 class PackageNameProviderTest : BaseAndroidTest() {
 
