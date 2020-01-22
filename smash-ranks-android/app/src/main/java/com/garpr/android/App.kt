@@ -71,7 +71,7 @@ class App : Application(), Configuration.Provider {
         initializeKoin()
         initializeCrashlytics()
 
-        timber.d(TAG, "App created", null)
+        timber.d(TAG, "App created")
 
         initializeNightMode()
         imageLibraryWrapper.initialize()
