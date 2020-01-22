@@ -135,15 +135,15 @@ class PersistentBooleanPreferenceTest : BaseTest() {
 
         preference.set(true)
         assertNotNull(value)
-        assertEquals(true, value?.item)
+        assertEquals(true, value?.orNull())
 
         preference.set(false)
         assertNotNull(value)
-        assertEquals(false, value?.item)
+        assertEquals(false, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(true, value?.item)
+        assertEquals(true, value?.orNull())
     }
 
     @Test
@@ -164,15 +164,15 @@ class PersistentBooleanPreferenceTest : BaseTest() {
 
         preference.set(true)
         assertNotNull(value)
-        assertEquals(true, value?.item)
+        assertEquals(true, value?.orNull())
 
         preference.set(false)
         assertNotNull(value)
-        assertEquals(false, value?.item)
+        assertEquals(false, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test

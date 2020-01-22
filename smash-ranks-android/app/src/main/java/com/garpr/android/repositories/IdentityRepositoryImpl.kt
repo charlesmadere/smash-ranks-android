@@ -41,7 +41,7 @@ class IdentityRepositoryImpl(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { optional ->
-                    hasIdentitySubject.onNext(optional.isPresent)
+                    hasIdentitySubject.onNext(optional.isPresent())
                 }
 
         generalPreferenceStore.identity.observable

@@ -66,7 +66,7 @@ class AppUpgradeManagerTest : BaseAndroidTest() {
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
         assertEquals(1, playersSize)
-        assertEquals(IMYT, identity?.item)
+        assertEquals(IMYT, identity?.orNull())
     }
 
     @Test
@@ -90,7 +90,7 @@ class AppUpgradeManagerTest : BaseAndroidTest() {
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
         assertEquals(0, playersSize)
-        assertEquals(false, identity?.isPresent)
+        assertEquals(false, identity?.isPresent())
     }
 
     @Test
@@ -114,7 +114,7 @@ class AppUpgradeManagerTest : BaseAndroidTest() {
 
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
         assertEquals(0, playersSize)
-        assertEquals(false, identity?.isPresent)
+        assertEquals(false, identity?.isPresent())
     }
 
 }

@@ -97,8 +97,8 @@ class TournamentViewModel(
                 .observeOn(schedulers.background)
                 .subscribe({ (tournament, identity) ->
                     identityRepository.identityObservable.take(1)
-                    val matches = createMatchesList(tournament, identity.item)
-                    val players = createPlayersList(tournament, identity.item)
+                    val matches = createMatchesList(tournament, identity.orNull())
+                    val players = createPlayersList(tournament, identity.orNull())
 
                     state = state.copy(
                             hasError = false,
@@ -145,7 +145,7 @@ class TournamentViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { optional ->
-                    refreshListItems(optional.item)
+                    refreshListItems(optional.orNull())
                 })
     }
 

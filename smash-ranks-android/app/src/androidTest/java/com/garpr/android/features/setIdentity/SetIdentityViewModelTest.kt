@@ -240,7 +240,7 @@ class SetIdentityViewModelTest : BaseViewModelTest() {
         }
 
         assertNull(throwable)
-        assertEquals(CHARLEZARD, optional?.item)
+        assertEquals(CHARLEZARD, optional?.orNull())
     }
 
     @Test
@@ -263,7 +263,7 @@ class SetIdentityViewModelTest : BaseViewModelTest() {
         }
 
         assertNull(throwable)
-        assertEquals(WEEDLORD, optional?.item)
+        assertEquals(WEEDLORD, optional?.orNull())
     }
 
     @Test

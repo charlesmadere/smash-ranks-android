@@ -44,16 +44,16 @@ class IdentityRepositoryTest : BaseTest() {
             value = it
         }
 
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
 
         identityRepository.setIdentity(HMW, NORCAL)
-        assertEquals(HMW, value?.item)
+        assertEquals(HMW, value?.orNull())
 
         identityRepository.setIdentity(NMW, NORCAL)
-        assertEquals(NMW, value?.item)
+        assertEquals(NMW, value?.orNull())
 
         identityRepository.removeIdentity()
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test
@@ -84,19 +84,19 @@ class IdentityRepositoryTest : BaseTest() {
             value = it
         }
 
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
 
         identityRepository.setIdentity(HMW, NORCAL)
-        assertEquals(HMW, value?.item)
+        assertEquals(HMW, value?.orNull())
 
         identityRepository.setIdentity(HMW, NORCAL)
-        assertEquals(HMW, value?.item)
+        assertEquals(HMW, value?.orNull())
 
         identityRepository.setIdentity(NMW, NORCAL)
-        assertEquals(NMW, value?.item)
+        assertEquals(NMW, value?.orNull())
 
         identityRepository.removeIdentity()
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
 }

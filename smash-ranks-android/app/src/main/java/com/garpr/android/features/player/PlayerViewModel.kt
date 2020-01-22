@@ -126,7 +126,7 @@ class PlayerViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ (bundle, favoritePlayers, identity) ->
-                    val list = createList(bundle, identity.item)
+                    val list = createList(bundle, identity.orNull())
 
                     val showSearchIcon = list?.any { listItem ->
                         listItem is ListItem.Match
@@ -137,7 +137,7 @@ class PlayerViewModel(
                     }
 
                     state = state.copy(
-                            identity = identity.item,
+                            identity = identity.orNull(),
                             hasError = false,
                             isFavorited = isFavorited,
                             isFetching = false,
@@ -186,8 +186,8 @@ class PlayerViewModel(
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { optional ->
-                    refreshListItems(optional.item)
+                .subscribe { identity ->
+                    refreshListItems(identity.orNull())
                 })
 
         disposables.add(smashRosterSyncManager.isSyncingObservable

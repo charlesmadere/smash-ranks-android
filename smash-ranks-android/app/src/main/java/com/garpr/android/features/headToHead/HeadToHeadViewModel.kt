@@ -97,7 +97,7 @@ class HeadToHeadViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ (headToHead, identity) ->
-                    val list = createList(headToHead, identity.item)
+                    val list = createList(headToHead, identity.orNull())
 
                     state = state.copy(
                             hasError = list.isNullOrEmpty(),
@@ -120,7 +120,7 @@ class HeadToHeadViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { identity ->
-                    refreshListItems(identity.item)
+                    refreshListItems(identity.orNull())
                 })
     }
 

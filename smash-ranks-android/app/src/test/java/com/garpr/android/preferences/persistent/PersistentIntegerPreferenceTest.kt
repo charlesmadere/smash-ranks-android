@@ -125,15 +125,15 @@ class PersistentIntegerPreferenceTest : BaseTest() {
 
         preference.set(25)
         assertNotNull(value)
-        assertEquals(25, value?.item)
+        assertEquals(25, value?.orNull())
 
         preference.set(10)
         assertNotNull(value)
-        assertEquals(10, value?.item)
+        assertEquals(10, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(-31, value?.item)
+        assertEquals(-31, value?.orNull())
     }
 
     @Test
@@ -154,15 +154,15 @@ class PersistentIntegerPreferenceTest : BaseTest() {
 
         preference.set(11)
         assertNotNull(value)
-        assertEquals(11, value?.item)
+        assertEquals(11, value?.orNull())
 
         preference.set(168)
         assertNotNull(value)
-        assertEquals(168, value?.item)
+        assertEquals(168, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test

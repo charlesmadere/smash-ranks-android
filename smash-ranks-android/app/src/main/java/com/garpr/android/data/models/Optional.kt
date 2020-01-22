@@ -1,17 +1,23 @@
 package com.garpr.android.data.models
 
 class Optional<T : Any> private constructor(
-        val item: T?
+        private val item: T?
 ) {
 
-    val isPresent: Boolean = item != null
+    fun get(): T {
+        return checkNotNull(item)
+    }
+
+    fun isPresent(): Boolean {
+        return item != null
+    }
 
     fun orElse(other: T): T {
         return item ?: other
     }
 
-    fun require(): T {
-        return checkNotNull(item)
+    fun orNull(): T? {
+        return item
     }
 
     companion object {

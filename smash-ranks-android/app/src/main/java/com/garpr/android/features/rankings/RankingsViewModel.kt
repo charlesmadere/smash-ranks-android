@@ -109,7 +109,7 @@ class RankingsViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ (bundle, identity) ->
-                    val list = createList(bundle, identity.item)
+                    val list = createList(bundle, identity.orNull())
 
                     state = state.copy(
                             hasError = false,
@@ -143,8 +143,8 @@ class RankingsViewModel(
                                 })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { optional ->
-                    refreshListItems(optional.item)
+                .subscribe { identity ->
+                    refreshListItems(identity.orNull())
                 })
     }
 

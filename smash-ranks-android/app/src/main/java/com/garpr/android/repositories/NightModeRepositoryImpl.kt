@@ -27,8 +27,8 @@ class NightModeRepositoryImpl(
             .observable
             .subscribeOn(schedulers.background)
             .observeOn(schedulers.background)
-            .map {
-                checkNotNull(it.item) {
+            .map { optional ->
+                checkNotNull(optional.orNull()) {
                     "A null nightMode here is impossible and means we have a bug somewhere else."
                 }
             }

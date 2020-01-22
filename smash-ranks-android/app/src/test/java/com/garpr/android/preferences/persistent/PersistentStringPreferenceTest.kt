@@ -145,15 +145,15 @@ class PersistentStringPreferenceTest : BaseTest() {
 
         preference.set("blah")
         assertNotNull(value)
-        assertEquals("blah", value?.item)
+        assertEquals("blah", value?.orNull())
 
         preference.set("melee")
         assertNotNull(value)
-        assertEquals("melee", value?.item)
+        assertEquals("melee", value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals("Hello, World!", value?.item)
+        assertEquals("Hello, World!", value?.orNull())
     }
 
     @Test
@@ -174,15 +174,15 @@ class PersistentStringPreferenceTest : BaseTest() {
 
         preference.set("nintendo")
         assertNotNull(value)
-        assertEquals("nintendo", value?.item)
+        assertEquals("nintendo", value?.orNull())
 
         preference.set("game")
         assertNotNull(value)
-        assertEquals("game", value?.item)
+        assertEquals("game", value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test

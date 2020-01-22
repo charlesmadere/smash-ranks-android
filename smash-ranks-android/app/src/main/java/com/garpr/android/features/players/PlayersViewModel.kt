@@ -58,7 +58,7 @@ class PlayersViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ (bundle, identity) ->
-                    val list = playerListBuilder.create(bundle, identity.item)
+                    val list = playerListBuilder.create(bundle, identity.orNull())
 
                     state = state.copy(
                             hasError = false,
@@ -87,7 +87,7 @@ class PlayersViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { identity ->
-                    refreshIdentity(identity.item)
+                    refreshIdentity(identity.orNull())
                 })
     }
 

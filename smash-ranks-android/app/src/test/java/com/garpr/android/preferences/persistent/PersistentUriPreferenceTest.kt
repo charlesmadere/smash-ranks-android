@@ -130,15 +130,15 @@ class PersistentUriPreferenceTest : BaseTest() {
 
         preference.set(GOOGLE)
         assertNotNull(value)
-        assertEquals(GOOGLE, value?.item)
+        assertEquals(GOOGLE, value?.orNull())
 
         preference.set(POLYGON)
         assertNotNull(value)
-        assertEquals(POLYGON, value?.item)
+        assertEquals(POLYGON, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(AMAZON, value?.item)
+        assertEquals(AMAZON, value?.orNull())
     }
 
     @Test
@@ -159,15 +159,15 @@ class PersistentUriPreferenceTest : BaseTest() {
 
         preference.set(POLYGON)
         assertNotNull(value)
-        assertEquals(POLYGON, value?.item)
+        assertEquals(POLYGON, value?.orNull())
 
         preference.set(GOOGLE)
         assertNotNull(value)
-        assertEquals(GOOGLE, value?.item)
+        assertEquals(GOOGLE, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test

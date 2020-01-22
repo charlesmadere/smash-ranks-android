@@ -31,8 +31,8 @@ class RegionRepositoryImpl(
             .observable
             .subscribeOn(schedulers.background)
             .observeOn(schedulers.background)
-            .map {
-                checkNotNull(it.item) {
+            .map { optional ->
+                checkNotNull(optional.orNull()) {
                     "A null region here is impossible and means we have a bug somewhere else."
                 }
             }

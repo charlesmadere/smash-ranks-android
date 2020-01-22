@@ -46,7 +46,7 @@ class HomeViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { identity ->
-                    refreshIdentity(identity.item)
+                    refreshIdentity(identity.orNull())
                 })
     }
 
