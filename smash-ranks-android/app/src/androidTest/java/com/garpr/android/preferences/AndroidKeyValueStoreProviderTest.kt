@@ -1,6 +1,6 @@
 package com.garpr.android.preferences
 
-import com.garpr.android.test.BaseTest
+import com.garpr.android.test.BaseAndroidTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -9,7 +9,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.test.inject
 
-class KeyValueStoreProviderTest : BaseTest() {
+class AndroidKeyValueStoreProviderTest : BaseAndroidTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
 
