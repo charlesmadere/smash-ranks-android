@@ -19,15 +19,6 @@ enum class Endpoint(
     @Json(name = "not_gar_pr")
     NOT_GAR_PR(Constants.NOT_GAR_PR_BASE_PATH, R.string.not_gar_pr);
 
-    companion object {
-        @JvmField
-        val CREATOR = createParcel { values()[it.readInt()] }
-
-        val ALPHABETICAL_ORDER = Comparator<Endpoint> { o1, o2 ->
-            o1.name.compareTo(o2.name, ignoreCase = true)
-        }
-    }
-
     fun getPlayerWebPath(regionId: String, playerId: String): String {
         return StringBuilder(getWebPath(regionId))
                 .append("/players/")
@@ -69,6 +60,15 @@ enum class Endpoint(
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel { values()[it.readInt()] }
+
+        val ALPHABETICAL_ORDER = Comparator<Endpoint> { o1, o2 ->
+            o1.name.compareTo(o2.name, ignoreCase = true)
+        }
     }
 
 }

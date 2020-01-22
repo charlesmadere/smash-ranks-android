@@ -20,6 +20,9 @@ class LiteTournament(
         name
 ), Parcelable {
 
+    override val kind: Kind
+        get() = Kind.LITE
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -31,8 +34,5 @@ class LiteTournament(
             )
         }
     }
-
-    override val kind: Kind
-        get() = Kind.LITE
 
 }

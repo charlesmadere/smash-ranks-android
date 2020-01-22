@@ -13,6 +13,12 @@ data class TournamentsBundle(
         @Json(name = "tournaments") val tournaments: List<AbsTournament>? = null
 ) : Parcelable {
 
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeAbsTournamentList(tournaments, flags)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -20,12 +26,6 @@ data class TournamentsBundle(
                     it.optAbsTournamentList()
             )
         }
-    }
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeAbsTournamentList(tournaments, flags)
     }
 
 }

@@ -251,16 +251,15 @@ enum class SmashCharacter(
     @Json(name = "zss")
     ZERO_SUIT_SAMUS(R.string.zero_suit_samus);
 
-
-    companion object {
-        @JvmField
-        val CREATOR = createParcel { values()[it.readInt()] }
-    }
-
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel { values()[it.readInt()] }
     }
 
 }

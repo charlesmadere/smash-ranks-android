@@ -13,6 +13,12 @@ data class RegionsBundle(
         @Json(name = "regions") val regions: List<AbsRegion>? = null
 ) : Parcelable {
 
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeAbsRegionList(regions, flags)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -20,12 +26,6 @@ data class RegionsBundle(
                     it.optAbsRegionList()
             )
         }
-    }
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeAbsRegionList(regions, flags)
     }
 
 }

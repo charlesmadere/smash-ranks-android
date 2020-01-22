@@ -25,6 +25,9 @@ class LiteRegion(
         id
 ), Parcelable {
 
+    override val kind: Kind
+        get() = Kind.LITE
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -38,8 +41,5 @@ class LiteRegion(
             )
         }
     }
-
-    override val kind: Kind
-        get() = Kind.LITE
 
 }

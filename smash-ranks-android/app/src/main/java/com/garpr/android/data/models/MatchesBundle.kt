@@ -16,6 +16,15 @@ data class MatchesBundle(
         @Json(name = "matches") val matches: List<TournamentMatch>? = null
 ) : Parcelable {
 
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeAbsPlayer(player, flags)
+        dest.writeInt(losses)
+        dest.writeInt(wins)
+        dest.writeTypedList(matches)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -26,15 +35,6 @@ data class MatchesBundle(
                     it.createTypedArrayList(TournamentMatch.CREATOR)
             )
         }
-    }
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeAbsPlayer(player, flags)
-        dest.writeInt(losses)
-        dest.writeInt(wins)
-        dest.writeTypedList(matches)
     }
 
 }

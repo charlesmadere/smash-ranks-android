@@ -65,6 +65,7 @@ abstract class AbsPlayer(
     }
 
     enum class Kind : Parcelable {
+
         @Json(name = "favorite")
         FAVORITE,
 
@@ -77,16 +78,17 @@ abstract class AbsPlayer(
         @Json(name = "ranked")
         RANKED;
 
-        companion object {
-            @JvmField
-            val CREATOR = createParcel { values()[it.readInt()] }
-        }
-
         override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(ordinal)
         }
+
+        companion object {
+            @JvmField
+            val CREATOR = createParcel { values()[it.readInt()] }
+        }
+
     }
 
 }

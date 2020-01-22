@@ -37,18 +37,17 @@ enum class PollFrequency constructor(
     @Json(name = "every_2_weeks")
     EVERY_2_WEEKS(R.string.every_2_weeks, TimeUnit.DAYS.toMillis(14));
 
-
-    companion object {
-        @JvmField
-        val CREATOR = createParcel { values()[it.readInt()] }
-    }
-
     val timeInSeconds: Long = TimeUnit.MILLISECONDS.toSeconds(timeInMillis)
 
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel { values()[it.readInt()] }
     }
 
 }
