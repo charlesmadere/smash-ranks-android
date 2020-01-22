@@ -15,6 +15,8 @@ import org.koin.android.ext.android.inject
 
 abstract class BaseApp : Application(), Configuration.Provider {
 
+    protected abstract val tag: String
+
     protected val appUpgradeManager: AppUpgradeManager by inject()
     protected val crashlyticsWrapper: CrashlyticsWrapper by inject()
     protected val deviceUtils: DeviceUtils by inject()
@@ -50,15 +52,13 @@ abstract class BaseApp : Application(), Configuration.Provider {
         initializeKoin()
         initializeCrashlytics()
 
-        timber.d(TAG, "BaseApp created")
+        timber.d(tag, "Application created")
 
         initializeNightMode()
         imageLibraryWrapper.initialize()
         appUpgradeManager.upgradeApp()
-    }
 
-    companion object {
-        private const val TAG = "BaseApp"
+        timber.d(tag, "Finished initialization of everything")
     }
 
 }

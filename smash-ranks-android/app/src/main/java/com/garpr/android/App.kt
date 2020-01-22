@@ -16,6 +16,8 @@ import org.koin.core.logger.Level
 
 class App : BaseApp() {
 
+    override val tag: String = "App"
+
     override fun initializeKoin() {
         startKoin {
             androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
