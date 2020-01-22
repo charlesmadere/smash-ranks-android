@@ -23,6 +23,9 @@ enum class SmashCharacter(
     @Json(name = "bjr")
     BOWSER_JR(R.string.bowser_jr),
 
+    @Json(name = "byl")
+    BYLETH(R.string.byleth),
+
     @Json(name = "fcn")
     CPTN_FALCON(R.string.captain_falcon),
 
