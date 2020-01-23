@@ -1,34 +1,18 @@
-// Fabric
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        //noinspection GradleDynamicVersion
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
-
 // Android
-apply plugin: 'com.android.application'
+apply plugin: "com.android.application"
 
 // Kotlin
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
 
-// Fabric
-apply plugin: 'io.fabric'
-
-// Fabric
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
+// Fabric / Firebase Crashlytics plugin
+apply plugin: "io.fabric"
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -37,9 +21,12 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 22002
-        versionName "2.2.2"
+        targetSdkVersion 29
+        versionCode 22003
+        versionName "2.2.3"
+
+        testInstrumentationRunner "com.garpr.android.test.AndroidTestRunner"
+        testInstrumentationRunnerArguments clearPackageData: "true"
     }
 
     buildTypes {
@@ -53,16 +40,25 @@ android {
         cruncherEnabled false
     }
 
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
+    sourceSets {
+        androidTest {
+            java.srcDirs += "src/baseTest/java"
+        }
+
+        test {
+            java.srcDirs += "src/baseTest/java"
         }
     }
+
+    testOptions {
+        execution "ANDROIDX_TEST_ORCHESTRATOR"
+    }
+
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation "junit:junit:4.12"
 
     // Kotlin
     // https://kotlinlang.org/docs/reference/using-gradle.html
@@ -72,14 +68,13 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // Android Architecture Components - ViewModel and LiveData
-    // https://developer.android.com/jetpack/androidx/releases/lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    // AndroidX Activity
+    // https://developer.android.com/jetpack/androidx/releases/activity
+    implementation "androidx.activity:activity:$activity_version"
 
-    // Android Architecture Components - WorkManager
-    // https://developer.android.com/jetpack/androidx/releases/work
-    implementation "androidx.work:work-runtime:$workmanager_version"
+    // AndroidX Architecture Test
+    // https://developer.android.com/jetpack/androidx/releases/test
+    androidTestImplementation "androidx.arch.core:core-testing:$architecture_test_version"
 
     // AndroidX AppCompat
     // https://developer.android.com/jetpack/androidx/releases/appcompat
@@ -93,6 +88,10 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
 
+    // AndroidX Fragment
+    // https://developer.android.com/jetpack/androidx/releases/fragment
+    implementation "androidx.fragment:fragment:$fragment_version"
+
     // AndroidX Palette
     // https://developer.android.com/jetpack/androidx/releases/palette
     implementation "androidx.palette:palette:$palette_version"
@@ -101,13 +100,29 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/recyclerview
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
+    // AndroidX Room
+    // https://developer.android.com/jetpack/androidx/releases/room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
     // AndroidX Test
     // https://developer.android.com/jetpack/androidx/releases/test
-    testImplementation "androidx.test:core:$testcore_version"
+    androidTestImplementation "androidx.test:core:$testcore_version"
+    androidTestImplementation "androidx.test:runner:$testcore_version"
+    androidTestUtil "androidx.test:orchestrator:$testcore_version"
+
+    // AndroidX ViewModel and LiveData
+    // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // AndroidX ViewPager2
     // https://developer.android.com/jetpack/androidx/releases/viewpager2
     implementation "androidx.viewpager2:viewpager2:$viewpager_version"
+
+    // AndroidX WorkManager
+    // https://developer.android.com/jetpack/androidx/releases/work
+    implementation "androidx.work:work-runtime:$workmanager_version"
 
     // Facebook's Fresco
     // https://github.com/facebook/fresco
@@ -118,15 +133,16 @@ dependencies {
     // https://material.io/develop/android/
     implementation "com.google.android.material:material:$material_design_version"
 
+    // JUnit 4
+    // https://junit.org/junit4/
+    androidTestImplementation "junit:junit:4.12"
+    testImplementation "junit:junit:4.12"
+
     // Koin
     // https://github.com/InsertKoinIO/koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     testImplementation "org.koin:koin-test:$koin_version"
-
-    // Robolectric
-    // https://github.com/robolectric/robolectric
-    testImplementation "org.robolectric:robolectric:$robolectric_version"
 
     // RxJava
     // https://github.com/ReactiveX/RxJava
@@ -147,9 +163,8 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
-    // Fabric
-    // https://fabric.io/kits/android/crashlytics/update
-    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics_version@aar") {
-        transitive = true
-    }
+    // Fabric / Firebase Crashlytics
+    // https://firebase.google.com/docs/crashlytics/get-started?platform=android
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
+
 }

@@ -12,13 +12,6 @@ data class Rating(
         @Json(name = "sigma") val sigma: Float
 ) : Parcelable {
 
-    companion object {
-        @JvmField
-        val CREATOR = createParcel {
-            Rating(it.readFloat(), it.readFloat())
-        }
-    }
-
     val rating: Float
         get() = mu - (3f * sigma)
 
@@ -27,6 +20,13 @@ data class Rating(
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeFloat(mu)
         dest.writeFloat(sigma)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel {
+            Rating(it.readFloat(), it.readFloat())
+        }
     }
 
 }

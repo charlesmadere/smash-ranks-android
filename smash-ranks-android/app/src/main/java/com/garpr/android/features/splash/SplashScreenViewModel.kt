@@ -44,15 +44,15 @@ class SplashScreenViewModel(
         disposables.add(generalPreferenceStore.hajimeteKimasu.observable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { optional ->
-                    refreshIsSplashScreenComplete(optional.orElse(false))
+                .subscribe { hajimeteKimasu ->
+                    refreshIsSplashScreenComplete(hajimeteKimasu.orElse(false))
                 })
 
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { optional ->
-                    refreshIdentity(optional.item)
+                .subscribe { identity ->
+                    refreshIdentity(identity.orNull())
                 })
 
         disposables.add(regionRepository.observable

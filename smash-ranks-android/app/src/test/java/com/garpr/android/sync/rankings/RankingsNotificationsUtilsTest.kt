@@ -1,6 +1,5 @@
 package com.garpr.android.sync.rankings
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
@@ -8,6 +7,7 @@ import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationIn
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.SHOW
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.PollStatus
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -15,11 +15,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class RankingsNotificationsUtilsTest : BaseTest() {
 
     private lateinit var rankingsBundle: RankingsBundle

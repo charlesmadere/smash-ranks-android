@@ -1,12 +1,14 @@
 package com.garpr.android.repositories
 
 import com.garpr.android.data.models.NightMode
+import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.GeneralPreferenceStore
 import io.reactivex.Observable
 
 class NightModeRepositoryImpl(
         private val generalPreferenceStore: GeneralPreferenceStore,
+        schedulers: Schedulers,
         private val timber: Timber
 ) : NightModeRepository {
 
@@ -23,8 +25,10 @@ class NightModeRepositoryImpl(
 
     override val observable: Observable<NightMode> = generalPreferenceStore.nightMode
             .observable
-            .map {
-                checkNotNull(it.item) {
+            .subscribeOn(schedulers.background)
+            .observeOn(schedulers.background)
+            .map { optional ->
+                checkNotNull(optional.orNull()) {
                     "A null nightMode here is impossible and means we have a bug somewhere else."
                 }
             }

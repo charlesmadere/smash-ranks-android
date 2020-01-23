@@ -91,6 +91,7 @@ class KeyValueStoreImpl(
     class BatchEditorImpl(
             private val editor: Editor
     ) : BatchEditor {
+
         override fun apply() {
             editor.apply()
         }
@@ -114,6 +115,7 @@ class KeyValueStoreImpl(
             editor.putString(key, value)
             return this
         }
+
     }
 
 }

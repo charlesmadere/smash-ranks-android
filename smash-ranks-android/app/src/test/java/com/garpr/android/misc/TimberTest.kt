@@ -1,23 +1,16 @@
 package com.garpr.android.misc
 
-import com.garpr.android.BaseTest
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import kotlin.random.Random
 
-@RunWith(RobolectricTestRunner::class)
 class TimberTest : BaseTest() {
 
     protected val timber: Timber by inject()
-
-    companion object {
-        private const val TAG = "TimberTest"
-    }
 
     @Test
     fun testClearEntries() {
@@ -72,6 +65,10 @@ class TimberTest : BaseTest() {
 
         val entries = timber.entries
         assertNotEquals(times, entries.size)
+    }
+
+    companion object {
+        private const val TAG = "TimberTest"
     }
 
 }

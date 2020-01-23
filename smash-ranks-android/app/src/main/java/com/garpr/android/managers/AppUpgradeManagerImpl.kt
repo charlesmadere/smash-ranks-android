@@ -11,10 +11,6 @@ class AppUpgradeManagerImpl(
         private val timber: Timber
 ) : AppUpgradeManager {
 
-    companion object {
-        private const val TAG = "AppUpgradeManagerImpl"
-    }
-
     override fun upgradeApp() {
         val lastVersionPref = generalPreferenceStore.lastVersion
         val lastVersion = lastVersionPref.get()
@@ -39,9 +35,16 @@ class AppUpgradeManagerImpl(
 
             // used to be a list of AbsPlayer, is now a list of FavoritePlayer
             favoritePlayersRepository.clear()
+        } else if (lastVersion < 22003) {
+            // migrated to Room for storage of favorite players
+            favoritePlayersRepository.migrate()
         }
 
         timber.d(TAG, "App upgrade complete")
+    }
+
+    companion object {
+        private const val TAG = "AppUpgradeManagerImpl"
     }
 
 }

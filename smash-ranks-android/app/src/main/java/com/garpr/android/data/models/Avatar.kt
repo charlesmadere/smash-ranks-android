@@ -14,6 +14,29 @@ data class Avatar(
         @Json(name = "small") val small: String? = null
 ) : Parcelable {
 
+    val largeButFallbackToMediumThenOriginalThenSmall: String? by lazy {
+        if (!large.isNullOrBlank()) {
+            large
+        } else if (!medium.isNullOrBlank()) {
+            medium
+        } else if (!original.isNullOrBlank()) {
+            original
+        } else if (!small.isNullOrBlank()) {
+            small
+        } else {
+            null
+        }
+    }
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeString(large)
+        dest.writeString(medium)
+        dest.writeString(original)
+        dest.writeString(small)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -24,28 +47,6 @@ data class Avatar(
                     it.readString()
             )
         }
-    }
-
-    val largeButFallbackToMediumThenOriginalThenSmall: String?
-        get() = if (!large.isNullOrBlank()) {
-                    large
-                } else if (!medium.isNullOrBlank()) {
-                    medium
-                } else if (!original.isNullOrBlank()) {
-                    original
-                } else if (!small.isNullOrBlank()) {
-                   small
-                } else {
-                    null
-                }
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(large)
-        dest.writeString(medium)
-        dest.writeString(original)
-        dest.writeString(small)
     }
 
 }

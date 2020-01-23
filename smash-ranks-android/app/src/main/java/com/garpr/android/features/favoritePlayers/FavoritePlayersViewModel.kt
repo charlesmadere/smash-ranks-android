@@ -58,7 +58,7 @@ class FavoritePlayersViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { (players, identity) ->
-                    refreshFavoritePlayers(players, identity.item)
+                    refreshFavoritePlayers(players, identity.orNull())
                 })
     }
 

@@ -1,18 +1,15 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseTest
 import com.garpr.android.extensions.requireFromJson
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.util.Calendar
 import java.util.Collections
 
-@RunWith(RobolectricTestRunner::class)
 class AbsTournamentTest : BaseTest() {
 
     protected val moshi: Moshi by inject()

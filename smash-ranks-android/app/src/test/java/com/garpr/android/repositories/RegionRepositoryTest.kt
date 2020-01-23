@@ -1,16 +1,13 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class RegionRepositoryTest : BaseTest() {
 
     protected val regionRepository: RegionRepository by inject()

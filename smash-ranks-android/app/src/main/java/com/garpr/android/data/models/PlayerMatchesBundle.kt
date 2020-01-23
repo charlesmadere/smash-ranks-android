@@ -13,6 +13,13 @@ data class PlayerMatchesBundle(
         @Json(name = "matches_bundle") val matchesBundle: MatchesBundle? = null
 ) : Parcelable {
 
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeParcelable(fullPlayer, flags)
+        dest.writeParcelable(matchesBundle, flags)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -21,13 +28,6 @@ data class PlayerMatchesBundle(
                     it.readParcelable(MatchesBundle::class.java.classLoader)
             )
         }
-    }
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeParcelable(fullPlayer, flags)
-        dest.writeParcelable(matchesBundle, flags)
     }
 
 }

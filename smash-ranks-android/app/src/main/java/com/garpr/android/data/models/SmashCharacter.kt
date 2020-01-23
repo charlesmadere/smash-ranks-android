@@ -23,6 +23,9 @@ enum class SmashCharacter(
     @Json(name = "bjr")
     BOWSER_JR(R.string.bowser_jr),
 
+    @Json(name = "byl")
+    BYLETH(R.string.byleth),
+
     @Json(name = "fcn")
     CPTN_FALCON(R.string.captain_falcon),
 
@@ -251,16 +254,15 @@ enum class SmashCharacter(
     @Json(name = "zss")
     ZERO_SUIT_SAMUS(R.string.zero_suit_samus);
 
-
-    companion object {
-        @JvmField
-        val CREATOR = createParcel { values()[it.readInt()] }
-    }
-
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel { values()[it.readInt()] }
     }
 
 }

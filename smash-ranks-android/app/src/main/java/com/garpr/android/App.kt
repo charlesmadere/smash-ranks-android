@@ -3,8 +3,8 @@ package com.garpr.android
 import android.annotation.SuppressLint
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.work.Configuration
 import com.garpr.android.koin.configModule
+import com.garpr.android.koin.databaseModule
 import com.garpr.android.koin.managersModule
 import com.garpr.android.koin.miscModule
 import com.garpr.android.koin.networkingModule
@@ -24,8 +24,9 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import androidx.work.Configuration as WorkManagerConfiguration
 
-class App : Application(), Configuration.Provider {
+class App : Application(), WorkManagerConfiguration.Provider {
 
     protected val appUpgradeManager: AppUpgradeManager by inject()
     protected val crashlyticsWrapper: CrashlyticsWrapper by inject()
@@ -35,20 +36,7 @@ class App : Application(), Configuration.Provider {
     protected val timber: Timber by inject()
     protected val workManagerWrapper: WorkManagerWrapper by inject()
 
-    companion object {
-        private const val TAG = "App"
-    }
-
-    @SuppressLint("CheckResult")
-    private fun applyNightMode() {
-        AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
-
-        nightModeRepository.observable.subscribe { nightMode ->
-            AppCompatDelegate.setDefaultNightMode(nightMode.themeValue)
-        }
-    }
-
-    override fun getWorkManagerConfiguration(): Configuration {
+    override fun getWorkManagerConfiguration(): WorkManagerConfiguration {
         return workManagerWrapper.configuration
     }
 
@@ -61,8 +49,18 @@ class App : Application(), Configuration.Provider {
         startKoin {
             androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
             androidContext(this@App)
-            modules(listOf(configModule, managersModule, miscModule, networkingModule,
-                    preferencesModule, repositoriesModule, syncModule, viewModelsModule))
+            modules(listOf(configModule, databaseModule, managersModule, miscModule,
+                    networkingModule, preferencesModule, repositoriesModule, syncModule,
+                    viewModelsModule))
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun initializeNightMode() {
+        AppCompatDelegate.setDefaultNightMode(nightModeRepository.nightMode.themeValue)
+
+        nightModeRepository.observable.subscribe { nightMode ->
+            AppCompatDelegate.setDefaultNightMode(nightMode.themeValue)
         }
     }
 
@@ -73,11 +71,17 @@ class App : Application(), Configuration.Provider {
         initializeKoin()
         initializeCrashlytics()
 
-        timber.d(TAG, "App created", null)
+        timber.d(TAG, "Application created")
 
-        applyNightMode()
+        initializeNightMode()
         imageLibraryWrapper.initialize()
         appUpgradeManager.upgradeApp()
+
+        timber.d(TAG, "Finished initialization of everything")
+    }
+
+    companion object {
+        private const val TAG = "App"
     }
 
 }

@@ -1,14 +1,11 @@
 package com.garpr.android.features.player
 
-import com.garpr.android.BaseTest
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class SmashRosterAvatarUrlHelperTest : BaseTest() {
 
     protected val smashRosterAvatarUrlHelper: SmashRosterAvatarUrlHelper by inject()

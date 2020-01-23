@@ -7,7 +7,6 @@ import android.text.format.DateUtils
 import com.garpr.android.extensions.createParcel
 import com.squareup.moshi.JsonClass
 import java.text.DateFormat
-import java.util.Comparator
 import java.util.Date
 
 @JsonClass(generateAdapter = false)
@@ -20,19 +19,6 @@ data class SimpleDate(
     val mediumForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.MEDIUM).format(date) }
 
     val shortForm: CharSequence by lazy { DateFormat.getDateInstance(DateFormat.SHORT).format(date) }
-
-    companion object {
-        @JvmField
-        val CREATOR = createParcel { SimpleDate(Date(it.readLong())) }
-
-        val CHRONOLOGICAL_ORDER = Comparator<SimpleDate> { o1, o2 ->
-            o1.date.compareTo(o2.date)
-        }
-
-        val REVERSE_CHRONOLOGICAL_ORDER = Comparator<SimpleDate> { o1, o2 ->
-            CHRONOLOGICAL_ORDER.compare(o2, o1)
-        }
-    }
 
     override fun equals(other: Any?): Boolean {
         return other is SimpleDate && date == other.date
@@ -51,6 +37,19 @@ data class SimpleDate(
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeLong(date.time)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel { SimpleDate(Date(it.readLong())) }
+
+        val CHRONOLOGICAL_ORDER = Comparator<SimpleDate> { o1, o2 ->
+            o1.date.compareTo(o2.date)
+        }
+
+        val REVERSE_CHRONOLOGICAL_ORDER = Comparator<SimpleDate> { o1, o2 ->
+            CHRONOLOGICAL_ORDER.compare(o2, o1)
+        }
     }
 
 }

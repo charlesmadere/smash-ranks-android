@@ -1,10 +1,10 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Optional
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -12,11 +12,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class PersistentLongPreferenceTest : BaseTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
@@ -128,15 +125,15 @@ class PersistentLongPreferenceTest : BaseTest() {
 
         preference.set(-93L)
         assertNotNull(value)
-        assertEquals(-93L, value?.item)
+        assertEquals(-93L, value?.orNull())
 
         preference.set(13L)
         assertNotNull(value)
-        assertEquals(13L, value?.item)
+        assertEquals(13L, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(-50L, value?.item)
+        assertEquals(-50L, value?.orNull())
     }
 
     @Test
@@ -157,15 +154,15 @@ class PersistentLongPreferenceTest : BaseTest() {
 
         preference.set(11L)
         assertNotNull(value)
-        assertEquals(11L, value?.item)
+        assertEquals(11L, value?.orNull())
 
         preference.set(21L)
         assertNotNull(value)
-        assertEquals(21L, value?.item)
+        assertEquals(21L, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test

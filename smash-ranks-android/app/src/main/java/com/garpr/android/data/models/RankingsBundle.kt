@@ -20,20 +20,6 @@ data class RankingsBundle(
         @Json(name = "region") val region: String
 ) : Parcelable {
 
-    companion object {
-        @JvmField
-        val CREATOR = createParcel {
-            RankingsBundle(
-                    it.requireAbsRegion(),
-                    it.createTypedArrayList(RankedPlayer.CREATOR),
-                    it.createStringArrayList(),
-                    it.requireParcelable(SimpleDate::class.java.classLoader),
-                    it.requireString(),
-                    it.requireString()
-            )
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         return other is RankingsBundle && id.equals(other.id, ignoreCase = true)
     }
@@ -49,6 +35,20 @@ data class RankingsBundle(
         dest.writeParcelable(time, flags)
         dest.writeString(id)
         dest.writeString(region)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel {
+            RankingsBundle(
+                    it.requireAbsRegion(),
+                    it.createTypedArrayList(RankedPlayer.CREATOR),
+                    it.createStringArrayList(),
+                    it.requireParcelable(SimpleDate::class.java.classLoader),
+                    it.requireString(),
+                    it.requireString()
+            )
+        }
     }
 
 }

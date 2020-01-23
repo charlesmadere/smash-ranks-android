@@ -6,8 +6,9 @@ import java.util.Collections
 import java.util.LinkedList
 
 class TimberImpl(
+        private val crashlyticsWrapper: CrashlyticsWrapper,
         deviceUtils: DeviceUtils,
-        private val crashlyticsWrapper: CrashlyticsWrapper
+        private val stackTraceUtils: StackTraceUtils
 ) : Timber {
 
     private val maxSize: Int = if (deviceUtils.hasLowRam) 64 else 256
@@ -41,7 +42,7 @@ class TimberImpl(
     }
 
     override fun d(tag: String, msg: String, tr: Throwable?) {
-        addEntry(Timber.DebugEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))
+        addEntry(Timber.DebugEntry(tag, msg, if (tr == null) null else stackTraceUtils.toString(tr)))
         crashlyticsWrapper.log(Log.DEBUG, tag, msg)
 
         if (tr != null) {
@@ -50,7 +51,7 @@ class TimberImpl(
     }
 
     override fun e(tag: String, msg: String, tr: Throwable?) {
-        addEntry(Timber.ErrorEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))
+        addEntry(Timber.ErrorEntry(tag, msg, if (tr == null) null else stackTraceUtils.toString(tr)))
         crashlyticsWrapper.log(Log.ERROR, tag, msg)
 
         if (tr != null) {
@@ -59,7 +60,7 @@ class TimberImpl(
     }
 
     override fun w(tag: String, msg: String, tr: Throwable?) {
-        addEntry(Timber.WarnEntry(tag, msg, if (tr == null) null else Log.getStackTraceString(tr)))
+        addEntry(Timber.WarnEntry(tag, msg, if (tr == null) null else stackTraceUtils.toString(tr)))
         crashlyticsWrapper.log(Log.WARN, tag, msg)
 
         if (tr != null) {

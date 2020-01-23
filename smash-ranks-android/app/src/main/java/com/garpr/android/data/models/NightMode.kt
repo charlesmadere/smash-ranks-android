@@ -25,16 +25,15 @@ enum class NightMode constructor(
     @Json(name = "system")
     SYSTEM(R.string.system, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
-
-    companion object {
-        @JvmField
-        val CREATOR = createParcel { values()[it.readInt()] }
-    }
-
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel { values()[it.readInt()] }
     }
 
 }

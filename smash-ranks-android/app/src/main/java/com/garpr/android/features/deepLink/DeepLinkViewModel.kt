@@ -12,6 +12,7 @@ import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.repositories.RegionsRepository
 import okhttp3.internal.toImmutableList
+import java.util.Collections
 
 class DeepLinkViewModel(
         private val regionRepository: RegionRepository,
@@ -179,7 +180,7 @@ class DeepLinkViewModel(
             createTournamentsBreadcrumbs(breadcrumbs, region, sameRegion, splits)
         }
 
-        return breadcrumbs
+        return Collections.unmodifiableList(breadcrumbs)
     }
 
     fun fetchBreadcrumbs() {

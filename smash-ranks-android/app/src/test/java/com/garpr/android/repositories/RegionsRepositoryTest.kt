@@ -1,14 +1,13 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.exceptions.FailedToFetchRegionsException
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LiteRegion
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
-import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.AbsServerApi
+import com.garpr.android.test.BaseTest
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -17,17 +16,11 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class RegionsRepositoryTest : BaseTest() {
 
     private lateinit var regionsRepository: RegionsRepository
     private val serverApi = ServerApiOverride()
-
-    protected val schedulers: Schedulers by inject()
 
     companion object {
         private val AUSTIN: AbsRegion = LiteRegion(
@@ -70,7 +63,7 @@ class RegionsRepositoryTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        regionsRepository = RegionsRepositoryImpl(schedulers, serverApi)
+        regionsRepository = RegionsRepositoryImpl(serverApi)
     }
 
     @Test

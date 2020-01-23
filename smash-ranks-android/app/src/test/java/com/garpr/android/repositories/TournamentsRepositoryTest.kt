@@ -1,6 +1,5 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FullTournament
@@ -9,26 +8,20 @@ import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentsBundle
-import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.AbsServerApi
+import com.garpr.android.test.BaseTest
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.util.Date
 
-@RunWith(RobolectricTestRunner::class)
 class TournamentsRepositoryTest : BaseTest() {
 
     private val serverApi = ServerApiOverride()
     private lateinit var tournamentsRepository: TournamentsRepository
-
-    protected val schedulers: Schedulers by inject()
 
     companion object {
         private val TOURNAMENT_MADE_112: AbsTournament = LiteTournament(
@@ -99,7 +92,7 @@ class TournamentsRepositoryTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        tournamentsRepository = TournamentsRepositoryImpl(schedulers, serverApi)
+        tournamentsRepository = TournamentsRepositoryImpl(serverApi)
     }
 
     @Test

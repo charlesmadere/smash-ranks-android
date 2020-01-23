@@ -1,27 +1,25 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseTest
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class SmashCharacterTest : BaseTest() {
 
-    protected val moshi: Moshi by inject()
-
     private lateinit var smashCharacterAdapter: JsonAdapter<SmashCharacter>
+
+    protected val moshi: Moshi by inject()
 
     companion object {
         private const val JSON_BANJO_N_KAZOOIE = "\"bnk\""
         private const val JSON_BAYONETTA = "\"byo\""
         private const val JSON_BOWSER = "\"bow\""
         private const val JSON_BOWSER_JR = "\"bjr\""
+        private const val JSON_BYLETH = "\"byl\""
         private const val JSON_CPTN_FALCON = "\"fcn\""
         private const val JSON_CPTN_OLIMAR = "\"olm\""
         private const val JSON_CHARIZARD = "\"chr\""
@@ -129,6 +127,12 @@ class SmashCharacterTest : BaseTest() {
     fun testBowserJr() {
         assertEquals(JSON_BOWSER_JR, smashCharacterAdapter.toJson(SmashCharacter.BOWSER_JR))
         assertEquals(SmashCharacter.BOWSER_JR, smashCharacterAdapter.fromJson(JSON_BOWSER_JR))
+    }
+
+    @Test
+    fun testByleth() {
+        assertEquals(JSON_BYLETH, smashCharacterAdapter.toJson(SmashCharacter.BYLETH))
+        assertEquals(SmashCharacter.BYLETH, smashCharacterAdapter.fromJson(JSON_BYLETH))
     }
 
     @Test

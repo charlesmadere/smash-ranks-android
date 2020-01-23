@@ -1,19 +1,16 @@
 package com.garpr.android.repositories
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Region
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class IdentityRepositoryTest : BaseTest() {
 
     protected val identityRepository: IdentityRepository by inject()
@@ -40,29 +37,6 @@ class IdentityRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun testAddListener() {
-        var value: Optional<FavoritePlayer>? = null
-
-        identityRepository.identityObservable.subscribe {
-            value = it
-        }
-
-        assertEquals(false, value?.isPresent)
-
-        identityRepository.setIdentity(HMW, NORCAL)
-        assertEquals(HMW, value?.item)
-
-        identityRepository.setIdentity(HMW, NORCAL)
-        assertEquals(HMW, value?.item)
-
-        identityRepository.setIdentity(NMW, NORCAL)
-        assertEquals(NMW, value?.item)
-
-        identityRepository.removeIdentity()
-        assertEquals(false, value?.isPresent)
-    }
-
-    @Test
     fun testGetAndSetIdentity() {
         var value: Optional<FavoritePlayer>? = null
 
@@ -70,20 +44,20 @@ class IdentityRepositoryTest : BaseTest() {
             value = it
         }
 
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
 
         identityRepository.setIdentity(HMW, NORCAL)
-        assertEquals(HMW, value?.item)
+        assertEquals(HMW, value?.orNull())
 
         identityRepository.setIdentity(NMW, NORCAL)
-        assertEquals(NMW, value?.item)
+        assertEquals(NMW, value?.orNull())
 
         identityRepository.removeIdentity()
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test
-    fun testHasIdentity() {
+    fun testHasIdentityObservable() {
         var value: Boolean? = null
 
         identityRepository.hasIdentityObservable.subscribe {
@@ -100,6 +74,29 @@ class IdentityRepositoryTest : BaseTest() {
 
         identityRepository.removeIdentity()
         assertEquals(false, value)
+    }
+
+    @Test
+    fun testIdentityObservable() {
+        var value: Optional<FavoritePlayer>? = null
+
+        identityRepository.identityObservable.subscribe {
+            value = it
+        }
+
+        assertEquals(false, value?.isPresent())
+
+        identityRepository.setIdentity(HMW, NORCAL)
+        assertEquals(HMW, value?.orNull())
+
+        identityRepository.setIdentity(HMW, NORCAL)
+        assertEquals(HMW, value?.orNull())
+
+        identityRepository.setIdentity(NMW, NORCAL)
+        assertEquals(NMW, value?.orNull())
+
+        identityRepository.removeIdentity()
+        assertEquals(false, value?.isPresent())
     }
 
 }

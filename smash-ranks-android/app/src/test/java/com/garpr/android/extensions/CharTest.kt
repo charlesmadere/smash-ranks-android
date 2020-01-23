@@ -1,10 +1,11 @@
 package com.garpr.android.extensions
 
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class CharTest {
+class CharTest : BaseTest() {
 
     @Test
     fun testSafeEqualsWithDigits() {

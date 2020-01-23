@@ -18,6 +18,15 @@ data class SmashRosterSyncResult(
         @Json(name = "message") val message: String? = null
 ) : Parcelable {
 
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        ParcelCompat.writeBoolean(dest, success)
+        dest.writeInteger(httpCode)
+        dest.writeParcelable(date, flags)
+        dest.writeString(message)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -28,15 +37,6 @@ data class SmashRosterSyncResult(
                     it.readString()
             )
         }
-    }
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        ParcelCompat.writeBoolean(dest, success)
-        dest.writeInteger(httpCode)
-        dest.writeParcelable(date, flags)
-        dest.writeString(message)
     }
 
 }

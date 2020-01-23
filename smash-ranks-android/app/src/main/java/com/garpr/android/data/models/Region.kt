@@ -29,21 +29,6 @@ class Region(
         id
 ), Parcelable {
 
-    companion object {
-        @JvmField
-        val CREATOR = createParcel {
-            Region(
-                    it.optBoolean(),
-                    it.optInteger(),
-                    it.optInteger(),
-                    it.optInteger(),
-                    it.requireString(),
-                    it.requireString(),
-                    it.requireParcelable(Endpoint::class.java.classLoader)
-            )
-        }
-    }
-
     constructor(region: AbsRegion, endpoint: Endpoint) : this(region.activeTf,
             region.rankingActivityDayLimit, region.rankingNumTourneysAttended,
             region.tournamentQualifiedDayLimit, region.displayName, region.id, endpoint)
@@ -68,6 +53,21 @@ class Region(
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
         dest.writeParcelable(endpoint, flags)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel {
+            Region(
+                    it.optBoolean(),
+                    it.optInteger(),
+                    it.optInteger(),
+                    it.optInteger(),
+                    it.requireString(),
+                    it.requireString(),
+                    it.requireParcelable(Endpoint::class.java.classLoader)
+            )
+        }
     }
 
 }

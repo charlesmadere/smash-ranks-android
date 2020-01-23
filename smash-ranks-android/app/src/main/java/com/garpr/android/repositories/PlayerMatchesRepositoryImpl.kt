@@ -5,15 +5,13 @@ import com.garpr.android.data.models.MatchesBundle
 import com.garpr.android.data.models.PlayerMatchesBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.TournamentMatch
-import com.garpr.android.misc.Schedulers
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.Collections
 
 class PlayerMatchesRepositoryImpl(
         private val matchesRepository: MatchesRepository,
-        private val playersRepository: PlayersRepository,
-        private val schedulers: Schedulers
+        private val playersRepository: PlayersRepository
 ) : PlayerMatchesRepository {
 
     override fun getPlayerAndMatches(region: Region, playerId: String): Single<PlayerMatchesBundle> {
@@ -23,7 +21,6 @@ class PlayerMatchesRepositoryImpl(
                 BiFunction<MatchesBundle, FullPlayer, PlayerMatchesBundle> { t1, t2 ->
                     mergeResponses(fullPlayer = t2, matchesBundle = t1)
                 })
-                .subscribeOn(schedulers.background)
     }
 
     private fun mergeResponses(fullPlayer: FullPlayer, matchesBundle: MatchesBundle): PlayerMatchesBundle {

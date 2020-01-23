@@ -1,6 +1,5 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.LitePlayer
@@ -9,6 +8,7 @@ import com.garpr.android.data.models.Optional
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
@@ -18,11 +18,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class PersistentMoshiPreferenceTest : BaseTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
@@ -186,15 +183,15 @@ class PersistentMoshiPreferenceTest : BaseTest() {
 
         preference.set(MIKKUZ)
         assertNotNull(value)
-        assertEquals(MIKKUZ, value?.item)
+        assertEquals(MIKKUZ, value?.orNull())
 
         preference.set(HMW)
         assertNotNull(value)
-        assertEquals(HMW, value?.item)
+        assertEquals(HMW, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(SNAP, value?.item)
+        assertEquals(SNAP, value?.orNull())
     }
 
     @Test
@@ -216,15 +213,15 @@ class PersistentMoshiPreferenceTest : BaseTest() {
 
         preference.set(SPARK)
         assertNotNull(value)
-        assertEquals(SPARK, value?.item)
+        assertEquals(SPARK, value?.orNull())
 
         preference.set(MIKKUZ)
         assertNotNull(value)
-        assertEquals(MIKKUZ, value?.item)
+        assertEquals(MIKKUZ, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test

@@ -90,7 +90,7 @@ class SettingsViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { identity ->
-                    _identityStateLiveData.postValue(IdentityState.Fetched(identity.item))
+                    _identityStateLiveData.postValue(IdentityState.Fetched(identity.orNull()))
                 })
 
         disposables.add(nightModeRepository.observable

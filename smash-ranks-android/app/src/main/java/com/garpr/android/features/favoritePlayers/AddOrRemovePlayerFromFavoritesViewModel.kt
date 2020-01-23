@@ -24,9 +24,14 @@ class AddOrRemovePlayerFromFavoritesViewModel(
     private val _stateLiveData = MutableLiveData<State>(state)
     val stateLiveData: LiveData<State> = _stateLiveData
 
-    fun addToFavorites() {
+    fun addOrRemoveFromFavorites() {
         val player = checkNotNull(this.player) { "initialize() was not called" }
-        favoritePlayersRepository.addPlayer(player, player.region)
+
+        if (state.isFavorited) {
+            favoritePlayersRepository.removePlayer(player, player.region)
+        } else {
+            favoritePlayersRepository.addPlayer(player, player.region)
+        }
     }
 
     fun initialize(player: FavoritePlayer) {
@@ -57,11 +62,6 @@ class AddOrRemovePlayerFromFavoritesViewModel(
                 isFavorited = isFavorited,
                 isFetching = false
         )
-    }
-
-    fun removeFromFavorites() {
-        val player = checkNotNull(this.player) { "initialize() was not called" }
-        favoritePlayersRepository.removePlayer(player)
     }
 
     data class State(

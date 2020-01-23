@@ -1,6 +1,5 @@
 package com.garpr.android.data.converters
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.FavoritePlayer
@@ -9,6 +8,7 @@ import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankedPlayer
 import com.garpr.android.data.models.Rating
 import com.garpr.android.data.models.Region
+import com.garpr.android.test.BaseTest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals
@@ -16,11 +16,8 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class AbsPlayerConverterTest : BaseTest() {
 
     protected val moshi: Moshi by inject()

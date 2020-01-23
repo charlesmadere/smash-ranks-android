@@ -1,15 +1,12 @@
 package com.garpr.android.data.models
 
-import android.os.Parcel
-import com.garpr.android.BaseTest
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
+import java.util.Calendar
 import java.util.Collections
 import java.util.Date
 
-@RunWith(RobolectricTestRunner::class)
 class SimpleDateTest : BaseTest() {
 
     @Test
@@ -26,14 +23,31 @@ class SimpleDateTest : BaseTest() {
     }
 
     @Test
-    fun testParcelable() {
-        val simpleDate = SimpleDate()
-        val parcel = Parcel.obtain()
-        simpleDate.writeToParcel(parcel, simpleDate.describeContents())
-        parcel.setDataPosition(0)
+    fun testHashCodeWithChristmas() {
+        val date = with(Calendar.getInstance()) {
+            clear()
+            set(Calendar.YEAR, 2017)
+            set(Calendar.MONTH, Calendar.DECEMBER)
+            set(Calendar.DAY_OF_MONTH, 25)
+            time
+        }
 
-        val simpleDateFromParcel = SimpleDate.CREATOR.createFromParcel(parcel)
-        assertEquals(simpleDate, simpleDateFromParcel)
+        val simpleDate = SimpleDate(date)
+        assertEquals(date.hashCode(), simpleDate.hashCode())
+    }
+
+    @Test
+    fun testHashCodeWithGenesis7() {
+        val date = with(Calendar.getInstance()) {
+            clear()
+            set(Calendar.YEAR, 2020)
+            set(Calendar.MONTH, Calendar.JANUARY)
+            set(Calendar.DAY_OF_MONTH, 24)
+            time
+        }
+
+        val simpleDate = SimpleDate(date)
+        assertEquals(date.hashCode(), simpleDate.hashCode())
     }
 
     @Test

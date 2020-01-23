@@ -5,19 +5,16 @@ import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.TournamentsBundle
-import com.garpr.android.misc.Schedulers
 import com.garpr.android.networking.ServerApi
 import io.reactivex.Single
 import java.util.Collections
 
 class TournamentsRepositoryImpl(
-        private val schedulers: Schedulers,
         private val serverApi: ServerApi
 ) : TournamentsRepository {
 
     override fun getTournament(region: Region, tournamentId: String): Single<FullTournament> {
         return serverApi.getTournament(region, tournamentId)
-                .subscribeOn(schedulers.background)
                 .doOnSuccess {
                     if (!it.players.isNullOrEmpty()) {
                         Collections.sort(it.players, AbsPlayer.ALPHABETICAL_ORDER)
@@ -27,7 +24,6 @@ class TournamentsRepositoryImpl(
 
     override fun getTournaments(region: Region): Single<TournamentsBundle> {
         return serverApi.getTournaments(region)
-                .subscribeOn(schedulers.background)
                 .doOnSuccess {
                     if (!it.tournaments.isNullOrEmpty()) {
                         Collections.sort(it.tournaments, AbsTournament.REVERSE_CHRONOLOGICAL_ORDER)

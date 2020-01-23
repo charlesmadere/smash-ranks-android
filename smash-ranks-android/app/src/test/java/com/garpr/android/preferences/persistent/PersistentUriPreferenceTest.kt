@@ -1,11 +1,11 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Optional
 import com.garpr.android.extensions.toJavaUri
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -13,12 +13,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 import java.net.URI as JavaUri
 
-@RunWith(RobolectricTestRunner::class)
 class PersistentUriPreferenceTest : BaseTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
@@ -133,15 +130,15 @@ class PersistentUriPreferenceTest : BaseTest() {
 
         preference.set(GOOGLE)
         assertNotNull(value)
-        assertEquals(GOOGLE, value?.item)
+        assertEquals(GOOGLE, value?.orNull())
 
         preference.set(POLYGON)
         assertNotNull(value)
-        assertEquals(POLYGON, value?.item)
+        assertEquals(POLYGON, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(AMAZON, value?.item)
+        assertEquals(AMAZON, value?.orNull())
     }
 
     @Test
@@ -162,15 +159,15 @@ class PersistentUriPreferenceTest : BaseTest() {
 
         preference.set(POLYGON)
         assertNotNull(value)
-        assertEquals(POLYGON, value?.item)
+        assertEquals(POLYGON, value?.orNull())
 
         preference.set(GOOGLE)
         assertNotNull(value)
-        assertEquals(GOOGLE, value?.item)
+        assertEquals(GOOGLE, value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test

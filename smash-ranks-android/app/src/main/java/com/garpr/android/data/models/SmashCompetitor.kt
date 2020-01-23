@@ -19,6 +19,31 @@ data class SmashCompetitor(
         @Json(name = "tag") val tag: String
 ) : Parcelable {
 
+    val filteredMains: Array<SmashCharacter>? by lazy {
+        if (mains.isNullOrEmpty()) {
+            return@lazy null
+        }
+
+        val filteredMains = mains.filterNotNull().distinct()
+
+        if (filteredMains.isEmpty()) {
+            null
+        } else {
+            filteredMains.toTypedArray()
+        }
+    }
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeParcelable(avatar, flags)
+        dest.writeTypedList(mains)
+        dest.writeStringMap(websites)
+        dest.writeString(id)
+        dest.writeString(name)
+        dest.writeString(tag)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -31,32 +56,6 @@ data class SmashCompetitor(
                     it.requireString()
             )
         }
-    }
-
-    val filteredMains: Array<SmashCharacter>?
-        get() {
-            if (mains.isNullOrEmpty()) {
-                return null
-            }
-
-            val filteredMains = mains.filterNotNull().distinct()
-
-            return if (filteredMains.isEmpty()) {
-                null
-            } else {
-                filteredMains.toTypedArray()
-            }
-        }
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeParcelable(avatar, flags)
-        dest.writeTypedList(mains)
-        dest.writeStringMap(websites)
-        dest.writeString(id)
-        dest.writeString(name)
-        dest.writeString(tag)
     }
 
 }

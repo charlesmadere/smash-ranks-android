@@ -15,8 +15,8 @@ interface FavoritePlayersRepository {
 
     fun clear()
 
-    operator fun contains(player: AbsPlayer): Boolean
+    fun migrate()
 
-    fun removePlayer(player: AbsPlayer)
+    fun removePlayer(player: AbsPlayer, region: Region)
 
 }

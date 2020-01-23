@@ -13,16 +13,6 @@ abstract class AbsTournament(
         val name: String
 ) : Parcelable {
 
-    companion object {
-        val CHRONOLOGICAL_ORDER = Comparator<AbsTournament> { o1, o2 ->
-            SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.date, o2.date)
-        }
-
-        val REVERSE_CHRONOLOGICAL_ORDER = Comparator<AbsTournament> { o1, o2 ->
-            CHRONOLOGICAL_ORDER.compare(o2, o1)
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         return other is AbsTournament && id.equals(other.id, ignoreCase = true)
     }
@@ -42,24 +32,35 @@ abstract class AbsTournament(
         dest.writeString(name)
     }
 
+    companion object {
+        val CHRONOLOGICAL_ORDER = Comparator<AbsTournament> { o1, o2 ->
+            SimpleDate.CHRONOLOGICAL_ORDER.compare(o1.date, o2.date)
+        }
+
+        val REVERSE_CHRONOLOGICAL_ORDER = Comparator<AbsTournament> { o1, o2 ->
+            CHRONOLOGICAL_ORDER.compare(o2, o1)
+        }
+    }
 
     enum class Kind : Parcelable {
+
         @Json(name = "full")
         FULL,
 
         @Json(name = "lite")
         LITE;
 
-        companion object {
-            @JvmField
-            val CREATOR = createParcel { values()[it.readInt()] }
-        }
-
         override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(ordinal)
         }
+
+        companion object {
+            @JvmField
+            val CREATOR = createParcel { values()[it.readInt()] }
+        }
+
     }
 
 }

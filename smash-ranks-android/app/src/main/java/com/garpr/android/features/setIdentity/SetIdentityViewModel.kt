@@ -83,7 +83,7 @@ class SetIdentityViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ (bundle, identity) ->
-                    val list = playerListBuilder.create(bundle, identity.item)
+                    val list = playerListBuilder.create(bundle, identity.orNull())
 
                     state = state.copy(
                             selectedIdentity = null,
@@ -117,8 +117,8 @@ class SetIdentityViewModel(
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { optional ->
-                    identityRepositoryIdentity = optional.item
+                .subscribe { identity ->
+                    identityRepositoryIdentity = identity.orNull()
                 })
     }
 

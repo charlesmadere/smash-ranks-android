@@ -1,10 +1,10 @@
 package com.garpr.android.preferences.persistent
 
-import com.garpr.android.BaseTest
 import com.garpr.android.data.models.Optional
 import com.garpr.android.preferences.KeyValueStore
 import com.garpr.android.preferences.KeyValueStoreProvider
 import com.garpr.android.preferences.Preference
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -12,11 +12,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.koin.test.inject
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class PersistentStringPreferenceTest : BaseTest() {
 
     protected val keyValueStoreProvider: KeyValueStoreProvider by inject()
@@ -148,15 +145,15 @@ class PersistentStringPreferenceTest : BaseTest() {
 
         preference.set("blah")
         assertNotNull(value)
-        assertEquals("blah", value?.item)
+        assertEquals("blah", value?.orNull())
 
         preference.set("melee")
         assertNotNull(value)
-        assertEquals("melee", value?.item)
+        assertEquals("melee", value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals("Hello, World!", value?.item)
+        assertEquals("Hello, World!", value?.orNull())
     }
 
     @Test
@@ -177,15 +174,15 @@ class PersistentStringPreferenceTest : BaseTest() {
 
         preference.set("nintendo")
         assertNotNull(value)
-        assertEquals("nintendo", value?.item)
+        assertEquals("nintendo", value?.orNull())
 
         preference.set("game")
         assertNotNull(value)
-        assertEquals("game", value?.item)
+        assertEquals("game", value?.orNull())
 
         preference.delete()
         assertNotNull(value)
-        assertEquals(false, value?.isPresent)
+        assertEquals(false, value?.isPresent())
     }
 
     @Test

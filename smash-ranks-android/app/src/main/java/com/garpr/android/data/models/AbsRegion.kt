@@ -6,7 +6,6 @@ import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.writeBoolean
 import com.garpr.android.extensions.writeInteger
 import com.squareup.moshi.Json
-import java.util.Comparator
 
 abstract class AbsRegion(
         val activeTf: Boolean? = null,
@@ -16,6 +15,33 @@ abstract class AbsRegion(
         val displayName: String,
         val id: String
 ) : Parcelable {
+
+    val hasActivityRequirements: Boolean
+        get() = rankingActivityDayLimit != null && rankingNumTourneysAttended != null
+
+    val isActive: Boolean
+        get() = activeTf ?: true
+
+    override fun equals(other: Any?): Boolean {
+        return other is AbsRegion && id.equals(other.id, ignoreCase = true)
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+
+    abstract val kind: Kind
+
+    override fun toString(): String = displayName
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeBoolean(activeTf)
+        dest.writeInteger(rankingActivityDayLimit)
+        dest.writeInteger(rankingNumTourneysAttended)
+        dest.writeInteger(tournamentQualifiedDayLimit)
+        dest.writeString(displayName)
+        dest.writeString(id)
+    }
 
     companion object {
         val ALPHABETICAL_ORDER = Comparator<AbsRegion> { o1, o2 ->
@@ -41,51 +67,25 @@ abstract class AbsRegion(
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other is AbsRegion && id.equals(other.id, ignoreCase = true)
-    }
-
-    val hasActivityRequirements: Boolean
-        get() = rankingActivityDayLimit != null && rankingNumTourneysAttended != null
-
-    override fun hashCode(): Int = id.hashCode()
-
-    val isActive: Boolean
-        get() = activeTf ?: true
-
-    abstract val kind: Kind
-
-    override fun toString(): String = displayName
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeBoolean(activeTf)
-        dest.writeInteger(rankingActivityDayLimit)
-        dest.writeInteger(rankingNumTourneysAttended)
-        dest.writeInteger(tournamentQualifiedDayLimit)
-        dest.writeString(displayName)
-        dest.writeString(id)
-    }
-
-
     enum class Kind : Parcelable {
+
         @Json(name = "full")
         FULL,
 
         @Json(name = "lite")
         LITE;
 
-        companion object {
-            @JvmField
-            val CREATOR = createParcel { values()[it.readInt()] }
-        }
-
         override fun describeContents(): Int = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(ordinal)
         }
+
+        companion object {
+            @JvmField
+            val CREATOR = createParcel { values()[it.readInt()] }
+        }
+
     }
 
 }

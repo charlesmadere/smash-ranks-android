@@ -39,6 +39,15 @@ data class WinsLosses(
             }
         }
 
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeAbsPlayer(player, flags)
+        dest.writeInt(playerWins)
+        dest.writeAbsPlayer(opponent, flags)
+        dest.writeInt(opponentWins)
+    }
+
     companion object {
         @JvmField
         val CREATOR = createParcel {
@@ -49,15 +58,6 @@ data class WinsLosses(
                     it.readInt()
             )
         }
-    }
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeAbsPlayer(player, flags)
-        dest.writeInt(playerWins)
-        dest.writeAbsPlayer(opponent, flags)
-        dest.writeInt(opponentWins)
     }
 
 }

@@ -1,10 +1,11 @@
 package com.garpr.android.extensions
 
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class StringTest {
+class StringTest : BaseTest() {
 
     companion object {
         // Misc websites
@@ -19,7 +20,7 @@ class StringTest {
     }
 
     @Test
-    fun testToURIWithArsTechnica() {
+    fun testToJavaUriWithArsTechnica() {
         val uri = ARS_TECHNICA.toJavaUri()
         assertEquals("https", uri?.scheme)
         assertEquals("arstechnica.com", uri?.authority)
@@ -30,7 +31,7 @@ class StringTest {
     }
 
     @Test
-    fun testToURIWithBeatBoxAndroid() {
+    fun testToJavaUriWithBeatBoxAndroid() {
         val uri = BEAT_BOX_ANDROID.toJavaUri()
         assertEquals("content", uri?.scheme)
         assertEquals("media", uri?.authority)
@@ -41,12 +42,12 @@ class StringTest {
     }
 
     @Test
-    fun testToURIWithBlank() {
+    fun testToJavaUriWithBlank() {
         assertNull(" ".toJavaUri())
     }
 
     @Test
-    fun testToURIWithDefaultNotificationSound() {
+    fun testToJavaUriWithDefaultNotificationSound() {
         val uri = DEFAULT_NOTIFICATION_SOUND.toJavaUri()
         assertEquals("content", uri?.scheme)
         assertEquals("settings", uri?.authority)
@@ -57,12 +58,12 @@ class StringTest {
     }
 
     @Test
-    fun testToURIWithEmpty() {
+    fun testToJavaUriWithEmpty() {
         assertNull("".toJavaUri())
     }
 
     @Test
-    fun testToURIWithEndNote() {
+    fun testToJavaUriWithEndNote() {
         val uri = END_NOTE.toJavaUri()
         assertEquals("content", uri?.scheme)
         assertEquals("media", uri?.authority)
@@ -73,7 +74,7 @@ class StringTest {
     }
 
     @Test
-    fun testToURIWithGoogle() {
+    fun testToJavaUriWithGoogle() {
         val uri = GOOGLE.toJavaUri()
         assertEquals("https", uri?.scheme)
         assertEquals("www.google.com", uri?.authority)
@@ -84,7 +85,7 @@ class StringTest {
     }
 
     @Test
-    fun testToURIWithMagic() {
+    fun testToJavaUriWithMagic() {
         val uri = MAGIC.toJavaUri()
         assertEquals("content", uri?.scheme)
         assertEquals("media", uri?.authority)
@@ -95,7 +96,7 @@ class StringTest {
     }
 
     @Test
-    fun testToURIWithNull() {
+    fun testToJavaUriWithNull() {
         assertNull((null as String?).toJavaUri())
     }
 

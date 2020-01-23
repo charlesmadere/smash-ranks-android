@@ -1,5 +1,6 @@
 package com.garpr.android.koin
 
+const val DATABASE_NAME = "GAR_PR_DATABASE"
 const val FAVORITE_PLAYERS_KEY_VALUE_STORE = "FAVORITE_PLAYERS_KEY_VALUE_STORE"
 const val GAR_PR_API = "GAR_PR_API"
 const val GAR_PR_RETROFIT = "GAR_PR_RETROFIT"

@@ -1,16 +1,13 @@
 package com.garpr.android.data.models
 
-import com.garpr.android.BaseTest
+import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import java.util.Collections
 
-@RunWith(RobolectricTestRunner::class)
 class AbsRegionTest : BaseTest() {
 
     companion object {
