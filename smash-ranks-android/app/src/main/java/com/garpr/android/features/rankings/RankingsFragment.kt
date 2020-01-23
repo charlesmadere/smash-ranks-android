@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.Keep
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_rankings.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-@Keep
 class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
         RankingItemView.Listeners, Refreshable, Searchable, SwipeRefreshLayout.OnRefreshListener {
 
