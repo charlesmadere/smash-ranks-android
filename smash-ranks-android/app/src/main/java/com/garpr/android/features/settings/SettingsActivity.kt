@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.garpr.android.R
@@ -233,6 +234,11 @@ class SettingsActivity : BaseActivity() {
 
     private val rankingsPollingVibrateListener = object : CheckablePreferenceView.Listener {
         override fun onClick(v: CheckablePreferenceView) {
+            if (!v.isChecked) {
+                // the user is turning vibration ON, let's give them a cute lil nudge
+                v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            }
+
             viewModel.setRankingsPollingIsVibrationEnabled(!v.isChecked)
         }
     }
