@@ -68,6 +68,10 @@ dependencies {
     // https://kotlinlang.org/docs/reference/using-gradle.html
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
+    // AndroidX Activity
+    // https://developer.android.com/jetpack/androidx/releases/activity
+    implementation "androidx.activity:activity:$activity_version"
+
     // AndroidX Architecture Test
     // https://developer.android.com/jetpack/androidx/releases/test
     androidTestImplementation "androidx.arch.core:core-testing:$architecture_test_version"
@@ -83,6 +87,10 @@ dependencies {
     // AndroidX ConstraintLayout
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+
+    // AndroidX Fragment
+    // https://developer.android.com/jetpack/androidx/releases/fragment
+    implementation "androidx.fragment:fragment:$fragment_version"
 
     // AndroidX Palette
     // https://developer.android.com/jetpack/androidx/releases/palette
