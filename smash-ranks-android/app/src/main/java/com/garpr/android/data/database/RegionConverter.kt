@@ -15,12 +15,20 @@ class RegionConverter : KoinComponent {
 
     @TypeConverter
     fun regionFromString(string: String?): Region? {
-        return jsonAdapter.fromJson(string.orEmpty())
+        return if (string.isNullOrEmpty()) {
+            null
+        } else {
+            jsonAdapter.fromJson(string)
+        }
     }
 
     @TypeConverter
     fun stringFromRegion(region: Region?): String? {
-        return jsonAdapter.toJson(region)
+        return if (region == null) {
+            null
+        } else {
+            jsonAdapter.toJson(region)
+        }
     }
 
 }
