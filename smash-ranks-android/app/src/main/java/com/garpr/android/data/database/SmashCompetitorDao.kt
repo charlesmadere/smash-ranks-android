@@ -13,7 +13,7 @@ interface SmashCompetitorDao {
     fun deleteAll()
 
     @Query("SELECT * FROM smashCompetitors WHERE endpoint = :endpoint AND id = :id LIMIT 1")
-    fun get(endpoint: Endpoint, id: String): DbSmashCompetitor
+    fun get(endpoint: Endpoint, id: String): DbSmashCompetitor?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(dbSmashCompetitors: List<DbSmashCompetitor>)
