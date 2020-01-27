@@ -3,6 +3,7 @@ package com.garpr.android.repositories
 import com.garpr.android.data.exceptions.FailedToFetchRegionsException
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.Endpoint
+import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
 import com.garpr.android.networking.ServerApi
@@ -16,23 +17,39 @@ class RegionsRepositoryImpl(
 
     override fun getRegions(): Single<RegionsBundle> {
         return Single.zip(
-                serverApi.getRegions(Endpoint.GAR_PR),
-                serverApi.getRegions(Endpoint.NOT_GAR_PR),
-                BiFunction<RegionsBundle, RegionsBundle, RegionsBundle> { t1, t2 ->
-                    mergeResponses(garPr = t1, notGarPr = t2)
+                getRegions(Endpoint.GAR_PR),
+                getRegions(Endpoint.NOT_GAR_PR),
+                BiFunction<Optional<RegionsBundle>, Optional<RegionsBundle>, RegionsBundle> { garPr, notGarPr ->
+                    mergeResponses(garPr.orNull(), notGarPr.orNull())
                 })
     }
 
-    @Throws(FailedToFetchRegionsException::class)
-    private fun mergeResponses(garPr: RegionsBundle, notGarPr: RegionsBundle): RegionsBundle {
-        val regionsSet = mutableSetOf<Region>()
-        garPr.regions
-                ?.filter { region -> region.isActive }
-                ?.mapTo(regionsSet) { region -> Region(region, Endpoint.GAR_PR) }
+    private fun getRegions(endpoint: Endpoint): Single<Optional<RegionsBundle>> {
+        return serverApi.getRegions(endpoint)
+                .map { regionsBundle ->
+                    Optional.of(regionsBundle)
+                }
+                .onErrorReturn {
+                    Optional.empty()
+                }
+    }
 
-        notGarPr.regions
-                ?.filter { region -> region.isActive }
-                ?.mapTo(regionsSet) { region -> Region(region, Endpoint.NOT_GAR_PR) }
+    @Throws(FailedToFetchRegionsException::class)
+    private fun mergeResponses(garPr: RegionsBundle?, notGarPr: RegionsBundle?): RegionsBundle {
+        val regionsSet = mutableSetOf<Region>()
+        garPr?.regions?.mapTo(regionsSet) { region ->
+            Region(
+                    region = region,
+                    endpoint = Endpoint.GAR_PR
+            )
+        }
+
+        notGarPr?.regions?.mapTo(regionsSet) { region ->
+            Region(
+                    region = region,
+                    endpoint = Endpoint.NOT_GAR_PR
+            )
+        }
 
         val regionsList = regionsSet.toList()
         Collections.sort(regionsList, AbsRegion.ENDPOINT_ORDER)
