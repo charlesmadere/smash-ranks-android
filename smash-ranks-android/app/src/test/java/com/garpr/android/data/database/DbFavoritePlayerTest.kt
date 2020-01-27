@@ -33,6 +33,22 @@ class DbFavoritePlayerTest : BaseTest() {
         assertEquals(DRUGGEDFOX.region, druggedfox.region)
     }
 
+    @Test
+    fun testToFavoritePlayerWithCharlezard() {
+        val favoritePlayer = DB_CHARLEZARD.toFavoritePlayer()
+        assertEquals(DB_CHARLEZARD.id, favoritePlayer.id)
+        assertEquals(DB_CHARLEZARD.name, favoritePlayer.name)
+        assertEquals(DB_CHARLEZARD.region, favoritePlayer.region)
+    }
+
+    @Test
+    fun testToFavoritePlayerWithDruggedfox() {
+        val favoritePlayer = DB_DRUGGEDFOX.toFavoritePlayer()
+        assertEquals(DB_DRUGGEDFOX.id, favoritePlayer.id)
+        assertEquals(DB_DRUGGEDFOX.name, favoritePlayer.name)
+        assertEquals(DB_DRUGGEDFOX.region, favoritePlayer.region)
+    }
+
     companion object {
         private val GEORGIA = Region(
                 displayName = "Georgia",
@@ -56,6 +72,18 @@ class DbFavoritePlayerTest : BaseTest() {
                 id = "583a4a15d2994e0577b05c86",
                 name = "druggedfox",
                 region = GEORGIA
+        )
+
+        private val DB_CHARLEZARD = DbFavoritePlayer(
+                id = CHARLEZARD.id,
+                name = CHARLEZARD.name,
+                region = CHARLEZARD.region
+        )
+
+        private val DB_DRUGGEDFOX = DbFavoritePlayer(
+                id = DRUGGEDFOX.id,
+                name = DRUGGEDFOX.name,
+                region = DRUGGEDFOX.region
         )
     }
 
