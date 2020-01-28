@@ -121,9 +121,9 @@ class SetRegionViewModelTest : BaseViewModelTest() {
         viewModel.fetchRegions()
 
         assertNotNull(state?.list)
-        assertEquals(3, state?.list?.size)
+        assertEquals(5, state?.list?.size)
 
-        val endpoint = state?.list?.get(0) as ListItem.Endpoint
+        var endpoint = state?.list?.get(0) as ListItem.Endpoint
         assertEquals(Endpoint.GAR_PR, endpoint.endpoint)
 
         var region = state?.list?.get(1) as ListItem.Region
@@ -131,6 +131,12 @@ class SetRegionViewModelTest : BaseViewModelTest() {
 
         region = state?.list?.get(2) as ListItem.Region
         assertEquals(NORCAL.id, region.region.id)
+
+        endpoint = state?.list?.get(3) as ListItem.Endpoint
+        assertEquals(Endpoint.NOT_GAR_PR, endpoint.endpoint)
+
+        val error = state?.list?.get(4) as ListItem.EndpointError
+        assertEquals(Endpoint.NOT_GAR_PR, error.endpoint)
     }
 
     @Test
@@ -145,9 +151,9 @@ class SetRegionViewModelTest : BaseViewModelTest() {
         viewModel.fetchRegions()
 
         assertNotNull(state?.list)
-        assertEquals(3, state?.list?.size)
+        assertEquals(5, state?.list?.size)
 
-        val endpoint = state?.list?.get(0) as ListItem.Endpoint
+        var endpoint = state?.list?.get(0) as ListItem.Endpoint
         assertEquals(Endpoint.NOT_GAR_PR, endpoint.endpoint)
 
         var region = state?.list?.get(1) as ListItem.Region
@@ -155,6 +161,12 @@ class SetRegionViewModelTest : BaseViewModelTest() {
 
         region = state?.list?.get(2) as ListItem.Region
         assertEquals(NEW_YORK_CITY.id, region.region.id)
+
+        endpoint = state?.list?.get(3) as ListItem.Endpoint
+        assertEquals(Endpoint.GAR_PR, endpoint.endpoint)
+
+        val error = state?.list?.get(4) as ListItem.EndpointError
+        assertEquals(Endpoint.GAR_PR, error.endpoint)
     }
 
     @Test
