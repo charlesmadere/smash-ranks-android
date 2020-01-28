@@ -37,6 +37,7 @@
     <string name="error_loading_players">Error loading players!</string>
     <string name="error_loading_rankings">Error loading rankings!</string>
     <string name="error_loading_regions">Error loading regions!</string>
+    <string name="error_loading_regions_from_x">Error loading regions from %1$s!</string>
     <string name="error_loading_tournament">Error loading tournament!</string>
     <string name="error_loading_tournaments">Error loading tournaments!</string>
     <string name="every_2_days">Every 2 days</string>
