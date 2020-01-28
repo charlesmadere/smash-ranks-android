@@ -10,7 +10,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class SmashCompetitor(
+class SmashCompetitor(
         @Json(name = "avatar") val avatar: Avatar? = null,
         @Json(name = "mains") val mains: List<SmashCharacter?>? = null,
         @Json(name = "websites") val websites: Map<String, String>? = null,
@@ -32,6 +32,8 @@ data class SmashCompetitor(
             filteredMains.toTypedArray()
         }
     }
+
+    override fun toString(): String = tag
 
     override fun describeContents(): Int = 0
 

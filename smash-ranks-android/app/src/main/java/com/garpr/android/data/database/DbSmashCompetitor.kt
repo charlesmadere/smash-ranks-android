@@ -36,4 +36,6 @@ class DbSmashCompetitor(
         )
     }
 
+    override fun toString(): String = tag
+
 }

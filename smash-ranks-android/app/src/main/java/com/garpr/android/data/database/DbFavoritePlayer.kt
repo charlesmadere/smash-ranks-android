@@ -24,4 +24,6 @@ class DbFavoritePlayer(
         )
     }
 
+    override fun toString(): String = name
+
 }
