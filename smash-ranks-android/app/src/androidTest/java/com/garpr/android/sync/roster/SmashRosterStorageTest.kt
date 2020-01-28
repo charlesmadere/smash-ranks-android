@@ -3,7 +3,7 @@ package com.garpr.android.sync.roster
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.requireFromJson
-import com.garpr.android.test.BaseTest
+import com.garpr.android.test.BaseAndroidTest
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -11,9 +11,9 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.inject
+import org.koin.core.inject
 
-class SmashRosterStorageTest : BaseTest() {
+class SmashRosterStorageTest : BaseAndroidTest() {
 
     private lateinit var garPrSmashRoster: Map<String, SmashCompetitor>
     private lateinit var notGarPrSmashRoster: Map<String, SmashCompetitor>
@@ -37,24 +37,19 @@ class SmashRosterStorageTest : BaseTest() {
     override fun setUp() {
         super.setUp()
 
-        val smashRosterAdapter: JsonAdapter<Map<String, SmashCompetitor>> = moshi.adapter(
-                Types.newParameterizedType(Map::class.java, String::class.java,
-                        SmashCompetitor::class.java))
+        val type = Types.newParameterizedType(Map::class.java, String::class.java,
+                SmashCompetitor::class.java)
+        val smashRosterAdapter: JsonAdapter<Map<String, SmashCompetitor>> = moshi.adapter(type)
 
         garPrSmashRoster = smashRosterAdapter.requireFromJson(JSON_GAR_PR_SMASH_ROSTER)
         notGarPrSmashRoster = smashRosterAdapter.requireFromJson(JSON_NOT_GAR_PR_SMASH_ROSTER)
     }
 
     @Test
-    fun testDeleteFromStorageWithGarPr() {
-        smashRosterStorage.deleteFromStorage(Endpoint.GAR_PR)
+    fun testClear() {
+        smashRosterStorage.clear()
         assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
-    }
-
-    @Test
-    fun testDeleteFromStorageWithNotGarPr() {
-        smashRosterStorage.deleteFromStorage(Endpoint.NOT_GAR_PR)
-        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_DJ_NINTENDO))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_HAX))
     }
 
     @Test

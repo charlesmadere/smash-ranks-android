@@ -10,7 +10,7 @@ import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.SmashRosterPreferenceStore
 import com.garpr.android.repositories.SmashRosterRepository
-import com.garpr.android.test.BaseTest
+import com.garpr.android.test.BaseAndroidTest
 import com.garpr.android.wrappers.WorkManagerWrapper
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
@@ -20,9 +20,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.inject
+import org.koin.core.inject
 
-class SmashRosterSyncManagerTest : BaseTest() {
+class SmashRosterSyncManagerTest : BaseAndroidTest() {
 
     private val smashRosterRepository = SmashRosterRepositoryOverride()
     private lateinit var smashRosterSyncManager: SmashRosterSyncManager
@@ -165,7 +165,7 @@ class SmashRosterSyncManagerTest : BaseTest() {
     fun testSync() {
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
-        assertEquals(true, smashRosterSyncManager.syncResult?.success)
+        assertEquals(false, smashRosterSyncManager.syncResult?.success)
 
         smashRosterRepository.garPrRoster = emptyMap()
         smashRosterSyncManager.sync().blockingAwait()
@@ -173,6 +173,12 @@ class SmashRosterSyncManagerTest : BaseTest() {
         assertEquals(false, smashRosterSyncManager.syncResult?.success)
 
         smashRosterRepository.notGarPrRoster = emptyMap()
+        smashRosterSyncManager.sync().blockingAwait()
+        assertNotNull(smashRosterSyncManager.syncResult)
+        assertEquals(true, smashRosterSyncManager.syncResult?.success)
+
+        smashRosterRepository.garPrRoster = null
+        smashRosterRepository.notGarPrRoster = null
         smashRosterSyncManager.sync().blockingAwait()
         assertNotNull(smashRosterSyncManager.syncResult)
         assertEquals(false, smashRosterSyncManager.syncResult?.success)
@@ -185,9 +191,10 @@ class SmashRosterSyncManagerTest : BaseTest() {
     }
 
     private class SmashRosterRepositoryOverride(
-            internal var garPrRoster: Map<String, SmashCompetitor>? = GAR_PR_ROSTER,
-            internal var notGarPrRoster: Map<String, SmashCompetitor>? = NOT_GAR_PR_ROSTER
+            internal var garPrRoster: Map<String, SmashCompetitor>? = null,
+            internal var notGarPrRoster: Map<String, SmashCompetitor>? = null
     ) : SmashRosterRepository {
+
         override fun getSmashRoster(endpoint: Endpoint): Single<Map<String, SmashCompetitor>> {
             val roster = when (endpoint) {
                 Endpoint.GAR_PR -> garPrRoster
@@ -200,9 +207,11 @@ class SmashRosterSyncManagerTest : BaseTest() {
                 Single.just(roster)
             }
         }
+
     }
 
     private class WorkManagerWrapperOverride : WorkManagerWrapper {
+
         internal var status: Boolean? = null
 
         override val configuration: Configuration

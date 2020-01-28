@@ -89,12 +89,12 @@ class FavoritePlayersRepositoryImpl(
 
     override fun migrate() {
         threadUtils.background.submit {
-            migratePlayersFromKeyValueStoreToRoom()
+            migrateFromKeyValueStoreToRoom()
         }
     }
 
     @WorkerThread
-    private fun migratePlayersFromKeyValueStoreToRoom() {
+    private fun migrateFromKeyValueStoreToRoom() {
         timber.d(TAG, "migrating favorites from KeyValueStore to Room...")
 
         val all = keyValueStore.all

@@ -18,7 +18,7 @@ val syncModule = module {
 
     single<SmashRosterStorage> {
         val packageNameProvider: PackageNameProvider = get()
-        SmashRosterStorageImpl(get(), get(), packageNameProvider.packageName, get())
+        SmashRosterStorageImpl(get(), get(), get(), packageNameProvider.packageName, get(), get())
     }
 
     single<SmashRosterSyncManager> { SmashRosterSyncManagerImpl(get(), get(), get(), get(), get(), get()) }

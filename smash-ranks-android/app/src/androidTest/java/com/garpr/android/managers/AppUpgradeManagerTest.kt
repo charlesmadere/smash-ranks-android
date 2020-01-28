@@ -33,11 +33,6 @@ class AppUpgradeManagerTest : BaseAndroidTest() {
                 name = "Imyt"
         )
 
-        private val MIKKUZ: AbsPlayer = LitePlayer(
-                id = "583a4a15d2994e0577b05c74",
-                name = "mikkuz"
-        )
-
         private val NORCAL = Region(
                 displayName = "Norcal",
                 id = "norcal",
@@ -67,30 +62,6 @@ class AppUpgradeManagerTest : BaseAndroidTest() {
         assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
         assertEquals(1, playersSize)
         assertEquals(IMYT, identity?.orNull())
-    }
-
-    @Test
-    fun testUpgradeAppFromNull() {
-        generalPreferenceStore.lastVersion.delete()
-        favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
-        identityRepository.setIdentity(MIKKUZ, NORCAL)
-        appUpgradeManager.upgradeApp()
-
-        var playersSize: Int? = null
-
-        favoritePlayersRepository.sizeObservable.subscribe {
-            playersSize = it
-        }
-
-        var identity: Optional<FavoritePlayer>? = null
-
-        identityRepository.identityObservable.subscribe {
-            identity = it
-        }
-
-        assertEquals(BuildConfig.VERSION_CODE, generalPreferenceStore.lastVersion.get())
-        assertEquals(0, playersSize)
-        assertEquals(false, identity?.isPresent())
     }
 
     @Test
