@@ -55,9 +55,9 @@ class SmashRosterStorageImpl(
             val keyValueStore = keyValueStoreProvider.getKeyValueStore(
                     "$packageName.SmashRosterStorage.$endpoint")
 
-            keyValueStore.all?.mapNotNullTo(dbSmashCompetitors) { (_, value) ->
-                val smashCompetitor = if (value is String && value.isNotBlank()) {
-                    smashCompetitorAdapter.fromJson(value)
+            keyValueStore.all?.mapNotNullTo(dbSmashCompetitors) { (_, json) ->
+                val smashCompetitor = if (json is String && json.isNotBlank()) {
+                    smashCompetitorAdapter.fromJson(json)
                 } else {
                     null
                 }
