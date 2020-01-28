@@ -19,10 +19,6 @@ class SmashRosterStorageImpl(
         moshi.adapter(SmashCompetitor::class.java)
     }
 
-    companion object {
-        private const val TAG = "SmashRosterStorageImpl"
-    }
-
     override fun deleteFromStorage(endpoint: Endpoint) {
         getKeyValueStore(endpoint).clear()
         timber.d(TAG, "deleted $endpoint from storage")
@@ -64,6 +60,10 @@ class SmashRosterStorageImpl(
 
         keyValueStoreEditor.apply()
         timber.d(TAG, "wrote ${smashRoster.size} $endpoint competitor(s) to storage")
+    }
+
+    companion object {
+        private const val TAG = "SmashRosterStorageImpl"
     }
 
 }
