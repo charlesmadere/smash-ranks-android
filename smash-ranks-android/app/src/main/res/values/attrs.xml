@@ -14,9 +14,8 @@
     </declare-styleable>
 
     <declare-styleable name="GarToolbar">
-        <attr name="descriptionTextColor" format="color" />
         <attr name="showUpNavigation" format="boolean" />
-        <attr name="titleTextColor" format="color" />
+        <attr name="startWithTransparentTitle" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="NoContentLinearLayout">

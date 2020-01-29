@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:maxLines="1"
-            android:textColor="?android:attr/textColorPrimaryInverse"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/text_size_xlarge"
             android:textStyle="bold"
             tools:text="@string/rankings" />
@@ -64,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:maxLines="1"
-            android:textColor="?android:attr/textColorSecondaryInverse"
             android:textSize="@dimen/text_size_normal"
             android:visibility="gone"
             tools:text="@string/norcal"

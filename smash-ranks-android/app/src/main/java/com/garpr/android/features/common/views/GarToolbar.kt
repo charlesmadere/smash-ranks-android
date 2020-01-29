@@ -6,11 +6,10 @@ import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
-import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnTouchListener
+import android.view.ViewPropertyAnimator
 import android.view.Window
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
@@ -51,19 +50,18 @@ open class GarToolbar @JvmOverloads constructor(
         get() = !titleText.isNullOrBlank()
 
     protected var showTitleContainer: Boolean
-        get() = titleContainer.visibility == View.VISIBLE
+        get() = titleContainer.visibility == VISIBLE
         set(value) {
-            titleContainer.visibility = if (value) View.VISIBLE else View.GONE
+            titleContainer.visibility = if (value) VISIBLE else GONE
         }
 
     var showUpNavigation: Boolean
-        get() = upNavigationButton.visibility == View.VISIBLE
+        get() = upNavigationButton.visibility == VISIBLE
         set(value) {
-            upNavigationButton.visibility = if (value) View.VISIBLE else View.GONE
+            upNavigationButton.visibility = if (value) VISIBLE else GONE
         }
 
     var subtitleText: CharSequence? = null
-        get() = subtitleView.text
         set(value) {
             field = value
             subtitleView.text = value
@@ -71,23 +69,10 @@ open class GarToolbar @JvmOverloads constructor(
         }
 
     var titleText: CharSequence? = null
-        get() = titleView.text
         set(value) {
             field = value
             titleView.text = value
             refreshTitleContainerVisibility()
-        }
-
-    var subtitleTextColor: Int = textColorSecondary
-        set(value) {
-            field = value
-            subtitleView.setTextColor(value)
-        }
-
-    var titleTextColor: Int = textColorPrimary
-        set(value) {
-            field = value
-            titleView.setTextColor(value)
         }
 
     private val onUpNavigationClick = OnClickListener {
@@ -99,20 +84,18 @@ open class GarToolbar @JvmOverloads constructor(
         true
     }
 
-    companion object {
-        private const val LIGHTNESS_LIMIT = 0.4f
-        private const val STATUS_BAR_DARKEN_FACTOR = 0.8f
-        private const val TOO_LIGHT_DARKEN_FACTOR = 0.75f
-    }
-
     init {
         @Suppress("LeakingThis")
         layoutInflater.inflate(R.layout.gar_toolbar, this)
 
         var ta = context.obtainStyledAttributes(attrs, R.styleable.GarToolbar)
+
+        if (ta.getBoolean(R.styleable.GarToolbar_startWithTransparentTitle, false)) {
+            titleView.alpha = 0f
+            subtitleView.alpha = 0f
+        }
+
         showUpNavigation = ta.getBoolean(R.styleable.GarToolbar_showUpNavigation, showUpNavigation)
-        subtitleTextColor = ta.getColor(R.styleable.GarToolbar_descriptionTextColor, subtitleTextColor)
-        titleTextColor = ta.getColor(R.styleable.GarToolbar_titleTextColor, titleTextColor)
         ta.recycle()
 
         @SuppressLint("CustomViewStyleable")
@@ -148,7 +131,7 @@ open class GarToolbar @JvmOverloads constructor(
 
         val toolbarAnimator = ValueAnimator.ofArgb(
                 background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
-        toolbarAnimator.addUpdateListener(backgroundAnimatorUpdateListener)
+        toolbarAnimator.addUpdateListener(backgroundColorAnimatorUpdateListener)
 
         val statusBarAnimator = ValueAnimator.ofArgb(window.statusBarColor,
                 systemWindowBackground)
@@ -179,17 +162,17 @@ open class GarToolbar @JvmOverloads constructor(
         outSubtitleAnimation?.cancel()
         outSubtitleAnimation = null
 
-        val titleAnimation = ValueAnimator.ofArgb(titleTextColor, textColorPrimary)
-        titleAnimation.addListener(clearInTitleAnimation)
-        titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
-        titleAnimation.duration = titleAlphaAnimationDuration
-        titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
+        val titleAnimation = titleView.animate()
+                .alpha(1f)
+                .setDuration(titleAlphaAnimationDuration)
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .setListener(clearInTitleAnimation)
 
-        val subtitleAnimation = ValueAnimator.ofArgb(subtitleTextColor, textColorSecondary)
-        subtitleAnimation.addListener(clearInSubtitleAnimation)
-        subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
-        subtitleAnimation.duration = titleAnimation.duration
-        subtitleAnimation.interpolator = titleAnimation.interpolator
+        val subtitleAnimation = subtitleView.animate()
+                .alpha(1f)
+                .setDuration(titleAlphaAnimationDuration)
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .setListener(clearInSubtitleAnimation)
 
         inTitleAnimation = titleAnimation
         inSubtitleAnimation = subtitleAnimation
@@ -208,17 +191,17 @@ open class GarToolbar @JvmOverloads constructor(
         inSubtitleAnimation?.cancel()
         inSubtitleAnimation = null
 
-        val titleAnimation = ValueAnimator.ofArgb(titleTextColor, Color.TRANSPARENT)
-        titleAnimation.addListener(clearOutTitleAnimation)
-        titleAnimation.addUpdateListener(titleAnimatorUpdateListener)
-        titleAnimation.duration = titleAlphaAnimationDuration
-        titleAnimation.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
+        val titleAnimation = titleView.animate()
+                .alpha(0f)
+                .setDuration(titleAlphaAnimationDuration)
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .setListener(clearOutTitleAnimation)
 
-        val subtitleAnimation = ValueAnimator.ofArgb(subtitleTextColor, Color.TRANSPARENT)
-        subtitleAnimation.addListener(clearOutSubtitleAnimation)
-        subtitleAnimation.addUpdateListener(subtitleAnimatorUpdateListener)
-        subtitleAnimation.duration = titleAnimation.duration
-        subtitleAnimation.interpolator = titleAnimation.interpolator
+        val subtitleAnimation = subtitleView.animate()
+                .alpha(0f)
+                .setDuration(titleAlphaAnimationDuration)
+                .setInterpolator(AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR)
+                .setListener(clearOutSubtitleAnimation)
 
         outTitleAnimation = titleAnimation
         outSubtitleAnimation = subtitleAnimation
@@ -228,9 +211,9 @@ open class GarToolbar @JvmOverloads constructor(
     }
 
     private fun refreshTitleContainerVisibility() {
-        titleView.visibility = if (hasTitleText) View.VISIBLE else View.GONE
-        subtitleView.visibility = if (hasSubtitleText) View.VISIBLE else View.GONE
-        showTitleContainer = titleView.visibility == View.VISIBLE || subtitleView.visibility == View.VISIBLE
+        titleView.visibility = if (hasTitleText) VISIBLE else GONE
+        subtitleView.visibility = if (hasSubtitleText) VISIBLE else GONE
+        showTitleContainer = titleView.visibility == VISIBLE || subtitleView.visibility == VISIBLE
     }
 
     protected open fun upNavigate() {
@@ -249,23 +232,17 @@ open class GarToolbar @JvmOverloads constructor(
         }
     }
 
-
     ///////////////////////////////
     // BEGIN ANIMATION VARIABLES //
     ///////////////////////////////
 
-    private val titleAlphaAnimationDuration: Long by lazy {
+    private val titleAlphaAnimationDuration by lazy {
         resources.getLong(R.integer.toolbar_title_animation_duration)
     }
 
-    private val titleColorAnimationDuration: Long by lazy {
+    private val titleColorAnimationDuration by lazy {
         resources.getLong(R.integer.toolbar_color_animation_duration)
     }
-
-    private var inTitleAnimation: ValueAnimator? = null
-    private var inSubtitleAnimation: ValueAnimator? = null
-    private var outTitleAnimation: ValueAnimator? = null
-    private var outSubtitleAnimation: ValueAnimator? = null
 
     private val clearInTitleAnimation: Animator.AnimatorListener by lazy {
         object : AnimatorListenerAdapter() {
@@ -299,26 +276,25 @@ open class GarToolbar @JvmOverloads constructor(
         }
     }
 
-    private val backgroundAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
+    private val backgroundColorAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
         ValueAnimator.AnimatorUpdateListener {
             setBackgroundColor(it.animatedValue as Int)
         }
     }
 
-    private val titleAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
-        ValueAnimator.AnimatorUpdateListener {
-            titleTextColor = it.animatedValue as Int
-        }
-    }
-
-    private val subtitleAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener by lazy {
-        ValueAnimator.AnimatorUpdateListener {
-            subtitleTextColor = it.animatedValue as Int
-        }
-    }
+    private var inTitleAnimation: ViewPropertyAnimator? = null
+    private var inSubtitleAnimation: ViewPropertyAnimator? = null
+    private var outTitleAnimation: ViewPropertyAnimator? = null
+    private var outSubtitleAnimation: ViewPropertyAnimator? = null
 
     /////////////////////////////
     // END ANIMATION VARIABLES //
     /////////////////////////////
+
+    companion object {
+        private const val LIGHTNESS_LIMIT = 0.4f
+        private const val STATUS_BAR_DARKEN_FACTOR = 0.8f
+        private const val TOO_LIGHT_DARKEN_FACTOR = 0.75f
+    }
 
 }

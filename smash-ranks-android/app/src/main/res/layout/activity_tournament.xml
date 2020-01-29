@@ -21,10 +21,9 @@
             <com.garpr.android.features.common.views.SearchToolbar
                 android:hint="@string/search_matches_and_players_"
                 android:id="@+id/toolbar"
-                app:descriptionTextColor="@color/transparent"
                 app:layout_collapseMode="pin"
                 app:showUpNavigation="true"
-                app:titleTextColor="@color/transparent"
+                app:startWithTransparentTitle="true"
                 style="@style/Toolbar" />
 
             <com.garpr.android.features.tournament.TournamentInfoView
