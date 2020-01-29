@@ -18,9 +18,9 @@ class PlayersRepositoryImpl(
 
     override fun getPlayers(region: Region): Single<PlayersBundle> {
         return serverApi.getPlayers(region)
-                .doOnSuccess {
-                    if (!it.players.isNullOrEmpty()) {
-                        Collections.sort(it.players, AbsPlayer.ALPHABETICAL_ORDER)
+                .doOnSuccess { bundle ->
+                    if (!bundle.players.isNullOrEmpty()) {
+                        Collections.sort(bundle.players, AbsPlayer.ALPHABETICAL_ORDER)
                     }
                 }
     }

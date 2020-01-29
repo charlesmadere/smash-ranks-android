@@ -8,6 +8,7 @@ import com.garpr.android.networking.AbsServerApi
 import com.garpr.android.test.BaseTest
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -15,6 +16,35 @@ class PlayersRepositoryTest : BaseTest() {
 
     private lateinit var playersRepository: PlayersRepository
     private val serverApi = ServerApiOverride()
+
+    @Before
+    override fun setUp() {
+        super.setUp()
+
+        playersRepository = PlayersRepositoryImpl(serverApi)
+    }
+
+    @Test
+    fun testGetPlayersWithEmptyPlayersBundle() {
+        serverApi.playersBundle = EMPTY_PLAYERS_BUNDLE
+        val bundle = playersRepository.getPlayers(NORCAL)
+                .blockingGet()
+
+        assertTrue(bundle.players.isNullOrEmpty())
+    }
+
+    @Test
+    fun testGetPlayersWithPlayersBundle() {
+        serverApi.playersBundle = PLAYERS_BUNDLE
+        val bundle = playersRepository.getPlayers(NORCAL)
+                .blockingGet()
+
+        assertEquals(4, bundle.players?.size)
+        assertEquals(BLARGH, bundle.players?.get(0))
+        assertEquals(NMW, bundle.players?.get(1))
+        assertEquals(SNAP, bundle.players?.get(2))
+        assertEquals(UMARTH, bundle.players?.get(3))
+    }
 
     companion object {
         private val BLARGH = LitePlayer(
@@ -37,6 +67,8 @@ class PlayersRepositoryTest : BaseTest() {
                 name = "Umarth"
         )
 
+        private val EMPTY_PLAYERS_BUNDLE = PlayersBundle()
+
         private val PLAYERS_BUNDLE = PlayersBundle(
                 players = listOf(UMARTH, BLARGH, SNAP, NMW)
         )
@@ -48,28 +80,10 @@ class PlayersRepositoryTest : BaseTest() {
         )
     }
 
-    @Before
-    override fun setUp() {
-        super.setUp()
-
-        playersRepository = PlayersRepositoryImpl(serverApi)
-    }
-
-    @Test
-    fun testGetPlayers() {
-        val bundle = playersRepository.getPlayers(NORCAL)
-                .blockingGet()
-
-        assertEquals(4, bundle.players?.size)
-        assertEquals(BLARGH, bundle.players?.get(0))
-        assertEquals(NMW, bundle.players?.get(1))
-        assertEquals(SNAP, bundle.players?.get(2))
-        assertEquals(UMARTH, bundle.players?.get(3))
-    }
-
     private class ServerApiOverride(
-            internal var playersBundle: PlayersBundle? = PLAYERS_BUNDLE
+            internal var playersBundle: PlayersBundle? = null
     ) : AbsServerApi() {
+
         override fun getPlayers(region: Region): Single<PlayersBundle> {
             val playersBundle = this.playersBundle
 
@@ -79,6 +93,7 @@ class PlayersRepositoryTest : BaseTest() {
                 Single.just(playersBundle)
             }
         }
+
     }
 
 }

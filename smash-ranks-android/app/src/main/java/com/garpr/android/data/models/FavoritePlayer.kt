@@ -2,12 +2,12 @@ package com.garpr.android.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.requireString
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.util.Objects
 
 @JsonClass(generateAdapter = true)
 @Suppress("EqualsOrHashCode")
@@ -23,7 +23,7 @@ class FavoritePlayer(
     override val kind: Kind
         get() = Kind.FAVORITE
 
-    override fun hashCode(): Int = ObjectsCompat.hash(id, region.endpoint)
+    override fun hashCode(): Int = Objects.hash(id, region.endpoint)
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
