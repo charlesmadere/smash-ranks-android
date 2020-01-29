@@ -12,6 +12,7 @@ import com.squareup.moshi.Types
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.inject
@@ -134,45 +135,31 @@ class SmashRosterStorageTest : BaseAndroidTest() {
 
     @Test
     fun testMigrate() {
-        with (keyValueStoreProvider.getKeyValueStore(
-                "${packageNameProvider.packageName}.SmashRosterStorage.${Endpoint.GAR_PR}")) {
-            setString(PLAYER_ID_CHARLEZARD, smashCompetitorAdapter.toJson(CHARLEZARD))
-            setString(PLAYER_ID_IMYT, smashCompetitorAdapter.toJson(IMYT))
-        }
+        val garPrKeyValueStore = keyValueStoreProvider.getKeyValueStore(
+                name = "${packageNameProvider.packageName}.SmashRosterStorage.${Endpoint.GAR_PR}"
+        )
 
-        with (keyValueStoreProvider.getKeyValueStore(
-                "${packageNameProvider.packageName}.SmashRosterStorage.${Endpoint.NOT_GAR_PR}")) {
-            setString(PLAYER_ID_HAX, smashCompetitorAdapter.toJson(HAX))
-        }
+        garPrKeyValueStore.setString(PLAYER_ID_CHARLEZARD, smashCompetitorAdapter.toJson(CHARLEZARD))
+        garPrKeyValueStore.setString(PLAYER_ID_IMYT, smashCompetitorAdapter.toJson(IMYT))
+
+        val notGarPrKeyValueStore = keyValueStoreProvider.getKeyValueStore(
+                name = "${packageNameProvider.packageName}.SmashRosterStorage.${Endpoint.NOT_GAR_PR}"
+        )
+
+        notGarPrKeyValueStore.setString(PLAYER_ID_HAX, smashCompetitorAdapter.toJson(HAX))
 
         smashRosterStorage.migrate()
 
-        var charlezard = smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD)
-        assertNotNull(charlezard)
-        assertEquals(CHARLEZARD.id, charlezard?.id)
-        assertEquals(CHARLEZARD.name, charlezard?.name)
-        assertEquals(CHARLEZARD.tag, charlezard?.tag)
+        assertTrue(garPrKeyValueStore.all.isNullOrEmpty())
+        assertTrue(notGarPrKeyValueStore.all.isNullOrEmpty())
 
-        var imyt = smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_IMYT)
-        assertNotNull(imyt)
-        assertEquals(IMYT.id, imyt?.id)
-        assertEquals(IMYT.name, imyt?.name)
-        assertEquals(IMYT.tag, imyt?.tag)
+        assertEquals(CHARLEZARD, smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_CHARLEZARD))
+        assertEquals(IMYT, smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_IMYT))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_HAX))
 
-        var hax = smashRosterStorage.getSmashCompetitor(Endpoint.GAR_PR, PLAYER_ID_HAX)
-        assertNull(hax)
-
-        charlezard = smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_CHARLEZARD)
-        assertNull(charlezard)
-
-        imyt = smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_IMYT)
-        assertNull(imyt)
-
-        hax = smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_HAX)
-        assertNotNull(hax)
-        assertEquals(HAX.id, hax?.id)
-        assertEquals(HAX.name, hax?.name)
-        assertEquals(HAX.tag, hax?.tag)
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_CHARLEZARD))
+        assertNull(smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_IMYT))
+        assertEquals(HAX, smashRosterStorage.getSmashCompetitor(Endpoint.NOT_GAR_PR, PLAYER_ID_HAX))
     }
 
     @Test

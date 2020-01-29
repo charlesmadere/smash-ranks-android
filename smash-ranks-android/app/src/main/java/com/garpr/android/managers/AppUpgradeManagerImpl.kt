@@ -40,7 +40,7 @@ class AppUpgradeManagerImpl(
             // migrated to Room for storage of favorite players
             favoritePlayersRepository.migrate()
         } else if (lastVersion < 22004) {
-            // migrated to Room for storage of smash roster
+            // migrated to Room for storage of smash roster competitors
             smashRosterStorage.migrate()
         }
 

@@ -33,6 +33,12 @@ class SmashCompetitor(
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        return other is SmashCompetitor && id.equals(other.id, ignoreCase = true)
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+
     override fun toString(): String = tag
 
     override fun describeContents(): Int = 0

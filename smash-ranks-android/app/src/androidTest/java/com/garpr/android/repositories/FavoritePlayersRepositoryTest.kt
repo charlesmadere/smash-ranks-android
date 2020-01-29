@@ -133,10 +133,10 @@ class FavoritePlayersRepositoryTest : BaseAndroidTest() {
         assertEquals(true, players?.isEmpty())
 
         favoritePlayersRepository.migrate()
+        assertTrue(keyValueStore.all.isNullOrEmpty())
         assertEquals(2, players?.size)
         assertEquals(HMW, players?.get(0))
         assertEquals(SPARK, players?.get(1))
-        assertTrue(keyValueStore.all.isNullOrEmpty())
     }
 
     @Test
