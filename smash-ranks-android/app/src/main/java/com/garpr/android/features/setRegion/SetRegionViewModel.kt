@@ -7,6 +7,7 @@ import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.extensions.require
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
@@ -52,10 +53,6 @@ class SetRegionViewModel(
             _stateLiveData.postValue(value)
         }
 
-    companion object {
-        private const val TAG = "SetRegionViewModel"
-    }
-
     @WorkerThread
     private fun createList(bundle: RegionsBundle?): List<ListItem>? {
         val regions = bundle?.regions
@@ -64,33 +61,38 @@ class SetRegionViewModel(
             return null
         }
 
-        val regionsCopy = mutableListOf<Region>()
+        val filteredRegions = regions.filterIsInstance(Region::class.java)
+                .filter { region -> region.isActive }
 
-        regionsCopy.addAll(
-                regions
-                        .filterIsInstance(Region::class.java)
-                        .filter { it.isActive }
-        )
-
-        if (regionsCopy.isEmpty()) {
+        if (filteredRegions.isNullOrEmpty()) {
             return null
         }
 
-        Collections.sort(regionsCopy, AbsRegion.ENDPOINT_ORDER)
+        Collections.sort(filteredRegions, AbsRegion.ENDPOINT_ORDER)
 
-        val list = mutableListOf<ListItem>()
-        var endpoint: Endpoint? = null
+        val listItems = mutableListOf<ListItem>()
+        val endpoints = mutableMapOf<Endpoint, Boolean>()
 
-        regionsCopy.forEach { region ->
-            if (region.endpoint != endpoint) {
-                endpoint = region.endpoint
-                list.add(ListItem.Endpoint(region.endpoint))
-            }
-
-            list.add(ListItem.Region(region))
+        Endpoint.values().forEach { endpoint ->
+            endpoints.put(endpoint, false)
         }
 
-        return list
+        filteredRegions.forEach { region ->
+            if (!endpoints.require(region.endpoint)) {
+                endpoints[region.endpoint] = true
+                listItems.add(ListItem.Endpoint(region.endpoint))
+            }
+
+            listItems.add(ListItem.Region(region))
+        }
+
+        endpoints.filter { entry -> !entry.value }
+                .forEach { (endpoint, _) ->
+                    listItems.add(ListItem.Endpoint(endpoint))
+                    listItems.add(ListItem.EndpointError(endpoint))
+                }
+
+        return listItems
     }
 
     private fun errorState() {
@@ -142,6 +144,10 @@ class SetRegionViewModel(
         regionRepository.region = region
     }
 
+    companion object {
+        private const val TAG = "SetRegionViewModel"
+    }
+
     sealed class ListItem {
         abstract val listId: Long
 
@@ -149,6 +155,12 @@ class SetRegionViewModel(
                 val endpoint: GarPrEndpoint
         ) : ListItem() {
             override val listId: Long = Long.MIN_VALUE + endpoint.ordinal.toLong()
+        }
+
+        class EndpointError(
+                val endpoint: GarPrEndpoint
+        ) : ListItem() {
+            override val listId: Long = Long.MAX_VALUE - endpoint.ordinal.toLong()
         }
 
         class Region(

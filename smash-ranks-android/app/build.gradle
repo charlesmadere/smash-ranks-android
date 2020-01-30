@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 22003
-        versionName "2.2.3"
+        versionCode 22004
+        versionName "2.2.4"
 
         testInstrumentationRunner "com.garpr.android.test.AndroidTestRunner"
         testInstrumentationRunnerArguments clearPackageData: "true"
@@ -72,10 +72,6 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/activity
     implementation "androidx.activity:activity:$activity_version"
 
-    // AndroidX Architecture Test
-    // https://developer.android.com/jetpack/androidx/releases/test
-    androidTestImplementation "androidx.arch.core:core-testing:$architecture_test_version"
-
     // AndroidX AppCompat
     // https://developer.android.com/jetpack/androidx/releases/appcompat
     implementation "androidx.appcompat:appcompat:$appcompat_version"
@@ -107,6 +103,7 @@ dependencies {
 
     // AndroidX Test
     // https://developer.android.com/jetpack/androidx/releases/test
+    androidTestImplementation "androidx.arch.core:core-testing:$architecture_test_version"
     androidTestImplementation "androidx.test:core:$testcore_version"
     androidTestImplementation "androidx.test:runner:$testcore_version"
     androidTestUtil "androidx.test:orchestrator:$testcore_version"
@@ -135,8 +132,8 @@ dependencies {
 
     // JUnit 4
     // https://junit.org/junit4/
-    androidTestImplementation "junit:junit:4.12"
-    testImplementation "junit:junit:4.12"
+    androidTestImplementation "junit:junit:$junit_version"
+    testImplementation "junit:junit:$junit_version"
 
     // Koin
     // https://github.com/InsertKoinIO/koin

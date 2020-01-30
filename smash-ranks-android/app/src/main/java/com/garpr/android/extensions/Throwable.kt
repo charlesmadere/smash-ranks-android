@@ -11,12 +11,3 @@ val Throwable?.httpCode: Int?
             else -> null
         }
     }
-
-val Throwable?.message: String?
-    get() {
-        return when (this) {
-            is HttpException -> message()
-            is HttpRetryException -> reason
-            else -> null
-        }
-    }

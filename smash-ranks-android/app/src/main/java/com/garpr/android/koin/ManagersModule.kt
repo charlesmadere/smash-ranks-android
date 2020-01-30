@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 val managersModule = module {
 
-    single<AppUpgradeManager> { AppUpgradeManagerImpl(get(), get(), get()) }
+    single<AppUpgradeManager> { AppUpgradeManagerImpl(get(), get(), get(), get()) }
     single<NotificationsManager> { NotificationsManagerImpl(androidContext(), get(), get(), get()) }
     single<PlayerProfileManager> { PlayerProfileManagerImpl(androidContext(), get()) }
 

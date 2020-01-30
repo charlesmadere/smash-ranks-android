@@ -1,5 +1,6 @@
 package com.garpr.android.repositories
 
+import androidx.annotation.AnyThread
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Optional
@@ -12,8 +13,10 @@ interface IdentityRepository {
 
     val identityObservable: Observable<Optional<FavoritePlayer>>
 
+    @AnyThread
     fun removeIdentity()
 
+    @AnyThread
     fun setIdentity(player: AbsPlayer, region: Region)
 
 }

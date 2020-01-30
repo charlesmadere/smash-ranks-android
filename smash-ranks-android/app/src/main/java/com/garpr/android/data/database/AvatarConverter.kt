@@ -15,12 +15,20 @@ class AvatarConverter : KoinComponent {
 
     @TypeConverter
     fun avatarFromString(string: String?): Avatar? {
-        return jsonAdapter.fromJson(string.orEmpty())
+        return if (string.isNullOrEmpty()) {
+            null
+        } else {
+            jsonAdapter.fromJson(string)
+        }
     }
 
     @TypeConverter
     fun stringFromAvatar(avatar: Avatar?): String? {
-        return jsonAdapter.toJson(avatar)
+        return if (avatar == null) {
+            null
+        } else {
+            jsonAdapter.toJson(avatar)
+        }
     }
 
 }

@@ -10,7 +10,6 @@ import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.data.models.SmashRosterSyncResult
 import com.garpr.android.extensions.httpCode
-import com.garpr.android.extensions.message
 import com.garpr.android.extensions.requireValue
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
@@ -150,23 +149,18 @@ class SmashRosterSyncManagerImpl(
             timber.e(TAG, "Exception when fetching Not GAR PR roster", e)
         }
 
-        syncResult = if (
-                garPrRoster.isNullOrEmpty() ||
-                notGarPrRoster.isNullOrEmpty() ||
-                throwable != null
-        ) {
-            smashRosterStorage.deleteFromStorage(Endpoint.GAR_PR)
-            smashRosterStorage.deleteFromStorage(Endpoint.NOT_GAR_PR)
+        smashRosterStorage.clear()
 
+        syncResult = if (throwable == null) {
+            smashRosterStorage.writeToStorage(Endpoint.GAR_PR, garPrRoster)
+            smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, notGarPrRoster)
+            SmashRosterSyncResult(success = true)
+        } else {
             SmashRosterSyncResult(
                     success = false,
                     httpCode = throwable.httpCode,
                     message = throwable.message
             )
-        } else {
-            smashRosterStorage.writeToStorage(Endpoint.GAR_PR, garPrRoster)
-            smashRosterStorage.writeToStorage(Endpoint.NOT_GAR_PR, notGarPrRoster)
-            SmashRosterSyncResult(success = true)
         }
 
         timber.d(TAG, "finished sync")

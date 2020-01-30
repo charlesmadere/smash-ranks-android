@@ -2,7 +2,6 @@ package com.garpr.android.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.requireAbsPlayer
 import com.garpr.android.extensions.requireAbsTournament
@@ -11,6 +10,7 @@ import com.garpr.android.extensions.writeAbsPlayer
 import com.garpr.android.extensions.writeAbsTournament
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.util.Objects
 
 @JsonClass(generateAdapter = false)
 class TournamentMatch(
@@ -20,14 +20,11 @@ class TournamentMatch(
 ) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
-        return if (other is TournamentMatch) {
-            opponent == other.opponent && tournament == other.tournament && result == other.result
-        } else {
-            false
-        }
+        return other is TournamentMatch && opponent == other.opponent &&
+                tournament == other.tournament && result == other.result
     }
 
-    override fun hashCode(): Int = ObjectsCompat.hash(opponent, tournament, result)
+    override fun hashCode(): Int = Objects.hash(opponent, tournament, result)
 
     override fun describeContents(): Int = 0
 

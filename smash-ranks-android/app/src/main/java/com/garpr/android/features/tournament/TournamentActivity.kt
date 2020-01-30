@@ -78,6 +78,10 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         val datePositionInWindow = tournamentInfoView.dateVerticalPositionInWindow
         val toolbarPositionInWindow = toolbar.verticalPositionInWindow + toolbar.height
 
+        if (!tournamentInfoView.isShown) {
+            return
+        }
+
         if (datePositionInWindow <= toolbarPositionInWindow) {
             toolbar.fadeInTitleAndSubtitle()
         } else {

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -161,17 +162,19 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
         private val list = mutableListOf<ListItem>()
         private var selectedRegion: Region? = null
 
-        companion object {
-            private const val VIEW_TYPE_ENDPOINT = 0
-            private const val VIEW_TYPE_REGION = 1
-        }
-
         init {
             setHasStableIds(true)
         }
 
         private fun bindEndpoint(holder: EndpointViewHolder, item: ListItem.Endpoint) {
             holder.endpointDividerView.setContent(item.endpoint)
+        }
+
+        private fun bindEndpointError(holder: EndpointErrorViewHolder, item: ListItem.EndpointError) {
+            holder.endpointErrorItemView.text = holder.endpointErrorItemView.context.getString(
+                    R.string.error_loading_regions_from_x,
+                    holder.endpointErrorItemView.context.getText(item.endpoint.title)
+            )
         }
 
         private fun bindRegion(holder: RegionViewHolder, item: ListItem.Region) {
@@ -195,6 +198,7 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
                 is ListItem.Endpoint -> VIEW_TYPE_ENDPOINT
+                is ListItem.EndpointError -> VIEW_TYPE_ENDPOINT_ERROR
                 is ListItem.Region -> VIEW_TYPE_REGION
             }
         }
@@ -202,6 +206,7 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
                 is ListItem.Endpoint -> bindEndpoint(holder as EndpointViewHolder, item)
+                is ListItem.EndpointError -> bindEndpointError(holder as EndpointErrorViewHolder, item)
                 is ListItem.Region -> bindRegion(holder as RegionViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
@@ -213,6 +218,8 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
             return when (viewType) {
                 VIEW_TYPE_ENDPOINT -> EndpointViewHolder(inflater.inflate(
                         R.layout.divider_endpoint, parent, false))
+                VIEW_TYPE_ENDPOINT_ERROR -> EndpointErrorViewHolder(inflater.inflate(
+                        R.layout.item_string_with_background, parent, false))
                 VIEW_TYPE_REGION -> RegionViewHolder(regionItemViewListener,
                         inflater.inflate(R.layout.item_region_selection, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
@@ -230,6 +237,16 @@ class SetRegionActivity : BaseActivity(), Refreshable, RegionSelectionItemView.L
             notifyDataSetChanged()
         }
 
+        companion object {
+            private const val VIEW_TYPE_ENDPOINT = 0
+            private const val VIEW_TYPE_ENDPOINT_ERROR = 1
+            private const val VIEW_TYPE_REGION = 2
+        }
+
+    }
+
+    private class EndpointErrorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val endpointErrorItemView: TextView = itemView as TextView
     }
 
     private class EndpointViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

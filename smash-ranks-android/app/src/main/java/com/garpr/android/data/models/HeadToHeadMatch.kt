@@ -2,13 +2,13 @@ package com.garpr.android.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.core.util.ObjectsCompat
 import com.garpr.android.extensions.createParcel
 import com.garpr.android.extensions.requireAbsPlayer
 import com.garpr.android.extensions.requireParcelable
 import com.garpr.android.extensions.writeAbsPlayer
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.util.Objects
 
 @JsonClass(generateAdapter = true)
 class HeadToHeadMatch(
@@ -25,7 +25,7 @@ class HeadToHeadMatch(
         }
     }
 
-    override fun hashCode(): Int = ObjectsCompat.hash(player, opponent, result)
+    override fun hashCode(): Int = Objects.hash(player, opponent, result)
 
     override fun describeContents(): Int = 0
 

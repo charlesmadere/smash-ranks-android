@@ -10,4 +10,9 @@ val databaseModule = module {
         appDatabase.dbFavoritePlayerDao()
     }
 
+    single {
+        val appDatabase: AppDatabase = get()
+        appDatabase.dbSmashCompetitorDao()
+    }
+
 }
