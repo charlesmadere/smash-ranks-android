@@ -31,7 +31,11 @@ object TournamentMatchConverter {
             reader: JsonReader,
             matchResultAdapter: JsonAdapter<MatchResult>,
             simpleDateAdapter: JsonAdapter<SimpleDate>
-    ): TournamentMatch {
+    ): TournamentMatch? {
+        if (reader.peek() == JsonReader.Token.NULL) {
+            return reader.nextNull()
+        }
+
         reader.beginObject()
 
         var opponentId: String? = null

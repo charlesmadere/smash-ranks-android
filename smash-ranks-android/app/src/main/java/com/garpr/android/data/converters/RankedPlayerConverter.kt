@@ -19,7 +19,11 @@ object RankedPlayerConverter {
             RANK.second, RATING.second)
 
     @FromJson
-    fun fromJson(reader: JsonReader): RankedPlayer {
+    fun fromJson(reader: JsonReader): RankedPlayer? {
+        if (reader.peek() == JsonReader.Token.NULL) {
+            return reader.nextNull()
+        }
+
         reader.beginObject()
 
         var id: String? = null

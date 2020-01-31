@@ -21,10 +21,12 @@ object SimpleDateConverter {
     })
 
     @FromJson
-    fun fromJson(reader: JsonReader): SimpleDate {
-        val token = reader.peek()
+    fun fromJson(reader: JsonReader): SimpleDate? {
+        when (val token = reader.peek()) {
+            JsonReader.Token.NULL -> {
+                return reader.nextNull()
+            }
 
-        when (token) {
             JsonReader.Token.NUMBER -> {
                 val timeLong = reader.nextLong()
                 return SimpleDate(Date(timeLong))
@@ -42,14 +44,14 @@ object SimpleDateConverter {
                         // this Exception can be safely ignored
                     }
                 }
+
+                throw JsonDataException("Can't parse SimpleDate, unsupported format ($timeString)")
             }
 
             else -> {
                 throw JsonDataException("Can't parse SimpleDate, unsupported token ($token)")
             }
         }
-
-        throw JsonDataException("Failed to parse SimpleDate (token is $token)")
     }
 
     @ToJson

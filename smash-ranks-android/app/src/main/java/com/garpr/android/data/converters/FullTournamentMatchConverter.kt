@@ -22,7 +22,11 @@ object FullTournamentMatchConverter {
             LOSER_NAME.second, MATCH_ID.second, WINNER_ID.second, WINNER_NAME.second)
 
     @FromJson
-    fun fromJson(reader: JsonReader): FullTournament.Match {
+    fun fromJson(reader: JsonReader): FullTournament.Match? {
+        if (reader.peek() == JsonReader.Token.NULL) {
+            return reader.nextNull()
+        }
+
         reader.beginObject()
 
         var excluded: Boolean? = null

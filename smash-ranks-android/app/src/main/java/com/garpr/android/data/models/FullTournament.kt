@@ -21,7 +21,6 @@ class FullTournament(
         @Json(name = "name") name: String,
         @Json(name = "players") val players: List<AbsPlayer>? = null,
         @Json(name = "matches") val matches: List<Match>? = null,
-        @Json(name = "rawId") val rawId: String? = null,
         @Json(name = "url") val url: String? = null
 ) : AbsTournament(
         regions,
@@ -37,7 +36,6 @@ class FullTournament(
         super.writeToParcel(dest, flags)
         dest.writeAbsPlayerList(players, flags)
         dest.writeTypedList(matches)
-        dest.writeString(rawId)
         dest.writeString(url)
     }
 
@@ -51,7 +49,6 @@ class FullTournament(
                     it.requireString(),
                     it.optAbsPlayerList(),
                     it.createTypedArrayList(Match.CREATOR),
-                    it.readString(),
                     it.readString()
             )
         }

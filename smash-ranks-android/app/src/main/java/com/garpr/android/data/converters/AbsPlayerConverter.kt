@@ -5,7 +5,6 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.LitePlayer
 import com.garpr.android.data.models.RankedPlayer
-import com.garpr.android.extensions.readJsonValueMap
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
@@ -14,13 +13,16 @@ import com.squareup.moshi.ToJson
 
 object AbsPlayerConverter {
 
-    private const val ALIASES = "aliases"
-    private const val PREVIOUS_RANK = "previous_rank"
-    private const val RANK = "rank"
-    private const val RATING = "rating"
-    private const val RATINGS = "ratings"
-    private const val REGION = "region"
-    private const val REGIONS = "regions"
+    private val ALIASES = 0 to "aliases"
+    private val PREVIOUS_RANK = 1 to "previous_rank"
+    private val RANK = 2 to "rank"
+    private val RATING = 3 to "rating"
+    private val RATINGS = 4 to "ratings"
+    private val REGION = 5 to "region"
+    private val REGIONS = 6 to "regions"
+
+    private val OPTIONS = JsonReader.Options.of(ALIASES.second, PREVIOUS_RANK.second, RANK.second,
+            RATING.second, RATINGS.second, REGION.second, REGIONS.second)
 
     @FromJson
     fun fromJson(
@@ -30,16 +32,68 @@ object AbsPlayerConverter {
             litePlayerAdapter: JsonAdapter<LitePlayer>,
             rankedPlayerAdapter: JsonAdapter<RankedPlayer>
     ): AbsPlayer? {
-        val json = reader.readJsonValueMap() ?: return null
+        if (reader.peek() == JsonReader.Token.NULL) {
+            return reader.nextNull()
+        }
 
-        return if (REGION in json) {
-            favoritePlayerAdapter.fromJsonValue(json)
-        } else if (ALIASES in json || RATINGS in json || REGIONS in json) {
-            fullPlayerAdapter.fromJsonValue(json)
-        } else if (PREVIOUS_RANK in json || RANK in json || RATING in json) {
-            rankedPlayerAdapter.fromJsonValue(json)
+        val innerReader = reader.peekJson()
+        innerReader.beginObject()
+
+        var hasAliases = false
+        var hasPreviousRank = false
+        var hasRank = false
+        var hasRating = false
+        var hasRatings = false
+        var hasRegion = false
+        var hasRegions = false
+
+        while (innerReader.hasNext()) {
+            when (innerReader.selectName(OPTIONS)) {
+                ALIASES.first -> {
+                    hasAliases = true
+                    innerReader.skipValue()
+                }
+                PREVIOUS_RANK.first -> {
+                    hasPreviousRank = true
+                    innerReader.skipValue()
+                }
+                RANK.first -> {
+                    hasRank = true
+                    innerReader.skipValue()
+                }
+                RATING.first -> {
+                    hasRating = true
+                    innerReader.skipValue()
+                }
+                RATINGS.first -> {
+                    hasRatings = true
+                    innerReader.skipValue()
+                }
+                REGION.first -> {
+                    hasRegion = true
+                    innerReader.skipValue()
+                }
+                REGIONS.first -> {
+                    hasRegions = true
+                    innerReader.skipValue()
+                }
+                else -> {
+                    innerReader.skipName()
+                    innerReader.skipValue()
+                }
+            }
+        }
+
+        innerReader.endObject()
+
+        return if (hasRegion) {
+            favoritePlayerAdapter.fromJson(reader)
+        } else if (hasAliases || hasRatings || hasRegions) {
+            fullPlayerAdapter.fromJson(reader)
+        } else if (hasPreviousRank || hasRank || hasRating) {
+            rankedPlayerAdapter.fromJson(reader)
         } else {
-            litePlayerAdapter.fromJsonValue(json)
+            litePlayerAdapter.fromJson(reader)
         }
     }
 
