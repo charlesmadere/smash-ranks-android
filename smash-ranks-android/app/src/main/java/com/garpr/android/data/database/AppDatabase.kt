@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 
 @Database(
         entities = [ DbFavoritePlayer::class, DbSmashCompetitor::class ],
-        version = 1
+        version = 2
 )
 @TypeConverters(
         AvatarConverter::class, EndpointConverter::class, ListOfSmashCharacterConverter::class,
