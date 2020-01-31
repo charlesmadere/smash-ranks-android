@@ -22,7 +22,6 @@ object AbsPlayerConverter {
     private const val REGION = "region"
     private const val REGIONS = "regions"
 
-
     @FromJson
     fun fromJson(
             reader: JsonReader,

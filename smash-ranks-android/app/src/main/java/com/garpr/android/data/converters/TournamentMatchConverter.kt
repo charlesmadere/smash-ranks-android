@@ -7,43 +7,74 @@ import com.garpr.android.data.models.LiteTournament
 import com.garpr.android.data.models.MatchResult
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.data.models.TournamentMatch
-import com.garpr.android.extensions.readJsonValueMap
-import com.garpr.android.extensions.requireFromJsonValue
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.ToJson
 
 object TournamentMatchConverter {
 
-    private const val OPPONENT_ID = "opponent_id"
-    private const val OPPONENT_NAME = "opponent_name"
-    private const val RESULT = "result"
-    private const val TOURNAMENT_DATE = "tournament_date"
-    private const val TOURNAMENT_ID = "tournament_id"
-    private const val TOURNAMENT_NAME = "tournament_name"
+    private val OPPONENT_ID = 0 to "opponent_id"
+    private val OPPONENT_NAME = 1 to "opponent_name"
+    private val RESULT = 2 to "result"
+    private val TOURNAMENT_DATE = 3 to "tournament_date"
+    private val TOURNAMENT_ID = 4 to "tournament_id"
+    private val TOURNAMENT_NAME = 5 to "tournament_name"
+
+    private val OPTIONS = JsonReader.Options.of(OPPONENT_ID.second, OPPONENT_NAME.second,
+            RESULT.second, TOURNAMENT_DATE.second, TOURNAMENT_ID.second, TOURNAMENT_NAME.second)
 
     @FromJson
     fun fromJson(
             reader: JsonReader,
             matchResultAdapter: JsonAdapter<MatchResult>,
             simpleDateAdapter: JsonAdapter<SimpleDate>
-    ): TournamentMatch? {
-        val json = reader.readJsonValueMap() ?: return null
+    ): TournamentMatch {
+        reader.beginObject()
+
+        var opponentId: String? = null
+        var opponentName: String? = null
+        var result: MatchResult? = null
+        var tournamentDate: SimpleDate? = null
+        var tournamentId: String? = null
+        var tournamentName: String? = null
+
+        while (reader.hasNext()) {
+            when (reader.selectName(OPTIONS)) {
+                OPPONENT_ID.first -> opponentId = reader.nextString()
+                OPPONENT_NAME.first -> opponentName = reader.nextString()
+                RESULT.first -> result = matchResultAdapter.fromJson(reader)
+                TOURNAMENT_DATE.first -> tournamentDate = simpleDateAdapter.fromJson(reader)
+                TOURNAMENT_ID.first -> tournamentId = reader.nextString()
+                TOURNAMENT_NAME.first -> tournamentName = reader.nextString()
+                else -> {
+                    reader.skipName()
+                    reader.skipValue()
+                }
+            }
+        }
+
+        reader.endObject()
+
+        if (opponentId == null || opponentName == null || result == null ||
+                tournamentDate == null || tournamentId == null || tournamentName == null) {
+            throw JsonDataException("Invalid JSON data (opponentId:$opponentId, " +
+                    "opponentName:$opponentName, result:$result, tournamentDate:$tournamentDate, " +
+                    "tournamentId:$tournamentId, tournamentName:$tournamentName)")
+        }
 
         val opponent: AbsPlayer = LitePlayer(
-                id = json[OPPONENT_ID] as String,
-                name = json[OPPONENT_NAME] as String
+                id = opponentId,
+                name = opponentName
         )
 
         val tournament: AbsTournament = LiteTournament(
-                date = simpleDateAdapter.requireFromJsonValue(json[TOURNAMENT_DATE]),
-                id = json[TOURNAMENT_ID] as String,
-                name = json[TOURNAMENT_NAME] as String
+                date = tournamentDate,
+                id = tournamentId,
+                name = tournamentName
         )
-
-        val result = matchResultAdapter.requireFromJsonValue(json[RESULT])
 
         return TournamentMatch(
                 opponent = opponent,
@@ -64,12 +95,12 @@ object TournamentMatchConverter {
         }
 
         writer.beginObject()
-                .name(RESULT).value(matchResultAdapter.toJsonValue(value.result) as String)
-                .name(OPPONENT_ID).value(value.opponent.id)
-                .name(OPPONENT_NAME).value(value.opponent.name)
-                .name(TOURNAMENT_DATE).value(simpleDateAdapter.toJsonValue(value.tournament.date) as Long)
-                .name(TOURNAMENT_ID).value(value.tournament.id)
-                .name(TOURNAMENT_NAME).value(value.tournament.name)
+                .name(RESULT.second).value(matchResultAdapter.toJsonValue(value.result) as String)
+                .name(OPPONENT_ID.second).value(value.opponent.id)
+                .name(OPPONENT_NAME.second).value(value.opponent.name)
+                .name(TOURNAMENT_DATE.second).value(simpleDateAdapter.toJsonValue(value.tournament.date) as Long)
+                .name(TOURNAMENT_ID.second).value(value.tournament.id)
+                .name(TOURNAMENT_NAME.second).value(value.tournament.name)
                 .endObject()
     }
 

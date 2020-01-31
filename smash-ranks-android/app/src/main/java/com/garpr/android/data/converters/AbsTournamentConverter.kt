@@ -16,7 +16,6 @@ object AbsTournamentConverter {
     private const val PLAYERS = "players"
     private const val RAW_ID = "raw_id"
 
-
     @FromJson
     fun fromJson(
             reader: JsonReader,
