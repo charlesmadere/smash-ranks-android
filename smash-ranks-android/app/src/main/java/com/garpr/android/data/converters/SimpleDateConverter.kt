@@ -33,23 +33,28 @@ object SimpleDateConverter {
             }
 
             JsonReader.Token.STRING -> {
-                val timeString = reader.nextString()
+                val string = reader.nextString()
 
                 FORMATS.forEach { threadLocal ->
                     val format = threadLocal.require()
 
-                    try {
-                        return SimpleDate(format.parse(timeString))
+                    val date: Date? = try {
+                        format.parse(string)
                     } catch (e: ParseException) {
                         // this Exception can be safely ignored
+                        null
+                    }
+
+                    if (date != null) {
+                        return SimpleDate(date)
                     }
                 }
 
-                throw JsonDataException("Can't parse SimpleDate, unsupported format ($timeString)")
+                throw JsonDataException("Can't parse SimpleDate, unsupported format: \"$string\"")
             }
 
             else -> {
-                throw JsonDataException("Can't parse SimpleDate, unsupported token ($token)")
+                throw JsonDataException("Can't parse SimpleDate, unsupported token: \"$token\"")
             }
         }
     }
