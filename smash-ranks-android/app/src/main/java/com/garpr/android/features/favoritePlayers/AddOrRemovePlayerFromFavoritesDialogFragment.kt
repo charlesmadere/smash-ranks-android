@@ -72,7 +72,7 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
         if (state.isFetching) {
             dialogMessage.visibility = View.INVISIBLE
             dialogPositiveText.visibility = View.INVISIBLE
-            dialogProgressBar.visibility = View.VISIBLE
+            dialogProgressGroup.visibility = View.VISIBLE
         } else {
             if (state.isFavorited) {
                 dialogMessage.text = getString(R.string.remove_x_from_favorites, player.name)
@@ -88,7 +88,7 @@ class AddOrRemovePlayerFromFavoritesDialogFragment : BaseBottomSheetDialogFragme
 
             dialogMessage.visibility = View.VISIBLE
             dialogPositiveText.visibility = View.VISIBLE
-            dialogProgressBar.visibility = View.GONE
+            dialogProgressGroup.visibility = View.GONE
         }
     }
 
