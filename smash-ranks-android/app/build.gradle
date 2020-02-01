@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 22005
-        versionName "2.2.5"
+        versionCode 22006
+        versionName "2.2.6"
 
         // needed for androidTest
         testInstrumentationRunner "com.garpr.android.test.AndroidTestRunner"
