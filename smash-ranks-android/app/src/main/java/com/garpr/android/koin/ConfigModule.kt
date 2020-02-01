@@ -28,6 +28,7 @@ val configModule = module {
         val threadUtils: ThreadUtils = get()
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, DATABASE_NAME)
                 .addMigrations(Migrations.MIGRATION_1_2)
+                .fallbackToDestructiveMigration()
                 .setQueryExecutor(threadUtils.background)
                 .setTransactionExecutor(threadUtils.background)
                 .build()
