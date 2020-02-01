@@ -2,6 +2,7 @@ package com.garpr.android.koin
 
 import androidx.room.Room
 import com.garpr.android.data.database.AppDatabase
+import com.garpr.android.data.database.Migrations
 import com.garpr.android.misc.DeviceUtils
 import com.garpr.android.misc.DeviceUtilsImpl
 import com.garpr.android.misc.PackageNameProvider
@@ -26,6 +27,8 @@ val configModule = module {
     single {
         val threadUtils: ThreadUtils = get()
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, DATABASE_NAME)
+                .addMigrations(Migrations.MIGRATION_1_2)
+                .fallbackToDestructiveMigration()
                 .setQueryExecutor(threadUtils.background)
                 .setTransactionExecutor(threadUtils.background)
                 .build()

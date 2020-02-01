@@ -38,8 +38,34 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/dialogSpace"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dialogProgressSpace"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dialogMessage" />
+
+    <Space
+        android:id="@+id/dialogProgressSpace"
+        android:layout_height="1dp"
+        android:layout_width="@dimen/root_padding_double"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogSpace"
+        app:layout_constraintEnd_toStartOf="@+id/dialogProgressMessage"
+        app:layout_constraintStart_toEndOf="@+id/dialogProgressBar"
+        app:layout_constraintTop_toTopOf="@+id/dialogMessage" />
+
+    <TextView
+        android:id="@+id/dialogProgressMessage"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/loading_favorite_players_"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogSpace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dialogProgressSpace"
+        app:layout_constraintTop_toTopOf="@+id/dialogMessage" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/dialogProgressGroup"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:constraint_referenced_ids="dialogProgressBar,dialogProgressSpace,dialogProgressMessage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

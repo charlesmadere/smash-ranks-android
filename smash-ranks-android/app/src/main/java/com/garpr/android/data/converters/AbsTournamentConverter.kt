@@ -3,7 +3,6 @@ package com.garpr.android.data.converters
 import com.garpr.android.data.models.AbsTournament
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.LiteTournament
-import com.garpr.android.extensions.readJsonValueMap
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
@@ -12,10 +11,10 @@ import com.squareup.moshi.ToJson
 
 object AbsTournamentConverter {
 
-    private const val MATCHES = "matches"
-    private const val PLAYERS = "players"
-    private const val RAW_ID = "raw_id"
+    private val MATCHES = 0 to "matches"
+    private val PLAYERS = 1 to "players"
 
+    private val OPTIONS = JsonReader.Options.of(MATCHES.second, PLAYERS.second)
 
     @FromJson
     fun fromJson(
@@ -23,12 +22,39 @@ object AbsTournamentConverter {
             fullTournamentAdapter: JsonAdapter<FullTournament>,
             liteTournamentAdapter: JsonAdapter<LiteTournament>
     ): AbsTournament? {
-        val json = reader.readJsonValueMap() ?: return null
+        if (reader.peek() == JsonReader.Token.NULL) {
+            return reader.nextNull()
+        }
 
-        return if (MATCHES in json || PLAYERS in json || RAW_ID in json) {
-            fullTournamentAdapter.fromJsonValue(json)
+        val innerReader = reader.peekJson()
+        innerReader.beginObject()
+
+        var hasMatches = false
+        var hasPlayers = false
+
+        while (innerReader.hasNext()) {
+            when (innerReader.selectName(OPTIONS)) {
+                MATCHES.first -> {
+                    hasMatches = true
+                    innerReader.skipValue()
+                }
+                PLAYERS.first -> {
+                    hasPlayers = true
+                    innerReader.skipValue()
+                }
+                else -> {
+                    innerReader.skipName()
+                    innerReader.skipValue()
+                }
+            }
+        }
+
+        innerReader.endObject()
+
+        return if (hasMatches || hasPlayers) {
+            fullTournamentAdapter.fromJson(reader)
         } else {
-            liteTournamentAdapter.fromJsonValue(json)
+            liteTournamentAdapter.fromJson(reader)
         }
     }
 

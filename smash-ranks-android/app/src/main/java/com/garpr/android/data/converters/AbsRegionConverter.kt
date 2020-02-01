@@ -3,7 +3,6 @@ package com.garpr.android.data.converters
 import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.LiteRegion
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.readJsonValueMap
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
@@ -12,7 +11,9 @@ import com.squareup.moshi.ToJson
 
 object AbsRegionConverter {
 
-    private const val ENDPOINT = "endpoint"
+    private val ENDPOINT = 0 to "endpoint"
+
+    private val OPTIONS = JsonReader.Options.of(ENDPOINT.second)
 
     @FromJson
     fun fromJson(
@@ -20,12 +21,34 @@ object AbsRegionConverter {
             liteRegionAdapter: JsonAdapter<LiteRegion>,
             regionAdapter: JsonAdapter<Region>
     ): AbsRegion? {
-        val json = reader.readJsonValueMap() ?: return null
+        if (reader.peek() == JsonReader.Token.NULL) {
+            return reader.nextNull()
+        }
 
-        return if (ENDPOINT in json) {
-            regionAdapter.fromJsonValue(json)
+        val innerReader = reader.peekJson()
+        innerReader.beginObject()
+
+        var hasEndpoint = false
+
+        while (innerReader.hasNext()) {
+            when (innerReader.selectName(OPTIONS)) {
+                ENDPOINT.first -> {
+                    hasEndpoint = true
+                    innerReader.skipValue()
+                }
+                else -> {
+                    innerReader.skipName()
+                    innerReader.skipValue()
+                }
+            }
+        }
+
+        innerReader.endObject()
+
+        return if (hasEndpoint) {
+            regionAdapter.fromJson(reader)
         } else {
-            liteRegionAdapter.fromJsonValue(json)
+            liteRegionAdapter.fromJson(reader)
         }
     }
 
