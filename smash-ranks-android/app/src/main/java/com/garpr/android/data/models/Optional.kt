@@ -5,7 +5,7 @@ class Optional<T : Any> private constructor(
 ) {
 
     fun get(): T {
-        return checkNotNull(item)
+        return item ?: throw NoSuchElementException()
     }
 
     fun isPresent(): Boolean {
