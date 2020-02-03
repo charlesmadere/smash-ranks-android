@@ -12,7 +12,10 @@ class BehaviorSubjectTest : BaseTest() {
     @Test
     fun testRequireValueWithDefault() {
         val subject = BehaviorSubject.createDefault(HELLO_WORLD)
-        assertEquals(subject.value, subject.requireValue())
+        assertEquals(HELLO_WORLD, subject.requireValue())
+
+        subject.onNext(BLAH)
+        assertEquals(BLAH, subject.requireValue())
     }
 
     @Test
@@ -25,10 +28,15 @@ class BehaviorSubjectTest : BaseTest() {
         }
 
         assertNull(value)
+
+        subject.onNext(SHEIK)
+        assertEquals(SHEIK, subject.requireValue())
     }
 
     companion object {
+        private const val BLAH = "Blah"
         private const val HELLO_WORLD = "Hello, World!"
+        private const val SHEIK = "Sheik"
     }
 
 }
