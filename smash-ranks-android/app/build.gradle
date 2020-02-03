@@ -111,6 +111,10 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
 
+    // AndroidX SwipeRefreshLayout
+    // https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_layout_version"
+
     // AndroidX Test
     // https://developer.android.com/jetpack/androidx/releases/test
     androidTestImplementation "androidx.arch.core:core-testing:$architecture_test_version"

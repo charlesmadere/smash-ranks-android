@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AlertDialogThemeDayNight" parent="Theme.MaterialComponents.Light.Dialog.Alert" />
-
-    <style name="AlertDialogTheme" parent="AlertDialogThemeDayNight">
+    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
     </style>
 
-    <style name="AppTheme" parent="AppThemeDayNight">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
+        <item name="popupMenuStyle">@style/Widget.AppCompat.PopupMenu</item>
         <item name="timberDebug">@color/debug</item>
         <item name="timberError">@color/error</item>
         <item name="timberWarn">@color/warn</item>
@@ -23,11 +22,7 @@
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
-    <style name="AppThemeDayNight" parent="Theme.MaterialComponents.Light.NoActionBar" />
-
-    <style name="BottomSheetDialogThemeDayNight" parent="Theme.MaterialComponents.Light.BottomSheetDialog" />
-
-    <style name="BottomSheetDialogTheme" parent="BottomSheetDialogThemeDayNight">
+    <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.DayNight.BottomSheetDialog">
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>

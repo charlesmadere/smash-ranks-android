@@ -21,6 +21,9 @@ class RefreshLayout @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SwipeRefreshLayout(context, attrs), Heartbeat, ListLayout {
 
+    override val isAlive: Boolean
+        get() = ViewCompat.isAttachedToWindow(this)
+
     @IdRes
     private val scrollingChildId: Int
 
@@ -42,9 +45,6 @@ class RefreshLayout @JvmOverloads constructor(
     override fun getRecyclerView(): RecyclerView? {
         return scrollingChild as? RecyclerView?
     }
-
-    override val isAlive: Boolean
-        get() = ViewCompat.isAttachedToWindow(this)
 
     override fun onFinishInflate() {
         super.onFinishInflate()

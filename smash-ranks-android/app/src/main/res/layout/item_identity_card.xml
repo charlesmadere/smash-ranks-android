@@ -182,9 +182,6 @@
 
         </LinearLayout>
 
-        <include
-            layout="@layout/view_constraint_layout_foreground" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.garpr.android.features.rankings.IdentityCardView>
