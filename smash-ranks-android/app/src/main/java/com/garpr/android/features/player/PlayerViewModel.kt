@@ -56,10 +56,6 @@ class PlayerViewModel(
 
     private var playerId: String? = null
 
-    companion object {
-        private const val TAG = "PlayerViewModel"
-    }
-
     init {
         initListeners()
     }
@@ -325,7 +321,15 @@ class PlayerViewModel(
             }
         }
 
+        if (results.isEmpty()) {
+            results.add(ListItem.NoResults(trimmedQuery))
+        }
+
         return results
+    }
+
+    companion object {
+        private const val TAG = "PlayerViewModel"
     }
 
     sealed class ListItem {
@@ -342,8 +346,14 @@ class PlayerViewModel(
             override val listId: Long = Long.MIN_VALUE + 1L
         }
 
-        object Player : ListItem() {
+        class NoResults(
+                val query: String
+        ) : ListItem() {
             override val listId: Long = Long.MIN_VALUE + 2L
+        }
+
+        object Player : ListItem() {
+            override val listId: Long = Long.MIN_VALUE + 3L
         }
 
         class Tournament(

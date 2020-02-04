@@ -22,6 +22,7 @@ import com.garpr.android.extensions.requireStringExtra
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.features.common.activities.BaseActivity
+import com.garpr.android.features.common.views.NoResultsItemView
 import com.garpr.android.features.headToHead.HeadToHeadActivity
 import com.garpr.android.features.player.PlayerViewModel.ListItem
 import com.garpr.android.features.tournament.TournamentActivity
@@ -243,19 +244,23 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             setHasStableIds(true)
         }
 
-        private fun bindMatchViewHolder(holder: MatchViewHolder, item: ListItem.Match) {
+        private fun bindMatch(holder: MatchViewHolder, item: ListItem.Match) {
             holder.matchItemView.setContent(
                     match = item.match,
                     isIdentity = item.isIdentity
             )
         }
 
-        private fun bindPlayerViewHolder(holder: PlayerViewHolder) {
+        private fun bindNoResults(holder: NoResultsViewHolder, item: ListItem.NoResults) {
+            holder.noResultsItemView.setContent(item.query)
+        }
+
+        private fun bindPlayer(holder: PlayerViewHolder) {
             val player = checkNotNull(this.player)
             holder.playerProfileItemView.setContent(identity, isFavorited, player, smashCompetitor)
         }
 
-        private fun bindTournamentViewHolder(holder: TournamentViewHolder,
+        private fun bindTournament(holder: TournamentViewHolder,
                 item: ListItem.Tournament) {
             holder.tournamentDividerView.setContent(item.tournament)
         }
@@ -277,6 +282,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             return when (list[position]) {
                 is ListItem.Match -> VIEW_TYPE_MATCH
                 is ListItem.NoMatches -> VIEW_TYPE_NO_MATCHES
+                is ListItem.NoResults -> VIEW_TYPE_NO_RESULTS
                 is ListItem.Player -> VIEW_TYPE_PLAYER
                 is ListItem.Tournament -> VIEW_TYPE_TOURNAMENT
             }
@@ -284,10 +290,11 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is ListItem.Match -> bindMatchViewHolder(holder as MatchViewHolder, item)
+                is ListItem.Match -> bindMatch(holder as MatchViewHolder, item)
                 is ListItem.NoMatches -> { /* intentionally empty */ }
-                is ListItem.Player -> bindPlayerViewHolder(holder as PlayerViewHolder)
-                is ListItem.Tournament -> bindTournamentViewHolder(holder as TournamentViewHolder, item)
+                is ListItem.NoResults -> bindNoResults(holder as NoResultsViewHolder, item)
+                is ListItem.Player -> bindPlayer(holder as PlayerViewHolder)
+                is ListItem.Tournament -> bindTournament(holder as TournamentViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
@@ -301,6 +308,8 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
                 VIEW_TYPE_NO_MATCHES -> NoMatchesViewHolder(
                         parent.context.getString(R.string.no_matches),
                         inflater.inflate(R.layout.item_string, parent, false))
+                VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
+                        R.layout.item_no_results, parent, false))
                 VIEW_TYPE_PLAYER -> PlayerViewHolder(playerProfileItemViewListeners,
                         inflater.inflate(R.layout.item_player_profile, parent, false))
                 VIEW_TYPE_TOURNAMENT -> TournamentViewHolder(tournamentDividerViewListener,
@@ -328,8 +337,9 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         companion object {
             private const val VIEW_TYPE_MATCH = 0
             private const val VIEW_TYPE_NO_MATCHES = 1
-            private const val VIEW_TYPE_PLAYER = 2
-            private const val VIEW_TYPE_TOURNAMENT = 3
+            private const val VIEW_TYPE_NO_RESULTS = 2
+            private const val VIEW_TYPE_PLAYER = 3
+            private const val VIEW_TYPE_TOURNAMENT = 4
         }
 
     }
@@ -352,6 +362,10 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         init {
             (itemView as TextView).text = text
         }
+    }
+
+    private class NoResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val noResultsItemView: NoResultsItemView = itemView as NoResultsItemView
     }
 
     private class PlayerViewHolder(
