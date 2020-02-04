@@ -273,13 +273,13 @@ class RankingsViewModel(
                 val rating: String? = null,
                 val tag: String
         ) : ListItem() {
-            override val listId: Long = Long.MAX_VALUE - 1L
+            override val listId: Long = Long.MIN_VALUE + 1L
         }
 
         class NoResults(
                 val query: String
         ) : ListItem() {
-            override val listId: Long = Long.MAX_VALUE - 2L
+            override val listId: Long = Long.MIN_VALUE + 2L
         }
 
         data class Player(

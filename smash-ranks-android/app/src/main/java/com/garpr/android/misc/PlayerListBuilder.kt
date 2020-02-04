@@ -20,7 +20,7 @@ interface PlayerListBuilder {
 
         sealed class Divider : PlayerListItem() {
             object Digit : Divider() {
-                override val listId: Long = Long.MAX_VALUE - 1L
+                override val listId: Long = Long.MIN_VALUE + 1L
             }
 
             class Letter(
@@ -29,14 +29,14 @@ interface PlayerListBuilder {
             ) : Divider()
 
             object Other : Divider() {
-                override val listId: Long = Long.MAX_VALUE - 2L
+                override val listId: Long = Long.MIN_VALUE + 2L
             }
         }
 
         class NoResults(
                 val query: String
         ) : PlayerListItem() {
-            override val listId: Long = Long.MAX_VALUE - 3L
+            override val listId: Long = Long.MIN_VALUE + 3L
         }
 
         class Player(

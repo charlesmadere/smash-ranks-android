@@ -115,7 +115,7 @@ class FavoritePlayersViewModel(
         class NoResults(
                 val query: String
         ) : ListItem() {
-            override val listId: Long = Long.MAX_VALUE - 1L
+            override val listId: Long = Long.MIN_VALUE + 1L
         }
     }
 
