@@ -2,8 +2,8 @@ package com.garpr.android.features.common.views
 
 import android.content.Context
 import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -26,12 +26,12 @@ open class SearchToolbar @JvmOverloads constructor(
 ) : GarToolbar(context, attrs), SearchQueryHandle {
 
     val isSearchFieldExpanded: Boolean
-        get() = searchField.visibility == View.VISIBLE
+        get() = searchField.visibility == VISIBLE
 
     var showSearchIcon: Boolean
-        get() = searchIcon.visibility == View.VISIBLE
+        get() = searchIcon.visibility == VISIBLE
         set(value) {
-            searchIcon.visibility = if (!searchField.isFocused && value) View.VISIBLE else View.GONE
+            searchIcon.visibility = if (!searchField.isFocused && value) VISIBLE else GONE
         }
 
     private val wasShowingUpNavigation = showUpNavigation
@@ -43,18 +43,20 @@ open class SearchToolbar @JvmOverloads constructor(
         openSearchField()
     }
 
+    var searchableListener: Searchable? = null
+
     private val searchFieldActionListener = TextView.OnEditorActionListener { v, actionId, event ->
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            (activity as? Searchable?)?.search(searchQuery?.toString())
+            searchableListener?.search(searchQuery?.toString())
             activity?.hideKeyboard()
         }
 
         false
     }
 
-    private val searchFieldTextWatcher = object : AbstractTextWatcher() {
+    private val searchFieldTextWatcher: TextWatcher = object : AbstractTextWatcher() {
         override fun afterTextChanged(s: Editable?) {
-            (activity as? Searchable?)?.search(searchQuery?.toString())
+            searchableListener?.search(searchQuery?.toString())
         }
     }
 
@@ -83,11 +85,11 @@ open class SearchToolbar @JvmOverloads constructor(
     protected open fun onCloseSearchField() {
         activity?.hideKeyboard()
         searchField.clear()
-        searchField.visibility = View.GONE
+        searchField.visibility = GONE
         showUpNavigation = wasShowingUpNavigation
 
         menuExpansionContainer.layoutParams = (menuExpansionContainer.layoutParams as LayoutParams).apply {
-            startToEnd = View.NO_ID
+            startToEnd = NO_ID
             width = ViewGroup.LayoutParams.WRAP_CONTENT
         }
 
@@ -104,7 +106,7 @@ open class SearchToolbar @JvmOverloads constructor(
             width = LayoutParams.MATCH_CONSTRAINT
         }
 
-        searchField.visibility = View.VISIBLE
+        searchField.visibility = VISIBLE
         searchField.requestFocusAndOpenKeyboard()
     }
 

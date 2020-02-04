@@ -28,18 +28,11 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
         Searchable, SetIdentityToolbar.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = Adapter(this)
+    override val activityName = TAG
 
     private val viewModel: SetIdentityViewModel by viewModel()
 
     protected val regionHandleUtils: RegionHandleUtils by inject()
-
-    companion object {
-        private const val TAG = "SetIdentityActivity"
-
-        fun getLaunchIntent(context: Context) = Intent(context, SetIdentityActivity::class.java)
-    }
-
-    override val activityName = TAG
 
     private fun fetchPlayers() {
         viewModel.fetchPlayers(regionHandleUtils.getRegion(this))
@@ -113,6 +106,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
         val region = regionHandleUtils.getRegion(this)
         toolbar.subtitleText = getString(R.string.region_endpoint_format, region.displayName,
                 getText(region.endpoint.title))
+        toolbar.searchableListener = this
         toolbar.listener = this
 
         refreshLayout.setOnRefreshListener(this)
@@ -179,18 +173,18 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
         viewModel.search(query)
     }
 
+    companion object {
+        private const val TAG = "SetIdentityActivity"
+
+        fun getLaunchIntent(context: Context) = Intent(context, SetIdentityActivity::class.java)
+    }
+
     private class Adapter(
             private val playerItemViewListener: PlayerSelectionItemView.Listener
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var selectedIdentity: AbsPlayer? = null
         private val list = mutableListOf<PlayerListItem>()
-
-        companion object {
-            private const val VIEW_TYPE_DIVIDER = 0
-            private const val VIEW_TYPE_NO_RESULTS = 1
-            private const val VIEW_TYPE_PLAYER = 2
-        }
 
         init {
             setHasStableIds(true)
@@ -268,6 +262,12 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
 
             this.selectedIdentity = selectedIdentity
             notifyDataSetChanged()
+        }
+
+        companion object {
+            private const val VIEW_TYPE_DIVIDER = 0
+            private const val VIEW_TYPE_NO_RESULTS = 1
+            private const val VIEW_TYPE_PLAYER = 2
         }
 
     }

@@ -3,7 +3,6 @@ package com.garpr.android.features.home
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import com.garpr.android.R
 import com.garpr.android.extensions.addMenuItem
@@ -72,12 +71,12 @@ class HomeToolbar @JvmOverloads constructor(
 
     override fun onCloseSearchField() {
         super.onCloseSearchField()
-        overflowButton.visibility = View.VISIBLE
+        overflowButton.visibility = VISIBLE
     }
 
     override fun onOpenSearchField() {
         super.onOpenSearchField()
-        overflowButton.visibility = View.GONE
+        overflowButton.visibility = GONE
     }
 
 }

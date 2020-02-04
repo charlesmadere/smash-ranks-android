@@ -2,7 +2,6 @@ package com.garpr.android.features.setRegion
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.view.View.OnClickListener
 import com.garpr.android.R
 import com.garpr.android.extensions.layoutInflater
@@ -22,9 +21,9 @@ class SetRegionToolbar @JvmOverloads constructor(
         }
 
     var showSaveIcon: Boolean
-        get() = saveButton.visibility == View.VISIBLE
+        get() = saveButton.visibility == VISIBLE
         set(value) {
-            saveButton.visibility = if (value) View.VISIBLE else View.GONE
+            saveButton.visibility = if (value) VISIBLE else GONE
         }
 
     var listener: Listener? = null

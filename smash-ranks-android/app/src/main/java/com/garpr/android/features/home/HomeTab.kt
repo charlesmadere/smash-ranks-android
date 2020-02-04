@@ -10,15 +10,15 @@ enum class HomeTab : Parcelable {
     TOURNAMENTS,
     FAVORITE_PLAYERS;
 
-    companion object {
-        @JvmField
-        val CREATOR = createParcel { values()[it.readInt()] }
-    }
-
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel { values()[it.readInt()] }
     }
 
 }
