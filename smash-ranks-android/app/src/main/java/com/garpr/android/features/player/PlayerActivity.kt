@@ -42,13 +42,12 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
     private val adapter = Adapter(this, this, this)
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
+    override val activityName = TAG
 
     private val viewModel: PlayerViewModel by viewModel()
 
     protected val regionHandleUtils: RegionHandleUtils by inject()
     protected val shareUtils: ShareUtils by inject()
-
-    override val activityName = TAG
 
     private fun checkNameAndRegionViewScrollStates() {
         val view = recyclerView.getChildAt(0) as? PlayerProfileItemView
