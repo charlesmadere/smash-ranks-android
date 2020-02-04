@@ -5,6 +5,7 @@
     <string name="x_activity_requirements">%1$s Activity Requirements</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
+    <string name="app_restarted_to_apply_new_theme_">App restarted to apply new theme…</string>
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
@@ -105,7 +106,6 @@
     <string name="region_endpoint_format">%1$s (%2$s)</string>
     <string name="region_saved_">Region saved!</string>
     <string name="remove_x_from_favorites">Remove %1$s from favorites?</string>
-    <string name="restarting_app_to_apply_new_theme_">Restarting app to apply new theme…</string>
     <string name="ringtone">Ringtone</string>
     <string name="save">Save</string>
     <string name="search">Search</string>

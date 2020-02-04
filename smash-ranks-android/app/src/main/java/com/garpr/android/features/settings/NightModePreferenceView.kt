@@ -37,7 +37,7 @@ class NightModePreferenceView @JvmOverloads constructor(
             return
         }
 
-        Toast.makeText(context, R.string.restarting_app_to_apply_new_theme_, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.app_restarted_to_apply_new_theme_, Toast.LENGTH_SHORT).show()
         listener?.onNightModeChange(this, selected)
     }
 
