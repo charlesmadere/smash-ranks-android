@@ -25,6 +25,7 @@ import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.Single
 import io.reactivex.functions.Function3
+import java.util.Collections
 
 class PlayerViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
@@ -321,11 +322,11 @@ class PlayerViewModel(
             }
         }
 
-        if (results.isEmpty()) {
-            results.add(ListItem.NoResults(trimmedQuery))
+        return if (results.isEmpty()) {
+            Collections.singletonList(ListItem.NoResults(trimmedQuery))
+        } else {
+            results
         }
-
-        return results
     }
 
     companion object {

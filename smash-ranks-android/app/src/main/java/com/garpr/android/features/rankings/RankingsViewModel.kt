@@ -22,6 +22,7 @@ import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.functions.BiFunction
 import java.text.NumberFormat
+import java.util.Collections
 
 class RankingsViewModel(
         private val identityRepository: IdentityRepository,
@@ -256,7 +257,7 @@ class RankingsViewModel(
                 }
 
         return if (results.isEmpty()) {
-            listOf(ListItem.NoResults(trimmedQuery))
+            Collections.singletonList(ListItem.NoResults(trimmedQuery))
         } else {
             results
         }

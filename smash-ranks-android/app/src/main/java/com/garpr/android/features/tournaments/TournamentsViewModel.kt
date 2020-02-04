@@ -12,6 +12,7 @@ import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.TournamentsRepository
+import java.util.Collections
 
 class TournamentsViewModel(
         private val schedulers: Schedulers,
@@ -101,7 +102,7 @@ class TournamentsViewModel(
                 }
 
         return if (results.isEmpty()) {
-            listOf(ListItem.NoResults(trimmedQuery))
+            Collections.singletonList(ListItem.NoResults(trimmedQuery))
         } else {
             results
         }
