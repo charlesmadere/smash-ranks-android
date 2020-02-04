@@ -20,6 +20,7 @@ import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RankingsRepository
 import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
+import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import java.text.NumberFormat
 import java.util.Collections
@@ -135,13 +136,14 @@ class RankingsViewModel(
     }
 
     private fun initListeners() {
-        disposables.add(identityRepository.identityObservable
-                .withLatestFrom(smashRosterSyncManager.isSyncingObservable
+        disposables.add(Observable.combineLatest(
+                identityRepository.identityObservable,
+                smashRosterSyncManager.isSyncingObservable
                         .filter { isSyncing -> !isSyncing },
-                        BiFunction<Optional<FavoritePlayer>, Boolean,
-                                Optional<FavoritePlayer>> { optional, _ ->
-                                    optional
-                                })
+                BiFunction<Optional<FavoritePlayer>, Boolean,
+                        Optional<FavoritePlayer>> { t1, t2 ->
+                            t1
+                        })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe { identity ->
