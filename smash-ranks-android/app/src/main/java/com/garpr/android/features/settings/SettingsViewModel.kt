@@ -166,11 +166,6 @@ class SettingsViewModel(
     }
 
     fun syncSmashRoster() {
-        if (smashRosterSyncManager.isSyncing) {
-            timber.d(TAG, "User tried to sync the smash roster but it's already syncing")
-            return
-        }
-
         timber.d(TAG, "User requested a manual sync of the smash roster")
 
         disposables.add(smashRosterSyncManager.sync()
