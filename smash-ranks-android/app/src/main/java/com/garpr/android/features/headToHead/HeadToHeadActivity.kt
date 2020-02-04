@@ -164,7 +164,7 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
             setHasStableIds(true)
         }
 
-        private fun bindMatchViewHolder(holder: HeadToHeadMatchViewHolder, item: ListItem.Match) {
+        private fun bindMatch(holder: HeadToHeadMatchViewHolder, item: ListItem.Match) {
             holder.headToHeadMatchItemView.setContent(
                     match = item.match,
                     playerIsIdentity = item.playerIsIdentity,
@@ -172,13 +172,11 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
             )
         }
 
-        private fun bindTournamentViewHolder(holder: TournamentViewHolder,
-                item: ListItem.Tournament) {
+        private fun bindTournament(holder: TournamentViewHolder,item: ListItem.Tournament) {
             holder.tournamentDividerView.setContent(item.tournament)
         }
 
-        private fun bindWinsLossesViewHolder(holder: WinsLossesViewHolder,
-                item: ListItem.WinsLosses) {
+        private fun bindWinsLosses(holder: WinsLossesViewHolder, item: ListItem.WinsLosses) {
             holder.winsLossesView.setContent(item.winsLosses)
         }
 
@@ -206,10 +204,10 @@ class HeadToHeadActivity : BaseActivity(), Refreshable, SwipeRefreshLayout.OnRef
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
-                is ListItem.Match -> bindMatchViewHolder(holder as HeadToHeadMatchViewHolder, item)
+                is ListItem.Match -> bindMatch(holder as HeadToHeadMatchViewHolder, item)
                 is ListItem.NoMatches -> { /* intentionally empty */ }
-                is ListItem.Tournament -> bindTournamentViewHolder(holder as TournamentViewHolder, item)
-                is ListItem.WinsLosses -> bindWinsLossesViewHolder(holder as WinsLossesViewHolder, item)
+                is ListItem.Tournament -> bindTournament(holder as TournamentViewHolder, item)
+                is ListItem.WinsLosses -> bindWinsLosses(holder as WinsLossesViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
         }
