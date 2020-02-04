@@ -13,18 +13,9 @@ import org.koin.android.ext.android.inject
 
 class TournamentsActivity : BaseActivity() {
 
-    protected val regionHandleUtils: RegionHandleUtils by inject()
-
-    companion object {
-        private const val TAG = "TournamentsActivity"
-
-        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
-            return Intent(context, TournamentsActivity::class.java)
-                    .putOptionalExtra(EXTRA_REGION, region)
-        }
-    }
-
     override val activityName = TAG
+
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +26,15 @@ class TournamentsActivity : BaseActivity() {
         super.onViewsBound()
 
         toolbar.subtitleText = regionHandleUtils.getRegion(this).displayName
+    }
+
+    companion object {
+        private const val TAG = "TournamentsActivity"
+
+        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
+            return Intent(context, TournamentsActivity::class.java)
+                    .putOptionalExtra(EXTRA_REGION, region)
+        }
     }
 
 }

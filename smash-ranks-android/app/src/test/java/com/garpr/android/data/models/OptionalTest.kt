@@ -3,30 +3,13 @@ package com.garpr.android.data.models
 import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
+import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class OptionalTest : BaseTest() {
-
-    companion object {
-        private val CHARLEZARD: AbsPlayer = LitePlayer(
-                id = "587a951dd2994e15c7dea9fe",
-                name = "Charlezard"
-        )
-
-        private val IMYT: AbsPlayer = LitePlayer(
-                id = "5877eb55d2994e15c7dea98b",
-                name = "Imyt"
-        )
-
-        private val NORCAL: AbsRegion = LiteRegion(
-                id = "norcal",
-                displayName = "Norcal"
-        )
-    }
 
     @Test
     fun testGetWithDouble() {
@@ -47,32 +30,24 @@ class OptionalTest : BaseTest() {
     @Test
     fun testGetWithNullAbsRegion() {
         val optional = Optional.empty<AbsRegion>()
-        var throwable: Throwable? = null
         var item: AbsRegion? = null
 
-        try {
+        assertThrows(NoSuchElementException::class.java) {
             item = optional.get()
-        } catch (t: Throwable) {
-            throwable = t
         }
 
-        assertNotNull(throwable)
         assertNull(item)
     }
 
     @Test
     fun testGetWithEmptyOptional() {
         val optional = Optional.empty<Unit>()
-        var throwable: Throwable? = null
         var item: Unit? = null
 
-        try {
+        assertThrows(NoSuchElementException::class.java) {
             item = optional.get()
-        } catch (t: Throwable) {
-            throwable = t
         }
 
-        assertNotNull(throwable)
         assertNull(item)
     }
 
@@ -176,6 +151,23 @@ class OptionalTest : BaseTest() {
     fun testOrNullWithNullFloat() {
         val optional = Optional.empty<Float>()
         assertNull(optional.orNull())
+    }
+
+    companion object {
+        private val CHARLEZARD: AbsPlayer = LitePlayer(
+                id = "587a951dd2994e15c7dea9fe",
+                name = "Charlezard"
+        )
+
+        private val IMYT: AbsPlayer = LitePlayer(
+                id = "5877eb55d2994e15c7dea98b",
+                name = "Imyt"
+        )
+
+        private val NORCAL: AbsRegion = LiteRegion(
+                id = "norcal",
+                displayName = "Norcal"
+        )
     }
 
 }

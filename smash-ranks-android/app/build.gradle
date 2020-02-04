@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 22005
-        versionName "2.2.5"
+        versionCode 22006
+        versionName "2.2.6"
 
         // needed for androidTest
         testInstrumentationRunner "com.garpr.android.test.AndroidTestRunner"
@@ -110,6 +110,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
+
+    // AndroidX SwipeRefreshLayout
+    // https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_layout_version"
 
     // AndroidX Test
     // https://developer.android.com/jetpack/androidx/releases/test

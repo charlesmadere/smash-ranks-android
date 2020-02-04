@@ -34,10 +34,6 @@ class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
     protected val regionHandleUtils: RegionHandleUtils by inject()
     protected val regionRepository: RegionRepository by inject()
 
-    companion object {
-        fun create() = RankingsFragment()
-    }
-
     private fun fetchRankings() {
         viewModel.fetchRankings(regionHandleUtils.getRegion(context))
     }
@@ -149,18 +145,16 @@ class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
         recyclerView.visibility = View.VISIBLE
     }
 
+    companion object {
+        fun create() = RankingsFragment()
+    }
+
     private class Adapter(
             private val identityCardViewListener: IdentityCardView.Listener,
             private val rankingItemViewListeners: RankingItemView.Listeners
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val list = mutableListOf<ListItem>()
-
-        companion object {
-            private const val VIEW_TYPE_IDENTITY = 0
-            private const val VIEW_TYPE_NO_RESULTS = 1
-            private const val VIEW_TYPE_PLAYER = 2
-        }
 
         init {
             setHasStableIds(true)
@@ -243,6 +237,12 @@ class RankingsFragment : BaseFragment(), IdentityCardView.Listener, ListLayout,
             }
 
             notifyDataSetChanged()
+        }
+
+        companion object {
+            private const val VIEW_TYPE_IDENTITY = 0
+            private const val VIEW_TYPE_NO_RESULTS = 1
+            private const val VIEW_TYPE_PLAYER = 2
         }
 
     }

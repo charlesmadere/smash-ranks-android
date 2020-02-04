@@ -34,15 +34,6 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
 
     protected val regionHandleUtils: RegionHandleUtils by inject()
 
-    companion object {
-        private const val TAG = "PlayersActivity"
-
-        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
-            return Intent(context, PlayersActivity::class.java)
-                    .putOptionalExtra(EXTRA_REGION, region)
-        }
-    }
-
     override val activityName = TAG
 
     private fun fetchPlayers() {
@@ -93,6 +84,7 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
         super.onViewsBound()
 
         toolbar.subtitleText = regionHandleUtils.getRegion(this).displayName
+        toolbar.searchableListener = this
 
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
@@ -135,17 +127,20 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
         viewModel.search(query)
     }
 
+    companion object {
+        private const val TAG = "PlayersActivity"
+
+        fun getLaunchIntent(context: Context, region: Region? = null): Intent {
+            return Intent(context, PlayersActivity::class.java)
+                    .putOptionalExtra(EXTRA_REGION, region)
+        }
+    }
+
     private class Adapter(
             private val playerItemViewListeners: PlayerItemView.Listeners
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val list = mutableListOf<PlayerListItem>()
-
-        companion object {
-            private const val VIEW_TYPE_DIVIDER = 0
-            private const val VIEW_TYPE_NO_RESULTS = 1
-            private const val VIEW_TYPE_PLAYER = 2
-        }
 
         init {
             setHasStableIds(true)
@@ -221,6 +216,12 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
             }
 
             notifyDataSetChanged()
+        }
+
+        companion object {
+            private const val VIEW_TYPE_DIVIDER = 0
+            private const val VIEW_TYPE_NO_RESULTS = 1
+            private const val VIEW_TYPE_PLAYER = 2
         }
 
     }

@@ -51,24 +51,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
     }
 
-    companion object {
-        const val TAG = "HomeActivity"
-        private val CNAME = HomeActivity::class.java.canonicalName
-        private val EXTRA_INITIAL_POSITION = "$CNAME.InitialPosition"
-        private const val KEY_CURRENT_POSITION = "CurrentPosition"
-
-        fun getLaunchIntent(context: Context, initialPosition: HomeTab? = null,
-                restartActivityTask: Boolean = false): Intent {
-            var intent = Intent(context, HomeActivity::class.java)
-
-            if (restartActivityTask) {
-                intent = Intent.makeRestartActivityTask(intent.component)
-            }
-
-            return intent.putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
-        }
-    }
-
     private fun initListeners() {
         homeViewModel.stateLiveData.observe(this, Observer {
             refreshState(it)
@@ -143,6 +125,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override fun onViewsBound() {
         super.onViewsBound()
 
+        toolbar.searchableListener = this
         toolbar.listeners = this
 
         bottomNavigationView.setOnNavigationItemReselectedListener(this)
@@ -201,6 +184,24 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         }
 
         bottomNavigationView.menu.findItem(itemId).isChecked = true
+    }
+
+    companion object {
+        const val TAG = "HomeActivity"
+        private val CNAME = HomeActivity::class.java.canonicalName
+        private val EXTRA_INITIAL_POSITION = "$CNAME.InitialPosition"
+        private const val KEY_CURRENT_POSITION = "CurrentPosition"
+
+        fun getLaunchIntent(context: Context, initialPosition: HomeTab? = null,
+                restartActivityTask: Boolean = false): Intent {
+            var intent = Intent(context, HomeActivity::class.java)
+
+            if (restartActivityTask) {
+                intent = Intent.makeRestartActivityTask(intent.component)
+            }
+
+            return intent.putOptionalExtra(EXTRA_INITIAL_POSITION, initialPosition)
+        }
     }
 
 }

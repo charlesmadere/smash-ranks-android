@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <com.garpr.android.features.setIdentity.SetIdentityToolbar
+        android:hint="@string/search_players_"
         android:id="@+id/toolbar"
         app:showUpNavigation="true"
         app:titleText="@string/set_identity"

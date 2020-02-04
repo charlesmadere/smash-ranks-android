@@ -51,27 +51,6 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
         }
     }
 
-    companion object {
-        private const val TAG = "TournamentActivity"
-        private val CNAME = TournamentActivity::class.java.canonicalName
-        private val EXTRA_TOURNAMENT_ID = "$CNAME.TournamentId"
-
-        fun getLaunchIntent(context: Context, tournament: AbsTournament,
-                region: Region? = null): Intent {
-            return getLaunchIntent(context, tournament.id, region)
-        }
-
-        fun getLaunchIntent(context: Context, match: TournamentMatch, region: Region? = null): Intent {
-            return getLaunchIntent(context, match.tournament.id, region)
-        }
-
-        fun getLaunchIntent(context: Context, tournamentId: String, region: Region? = null): Intent {
-            return Intent(context, TournamentActivity::class.java)
-                    .putExtra(EXTRA_TOURNAMENT_ID, tournamentId)
-                    .putOptionalExtra(EXTRA_REGION, region)
-        }
-    }
-
     override val activityName = TAG
 
     private fun checkNameAndDateViewScrollStates() {
@@ -142,6 +121,8 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
     override fun onViewsBound() {
         super.onViewsBound()
 
+        toolbar.searchableListener = this
+
         appBarLayout.addOnOffsetChangedListener(this)
         tournamentInfoView.listeners = this
         tournamentTabsView.onTabClickListener = this
@@ -189,6 +170,27 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
 
     override fun search(query: String?) {
         viewModel.search(query)
+    }
+
+    companion object {
+        private const val TAG = "TournamentActivity"
+        private val CNAME = TournamentActivity::class.java.canonicalName
+        private val EXTRA_TOURNAMENT_ID = "$CNAME.TournamentId"
+
+        fun getLaunchIntent(context: Context, tournament: AbsTournament,
+                region: Region? = null): Intent {
+            return getLaunchIntent(context, tournament.id, region)
+        }
+
+        fun getLaunchIntent(context: Context, match: TournamentMatch, region: Region? = null): Intent {
+            return getLaunchIntent(context, match.tournament.id, region)
+        }
+
+        fun getLaunchIntent(context: Context, tournamentId: String, region: Region? = null): Intent {
+            return Intent(context, TournamentActivity::class.java)
+                    .putExtra(EXTRA_TOURNAMENT_ID, tournamentId)
+                    .putOptionalExtra(EXTRA_REGION, region)
+        }
     }
 
 }

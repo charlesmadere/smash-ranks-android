@@ -47,28 +47,6 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     protected val regionHandleUtils: RegionHandleUtils by inject()
     protected val shareUtils: ShareUtils by inject()
 
-    companion object {
-        private const val TAG = "PlayerActivity"
-        private val CNAME = PlayerActivity::class.java.canonicalName
-        private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
-
-        fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region? = null): Intent {
-            var regionCopy = region
-
-            if (player is FavoritePlayer) {
-                regionCopy = player.region
-            }
-
-            return getLaunchIntent(context, player.id, regionCopy)
-        }
-
-        fun getLaunchIntent(context: Context, playerId: String, region: Region? = null): Intent {
-            return Intent(context, PlayerActivity::class.java)
-                    .putExtra(EXTRA_PLAYER_ID, playerId)
-                    .putOptionalExtra(EXTRA_REGION, region)
-        }
-    }
-
     override val activityName = TAG
 
     private fun checkNameAndRegionViewScrollStates() {
@@ -186,6 +164,8 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     override fun onViewsBound() {
         super.onViewsBound()
 
+        toolbar.searchableListener = this
+
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.addOnScrollListener(onScrollListener)
@@ -225,6 +205,28 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         viewModel.search(query)
     }
 
+    companion object {
+        private const val TAG = "PlayerActivity"
+        private val CNAME = PlayerActivity::class.java.canonicalName
+        private val EXTRA_PLAYER_ID = "$CNAME.PlayerId"
+
+        fun getLaunchIntent(context: Context, player: AbsPlayer, region: Region? = null): Intent {
+            var regionCopy = region
+
+            if (player is FavoritePlayer) {
+                regionCopy = player.region
+            }
+
+            return getLaunchIntent(context, player.id, regionCopy)
+        }
+
+        fun getLaunchIntent(context: Context, playerId: String, region: Region? = null): Intent {
+            return Intent(context, PlayerActivity::class.java)
+                    .putExtra(EXTRA_PLAYER_ID, playerId)
+                    .putOptionalExtra(EXTRA_REGION, region)
+        }
+    }
+
     private class Adapter(
             private val matchItemViewListeners: MatchItemView.Listeners,
             private val playerProfileItemViewListeners: PlayerProfileItemView.Listeners,
@@ -236,13 +238,6 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         private var player: FullPlayer? = null
         private val list = mutableListOf<ListItem>()
         private var smashCompetitor: SmashCompetitor? = null
-
-        companion object {
-            private const val VIEW_TYPE_MATCH = 0
-            private const val VIEW_TYPE_NO_MATCHES = 1
-            private const val VIEW_TYPE_PLAYER = 2
-            private const val VIEW_TYPE_TOURNAMENT = 3
-        }
 
         init {
             setHasStableIds(true)
@@ -328,6 +323,13 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             this.smashCompetitor = smashCompetitor
 
             notifyDataSetChanged()
+        }
+
+        companion object {
+            private const val VIEW_TYPE_MATCH = 0
+            private const val VIEW_TYPE_NO_MATCHES = 1
+            private const val VIEW_TYPE_PLAYER = 2
+            private const val VIEW_TYPE_TOURNAMENT = 3
         }
 
     }
