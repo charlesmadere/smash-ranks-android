@@ -125,7 +125,7 @@ class PlayerViewModel(
                 .subscribe({ (bundle, favoritePlayers, identity) ->
                     val list = createList(bundle, identity.orNull())
 
-                    val showSearchIcon = list?.any { listItem ->
+                    val showSearchIcon: Boolean = list?.any { listItem ->
                         listItem is ListItem.Match
                     } == true
 
