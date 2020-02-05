@@ -88,7 +88,7 @@ class SplashActivity : BaseActivity(), SplashCardView.Listeners {
     private fun startHomeActivity() {
         timber.d(TAG, "starting ${HomeActivity.TAG}...")
         startActivity(HomeActivity.getLaunchIntent(context = this))
-        finish()
+        supportFinishAfterTransition()
     }
 
 }
