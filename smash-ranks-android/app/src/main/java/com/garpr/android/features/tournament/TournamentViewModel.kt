@@ -37,10 +37,6 @@ class TournamentViewModel(
             _stateLiveData.postValue(value)
         }
 
-    companion object {
-        private const val TAG = "TournamentViewModel"
-    }
-
     init {
         initListeners()
     }
@@ -238,6 +234,10 @@ class TournamentViewModel(
                 .filter { listItem ->
                     listItem.player.name.contains(trimmedQuery, ignoreCase = true)
                 }
+    }
+
+    companion object {
+        private const val TAG = "TournamentViewModel"
     }
 
     sealed class MatchListItem {

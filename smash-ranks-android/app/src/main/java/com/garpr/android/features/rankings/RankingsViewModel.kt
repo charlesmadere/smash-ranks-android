@@ -45,11 +45,6 @@ class RankingsViewModel(
             _stateLiveData.postValue(value)
         }
 
-    companion object {
-        private const val TAG = "RankingsViewModel"
-        private val NUMBER_FORMAT = NumberFormat.getInstance()
-    }
-
     init {
         initListeners()
     }
@@ -263,6 +258,11 @@ class RankingsViewModel(
         } else {
             results
         }
+    }
+
+    companion object {
+        private const val TAG = "RankingsViewModel"
+        private val NUMBER_FORMAT = NumberFormat.getInstance()
     }
 
     sealed class ListItem {
