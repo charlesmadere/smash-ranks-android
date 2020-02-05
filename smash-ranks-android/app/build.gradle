@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 22006
-        versionName "2.2.6"
+        versionCode 22007
+        versionName "2.2.7"
 
         // needed for androidTest
         testInstrumentationRunner "com.garpr.android.test.AndroidTestRunner"
@@ -92,6 +92,10 @@ dependencies {
     // AndroidX ConstraintLayout
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+
+    // AndroidX Core
+    // https://developer.android.com/jetpack/androidx/releases/core
+    implementation "androidx.core:core:$core_version"
 
     // AndroidX Fragment
     // https://developer.android.com/jetpack/androidx/releases/fragment

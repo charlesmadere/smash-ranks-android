@@ -465,6 +465,26 @@ class PlayerViewModelTest : BaseViewModelTest() {
         assertNull(state?.searchResults)
     }
 
+    @Test
+    fun testSearchWithWadu() {
+        viewModel.initialize(NORCAL, CHARLEZARD_ID)
+
+        var state: PlayerViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.fetchPlayer()
+        viewModel.search("wadu")
+
+        assertNotNull(state?.searchResults)
+        assertEquals(1, state?.searchResults?.size)
+
+        val noResults = state?.searchResults?.get(0) as ListItem.NoResults
+        assertEquals("wadu", noResults.query)
+    }
+
     private class PlayerMatchesRepositoryOverride(
             internal var playerMatchesBundle: PlayerMatchesBundle? = PLAYER_MATCHES_BUNDLE
     ) : PlayerMatchesRepository {

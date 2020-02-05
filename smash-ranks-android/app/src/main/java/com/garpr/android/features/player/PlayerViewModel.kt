@@ -25,6 +25,7 @@ import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.Single
 import io.reactivex.functions.Function3
+import java.util.Collections
 
 class PlayerViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
@@ -55,10 +56,6 @@ class PlayerViewModel(
         }
 
     private var playerId: String? = null
-
-    companion object {
-        private const val TAG = "PlayerViewModel"
-    }
 
     init {
         initListeners()
@@ -128,7 +125,7 @@ class PlayerViewModel(
                 .subscribe({ (bundle, favoritePlayers, identity) ->
                     val list = createList(bundle, identity.orNull())
 
-                    val showSearchIcon = list?.any { listItem ->
+                    val showSearchIcon: Boolean = list?.any { listItem ->
                         listItem is ListItem.Match
                     } == true
 
@@ -325,7 +322,15 @@ class PlayerViewModel(
             }
         }
 
-        return results
+        return if (results.isEmpty()) {
+            Collections.singletonList(ListItem.NoResults(trimmedQuery))
+        } else {
+            results
+        }
+    }
+
+    companion object {
+        private const val TAG = "PlayerViewModel"
     }
 
     sealed class ListItem {
@@ -342,8 +347,14 @@ class PlayerViewModel(
             override val listId: Long = Long.MIN_VALUE + 1L
         }
 
-        object Player : ListItem() {
+        class NoResults(
+                val query: String
+        ) : ListItem() {
             override val listId: Long = Long.MIN_VALUE + 2L
+        }
+
+        object Player : ListItem() {
+            override val listId: Long = Long.MIN_VALUE + 3L
         }
 
         class Tournament(

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.util.AttributeSet
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.garpr.android.R
@@ -17,10 +18,6 @@ class NightModePreferenceView @JvmOverloads constructor(
 
     var listener: Listener? = null
     private var nightMode: NightMode? = null
-
-    interface Listener {
-        fun onNightModeChange(v: NightModePreferenceView, nightMode: NightMode)
-    }
 
     init {
         titleText = context.getText(R.string.theme)
@@ -40,13 +37,8 @@ class NightModePreferenceView @JvmOverloads constructor(
             return
         }
 
-        AlertDialog.Builder(context)
-                .setMessage(R.string.the_app_will_now_restart)
-                .setNeutralButton(R.string.ok, null)
-                .setOnDismissListener {
-                    listener?.onNightModeChange(this@NightModePreferenceView, selected)
-                }
-                .show()
+        Toast.makeText(context, R.string.app_restarted_to_apply_new_theme_, Toast.LENGTH_SHORT).show()
+        listener?.onNightModeChange(this, selected)
     }
 
     override fun onClick(v: View) {
@@ -65,6 +57,10 @@ class NightModePreferenceView @JvmOverloads constructor(
     fun setContent(nightMode: NightMode) {
         this.nightMode = nightMode
         descriptionText = resources.getText(nightMode.textResId)
+    }
+
+    interface Listener {
+        fun onNightModeChange(v: NightModePreferenceView, nightMode: NightMode)
     }
 
 }

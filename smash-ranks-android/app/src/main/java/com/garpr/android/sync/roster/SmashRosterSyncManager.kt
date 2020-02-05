@@ -8,8 +8,6 @@ interface SmashRosterSyncManager {
 
     var isEnabled: Boolean
 
-    val isSyncing: Boolean
-
     val isSyncingObservable: Observable<Boolean>
 
     val syncResult: SmashRosterSyncResult?

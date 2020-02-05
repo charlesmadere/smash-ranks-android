@@ -146,11 +146,6 @@ class SmashRosterSyncManagerTest : BaseAndroidTest() {
     }
 
     @Test
-    fun testInitialIsSyncing() {
-        assertFalse(smashRosterSyncManager.isSyncing)
-    }
-
-    @Test
     fun testIsEnabled() {
         assertTrue(smashRosterSyncManager.isEnabled)
 

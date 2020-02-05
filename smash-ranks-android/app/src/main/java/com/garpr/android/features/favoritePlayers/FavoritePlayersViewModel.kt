@@ -13,6 +13,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import io.reactivex.functions.BiFunction
+import java.util.Collections
 
 class FavoritePlayersViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
@@ -96,7 +97,7 @@ class FavoritePlayersViewModel(
                 }
 
         return if (results.isEmpty()) {
-            listOf(ListItem.NoResults(trimmedQuery))
+            Collections.singletonList(ListItem.NoResults(trimmedQuery))
         } else {
             results
         }
@@ -115,7 +116,7 @@ class FavoritePlayersViewModel(
         class NoResults(
                 val query: String
         ) : ListItem() {
-            override val listId: Long = Long.MAX_VALUE - 1L
+            override val listId: Long = Long.MIN_VALUE + 1L
         }
     }
 

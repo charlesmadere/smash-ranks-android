@@ -19,6 +19,7 @@ import com.garpr.android.wrappers.WorkManagerWrapper
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.CompletableSubject
 import java.util.concurrent.TimeUnit
 
 class SmashRosterSyncManagerImpl(
@@ -41,7 +42,7 @@ class SmashRosterSyncManagerImpl(
             enableOrDisable()
         }
 
-    override var isSyncing: Boolean
+    private var isSyncing: Boolean
         get() = isSyncingSubject.requireValue()
         set(value) = isSyncingSubject.onNext(value)
 
@@ -118,7 +119,6 @@ class SmashRosterSyncManagerImpl(
                 })
     }
 
-    @Synchronized
     @WorkerThread
     private fun performSync() {
         if (isSyncing) {
@@ -168,10 +168,22 @@ class SmashRosterSyncManagerImpl(
     }
 
     override fun sync(): Completable {
-        return Completable.create { emitter ->
-            performSync()
-            emitter.onComplete()
-        }
+        val subject = CompletableSubject.create()
+
+        val disposable = isSyncingObservable
+                .filter { isSyncing -> !isSyncing }
+                .doOnNext {
+                    subject.onComplete()
+                }
+                .subscribe()
+
+        return subject
+                .doOnComplete {
+                    disposable.dispose()
+                }
+                .doOnSubscribe {
+                    performSync()
+                }
     }
 
 }

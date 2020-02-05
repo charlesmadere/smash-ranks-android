@@ -5,6 +5,7 @@
     <string name="x_activity_requirements">%1$s Activity Requirements</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
+    <string name="app_restarted_to_apply_new_theme_">App restarted to apply new theme…</string>
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
     <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
     <string name="auto">Auto</string>
@@ -140,7 +141,6 @@
     <string name="system">System</string>
     <string name="tag_and_message">%1$s: %2$s</string>
     <string name="theme">Theme</string>
-    <string name="the_app_will_now_restart">The app will now restart.</string>
     <string name="these_two_competitors_have_never_played_in_tournament_before">These two competitors have never played in tournament before.</string>
     <string name="tournaments">Tournaments</string>
     <string name="x_tournaments_">%1$s tournaments…</string>

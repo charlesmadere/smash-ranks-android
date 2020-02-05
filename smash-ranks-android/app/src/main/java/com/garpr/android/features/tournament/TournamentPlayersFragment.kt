@@ -11,6 +11,7 @@ import com.garpr.android.R
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.showAddOrRemoveFavoritePlayerDialog
 import com.garpr.android.features.common.fragments.BaseFragment
+import com.garpr.android.features.common.views.NoResultsItemView
 import com.garpr.android.features.player.PlayerActivity
 import com.garpr.android.features.tournament.TournamentViewModel.PlayerListItem
 import com.garpr.android.misc.ListLayout
@@ -27,16 +28,12 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
 
     protected val regionHandleUtils: RegionHandleUtils by inject()
 
-    companion object {
-        fun create(): TournamentPlayersFragment = TournamentPlayersFragment()
-    }
-
     override fun getRecyclerView(): RecyclerView? {
         return recyclerView
     }
 
     private fun initListeners() {
-        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.playersStateLiveData.observe(viewLifecycleOwner, Observer {
             refreshState(it)
         })
     }
@@ -49,13 +46,11 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
     }
 
     override fun onClick(v: TournamentPlayerItemView) {
-        val intent = PlayerActivity.getLaunchIntent(
+        startActivity(PlayerActivity.getLaunchIntent(
                 context = requireContext(),
                 player = v.player,
                 region = regionHandleUtils.getRegion(context)
-        )
-
-        startActivity(intent)
+        ))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -76,21 +71,25 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
         initListeners()
     }
 
-    private fun refreshState(state: TournamentViewModel.State) {
-        if (state.showPlayersEmpty) {
+    private fun refreshState(state: TournamentViewModel.PlayersState) {
+        if (state.isEmpty) {
             adapter.clear()
             recyclerView.visibility = View.GONE
             empty.visibility = View.VISIBLE
         } else {
-            if (state.playersSearchResults != null) {
-                adapter.set(state.playersSearchResults)
+            if (state.searchResults != null) {
+                adapter.set(state.searchResults)
             } else {
-                adapter.set(state.players)
+                adapter.set(state.list)
             }
 
             empty.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
+    }
+
+    companion object {
+        fun create() = TournamentPlayersFragment()
     }
 
     private class Adapter(
@@ -99,12 +98,12 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
 
         private val list = mutableListOf<PlayerListItem>()
 
-        companion object {
-            private const val VIEW_TYPE_PLAYER = 0
-        }
-
         init {
             setHasStableIds(true)
+        }
+
+        private fun bindNoResults(holder: NoResultsViewHolder, item: PlayerListItem.NoResults) {
+            holder.noResultsItemView.setContent(item.query)
         }
 
         private fun bindPlayer(holder: TournamentPlayerViewHolder, item: PlayerListItem.Player) {
@@ -119,22 +118,20 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
             notifyDataSetChanged()
         }
 
-        override fun getItemCount(): Int {
-            return list.size
-        }
+        override fun getItemCount(): Int = list.size
 
-        override fun getItemId(position: Int): Long {
-            return list[position].listId
-        }
+        override fun getItemId(position: Int): Long = list[position].listId
 
         override fun getItemViewType(position: Int): Int {
             return when (list[position]) {
+                is PlayerListItem.NoResults -> VIEW_TYPE_NO_RESULTS
                 is PlayerListItem.Player -> VIEW_TYPE_PLAYER
             }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (val item = list[position]) {
+                is PlayerListItem.NoResults -> bindNoResults(holder as NoResultsViewHolder, item)
                 is PlayerListItem.Player -> bindPlayer(holder as TournamentPlayerViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
@@ -144,6 +141,8 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
             val inflater = parent.layoutInflater
 
             return when (viewType) {
+                VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
+                        R.layout.item_no_results, parent, false))
                 VIEW_TYPE_PLAYER -> TournamentPlayerViewHolder(tournamentPlayerItemViewListeners,
                         inflater.inflate(R.layout.item_tournament_player, parent, false))
                 else -> throw IllegalArgumentException("unknown viewType: $viewType")
@@ -160,6 +159,15 @@ class TournamentPlayersFragment : BaseFragment(), ListLayout, TournamentPlayerIt
             notifyDataSetChanged()
         }
 
+        companion object {
+            private const val VIEW_TYPE_NO_RESULTS = 0
+            private const val VIEW_TYPE_PLAYER = 1
+        }
+
+    }
+
+    private class NoResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val noResultsItemView: NoResultsItemView = itemView as NoResultsItemView
     }
 
     private class TournamentPlayerViewHolder(
