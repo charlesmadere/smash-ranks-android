@@ -20,6 +20,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -140,9 +141,19 @@ class TournamentViewModelTest : BaseViewModelTest() {
     @Test
     fun testFetchTournamentWithEmptyTournament() {
         var state: TournamentViewModel.State? = null
+        var matchesState: TournamentViewModel.MatchesState? = null
+        var playersState: TournamentViewModel.PlayersState? = null
 
         viewModel.stateLiveData.observeForever {
             state = it
+        }
+
+        viewModel.matchesStateLiveData.observeForever {
+            matchesState = it
+        }
+
+        viewModel.playersStateLiveData.observeForever {
+            playersState = it
         }
 
         tournamentsRepository.fullTournament = EMPTY_TOURNAMENT
@@ -153,24 +164,38 @@ class TournamentViewModelTest : BaseViewModelTest() {
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isFetching)
         assertEquals(false, state?.isRefreshEnabled)
-        assertEquals(true, state?.showMatchesEmpty)
-        assertEquals(true, state?.showPlayersEmpty)
         assertEquals(false, state?.showSearchIcon)
         assertFalse(state?.subtitleText.isNullOrBlank())
         assertFalse(state?.titleText.isNullOrBlank())
         assertEquals(EMPTY_TOURNAMENT.id, state?.tournament?.id)
-        assertTrue(state?.matches.isNullOrEmpty())
-        assertTrue(state?.matchesSearchResults.isNullOrEmpty())
-        assertTrue(state?.players.isNullOrEmpty())
-        assertTrue(state?.playersSearchResults.isNullOrEmpty())
+
+        assertNotNull(matchesState)
+        assertEquals(true, matchesState?.isEmpty)
+        assertTrue(matchesState?.list.isNullOrEmpty())
+        assertNull(matchesState?.searchResults)
+
+        assertNotNull(playersState)
+        assertEquals(true, playersState?.isEmpty)
+        assertTrue(playersState?.list.isNullOrEmpty())
+        assertNull(playersState?.searchResults)
     }
 
     @Test
     fun testFetchTournamentWithMeleeAtTheMade119() {
         var state: TournamentViewModel.State? = null
+        var matchesState: TournamentViewModel.MatchesState? = null
+        var playersState: TournamentViewModel.PlayersState? = null
 
         viewModel.stateLiveData.observeForever {
             state = it
+        }
+
+        viewModel.matchesStateLiveData.observeForever {
+            matchesState = it
+        }
+
+        viewModel.playersStateLiveData.observeForever {
+            playersState = it
         }
 
         tournamentsRepository.fullTournament = MELEE_AT_THE_MADE_119
@@ -181,118 +206,177 @@ class TournamentViewModelTest : BaseViewModelTest() {
         assertEquals(false, state?.hasError)
         assertEquals(false, state?.isFetching)
         assertEquals(false, state?.isRefreshEnabled)
-        assertEquals(false, state?.showMatchesEmpty)
-        assertEquals(false, state?.showPlayersEmpty)
         assertEquals(true, state?.showSearchIcon)
         assertFalse(state?.subtitleText.isNullOrBlank())
         assertFalse(state?.titleText.isNullOrBlank())
         assertEquals(MELEE_AT_THE_MADE_119.id, state?.tournament?.id)
-        assertEquals(7, state?.matches?.size)
-        assertEquals(CHARLEZARD_VS_IMYT, (state?.matches?.get(0) as MatchListItem.Match).match)
-        assertEquals(CHARLEZARD_VS_MIKKUZ, (state?.matches?.get(1) as MatchListItem.Match).match)
-        assertEquals(IMYT_VS_MIKKUZ, (state?.matches?.get(2) as MatchListItem.Match).match)
-        assertEquals(IMYT_VS_SNAP_0, (state?.matches?.get(3) as MatchListItem.Match).match)
-        assertEquals(MIKKUZ_VS_SNAP, (state?.matches?.get(4) as MatchListItem.Match).match)
-        assertEquals(IMYT_VS_SNAP_1, (state?.matches?.get(5) as MatchListItem.Match).match)
-        assertEquals(IMYT_VS_SNAP_2, (state?.matches?.get(6) as MatchListItem.Match).match)
-        assertTrue(state?.matchesSearchResults.isNullOrEmpty())
-        assertEquals(4, state?.players?.size)
-        assertEquals(CHARLEZARD, (state?.players?.get(0) as PlayerListItem.Player).player)
-        assertEquals(IMYT, (state?.players?.get(1) as PlayerListItem.Player).player)
-        assertEquals(MIKKUZ, (state?.players?.get(2) as PlayerListItem.Player).player)
-        assertEquals(SNAP, (state?.players?.get(3) as PlayerListItem.Player).player)
-        assertTrue(state?.playersSearchResults.isNullOrEmpty())
+
+        assertNotNull(matchesState)
+        assertEquals(false, matchesState?.isEmpty)
+        assertEquals(7, matchesState?.list?.size)
+        assertEquals(CHARLEZARD_VS_IMYT, (matchesState?.list?.get(0) as MatchListItem.Match).match)
+        assertEquals(CHARLEZARD_VS_MIKKUZ, (matchesState?.list?.get(1) as MatchListItem.Match).match)
+        assertEquals(IMYT_VS_MIKKUZ, (matchesState?.list?.get(2) as MatchListItem.Match).match)
+        assertEquals(IMYT_VS_SNAP_0, (matchesState?.list?.get(3) as MatchListItem.Match).match)
+        assertEquals(MIKKUZ_VS_SNAP, (matchesState?.list?.get(4) as MatchListItem.Match).match)
+        assertEquals(IMYT_VS_SNAP_1, (matchesState?.list?.get(5) as MatchListItem.Match).match)
+        assertEquals(IMYT_VS_SNAP_2, (matchesState?.list?.get(6) as MatchListItem.Match).match)
+        assertNull(matchesState?.searchResults)
+
+        assertNotNull(playersState)
+        assertEquals(false, playersState?.isEmpty)
+        assertEquals(4, playersState?.list?.size)
+        assertEquals(CHARLEZARD, (playersState?.list?.get(0) as PlayerListItem.Player).player)
+        assertEquals(IMYT, (playersState?.list?.get(1) as PlayerListItem.Player).player)
+        assertEquals(MIKKUZ, (playersState?.list?.get(2) as PlayerListItem.Player).player)
+        assertEquals(SNAP, (playersState?.list?.get(3) as PlayerListItem.Player).player)
+        assertNull(playersState?.searchResults)
     }
 
     @Test
     fun testFetchTournamentWithoutCallingInitialize() {
-        var throwable: Throwable? = null
-
-        try {
+        assertThrows(Throwable::class.java) {
             viewModel.fetchTournament()
-        } catch (t: Throwable) {
-            throwable = t
         }
-
-        assertNotNull(throwable)
     }
 
     @Test
-    fun testSearchMeleeAtTheMade119() {
-        var state: TournamentViewModel.State? = null
+    fun testSearchMeleeAtTheMade119WithK() {
+        var matchesState: TournamentViewModel.MatchesState? = null
+        var playersState: TournamentViewModel.PlayersState? = null
 
-        viewModel.stateLiveData.observeForever {
-            state = it
+        viewModel.matchesStateLiveData.observeForever {
+            matchesState = it
+        }
+
+        viewModel.playersStateLiveData.observeForever {
+            playersState = it
         }
 
         tournamentsRepository.fullTournament = MELEE_AT_THE_MADE_119
         viewModel.initialize(NORCAL, MELEE_AT_THE_MADE_119.id)
         viewModel.fetchTournament()
-
         viewModel.search("k")
-        assertEquals(3, state?.matchesSearchResults?.size)
-        assertEquals(CHARLEZARD_VS_MIKKUZ, (state?.matchesSearchResults?.get(0) as MatchListItem.Match).match)
-        assertEquals(IMYT_VS_MIKKUZ, (state?.matchesSearchResults?.get(1) as MatchListItem.Match).match)
-        assertEquals(MIKKUZ_VS_SNAP, (state?.matchesSearchResults?.get(2) as MatchListItem.Match).match)
-        assertEquals(1, state?.playersSearchResults?.size)
-        assertEquals(MIKKUZ, (state?.playersSearchResults?.get(0) as PlayerListItem.Player).player)
+
+        assertNotNull(matchesState)
+        assertEquals(3, matchesState?.searchResults?.size)
+        assertEquals(CHARLEZARD_VS_MIKKUZ, (matchesState?.searchResults?.get(0) as MatchListItem.Match).match)
+        assertEquals(IMYT_VS_MIKKUZ, (matchesState?.searchResults?.get(1) as MatchListItem.Match).match)
+        assertEquals(MIKKUZ_VS_SNAP, (matchesState?.searchResults?.get(2) as MatchListItem.Match).match)
+
+        assertNotNull(playersState)
+        assertEquals(1, playersState?.searchResults?.size)
+        assertEquals(MIKKUZ, (playersState?.searchResults?.get(0) as PlayerListItem.Player).player)
     }
 
     @Test
     fun testSearchMeleeAtTheMade119WithBlankString() {
-        var state: TournamentViewModel.State? = null
+        var matchesState: TournamentViewModel.MatchesState? = null
+        var playersState: TournamentViewModel.PlayersState? = null
 
-        viewModel.stateLiveData.observeForever {
-            state = it
+        viewModel.matchesStateLiveData.observeForever {
+            matchesState = it
+        }
+
+        viewModel.playersStateLiveData.observeForever {
+            playersState = it
         }
 
         tournamentsRepository.fullTournament = MELEE_AT_THE_MADE_119
         viewModel.initialize(NORCAL, MELEE_AT_THE_MADE_119.id)
         viewModel.fetchTournament()
-
         viewModel.search(" ")
-        assertEquals(7, state?.matches?.size)
-        assertNull(state?.matchesSearchResults)
-        assertEquals(4, state?.players?.size)
-        assertNull(state?.playersSearchResults)
+
+        assertNotNull(matchesState)
+        assertEquals(7, matchesState?.list?.size)
+        assertNull(matchesState?.searchResults)
+
+        assertNotNull(playersState)
+        assertEquals(4, playersState?.list?.size)
+        assertNull(playersState?.searchResults)
     }
 
     @Test
     fun testSearchMeleeAtTheMade119WithEmptyString() {
-        var state: TournamentViewModel.State? = null
+        var matchesState: TournamentViewModel.MatchesState? = null
+        var playersState: TournamentViewModel.PlayersState? = null
 
-        viewModel.stateLiveData.observeForever {
-            state = it
+        viewModel.matchesStateLiveData.observeForever {
+            matchesState = it
+        }
+
+        viewModel.playersStateLiveData.observeForever {
+            playersState = it
         }
 
         tournamentsRepository.fullTournament = MELEE_AT_THE_MADE_119
         viewModel.initialize(NORCAL, MELEE_AT_THE_MADE_119.id)
         viewModel.fetchTournament()
-
         viewModel.search("")
-        assertEquals(7, state?.matches?.size)
-        assertNull(state?.matchesSearchResults)
-        assertEquals(4, state?.players?.size)
-        assertNull(state?.playersSearchResults)
+
+        assertNotNull(matchesState)
+        assertEquals(7, matchesState?.list?.size)
+        assertNull(matchesState?.searchResults)
+
+        assertNotNull(playersState)
+        assertEquals(4, playersState?.list?.size)
+        assertNull(playersState?.searchResults)
     }
 
     @Test
     fun testSearchMeleeAtTheMade119WithNullString() {
-        var state: TournamentViewModel.State? = null
+        var matchesState: TournamentViewModel.MatchesState? = null
+        var playersState: TournamentViewModel.PlayersState? = null
 
-        viewModel.stateLiveData.observeForever {
-            state = it
+        viewModel.matchesStateLiveData.observeForever {
+            matchesState = it
+        }
+
+        viewModel.playersStateLiveData.observeForever {
+            playersState = it
         }
 
         tournamentsRepository.fullTournament = MELEE_AT_THE_MADE_119
         viewModel.initialize(NORCAL, MELEE_AT_THE_MADE_119.id)
         viewModel.fetchTournament()
-
         viewModel.search(null)
-        assertEquals(7, state?.matches?.size)
-        assertNull(state?.matchesSearchResults)
-        assertEquals(4, state?.players?.size)
-        assertNull(state?.playersSearchResults)
+
+        assertNotNull(matchesState)
+        assertEquals(7, matchesState?.list?.size)
+        assertNull(matchesState?.searchResults)
+
+        assertNotNull(playersState)
+        assertEquals(4, playersState?.list?.size)
+        assertNull(playersState?.searchResults)
+    }
+
+    @Test
+    fun testSearchMeleeAtTheMade119WithWadu() {
+        var matchesState: TournamentViewModel.MatchesState? = null
+        var playersState: TournamentViewModel.PlayersState? = null
+
+        viewModel.matchesStateLiveData.observeForever {
+            matchesState = it
+        }
+
+        viewModel.playersStateLiveData.observeForever {
+            playersState = it
+        }
+
+        tournamentsRepository.fullTournament = MELEE_AT_THE_MADE_119
+        viewModel.initialize(NORCAL, MELEE_AT_THE_MADE_119.id)
+        viewModel.fetchTournament()
+        viewModel.search("wadu")
+
+        assertNotNull(matchesState)
+        assertEquals(1, matchesState?.searchResults?.size)
+        assertEquals(true, matchesState?.searchResults?.get(0) is MatchListItem.NoResults)
+        assertEquals("wadu", (matchesState?.searchResults?.get(0) as MatchListItem.NoResults).query)
+
+        assertNotNull(playersState)
+        assertEquals(1, playersState?.searchResults?.size)
+        assertEquals(true, playersState?.searchResults?.get(0) is PlayerListItem.NoResults)
+        assertEquals("wadu", (playersState?.searchResults?.get(0) as PlayerListItem.NoResults).query)
     }
 
     private class TournamentsRepositoryOverride(

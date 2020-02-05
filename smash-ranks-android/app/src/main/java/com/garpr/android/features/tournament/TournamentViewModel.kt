@@ -16,6 +16,7 @@ import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.TournamentsRepository
 import io.reactivex.functions.BiFunction
+import java.util.Collections
 
 class TournamentViewModel(
         private val identityRepository: IdentityRepository,
@@ -27,6 +28,24 @@ class TournamentViewModel(
 
     private var region: Region? = null
     private var tournamentId: String? = null
+
+    private val _matchesStateLiveData = MutableLiveData<MatchesState>()
+    val matchesStateLiveData: LiveData<MatchesState> = _matchesStateLiveData
+
+    private var matchesState: MatchesState = MatchesState()
+        set(value) {
+            field = value
+            _matchesStateLiveData.postValue(value)
+        }
+
+    private val _playersStateLiveData = MutableLiveData<PlayersState>()
+    val playersStateLiveData: LiveData<PlayersState> = _playersStateLiveData
+
+    private var playersState: PlayersState = PlayersState()
+        set(value) {
+            field = value
+            _playersStateLiveData.postValue(value)
+        }
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -100,15 +119,21 @@ class TournamentViewModel(
                             hasError = false,
                             isFetching = false,
                             isRefreshEnabled = false,
-                            showMatchesEmpty = matches.isNullOrEmpty(),
-                            showPlayersEmpty = players.isNullOrEmpty(),
                             showSearchIcon = !matches.isNullOrEmpty() || !players.isNullOrEmpty(),
                             titleText = tournament.name,
-                            tournament = tournament,
-                            matches = matches,
-                            matchesSearchResults = null,
-                            players = players,
-                            playersSearchResults = null
+                            tournament = tournament
+                    )
+
+                    matchesState = matchesState.copy(
+                            isEmpty = matches.isNullOrEmpty(),
+                            list = matches,
+                            searchResults = null
+                    )
+
+                    playersState = playersState.copy(
+                            isEmpty = players.isNullOrEmpty(),
+                            list = players,
+                            searchResults = null
                     )
                 }, {
                     timber.e(TAG, "Error fetching tournament", it)
@@ -117,15 +142,21 @@ class TournamentViewModel(
                             hasError = true,
                             isFetching = false,
                             isRefreshEnabled = true,
-                            showMatchesEmpty = false,
-                            showPlayersEmpty = false,
                             showSearchIcon = false,
                             titleText = null,
-                            tournament = null,
-                            matches = null,
-                            matchesSearchResults = null,
-                            players = null,
-                            playersSearchResults = null
+                            tournament = null
+                    )
+
+                    matchesState = matchesState.copy(
+                            isEmpty = false,
+                            list = null,
+                            searchResults = null
+                    )
+
+                    playersState = playersState.copy(
+                            isEmpty = false,
+                            list = null,
+                            searchResults = null
                     )
                 }))
     }
@@ -147,16 +178,20 @@ class TournamentViewModel(
 
     @WorkerThread
     private fun refreshListItems(identity: FavoritePlayer?) {
-        val matches = refreshMatchListItems(state.matches, identity)
-        val matchesSearchResults = refreshMatchListItems(state.matchesSearchResults, identity)
-        val players = refreshPlayerListItems(state.players, identity)
-        val playersSearchResults = refreshPlayerListItems(state.playersSearchResults, identity)
+        val matches = refreshMatchListItems(matchesState.list, identity)
+        val matchesSearchResults = refreshMatchListItems(matchesState.searchResults, identity)
 
-        state = state.copy(
-                matches = matches,
-                matchesSearchResults = matchesSearchResults,
-                players = players,
-                playersSearchResults = playersSearchResults
+        matchesState = matchesState.copy(
+                list = matches,
+                searchResults = matchesSearchResults
+        )
+
+        val players = refreshPlayerListItems(playersState.list, identity)
+        val playersSearchResults = refreshPlayerListItems(playersState.searchResults, identity)
+
+        playersState = playersState.copy(
+                list = players,
+                searchResults = playersSearchResults
         )
     }
 
@@ -197,13 +232,13 @@ class TournamentViewModel(
 
     override fun search(query: String?) {
         threadUtils.background.submit {
-            val results = searchMatches(query, state.matches)
-            state = state.copy(matchesSearchResults = results)
+            val results = searchMatches(query, matchesState.list)
+            matchesState = matchesState.copy(searchResults = results)
         }
 
         threadUtils.background.submit {
-            val results = searchPlayers(query, state.players)
-            state = state.copy(playersSearchResults = results)
+            val results = searchPlayers(query, playersState.list)
+            playersState = playersState.copy(searchResults = results)
         }
     }
 
@@ -215,11 +250,17 @@ class TournamentViewModel(
 
         val trimmedQuery = query.trim()
 
-        return list.filterIsInstance(MatchListItem.Match::class.java)
+        val results = list.filterIsInstance(MatchListItem.Match::class.java)
                 .filter { listItem ->
                     listItem.match.winner.name.contains(trimmedQuery, ignoreCase = true) ||
                             listItem.match.loser.name.contains(trimmedQuery, ignoreCase = true)
                 }
+
+        return if (results.isEmpty()) {
+            Collections.singletonList(MatchListItem.NoResults(trimmedQuery))
+        } else {
+            results
+        }
     }
 
     @WorkerThread
@@ -230,10 +271,16 @@ class TournamentViewModel(
 
         val trimmedQuery = query.trim()
 
-        return list.filterIsInstance(PlayerListItem.Player::class.java)
+        val results =  list.filterIsInstance(PlayerListItem.Player::class.java)
                 .filter { listItem ->
                     listItem.player.name.contains(trimmedQuery, ignoreCase = true)
                 }
+
+        return if (results.isEmpty()) {
+            Collections.singletonList(PlayerListItem.NoResults(trimmedQuery))
+        } else {
+            results
+        }
     }
 
     companion object {
@@ -250,10 +297,22 @@ class TournamentViewModel(
         ) : MatchListItem() {
             override val listId: Long = match.hashCode().toLong()
         }
+
+        class NoResults(
+                val query: String
+        ) : MatchListItem() {
+            override val listId: Long = Long.MIN_VALUE + 1L
+        }
     }
 
     sealed class PlayerListItem {
         abstract val listId: Long
+
+        class NoResults(
+                val query: String
+        ) : PlayerListItem() {
+            override val listId: Long = Long.MIN_VALUE + 1L
+        }
 
         data class Player(
                 val player: AbsPlayer,
@@ -263,20 +322,26 @@ class TournamentViewModel(
         }
     }
 
+    data class MatchesState(
+            val isEmpty: Boolean = false,
+            val list: List<MatchListItem>? = null,
+            val searchResults: List<MatchListItem>? = null
+    )
+
+    data class PlayersState(
+            val isEmpty: Boolean = false,
+            val list: List<PlayerListItem>? = null,
+            val searchResults: List<PlayerListItem>? = null
+    )
+
     data class State(
             val hasError: Boolean = false,
             val isFetching: Boolean = false,
             val isRefreshEnabled: Boolean = false,
-            val showMatchesEmpty: Boolean = false,
-            val showPlayersEmpty: Boolean = false,
             val showSearchIcon: Boolean = false,
             val subtitleText: CharSequence? = null,
             val titleText: CharSequence? = null,
-            val tournament: FullTournament? = null,
-            val matches: List<MatchListItem>? = null,
-            val matchesSearchResults: List<MatchListItem>? = null,
-            val players: List<PlayerListItem>? = null,
-            val playersSearchResults: List<PlayerListItem>? = null
+            val tournament: FullTournament? = null
     )
 
 }
