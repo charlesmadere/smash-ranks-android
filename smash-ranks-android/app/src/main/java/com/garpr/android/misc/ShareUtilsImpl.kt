@@ -23,9 +23,9 @@ class ShareUtilsImpl(
         }
 
         val androidUri = AndroidUri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, androidUri)
 
         try {
-            val intent = Intent(Intent.ACTION_VIEW, androidUri)
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
             timber.e(TAG, "Unable to open browser to URI: $androidUri", e)
