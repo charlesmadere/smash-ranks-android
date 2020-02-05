@@ -16,16 +16,21 @@ import org.koin.android.ext.android.inject
 
 abstract class BaseActivity : AppCompatActivity(), Heartbeat, RegionHandle {
 
-    protected val nightModeRepository: NightModeRepository by inject()
-    protected val timber: Timber by inject()
-
-    protected abstract val activityName: String
-
     override val isAlive: Boolean
         get() = !isFinishing && !isDestroyed
 
     override val regionOverride: Region?
         get() = intent?.getParcelableExtra(EXTRA_REGION)
+
+    protected abstract val activityName: String
+
+    protected val nightModeRepository: NightModeRepository by inject()
+    protected val timber: Timber by inject()
+
+    override fun finish() {
+        optHideKeyboard()
+        super.finish()
+    }
 
     open fun navigateUp() {
         val intent = supportParentActivityIntent
