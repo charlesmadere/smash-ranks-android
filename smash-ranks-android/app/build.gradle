@@ -93,6 +93,10 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
 
+    // AndroidX Core
+    // https://developer.android.com/jetpack/androidx/releases/core
+    implementation "androidx.core:core:$core_version"
+
     // AndroidX Fragment
     // https://developer.android.com/jetpack/androidx/releases/fragment
     implementation "androidx.fragment:fragment:$fragment_version"
