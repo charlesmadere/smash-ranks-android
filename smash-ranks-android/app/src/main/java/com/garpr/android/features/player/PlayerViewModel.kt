@@ -305,7 +305,7 @@ class PlayerViewModel(
                     val objectJ = list[j]
 
                     if (objectJ is ListItem.Match) {
-                        if (objectJ.match.opponent.name.contains(trimmedQuery, true)) {
+                        if (objectJ.match.opponent.name.contains(trimmedQuery, ignoreCase = true)) {
                             if (!addedTournament) {
                                 addedTournament = true
                                 results.add(listItem)

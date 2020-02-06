@@ -121,7 +121,7 @@ class PlayerListBuilderImpl : PlayerListBuilder {
                     val current = list[j]
 
                     if (current is PlayerListItem.Player) {
-                        if (current.player.name.contains(trimmedQuery, true)) {
+                        if (current.player.name.contains(trimmedQuery, ignoreCase = true)) {
                             if (!addedDivider) {
                                 addedDivider = true
                                 results.add(listItem)
