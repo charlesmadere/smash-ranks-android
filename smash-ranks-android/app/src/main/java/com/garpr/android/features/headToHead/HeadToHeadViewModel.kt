@@ -11,6 +11,7 @@ import com.garpr.android.data.models.HeadToHeadMatch
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.WinsLosses
+import com.garpr.android.extensions.takeSingle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
@@ -89,7 +90,7 @@ class HeadToHeadViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(Single.zip(headToHeadRepository.getHeadToHead(region, playerId, opponentId),
-                identityRepository.identityObservable.take(1).singleOrError(),
+                identityRepository.identityObservable.takeSingle(),
                 BiFunction<HeadToHead, Optional<FavoritePlayer>,
                         Pair<HeadToHead, Optional<FavoritePlayer>>> { t1, t2 ->
                             Pair(t1, t2)

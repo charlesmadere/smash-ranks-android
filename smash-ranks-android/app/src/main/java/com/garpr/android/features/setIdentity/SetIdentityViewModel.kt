@@ -7,6 +7,7 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.PlayersBundle
 import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.takeSingle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.PlayerListBuilder
 import com.garpr.android.misc.PlayerListBuilder.PlayerListItem
@@ -75,7 +76,7 @@ class SetIdentityViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(Single.zip(playersRepository.getPlayers(region),
-                identityRepository.identityObservable.take(1).singleOrError(),
+                identityRepository.identityObservable.takeSingle(),
                 BiFunction<PlayersBundle, Optional<FavoritePlayer>,
                         Pair<PlayersBundle, Optional<FavoritePlayer>>> { t1, t2 ->
                             Pair(t1, t2)

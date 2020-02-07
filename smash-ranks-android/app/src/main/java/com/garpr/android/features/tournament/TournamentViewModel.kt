@@ -8,6 +8,7 @@ import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.FullTournament
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
+import com.garpr.android.extensions.takeSingle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Searchable
@@ -103,7 +104,7 @@ class TournamentViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(tournamentsRepository.getTournament(region, tournamentId)
-                .zipWith(identityRepository.identityObservable.take(1).singleOrError(),
+                .zipWith(identityRepository.identityObservable.takeSingle(),
                         BiFunction<FullTournament, Optional<FavoritePlayer>,
                                 Pair<FullTournament, Optional<FavoritePlayer>>> { t1, t2 ->
                                     Pair(t1, t2)
@@ -111,7 +112,6 @@ class TournamentViewModel(
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
                 .subscribe({ (tournament, identity) ->
-                    identityRepository.identityObservable.take(1)
                     val matches = createMatchesList(tournament, identity.orNull())
                     val players = createPlayersList(tournament, identity.orNull())
 
