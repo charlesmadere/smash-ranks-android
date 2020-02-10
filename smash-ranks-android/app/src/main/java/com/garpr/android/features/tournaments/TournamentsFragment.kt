@@ -67,7 +67,7 @@ class TournamentsFragment : BaseFragment(), ListLayout, Refreshable,
         startActivity(TournamentActivity.getLaunchIntent(
                 context = requireContext(),
                 tournament = v.tournament,
-                region = regionHandleUtils.getRegion(requireContext())
+                region = regionHandleUtils.getRegion(context)
         ))
     }
 
