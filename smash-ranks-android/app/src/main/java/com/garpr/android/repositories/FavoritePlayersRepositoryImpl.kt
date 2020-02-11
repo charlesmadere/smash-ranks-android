@@ -7,7 +7,6 @@ import com.garpr.android.data.database.FavoritePlayerDao
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.ThreadUtils
@@ -106,10 +105,20 @@ class FavoritePlayersRepositoryImpl(
 
         val jsonAdapter = moshi.adapter(FavoritePlayer::class.java)
 
-        val players = all.map { entry ->
-            val json = entry.value as String
-            val player = jsonAdapter.requireFromJson(json)
-            DbFavoritePlayer(player = player, region = player.region)
+        val players: List<DbFavoritePlayer> = all.mapNotNull { entry ->
+            val json = entry.value as? String?
+
+            val player: FavoritePlayer? = if (json.isNullOrBlank()) {
+                null
+            } else {
+                jsonAdapter.fromJson(json)
+            }
+
+            if (player == null) {
+                null
+            } else {
+                DbFavoritePlayer(player = player, region = player.region)
+            }
         }
 
         keyValueStore.clear()

@@ -10,7 +10,6 @@ import com.garpr.android.data.models.PollFrequency
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.data.models.SmashRosterSyncResult
 import com.garpr.android.extensions.httpCode
-import com.garpr.android.extensions.requireValue
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.misc.Timber
 import com.garpr.android.preferences.SmashRosterPreferenceStore
@@ -42,11 +41,13 @@ class SmashRosterSyncManagerImpl(
             enableOrDisable()
         }
 
-    private var isSyncing: Boolean
-        get() = isSyncingSubject.requireValue()
-        set(value) = isSyncingSubject.onNext(value)
+    private var isSyncing: Boolean = false
+        set(value) {
+            field = value
+            isSyncingSubject.onNext(value)
+        }
 
-    private val isSyncingSubject = BehaviorSubject.createDefault(false)
+    private val isSyncingSubject = BehaviorSubject.createDefault(isSyncing)
     override val isSyncingObservable: Observable<Boolean> = isSyncingSubject.hide()
 
     override var syncResult: SmashRosterSyncResult?
@@ -54,10 +55,6 @@ class SmashRosterSyncManagerImpl(
         set(value) {
             smashRosterPreferenceStore.syncResult.set(value)
         }
-
-    companion object {
-        private const val TAG = "SmashRosterSyncManagerImpl"
-    }
 
     private fun disable() {
         timber.d(TAG, "disabling smash roster sync...")
@@ -184,6 +181,10 @@ class SmashRosterSyncManagerImpl(
                 .doOnSubscribe {
                     performSync()
                 }
+    }
+
+    companion object {
+        private const val TAG = "SmashRosterSyncManagerImpl"
     }
 
 }

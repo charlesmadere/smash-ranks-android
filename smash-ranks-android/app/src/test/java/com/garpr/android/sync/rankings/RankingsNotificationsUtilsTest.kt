@@ -1,7 +1,6 @@
 package com.garpr.android.sync.rankings
 
 import com.garpr.android.data.models.RankingsBundle
-import com.garpr.android.extensions.requireFromJson
 import com.garpr.android.preferences.RankingsPollingPreferenceStore
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.CANCEL
 import com.garpr.android.sync.rankings.RankingsNotificationsUtils.NotificationInfo.NO_CHANGE
@@ -38,7 +37,7 @@ class RankingsNotificationsUtilsTest : BaseTest() {
         super.setUp()
 
         val rankingsBundleAdapter = moshi.adapter(RankingsBundle::class.java)
-        rankingsBundle = rankingsBundleAdapter.requireFromJson(JSON_RANKINGS_BUNDLE)
+        rankingsBundle = checkNotNull(rankingsBundleAdapter.fromJson(JSON_RANKINGS_BUNDLE))
     }
 
     @Test

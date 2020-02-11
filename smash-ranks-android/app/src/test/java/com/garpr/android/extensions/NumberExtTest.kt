@@ -4,7 +4,7 @@ import com.garpr.android.test.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class NumberTest : BaseTest() {
+class NumberExtTest : BaseTest() {
 
     @Test
     fun testTruncateDoubleMaxValue() {
