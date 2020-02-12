@@ -240,6 +240,12 @@ class TournamentViewModel(
             val results = searchPlayers(query, playersState.list)
             playersState = playersState.copy(searchResults = results)
         }
+
+        // This line is kinda dumb but it fixes a bug where TournamentActivity won't bring back
+        // its Search icon in the toolbar unless we do this. It must happen because most of our
+        // ViewModel classes have a singular State object rather than multiple like this one does,
+        // and that singular State object tells the Activity to show/hide its Search icon.
+        state = state.copy()
     }
 
     @WorkerThread

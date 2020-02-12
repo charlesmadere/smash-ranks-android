@@ -136,7 +136,7 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
             }
         }
 
-        toolbar.showSearchIcon = state.showSearchIcon
+        toolbar.showSearchIcon = if (toolbar.isSearchFieldExpanded) false else state.showSearchIcon
 
         if (state.hasError) {
             adapter.clear()

@@ -139,7 +139,7 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
     private fun refreshState(state: TournamentViewModel.State) {
         toolbar.titleText = state.titleText
         toolbar.subtitleText = state.subtitleText
-        toolbar.showSearchIcon = state.showSearchIcon
+        toolbar.showSearchIcon = if (toolbar.isSearchFieldExpanded) false else state.showSearchIcon
 
         if (state.hasError) {
             tournamentInfoView.visibility = View.GONE
