@@ -29,7 +29,7 @@ class RegionSelectionItemView @JvmOverloads constructor(
 
     fun setContent(region: Region, isChecked: Boolean) {
         _region = region
-        displayName.text = region.displayName
+        regionDisplayName.text = region.displayName
         regionId.text = region.id
         radioButton.isChecked = isChecked
     }

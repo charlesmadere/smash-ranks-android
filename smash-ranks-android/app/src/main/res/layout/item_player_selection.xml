@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.garpr.android.features.setIdentity.PlayerSelectionItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    style="@style/ListItem.WithBackground">
+    style="@style/ConstraintListItem.WithBackground">
 
     <TextView
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:id="@+id/name"
-        android:layout_gravity="center_vertical"
+        android:id="@+id/playerName"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
         android:layout_width="0dp"
         android:maxLines="2"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/radioButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Charlezard" />
-
-    <Space
-        android:layout_height="1dp"
-        android:layout_width="@dimen/root_padding" />
 
     <RadioButton
         android:background="@null"
         android:clickable="false"
         android:id="@+id/radioButton"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
 
 </com.garpr.android.features.setIdentity.PlayerSelectionItemView>
