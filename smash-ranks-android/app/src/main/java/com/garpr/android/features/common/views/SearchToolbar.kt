@@ -36,6 +36,12 @@ open class SearchToolbar @JvmOverloads constructor(
 
     private val wasShowingUpNavigation = showUpNavigation
 
+    var searchFieldHint: CharSequence?
+        get() = searchField.hint
+        set(value) {
+            searchField.hint = value
+        }
+
     override val searchQuery: CharSequence?
         get() = searchField.text
 
@@ -67,7 +73,7 @@ open class SearchToolbar @JvmOverloads constructor(
         val ta = context.obtainStyledAttributes(attrs, R.styleable.SearchToolbar)
 
         if (ta.hasValue(R.styleable.SearchToolbar_android_hint)) {
-            searchField.hint = ta.getText(R.styleable.SearchToolbar_android_hint)
+            searchFieldHint = ta.getText(R.styleable.SearchToolbar_android_hint)
         }
 
         ta.recycle()
