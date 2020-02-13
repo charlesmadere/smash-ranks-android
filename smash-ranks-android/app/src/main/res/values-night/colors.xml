@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="card_background">#424242</color>
+    <color name="card_background">#2B2B2B</color>
     <color name="debug">@color/white</color>
     <color name="error">#FF6666</color>
     <color name="fast_scroll_thumb_normal">#44FFFFFF</color>
