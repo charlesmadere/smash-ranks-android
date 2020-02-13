@@ -12,6 +12,7 @@ import com.garpr.android.data.models.PlayerMatchesBundle
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.data.models.TournamentMatch
+import com.garpr.android.extensions.takeSingle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Refreshable
 import com.garpr.android.misc.Schedulers
@@ -114,8 +115,8 @@ class PlayerViewModel(
         state = state.copy(isFetching = true)
 
         disposables.add(Single.zip(playerMatchesRepository.getPlayerAndMatches(region, playerId),
-                favoritePlayersRepository.playersObservable.take(1).singleOrError(),
-                identityRepository.identityObservable.take(1).singleOrError(),
+                favoritePlayersRepository.playersObservable.takeSingle(),
+                identityRepository.identityObservable.takeSingle(),
                 Function3<PlayerMatchesBundle, List<FavoritePlayer>, Optional<FavoritePlayer>,
                         Triple<PlayerMatchesBundle, List<FavoritePlayer>, Optional<FavoritePlayer>>> { t1, t2, t3 ->
                             Triple(t1, t2, t3)
@@ -305,7 +306,7 @@ class PlayerViewModel(
                     val objectJ = list[j]
 
                     if (objectJ is ListItem.Match) {
-                        if (objectJ.match.opponent.name.contains(trimmedQuery, true)) {
+                        if (objectJ.match.opponent.name.contains(trimmedQuery, ignoreCase = true)) {
                             if (!addedTournament) {
                                 addedTournament = true
                                 results.add(listItem)

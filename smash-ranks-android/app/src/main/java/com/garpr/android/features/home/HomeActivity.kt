@@ -29,14 +29,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         SearchQueryHandle {
 
     private lateinit var adapter: HomeFragmentPagerAdapter
-    override val activityName = TAG
-
-    private val favoritePlayersViewModel: FavoritePlayersViewModel by viewModel()
-    private val homeViewModel: HomeViewModel by viewModel()
-    private val rankingsViewModel: RankingsViewModel by viewModel()
-    private val tournamentsViewModel: TournamentsViewModel by viewModel()
-
-    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     private var currentPage: HomeTab
         get() = HomeTab.values()[viewPager.currentItem]
@@ -44,12 +36,34 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             viewPager.setCurrentItem(value.ordinal, false)
         }
 
+    override val activityName = TAG
+
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
-            updateSelectedBottomNavigationItem()
+
+            toolbar.searchFieldHint = when (HomeTab.values()[position]) {
+                HomeTab.RANKINGS -> getText(R.string.search_rankings_)
+                HomeTab.TOURNAMENTS -> getText(R.string.search_tournaments_)
+                HomeTab.FAVORITE_PLAYERS -> getText(R.string.search_favorite_players_)
+            }
+
+            val itemId = when (HomeTab.values()[position]) {
+                HomeTab.RANKINGS -> R.id.actionRankings
+                HomeTab.TOURNAMENTS -> R.id.actionTournaments
+                HomeTab.FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
+            }
+
+            bottomNavigationView.menu.findItem(itemId).isChecked = true
         }
     }
+
+    private val favoritePlayersViewModel: FavoritePlayersViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModel()
+    private val rankingsViewModel: RankingsViewModel by viewModel()
+    private val tournamentsViewModel: TournamentsViewModel by viewModel()
+
+    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     private fun initListeners() {
         homeViewModel.stateLiveData.observe(this, Observer {
@@ -174,16 +188,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         if (initialPosition != null) {
             currentPage = initialPosition
         }
-    }
-
-    private fun updateSelectedBottomNavigationItem() {
-        val itemId = when (currentPage) {
-            HomeTab.RANKINGS -> R.id.actionRankings
-            HomeTab.TOURNAMENTS -> R.id.actionTournaments
-            HomeTab.FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
-        }
-
-        bottomNavigationView.menu.findItem(itemId).isChecked = true
     }
 
     companion object {

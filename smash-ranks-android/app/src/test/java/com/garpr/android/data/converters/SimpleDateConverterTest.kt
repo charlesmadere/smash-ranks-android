@@ -50,13 +50,13 @@ class SimpleDateConverterTest : BaseTest() {
     @Test
     fun testFromJsonWithString0() {
         val simpleDate = simpleDateAdapter.fromJson(JSON_STRING_0)
-        assertEquals(1483603200000L, simpleDate?.date?.time)
+        assertEquals(1483574400000L, simpleDate?.date?.time)
     }
 
     @Test
     fun testFromJsonWithString1() {
         val simpleDate = simpleDateAdapter.fromJson(JSON_STRING_1)
-        assertEquals(628243200000L, simpleDate?.date?.time)
+        assertEquals(628214400000L, simpleDate?.date?.time)
     }
 
     @Test

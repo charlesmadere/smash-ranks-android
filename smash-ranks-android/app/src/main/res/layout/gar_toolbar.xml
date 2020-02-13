@@ -26,7 +26,7 @@
         android:layout_height="0dp"
         android:layout_width="@dimen/root_padding"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/upNavigationButton"
+        app:layout_constraintStart_toEndOf="@+id/upNavigationButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -39,7 +39,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/menuExpansionContainer"
-        app:layout_constraintStart_toEndOf="@id/toolbarSpace"
+        app:layout_constraintStart_toEndOf="@+id/toolbarSpace"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 

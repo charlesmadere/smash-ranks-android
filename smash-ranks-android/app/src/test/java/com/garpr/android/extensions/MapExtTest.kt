@@ -6,19 +6,21 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class ListTest : BaseTest() {
+class MapExtTest : BaseTest() {
 
     @Test
-    fun testRequireWithNullItemInList() {
-        val list = listOf("Hello", "World", null)
-        assertEquals("Hello", list.require(0))
-        assertEquals("World", list.require(1))
+    fun testRequireWithNullItemInMap() {
+        val map = mapOf(
+                0 to "Hello",
+                1 to "World",
+                2 to null
+        )
 
         var item: Any? = null
         var throwable: Throwable? = null
 
         try {
-            item = list.require(2)
+            item = map.require(2)
         } catch (t: Throwable) {
             throwable = t
         }
@@ -28,13 +30,13 @@ class ListTest : BaseTest() {
     }
 
     @Test
-    fun testRequireWithNullList() {
-        val list: List<Any?>? = null
+    fun testRequireWithNullMap() {
+        val map: Map<Any?, Any?>? = null
         var item: Any? = null
         var throwable: Throwable? = null
 
         try {
-            item = list.require(0)
+            item = map.require(0)
         } catch (t: Throwable) {
             throwable = t
         }
@@ -44,11 +46,16 @@ class ListTest : BaseTest() {
     }
 
     @Test
-    fun testRequireWithStringList() {
-        val list = listOf("Hello", " ", "World")
-        assertEquals("Hello", list.require(0))
-        assertEquals(" ", list.require(1))
-        assertEquals("World", list.require(2))
+    fun testRequireWithStringMap() {
+        val map = mapOf(
+                0 to "Hello",
+                1 to " ",
+                2 to "World"
+        )
+
+        assertEquals("Hello", map.require(0))
+        assertEquals(" ", map.require(1))
+        assertEquals("World", map.require(2))
     }
 
 }

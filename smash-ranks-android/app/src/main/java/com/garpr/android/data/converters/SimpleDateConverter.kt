@@ -11,14 +11,20 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 object SimpleDateConverter {
 
-    private val FORMATS = arrayOf(object : ThreadLocal<SimpleDateFormat>() {
-        override fun initialValue(): SimpleDateFormat {
-            return SimpleDateFormat("MM/dd/yy", Locale.US)
+    private val UTC = TimeZone.getTimeZone("UTC")
+
+    private val FORMAT = object : ThreadLocal<SimpleDateFormat>() {
+        override fun initialValue(): SimpleDateFormat? {
+            val format = SimpleDateFormat("MM/dd/yy", Locale.US)
+            format.isLenient = false
+            format.timeZone = UTC
+            return format
         }
-    })
+    }
 
     @FromJson
     fun fromJson(reader: JsonReader): SimpleDate? {
@@ -34,20 +40,17 @@ object SimpleDateConverter {
 
             JsonReader.Token.STRING -> {
                 val string = reader.nextString()
+                val format = FORMAT.require()
 
-                FORMATS.forEach { threadLocal ->
-                    val format = threadLocal.require()
+                val date: Date? = try {
+                    format.parse(string)
+                } catch (e: ParseException) {
+                    // this Exception can be safely ignored
+                    null
+                }
 
-                    val date: Date? = try {
-                        format.parse(string)
-                    } catch (e: ParseException) {
-                        // this Exception can be safely ignored
-                        null
-                    }
-
-                    if (date != null) {
-                        return SimpleDate(date)
-                    }
+                if (date != null) {
+                    return SimpleDate(date)
                 }
 
                 throw JsonDataException("Can't parse SimpleDate, unsupported format: \"$string\"")
