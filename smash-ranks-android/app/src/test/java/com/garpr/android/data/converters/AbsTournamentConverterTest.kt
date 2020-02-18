@@ -52,13 +52,13 @@ class AbsTournamentConverterTest : BaseTest() {
         )
 
         private val FOUR_STOCK_FRIDAY = FullTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2018)
                     set(Calendar.MONTH, Calendar.JANUARY)
                     set(Calendar.DAY_OF_YEAR, 21)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 id = "5c1e7834d2994e505643f25c",
                 name = "Four Stock Friday #128",
                 regions = listOf(NORCAL.id),
@@ -67,13 +67,13 @@ class AbsTournamentConverterTest : BaseTest() {
         )
 
         private val PHOENIX_UNDERGROUND = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2019)
                     set(Calendar.MONTH, Calendar.JANUARY)
                     set(Calendar.DAY_OF_MONTH, 9)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 id = "5c384537d2994e505643f28d",
                 name = "Phoenix Underground #82"
         )

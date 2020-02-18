@@ -91,25 +91,25 @@ class MatchesRepositoryTest : BaseTest() {
         )
 
         private val MELEE_AT_THE_MADE_125: AbsTournament = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2020)
                     set(Calendar.MONTH, Calendar.JANUARY)
                     set(Calendar.DAY_OF_MONTH, 17)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 id = "5e22da86d2994e6bf4d676da",
                 name = "Melee @ the Made #125"
         )
 
         private val NORCAL_VALIDATED_1: AbsTournament = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.JANUARY)
                     set(Calendar.DAY_OF_MONTH, 14)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 id = "588850d5d2994e3bbfa52d67",
                 name = "Norcal Validated 1"
         )

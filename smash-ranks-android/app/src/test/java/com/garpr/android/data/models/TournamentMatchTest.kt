@@ -78,37 +78,37 @@ class TournamentMatchTest : BaseTest() {
         )
 
         private val FOUR_STOCK_FRIDAY_122: AbsTournament = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2018)
                     set(Calendar.MONTH, Calendar.OCTOBER)
                     set(Calendar.DAY_OF_MONTH, 26)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 id = "5bda91acd2994e14bfeb9f14",
                 name = "Four Stock Friday #122"
         )
 
         private val MELEE_AT_THE_MADE_124: AbsTournament = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2020)
                     set(Calendar.MONTH, Calendar.JANUARY)
                     set(Calendar.DAY_OF_MONTH, 10)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 id = "5e1b94c0d2994e2e36ea0610",
                 name = "Melee @ the Made #124"
         )
 
         private val NORCAL_ARCADIAN_6: AbsTournament = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2019)
                     set(Calendar.MONTH, Calendar.MAY)
                     set(Calendar.DAY_OF_MONTH, 11)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 id = "5cdb30ebd2994e02dc3aae8e",
                 name = "NorCal Arcadian #6"
         )

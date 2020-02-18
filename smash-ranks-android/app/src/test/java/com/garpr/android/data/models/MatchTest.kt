@@ -17,15 +17,13 @@ class MatchTest : BaseTest() {
                         name = "Mao"
                 ),
                 tournament = LiteTournament(
-                        date = SimpleDate(
-                                with(Calendar.getInstance()) {
-                                    clear()
-                                    set(Calendar.YEAR, 2017)
-                                    set(Calendar.MONTH, Calendar.JANUARY)
-                                    set(Calendar.DAY_OF_MONTH, 14)
-                                    time
-                                }
-                        ),
+                        date = with(Calendar.getInstance()) {
+                            clear()
+                            set(Calendar.YEAR, 2017)
+                            set(Calendar.MONTH, Calendar.JANUARY)
+                            set(Calendar.DAY_OF_MONTH, 14)
+                            SimpleDate(time)
+                        },
                         id = "588850d5d2994e3bbfa52d67",
                         name = "Norcal Validated 1"
                 )
@@ -38,15 +36,13 @@ class MatchTest : BaseTest() {
                         name = "Arcadia"
                 ),
                 tournament = LiteTournament(
-                        date = SimpleDate(
-                                with(Calendar.getInstance()) {
-                                    clear()
-                                    set(Calendar.YEAR, 2017)
-                                    set(Calendar.MONTH, Calendar.MARCH)
-                                    set(Calendar.DAY_OF_MONTH, 7)
-                                    time
-                                }
-                        ),
+                        date = with(Calendar.getInstance()) {
+                            clear()
+                            set(Calendar.YEAR, 2017)
+                            set(Calendar.MONTH, Calendar.MARCH)
+                            set(Calendar.DAY_OF_MONTH, 7)
+                            SimpleDate(time)
+                        },
                         id = "58bfaed4d2994e057e91f71b",
                         name = "Get Smashed #108"
                 )
@@ -59,15 +55,13 @@ class MatchTest : BaseTest() {
                         name = "Darrell"
                 ),
                 tournament = LiteTournament(
-                        date = SimpleDate(
-                                with(Calendar.getInstance()) {
-                                    clear()
-                                    set(Calendar.YEAR, 2017)
-                                    set(Calendar.MONTH, Calendar.FEBRUARY)
-                                    set(Calendar.DAY_OF_MONTH, 18)
-                                    time
-                                }
-                        ),
+                        date = with(Calendar.getInstance()) {
+                            clear()
+                            set(Calendar.YEAR, 2017)
+                            set(Calendar.MONTH, Calendar.FEBRUARY)
+                            set(Calendar.DAY_OF_MONTH, 18)
+                            SimpleDate(time)
+                        },
                         id = "58a9139cd2994e756952ad94",
                         name = "The Gator Games #3"
                 )
