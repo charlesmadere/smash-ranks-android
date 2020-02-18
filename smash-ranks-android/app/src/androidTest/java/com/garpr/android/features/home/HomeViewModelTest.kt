@@ -32,26 +32,6 @@ class HomeViewModelTest : BaseViewModelTest() {
     protected val schedulers: Schedulers by inject()
     protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
 
-    companion object {
-        private val NORCAL = Region(
-                displayName = "Norcal",
-                id = "norcal",
-                endpoint = Endpoint.GAR_PR
-        )
-
-        private val CHARLEZARD: AbsPlayer = LitePlayer(
-                id = "587a951dd2994e15c7dea9fe",
-                name = "Charlezard"
-        )
-
-        private val EMPTY_RANKINGS_BUNDLE = RankingsBundle(
-                rankingCriteria = NORCAL,
-                time = SimpleDate(Date(1477897200000L)),
-                id = "6f1ed002ab5595859014ebf0951522d9",
-                region = "norcal"
-        )
-    }
-
     @Before
     override fun setUp() {
         super.setUp()
@@ -132,6 +112,49 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         identityRepository.removeIdentity()
         assertEquals(false, state?.showYourself)
+    }
+
+    @Test
+    fun testTitle() {
+        var title: CharSequence? = null
+
+        viewModel.stateLiveData.observeForever {
+            title = it.title
+        }
+
+        assertEquals(NORCAL.displayName, title)
+
+        regionRepository.region = NYC
+        assertEquals(NYC.displayName, title)
+
+        regionRepository.region = NORCAL
+        assertEquals(NORCAL.displayName, title)
+    }
+
+    companion object {
+        private val NORCAL = Region(
+                displayName = "Norcal",
+                id = "norcal",
+                endpoint = Endpoint.GAR_PR
+        )
+
+        private val NYC = Region(
+                displayName = "New York City",
+                id = "nyc",
+                endpoint = Endpoint.NOT_GAR_PR
+        )
+
+        private val CHARLEZARD: AbsPlayer = LitePlayer(
+                id = "587a951dd2994e15c7dea9fe",
+                name = "Charlezard"
+        )
+
+        private val EMPTY_RANKINGS_BUNDLE = RankingsBundle(
+                rankingCriteria = NORCAL,
+                time = SimpleDate(Date(1477897200000L)),
+                id = "6f1ed002ab5595859014ebf0951522d9",
+                region = "norcal"
+        )
     }
 
 }
