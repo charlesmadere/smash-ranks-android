@@ -43,7 +43,7 @@ val repositoriesModule = module {
     single<PlayersRepository> { PlayersRepositoryImpl(get()) }
     single<RankingsRepository> { RankingsRepositoryImpl(get(), get(), get(), get()) }
     single<RegionRepository> { RegionRepositoryImpl(get(), get(), get(), get()) }
-    single<RegionsRepository> { RegionsRepositoryImpl(get()) }
+    single<RegionsRepository> { RegionsRepositoryImpl(get(), get()) }
     single<SmashRosterRepository> { SmashRosterRepositoryImpl(get()) }
     single<TournamentsRepository> { TournamentsRepositoryImpl(get()) }
 

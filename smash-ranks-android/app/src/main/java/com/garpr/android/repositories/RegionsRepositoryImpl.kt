@@ -6,13 +6,15 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.Optional
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.misc.Timber
 import com.garpr.android.networking.ServerApi
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.Collections
 
 class RegionsRepositoryImpl(
-        private val serverApi: ServerApi
+        private val serverApi: ServerApi,
+        private val timber: Timber
 ) : RegionsRepository {
 
     override fun getRegions(): Single<RegionsBundle> {
@@ -26,10 +28,11 @@ class RegionsRepositoryImpl(
 
     private fun getRegions(endpoint: Endpoint): Single<Optional<RegionsBundle>> {
         return serverApi.getRegions(endpoint)
-                .map { regionsBundle ->
-                    Optional.of(regionsBundle)
+                .map { bundle ->
+                    Optional.of(bundle)
                 }
-                .onErrorReturn {
+                .onErrorReturn { throwable ->
+                    timber.e(TAG, "Error fetching \"$endpoint\" regions", throwable)
                     Optional.empty()
                 }
     }
@@ -37,30 +40,28 @@ class RegionsRepositoryImpl(
     @Throws(FailedToFetchRegionsException::class)
     private fun mergeResponses(garPr: RegionsBundle?, notGarPr: RegionsBundle?): RegionsBundle {
         val regionsSet = mutableSetOf<Region>()
+
         garPr?.regions?.mapTo(regionsSet) { region ->
-            Region(
-                    region = region,
-                    endpoint = Endpoint.GAR_PR
-            )
+            Region(region = region, endpoint = Endpoint.GAR_PR)
         }
 
         notGarPr?.regions?.mapTo(regionsSet) { region ->
-            Region(
-                    region = region,
-                    endpoint = Endpoint.NOT_GAR_PR
-            )
+            Region(region = region, endpoint = Endpoint.NOT_GAR_PR)
         }
 
         val regionsList = regionsSet.toList()
         Collections.sort(regionsList, AbsRegion.ENDPOINT_ORDER)
 
         if (regionsList.isEmpty()) {
+            timber.e(TAG, "Failed to fetch any regions")
             throw FailedToFetchRegionsException()
-        } else {
-            return RegionsBundle(
-                    regions = regionsList
-            )
         }
+
+        return RegionsBundle(regions = regionsList)
+    }
+
+    companion object {
+        private const val TAG = "RegionsRepositoryImpl"
     }
 
 }
