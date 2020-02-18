@@ -2,8 +2,10 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:background="?attr/colorPrimary"
     tools:layout_height="?attr/actionBarSize"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    tools:theme="@style/ToolbarTheme">
 
     <ImageButton
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -54,7 +56,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/text_size_xlarge"
             android:textStyle="bold"
-            tools:text="@string/rankings" />
+            tools:text="@string/rankings"
+            tools:textColor="?android:attr/textColorPrimaryInverse" />
 
         <TextView
             android:ellipsize="end"
@@ -67,6 +70,7 @@
             android:textSize="@dimen/text_size_normal"
             android:visibility="gone"
             tools:text="@string/norcal"
+            tools:textColor="?android:attr/textColorSecondaryInverse"
             tools:visibility="visible" />
 
     </LinearLayout>
