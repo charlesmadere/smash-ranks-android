@@ -10,6 +10,7 @@ import com.garpr.android.features.common.viewModels.BaseViewModelTest
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
+import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import org.junit.Assert.assertEquals
@@ -27,6 +28,7 @@ class HomeViewModelTest : BaseViewModelTest() {
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val identityRepository: IdentityRepository by inject()
     protected val rankingsPollingManager: RankingsPollingManager by inject()
+    protected val regionRepository: RegionRepository by inject()
     protected val schedulers: Schedulers by inject()
     protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
 
@@ -55,7 +57,7 @@ class HomeViewModelTest : BaseViewModelTest() {
         super.setUp()
 
         viewModel = HomeViewModel(favoritePlayersRepository, identityRepository,
-                rankingsPollingManager, schedulers, smashRosterSyncManager)
+                rankingsPollingManager, regionRepository, schedulers, smashRosterSyncManager)
     }
 
     @Test
