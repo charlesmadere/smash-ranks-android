@@ -7,7 +7,7 @@
     <string name="app_by_charles_madere">App by Charles Madere</string>
     <string name="app_restarted_to_apply_new_theme_">App restarted to apply new theme…</string>
     <string name="are_you_sure_you_want_to_delete_all_of_your_favorite_players">Are you sure you want to delete all of your favorite players?</string>
-    <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity?</string>
+    <string name="are_you_sure_you_want_to_delete_your_identity">Are you sure you want to delete your identity? After deleting your identity, you can then set a new one.</string>
     <string name="auto">Auto</string>
     <string name="avatar">Avatar</string>
     <string name="back">Back</string>
