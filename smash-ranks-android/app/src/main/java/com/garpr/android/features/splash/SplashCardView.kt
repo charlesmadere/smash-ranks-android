@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.util.AttributeSet
 import android.view.View.OnClickListener
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.FavoritePlayer
 import com.garpr.android.data.models.Region
@@ -43,13 +42,6 @@ class SplashCardView @JvmOverloads constructor(
 
     protected val deviceUtils: DeviceUtils by inject()
 
-    interface Listeners {
-        fun onCustomizeIdentityClick(v: SplashCardView)
-        fun onCustomizeRegionClick(v: SplashCardView)
-        fun onRemoveIdentityClick(v: SplashCardView)
-        fun onStartUsingTheAppClick(v: SplashCardView)
-    }
-
     override fun onClick(dialog: DialogInterface, which: Int) {
         listeners?.onRemoveIdentityClick(this)
     }
@@ -81,16 +73,10 @@ class SplashCardView @JvmOverloads constructor(
         if (identity == null) {
             customizeIdentity.descriptionText = context.getText(
                     R.string.customize_identity_description)
-            customizeIdentity.titleText = context.getText(R.string.customize_identity)
-            customizeIdentity.setImageDrawable(ContextCompat.getDrawable(context,
-                    R.drawable.ic_chevron_right_white_24dp))
             customizeIdentity.setOnClickListener(customizeIdentityClickListener)
         } else {
             customizeIdentity.descriptionText = context.getString(R.string.identity_region_format,
                     identity.name, identity.region.displayName)
-            customizeIdentity.titleText = context.getText(R.string.delete_identity)
-            customizeIdentity.setImageDrawable(ContextCompat.getDrawable(context,
-                    R.drawable.ic_delete_white_24dp))
             customizeIdentity.setOnClickListener(deleteIdentityClickListener)
         }
 
@@ -114,6 +100,13 @@ class SplashCardView @JvmOverloads constructor(
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.yes, this)
                 .show()
+    }
+
+    interface Listeners {
+        fun onCustomizeIdentityClick(v: SplashCardView)
+        fun onCustomizeRegionClick(v: SplashCardView)
+        fun onRemoveIdentityClick(v: SplashCardView)
+        fun onStartUsingTheAppClick(v: SplashCardView)
     }
 
 
