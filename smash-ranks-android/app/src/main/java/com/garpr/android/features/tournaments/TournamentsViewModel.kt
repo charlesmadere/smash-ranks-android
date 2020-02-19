@@ -30,10 +30,6 @@ class TournamentsViewModel(
             _stateLiveData.postValue(value)
         }
 
-    companion object {
-        private const val TAG = "TournamentsViewModel"
-    }
-
     @WorkerThread
     private fun createList(bundle: TournamentsBundle?): List<ListItem>? {
         val tournaments = bundle?.tournaments
@@ -106,6 +102,10 @@ class TournamentsViewModel(
         } else {
             results
         }
+    }
+
+    companion object {
+        private const val TAG = "TournamentsViewModel"
     }
 
     sealed class ListItem {
