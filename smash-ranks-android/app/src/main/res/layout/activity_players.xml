@@ -27,7 +27,7 @@
                 android:visibility="gone"
                 tools:listitem="@layout/item_player"
                 tools:visibility="visible"
-                style="@style/RecyclerView" />
+                style="@style/RecyclerView.WithSections" />
 
             <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/empty"
