@@ -1,5 +1,12 @@
 package com.garpr.android.data.models
 
+/**
+ * An Optional class was added to the Android framework itself in 7.0 (API 24). But unfortunately,
+ * out minSdkVersion is currently 21 so we can't use that class. So in the meantime we can use
+ * this class, which was designed to have an exactly identical API to the framework version.
+ *
+ * Whenever we switch to the framework version, this class should be just deleted entirely.
+ */
 class Optional<T : Any> private constructor(
         private val item: T?
 ) {

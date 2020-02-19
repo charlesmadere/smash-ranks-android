@@ -9,6 +9,7 @@ import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
+import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 
@@ -16,6 +17,7 @@ class HomeViewModel(
         private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityRepository: IdentityRepository,
         rankingsPollingManager: RankingsPollingManager,
+        private val regionRepository: RegionRepository,
         private val schedulers: Schedulers,
         smashRosterSyncManager: SmashRosterSyncManager
 ) : BaseViewModel() {
@@ -26,7 +28,9 @@ class HomeViewModel(
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
 
-    private var state = State()
+    private var state: State = State(
+            title = regionRepository.region.displayName
+    )
 
     init {
         initListeners()
@@ -48,8 +52,17 @@ class HomeViewModel(
                 .subscribe { identity ->
                     refreshIdentity(identity.orNull())
                 })
+
+        disposables.add(regionRepository.observable
+                .subscribeOn(schedulers.background)
+                .observeOn(schedulers.background)
+                .map { region -> region.displayName }
+                .subscribe { regionDisplayName ->
+                    refreshTitle(regionDisplayName)
+                })
     }
 
+    @AnyThread
     fun onRankingsBundleChange(bundle: RankingsBundle?, isEmpty: Boolean) {
         state = state.copy(
                 hasRankings = !isEmpty,
@@ -57,13 +70,12 @@ class HomeViewModel(
                         bundle?.rankingCriteria?.rankingActivityDayLimit != null &&
                         bundle.rankingCriteria.rankingNumTourneysAttended != null &&
                         bundle.rankingCriteria.tournamentQualifiedDayLimit != null,
-                title = bundle?.rankingCriteria?.displayName,
                 subtitleDate = bundle?.time?.shortForm
         )
-
         refreshState()
     }
 
+    @AnyThread
     fun onTournamentsBundleChange(isEmpty: Boolean) {
         state = state.copy(hasTournaments = !isEmpty)
         refreshState()
@@ -81,6 +93,12 @@ class HomeViewModel(
                 identity = identity,
                 showYourself = identity != null
         )
+        refreshState()
+    }
+
+    @AnyThread
+    private fun refreshTitle(title: CharSequence?) {
+        state = state.copy(title = title)
         refreshState()
     }
 

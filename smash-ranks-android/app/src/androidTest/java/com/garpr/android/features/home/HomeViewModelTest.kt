@@ -10,6 +10,7 @@ import com.garpr.android.features.common.viewModels.BaseViewModelTest
 import com.garpr.android.misc.Schedulers
 import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
+import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import org.junit.Assert.assertEquals
@@ -27,35 +28,16 @@ class HomeViewModelTest : BaseViewModelTest() {
     protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val identityRepository: IdentityRepository by inject()
     protected val rankingsPollingManager: RankingsPollingManager by inject()
+    protected val regionRepository: RegionRepository by inject()
     protected val schedulers: Schedulers by inject()
     protected val smashRosterSyncManager: SmashRosterSyncManager by inject()
-
-    companion object {
-        private val NORCAL = Region(
-                displayName = "Norcal",
-                id = "norcal",
-                endpoint = Endpoint.GAR_PR
-        )
-
-        private val CHARLEZARD: AbsPlayer = LitePlayer(
-                id = "587a951dd2994e15c7dea9fe",
-                name = "Charlezard"
-        )
-
-        private val EMPTY_RANKINGS_BUNDLE = RankingsBundle(
-                rankingCriteria = NORCAL,
-                time = SimpleDate(Date(1477897200000L)),
-                id = "6f1ed002ab5595859014ebf0951522d9",
-                region = "norcal"
-        )
-    }
 
     @Before
     override fun setUp() {
         super.setUp()
 
         viewModel = HomeViewModel(favoritePlayersRepository, identityRepository,
-                rankingsPollingManager, schedulers, smashRosterSyncManager)
+                rankingsPollingManager, regionRepository, schedulers, smashRosterSyncManager)
     }
 
     @Test
@@ -130,6 +112,49 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         identityRepository.removeIdentity()
         assertEquals(false, state?.showYourself)
+    }
+
+    @Test
+    fun testTitle() {
+        var title: CharSequence? = null
+
+        viewModel.stateLiveData.observeForever {
+            title = it.title
+        }
+
+        assertEquals(NORCAL.displayName, title)
+
+        regionRepository.region = NYC
+        assertEquals(NYC.displayName, title)
+
+        regionRepository.region = NORCAL
+        assertEquals(NORCAL.displayName, title)
+    }
+
+    companion object {
+        private val NORCAL = Region(
+                displayName = "Norcal",
+                id = "norcal",
+                endpoint = Endpoint.GAR_PR
+        )
+
+        private val NYC = Region(
+                displayName = "New York City",
+                id = "nyc",
+                endpoint = Endpoint.NOT_GAR_PR
+        )
+
+        private val CHARLEZARD: AbsPlayer = LitePlayer(
+                id = "587a951dd2994e15c7dea9fe",
+                name = "Charlezard"
+        )
+
+        private val EMPTY_RANKINGS_BUNDLE = RankingsBundle(
+                rankingCriteria = NORCAL,
+                time = SimpleDate(Date(1477897200000L)),
+                id = "6f1ed002ab5595859014ebf0951522d9",
+                region = "norcal"
+        )
     }
 
 }

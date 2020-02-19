@@ -42,11 +42,11 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
 
-            toolbar.searchFieldHint = when (HomeTab.values()[position]) {
-                HomeTab.RANKINGS -> getText(R.string.search_rankings_)
-                HomeTab.TOURNAMENTS -> getText(R.string.search_tournaments_)
-                HomeTab.FAVORITE_PLAYERS -> getText(R.string.search_favorite_players_)
-            }
+            toolbar.searchFieldHint = getText(when (HomeTab.values()[position]) {
+                HomeTab.RANKINGS -> R.string.search_rankings_
+                HomeTab.TOURNAMENTS -> R.string.search_tournaments_
+                HomeTab.FAVORITE_PLAYERS -> R.string.search_favorite_players_
+            })
 
             val itemId = when (HomeTab.values()[position]) {
                 HomeTab.RANKINGS -> R.id.actionRankings

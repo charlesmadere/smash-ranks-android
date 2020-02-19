@@ -38,39 +38,39 @@ class TournamentsViewModelTest : BaseViewModelTest() {
         )
 
         private val GENESIS_RED: AbsTournament = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.JULY)
                     set(Calendar.DAY_OF_MONTH, 9)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 regions = listOf(NORCAL.id),
                 id = "597d2903d2994e34028b4cc4",
                 name = "GENESIS: RED"
         )
 
         private val GET_MADE_AT_THE_FOUNDRY: AbsTournament = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.FEBRUARY)
                     set(Calendar.DAY_OF_MONTH, 21)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 regions = listOf(NORCAL.id),
                 id = "58ad3b1cd2994e756952adba",
                 name = "Get MADE at the Foundry"
         )
 
         private val THE_BEAT_DOWN_14: AbsTournament = LiteTournament(
-                date = SimpleDate(with(Calendar.getInstance()) {
+                date = with(Calendar.getInstance()) {
                     clear()
                     set(Calendar.YEAR, 2017)
                     set(Calendar.MONTH, Calendar.JANUARY)
                     set(Calendar.DAY_OF_MONTH, 5)
-                    time
-                }),
+                    SimpleDate(time)
+                },
                 regions = listOf(NORCAL.id),
                 id = "588827bad2994e0d53b14556",
                 name = "The Beat Down Ep.14"

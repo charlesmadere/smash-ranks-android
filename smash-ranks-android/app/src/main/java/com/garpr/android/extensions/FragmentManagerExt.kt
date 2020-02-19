@@ -7,16 +7,16 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.features.favoritePlayers.AddOrRemovePlayerFromFavoritesDialogFragment
 
 fun FragmentManager.showAddOrRemoveFavoritePlayerDialog(player: AbsPlayer, region: Region) {
-    val favoritePlayer = FavoritePlayer(
-            id = player.id,
-            name = player.name,
-            region = region
-    )
+    val favoritePlayer = if (player is FavoritePlayer) {
+        player
+    } else {
+        FavoritePlayer(id = player.id, name = player.name, region = region)
+    }
 
     showAddOrRemoveFavoritePlayerDialog(favoritePlayer)
 }
 
 fun FragmentManager.showAddOrRemoveFavoritePlayerDialog(player: FavoritePlayer) {
-    val dialog = AddOrRemovePlayerFromFavoritesDialogFragment.create(player)
+    val dialog = AddOrRemovePlayerFromFavoritesDialogFragment.create(player = player)
     dialog.show(this, AddOrRemovePlayerFromFavoritesDialogFragment.TAG)
 }

@@ -6,6 +6,7 @@ import com.garpr.android.data.models.Endpoint
 import com.garpr.android.data.models.LiteRegion
 import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.RegionsBundle
+import com.garpr.android.misc.Timber
 import com.garpr.android.networking.AbsServerApi
 import com.garpr.android.test.BaseTest
 import io.reactivex.Single
@@ -16,54 +17,20 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.koin.test.inject
 
 class RegionsRepositoryTest : BaseTest() {
 
     private lateinit var regionsRepository: RegionsRepository
     private val serverApi = ServerApiOverride()
 
-    companion object {
-        private val AUSTIN: AbsRegion = LiteRegion(
-                displayName = "Austin",
-                id = "austin"
-        )
-
-        private val CHICAGO: AbsRegion = LiteRegion(
-                displayName = "Chicago",
-                id = "chicago"
-        )
-
-        private val GOOGLE_MTV: AbsRegion = LiteRegion(
-                displayName = "Google MTV",
-                id = "googlemtv"
-        )
-
-        private val NORCAL: AbsRegion = LiteRegion(
-                displayName = "Norcal",
-                id = "norcal"
-        )
-
-        private val NYC: AbsRegion = LiteRegion(
-                displayName = "NYC Metric Area",
-                id = "nyc"
-        )
-
-        private val EMPTY_REGIONS_BUNDLE = RegionsBundle()
-
-        private val GAR_PR_REGIONS_BUNDLE = RegionsBundle(
-                regions = listOf(GOOGLE_MTV, NORCAL)
-        )
-
-        private val NOT_GAR_PR_REGIONS_BUNDLE = RegionsBundle(
-                regions = listOf(AUSTIN, CHICAGO, NYC)
-        )
-    }
+    protected val timber: Timber by inject()
 
     @Before
     override fun setUp() {
         super.setUp()
 
-        regionsRepository = RegionsRepositoryImpl(serverApi)
+        regionsRepository = RegionsRepositoryImpl(serverApi, timber)
     }
 
     @Test
@@ -152,6 +119,43 @@ class RegionsRepositoryTest : BaseTest() {
         assertNull(regionsBundle)
         assertNotNull(throwable)
         assertTrue(throwable is FailedToFetchRegionsException)
+    }
+
+    companion object {
+        private val AUSTIN: AbsRegion = LiteRegion(
+                displayName = "Austin",
+                id = "austin"
+        )
+
+        private val CHICAGO: AbsRegion = LiteRegion(
+                displayName = "Chicago",
+                id = "chicago"
+        )
+
+        private val GOOGLE_MTV: AbsRegion = LiteRegion(
+                displayName = "Google MTV",
+                id = "googlemtv"
+        )
+
+        private val NORCAL: AbsRegion = LiteRegion(
+                displayName = "Norcal",
+                id = "norcal"
+        )
+
+        private val NYC: AbsRegion = LiteRegion(
+                displayName = "NYC Metric Area",
+                id = "nyc"
+        )
+
+        private val EMPTY_REGIONS_BUNDLE = RegionsBundle()
+
+        private val GAR_PR_REGIONS_BUNDLE = RegionsBundle(
+                regions = listOf(GOOGLE_MTV, NORCAL)
+        )
+
+        private val NOT_GAR_PR_REGIONS_BUNDLE = RegionsBundle(
+                regions = listOf(AUSTIN, CHICAGO, NYC)
+        )
     }
 
     private class ServerApiOverride(
