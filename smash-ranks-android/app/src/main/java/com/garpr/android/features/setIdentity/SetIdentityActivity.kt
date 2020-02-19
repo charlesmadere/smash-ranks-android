@@ -106,9 +106,8 @@ class SetIdentityActivity : BaseActivity(), PlayerSelectionItemView.Listener, Re
         val region = regionHandleUtils.getRegion(this)
         toolbar.subtitleText = getString(R.string.region_endpoint_format, region.displayName,
                 getText(region.endpoint.title))
-        toolbar.searchableListener = this
+        toolbar.searchable = this
         toolbar.listener = this
-
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter

@@ -84,8 +84,7 @@ class PlayersActivity : BaseActivity(), PlayerItemView.Listeners, Refreshable, S
         super.onViewsBound()
 
         toolbar.subtitleText = regionHandleUtils.getRegion(this).displayName
-        toolbar.searchableListener = this
-
+        toolbar.searchable = this
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter

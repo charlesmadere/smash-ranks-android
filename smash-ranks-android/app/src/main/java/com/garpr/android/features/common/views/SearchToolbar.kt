@@ -15,7 +15,6 @@ import com.garpr.android.extensions.hideKeyboard
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requestFocusAndOpenKeyboard
 import com.garpr.android.misc.AbstractTextWatcher
-import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 import kotlinx.android.synthetic.main.search_toolbar_items.view.*
@@ -23,7 +22,7 @@ import kotlinx.android.synthetic.main.search_toolbar_items.view.*
 open class SearchToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : GarToolbar(context, attrs), SearchQueryHandle {
+) : GarToolbar(context, attrs) {
 
     val isSearchFieldExpanded: Boolean
         get() = searchField.visibility == VISIBLE
@@ -42,18 +41,18 @@ open class SearchToolbar @JvmOverloads constructor(
             searchField.hint = value
         }
 
-    override val searchQuery: CharSequence?
+    val searchQuery: CharSequence?
         get() = searchField.text
 
     private val searchIconClickListener = OnClickListener {
         openSearchField()
     }
 
-    var searchableListener: Searchable? = null
+    var searchable: Searchable? = null
 
     private val searchFieldActionListener = TextView.OnEditorActionListener { v, actionId, event ->
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            searchableListener?.search(searchQuery?.toString())
+            searchable?.search(searchQuery?.toString())
             activity?.hideKeyboard()
         }
 
@@ -62,7 +61,7 @@ open class SearchToolbar @JvmOverloads constructor(
 
     private val searchFieldTextWatcher: TextWatcher = object : AbstractTextWatcher() {
         override fun afterTextChanged(s: Editable?) {
-            searchableListener?.search(searchQuery?.toString())
+            searchable?.search(searchQuery?.toString())
         }
     }
 

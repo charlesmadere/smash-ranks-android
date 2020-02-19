@@ -164,8 +164,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     override fun onViewsBound() {
         super.onViewsBound()
 
-        toolbar.searchableListener = this
-
+        toolbar.searchable = this
         refreshLayout.setOnRefreshListener(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.addOnScrollListener(onScrollListener)

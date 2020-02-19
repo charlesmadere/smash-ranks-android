@@ -17,7 +17,6 @@ import com.garpr.android.features.rankings.RankingsViewModel
 import com.garpr.android.features.settings.SettingsActivity
 import com.garpr.android.features.tournaments.TournamentsViewModel
 import com.garpr.android.misc.RegionHandleUtils
-import com.garpr.android.misc.SearchQueryHandle
 import com.garpr.android.misc.Searchable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
@@ -25,8 +24,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
-        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners, Searchable,
-        SearchQueryHandle {
+        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners, Searchable {
 
     private lateinit var adapter: HomeFragmentPagerAdapter
 
@@ -139,7 +137,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
     override fun onViewsBound() {
         super.onViewsBound()
 
-        toolbar.searchableListener = this
+        toolbar.searchable = this
         toolbar.listeners = this
 
         bottomNavigationView.setOnNavigationItemReselectedListener(this)
@@ -170,9 +168,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         tournamentsViewModel.search(query)
         favoritePlayersViewModel.search(query)
     }
-
-    override val searchQuery: CharSequence?
-        get() = toolbar.searchQuery
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {
         var initialPosition: HomeTab? = null

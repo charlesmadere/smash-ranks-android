@@ -121,8 +121,7 @@ class TournamentActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener,
     override fun onViewsBound() {
         super.onViewsBound()
 
-        toolbar.searchableListener = this
-
+        toolbar.searchable = this
         appBarLayout.addOnOffsetChangedListener(this)
         tournamentInfoView.listeners = this
         tournamentTabsView.onTabClickListener = this
