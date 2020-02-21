@@ -96,7 +96,7 @@
             android:layout_width="@dimen/root_padding_half" />
 
         <TextView
-            android:fontFamily="@font/nunito_sans"
+            android:fontFamily="@font/nunito_sans_bold"
             android:id="@+id/tournamentsTextView"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"

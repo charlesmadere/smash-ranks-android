@@ -7,7 +7,6 @@ import android.view.View.OnClickListener
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
 import com.garpr.android.extensions.getAttrColor
@@ -56,9 +55,6 @@ class BottomNavigationView @JvmOverloads constructor(
         }
     }
 
-    private val nunitoSansBold = ResourcesCompat.getFont(context, R.font.nunito_sans_bold)
-    private val nunitoSansRegular = ResourcesCompat.getFont(context, R.font.nunito_sans_regular)
-
     init {
         layoutInflater.inflate(R.layout.view_bottom_navigation, this)
         homeClickArea.setOnClickListener(homeTabClickListener)
@@ -72,24 +68,20 @@ class BottomNavigationView @JvmOverloads constructor(
                 ViewCompat.setBackground(homeCell, selectionDrawable)
                 homeImageView.setTintedImageColor(colorAccent)
                 homeTextView.setTextColor(colorAccent)
-                homeTextView.typeface = nunitoSansBold
 
                 ViewCompat.setBackground(tournamentsCell, null)
                 tournamentsImageView.setTintedImageColor(textColorPrimary)
                 tournamentsTextView.setTextColor(textColorPrimary)
-                tournamentsTextView.typeface = nunitoSansRegular
             }
 
             HomeTab.TOURNAMENTS -> {
                 ViewCompat.setBackground(homeCell, null)
                 homeImageView.setTintedImageColor(textColorPrimary)
                 homeTextView.setTextColor(textColorPrimary)
-                homeTextView.typeface = nunitoSansRegular
 
                 ViewCompat.setBackground(tournamentsCell, selectionDrawable)
                 tournamentsImageView.setTintedImageColor(colorAccent)
                 tournamentsTextView.setTextColor(colorAccent)
-                tournamentsTextView.typeface = nunitoSansBold
             }
         }
     }
