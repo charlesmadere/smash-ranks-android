@@ -11,6 +11,7 @@
     <color name="fast_scroll_track">#22000000</color>
     <color name="gray">#303030</color>
     <color name="gray_dark">#212121</color>
+    <color name="gray_darker">#121212</color>
     <color name="lose">#C1455A</color>
     <color name="lose_background">#22C1455A</color>
     <color name="lose_badge_background">#77C1455A</color>

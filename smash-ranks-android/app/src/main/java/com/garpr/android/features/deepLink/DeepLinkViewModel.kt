@@ -93,7 +93,7 @@ class DeepLinkViewModel(
     private fun createRankingsBreadcrumbs(breadcrumbs: MutableList<Breadcrumb>, region: Region,
             sameRegion: Boolean) {
         if (sameRegion) {
-            breadcrumbs.add(Breadcrumb.Home(initialPosition = HomeTab.RANKINGS))
+            breadcrumbs.add(Breadcrumb.Home(initialPosition = HomeTab.HOME))
         } else {
             breadcrumbs.add(Breadcrumb.Home())
             breadcrumbs.add(Breadcrumb.Rankings(region = region))

@@ -6,9 +6,8 @@ import com.garpr.android.extensions.createParcel
 
 enum class HomeTab : Parcelable {
 
-    RANKINGS,
-    TOURNAMENTS,
-    FAVORITE_PLAYERS;
+    HOME,
+    TOURNAMENTS;
 
     override fun describeContents(): Int = 0
 

@@ -3,28 +3,22 @@ package com.garpr.android.features.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.garpr.android.R
-import com.garpr.android.extensions.itemIdAsHomeTab
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.common.activities.BaseActivity
-import com.garpr.android.features.favoritePlayers.FavoritePlayersViewModel
 import com.garpr.android.features.home.shareRegion.ShareRegionDialogFragment
 import com.garpr.android.features.players.PlayersActivity
-import com.garpr.android.features.rankings.RankingsViewModel
+import com.garpr.android.features.rankings.RankingsAndFavoritesViewModel
 import com.garpr.android.features.settings.SettingsActivity
 import com.garpr.android.features.tournaments.TournamentsViewModel
-import com.garpr.android.misc.RegionHandleUtils
 import com.garpr.android.misc.Searchable
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener,
-        BottomNavigationView.OnNavigationItemSelectedListener, HomeToolbar.Listeners, Searchable {
+class HomeActivity : BaseActivity(), BottomNavigationView.Listeners, HomeToolbar.Listeners,
+        Searchable {
 
     private lateinit var adapter: HomeFragmentPagerAdapter
 
@@ -41,49 +35,30 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             super.onPageSelected(position)
 
             toolbar.searchFieldHint = getText(when (HomeTab.values()[position]) {
-                HomeTab.RANKINGS -> R.string.search_rankings_
+                HomeTab.HOME -> R.string.search_rankings_and_favorites_
                 HomeTab.TOURNAMENTS -> R.string.search_tournaments_
-                HomeTab.FAVORITE_PLAYERS -> R.string.search_favorite_players_
             })
 
-            val itemId = when (HomeTab.values()[position]) {
-                HomeTab.RANKINGS -> R.id.actionRankings
-                HomeTab.TOURNAMENTS -> R.id.actionTournaments
-                HomeTab.FAVORITE_PLAYERS -> R.id.actionFavoritePlayers
-            }
-
-            bottomNavigationView.menu.findItem(itemId).isChecked = true
+            bottomNavigationView.selection = HomeTab.values()[position]
         }
     }
 
-    private val favoritePlayersViewModel: FavoritePlayersViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
-    private val rankingsViewModel: RankingsViewModel by viewModel()
+    private val rankingsAndFavoritesViewModel: RankingsAndFavoritesViewModel by viewModel()
     private val tournamentsViewModel: TournamentsViewModel by viewModel()
-
-    protected val regionHandleUtils: RegionHandleUtils by inject()
 
     private fun initListeners() {
         homeViewModel.stateLiveData.observe(this, Observer {
             refreshState(it)
         })
 
-        rankingsViewModel.stateLiveData.observe(this, Observer {
-            homeViewModel.onRankingsBundleChange(it.rankingsBundle, it.isEmpty)
+        rankingsAndFavoritesViewModel.stateLiveData.observe(this, Observer {
+            homeViewModel.onRankingsBundleChange(it.rankingsBundle, it.hasContent)
         })
 
         tournamentsViewModel.stateLiveData.observe(this, Observer {
             homeViewModel.onTournamentsBundleChange(it.isEmpty)
         })
-    }
-
-    override fun onActivityRequirementsClick(v: HomeToolbar) {
-        val rankingCriteria = rankingsViewModel.stateLiveData.value?.rankingsBundle?.rankingCriteria ?: return
-        val dialog = ActivityRequirementsDialogFragment.create(
-                rankingCriteria.rankingActivityDayLimit,
-                rankingCriteria.rankingNumTourneysAttended,
-                regionHandleUtils.getRegion(this).displayName)
-        dialog.show(supportFragmentManager, ActivityRequirementsDialogFragment.TAG)
     }
 
     override fun onBackPressed() {
@@ -92,8 +67,8 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             return
         }
 
-        if (currentPage != HomeTab.RANKINGS) {
-            currentPage = HomeTab.RANKINGS
+        if (currentPage != HomeTab.HOME) {
+            currentPage = HomeTab.HOME
             return
         }
 
@@ -107,13 +82,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         initListeners()
     }
 
-    override fun onNavigationItemReselected(item: MenuItem) {
-        adapter.onNavigationItemReselected(item.itemIdAsHomeTab)
+    override fun onHomeTabClick(v: BottomNavigationView, homeTab: HomeTab) {
+        currentPage = homeTab
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        currentPage = item.itemIdAsHomeTab
-        return true
+    override fun onHomeTabReselected(v: BottomNavigationView, homeTab: HomeTab) {
+        adapter.onHomeTabReselected(homeTab)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -139,12 +113,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
         toolbar.searchable = this
         toolbar.listeners = this
-
-        bottomNavigationView.setOnNavigationItemReselectedListener(this)
-        bottomNavigationView.setOnNavigationItemSelectedListener(this)
         viewPager.registerOnPageChangeCallback(onPageChangeCallback)
         viewPager.isUserInputEnabled = false
         viewPager.offscreenPageLimit = HomeTab.values().size - 1
+        bottomNavigationView.listeners = this
 
         adapter = HomeFragmentPagerAdapter(this)
         viewPager.adapter = adapter
@@ -159,14 +131,12 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
             getString(R.string.updated_x, state.subtitleDate)
         }
 
-        toolbar.isActivityRequirementsVisible = state.showActivityRequirements
         toolbar.showSearchIcon = if (toolbar.isSearchFieldExpanded) false else state.showSearch
     }
 
     override fun search(query: String?) {
-        rankingsViewModel.search(query)
-        tournamentsViewModel.search(query)
-        favoritePlayersViewModel.search(query)
+        rankingsAndFavoritesViewModel.searchQuery = query
+        tournamentsViewModel.searchQuery = query
     }
 
     private fun setInitialPosition(savedInstanceState: Bundle?) {

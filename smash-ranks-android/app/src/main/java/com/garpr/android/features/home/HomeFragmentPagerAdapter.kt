@@ -4,8 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.garpr.android.features.common.fragments.BaseFragment
-import com.garpr.android.features.favoritePlayers.FavoritePlayersFragment
-import com.garpr.android.features.rankings.RankingsFragment
+import com.garpr.android.features.rankings.RankingsAndFavoritesFragment
 import com.garpr.android.features.tournaments.TournamentsFragment
 import com.garpr.android.misc.ListLayout
 import java.lang.ref.WeakReference
@@ -20,9 +19,8 @@ class HomeFragmentPagerAdapter(
         val homeTab = HomeTab.values()[position]
 
         val fragment: BaseFragment = when (homeTab) {
-            HomeTab.RANKINGS -> RankingsFragment.create()
+            HomeTab.HOME -> RankingsAndFavoritesFragment.create()
             HomeTab.TOURNAMENTS -> TournamentsFragment.create()
-            HomeTab.FAVORITE_PLAYERS -> FavoritePlayersFragment.create()
         }
 
         pages[homeTab] = WeakReference(fragment)
@@ -31,7 +29,7 @@ class HomeFragmentPagerAdapter(
 
     override fun getItemCount(): Int = HomeTab.values().size
 
-    fun onNavigationItemReselected(homeTab: HomeTab) {
+    fun onHomeTabReselected(homeTab: HomeTab) {
         val fragment = pages[homeTab]?.get()
 
         if (fragment?.isAlive == true) {

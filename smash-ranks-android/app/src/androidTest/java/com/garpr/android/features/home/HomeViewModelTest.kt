@@ -8,7 +8,6 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.SimpleDate
 import com.garpr.android.features.common.viewModels.BaseViewModelTest
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
@@ -19,13 +18,12 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.inject
-import java.util.Date
+import java.util.Calendar
 
 class HomeViewModelTest : BaseViewModelTest() {
 
     private lateinit var viewModel: HomeViewModel
 
-    protected val favoritePlayersRepository: FavoritePlayersRepository by inject()
     protected val identityRepository: IdentityRepository by inject()
     protected val rankingsPollingManager: RankingsPollingManager by inject()
     protected val regionRepository: RegionRepository by inject()
@@ -36,26 +34,8 @@ class HomeViewModelTest : BaseViewModelTest() {
     override fun setUp() {
         super.setUp()
 
-        viewModel = HomeViewModel(favoritePlayersRepository, identityRepository,
-                rankingsPollingManager, regionRepository, schedulers, smashRosterSyncManager)
-    }
-
-    @Test
-    fun testHasFavoritePlayers() {
-        var state: HomeViewModel.State? = null
-
-        viewModel.stateLiveData.observeForever {
-            state = it
-        }
-
-        favoritePlayersRepository.clear()
-        assertEquals(false, state?.hasFavoritePlayers)
-
-        favoritePlayersRepository.addPlayer(CHARLEZARD, NORCAL)
-        assertEquals(true, state?.hasFavoritePlayers)
-
-        favoritePlayersRepository.clear()
-        assertEquals(false, state?.hasFavoritePlayers)
+        viewModel = HomeViewModel(identityRepository, rankingsPollingManager, regionRepository,
+                schedulers, smashRosterSyncManager)
     }
 
     @Test
@@ -70,6 +50,23 @@ class HomeViewModelTest : BaseViewModelTest() {
     }
 
     @Test
+    fun testOnRankingsBundleChange() {
+        var state: HomeViewModel.State? = null
+
+        viewModel.stateLiveData.observeForever {
+            state = it
+        }
+
+        viewModel.onRankingsBundleChange(RANKINGS_BUNDLE, true)
+        assertEquals(true, state?.hasHomeContent)
+        assertFalse(state?.subtitleDate.isNullOrBlank())
+
+        viewModel.onRankingsBundleChange(RANKINGS_BUNDLE, false)
+        assertEquals(false, state?.hasHomeContent)
+        assertFalse(state?.subtitleDate.isNullOrBlank())
+    }
+
+    @Test
     fun testOnRankingsBundleChangeWithEmptyRankingsBundle() {
         var state: HomeViewModel.State? = null
 
@@ -78,10 +75,12 @@ class HomeViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.onRankingsBundleChange(EMPTY_RANKINGS_BUNDLE, true)
-        assertEquals(false, state?.hasRankings)
-        assertEquals(false, state?.showActivityRequirements)
+        assertEquals(true, state?.hasHomeContent)
         assertFalse(state?.subtitleDate.isNullOrBlank())
-        assertFalse(state?.title.isNullOrBlank())
+
+        viewModel.onRankingsBundleChange(EMPTY_RANKINGS_BUNDLE, false)
+        assertEquals(false, state?.hasHomeContent)
+        assertFalse(state?.subtitleDate.isNullOrBlank())
     }
 
     @Test
@@ -151,9 +150,35 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         private val EMPTY_RANKINGS_BUNDLE = RankingsBundle(
                 rankingCriteria = NORCAL,
-                time = SimpleDate(Date(1477897200000L)),
-                id = "6f1ed002ab5595859014ebf0951522d9",
-                region = "norcal"
+                time = with(Calendar.getInstance()) {
+                    clear()
+                    set(Calendar.YEAR, 2019)
+                    set(Calendar.MONTH, Calendar.SEPTEMBER)
+                    set(Calendar.DAY_OF_MONTH, 26)
+                    SimpleDate(time)
+                },
+                id = "476E660A",
+                region = NORCAL.id
+        )
+
+        private val RANKINGS_BUNDLE = RankingsBundle(
+                rankingCriteria = Region(
+                        displayName = NORCAL.displayName,
+                        id = NORCAL.id,
+                        rankingActivityDayLimit = 60,
+                        rankingNumTourneysAttended = 2,
+                        tournamentQualifiedDayLimit = 1000,
+                        endpoint = NORCAL.endpoint
+                ),
+                time = with(Calendar.getInstance()) {
+                    clear()
+                    set(Calendar.YEAR, 2018)
+                    set(Calendar.MONTH, Calendar.JUNE)
+                    set(Calendar.DAY_OF_MONTH, 15)
+                    SimpleDate(time)
+                },
+                id = "ED31752D",
+                region = NORCAL.id
         )
     }
 

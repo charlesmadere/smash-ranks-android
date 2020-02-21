@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="?attr/colorPrimaryDark"
+    tools:layout_gravity="bottom"
+    tools:layout_height="@dimen/bottom_navigation_view_height"
+    tools:layout_width="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    tools:theme="@style/ToolbarTheme">
+
+    <View
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:id="@+id/homeClickArea"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/homeCell"
+        app:layout_constraintStart_toStartOf="@+id/homeCell"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:id="@+id/homeCell"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/root_padding"
+        android:paddingStart="@dimen/root_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tournamentsCell"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/bottom_navigation_selection">
+
+        <ImageView
+            android:id="@+id/homeImageView"
+            android:importantForAccessibility="no"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_home_white_24dp"
+            tools:tint="?attr/colorAccent" />
+
+        <Space
+            android:layout_height="1dp"
+            android:layout_width="@dimen/root_padding_half" />
+
+        <TextView
+            android:fontFamily="@font/nunito_sans_bold"
+            android:id="@+id/homeTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/home"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:textColor="?attr/colorAccent" />
+
+    </LinearLayout>
+
+    <View
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:id="@+id/tournamentsClickArea"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/homeClickArea"
+        app:layout_constraintEnd_toEndOf="@+id/tournamentsCell"
+        app:layout_constraintStart_toStartOf="@+id/tournamentsCell"
+        app:layout_constraintTop_toTopOf="@+id/homeClickArea" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:id="@+id/tournamentsCell"
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/root_padding"
+        android:paddingStart="@dimen/root_padding"
+        app:layout_constraintBottom_toBottomOf="@+id/homeCell"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/homeCell"
+        app:layout_constraintTop_toTopOf="@+id/homeCell">
+
+        <ImageView
+            android:id="@+id/tournamentsImageView"
+            android:importantForAccessibility="no"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_stars_white_24dp" />
+
+        <Space
+            android:layout_height="1dp"
+            android:layout_width="@dimen/root_padding_half" />
+
+        <TextView
+            android:fontFamily="@font/nunito_sans"
+            android:id="@+id/tournamentsTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/tournaments"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:textColor="?android:attr/textColorPrimaryInverse" />
+
+    </LinearLayout>
+
+</merge>

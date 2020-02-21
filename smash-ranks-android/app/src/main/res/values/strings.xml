@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="activity_requirements">Activity requirements</string>
-    <string name="x_activity_requirements">%1$s Activity Requirements</string>
     <string name="add_x_to_favorites">Add %1$s to favorites?</string>
     <string name="app_by_charles_madere">App by Charles Madere</string>
     <string name="app_restarted_to_apply_new_theme_">App restarted to apply new theme…</string>
@@ -31,6 +29,7 @@
     <string name="delete_identity">Delete identity</string>
     <string name="delimiter">,\u0020</string>
     <string name="easily_find_yourself_throughout_the_app">Easily find yourself throughout the app</string>
+    <string name="empty_favorites_description">Long click on a player to add them to your favorites. When you add a player to your favorites, they\'ll instantly appear here.</string>
     <string name="error_loading_deep_link_data">Error loading deep link data!</string>
     <string name="error_loading_head_to_head">Error loading head to head!</string>
     <string name="error_loading_head_to_head_description">There are a few possibilities for this error. It could mean that you don\'t currently have a functional network connection. Or it could mean that these two players have never played in tournament before. Or it could mean that these players are from two different regions. But, you can swipe down to refresh and try again.</string>
@@ -48,11 +47,12 @@
     <string name="every_10_days">Every 10 days</string>
     <string name="every_8_hours">Every 8 hours</string>
     <string name="favorite">Favorite</string>
-    <string name="favorite_players">Favorite Players</string>
+    <string name="favorite_players">Favorite players</string>
     <string name="gar_pr" translatable="false">GAR PR</string>
     <string name="gar_twitter_url" translatable="false">twitter.com/garsh0p</string>
     <string name="germ_website_url" translatable="false">germroverso.com</string>
     <string name="head_to_head">Head to Head</string>
+    <string name="home">Home</string>
     <string name="identity">Identity</string>
     <string name="identity_region_format">%1$s (%2$s)</string>
     <string name="identity_saved_">Identity saved!</string>
@@ -61,6 +61,7 @@
     <string name="loading_deep_link_">Loading deep link…</string>
     <string name="loading_favorite_players_">Loading favorite players…</string>
     <string name="loading_identity_">Loading identity…</string>
+    <string name="loading_rankings_">Loading rankings…</string>
     <string name="loading_sync_status_">Loading sync status…</string>
     <string name="log_viewer">Log Viewer</string>
     <string name="matches">Matches</string>
@@ -92,6 +93,7 @@
     <string name="please_wait_">Please wait…</string>
     <string name="poll_frequency">Poll frequency</string>
     <string name="poll_has_yet_to_occur">Poll has yet to occur</string>
+    <string name="question_mark">\?</string>
     <string name="rank">Rank</string>
     <string name="rankings">Rankings</string>
     <string name="x_rankings_">%1$s rankings…</string>
@@ -110,11 +112,10 @@
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="search_">Search…</string>
-    <string name="search_favorite_players_">Search favorite players…</string>
     <string name="search_matches_">Search matches…</string>
     <string name="search_matches_and_players_">Search matches and players…</string>
     <string name="search_players_">Search players…</string>
-    <string name="search_rankings_">Search rankings…</string>
+    <string name="search_rankings_and_favorites_">Search rankings and favorites…</string>
     <string name="search_tournaments_">Search tournaments…</string>
     <string name="settings">Settings</string>
     <string name="set_identity">Set Identity</string>
@@ -154,7 +155,6 @@
     <string name="unadjusted_x_y">Unadjusted: %1$s (+/- %2$s)</string>
     <string name="unfavorite">Unfavorite</string>
     <string name="unknown">Unknown</string>
-    <string name="unknown_activity_requirements">This region\'s activity requirements are unknown.</string>
     <string name="updated_x">Updated %1$s</string>
     <string name="use_rankings_polling">Use rankings polling</string>
     <string name="version_x">Version %1$s</string>
@@ -166,7 +166,7 @@
     <string name="view_logs_description">Read logs normally only visible via Android\'s Logcat. Really only useful for debug purposes.</string>
     <string name="website_by_ivan_van">Website by Ivan Van</string>
     <string name="weekly">Weekly</string>
-    <string name="x_within_the_last_y">%1$s within the last %2$s.</string>
+    <string name="x_activity_requirements_are_y_within_the_last_z">%1$s\'s activity requirements are %2$s within the last %3$s.</string>
     <string name="yes">Yes</string>
     <string name="yes_add">Yes, add</string>
     <string name="yes_remove">Yes, remove</string>

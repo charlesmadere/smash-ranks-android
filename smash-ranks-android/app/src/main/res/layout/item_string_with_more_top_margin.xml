@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="bottom"
+    android:layout_marginTop="@dimen/root_padding"
+    android:paddingBottom="0dp"
+    android:textSize="@dimen/text_size_large"
+    tools:text="@string/x_unknown_activity_requirements"
+    style="@style/ListItem" />

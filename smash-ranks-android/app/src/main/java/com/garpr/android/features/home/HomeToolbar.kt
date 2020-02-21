@@ -3,6 +3,7 @@ package com.garpr.android.features.home
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MenuItem
+import android.view.View.OnClickListener
 import androidx.appcompat.widget.PopupMenu
 import com.garpr.android.R
 import com.garpr.android.extensions.addMenuItem
@@ -16,20 +17,7 @@ class HomeToolbar @JvmOverloads constructor(
         attrs: AttributeSet? = null
 ) : SearchToolbar(context, attrs) {
 
-    var isActivityRequirementsVisible: Boolean
-        get() = showActivityRequirements.isVisible
-        set(value) {
-            showActivityRequirements.isVisible = value
-        }
-
     var listeners: Listeners? = null
-
-    private val showActivityRequirements: MenuItem
-
-    private val activityRequirementsClickListener = MenuItem.OnMenuItemClickListener {
-        listeners?.onActivityRequirementsClick(this)
-        true
-    }
 
     private val shareClickListener = MenuItem.OnMenuItemClickListener {
         listeners?.onShareClick(this)
@@ -46,25 +34,20 @@ class HomeToolbar @JvmOverloads constructor(
         true
     }
 
-    private val overflowPopupMenu: PopupMenu
-
-    interface Listeners {
-        fun onActivityRequirementsClick(v: HomeToolbar)
-        fun onSettingsClick(v: HomeToolbar)
-        fun onShareClick(v: HomeToolbar)
-        fun onViewAllPlayersClick(v: HomeToolbar)
+    private val overflowButtonOnClickListener = OnClickListener {
+        overflowPopupMenu.show()
     }
+
+    private val overflowPopupMenu: PopupMenu
 
     init {
         layoutInflater.inflate(R.layout.home_toolbar_items, menuExpansionContainer)
 
         overflowPopupMenu = PopupMenu(context, overflowButton)
-        overflowButton.setOnClickListener { overflowPopupMenu.show() }
+        overflowButton.setOnClickListener(overflowButtonOnClickListener)
         overflowButton.setOnTouchListener(overflowPopupMenu.dragToOpenListener)
 
         overflowPopupMenu.addMenuItem(R.string.share, shareClickListener)
-        showActivityRequirements = overflowPopupMenu.addMenuItem(R.string.activity_requirements,
-                    activityRequirementsClickListener)
         overflowPopupMenu.addMenuItem(R.string.view_all_players, viewAllPlayersClickListener)
         overflowPopupMenu.addMenuItem(R.string.settings, settingsClickListener)
     }
@@ -77,6 +60,12 @@ class HomeToolbar @JvmOverloads constructor(
     override fun onOpenSearchField() {
         super.onOpenSearchField()
         overflowButton.visibility = GONE
+    }
+
+    interface Listeners {
+        fun onSettingsClick(v: HomeToolbar)
+        fun onShareClick(v: HomeToolbar)
+        fun onViewAllPlayersClick(v: HomeToolbar)
     }
 
 }
