@@ -4,6 +4,5 @@
     android:gravity="bottom"
     android:layout_marginTop="@dimen/root_padding"
     android:paddingBottom="0dp"
-    android:textSize="@dimen/text_size_large"
     tools:text="Norcal\'s activity requirements are 2 tournaments within the last 60 days."
     style="@style/ListItem" />

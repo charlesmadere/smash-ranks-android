@@ -234,7 +234,7 @@ class RankingsAndFavoritesFragment : BaseFragment(), IdentityCardView.Listener, 
 
             return when (viewType) {
                 VIEW_TYPE_ACTIVITY_REQUIREMENTS -> ActivityRequirementsViewHolder(inflater.inflate(
-                        R.layout.item_string_with_more_top_margin, parent, false))
+                        R.layout.item_activity_requirements, parent, false))
                 VIEW_TYPE_EMPTY -> EmptyViewHolder(inflater.inflate(
                         R.layout.item_string_with_background, parent, false))
                 VIEW_TYPE_ERROR -> ErrorViewHolder(inflater.inflate(
