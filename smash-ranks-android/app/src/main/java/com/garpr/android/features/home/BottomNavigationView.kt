@@ -77,6 +77,14 @@ class BottomNavigationView @JvmOverloads constructor(
         homeClickArea.setOnClickListener(homeTabClickListener)
         ViewCompat.setBackground(tournamentsCell, tournamentsBackground)
         tournamentsClickArea.setOnClickListener(tournamentsTabClickListener)
+
+        homeBackground.alpha = 255
+        homeImageView.setTintedImageColor(colorAccent)
+        homeTextView.setTextColor(colorAccent)
+
+        tournamentsBackground.alpha = 255
+        tournamentsImageView.setTintedImageColor(textColorPrimary)
+        tournamentsTextView.setTextColor(textColorPrimary)
     }
 
     private fun animateToHome() {
