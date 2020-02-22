@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/root_padding"
-    android:layout_marginEnd="@dimen/root_padding"
-    android:layout_marginStart="@dimen/root_padding"
-    android:layout_marginTop="@dimen/root_padding_one_and_half"
+    android:layout_margin="@dimen/root_padding"
     android:layout_width="match_parent"
     app:cardCornerRadius="@dimen/splash_card_corner_radius"
     app:cardElevation="@dimen/splash_card_elevation">

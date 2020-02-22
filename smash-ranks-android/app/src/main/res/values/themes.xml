@@ -5,6 +5,7 @@
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
+        <item name="colorPrimaryDarker">@color/gray_darker</item>
     </style>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -27,6 +28,7 @@
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
+        <item name="colorPrimaryDarker">@color/gray_darker</item>
     </style>
 
     <style name="FrameworkAlertDialogTheme" parent="android:Theme.Material.Dialog">
@@ -45,6 +47,7 @@
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/gray</item>
         <item name="colorPrimaryDark">@color/gray_dark</item>
+        <item name="colorPrimaryDarker">@color/gray_darker</item>
     </style>
 
 </resources>

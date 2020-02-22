@@ -15,7 +15,6 @@
     <dimen name="root_padding_eighth">2dp</dimen>
     <dimen name="root_padding_quarter">4dp</dimen>
     <dimen name="root_padding_half">8dp</dimen>
-    <dimen name="root_padding_one_and_half">20dp</dimen>
     <dimen name="root_padding_quadruple">64dp</dimen>
     <dimen name="root_padding_triple">48dp</dimen>
     <dimen name="splash_card_corner_radius">12dp</dimen>

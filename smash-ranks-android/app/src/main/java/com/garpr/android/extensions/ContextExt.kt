@@ -6,10 +6,13 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 
 val Context.activity: Activity?
     get() {
@@ -64,4 +67,9 @@ val Context.notificationManagerCompat: NotificationManagerCompat
 
 fun Context.requireActivity(): Activity {
     return checkNotNull(activity) { "Context ($this) is not attached to an Activity" }
+}
+
+fun Context.requireDrawable(@DrawableRes id: Int): Drawable {
+    return ContextCompat.getDrawable(this, id) ?: throw Resources.NotFoundException(
+            "unable to find Drawable for resId ($id): ${resources.getResourceEntryName(id)}")
 }
