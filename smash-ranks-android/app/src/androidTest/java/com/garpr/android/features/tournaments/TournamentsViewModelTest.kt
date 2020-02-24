@@ -144,7 +144,7 @@ class TournamentsViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchTournaments(NORCAL)
-        viewModel.search("ge")
+        viewModel.searchQuery = "ge"
         assertEquals(2, state?.searchResults?.size)
 
         var listItem = state?.searchResults?.get(0) as ListItem.Tournament
@@ -163,7 +163,7 @@ class TournamentsViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchTournaments(NORCAL)
-        viewModel.search("")
+        viewModel.searchQuery = ""
         assertNull(state?.searchResults)
     }
 
@@ -176,7 +176,7 @@ class TournamentsViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchTournaments(NORCAL)
-        viewModel.search(null)
+        viewModel.searchQuery = null
         assertNull(state?.searchResults)
     }
 
@@ -189,7 +189,7 @@ class TournamentsViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchTournaments(NORCAL)
-        viewModel.search(" ")
+        viewModel.searchQuery = " "
         assertNull(state?.searchResults)
     }
 
@@ -202,7 +202,7 @@ class TournamentsViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchTournaments(NORCAL)
-        viewModel.search("XyZ")
+        viewModel.searchQuery = "XyZ"
         assertEquals(1, state?.searchResults?.size)
 
         val listItem = state?.searchResults?.get(0) as ListItem.NoResults

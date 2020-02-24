@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.garpr.android.features.rankings.RankingItemCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ConstraintListItem.WithBackground">
+
+    <ImageView
+        android:id="@+id/previousRankView"
+        android:importantForAccessibility="no"
+        android:layout_height="@dimen/previous_rank_view_size"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_width="@dimen/previous_rank_view_size"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_arrow_upward_white_18dp"
+        tools:visibility="visible" />
+
+    <TextView
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-condensed"
+        android:id="@+id/rank"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/previousRankView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="84" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/root_padding_half"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_marginStart="@dimen/root_padding"
+        android:layout_marginTop="@dimen/root_padding_half"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rating"
+        app:layout_constraintStart_toEndOf="@+id/rank"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:id="@+id/name"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:maxLines="3"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_large"
+            tools:text="Charlezard" />
+
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/regionDisplayName"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="gone"
+            tools:text="@string/norcal"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <TextView
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="end"
+        android:id="@+id/rating"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/root_padding"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="21.737" />
+
+    <include
+        layout="@layout/view_constraint_layout_foreground" />
+
+</com.garpr.android.features.rankings.RankingItemCardView>

@@ -24,7 +24,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:visibility="gone"
-                style="@style/RecyclerView" />
+                style="@style/RecyclerView.WithSections" />
 
             <com.garpr.android.features.common.views.NoContentLinearLayout
                 android:id="@+id/empty"

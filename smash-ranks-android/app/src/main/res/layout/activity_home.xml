@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
 
     <com.garpr.android.features.home.HomeToolbar
-        android:hint="@string/search_rankings_"
+        android:hint="@string/search_rankings_and_favorites_"
         android:id="@+id/toolbar"
         style="@style/Toolbar" />
 
@@ -16,9 +15,12 @@
         android:layout_weight="1"
         android:layout_width="match_parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <com.garpr.android.features.home.BottomNavigationView
+        android:background="?attr/colorPrimaryDark"
+        android:elevation="@dimen/elevation"
         android:id="@+id/bottomNavigationView"
-        app:menu="@menu/bottom_navigation_view"
-        style="@style/BottomNavigationView" />
+        android:layout_height="@dimen/bottom_navigation_view_height"
+        android:layout_width="match_parent"
+        android:theme="@style/ToolbarTheme" />
 
 </LinearLayout>

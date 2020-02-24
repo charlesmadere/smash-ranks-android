@@ -116,56 +116,10 @@
     **[] values();
 }
 
-# The name of @JsonClass types is used to look up the generated adapter.
--keepnames @com.squareup.moshi.JsonClass class *
 
-# Retain generated target class's synthetic defaults constructor and keep DefaultConstructorMarker's
-# name. We will look this up reflectively to invoke the type's constructor.
-#
-# We can't _just_ keep the defaults constructor because Proguard/R8's spec doesn't allow wildcard
-# matching preceding parameters.
--keepnames class kotlin.jvm.internal.DefaultConstructorMarker
--keepclassmembers @com.squareup.moshi.JsonClass @kotlin.Metadata class * {
-    synthetic <init>(...);
-}
-
-# Retain generated JsonAdapters if annotated type is retained.
--if @com.squareup.moshi.JsonClass class *
--keep class <1>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*
--keep class <1>_<2>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*$*
--keep class <1>_<2>_<3>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*$*$*
--keep class <1>_<2>_<3>_<4>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*$*$*$*
--keep class <1>_<2>_<3>_<4>_<5>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*$*$*$*$*
--keep class <1>_<2>_<3>_<4>_<5>_<6>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
-
-
-##############################################################
-## Additional reflection-specific rules for Square's Moshi. ##
-##############################################################
-
+#####################################################################
+## Additional Kotlin-reflection-specific rules for Square's Moshi. ##
+#####################################################################
 -keep class kotlin.reflect.jvm.internal.impl.builtins.BuiltInsLoaderImpl
 
 -keepclassmembers class kotlin.Metadata {
@@ -174,12 +128,9 @@
 
 
 #######################################################################
-## Even more reflection-specific rules for Square's Moshi.           ##
+## Even more Kotlin-reflection-specific rules for Square's Moshi.    ##
 ## https://github.com/square/moshi/issues/402#issuecomment-517021981 ##
 #######################################################################
-
-# https://github.com/square/moshi/issues/402#issuecomment-517021981
-
 -keep class kotlin.reflect.jvm.internal.impl.builtins.BuiltInsLoader
 -keep class kotlin.reflect.jvm.internal.impl.serialization.deserialization.builtins.BuiltInsLoaderImpl
 -keep class kotlin.reflect.jvm.internal.impl.load.java.FieldOverridabilityCondition
@@ -203,6 +154,13 @@
 
 # OkHttp platform used only on JVM and when Conscrypt dependency is available.
 -dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+
+###################
+## Square's Okio ##
+###################
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
 
 
 #######################

@@ -1,5 +1,6 @@
 package com.garpr.android.features.tournaments
 
+import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +9,6 @@ import com.garpr.android.data.models.Region
 import com.garpr.android.data.models.TournamentsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.misc.Searchable
 import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.TournamentsRepository
@@ -19,7 +19,7 @@ class TournamentsViewModel(
         private val threadUtils: ThreadUtils,
         private val timber: Timber,
         private val tournamentsRepository: TournamentsRepository
-) : BaseViewModel(), Searchable {
+) : BaseViewModel() {
 
     private val _stateLiveData = MutableLiveData<State>()
     val stateLiveData: LiveData<State> = _stateLiveData
@@ -30,9 +30,11 @@ class TournamentsViewModel(
             _stateLiveData.postValue(value)
         }
 
-    companion object {
-        private const val TAG = "TournamentsViewModel"
-    }
+    var searchQuery: String? = null
+        set(value) {
+            field = value
+            search(value)
+        }
 
     @WorkerThread
     private fun createList(bundle: TournamentsBundle?): List<ListItem>? {
@@ -80,7 +82,8 @@ class TournamentsViewModel(
                 }))
     }
 
-    override fun search(query: String?) {
+    @AnyThread
+    private fun search(query: String?) {
         threadUtils.background.submit {
             val results = search(query, state.list)
             state = state.copy(searchResults = results)
@@ -106,6 +109,10 @@ class TournamentsViewModel(
         } else {
             results
         }
+    }
+
+    companion object {
+        private const val TAG = "TournamentsViewModel"
     }
 
     sealed class ListItem {

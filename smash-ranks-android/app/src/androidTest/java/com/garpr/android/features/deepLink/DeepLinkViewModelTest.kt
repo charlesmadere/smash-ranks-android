@@ -274,7 +274,7 @@ class DeepLinkViewModelTest : BaseViewModelTest() {
         assertEquals(1, breadcrumbs?.size)
 
         val home = breadcrumbs.require(0) as Breadcrumb.Home
-        assertEquals(HomeTab.RANKINGS, home.initialPosition)
+        assertEquals(HomeTab.HOME, home.initialPosition)
     }
 
     @Test

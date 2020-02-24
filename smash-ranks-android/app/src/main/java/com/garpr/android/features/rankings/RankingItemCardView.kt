@@ -2,20 +2,20 @@ package com.garpr.android.features.rankings
 
 import android.content.Context
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.PreviousRank
+import com.garpr.android.extensions.clear
 import com.garpr.android.extensions.setTintedImageResource
-import kotlinx.android.synthetic.main.item_ranking.view.*
+import com.garpr.android.extensions.truncate
+import kotlinx.android.synthetic.main.item_ranking_card.view.*
 
-class RankingItemView @JvmOverloads constructor(
+class RankingItemCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs), View.OnClickListener, View.OnLongClickListener {
@@ -25,11 +25,6 @@ class RankingItemView @JvmOverloads constructor(
     val player: AbsPlayer
         get() = checkNotNull(_player)
 
-    private val originalBackground: Drawable? = background
-
-    @ColorInt
-    private val cardBackgroundColor: Int = ContextCompat.getColor(context, R.color.card_background)
-
     @ColorInt
     private val loseColor: Int = ContextCompat.getColor(context, R.color.lose)
 
@@ -37,11 +32,6 @@ class RankingItemView @JvmOverloads constructor(
     private val winColor: Int = ContextCompat.getColor(context, R.color.win)
 
     var listeners: Listeners? = null
-
-    interface Listeners {
-        fun onClick(v: RankingItemView)
-        fun onLongClick(v: RankingItemView)
-    }
 
     init {
         setOnClickListener(this)
@@ -62,17 +52,19 @@ class RankingItemView @JvmOverloads constructor(
             isIdentity: Boolean,
             previousRank: PreviousRank,
             rank: String?,
-            rating: String?
+            rating: String?,
+            regionDisplayName: String?
     ) {
         _player = player
         name.text = player.name
+        name.typeface = if (isIdentity) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
 
-        if (isIdentity) {
-            name.typeface = Typeface.DEFAULT_BOLD
-            setBackgroundColor(cardBackgroundColor)
+        this.regionDisplayName.visibility = if (regionDisplayName.isNullOrBlank()) {
+            this.regionDisplayName.clear()
+            GONE
         } else {
-            name.typeface = Typeface.DEFAULT
-            ViewCompat.setBackground(this, originalBackground)
+            this.regionDisplayName.text = regionDisplayName
+            VISIBLE
         }
 
         when (previousRank) {
@@ -95,8 +87,26 @@ class RankingItemView @JvmOverloads constructor(
             }
         }
 
-        this.rank.text = rank
-        this.rating.text = rating
+        this.rank.text = if (rank.isNullOrBlank()) {
+            this.rank.visibility = INVISIBLE
+            resources.getText(R.string.question_mark)
+        } else {
+            this.rank.visibility = VISIBLE
+            rank
+        }
+
+        this.rating.text = if (rating.isNullOrBlank()) {
+            this.rating.visibility = INVISIBLE
+            0f.truncate()
+        } else {
+            this.rating.visibility = VISIBLE
+            rating
+        }
+    }
+
+    interface Listeners {
+        fun onClick(v: RankingItemCardView)
+        fun onLongClick(v: RankingItemCardView)
     }
 
 }

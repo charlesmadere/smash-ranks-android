@@ -7,14 +7,12 @@ import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.RankingsBundle
 import com.garpr.android.features.common.viewModels.BaseViewModel
 import com.garpr.android.misc.Schedulers
-import com.garpr.android.repositories.FavoritePlayersRepository
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.RegionRepository
 import com.garpr.android.sync.rankings.RankingsPollingManager
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 
 class HomeViewModel(
-        private val favoritePlayersRepository: FavoritePlayersRepository,
         private val identityRepository: IdentityRepository,
         rankingsPollingManager: RankingsPollingManager,
         private val regionRepository: RegionRepository,
@@ -39,13 +37,6 @@ class HomeViewModel(
     }
 
     private fun initListeners() {
-        disposables.add(favoritePlayersRepository.sizeObservable
-                .subscribeOn(schedulers.background)
-                .observeOn(schedulers.background)
-                .subscribe { size ->
-                    refreshFavoritePlayers(size)
-                })
-
         disposables.add(identityRepository.identityObservable
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
@@ -63,13 +54,9 @@ class HomeViewModel(
     }
 
     @AnyThread
-    fun onRankingsBundleChange(bundle: RankingsBundle?, isEmpty: Boolean) {
+    fun onRankingsBundleChange(bundle: RankingsBundle?, hasContent: Boolean) {
         state = state.copy(
-                hasRankings = !isEmpty,
-                showActivityRequirements =
-                        bundle?.rankingCriteria?.rankingActivityDayLimit != null &&
-                        bundle.rankingCriteria.rankingNumTourneysAttended != null &&
-                        bundle.rankingCriteria.tournamentQualifiedDayLimit != null,
+                hasHomeContent = hasContent,
                 subtitleDate = bundle?.time?.shortForm
         )
         refreshState()
@@ -78,12 +65,6 @@ class HomeViewModel(
     @AnyThread
     fun onTournamentsBundleChange(isEmpty: Boolean) {
         state = state.copy(hasTournaments = !isEmpty)
-        refreshState()
-    }
-
-    @AnyThread
-    private fun refreshFavoritePlayers(size: Int) {
-        state = state.copy(hasFavoritePlayers = size > 0)
         refreshState()
     }
 
@@ -105,17 +86,15 @@ class HomeViewModel(
     @AnyThread
     private fun refreshState() {
         state = state.copy(
-                showSearch = state.hasRankings || state.hasTournaments || state.hasFavoritePlayers
+                showSearch = state.hasHomeContent || state.hasTournaments
         )
         _stateLiveData.postValue(state)
     }
 
     data class State(
             val identity: AbsPlayer? = null,
-            val hasFavoritePlayers: Boolean = false,
-            val hasRankings: Boolean = false,
+            val hasHomeContent: Boolean = false,
             val hasTournaments: Boolean = false,
-            val showActivityRequirements: Boolean = false,
             val showSearch: Boolean = false,
             val showYourself: Boolean = false,
             val subtitleDate: CharSequence? = null,

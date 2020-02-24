@@ -236,11 +236,11 @@ open class GarToolbar @JvmOverloads constructor(
     // BEGIN ANIMATION VARIABLES //
     ///////////////////////////////
 
-    private val titleAlphaAnimationDuration by lazy {
+    private val titleAlphaAnimationDuration: Long by lazy {
         resources.getLong(R.integer.toolbar_title_animation_duration)
     }
 
-    private val titleColorAnimationDuration by lazy {
+    private val titleColorAnimationDuration: Long by lazy {
         resources.getLong(R.integer.toolbar_color_animation_duration)
     }
 

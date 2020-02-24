@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 22009
-        versionName "2.2.9"
+        versionCode 30000
+        versionName "3.0.0"
 
         // needed for androidTest
         testInstrumentationRunner "com.garpr.android.test.AndroidTestRunner"
@@ -128,7 +128,6 @@ dependencies {
 
     // AndroidX ViewModel and LiveData
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // AndroidX ViewPager2

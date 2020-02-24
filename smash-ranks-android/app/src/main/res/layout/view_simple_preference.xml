@@ -10,6 +10,7 @@
     <com.garpr.android.features.common.views.TintedImageView
         android:id="@+id/icon"
         android:importantForAccessibility="no"
+        android:layout_marginEnd="@dimen/root_padding"
         tools:srcCompat="@drawable/ic_date_range_white_24dp"
         style="@style/PreferenceViewCheckable" />
 
