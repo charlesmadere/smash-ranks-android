@@ -13,9 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
 import com.garpr.android.data.models.FavoritePlayer
-import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.Region
-import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.extensions.requireStringExtra
@@ -40,7 +38,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
         PlayerProfileItemView.Listeners, Refreshable, Searchable,
         SwipeRefreshLayout.OnRefreshListener, TournamentDividerView.Listener {
 
-    private val adapter = Adapter(this, this, this)
+    private val adapter = Adapter(this, this, this, this)
     private val playerId: String by lazy { intent.requireStringExtra(EXTRA_PLAYER_ID) }
     override val activityName = TAG
 
@@ -50,7 +48,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     protected val shareUtils: ShareUtils by inject()
 
     private fun checkNameAndRegionViewScrollStates() {
-        val view = recyclerView.getChildAt(0) as? PlayerProfileItemView
+        val view = recyclerView.getChildAt(0) as? PlayerProfileItemView?
 
         if (view == null) {
             toolbar.fadeInTitleAndSubtitle()
@@ -87,28 +85,30 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
     override fun onClick(v: MatchItemView) {
         val player = viewModel.player ?: return
-        val match = v.match
 
-        val intent = HeadToHeadActivity.getLaunchIntent(
+        startActivity(HeadToHeadActivity.getLaunchIntent(
                 context = this,
                 player = player,
-                match = match,
+                match = v.match,
                 region = regionHandleUtils.getRegion(this)
-        )
-
-        startActivity(intent)
+        ))
     }
 
     override fun onClick(v: TournamentDividerView) {
-        startActivity(TournamentActivity.getLaunchIntent(this, v.tournament,
-                regionHandleUtils.getRegion(this)))
+        startActivity(TournamentActivity.getLaunchIntent(
+                context = this,
+                tournament = v.tournament,
+                region = regionHandleUtils.getRegion(this)
+        ))
     }
 
     override fun onCompareClick(v: PlayerProfileItemView) {
-        val identity = viewModel.identity ?: return
-        val player = viewModel.player ?: return
-        startActivity(HeadToHeadActivity.getLaunchIntent(this, identity, player,
-                regionHandleUtils.getRegion(this)))
+        startActivity(HeadToHeadActivity.getLaunchIntent(
+                context = this,
+                player = v.identity,
+                opponent = v.player,
+                region = regionHandleUtils.getRegion(this)
+        ))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +132,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
 
     override fun onPaletteBuilt(palette: Palette?) {
         if (isAlive) {
-            toolbar.animateToPaletteColors(window, palette)
+            toolbar.onPaletteBuilt(palette)
         }
     }
 
@@ -141,8 +141,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     }
 
     override fun onShareClick(v: PlayerProfileItemView) {
-        val player = checkNotNull(viewModel.player)
-        shareUtils.sharePlayer(this, player)
+        shareUtils.sharePlayer(this, v.player)
     }
 
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
@@ -185,14 +184,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             recyclerView.visibility = View.GONE
             error.visibility = View.VISIBLE
         } else {
-            adapter.set(
-                    list = state.searchResults ?: state.list,
-                    identity = state.identity,
-                    isFavorited = state.isFavorited,
-                    player = viewModel.player,
-                    smashCompetitor = state.smashCompetitor
-            )
-
+            adapter.set(state.searchResults ?: state.list)
             error.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
@@ -201,7 +193,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     }
 
     override fun search(query: String?) {
-        viewModel.search(query)
+        viewModel.searchQuery = query
     }
 
     companion object {
@@ -227,16 +219,13 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     }
 
     private class Adapter(
+            private val colorListener: ColorListener,
             private val matchItemViewListeners: MatchItemView.Listeners,
             private val playerProfileItemViewListeners: PlayerProfileItemView.Listeners,
             private val tournamentDividerViewListener: TournamentDividerView.Listener
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private var identity: AbsPlayer? = null
-        private var isFavorited: Boolean = false
-        private var player: FullPlayer? = null
         private val list = mutableListOf<ListItem>()
-        private var smashCompetitor: SmashCompetitor? = null
 
         init {
             setHasStableIds(true)
@@ -253,22 +242,22 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             holder.noResultsItemView.setContent(item.query)
         }
 
-        private fun bindPlayer(holder: PlayerViewHolder) {
-            val player = checkNotNull(this.player)
-            holder.playerProfileItemView.setContent(identity, isFavorited, player, smashCompetitor)
+        private fun bindPlayer(holder: PlayerViewHolder, item: ListItem.Player) {
+            holder.playerProfileItemView.setContent(
+                    identity = item.identity,
+                    region = item.region,
+                    isFavorited = item.isFavorited,
+                    player = item.player,
+                    smashCompetitor = item.smashCompetitor
+            )
         }
 
-        private fun bindTournament(holder: TournamentViewHolder,
-                item: ListItem.Tournament) {
+        private fun bindTournament(holder: TournamentViewHolder, item: ListItem.Tournament) {
             holder.tournamentDividerView.setContent(item.tournament)
         }
 
         internal fun clear() {
-            identity = null
-            isFavorited = false
-            player = null
             list.clear()
-            smashCompetitor = null
             notifyDataSetChanged()
         }
 
@@ -291,7 +280,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
                 is ListItem.Match -> bindMatch(holder as MatchViewHolder, item)
                 is ListItem.NoMatches -> { /* intentionally empty */ }
                 is ListItem.NoResults -> bindNoResults(holder as NoResultsViewHolder, item)
-                is ListItem.Player -> bindPlayer(holder as PlayerViewHolder)
+                is ListItem.Player -> bindPlayer(holder as PlayerViewHolder, item)
                 is ListItem.Tournament -> bindTournament(holder as TournamentViewHolder, item)
                 else -> throw RuntimeException("unknown item: $item, position: $position")
             }
@@ -308,7 +297,7 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
                         inflater.inflate(R.layout.item_string, parent, false))
                 VIEW_TYPE_NO_RESULTS -> NoResultsViewHolder(inflater.inflate(
                         R.layout.item_no_results, parent, false))
-                VIEW_TYPE_PLAYER -> PlayerViewHolder(playerProfileItemViewListeners,
+                VIEW_TYPE_PLAYER -> PlayerViewHolder(colorListener, playerProfileItemViewListeners,
                         inflater.inflate(R.layout.item_player_profile, parent, false))
                 VIEW_TYPE_TOURNAMENT -> TournamentViewHolder(tournamentDividerViewListener,
                         inflater.inflate(R.layout.divider_tournament, parent, false))
@@ -316,18 +305,12 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
             }
         }
 
-        internal fun set(list: List<ListItem>?, identity: AbsPlayer?, isFavorited: Boolean,
-                player: FullPlayer?, smashCompetitor: SmashCompetitor?) {
+        internal fun set(list: List<ListItem>?) {
             this.list.clear()
 
             if (!list.isNullOrEmpty()) {
                 this.list.addAll(list)
             }
-
-            this.identity = identity
-            this.isFavorited = isFavorited
-            this.player = player
-            this.smashCompetitor = smashCompetitor
 
             notifyDataSetChanged()
         }
@@ -367,12 +350,14 @@ class PlayerActivity : BaseActivity(), ColorListener, MatchItemView.Listeners,
     }
 
     private class PlayerViewHolder(
+            colorListener: ColorListener,
             listeners: PlayerProfileItemView.Listeners,
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         internal val playerProfileItemView: PlayerProfileItemView = itemView as PlayerProfileItemView
 
         init {
+            playerProfileItemView.colorListener = colorListener
             playerProfileItemView.listeners = listeners
         }
     }

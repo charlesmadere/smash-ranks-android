@@ -11,13 +11,12 @@ import androidx.core.widget.TextViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
 import com.garpr.android.data.models.AbsPlayer
+import com.garpr.android.data.models.AbsRegion
 import com.garpr.android.data.models.FullPlayer
 import com.garpr.android.data.models.SmashCompetitor
 import com.garpr.android.extensions.verticalPositionInWindow
 import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.Heartbeat
-import com.garpr.android.misc.Refreshable
-import com.garpr.android.misc.RegionHandleUtils
 import kotlinx.android.synthetic.main.item_player_profile.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -25,15 +24,21 @@ import org.koin.core.inject
 class PlayerProfileItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : LinearLayout(context, attrs), ColorListener, Heartbeat, KoinComponent, Refreshable {
+) : LinearLayout(context, attrs), ColorListener, Heartbeat, KoinComponent {
 
-    private var identity: AbsPlayer? = null
+    private var _identity: AbsPlayer? = null
+
+    val identity: AbsPlayer
+        get() = checkNotNull(_identity)
 
     override val isAlive: Boolean
         get() = ViewCompat.isAttachedToWindow(this)
 
-    private var isFavorited: Boolean = false
-    private var player: FullPlayer? = null
+    var colorListener: ColorListener? = null
+    private var _player: FullPlayer? = null
+
+    val player: FullPlayer
+        get() = checkNotNull(_player)
 
     val ratingVerticalPositionInWindow: Int
         get() = rating.verticalPositionInWindow
@@ -68,14 +73,6 @@ class PlayerProfileItemView @JvmOverloads constructor(
     private var smashCompetitor: SmashCompetitor? = null
 
     protected val playerProfileManager: PlayerProfileManager by inject()
-    protected val regionHandleUtils: RegionHandleUtils by inject()
-
-    interface Listeners : ColorListener {
-        fun onCompareClick(v: PlayerProfileItemView)
-        fun onFavoriteOrUnfavoriteClick(v: PlayerProfileItemView)
-        fun onShareClick(v: PlayerProfileItemView)
-        fun onUrlClick(v: PlayerProfileItemView, url: String?)
-    }
 
     private fun applyPaletteToView(palette: Palette?, view: View?) {
         if (view is ColorListener) {
@@ -104,89 +101,96 @@ class PlayerProfileItemView @JvmOverloads constructor(
             return
         }
 
-        listeners?.onPaletteBuilt(palette)
+        colorListener?.onPaletteBuilt(palette)
 
         repeat(childCount) {
             applyPaletteToView(palette, getChildAt(it))
         }
     }
 
-    override fun refresh() {
-        val player = this.player ?: return
-        val region = regionHandleUtils.getRegion(context)
+    fun setContent(
+            identity: AbsPlayer?,
+            region: AbsRegion,
+            isFavorited: Boolean,
+            player: FullPlayer,
+            smashCompetitor: SmashCompetitor?
+    ) {
+        this._identity = identity
+        this._player = player
+        this.smashCompetitor = smashCompetitor
+
         val presentation = playerProfileManager.getPresentation(identity, region, isFavorited,
                 player, smashCompetitor)
         this.presentation = presentation
 
         if (presentation.avatar.isNullOrBlank()) {
-            avatarContainer.visibility = View.GONE
+            avatarContainer.visibility = GONE
         } else {
             avatar.setImageURI(presentation.avatar)
-            avatarContainer.visibility = View.VISIBLE
+            avatarContainer.visibility = VISIBLE
         }
 
         playerTag.text = presentation.tag
 
         if (presentation.name.isNullOrBlank()) {
-            name.visibility = View.GONE
+            name.visibility = GONE
         } else {
             name.text = presentation.name
-            name.visibility = View.VISIBLE
+            name.visibility = VISIBLE
         }
 
         if (presentation.mains.isNullOrBlank()) {
-            mains.visibility = View.GONE
+            mains.visibility = GONE
         } else {
             mains.text = presentation.mains
-            mains.visibility = View.VISIBLE
+            mains.visibility = VISIBLE
         }
 
         if (presentation.aliases.isNullOrBlank()) {
-            aliases.visibility = View.GONE
+            aliases.visibility = GONE
         } else {
             aliases.text = presentation.aliases
-            aliases.visibility = View.VISIBLE
+            aliases.visibility = VISIBLE
         }
 
-        this.region.text = region.displayName
+        regionDisplayName.text = region.displayName
 
         if (presentation.rating.isNullOrBlank() || presentation.unadjustedRating.isNullOrBlank()) {
-            rating.visibility = View.GONE
-            unadjustedRating.visibility = View.GONE
+            rating.visibility = GONE
+            unadjustedRating.visibility = GONE
         } else {
             rating.text = presentation.rating
-            rating.visibility = View.VISIBLE
+            rating.visibility = VISIBLE
 
             unadjustedRating.text = presentation.unadjustedRating
-            unadjustedRating.visibility = View.VISIBLE
+            unadjustedRating.visibility = VISIBLE
         }
 
-        if (presentation.twitch?.isNotBlank() == true
-                || presentation.twitter?.isNotBlank() == true
-                || presentation.youTube?.isNotBlank() == true) {
+        if (presentation.twitch.isNullOrBlank() && presentation.twitter.isNullOrBlank() &&
+                presentation.youTube.isNullOrBlank()) {
+            websites.visibility = GONE
+            websitesDivider.visibility = GONE
+        } else {
             if (presentation.twitch.isNullOrBlank()) {
-                twitch.visibility = View.GONE
+                twitch.visibility = GONE
             } else {
-                twitch.visibility = View.VISIBLE
+                twitch.visibility = VISIBLE
             }
 
             if (presentation.twitter.isNullOrBlank()) {
-                twitter.visibility = View.GONE
+                twitter.visibility = GONE
             } else {
-                twitter.visibility = View.VISIBLE
+                twitter.visibility = VISIBLE
             }
 
             if (presentation.youTube.isNullOrBlank()) {
-                youTube.visibility = View.GONE
+                youTube.visibility = GONE
             } else {
-                youTube.visibility = View.VISIBLE
+                youTube.visibility = VISIBLE
             }
 
-            websites.visibility = View.VISIBLE
-            websitesDivider.visibility = View.VISIBLE
-        } else {
-            websites.visibility = View.GONE
-            websitesDivider.visibility = View.GONE
+            websites.visibility = VISIBLE
+            websitesDivider.visibility = VISIBLE
         }
 
         if (presentation.isAddToFavoritesVisible) {
@@ -208,13 +212,11 @@ class PlayerProfileItemView @JvmOverloads constructor(
         }
     }
 
-    fun setContent(identity: AbsPlayer?, isFavorited: Boolean, player: FullPlayer,
-            smashCompetitor: SmashCompetitor?) {
-        this.identity = identity
-        this.isFavorited = isFavorited
-        this.player = player
-        this.smashCompetitor = smashCompetitor
-        refresh()
+    interface Listeners {
+        fun onCompareClick(v: PlayerProfileItemView)
+        fun onFavoriteOrUnfavoriteClick(v: PlayerProfileItemView)
+        fun onShareClick(v: PlayerProfileItemView)
+        fun onUrlClick(v: PlayerProfileItemView, url: String?)
     }
 
 }
