@@ -82,7 +82,7 @@ class BottomNavigationView @JvmOverloads constructor(
         homeImageView.setTintedImageColor(colorAccent)
         homeTextView.setTextColor(colorAccent)
 
-        tournamentsBackground.alpha = 255
+        tournamentsBackground.alpha = 0
         tournamentsImageView.setTintedImageColor(textColorPrimary)
         tournamentsTextView.setTextColor(textColorPrimary)
     }
