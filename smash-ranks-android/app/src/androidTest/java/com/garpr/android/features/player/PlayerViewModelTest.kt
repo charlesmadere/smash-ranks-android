@@ -56,14 +56,14 @@ class PlayerViewModelTest : BaseViewModelTest() {
                 name = "Charlezard"
         )
 
-        private val ABS_PLAYER_JOEJOE: AbsPlayer = LitePlayer(
-                id = "588999c5d2994e713ad63c7b",
-                name = "joejoe"
-        )
-
         private val ABS_PLAYER_IMYT: AbsPlayer = LitePlayer(
                 id = "5877eb55d2994e15c7dea98b",
                 name = "Imyt"
+        )
+
+        private val ABS_PLAYER_JOEJOE: AbsPlayer = LitePlayer(
+                id = "588999c5d2994e713ad63c7b",
+                name = "joejoe"
         )
 
         private val ABS_PLAYER_PIMP_JONG_ILLEST: AbsPlayer = LitePlayer(
