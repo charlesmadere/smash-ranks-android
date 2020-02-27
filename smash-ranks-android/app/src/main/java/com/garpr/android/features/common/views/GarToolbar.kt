@@ -10,12 +10,13 @@ import android.util.AttributeSet
 import android.view.View.OnClickListener
 import android.view.View.OnTouchListener
 import android.view.ViewPropertyAnimator
-import android.view.Window
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.garpr.android.R
+import com.garpr.android.extensions.activity
 import com.garpr.android.extensions.colorCompat
 import com.garpr.android.extensions.getAttrColor
 import com.garpr.android.extensions.getLong
@@ -23,13 +24,15 @@ import com.garpr.android.extensions.layoutInflater
 import com.garpr.android.extensions.requireActivity
 import com.garpr.android.features.common.activities.BaseActivity
 import com.garpr.android.misc.AnimationUtils
+import com.garpr.android.misc.ColorListener
 import com.garpr.android.misc.ColorUtils
+import com.garpr.android.misc.Heartbeat
 import kotlinx.android.synthetic.main.gar_toolbar.view.*
 
 open class GarToolbar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs) {
+) : ConstraintLayout(context, attrs), ColorListener, Heartbeat {
 
     @ColorInt
     private val colorPrimary = context.getAttrColor(R.attr.colorPrimary)
@@ -48,6 +51,9 @@ open class GarToolbar @JvmOverloads constructor(
 
     val hasTitleText: Boolean
         get() = !titleText.isNullOrBlank()
+
+    override val isAlive: Boolean
+        get() = ViewCompat.isAttachedToWindow(this)
 
     protected var showTitleContainer: Boolean
         get() = titleContainer.visibility == VISIBLE
@@ -110,48 +116,6 @@ open class GarToolbar @JvmOverloads constructor(
         upNavigationButton.setOnClickListener(onUpNavigationClick)
     }
 
-    fun animateToPaletteColors(window: Window, palette: Palette?) {
-        val toolbarBackgroundFallback = colorPrimary
-        val statusBarBackgroundFallback = colorPrimaryDark
-
-        val swatch = palette?.darkVibrantSwatch ?: palette?.darkMutedSwatch
-
-        @ColorInt val toolbarBackground: Int
-        @ColorInt val systemWindowBackground: Int
-
-        if (swatch == null) {
-            toolbarBackground = toolbarBackgroundFallback
-            systemWindowBackground = statusBarBackgroundFallback
-        } else {
-            toolbarBackground = ColorUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb,
-                    TOO_LIGHT_DARKEN_FACTOR, LIGHTNESS_LIMIT)
-            systemWindowBackground = ColorUtils.brightenOrDarkenColor(toolbarBackground,
-                    STATUS_BAR_DARKEN_FACTOR)
-        }
-
-        val toolbarAnimator = ValueAnimator.ofArgb(
-                background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
-        toolbarAnimator.addUpdateListener(backgroundColorAnimatorUpdateListener)
-
-        val statusBarAnimator = ValueAnimator.ofArgb(window.statusBarColor,
-                systemWindowBackground)
-        statusBarAnimator.addUpdateListener {
-            window.statusBarColor = it.animatedValue as Int
-        }
-
-        val navigationBarAnimator = ValueAnimator.ofArgb(window.navigationBarColor,
-                systemWindowBackground)
-        navigationBarAnimator.addUpdateListener {
-            window.navigationBarColor = it.animatedValue as Int
-        }
-
-        val animatorSet = AnimatorSet()
-        animatorSet.duration = titleColorAnimationDuration
-        animatorSet.interpolator = AnimationUtils.DECELERATE_INTERPOLATOR
-        animatorSet.playTogether(toolbarAnimator, statusBarAnimator, navigationBarAnimator)
-        animatorSet.start()
-    }
-
     fun fadeInTitleAndSubtitle() {
         if (inTitleAnimation != null || inSubtitleAnimation != null) {
             return
@@ -208,6 +172,53 @@ open class GarToolbar @JvmOverloads constructor(
 
         titleAnimation.start()
         subtitleAnimation.start()
+    }
+
+    override fun onPaletteBuilt(palette: Palette?) {
+        if (!isAlive) {
+            return
+        }
+
+        val window = activity?.window ?: return
+
+        val toolbarBackgroundFallback = colorPrimary
+        val statusBarBackgroundFallback = colorPrimaryDark
+        val swatch = palette?.darkVibrantSwatch ?: palette?.darkMutedSwatch
+
+        @ColorInt val toolbarBackground: Int
+        @ColorInt val systemWindowBackground: Int
+
+        if (swatch == null) {
+            toolbarBackground = toolbarBackgroundFallback
+            systemWindowBackground = statusBarBackgroundFallback
+        } else {
+            toolbarBackground = ColorUtils.brightenOrDarkenColorIfLightnessIs(swatch.rgb,
+                    TOO_LIGHT_DARKEN_FACTOR, LIGHTNESS_LIMIT)
+            systemWindowBackground = ColorUtils.brightenOrDarkenColor(toolbarBackground,
+                    STATUS_BAR_DARKEN_FACTOR)
+        }
+
+        val toolbarAnimator = ValueAnimator.ofArgb(
+                background?.colorCompat ?: toolbarBackgroundFallback, toolbarBackground)
+        toolbarAnimator.addUpdateListener(backgroundColorAnimatorUpdateListener)
+
+        val statusBarAnimator = ValueAnimator.ofArgb(window.statusBarColor,
+                systemWindowBackground)
+        statusBarAnimator.addUpdateListener {
+            window.statusBarColor = it.animatedValue as Int
+        }
+
+        val navigationBarAnimator = ValueAnimator.ofArgb(window.navigationBarColor,
+                systemWindowBackground)
+        navigationBarAnimator.addUpdateListener {
+            window.navigationBarColor = it.animatedValue as Int
+        }
+
+        val animatorSet = AnimatorSet()
+        animatorSet.duration = titleColorAnimationDuration
+        animatorSet.interpolator = AnimationUtils.DECELERATE_INTERPOLATOR
+        animatorSet.playTogether(toolbarAnimator, statusBarAnimator, navigationBarAnimator)
+        animatorSet.start()
     }
 
     private fun refreshTitleContainerVisibility() {

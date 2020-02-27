@@ -8,6 +8,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View.OnClickListener
 import androidx.annotation.ColorInt
+import androidx.annotation.IntRange
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import com.garpr.android.R
@@ -82,45 +83,54 @@ class BottomNavigationView @JvmOverloads constructor(
         homeImageView.setTintedImageColor(colorAccent)
         homeTextView.setTextColor(colorAccent)
 
-        tournamentsBackground.alpha = 255
+        tournamentsBackground.alpha = 0
         tournamentsImageView.setTintedImageColor(textColorPrimary)
         tournamentsTextView.setTextColor(textColorPrimary)
     }
 
-    private fun animateToHome() {
+    private fun animateTo(
+            @IntRange(from = 0, to = 255) newHomeBackgroundAlpha: Int,
+            @ColorInt currentHomeImageTint: Int,
+            @ColorInt newHomeImageTint: Int,
+            @ColorInt newHomeTextColor: Int,
+            @IntRange(from = 0, to = 255) newTournamentsBackgroundAlpha: Int,
+            @ColorInt currentTournamentsImageTint: Int,
+            @ColorInt newTournamentsImageTint: Int,
+            @ColorInt newTournamentsTextColor: Int
+    ) {
         homeBackgroundAnimation?.cancel()
+        homeImageTintAnimation?.cancel()
         homeTextColorAnimation?.cancel()
         tournamentsBackgroundAnimation?.cancel()
+        tournamentsImageTintAnimation?.cancel()
         tournamentsTextColorAnimation?.cancel()
 
-        val homeBackgroundAnimation = ValueAnimator.ofInt(homeBackground.alpha, 255)
+        val homeBackgroundAnimation = ValueAnimator.ofInt(homeBackground.alpha, newHomeBackgroundAlpha)
         homeBackgroundAnimation.addListener(clearHomeBackgroundAnimation)
         homeBackgroundAnimation.addUpdateListener(homeBackgroundAlphaAnimatorUpdateListener)
         this.homeBackgroundAnimation = homeBackgroundAnimation
 
-        val homeImageTintAnimation = ValueAnimator.ofArgb(textColorPrimary, colorAccent)
+        val homeImageTintAnimation = ValueAnimator.ofArgb(currentHomeImageTint, newHomeImageTint)
         homeImageTintAnimation.addListener(clearHomeImageTintAnimation)
         homeImageTintAnimation.addUpdateListener(homeImageTintAnimatorUpdateListener)
         this.homeImageTintAnimation = homeImageTintAnimation
 
-        val homeTextColorAnimation = ValueAnimator.ofArgb(homeTextView.currentTextColor,
-                colorAccent)
+        val homeTextColorAnimation = ValueAnimator.ofArgb(homeTextView.currentTextColor, newHomeTextColor)
         homeTextColorAnimation.addListener(clearHomeTextColorAnimation)
         homeTextColorAnimation.addUpdateListener(homeTextColorAnimatorUpdateListener)
         this.homeTextColorAnimation = homeTextColorAnimation
 
-        val tournamentsBackgroundAnimation = ValueAnimator.ofInt(tournamentsBackground.alpha, 0)
+        val tournamentsBackgroundAnimation = ValueAnimator.ofInt(tournamentsBackground.alpha, newTournamentsBackgroundAlpha)
         tournamentsBackgroundAnimation.addListener(clearTournamentsBackgroundAnimation)
         tournamentsBackgroundAnimation.addUpdateListener(tournamentsBackgroundAlphaAnimatorUpdateListener)
         this.tournamentsBackgroundAnimation = tournamentsBackgroundAnimation
 
-        val tournamentsImageTintAnimation = ValueAnimator.ofArgb(colorAccent, textColorPrimary)
+        val tournamentsImageTintAnimation = ValueAnimator.ofArgb(currentTournamentsImageTint, newTournamentsImageTint)
         tournamentsImageTintAnimation.addListener(clearTournamentsImageTintAnimation)
         tournamentsImageTintAnimation.addUpdateListener(tournamentsImageTintAnimatorUpdateListener)
         this.tournamentsImageTintAnimation = tournamentsImageTintAnimation
 
-        val tournamentsTextColorAnimation = ValueAnimator.ofArgb(
-                tournamentsTextView.currentTextColor, textColorPrimary)
+        val tournamentsTextColorAnimation = ValueAnimator.ofArgb(tournamentsTextView.currentTextColor, newTournamentsTextColor)
         tournamentsTextColorAnimation.addListener(clearTournamentsTextColorAnimation)
         tournamentsTextColorAnimation.addUpdateListener(tournamentsTextColorAnimatorUpdateListener)
         this.tournamentsTextColorAnimation = tournamentsTextColorAnimation
@@ -134,51 +144,30 @@ class BottomNavigationView @JvmOverloads constructor(
         animatorSet.start()
     }
 
+    private fun animateToHome() {
+        animateTo(
+                newHomeBackgroundAlpha = 255,
+                currentHomeImageTint = textColorPrimary,
+                newHomeImageTint = colorAccent,
+                newHomeTextColor = colorAccent,
+                newTournamentsBackgroundAlpha = 0,
+                currentTournamentsImageTint = colorAccent,
+                newTournamentsImageTint = textColorPrimary,
+                newTournamentsTextColor = textColorPrimary
+        )
+    }
+
     private fun animateToTournaments() {
-        homeBackgroundAnimation?.cancel()
-        homeTextColorAnimation?.cancel()
-        tournamentsBackgroundAnimation?.cancel()
-        tournamentsTextColorAnimation?.cancel()
-
-        val homeBackgroundAnimation = ValueAnimator.ofInt(homeBackground.alpha, 0)
-        homeBackgroundAnimation.addListener(clearHomeBackgroundAnimation)
-        homeBackgroundAnimation.addUpdateListener(homeBackgroundAlphaAnimatorUpdateListener)
-        this.homeBackgroundAnimation = homeBackgroundAnimation
-
-        val homeImageTintAnimation = ValueAnimator.ofArgb(colorAccent, textColorPrimary)
-        homeImageTintAnimation.addListener(clearHomeImageTintAnimation)
-        homeImageTintAnimation.addUpdateListener(homeImageTintAnimatorUpdateListener)
-        this.homeImageTintAnimation = homeImageTintAnimation
-
-        val homeTextColorAnimation = ValueAnimator.ofArgb(homeTextView.currentTextColor,
-                textColorPrimary)
-        homeTextColorAnimation.addListener(clearHomeTextColorAnimation)
-        homeTextColorAnimation.addUpdateListener(homeTextColorAnimatorUpdateListener)
-        this.homeTextColorAnimation = homeTextColorAnimation
-
-        val tournamentsBackgroundAnimation = ValueAnimator.ofInt(tournamentsBackground.alpha, 255)
-        tournamentsBackgroundAnimation.addListener(clearTournamentsBackgroundAnimation)
-        tournamentsBackgroundAnimation.addUpdateListener(tournamentsBackgroundAlphaAnimatorUpdateListener)
-        this.tournamentsBackgroundAnimation = tournamentsBackgroundAnimation
-
-        val tournamentsImageTintAnimation = ValueAnimator.ofArgb(textColorPrimary, colorAccent)
-        tournamentsImageTintAnimation.addListener(clearTournamentsImageTintAnimation)
-        tournamentsImageTintAnimation.addUpdateListener(tournamentsImageTintAnimatorUpdateListener)
-        this.tournamentsImageTintAnimation = tournamentsImageTintAnimation
-
-        val tournamentsTextColorAnimation = ValueAnimator.ofArgb(
-                tournamentsTextView.currentTextColor, colorAccent)
-        tournamentsTextColorAnimation.addListener(clearTournamentsTextColorAnimation)
-        tournamentsTextColorAnimation.addUpdateListener(tournamentsTextColorAnimatorUpdateListener)
-        this.tournamentsTextColorAnimation = tournamentsTextColorAnimation
-
-        val animatorSet = AnimatorSet()
-        animatorSet.duration = animationDuration
-        animatorSet.interpolator = AnimationUtils.ACCELERATE_DECELERATE_INTERPOLATOR
-        animatorSet.playTogether(homeBackgroundAnimation, homeImageTintAnimation,
-                homeTextColorAnimation, tournamentsBackgroundAnimation,
-                tournamentsImageTintAnimation, tournamentsTextColorAnimation)
-        animatorSet.start()
+        animateTo(
+                newHomeBackgroundAlpha = 0,
+                currentHomeImageTint = colorAccent,
+                newHomeImageTint = textColorPrimary,
+                newHomeTextColor = textColorPrimary,
+                newTournamentsBackgroundAlpha = 255,
+                currentTournamentsImageTint = textColorPrimary,
+                newTournamentsImageTint = colorAccent,
+                newTournamentsTextColor = colorAccent
+        )
     }
 
     interface Listeners {

@@ -214,10 +214,10 @@ class RankingsAndFavoritesViewModel(
                         })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe { (favorites, identity) ->
+                .subscribe { (favorites, identityOptional) ->
                     refreshListItems(
                             favorites = favorites,
-                            identity = identity.orNull()
+                            identity = identityOptional.orNull()
                     )
                 })
     }

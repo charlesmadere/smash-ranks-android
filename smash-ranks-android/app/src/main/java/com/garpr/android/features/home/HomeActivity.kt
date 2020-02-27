@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.viewpager2.widget.ViewPager2
 import com.garpr.android.R
 import com.garpr.android.extensions.putOptionalExtra
 import com.garpr.android.features.common.activities.BaseActivity
@@ -23,25 +22,18 @@ class HomeActivity : BaseActivity(), BottomNavigationView.Listeners, HomeToolbar
     private lateinit var adapter: HomeFragmentPagerAdapter
 
     private var currentPage: HomeTab
-        get() = HomeTab.values()[viewPager.currentItem]
+        get() = bottomNavigationView.selection
         set(value) {
-            viewPager.setCurrentItem(value.ordinal, false)
-        }
-
-    override val activityName = TAG
-
-    private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-
-            toolbar.searchFieldHint = getText(when (HomeTab.values()[position]) {
+            toolbar.searchFieldHint = getText(when (value) {
                 HomeTab.HOME -> R.string.search_rankings_and_favorites_
                 HomeTab.TOURNAMENTS -> R.string.search_tournaments_
             })
 
-            bottomNavigationView.selection = HomeTab.values()[position]
+            viewPager.setCurrentItem(value.ordinal, false)
+            bottomNavigationView.selection = value
         }
-    }
+
+    override val activityName = TAG
 
     private val homeViewModel: HomeViewModel by viewModel()
     private val rankingsAndFavoritesViewModel: RankingsAndFavoritesViewModel by viewModel()
@@ -113,7 +105,6 @@ class HomeActivity : BaseActivity(), BottomNavigationView.Listeners, HomeToolbar
 
         toolbar.searchable = this
         toolbar.listeners = this
-        viewPager.registerOnPageChangeCallback(onPageChangeCallback)
         viewPager.isUserInputEnabled = false
         viewPager.offscreenPageLimit = HomeTab.values().size - 1
         bottomNavigationView.listeners = this

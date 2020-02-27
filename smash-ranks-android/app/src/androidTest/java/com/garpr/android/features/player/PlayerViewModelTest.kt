@@ -28,6 +28,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -55,14 +56,14 @@ class PlayerViewModelTest : BaseViewModelTest() {
                 name = "Charlezard"
         )
 
-        private val ABS_PLAYER_JOEJOE: AbsPlayer = LitePlayer(
-                id = "588999c5d2994e713ad63c7b",
-                name = "joejoe"
-        )
-
         private val ABS_PLAYER_IMYT: AbsPlayer = LitePlayer(
                 id = "5877eb55d2994e15c7dea98b",
                 name = "Imyt"
+        )
+
+        private val ABS_PLAYER_JOEJOE: AbsPlayer = LitePlayer(
+                id = "588999c5d2994e713ad63c7b",
+                name = "joejoe"
         )
 
         private val ABS_PLAYER_PIMP_JONG_ILLEST: AbsPlayer = LitePlayer(
@@ -175,26 +176,26 @@ class PlayerViewModelTest : BaseViewModelTest() {
     fun testAddOrRemoveFromFavorites() {
         viewModel.initialize(NORCAL, CHARLEZARD_ID)
 
-        var state: PlayerViewModel.State? = null
+        var isFavorited: Boolean? = null
 
         viewModel.stateLiveData.observeForever {
-            state = it
+            isFavorited = (it.list?.get(0) as? ListItem.Player?)?.isFavorited
         }
 
         viewModel.fetchPlayer()
-        assertEquals(false, state?.isFavorited)
+        assertEquals(false, isFavorited)
 
         viewModel.addOrRemoveFromFavorites()
-        assertEquals(true, state?.isFavorited)
+        assertEquals(true, isFavorited)
 
         viewModel.addOrRemoveFromFavorites()
-        assertEquals(false, state?.isFavorited)
+        assertEquals(false, isFavorited)
 
         favoritePlayersRepository.addPlayer(ABS_PLAYER_CHARLEZARD, NORCAL)
-        assertEquals(true, state?.isFavorited)
+        assertEquals(true, isFavorited)
 
         favoritePlayersRepository.removePlayer(ABS_PLAYER_CHARLEZARD, NORCAL)
-        assertEquals(false, state?.isFavorited)
+        assertEquals(false, isFavorited)
     }
 
     @Test
@@ -209,7 +210,6 @@ class PlayerViewModelTest : BaseViewModelTest() {
 
         viewModel.fetchPlayer()
         assertEquals(false, state?.hasError)
-        assertEquals(false, state?.isFavorited)
         assertEquals(false, state?.isFetching)
         assertEquals(true, state?.showSearchIcon)
         assertFalse(state?.subtitleText.isNullOrBlank())
@@ -217,9 +217,11 @@ class PlayerViewModelTest : BaseViewModelTest() {
         assertEquals(11, state?.list?.size)
         assertNull(state?.searchResults)
         assertEquals(PLAYER_MATCHES_BUNDLE, state?.playerMatchesBundle)
-        assertNull(state?.smashCompetitor)
 
-        assertTrue(state?.list?.get(0) is ListItem.Player)
+        val player = state?.list?.get(0) as ListItem.Player
+        assertEquals(ABS_PLAYER_CHARLEZARD, player.player)
+        assertEquals(false, player.isFavorited)
+        assertNull(player.smashCompetitor)
 
         assertTrue(state?.list?.get(1) is ListItem.Tournament)
         var tournament = state?.list?.get(1) as ListItem.Tournament
@@ -282,7 +284,6 @@ class PlayerViewModelTest : BaseViewModelTest() {
 
         viewModel.fetchPlayer()
         assertEquals(false, state?.hasError)
-        assertEquals(false, state?.isFavorited)
         assertEquals(false, state?.isFetching)
         assertEquals(false, state?.showSearchIcon)
         assertFalse(state?.subtitleText.isNullOrBlank())
@@ -290,9 +291,12 @@ class PlayerViewModelTest : BaseViewModelTest() {
         assertEquals(2, state?.list?.size)
         assertNull(state?.searchResults)
         assertEquals(EMPTY_PLAYER_MATCHES_BUNDLE, state?.playerMatchesBundle)
-        assertNull(state?.smashCompetitor)
 
-        assertTrue(state?.list?.get(0) is ListItem.Player)
+        val player = state?.list?.get(0) as ListItem.Player
+        assertEquals(ABS_PLAYER_CHARLEZARD, player.player)
+        assertFalse(player.isFavorited)
+        assertNull(player.smashCompetitor)
+
         assertTrue(state?.list?.get(1) is ListItem.NoMatches)
     }
 
@@ -309,7 +313,6 @@ class PlayerViewModelTest : BaseViewModelTest() {
 
         viewModel.fetchPlayer()
         assertEquals(true, state?.hasError)
-        assertEquals(false, state?.isFavorited)
         assertEquals(false, state?.isFetching)
         assertEquals(false, state?.showSearchIcon)
         assertFalse(state?.subtitleText.isNullOrBlank())
@@ -317,20 +320,13 @@ class PlayerViewModelTest : BaseViewModelTest() {
         assertNull(state?.list)
         assertNull(state?.searchResults)
         assertNull(state?.playerMatchesBundle)
-        assertNull(state?.smashCompetitor)
     }
 
     @Test
     fun testFetchPlayerWithoutInitializeDoesThrowException() {
-        var throwable: Throwable? = null
-
-        try {
+        assertThrows(Throwable::class.java) {
             viewModel.fetchPlayer()
-        } catch (t: Throwable) {
-            throwable = t
         }
-
-        assertNotNull(throwable)
     }
 
     @Test
@@ -342,10 +338,15 @@ class PlayerViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.initialize(NORCAL, CHARLEZARD_ID)
-        assertEquals(false, state?.isFavorited)
+        assertNull(state?.identity)
+        assertEquals(false, state?.hasError)
+        assertEquals(false, state?.isFetching)
+        assertEquals(false, state?.showSearchIcon)
         assertFalse(state?.subtitleText.isNullOrBlank())
         assertTrue(state?.titleText.isNullOrBlank())
-        assertNull(state?.smashCompetitor)
+        assertNull(state?.list)
+        assertNull(state?.searchResults)
+        assertNull(state?.playerMatchesBundle)
     }
 
     @Test
@@ -359,7 +360,7 @@ class PlayerViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchPlayer()
-        viewModel.search(" ")
+        viewModel.searchQuery = " "
 
         assertNull(state?.searchResults)
     }
@@ -375,7 +376,7 @@ class PlayerViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchPlayer()
-        viewModel.search("")
+        viewModel.searchQuery = ""
 
         assertNull(state?.searchResults)
     }
@@ -391,7 +392,7 @@ class PlayerViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchPlayer()
-        viewModel.search("imyt")
+        viewModel.searchQuery = "imyt"
 
         assertNotNull(state?.searchResults)
         assertEquals(6, state?.searchResults?.size)
@@ -429,7 +430,7 @@ class PlayerViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchPlayer()
-        viewModel.search("Joe")
+        viewModel.searchQuery = "Joe"
 
         assertNotNull(state?.searchResults)
         assertEquals(4, state?.searchResults?.size)
@@ -460,7 +461,7 @@ class PlayerViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchPlayer()
-        viewModel.search(null)
+        viewModel.searchQuery = null
 
         assertNull(state?.searchResults)
     }
@@ -476,7 +477,7 @@ class PlayerViewModelTest : BaseViewModelTest() {
         }
 
         viewModel.fetchPlayer()
-        viewModel.search("wadu")
+        viewModel.searchQuery = "wadu"
 
         assertNotNull(state?.searchResults)
         assertEquals(1, state?.searchResults?.size)

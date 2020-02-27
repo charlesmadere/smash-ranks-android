@@ -12,7 +12,7 @@ apply plugin: "io.fabric"
 android {
 
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -22,16 +22,16 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 30001
-        versionName "3.0.1"
+        versionCode 30002
+        versionName "3.0.2"
 
         // needed for androidTest
         testInstrumentationRunner "com.garpr.android.test.AndroidTestRunner"
         testInstrumentationRunnerArguments clearPackageData: "true"
 
-        // needed for Room migration tests in androidTest
         javaCompileOptions {
             annotationProcessorOptions {
+                // needed for Room migration tests in androidTest
                 arguments = [ "room.schemaLocation" : "$projectDir/schemas".toString() ]
             }
         }
@@ -50,7 +50,9 @@ android {
 
     sourceSets {
         androidTest {
+            // needed for Room migration tests in androidTest
             assets.srcDirs += files("$projectDir/schemas".toString())
+
             java.srcDirs += "src/baseTest/java"
         }
 
@@ -60,6 +62,7 @@ android {
     }
 
     testOptions {
+        // needed for androidTest
         execution "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
