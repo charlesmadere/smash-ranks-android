@@ -37,10 +37,10 @@ class SettingsViewModel(
     private val _identityStateLiveData = MutableLiveData<IdentityState>(IdentityState.Fetching)
     val identityStateLiveData: LiveData<IdentityState> = _identityStateLiveData
 
-    private val _nightModeLiveData = MutableLiveData<NightMode>(nightModeRepository.nightMode)
+    private val _nightModeLiveData = MutableLiveData(nightModeRepository.nightMode)
     val nightModeLiveData: LiveData<NightMode> = _nightModeLiveData
 
-    private val _regionLiveData = MutableLiveData<Region>(regionRepository.region)
+    private val _regionLiveData = MutableLiveData(regionRepository.region)
     val regionLiveData: LiveData<Region> = _regionLiveData
 
     private val _smashRosterStateLiveData = MutableLiveData<SmashRosterState>(SmashRosterState.Fetching)
@@ -59,7 +59,7 @@ class SettingsViewModel(
             _rankingsPollingStateLiveData.postValue(value)
         }
 
-    private val _rankingsPollingStateLiveData = MutableLiveData<RankingsPollingState>(rankingsPollingState)
+    private val _rankingsPollingStateLiveData = MutableLiveData(rankingsPollingState)
     val rankingsPollingStateLiveData: LiveData<RankingsPollingState> = _rankingsPollingStateLiveData
 
     companion object {

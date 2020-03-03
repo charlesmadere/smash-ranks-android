@@ -21,7 +21,7 @@ class AddOrRemovePlayerFromFavoritesViewModel(
             _stateLiveData.postValue(value)
         }
 
-    private val _stateLiveData = MutableLiveData<State>(state)
+    private val _stateLiveData = MutableLiveData(state)
     val stateLiveData: LiveData<State> = _stateLiveData
 
     fun addOrRemoveFromFavorites() {
