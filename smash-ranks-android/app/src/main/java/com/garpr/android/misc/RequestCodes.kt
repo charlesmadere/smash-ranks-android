@@ -10,12 +10,6 @@ enum class RequestCodes : Parcelable {
     CHANGE_REGION,
     CHANGE_RINGTONE;
 
-
-    companion object {
-        @JvmField
-        val CREATOR = createParcel { values()[it.readInt()] }
-    }
-
     val value: Int
         get() = ordinal + 10000
 
@@ -23,6 +17,11 @@ enum class RequestCodes : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(ordinal)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR = createParcel { values()[it.readInt()] }
     }
 
 }
