@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="android:background">?attr/colorPrimaryDark</item>
-        <item name="android:layout_height">@dimen/bottom_navigation_view_height</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:theme">@style/ToolbarTheme</item>
-        <item name="elevation">@dimen/elevation</item>
-        <item name="itemIconTint">@drawable/bottom_navigation_view_item_tint</item>
-        <item name="itemTextAppearanceActive">@style/BottomNavigationViewTextAppearance.Active</item>
-        <item name="itemTextAppearanceInactive">@style/BottomNavigationViewTextAppearance.Inactive</item>
-        <item name="itemTextColor">@drawable/bottom_navigation_view_item_tint</item>
-    </style>
-
-    <style name="BottomNavigationViewTextAppearance">
-
-    </style>
-
-    <style name="BottomNavigationViewTextAppearance.Active">
-        <item name="android:fontFamily">@font/nunito_sans</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="BottomNavigationViewTextAppearance.Inactive">
-        <item name="android:fontFamily">@font/nunito_sans_semibold</item>
-    </style>
-
     <style name="BottomSheetDialogButton">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:drawablePadding">@dimen/root_padding</item>
