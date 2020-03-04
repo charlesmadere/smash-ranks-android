@@ -26,7 +26,7 @@ buildscript {
     ext.swipe_refresh_layout_version = '1.0.0'
     ext.testcore_version = '1.2.0'
     ext.viewpager_version = '1.0.0'
-    ext.workmanager_version = '2.3.2'
+    ext.workmanager_version = '2.3.3'
 
     repositories {
         google()
