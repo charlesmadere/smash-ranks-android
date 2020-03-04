@@ -37,10 +37,6 @@ class HeadToHeadViewModel(
             _stateLiveData.postValue(value)
         }
 
-    companion object {
-        private const val TAG = "HeadToHeadViewModel"
-    }
-
     init {
         initListeners()
     }
@@ -89,7 +85,8 @@ class HeadToHeadViewModel(
     fun fetchHeadToHead(region: Region, playerId: String, opponentId: String) {
         state = state.copy(isFetching = true)
 
-        disposables.add(Single.zip(headToHeadRepository.getHeadToHead(region, playerId, opponentId),
+        disposables.add(Single.zip(
+                headToHeadRepository.getHeadToHead(region, playerId, opponentId),
                 identityRepository.identityObservable.takeSingle(),
                 BiFunction<HeadToHead, Optional<FavoritePlayer>,
                         Pair<HeadToHead, Optional<FavoritePlayer>>> { t1, t2 ->
@@ -145,6 +142,10 @@ class HeadToHeadViewModel(
         }
 
         state = state.copy(list = newList)
+    }
+
+    companion object {
+        private const val TAG = "HeadToHeadViewModel"
     }
 
     sealed class ListItem {

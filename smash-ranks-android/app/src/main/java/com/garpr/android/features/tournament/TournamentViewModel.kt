@@ -16,6 +16,7 @@ import com.garpr.android.misc.ThreadUtils
 import com.garpr.android.misc.Timber
 import com.garpr.android.repositories.IdentityRepository
 import com.garpr.android.repositories.TournamentsRepository
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.Collections
 
@@ -103,17 +104,18 @@ class TournamentViewModel(
 
         state = state.copy(isFetching = true)
 
-        disposables.add(tournamentsRepository.getTournament(region, tournamentId)
-                .zipWith(identityRepository.identityObservable.takeSingle(),
-                        BiFunction<FullTournament, Optional<FavoritePlayer>,
-                                Pair<FullTournament, Optional<FavoritePlayer>>> { t1, t2 ->
-                                    Pair(t1, t2)
-                                })
+        disposables.add(Single.zip(
+                tournamentsRepository.getTournament(region, tournamentId),
+                identityRepository.identityObservable.takeSingle(),
+                BiFunction<FullTournament, Optional<FavoritePlayer>,
+                        Pair<FullTournament, Optional<FavoritePlayer>>> { t1, t2 ->
+                            Pair(t1, t2)
+                        })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ (tournament, identity) ->
-                    val matches = createMatchesList(tournament, identity.orNull())
-                    val players = createPlayersList(tournament, identity.orNull())
+                .subscribe({ (tournament, identityOptional) ->
+                    val matches = createMatchesList(tournament, identityOptional.orNull())
+                    val players = createPlayersList(tournament, identityOptional.orNull())
 
                     state = state.copy(
                             hasError = false,

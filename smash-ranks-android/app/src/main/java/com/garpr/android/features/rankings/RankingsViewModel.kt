@@ -22,6 +22,7 @@ import com.garpr.android.repositories.RankingsRepository
 import com.garpr.android.sync.roster.SmashRosterStorage
 import com.garpr.android.sync.roster.SmashRosterSyncManager
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.text.NumberFormat
 import java.util.Collections
@@ -98,16 +99,17 @@ class RankingsViewModel(
     fun fetchRankings(region: Region) {
         state = state.copy(isFetching = true)
 
-        disposables.add(rankingsRepository.getRankings(region)
-                .zipWith(identityRepository.identityObservable.takeSingle(),
-                        BiFunction<RankingsBundle, Optional<FavoritePlayer>,
-                                Pair<RankingsBundle, Optional<FavoritePlayer>>> { t1, t2 ->
-                                    Pair(t1, t2)
-                                })
+        disposables.add(Single.zip(
+                rankingsRepository.getRankings(region),
+                identityRepository.identityObservable.takeSingle(),
+                BiFunction<RankingsBundle, Optional<FavoritePlayer>,
+                        Pair<RankingsBundle, Optional<FavoritePlayer>>> { t1, t2 ->
+                            Pair(t1, t2)
+                        })
                 .subscribeOn(schedulers.background)
                 .observeOn(schedulers.background)
-                .subscribe({ (bundle, identity) ->
-                    val list = createList(bundle, identity.orNull())
+                .subscribe({ (bundle, identityOptional) ->
+                    val list = createList(bundle, identityOptional.orNull())
 
                     state = state.copy(
                             hasError = false,

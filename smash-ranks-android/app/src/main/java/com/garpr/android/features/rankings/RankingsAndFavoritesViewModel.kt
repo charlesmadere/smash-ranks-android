@@ -166,7 +166,8 @@ class RankingsAndFavoritesViewModel(
     fun fetchRankings(region: Region) {
         state = state.copy(isRefreshing = true)
 
-        disposables.add(Single.zip(favoritePlayersRepository.playersObservable.takeSingle(),
+        disposables.add(Single.zip(
+                favoritePlayersRepository.playersObservable.takeSingle(),
                 identityRepository.identityObservable.takeSingle(),
                 rankingsRepository.getRankings(region)
                         .map { bundle ->

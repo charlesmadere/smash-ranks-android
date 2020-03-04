@@ -39,10 +39,6 @@ class PlayersViewModel(
             _stateLiveData.postValue(value)
         }
 
-    companion object {
-        private const val TAG = "PlayersViewModel"
-    }
-
     init {
         initListeners()
     }
@@ -50,7 +46,8 @@ class PlayersViewModel(
     fun fetchPlayers(region: Region) {
         state = state.copy(isFetching = true)
 
-        disposables.add(Single.zip(playersRepository.getPlayers(region),
+        disposables.add(Single.zip(
+                playersRepository.getPlayers(region),
                 identityRepository.identityObservable.takeSingle(),
                 BiFunction<PlayersBundle, Optional<FavoritePlayer>,
                         Pair<PlayersBundle, Optional<FavoritePlayer>>> { t1, t2 ->
@@ -108,6 +105,10 @@ class PlayersViewModel(
             val searchResults = playerListBuilder.search(state.list, query)
             state = state.copy(searchResults = searchResults)
         }
+    }
+
+    companion object {
+        private const val TAG = "PlayersViewModel"
     }
 
     data class State(
