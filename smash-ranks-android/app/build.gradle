@@ -104,6 +104,11 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/fragment
     implementation "androidx.fragment:fragment:$fragment_version"
 
+    // AndroidX Lifecycle - for LiveData and ViewModel
+    // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
     // AndroidX Palette
     // https://developer.android.com/jetpack/androidx/releases/palette
     implementation "androidx.palette:palette:$palette_version"
@@ -128,10 +133,6 @@ dependencies {
     androidTestImplementation "androidx.test:core:$testcore_version"
     androidTestImplementation "androidx.test:runner:$testcore_version"
     androidTestUtil "androidx.test:orchestrator:$testcore_version"
-
-    // AndroidX ViewModel and LiveData
-    // https://developer.android.com/jetpack/androidx/releases/lifecycle
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // AndroidX ViewPager2
     // https://developer.android.com/jetpack/androidx/releases/viewpager2
