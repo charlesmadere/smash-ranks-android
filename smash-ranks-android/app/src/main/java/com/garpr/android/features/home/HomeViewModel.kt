@@ -57,7 +57,7 @@ class HomeViewModel(
     fun onRankingsBundleChange(bundle: RankingsBundle?, hasContent: Boolean) {
         state = state.copy(
                 hasHomeContent = hasContent,
-                subtitleDate = bundle?.time?.shortForm
+                subtitleDate = bundle?.time?.mediumForm
         )
         refreshState()
     }
