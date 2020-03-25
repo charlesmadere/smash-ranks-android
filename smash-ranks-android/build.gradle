@@ -20,7 +20,7 @@ buildscript {
     ext.okhttp_version = '4.4.1'
     ext.palette_version = '1.0.0'
     ext.recyclerview_version = '1.1.0'
-    ext.retrofit_version = '2.7.2'
+    ext.retrofit_version = '2.8.1'
     ext.room_version = '2.2.5'
     ext.rx_java_version = '2.2.18'
     ext.swipe_refresh_layout_version = '1.0.0'
